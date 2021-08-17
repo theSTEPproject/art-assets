@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "tree_leaves.png",
+	"frame": {"x":0,"y":0,"w":750,"h":417},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":750,"h":417},
+	"sourceSize": {"w":750,"h":417}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "tree_leaves.png",
+	"format": "RGBA8888",
+	"size": {"w":750,"h":417},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:ecc360fbbc1e24cdbbe151d61c335958:c6e203391a65f6198f13ca3441fe95e5:5b866bc0b179049de709230304002d2a$"
+}
+}

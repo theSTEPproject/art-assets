@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "bunny_full_right.png",
+	"frame": {"x":0,"y":0,"w":313,"h":313},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":313,"h":313},
+	"sourceSize": {"w":313,"h":313}
+},
+{
+	"filename": "bunny_right.png",
+	"frame": {"x":313,"y":0,"w":313,"h":313},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":313,"h":313},
+	"sourceSize": {"w":313,"h":313}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bunnies.png",
+	"format": "RGBA8888",
+	"size": {"w":626,"h":313},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:c83ab99d1ba7d99f6df7f7e3535946f4:5273bdefca33cdfc5bbb199a71d3b7df:62d956865a4c5c48a07889147e78678d$"
+}
+}

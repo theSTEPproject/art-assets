@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "machine.png",
+	"frame": {"x":0,"y":0,"w":411,"h":411},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":411,"h":411},
+	"sourceSize": {"w":411,"h":411}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "machine.png",
+	"format": "RGBA8888",
+	"size": {"w":411,"h":411},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:497eb5780fb08b1cf4a2ef84a2b04aaf:d4ac74b84eb9f8b1ddf98eb77a488b74:ad02ef673cd9eee14916ad2dbb1b3a35$"
+}
+}

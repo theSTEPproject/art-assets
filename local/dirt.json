@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "dirt.png",
+	"frame": {"x":0,"y":0,"w":521,"h":521},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":521,"h":521},
+	"sourceSize": {"w":521,"h":521}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dirt.png",
+	"format": "RGBA8888",
+	"size": {"w":521,"h":521},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:dbfbe4152e52c8291e59256f0890f210:585d5bb4a37f44d96641430832b872bf:be8392acf03ae3ecf1ee879477e86cf9$"
+}
+}

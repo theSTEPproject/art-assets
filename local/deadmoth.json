@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "deadmoth_up.png",
+	"frame": {"x":0,"y":0,"w":301,"h":301},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":301,"h":301},
+	"sourceSize": {"w":301,"h":301}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "deadmoth.png",
+	"format": "RGBA8888",
+	"size": {"w":301,"h":301},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7adb0fe4383ec73ff4ccfb2e2d2743e8:25cf4f466e36bb58dd8365531db11eff:f96edc1ab0a32e67c55e81a275256338$"
+}
+}
