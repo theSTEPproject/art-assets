@@ -134,16 +134,6 @@
       "assetId": 216,
       "assetName": "plants.json",
       "assetUrl": "static/sprites/local/plants.json"
-    },
-    {
-      "assetId": 500,
-      "assetName": "turtle.json",
-      "assetUrl": "static/sprites/local/student/turtle.json"
-    },
-    {
-      "assetId": 501,
-      "assetName": "butterfly.json",
-      "assetUrl": "static/sprites/local/student/butterfly.json"
     }
   ],
   "READ_ME": [
