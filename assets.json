@@ -134,6 +134,41 @@
       "assetId": 216,
       "assetName": "plants.json",
       "assetUrl": "static/sprites/local/plants.json"
+    },
+    {
+      "assetId": 500,
+      "assetName": "turtle.json",
+      "assetUrl": "static/sprites/local/student/turtle.json"
+    },
+    {
+      "assetId": 501,
+      "assetName": "butterfly.json",
+      "assetUrl": "static/sprites/local/student/butterfly.json"
+    },
+    {
+      "assetId": 901,
+      "assetName": "canopy.json",
+      "assetUrl": "static/sprites/local/canopy.json"
+    },
+    {
+      "assetId": 902,
+      "assetName": "grass.json",
+      "assetUrl": "static/sprites/local/grass.json"
+    },
+    {
+      "assetId": 903,
+      "assetName": "trunk.json",
+      "assetUrl": "static/sprites/local/trunk.json"
+    },
+    {
+      "assetId": 904,
+      "assetName": "roots.json",
+      "assetUrl": "static/sprites/local/roots.json"
+    },
+    {
+      "assetId": 905,
+      "assetName": "robin.json",
+      "assetUrl": "static/sprites/local/robin.json"
     }
   ],
   "READ_ME": [
