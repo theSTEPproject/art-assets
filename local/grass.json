@@ -1,0 +1,20 @@
+{"frames": {
+
+"Screen Shot 2021-09-22 at 11.18.19 PM.png":
+{
+	"frame": {"x":0,"y":0,"w":1450,"h":552},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1450,"h":552},
+	"sourceSize": {"w":1450,"h":552}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "grass.png",
+	"format": "RGBA8888",
+	"size": {"w":1450,"h":552},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e852579a13b6b41e392c44453a00f6f1:2bffeaf86882e275dc74256265407fc3:b5eff027e4675af447e0c9c1b13dff5b$"
+}
+}
