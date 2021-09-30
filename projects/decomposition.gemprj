@@ -1,0 +1,219 @@
+{
+  "id": "decomposition",
+  "label": "Decomposition",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [false, false],
+    "bounce": true,
+    "bgcolor": "0x98f5ff",
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Soil",
+      "label": "Soil",
+      "scriptText": "# BLUEPRINT Soil\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'dirt.json' 0\n\naddProp nutrients Number 50\nprop nutrients setMax 100\nprop nutrients setMin 0\n\naddProp sparkleCount Number 0\n\nuseFeature Physics\n\nfeatCall Physics setSize 196 196\n\nprop zIndex setTo -200\n\nuseFeature Touches\nfeatCall Touches monitor Worm b2b\n\nuseFeature AgentWidgets\n// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)\nfeatCall AgentWidgets bindMeterTo nutrients\nfeatCall AgentWidgets setMeterPosition 'inside-left'\n// violet\nfeatProp AgentWidgets meterColor setTo 9055202\nfeatProp AgentWidgets text setTo ''\n\n# PROGRAM UPDATE\n\nevery 1 runAtStart [[\n  ifExpr {{ agent.getProp('sparkleCount').value > 0}} [[\n      prop sparkleCount sub 1\n  ]]\n  ifExpr {{ agent.getProp('sparkleCount').value == 0}} [[\n    featCall Costume setCostume 'dirt.json' 0\n  ]]\n]]"
+    },
+    {
+      "id": "Sunbeam",
+      "label": "Sunbeam",
+      "scriptText": "# BLUEPRINT Sunbeam\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'circle.json' 0\nfeatCall Costume setColorize 1 1 0\nprop agent.alpha setTo 0.3\n//prop zIndex setTo 100\n\n// STUDENTS_MAY_CHANGE - to set the speed of the sunbeam\naddProp speed Number 20\n// STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae\naddProp energyRate Number 5\n// STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)\naddProp direction Number 1\n\nuseFeature Physics\nfeatCall Physics init\n// STUDENTS_MAY_CHANGE - how wide the sunbeam is\nfeatProp Physics scale setTo 0.4\n// STUDENTS_MAY_CHANGE - how tall the sunbeam is\nfeatProp Physics scaleY setTo 2\n\nuseFeature Touches\n\n# PROGRAM INIT\n// default position for moving across the top\nprop x setTo -400\nprop y setTo -180\n\n# PROGRAM EVENT\nonEvent Tick [[\n  exprPush {{agent.x + agent.getProp('direction').value * (agent.getProp('speed').value); }}\n  propPop x\n\n  ifExpr {{ ((agent.getProp('direction').value == 1) && (agent.x > 400)) || ((agent.getProp('direction').value == -1) && (agent.x < -400))}} [[\n      exprPush {{400 * agent.getProp('direction').value * -1}}\n      propPop x\n  ]]\n]]"
+    },
+    {
+      "id": "Rock",
+      "label": "Rock",
+      "scriptText": "# BLUEPRINT Rock\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'boulder.json' 0\n\nuseFeature Physics\nuseFeature AgentWidgets\n\nfeatProp Physics scale setTo 0.5"
+    },
+    {
+      "id": "House",
+      "label": "House",
+      "scriptText": "# BLUEPRINT House\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'house.json' 0\n\nuseFeature Physics\nuseFeature AgentWidgets\n\nfeatProp Physics scale setTo 2"
+    },
+    {
+      "id": "SoilBG",
+      "label": "SoilBG",
+      "scriptText": "# BLUEPRINT SoilBG\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'square.json' 0\nfeatCall Costume setColorize 0.56 0.52 0.40\nuseFeature Physics\nfeatCall Physics setSize 800 400\nprop zIndex setTo -210"
+    },
+    {
+      "id": "Worm",
+      "label": "Worm",
+      "isCharControllable": true,
+      "isPozyxControllable": true,
+      "scriptText": "# BLUEPRINT Worm\n# PROGRAM DEFINE\n\nuseFeature Costume\nfeatCall Costume setCostume 'worm.json' 1\n\n// put above everything\nprop zIndex setTo 100\n\n// move between hungry and full where hungry will eat and full will release nutrients\naddProp feeling String 'hungry'\n\n// used internally to delay nutrient release when full\naddProp nutrientCountStart Number 0\n\n// STUDENTS_MAY_CHANGE set this lower for instant dispersal of nutrients, or higher to stretch it out\nprop nutrientCountStart setTo 5\naddProp nutrientCount Number 0\n\nuseFeature Movement\nfeatProp Movement useAutoOrientation setTo true\n\naddProp energyLevel Number 50\nprop energyLevel setMax 100\nprop energyLevel setMin 0\n\naddProp matter Number 50\nprop matter setMax 100\nprop matter setMin 0\n\nuseFeature Physics\nfeatProp Physics scale setTo 0.5\n\nuseFeature Touches\nfeatCall Touches monitor Waste b2b\nfeatCall Touches monitor Soil b2b\n\nuseFeature AgentWidgets\n// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)\nfeatCall AgentWidgets bindMeterTo energyLevel\n// Green = 0x00FF00\nfeatProp AgentWidgets meterColor setTo 65280\n\n# PROGRAM UPDATE\n\n\nwhen Worm touches Waste [[\n  every 1 runAtStart [[\n\n    // if hungry, eat\n    ifExpr {{ agent.getProp('feeling').value == 'hungry'}} [[\n      // move energy and matter from the waste to the worm and glow so we notice\n      prop Worm.energyLevel add 10\n      prop Worm.matter add 10\n      prop Waste.matter sub 10\n      featCall Costume setGlow 4\n\n      // if you are nice and full of energy, note you are full and start poop count-down\n        ifExpr {{ agent.getProp('energyLevel').value > 90 }} [[\n          prop feeling setTo 'full'\n\n          // set the glow to 0 to reflect not eating while full\n          featCall Costume setGlow 0\n\n          // change costume so we know we are full\n          featCall Costume setCostume 'worm.json' 0\n\n          exprPush {{ agent.getProp('nutrientCountStart').value }}\n          propPop nutrientCount\n        ]]\n    ]]\n  ]]\n]]\n\nwhen Worm lastTouches Waste [[\n  featCall Costume setGlow 0\n]]\n\nwhen Worm touches Soil [[\n  every 1 runAtStart [[\n\n    // if you are full, check if enough time has passed to release nutrients... do so and then switch to being hungry again\n    // if not, just update counter\n    ifExpr {{ agent.getProp('feeling').value == 'full'}} [[\n      ifExpr {{ agent.getProp('nutrientCount').value == 0}} [[\n        prop Worm.energyLevel sub 50\n        prop Worm.matter sub 50\n        prop Soil.nutrients add 50\n        featCall Soil.Costume setGlow 1\n        prop Soil.sparkleCount setTo 3\n        featCall Soil.Costume setCostume 'dirt.json' 1\n        prop feeling setTo 'hungry'\n        // revert costume now that we are hungry again\n        featCall Costume setCostume 'worm.json' 1\n      ]]\n      ifExpr {{ agent.getProp('nutrientCount').value > 0}} [[\n        prop nutrientCount sub 1\n      ]]\n    ]]\n  ]]\n]]\nevery 1 runAtStart [[\n  // energy goes down\n  prop energyLevel sub 1\n\n  // if out of energy ... die\n  ifExpr {{agent.getProp('energyLevel').value == 0}} [[\n    prop alpha setTo 0.3\n    prop isInert setTo true\n  ]]\n\n\n  ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[\n    featProp Costume flipY setTo false\n  ]]\n  ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[\n    featProp Costume flipY setTo true\n  ]]\n]]"
+    },
+    {
+      "id": "Bunny",
+      "label": "Bunny",
+      "isCharControllable": true,
+      "scriptText": "# BLUEPRINT Bunny\n# PROGRAM DEFINE\n\nuseFeature Population\nuseFeature Global\nuseFeature Costume\n\nfeatCall Costume setCostume 'bunnies.json' 1\n\n// set bunny energy\naddProp energyLevel Number 25\nprop energyLevel setMax 50\nprop energyLevel setMin 0\n\n// to manage when it is full and releases waste\naddProp feeling String 'hungry'\n\n// used internally to delay waste release when full\naddProp wasteCountStart Number 0\n\n// STUDENTS_MAY_CHANGE set this lower for instant dispersal of waste, or higher to stretch it out\nprop wasteCountStart setTo 5\naddProp wasteCount Number 0\n\naddProp matter Number 50\n\nprop matter setMax 50\nprop matter setMin 0\n\nuseFeature Physics\n\nfeatProp Physics scale setTo 0.3\n\nuseFeature Movement\n\nuseFeature Touches\nfeatCall Touches monitor Plant b2b\n\nuseFeature AgentWidgets\n// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below) [NOT_WORKING]\nfeatCall AgentWidgets bindMeterTo energyLevel\n// Green = 0x00FF00\nfeatProp AgentWidgets meterColor setTo 65280\n\nprop zIndex setTo 110\n\n# PROGRAM UPDATE\n\nifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[\n  featProp Costume flipX setTo false\n]]\nifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[\n  featProp Costume flipX setTo true\n]]\n\nwhen Bunny touches Plant [[\n  every 1 runAtStart [[\n\n    // if hungry, eat\n    ifExpr {{ agent.getProp('feeling').value == 'hungry'}} [[\n      featCall Costume setCostume 'bunnies.json' 1\n\n      // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants [NOT_WORKING]\n      // Plant matter goes down as it is eaten, as does Plant energy\n      prop Plant.matter sub 10\n      prop Plant.energyLevel sub 10\n      // Bunny matter and energy go up from eating\n      prop Bunny.matter add 10\n      prop Bunny.energyLevel add 10\n      featCall Bunny.Costume setGlow 4\n\n      // if full, change costume and set timer to emit waste\n      ifExpr {{ agent.getProp('energyLevel').value > 45 }} [[\n        featCall Costume setCostume 'bunnies.json' 0\n\n        // set variables to be full and prepare to release waste\n        prop feeling setTo 'full'\n        exprPush {{ agent.getProp('wasteCountStart').value }}\n        propPop wasteCount\n        featCall Bunny.Costume setGlow 0\n      ]]\n    ]]\n  ]]\n]]\n\nwhen Bunny lastTouches Plant [[\n  featCall Costume setGlow 0\n]]\n\nevery 1 runAtStart [[\n    ifExpr {{ agent.getProp('feeling').value == 'full'}} [[\n      ifExpr {{ agent.getProp('wasteCount').value == 0}} [[\n\n        // STUDENTS_MAY_CHANGE - switching these numbers will change how bunnies produce waste [WORKS]\n        prop energyLevel sub 20\n        prop matter sub 20\n        prop feeling setTo 'hungry'\n        featCall Population createAgent Waste [[\n          // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with [NOT_WORKING]\n          prop x addRndInt -20 20\n          prop y addRndInt 50 150\n          prop matter setTo 20\n      ]]\n    ]]\n\n    ifExpr {{ agent.getProp('wasteCount').value > 0}} [[\n      prop wasteCount sub 1\n    ]]\n]]\n\n  // use some energy from just livin / running around\n  prop energyLevel sub 1\n\n  // if out of energy ... die\n  ifExpr {{agent.getProp('energyLevel').value == 0}} [[\n    prop alpha setTo 0.3\n    prop isInert setTo true\n  ]]\n\n]]"
+    },
+    {
+      "id": "Plant",
+      "label": "Plant",
+      "scriptText": "# BLUEPRINT Plant\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'plants.json' 0\nuseFeature Global\nuseFeature Population\n\naddProp energyLevel Number 50\n\n// STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random) [WORKS]\nprop energyLevel setTo 50\nprop energyLevel setMax 100\nprop energyLevel setMin 0\n\naddProp nutrients Number 8\n\n// STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad [WORKS]\nprop nutrients setTo 8\nprop nutrients setMax 10\nprop nutrients setMin 0\n\naddProp matter Number 50\n\n// STUDENTS_MAY_CHANGE - sete a different range or starting point of matter [WORKS]\nprop matter setTo 50\nprop matter setMax 100\nprop matter setMin 0\n\nprop zIndex setTo -110\n\nuseFeature Physics\nuseFeature Touches\nfeatCall Touches monitor Sunbeam b2b\nfeatCall Touches monitor Soil b2b\nfeatCall Touches monitor Bunny b2b\n\nuseFeature AgentWidgets\n// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below) [WORKS]\nfeatProp AgentWidgets meterProp setTo energyLevel\n// Green\nfeatProp AgentWidgets meterColor setTo 65280\n\nfeatCall AgentWidgets setMeterPosition 'middle'\nfeatProp AgentWidgets text setTo ''\n\n// always keep it right near the edge of the dirt, but give some variability\nprop y setTo -50\nprop y addRnd -10 10\n\n  // set size based on matter (assume matter max of 100) and that we waver between 80-100%\n  exprPush {{ 0.25 + agent.getProp('matter').value / 100 }}\n  featPropPop Physics scale\n\n# PROGRAM UPDATE\n\nwhen Plant touches Sunbeam [[\n  every 1 runAtStart [[\n    prop Plant.energyLevel add 1\n    prop Plant.matter add 1\n    featCall Plant.Costume setGlow 4\n  ]]\n]]\n\nwhen Plant lastTouches Sunbeam [[\n  featCall Costume setGlow 0\n]]\n\nwhen Plant touches Soil [[\n  every 1 [[\n    ifExpr {{ Soil.getProp('nutrients').value > 0 }} [[\n      prop Soil.nutrients sub 1\n      prop Plant.nutrients add 1\n    ]]\n  ]]\n]]\n\nevery 1 runAtStart [[\n\n  // set size based on matter (assume matter max of 100) and that we waver between 80-100%\n  exprPush {{ 0.25 + agent.getProp('matter').value / 100 }}\n  featPropPop Physics scale  featPropPop Physics scale\n\n  // if the plant is basically dead\n  ifExpr {{ agent.getProp('matter').value < 10 }} [[\n\n    // create a little bit of inorganic matter\n    featCall Population createAgent Waste [[\n      // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with\n      prop x addRndInt -5 5\n      prop y addRndInt 50 100\n      prop matter setTo 20\n    ]]\n\n    // then remove the plant\n    featCall Population removeAgent\n  ]]\n\n\n  // is it healthy?  Use some nutrients and then set color\n  prop nutrients sub 1\n  ifExpr {{ agent.getProp('nutrients').value > 6 }} [[\n    // healthy\n    featCall Costume setCostume 'plants.json' 0\n  ]]\n  ifExpr {{ agent.getProp('nutrients').value < 6 }} [[\n    // ok, but not great\n    featCall Costume setCostume 'plants.json' 1\n  ]]\n  ifExpr {{ agent.getProp('nutrients').value < 2 }} [[\n    // not doing well at all, so lets also lose some matter\n    featCall Costume setCostume 'plants.json' 2\n    prop matter sub 1\n  ]]\n]]"
+    },
+    {
+      "id": "Waste",
+      "label": "Organic Waste",
+      "scriptText": "# BLUEPRINT Waste\n# PROGRAM DEFINE\nuseFeature Population\n\nuseFeature Costume\nfeatCall Costume setCostume 'organic_matter.json' 0\n\naddProp matter Number 100\nprop matter setMax 100\nprop matter setMin 0\n\n// scale up because the art is a bit small\nuseFeature Physics\nfeatProp Physics scale setTo 2\n\n// pick a random rotation to keep things looking interesting\nprop orientation setTo 0\nprop orientation addRnd 0 6\n\n// we need to be able to see when the waste is on soil and / or being eaten by a worm\nuseFeature Touches\nfeatCall Touches monitor Worm b2b\nfeatCall Touches monitor Soil b2b\n\n// make sure it is in front of the soil but behind the worms\nprop zIndex setTo -150\n\nuseFeature AgentWidgets\n// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter\nfeatProp AgentWidgets meterProp setTo matter\n\nfeatProp AgentWidgets meterColor setTo 5783616\nfeatProp AgentWidgets text setTo ''\n\n# PROGRAM UPDATE\nwhen Waste touches Soil [[\n  // STUDENTS_MAY_CHANGE - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria) [NOT_WORKING]\n  every 1 [[\n    // Bacteria decomposes waste\n    prop Waste.matter sub 1\n    prop Soil.nutrients add 1\n  ]]\n]]\nevery 1 runAtStart [[\n  // remove if there is nothing left\n  ifExpr {{ agent.getProp('matter').value < 1 }} [[\n    featCall Population removeAgent\n  ]]\n\n  // scale based on amount of matter\n    exprPush {{ (agent.getProp('matter').value / 50)}}\n    featPropPop agent.Physics scale\n\n]]"
+    },
+    {
+      "id": "TextLabel",
+      "label": "TextLabel",
+      "scriptText": "# BLUEPRINT TextLabel\n# PROGRAM DEFINE\nuseFeature AgentWidgets\nuseFeature Costume\nfeatCall Costume setCostume 'onexone.json' 0"
+    },
+    {
+      "id": "ColorChip",
+      "label": "ColorChip",
+      "scriptText": "# BLUEPRINT ColorChip\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'square.json' 0\nuseFeature Physics"
+    },
+    {
+      "id": "Timer",
+      "label": "Timer",
+      "scriptText": "# BLUEPRINT Timer\n# PROGRAM DEFINE\nuseFeature AgentWidgets\nuseFeature Costume\nfeatCall Costume setCostume 'onexone.json' 0\naddProp time Number 0\n\nfeatProp AgentWidgets text setTo 'Time: 0'\n\n# PROGRAM INIT\n\nprop x setTo 445\nprop y setTo -256\n\n# PROGRAM UPDATE\nevery 1 runAtStart [[\n  prop time add 1\n  exprPush {{ 'Time: ' + agent.getProp('time').value }}\n  featPropPop AgentWidgets text\n]]"
+    },
+    {
+      "id": "CharacterGraph",
+      "label": "CharacterGraph",
+      "scriptText": "# BLUEPRINT CharacterGraph\n# PROGRAM DEFINE\nuseFeature Costume\nfeatCall Costume setCostume 'onexone.json' 0\n// setting these all up to so they can be changed in the map editor\naddProp characterType String 'Worm'\naddProp countType String 'sum'\naddProp variableToGraph String 'energyLevel'\naddProp labelText String 'Worm Energy'\n\nuseFeature AgentWidgets\nuseFeature Population\nfeatProp AgentWidgets isLargeGraphic setTo true\n\n// using a generic name so that it is easier to change later\naddProp graphValue Number 0\nprop graphValue setMax 1000\nprop graphValue setMin 0\n\nfeatCall AgentWidgets bindGraphTo graphValue 30\n\n# PROGRAM EVENT\n\nonEvent Start [[\n  exprPush {{agent.getProp('labelText').value}}\n  featPropPop AgentWidgets text\n]]\n\nonEvent Tick [[\n  // TEAM_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed\n  // -- Character options: Plant, Worm, Waste, Bunny\n  // -- Variable options: matter, energyLevel, nutrients\n  // -- Population options: sum, avg, min, max\n\n  exprPush {{agent.getProp('characterType').value}}\n  featPropPop Population monitoredAgent\n\n  exprPush {{agent.getProp('variableToGraph').value}}\n  featPropPop Population monitoredAgentProp\n\n  featCall Population countAgentProp\n\n  exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}\n  propPop graphValue\n]]"
+    }
+  ],
+  "instances": [
+    {
+      "id": "1101",
+      "label": "Soil01",
+      "bpid": "Soil",
+      "initScript": "prop x setTo -300\nprop y setTo 100\nprop nutrients setTo 10"
+    },
+    {
+      "id": "1102",
+      "label": "Soil02",
+      "bpid": "Soil",
+      "initScript": "prop x setTo -100\nprop y setTo 100"
+    },
+    {
+      "id": "1103",
+      "label": "Soil03",
+      "bpid": "Soil",
+      "initScript": "prop x setTo 100\nprop y setTo 100"
+    },
+    {
+      "id": "1104",
+      "label": "Soil04",
+      "bpid": "Soil",
+      "initScript": "prop x setTo 300\nprop y setTo 100"
+    },
+    {
+      "id": "1105",
+      "label": "Soil05",
+      "bpid": "Soil",
+      "initScript": "prop x setTo -300\nprop y setTo 300"
+    },
+    {
+      "id": "1106",
+      "label": "Soil06",
+      "bpid": "Soil",
+      "initScript": "prop x setTo -100\nprop y setTo 300"
+    },
+    {
+      "id": "1107",
+      "label": "Soil07",
+      "bpid": "Soil",
+      "initScript": "prop x setTo 100\nprop y setTo 300"
+    },
+    {
+      "id": "1108",
+      "label": "Soil08",
+      "bpid": "Soil",
+      "initScript": "prop x setTo 300\nprop y setTo 300"
+    },
+    {
+      "id": "1109",
+      "label": "SoilBG01",
+      "bpid": "SoilBG",
+      "initScript": "prop x setTo 0\n prop y setTo 200"
+    },
+    {
+      "id": "1801",
+      "label": "Plant Energy",
+      "bpid": "CharacterGraph",
+      "initScript": "prop x setTo 470\nprop y setTo 370\nprop characterType setTo 'Plant'\nprop countType setTo 'sum'\nprop variableToGraph setTo 'energyLevel'\nprop labelText setTo 'Plant Energy'"
+    },
+    {
+      "id": "1802",
+      "label": "Bunny Energy",
+      "bpid": "CharacterGraph",
+      "initScript": "prop x setTo 470\nprop y setTo 230\nprop characterType setTo 'Bunny'\nprop countType setTo 'sum'\nprop variableToGraph setTo 'energyLevel'\nprop labelText setTo 'Bunny Energy'"
+    },
+    {
+      "id": "1803",
+      "label": "Worm Energy",
+      "bpid": "CharacterGraph",
+      "initScript": "prop x setTo 470\nprop y setTo 90\nprop characterType setTo 'Worm'\nprop countType setTo 'sum'\nprop variableToGraph setTo 'energyLevel'\nprop labelText setTo 'Worm Energy'\n"
+    },
+    {
+      "id": "1201",
+      "label": "Plant01",
+      "bpid": "Plant",
+      "initScript": "prop x setTo -300"
+    },
+    {
+      "id": "1601",
+      "label": "Waste01",
+      "bpid": "Waste",
+      "initScript": "prop x setTo -100\nprop y setTo 100"
+    },
+    {
+      "id": "1602",
+      "label": "Waste02",
+      "bpid": "Waste",
+      "initScript": "prop x setTo 220\nprop y setTo 50"
+    },
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": "prop x setTo 455\nprop y setTo -400\nfeatProp AgentWidgets text setTo 'Key:'"
+    },
+    {
+      "id": "1701",
+      "label": "EnergyLabel",
+      "bpid": "TextLabel",
+      "initScript": "prop x setTo 455\n    prop y setTo -373\n    featProp AgentWidgets text setTo 'Energy'\n    prop zIndex setTo 100"
+    },
+    {
+      "id": "1702",
+      "label": "NutrientsLabel",
+      "bpid": "TextLabel",
+      "initScript": "prop x setTo 455\nprop y setTo -340\nfeatProp AgentWidgets text setTo 'Nutrients'\nprop zIndex setTo 100"
+    },
+    {
+      "id": "1703",
+      "label": "MatterLabel",
+      "bpid": "TextLabel",
+      "initScript": "prop x setTo 455\nprop y setTo -308\nfeatProp AgentWidgets text setTo 'Matter'\nprop zIndex setTo 100"
+    },
+    {
+      "id": "1704",
+      "label": "EnergyChip",
+      "bpid": "ColorChip",
+      "initScript": "prop x setTo 455\nprop y setTo -351\nfeatCall Costume setColorize 0 255 0\nprop zIndex setTo 95\nfeatCall Physics setSize 100 30"
+    },
+    {
+      "id": "1705",
+      "label": "NutrientsChip",
+      "bpid": "ColorChip",
+      "initScript": "prop x setTo 455\nprop y setTo -320\nfeatCall Costume setColorize 138 43 226\nprop zIndex setTo 95\nfeatCall Physics setSize 100 30"
+    },
+    {
+      "id": "1706",
+      "label": "MatterChip",
+      "bpid": "ColorChip",
+      "initScript": "prop x setTo 455\nprop y setTo -290\nfeatCall Costume setColorize 0.56 0.52 0.40\nprop zIndex setTo 95\nfeatCall Physics setSize 100 30"
+    }
+  ]
+}
