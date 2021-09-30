@@ -1,0 +1,1489 @@
+{
+  "id": "moths-two",
+  "label": "Moths Act Two",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      "false",
+      "false"
+    ],
+    "bounce": true,
+    "bgcolor": 4474094,
+    "roundsCanLoop": false
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "label": "Predation Round",
+      "time": 130,
+      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "initScript": `\n        `,
+      "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
+      "endScript": `
+
+          featCall Population agentsForEach Predator [[
+            prop agent.isInert setTo true
+            featCall Movement queuePosition -400 -400
+            prop tickCounter setTo 0
+          ]]
+
+          featCall Population agentsForEach Myth [[
+            prop agent.isInert setTo true
+            featCall Movement queuePosition -400 400
+          ]]
+
+          featCall Population agentsForEach Moth [[
+            ifExpr {{ !agent.getProp('isInert').value }} [[
+              featCall agent.Costume setPose 0
+              prop alpha setTo 1
+              featCall Movement queuePosition 0 0
+              exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+              propPop x
+              prop y setTo -200
+              prop y addRnd -150 150
+              featCall Movement jitterPos -2 2
+            ]]
+          ]]
+
+          featCall Population agentsForEach Moth [[
+            ifExpr {{ agent.getProp('isInert').value }} [[
+              featCall agent.Costume setPose 0
+              prop alpha setTo 1
+              featCall Movement queuePosition 0 0
+              exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+              propPop x
+              prop y setTo 200
+              prop y addRnd -150 150
+              featCall Movement jitterPos -2 2
+            ]]
+          ]]
+
+          featCall Population agentsForEachActive Moth [[
+            featCall Movement setMovementType 'static'
+            prop orientation setTo 3.14
+            featProp Movement useAutoOrientation setTo false
+            prop alpha setTo 1
+            featProp AgentWidgets text setTo ''
+            prop costumenum setTo 0
+          ]]
+
+          featCall Population agentsForEach TreeTrunk [[
+            featProp Physics scale setTo 0.01
+            prop alpha setTo 0.01
+            featCall Movement queuePosition -400 400
+          ]]
+
+          featCall Population agentsForEach TreeFoliage [[
+            featProp Physics scale setTo 0.01
+            prop alpha setTo 0.01
+            featCall Movement queuePosition -400 400
+          ]]
+
+          featCall Population agentsForEach Grass [[
+            featProp Physics scale setTo 0.01
+            prop alpha setTo 0.01
+            featCall Movement queuePosition -400 400
+          ]]
+
+          featCall Population agentsForEach TreeRoots [[
+            featProp Physics scale setTo 0.01
+            prop alpha setTo 0.01
+            featCall Movement queuePosition -400 400
+          ]]
+  `
+    },
+    {
+      "id": "r2",
+      "label": "Reproduction Round",
+      "time": 130,
+      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "initScript": `
+
+          featCall Population agentsForEach Predator [[
+            prop agent.isInert setTo false
+            prop orientation setTo 0.1
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+            featProp Movement distance setTo 4
+            featCall Movement setMovementType 'static'
+            prop tickCounter setTo 0
+          ]]
+
+          featCall Population agentsForEach Myth [[
+            prop agent.isInert setTo false
+          ]]
+
+
+          featCall Population agentsForEach TreeTrunk [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.5
+            featProp Physics scaleY setTo 0.55
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+          featCall Population agentsForEach Grass [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.55
+            featProp Physics scaleY setTo 0.9
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+          featCall Population agentsForEach TreeRoots [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.35
+            featProp Physics scaleY setTo 0.35
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+
+          featCall Population removeInertAgents
+          featProp Population targetPopulationSize setTo 21
+          featCall Population populateBySpawning Moth [[
+            prop y setTo 280
+            prop x setTo 0
+            prop x addRndInt -360 360
+            prop y addRndInt -60 60
+            featCall Movement jitterPos -2 2
+            prop colorIndx addRndInt -1 1
+            propPush colorIndx
+            featPropPop Costume colorScaleIndex
+            propPush colorIndx
+            featPropPop AgentWidgets text
+            prop costumenum setTo 0
+
+            //featProp Costume colorScaleIndex addRndInt -1 1
+            //dbgOut {{ featProp Costume colorScaleIndex }}
+            // update color index label
+            featPropPush Costume colorScaleIndex
+            featPropPop AgentWidgets text
+            prop vulnerable setTo 1
+          ]]
+
+        `,
+      "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
+      "endScript": `
+        featCall Population agentsForEach Predator [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 -400
+          prop tickCounter setTo 0
+        ]]
+
+        featCall Population agentsForEach Myth [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ !agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo -200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+            prop costumenum setTo 0
+          ]]
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo 200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEachActive Moth [[
+          featCall Movement setMovementType 'static'
+          prop orientation setTo 3.14
+          featProp Movement useAutoOrientation setTo false
+          prop alpha setTo 1
+          featProp AgentWidgets text setTo ''
+        ]]
+
+        featCall Population agentsForEach TreeTrunk [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeFoliage [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+
+        featCall Population agentsForEach Grass [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeRoots [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+        `
+    },
+    {
+      "id": "r3",
+      "label": "Reproduction Round",
+      "time": 130,
+      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "initScript": `featCall Population agentsForEach Predator [[
+  prop agent.isInert setTo false
+  prop orientation setTo 0.1
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+  featProp Movement distance setTo 4
+  featCall Movement setMovementType 'static'
+  prop tickCounter setTo 0
+]]
+
+featCall Population agentsForEach TreeTrunk [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.5
+  featProp Physics scaleY setTo 0.55
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population agentsForEach Grass [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.55
+  featProp Physics scaleY setTo 0.9
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population agentsForEach TreeRoots [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.35
+  featProp Physics scaleY setTo 0.35
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population removeInertAgents
+featProp Population targetPopulationSize setTo 21
+featCall Population populateBySpawning Moth [[
+  prop y setTo 280
+  prop x setTo 0
+  prop x addRndInt -360 360
+  prop y addRndInt -60 60
+  featCall Movement jitterPos -2 2
+  prop colorIndx addRndInt -1 1
+  propPush colorIndx
+  featPropPop Costume colorScaleIndex
+  propPush colorIndx
+  featPropPop AgentWidgets text
+
+  //featProp Costume colorScaleIndex addRndInt -1 1
+  //dbgOut {{ featProp Costume colorScaleIndex }}
+  // update color index label
+  featPropPush Costume colorScaleIndex
+  featPropPop AgentWidgets text
+  prop vulnerable setTo 1
+  prop costumenum setTo 0
+]]
+        `,
+      "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
+      "endScript": `
+        featCall Population agentsForEach Predator [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 -400
+          prop tickCounter setTo 0
+        ]]
+
+        featCall Population agentsForEach Myth [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ !agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo -200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo 200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEachActive Moth [[
+          featCall Movement setMovementType 'static'
+          prop orientation setTo 3.14
+          featProp Movement useAutoOrientation setTo false
+          prop alpha setTo 1
+          featProp AgentWidgets text setTo ''
+        ]]
+
+        featCall Population agentsForEach TreeTrunk [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeFoliage [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Grass [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeRoots [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+        `
+    },
+    {
+      "id": "r4",
+      "label": "Reproduction Round",
+      "time": 130,
+      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "initScript": `featCall Population agentsForEach Predator [[
+  prop agent.isInert setTo false
+  prop orientation setTo 0.1
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+  featProp Movement distance setTo 4
+  featCall Movement setMovementType 'static'
+  prop tickCounter setTo 0
+]]
+
+featCall Population agentsForEach TreeTrunk [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.5
+  featProp Physics scaleY setTo 0.55
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population agentsForEach Grass [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.55
+  featProp Physics scaleY setTo 0.9
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population agentsForEach TreeRoots [[
+  prop agent.isInert setTo false
+  featProp Physics scale setTo 0.35
+  featProp Physics scaleY setTo 0.35
+  prop alpha setTo 1
+  propPush initx
+  propPop x
+  propPush inity
+  propPop y
+  featCall Movement jitterPos -2 2
+]]
+
+featCall Population removeInertAgents
+featProp Population targetPopulationSize setTo 21
+featCall Population populateBySpawning Moth [[
+  prop y setTo 280
+  prop x setTo 0
+  prop x addRndInt -360 360
+  prop y addRndInt -60 60
+  featCall Movement jitterPos -2 2
+  prop colorIndx addRndInt -1 1
+  propPush colorIndx
+  featPropPop Costume colorScaleIndex
+  propPush colorIndx
+  featPropPop AgentWidgets text
+
+  //featProp Costume colorScaleIndex addRndInt -1 1
+  //dbgOut {{ featProp Costume colorScaleIndex }}
+  // update color index label
+  featPropPush Costume colorScaleIndex
+  featPropPop AgentWidgets text
+  prop vulnerable setTo 1
+  prop costumenum setTo 0
+]]
+        `,
+      "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
+      "endScript": `
+        featCall Population agentsForEach Predator [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 -400
+          prop tickCounter setTo 0
+        ]]
+
+        featCall Population agentsForEach Myth [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ !agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo -200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo 200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEachActive Moth [[
+          featCall Movement setMovementType 'static'
+          prop orientation setTo 3.14
+          featProp Movement useAutoOrientation setTo false
+          prop alpha setTo 1
+          featProp AgentWidgets text setTo ''
+        ]]
+
+        featCall Population agentsForEach TreeTrunk [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeFoliage [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+
+        featCall Population agentsForEach Grass [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeRoots [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        `
+    },
+    {
+      "id": "r5",
+      "label": "Reproduction Round",
+      "time": 130,
+      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "initScript": `
+
+          featCall Population agentsForEach Predator [[
+            prop agent.isInert setTo false
+            prop orientation setTo 0.1
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+            featProp Movement distance setTo 4
+            featCall Movement setMovementType 'static'
+            prop tickCounter setTo 0
+          ]]
+
+
+          featCall Population agentsForEach TreeTrunk [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.5
+            featProp Physics scaleY setTo 0.55
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+          featCall Population agentsForEach Grass [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.55
+            featProp Physics scaleY setTo 0.9
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+          featCall Population agentsForEach TreeRoots [[
+            prop agent.isInert setTo false
+            featProp Physics scale setTo 0.35
+            featProp Physics scaleY setTo 0.35
+            prop alpha setTo 1
+            propPush initx
+            propPop x
+            propPush inity
+            propPop y
+            featCall Movement jitterPos -2 2
+          ]]
+
+          featCall Population removeInertAgents
+          featProp Population targetPopulationSize setTo 21
+          featCall Population populateBySpawning Moth [[
+            prop y setTo 280
+            prop x setTo 0
+            prop x addRndInt -360 360
+            prop y addRndInt -60 60
+            featCall Movement jitterPos -2 2
+            prop colorIndx addRndInt -1 1
+            propPush colorIndx
+            featPropPop Costume colorScaleIndex
+            propPush colorIndx
+            featPropPop AgentWidgets text
+
+            //featProp Costume colorScaleIndex addRndInt -1 1
+            //dbgOut {{ featProp Costume colorScaleIndex }}
+            // update color index label
+            featPropPush Costume colorScaleIndex
+            featPropPop AgentWidgets text
+            prop vulnerable setTo 1
+            prop costumenum setTo 0
+          ]]
+
+        `,
+      "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
+      "endScript": `
+        featCall Population agentsForEach Predator [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 -400
+          prop tickCounter setTo 0
+        ]]
+
+        featCall Population agentsForEach Myth [[
+          prop agent.isInert setTo true
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ !agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo -200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEach Moth [[
+          ifExpr {{ agent.getProp('isInert').value }} [[
+            featCall agent.Costume setPose 0
+            prop costumenum setTo 0
+            prop alpha setTo 1
+            featCall Movement queuePosition 0 0
+            exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
+            propPop x
+            prop y setTo 200
+            prop y addRnd -150 150
+            featCall Movement jitterPos -2 2
+          ]]
+        ]]
+
+        featCall Population agentsForEachActive Moth [[
+          featCall Movement setMovementType 'static'
+          prop orientation setTo 3.14
+          featProp Movement useAutoOrientation setTo false
+          prop alpha setTo 1
+          featProp AgentWidgets text setTo ''
+        ]]
+
+        featCall Population agentsForEach TreeTrunk [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeFoliage [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach Grass [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        featCall Population agentsForEach TreeRoots [[
+          featProp Physics scale setTo 0.01
+          prop alpha setTo 0.01
+          featCall Movement queuePosition -400 400
+        ]]
+
+        `
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "Myth",
+      "label": "Myth",
+      "isPozyxControllable": true,
+      "scriptText": `# BLUEPRINT Myth
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'moth.json' 0
+
+useFeature Physics
+useFeature Touches
+useFeature Population
+
+featProp Physics scale setTo 0.6
+
+//for shoving them off to the side during data representation work.
+addProp initx Number 0
+prop initx setMax 400
+prop initx setMin -400
+
+addProp inity Number 0
+prop inity setMax 400
+prop inity setMin -400
+
+featCall Touches monitor Moth c2c
+featCall Touches monitor TreeTrunk c2c c2b b2b binb
+
+// needed for orientation to be nice for pozyx or finger puppet.
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+useFeature Global
+useFeature Timer
+
+//for knowing whether they can attract/pick up a baby moth.
+addProp carrying Number 0
+prop carrying setMin 0
+prop carrying setMax 10
+
+//for by-hand animation
+addProp frame Number 0
+prop frame setMax 1000
+prop frame setMin 0
+
+# PROGRAM UPDATE
+
+
+every 0.1 [[
+  prop frame add 1
+  ifExpr {{agent.getProp('frame').value > 3}} [[
+    prop frame setTo 0
+  ]]
+  propPush frame
+  featPropPop Costume currentFrame
+]]
+
+when Myth centerTouchesCenter Moth [[
+  ifExpr {{ Myth.prop.carrying.value < 1 }} [[
+    ifExpr {{ Moth.prop.costumenum.value < 2 }} [[
+      featCall Moth.Costume setGlow 1
+      featProp Moth.Movement distance setTo 10
+      featCall Moth.Movement seekNearest Myth
+      prop Myth.carrying setTo 1
+    ]]
+  ]]
+]]
+
+when Myth centerTouches TreeTrunk [[
+  prop carrying setTo 0
+]]
+
+`
+    },
+    {
+      "id": "Moth",
+      "label": "Moth",
+      "scriptText": `# BLUEPRINT Moth
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'moth.json' 0
+
+// COLOR
+featProp Costume colorScaleHue setTo 0
+featProp Costume colorScaleSaturation setTo 0
+featProp Costume colorScaleValue setTo 0
+featProp Costume colorScaleType setTo 'value'
+featProp Costume colorScaleSteps setTo 10
+featCall Costume initHSVColorScale
+
+// Fully visible
+prop alpha setTo 1
+prop alpha setMin 1
+
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+useFeature Physics
+featProp Physics scale setTo 0.4
+
+useFeature Touches
+featCall Touches monitor TreeTrunk c2c c2b b2b binb
+
+useFeature Population
+
+// allow Predator to see us
+useFeature Vision
+
+addProp energyLevel Number 15
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+addProp colorIndx Number 5
+prop colorIndx setMax 11
+prop colorIndx setMin 0
+
+addProp costumenum Number 0
+prop costumenum setMin 0
+prop costumenum setMax 4
+prop costumenum setTo 0
+
+addProp vulnerable Number 1
+prop vulnerable setMin 0
+prop vulnerable setMax 1
+prop vulnerable setTo 1
+
+// allow access to global darkMoths/lightMoths values
+useFeature Global
+
+useFeature Cursor
+
+useFeature AgentWidgets
+featPropPush Costume colorScaleIndex
+featPropPop AgentWidgets text
+
+# PROGRAM INIT
+
+# PROGRAM EVENT
+onEvent Start [[
+  featProp AgentWidgets text setTo ''
+  featProp Vision visionable setTo true
+  prop vulnerable setTo 1
+]]
+
+# PROGRAM UPDATE
+
+
+
+when Moth centerFirstTouches TreeTrunk [[
+ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+  dbgOut {{ Moth.name + ' will be hidden ' }}
+  dbgOut {{  ( Moth.prop.color.value )  }}
+]] [[
+  dbgOut {{ Moth.name + ' will be visible ' }}
+]]
+//timer for dropping
+prop Moth.energyLevel setTo 21
+prop vulnerable setTo 1
+]]
+
+
+
+when Moth centerTouches TreeTrunk [[
+  ifExpr {{ !Moth.prop.isInert.value }} [[
+    featCall Moth.Costume setPose 2
+    prop Moth.costumenum setTo 2
+  ]]
+
+  ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+    prop alpha setMin 0.1
+    prop alpha sub 0.1
+    featProp Vision visionable setTo false
+    prop vulnerable setTo 0
+  ]]
+  [[
+    prop alpha setMin 1
+    prop alpha add 1
+    featProp Vision visionable setTo true
+    prop vulnerable setTo 1
+  ]]
+  prop energyLevel sub 3
+  ifExpr {{ Moth.prop.energyLevel.value < 1 }} [[
+     featCall Movement setMovementType 'static'
+  ]]
+]]
+
+//eaten moths become postit-markers
+ifExpr {{ agent.getProp('isInert').value }} [[
+  featCall Costume setPose 0
+  prop alpha setMin 0.1
+  prop alpha setTo 0.1
+  prop orientation setTo 3.14
+  featProp AgentWidgets text setTo ''
+]]
+
+
+`
+    },
+    {
+      "id": "Predator",
+      "label": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+
+# PROGRAM DEFINE
+useFeature Costume
+//featCall Costume setCostume 'predator.json' 0
+//featCall Costume setCostume 'hawk.json' 0
+featCall Costume setCostume 'robin.json' 0
+
+useFeature Physics
+useFeature Touches
+featCall Touches monitor Moth c2c
+
+// needed for Seek
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+//featProp Physics scale setTo 0.75  //FOR 'predator'
+featProp Physics scale setTo 0.5
+
+useFeature Vision
+featCall Vision monitor Moth
+featProp Vision viewDistance setTo 250
+featProp Vision viewAngle setTo 90
+
+//for getting them out of the way during data representation work
+addProp initx Number 0
+prop initx setMax 400
+prop initx setMin -400
+
+addProp inity Number 0
+prop inity setMax 400
+prop inity setMin -400
+
+//for by-hand animation
+addProp frame Number 0
+prop frame setMax 1000
+prop frame setMin 0
+
+addProp tickCounter Number 0
+prop tickCounter setMax 1000
+prop tickCounter setMin 0
+prop tickCounter setTo 0
+
+
+// AI Movement
+featProp Movement distance setTo 4
+useFeature Population
+
+useFeature Global
+useFeature Timer
+
+# PROGRAM UPDATE
+
+
+every 1 [[
+  prop tickCounter add 1
+  //dbgOut{{  agent.getProp('tickCounter').value  }}
+  ifExpr {{ agent.getProp('tickCounter').value > 88 }} [[
+    //dbgOut{{ 'setting the movemnt info' }}
+    featProp Movement distance setTo 4
+    featCall Movement seekNearestVisibleCone Moth
+    prop tickCounter setTo 0
+  ]]
+]]
+
+
+every 0.1 [[
+  prop frame add 1
+  ifExpr {{agent.getProp('frame').value > 3}} [[
+    prop frame setTo 0
+  ]]
+  propPush frame
+  featPropPop Costume currentFrame
+]]
+
+when Predator centerTouchesCenter Moth [[
+  // Only if Moth is not camouflaged
+  ifExpr {{ Moth.getProp('vulnerable').value  > 0 }} [[
+    featCall Moth.Costume setGlow 1
+    every 0.12 [[
+
+      featCall Moth.Costume setCostume 'smallsquare.json' 0
+      prop Moth.alpha setMin 0.1
+      prop Moth.alpha setTo 0.1
+      prop Moth.orientation setTo 3.14
+      featProp Moth.AgentWidgets text setTo ''
+      prop Moth.isInert setTo true
+
+      // Stop sim if half of the moths are eaten
+      ifExpr {{ Moth.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') < 11 }} [[
+        featCall Predator.Timer stopRound
+        // This will be added to the end of round message
+        featCall Moth.AgentWidgets showMessage 'Predators have eaten over half of the Moth population!'
+      ]]
+    ]]
+  ]]
+]]
+
+`
+    },
+    {
+      "id": "TreeTrunk",
+      "label": "TreeTrunk",
+      "scriptText": `# BLUEPRINT TreeTrunk
+          # PROGRAM DEFINE
+          useFeature Costume
+          featCall Costume setCostume 'trunk.json' 0
+
+          useFeature Physics
+          useFeature Population
+          useFeature Movement
+
+          addProp initx Number 0
+          prop initx setMax 400
+          prop initx setMin -400
+
+          addProp inity Number 0
+          prop inity setMax 400
+          prop inity setMin -400
+
+          # PROGRAM INIT
+          prop zIndex setTo -200
+
+          # PROGRAM UPDATE
+
+        `
+    },
+    {
+      "id": "Grass",
+      "label": "Grass",
+      "scriptText": `# BLUEPRINT Grass
+          # PROGRAM DEFINE
+          useFeature Costume
+          featCall Costume setCostume 'grass.json' 0
+
+          useFeature Physics
+          useFeature Population
+          useFeature Movement
+
+          addProp initx Number 0
+          prop initx setMax 400
+          prop initx setMin -400
+
+          addProp inity Number 0
+          prop inity setMax 400
+          prop inity setMin -400
+
+          # PROGRAM INIT
+          prop zIndex setTo -300
+
+          # PROGRAM UPDATE
+        `
+    },
+    {
+      "id": "TreeRoots",
+      "label": "TreeRoots",
+      "scriptText": `# BLUEPRINT TreeRoots
+      # PROGRAM DEFINE
+      useFeature Costume
+      featCall Costume setCostume 'roots.json' 0
+      //featCall Costume setColorizeHSV 0 .8 0.5
+
+      useFeature Physics
+      useFeature AgentWidgets
+      useFeature Movement
+
+      addProp initx Number 0
+      prop initx setMax 400
+      prop initx setMin -400
+
+      addProp inity Number 0
+      prop inity setMax 400
+      prop inity setMin -400
+
+      featProp AgentWidgets text setTo ''
+
+
+      # PROGRAM INIT
+      prop zIndex setTo -199
+
+      # PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Cursor",
+      "label": "Cursor",
+      "isCharControllable": true,
+      "isPozyxControllable": true,
+      "scriptText": `# BLUEPRINT Cursor
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'circle.json' 0
+featCall Costume setColorizeHSV 1 1 1
+featCall Costume randomizeColorHSV 1 0 0
+
+useFeature Physics
+featProp Physics scale setTo 0.05
+
+useFeature Movement
+
+useFeature Cursor
+
+useFeature Touches
+featCall Touches monitor Moth c2c
+
+
+useFeature AgentWidgets
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1100",
+      "label": "Grass",
+      "bpid": "Grass",
+      "initScript": `
+    featCall Movement queuePosition 0 265
+     //featCall Costume setColorize 0.1 0.8 0
+     featProp Physics scale setTo 0.55
+     featProp Physics scaleY setTo 0.9
+     prop initx setTo 0
+     prop inity setTo 265
+     `
+    },
+    {
+      "id": "1102",
+      "label": "TreeTrunk1",
+      "bpid": "TreeTrunk",
+      "initScript": `
+      featCall Movement queuePosition -250 -145
+     featCall Costume setColorizeHSV 0 0 0.66
+     featProp Physics scale setTo 0.5
+     featProp Physics scaleY setTo 0.55
+     prop initx setTo -250
+     prop inity setTo -145
+     `
+    },
+    {
+      "id": "1103",
+      "label": "TreeRoots1",
+      "bpid": "TreeRoots",
+      "initScript": `
+      featCall Movement queuePosition -250 125
+     featCall Costume setColorizeHSV 0 0 0.66
+     featProp Physics scale setTo 0.35
+     featProp Physics scaleY setTo 0.35
+     prop initx setTo -250
+     prop inity setTo 125
+     `
+    },
+    {
+      "id": "1104",
+      "label": "TreeTrunk2",
+      "bpid": "TreeTrunk",
+      "initScript": `
+      featCall Movement queuePosition 50 -145
+      featCall Costume setColorizeHSV 0 0 0.67
+      featProp Physics scale setTo 0.5
+      featProp Physics scaleY setTo 0.55
+      prop initx setTo 50
+      prop inity setTo -145
+     `
+    },
+    {
+      "id": "1105",
+      "label": "TreeRoots2",
+      "bpid": "TreeRoots",
+      "initScript": `
+      featCall Movement queuePosition 50 125
+     featCall Costume setColorizeHSV 0 0 0.67
+     featProp Physics scale setTo 0.35
+     featProp Physics scaleY setTo 0.35
+     prop initx setTo 50
+     prop inity setTo 125
+     `
+    },
+    {
+      "id": "1106",
+      "label": "TreeTrunk3",
+      "bpid": "TreeTrunk",
+      "initScript": `
+    featCall Movement queuePosition 250 -145
+     featCall Costume setColorizeHSV 0 0 0.68
+     featProp Physics scale setTo 0.5
+     featProp Physics scaleY setTo 0.55
+     prop initx setTo 250
+     prop inity setTo -145
+     `
+    },
+    {
+      "id": "1107",
+      "label": "TreeRoots3",
+      "bpid": "TreeRoots",
+      "initScript": `
+      featCall Movement queuePosition 250 125
+     featCall Costume setColorizeHSV 0 0 0.68
+     featProp Physics scale setTo 0.35
+     featProp Physics scaleY setTo 0.35
+     prop initx setTo 250
+     prop inity setTo 125
+     `
+    },
+    {
+      "id": "1203",
+      "label": "Moth3a",
+      "bpid": "Moth",
+      "initScript": `
+      featCall Movement queuePosition -340 320
+      featProp Costume colorScaleIndex setTo 3
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 3
+
+`
+    },
+    {
+      "id": "12031",
+      "label": "Moth3b",
+      "bpid": "Moth",
+      "initScript": `
+      featCall Movement queuePosition -40 320
+      featProp Costume colorScaleIndex setTo 3
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 3
+
+`
+    },
+    {
+      "id": "12032",
+      "label": "Moth3c",
+      "bpid": "Moth",
+      "initScript": `
+      featCall Movement queuePosition 320 320
+      featProp Costume colorScaleIndex setTo 3
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 3
+
+`
+    },
+    {
+      "id": "1204",
+      "label": "Moth4a",
+      "bpid": "Moth",
+      "initScript": `
+      featCall Movement queuePosition 125 250
+      featProp Costume colorScaleIndex setTo 4
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 4
+
+`
+    },
+    {
+      "id": "1205",
+      "label": "Moth5a",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -180 320
+      featProp Costume colorScaleIndex setTo 5
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 5
+`
+    },
+    {
+      "id": "1206",
+      "label": "Moth6a",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -300 280
+      featProp Costume colorScaleIndex setTo 6
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 6
+`
+    },
+    {
+      "id": "1207",
+      "label": "Moth7a",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 200 260
+      featProp Costume colorScaleIndex setTo 7
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 7
+`
+    },
+    {
+      "id": "1208",
+      "label": "Moth8a",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -140 280
+      featProp Costume colorScaleIndex setTo 8
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 8
+`
+    },
+    {
+      "id": "1209",
+      "label": "Moth9a",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -260 240
+      featProp Costume colorScaleIndex setTo 9
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 9
+`
+    },
+    {
+      "id": "12041",
+      "label": "Moth4b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -210 240
+      featProp Costume colorScaleIndex setTo 4
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 4
+`
+    },
+    {
+      "id": "12051",
+      "label": "Moth5b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -10 240
+      featProp Costume colorScaleIndex setTo 5
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+     prop colorIndx setTo 5
+`
+    },
+    {
+      "id": "12061",
+      "label": "Moth6b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 60 240
+      featProp Costume colorScaleIndex setTo 6
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 6
+`
+    },
+    {
+      "id": "12071",
+      "label": "Moth7b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -60 240
+      featProp Costume colorScaleIndex setTo 7
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 7
+`
+    },
+    {
+      "id": "12081",
+      "label": "Moth8b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 290 240
+      featProp Costume colorScaleIndex setTo 8
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 8
+`
+    },
+    {
+      "id": "12091",
+      "label": "Moth9b",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 0 320
+      featProp Costume colorScaleIndex setTo 9
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 9
+`
+    },
+    {
+      "id": "12042",
+      "label": "Moth4c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 40 320
+      featProp Costume colorScaleIndex setTo 4
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 4
+`
+    },
+    {
+      "id": "12052",
+      "label": "Moth5c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -90 320
+      featProp Costume colorScaleIndex setTo 5
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 5
+`
+    },
+    {
+      "id": "12062",
+      "label": "Moth6c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 90 320
+      featProp Costume colorScaleIndex setTo 6
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 6
+`
+    },
+    {
+      "id": "12072",
+      "label": "Moth7c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 160 320
+      featProp Costume colorScaleIndex setTo 7
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 7
+`
+    },
+    {
+      "id": "12082",
+      "label": "Moth8c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition -240 320
+      featProp Costume colorScaleIndex setTo 8
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+      prop colorIndx setTo 8
+`
+    },
+    {
+      "id": "1301",
+      "label": "Predator1",
+      "bpid": "Predator",
+      "initScript": `
+      featCall Movement queuePosition -300 -300
+      prop initx setTo -300
+      prop inity setTo -300
+      prop frame setTo 0
+      `
+    },
+    {
+      "id": "1302",
+      "label": "Predator2",
+      "bpid": "Predator",
+      "initScript": `
+      featCall Movement queuePosition 300 -300
+      prop initx setTo 300
+      prop inity setTo -300
+      prop frame setTo 1
+      `
+    },
+    {
+      "id": "12092",
+      "label": "Moth9c",
+      "bpid": "Moth",
+      "initScript": `featCall Movement queuePosition 240 320
+      featProp Costume colorScaleIndex setTo 9
+      //featPropPush Costume colorScaleIndex
+      //featPropPop AgentWidgets text
+     prop colorIndx setTo 9\n`
+    }
+  ]
+}
