@@ -686,12 +686,6 @@ useFeature AgentWidgets
   ],
   "instances": [
     {
-      "id": "1000",
-      "label": "Fish1",
-      "bpid": "Fish",
-      "initScript": `// initScript Fish`
-    },
-    {
       "id": "501",
       "label": "Algae 1",
       "bpid": "Algae",
