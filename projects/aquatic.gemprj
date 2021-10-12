@@ -264,8 +264,8 @@ when Algae touches Sunbeam [[
         ]]
       ]]
     ]] // if spawning
-  ]]
-]]
+  ]] // every 1
+]] // when Algae touches Sunbeam
 
 when Algae lastTouches Sunbeam [[
   featCall Costume setGlow 0
@@ -824,6 +824,13 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1707",
+      "label": "Sunbeam1707",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -376.31
+prop y setTo -113.97`
     }
   ]
 }
