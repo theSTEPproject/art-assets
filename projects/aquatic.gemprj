@@ -499,7 +499,7 @@ onEvent Tick [[
     },
     {
       "id": "Rock",
-      "label": "Rock Blue",
+      "label": "Rock",
       "isCharControllable": null,
       "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Rock
@@ -510,6 +510,118 @@ onEvent Tick [[
       featCall Costume setCostume 'boulder.json' 0
 
       useFeature Physics`
+    },
+    {
+      "id": "Turtle",
+      "label": "Turtle",
+      "isCharControllable": true,
+      "isPozyxControllable": null,
+      "scriptText": `# BLUEPRINT Turtle
+
+# PROGRAM DEFINE
+useFeature Costume
+useFeature AgentWidgets
+useFeature Movement
+
+// temp until we get new art
+featCall Costume setCostume 'fish.json' 0
+featCall Costume setColorizeHSV 1 1 1
+      
+addProp energyLevel Number 50
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+\t  
+addProp energyUse Number 0
+
+addProp health String 'healthy'
+
+// STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
+prop energyUse setTo 1
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 2
+      
+      // set Touches
+useFeature Touches
+featCall Touches monitor Fish b2b
+featCall Touches monitor Trash b2b
+
+// show meter immediately
+featCall AgentWidgets bindMeterTo energyLevel    
+
+featProp AgentWidgets text setTo ''
+
+# PROGRAM UPDATE
+
+ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Costume flipX setTo false
+]]
+ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Costume flipX setTo true
+]]
+
+when Turtle touches Fish [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featCall Costume setGlow 1
+    
+    // only eat the fish if you are under 50% full or healthy
+    ifExpr {{(Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy')}} [[
+    
+    prop Fish.alpha setTo 0.3
+    prop Fish.isInert setTo true
+    prop Turtle.energyLevel add 20
+    prop Fish.energyLevel sub 20
+    
+    ]]
+      
+  ]]
+]]
+
+when Turtle lastTouches Fish [[
+  featCall Costume setGlow 0
+]]
+
+when Turtle touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featCall Costume setGlow 0.5
+    
+    prop health setTo 'hurt'
+  \tfeatCall Trash.Population removeAgent
+  \t
+    // change art
+  ]]
+]]
+
+when Turtle lastTouches Trash [[
+  featCall Costume setGlow 0
+    
+]]
+
+
+`
+    },
+    {
+      "id": "Trash",
+      "label": "Trash",
+      "isCharControllable": null,
+      "isPozyxControllable": null,
+      "scriptText": `# BLUEPRINT Trash
+
+# PROGRAM DEFINE
+useFeature Costume
+useFeature Population
+
+// temp until we get new art
+featCall Costume setCostume 'boulder.json' 0
+featCall Costume setColorizeHSV 1 1 1
+
+
+useFeature Physics
+featProp Physics scale setTo 0.5
+      `
     },
     {
       "id": "Graph1",
@@ -697,43 +809,43 @@ prop y setTo 220`
       "label": "Algae 2",
       "bpid": "Algae",
       "initScript": `prop energyLevel setTo 50
-prop x setTo -250
-prop y setTo -200`
+prop x setTo -181.69
+prop y setTo -238.73`
     },
     {
       "id": "503",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo -220
-prop y setTo -290`
+      "initScript": `prop x setTo -239.88
+prop y setTo -272.43`
     },
     {
       "id": "504",
       "label": "Algae 4",
       "bpid": "Algae",
-      "initScript": `prop x setTo -220
-prop y setTo -230`
+      "initScript": `prop x setTo -295.58
+prop y setTo -297.17`
     },
     {
       "id": "505",
       "label": "Algae 5",
       "bpid": "Algae",
-      "initScript": `prop x setTo 220
-prop y setTo 230`
+      "initScript": `prop x setTo 170.99
+prop y setTo 245.22`
     },
     {
       "id": "506",
       "label": "Algae 6",
       "bpid": "Algae",
-      "initScript": `prop x setTo 240
-prop y setTo 250`
+      "initScript": `prop x setTo 228.95
+prop y setTo 225.57`
     },
     {
       "id": "507",
       "label": "Algae 7",
       "bpid": "Algae",
       "initScript": `prop x setTo 260
-prop y setTo 280`
+prop y setTo 210`
     },
     {
       "id": "520",
