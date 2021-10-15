@@ -601,7 +601,7 @@ when Turtle touches Trash [[
     featCall Costume setGlow 0.5
     
     prop health setTo 'hurt'
-    featCall Costume setColorizeHSV 1 0 0
+    featCall Costume setColorizeHSV 0.5 1 0.5
   \tfeatCall Trash.Population removeAgent
   \t
     // change art
@@ -627,10 +627,9 @@ useFeature Population
 useFeature Physics
 
 // temp until we get new art
-featCall Costume setCostume 'boulder.json' 0
-featCall Costume setColorizeHSV 1 1 1
+featCall Costume setCostume 'square.json' 0
 
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.25
 `
     },
     {
