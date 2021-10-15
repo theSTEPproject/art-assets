@@ -110,7 +110,9 @@ ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
 when Fish touches Algae [[
   every 1 runAtStart [[
     // always glow to show the interaction
-    featCall Fish.Costume setGlow 4
+    ifExpr {{Fish.getProp('isInert').value != true}} [[
+      featCall Fish.Costume setGlow 4
+    ]]
 
     // only eat if the algae is above 0
     ifExpr {{Algae.getProp('energyLevel').value > 0}} [[
@@ -531,7 +533,7 @@ addProp energyLevel Number 50
 prop energyLevel setMax 100
 prop energyLevel setMin 0
 \t  
-addProp energyUse Number 0
+addProp energyUse Number 1
 
 addProp health String 'healthy'
 
@@ -561,19 +563,29 @@ ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
   featProp Costume flipX setTo true
 ]]
 
+every 1 runAtStart [[
+  // foodLevel goes down every n seconds
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  propPop agent.energyLevel
+]]
+  
 when Turtle touches Fish [[
   every 1 runAtStart [[
-    // always glow to show the interaction
-    featCall Costume setGlow 1
     
     // only eat the fish if you are under 50% full or healthy
     ifExpr {{(Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy')}} [[
     
-    prop Fish.alpha setTo 0.3
-    prop Fish.isInert setTo true
-    prop Turtle.energyLevel add 20
-    prop Fish.energyLevel sub 20
+    // only glow when we are healthy and can eat
+    featCall Costume setGlow 1
     
+    // Turtle gains some energy
+    prop Turtle.energyLevel add 20
+
+\t// Fish is dead 
+    prop Fish.isInert setTo true
+    prop Fish.alpha setTo 0.3
+    featCall Fish.Costume setPose 2
+    prop Fish.energyLevel setTo 0
     ]]
       
   ]]
@@ -589,6 +601,7 @@ when Turtle touches Trash [[
     featCall Costume setGlow 0.5
     
     prop health setTo 'hurt'
+    featCall Costume setColorizeHSV 1 0 0
   \tfeatCall Trash.Population removeAgent
   \t
     // change art
@@ -599,8 +612,6 @@ when Turtle lastTouches Trash [[
   featCall Costume setGlow 0
     
 ]]
-
-
 `
     },
     {
@@ -613,15 +624,14 @@ when Turtle lastTouches Trash [[
 # PROGRAM DEFINE
 useFeature Costume
 useFeature Population
+useFeature Physics
 
 // temp until we get new art
 featCall Costume setCostume 'boulder.json' 0
 featCall Costume setColorizeHSV 1 1 1
 
-
-useFeature Physics
 featProp Physics scale setTo 0.5
-      `
+`
     },
     {
       "id": "Graph1",
@@ -936,6 +946,34 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1707",
+      "label": "Trash1707",
+      "bpid": "Trash",
+      "initScript": `prop x setTo -168.58
+prop y setTo 370.68`
+    },
+    {
+      "id": "1708",
+      "label": "Fish1708",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -331.71
+prop y setTo -247.9`
+    },
+    {
+      "id": "1709",
+      "label": "Fish1709",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -8.17
+prop y setTo 250.9`
+    },
+    {
+      "id": "1710",
+      "label": "Fish1710",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -139.77
+prop y setTo 187.57`
     }
   ]
 }
