@@ -526,8 +526,7 @@ useFeature AgentWidgets
 useFeature Movement
 
 // temp until we get new art
-featCall Costume setCostume 'fish.json' 0
-featCall Costume setColorizeHSV 1 1 1
+featCall Costume setCostume 'turtle_sprites.json' 0
       
 addProp energyLevel Number 50
 prop energyLevel setMax 100
@@ -542,7 +541,7 @@ prop energyUse setTo 1
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 2
+featProp Physics scale setTo 0.15
       
       // set Touches
 useFeature Touches
@@ -627,9 +626,9 @@ useFeature Population
 useFeature Physics
 
 // temp until we get new art
-featCall Costume setCostume 'square.json' 0
+featCall Costume setCostume 'trash.json' 0
 
-featProp Physics scale setTo 0.25
+featProp Physics scale setTo 0.05
 `
     },
     {
@@ -876,8 +875,8 @@ prop zIndex setTo 210`
       "id": "522",
       "label": "Rock2",
       "bpid": "Rock",
-      "initScript": `prop x setTo 350
-prop y setTo 378
+      "initScript": `prop x setTo 339.19
+prop y setTo 387.94
 featProp Costume flipX setTo true
 prop zIndex setTo 210`
     },
@@ -945,34 +944,6 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
-    },
-    {
-      "id": "1707",
-      "label": "Trash1707",
-      "bpid": "Trash",
-      "initScript": `prop x setTo -168.58
-prop y setTo 370.68`
-    },
-    {
-      "id": "1708",
-      "label": "Fish1708",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -331.71
-prop y setTo -247.9`
-    },
-    {
-      "id": "1709",
-      "label": "Fish1709",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -8.17
-prop y setTo 250.9`
-    },
-    {
-      "id": "1710",
-      "label": "Fish1710",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -139.77
-prop y setTo 187.57`
     }
   ]
 }
