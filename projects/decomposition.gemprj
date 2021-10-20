@@ -404,21 +404,29 @@ useFeature Population
 
 addProp energyLevel Number 50
 
-// STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random) [WORKS]
+// STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random)
 prop energyLevel setTo 50
 prop energyLevel setMax 100
 prop energyLevel setMin 0
 
+// setup so that we can tweak the size more dynamically, and plant by plant
+addProp minimumScale Number 0
+
+// STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
+prop minimumScale setTo 0
+prop minimumScale setMax 1.0
+prop minimumScale setMin -0.5
+
 addProp nutrients Number 8
 
-// STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad [WORKS]
+// STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
 prop nutrients setTo 8
 prop nutrients setMax 10
 prop nutrients setMin 0
 
 addProp matter Number 50
 
-// STUDENTS_MAY_CHANGE - sete a different range or starting point of matter [WORKS]
+// STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
 prop matter setTo 50
 prop matter setMax 100
 prop matter setMin 0
@@ -432,7 +440,7 @@ featCall Touches monitor Soil b2b
 featCall Touches monitor Bunny b2b
 
 useFeature AgentWidgets
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below) [WORKS]
+// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp AgentWidgets meterProp setTo energyLevel
 // Green
 featProp AgentWidgets meterColor setTo 65280
@@ -445,7 +453,7 @@ prop y setTo -50
 prop y addRnd -10 10
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-  exprPush {{ 0.25 + agent.getProp('matter').value / 100 }}
+  exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
   featPropPop Physics scale
 
 # PROGRAM UPDATE
@@ -474,7 +482,7 @@ when Plant touches Soil [[
 every 1 runAtStart [[
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-  exprPush {{ 0.25 + agent.getProp('matter').value / 100 }}
+  exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
   featPropPop Physics scale  featPropPop Physics scale
 
   // if the plant is basically dead
