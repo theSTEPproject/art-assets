@@ -32,7 +32,7 @@ addProp sparkleCount Number 0
 
 useFeature Physics
 
-featCall Physics setSize 196 196
+featProp Physics scale setTo 0.38
 
 prop zIndex setTo -200
 
