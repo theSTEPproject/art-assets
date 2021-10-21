@@ -620,15 +620,14 @@ when Turtle lastTouches Trash [[
       "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Trash
 
-# PROGRAM DEFINE
-useFeature Costume
-useFeature Population
-useFeature Physics
+      # PROGRAM DEFINE
+      useFeature Costume
 
-// temp until we get new art
-featCall Costume setCostume 'trash.json' 0
+      featCall Costume setCostume 'trash.json' 0
 
-featProp Physics scale setTo 0.05
+      useFeature Physics
+
+\t  featProp Physics scale setTo 0.05
 `
     },
     {
