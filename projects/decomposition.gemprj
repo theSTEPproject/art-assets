@@ -452,6 +452,8 @@ featProp AgentWidgets text setTo ''
 prop y setTo -50
 prop y addRnd -10 10
 
+# PROGRAM INIT
+
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
   exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
   featPropPop Physics scale

@@ -566,6 +566,11 @@ every 1 runAtStart [[
   // foodLevel goes down every n seconds
   exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
   propPop agent.energyLevel
+  
+  ifExpr {{ agent.getProp('energyLevel').value == 0}} [[
+  \tprop agent.isInert setTo true 
+  \tprop agent.alpha setTo 0.3
+  ]]
 ]]
   
 when Turtle touches Fish [[
@@ -622,7 +627,7 @@ when Turtle lastTouches Trash [[
 
       # PROGRAM DEFINE
       useFeature Costume
-
+      useFeature Population
       featCall Costume setCostume 'trash.json' 0
 
       useFeature Physics
@@ -943,6 +948,13 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1708",
+      "label": "Trash1708",
+      "bpid": "Trash",
+      "initScript": `prop x setTo -210.46
+prop y setTo 380.16`
     }
   ]
 }
