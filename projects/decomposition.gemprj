@@ -198,9 +198,13 @@ when Worm touches Waste [[
     // if hungry, eat
     ifExpr {{ agent.getProp('feeling').value == 'hungry'}} [[
       // move energy and matter from the waste to the worm and glow so we notice
+      // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
+      // waste loses matter
+      prop Waste.matter sub 10
+      // worms gain energy and matter
       prop Worm.energyLevel add 10
       prop Worm.matter add 10
-      prop Waste.matter sub 10
+      // worm glowss so we know it is eating
       featCall Costume setGlow 4
 
       // if you are nice and full of energy, note you are full and start poop count-down
@@ -249,7 +253,7 @@ when Worm touches Soil [[
 ]]
 every 1 runAtStart [[
   // energy goes down
-  prop energyLevel sub 1
+  prop energyLevel sub 2
 
   // if out of energy ... die
   ifExpr {{agent.getProp('energyLevel').value == 0}} [[
@@ -291,7 +295,7 @@ addProp feeling String \"hungry\"
 addProp wasteCountStart Number 0
 
 // STUDENTS_MAY_CHANGE set this lower for instant dispersal of waste, or higher to stretch it out
-prop wasteCountStart setTo 5
+prop wasteCountStart setTo 3
 addProp wasteCount Number 0
 
 addProp matter Number 50
@@ -337,8 +341,8 @@ when Bunny touches Plant [[
       prop Plant.matter sub 10
       prop Plant.energyLevel sub 10
       // Bunny matter and energy go up from eating
-      prop Bunny.matter add 10
-      prop Bunny.energyLevel add 10
+      prop Bunny.matter add 20
+      prop Bunny.energyLevel add 20
       featCall Bunny.Costume setGlow 4
 
       // if full, change costume and set timer to emit waste
@@ -367,11 +371,12 @@ every 1 runAtStart [[
       prop energyLevel sub 20
       prop matter sub 20
       prop feeling setTo \"hungry\"
+      featCall Costume setCostume \"bunnies.json\" 1
       featCall Population createAgent Waste [[
         // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
         prop x addRndInt -20 20
         prop y addRndInt 50 150
-        prop matter setTo 20
+        prop matter setTo 40
       ]]
     ]]
 
@@ -801,18 +806,11 @@ prop labelText setTo 'Worm Energy'
       "initScript": `prop x setTo -300`
     },
     {
-      "id": "1601",
-      "label": "Waste01",
-      "bpid": "Waste",
-      "initScript": `prop x setTo -100
-prop y setTo 100`
-    },
-    {
       "id": "1602",
       "label": "Waste02",
       "bpid": "Waste",
-      "initScript": `prop x setTo 220
-prop y setTo 50`
+      "initScript": `prop x setTo 317.07
+prop y setTo 113.34`
     },
     {
       "id": "1700",
@@ -878,6 +876,34 @@ prop y setTo -290
 featCall Costume setColorize 0.56 0.52 0.40
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1804",
+      "label": "Sunbeam1804",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -407.34
+prop y setTo -192.67`
+    },
+    {
+      "id": "1808",
+      "label": "Waste1808",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -288.34
+prop y setTo 113.79`
+    },
+    {
+      "id": "1809",
+      "label": "Timer1809",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 453.76
+prop y setTo -260.99`
+    },
+    {
+      "id": "1810",
+      "label": "Plant1810",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 88.12
+prop y setTo -43.58`
     }
   ]
 }
