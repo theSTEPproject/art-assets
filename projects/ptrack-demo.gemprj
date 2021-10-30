@@ -1,0 +1,56 @@
+{
+  "id": "ptrack-demo",
+  "label": "PTrack Demo",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      "false",
+      "false"
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Bee",
+      "label": "Bee",
+      "scriptText": `# BLUEPRINT Bee
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'bee.json'
+useFeature Movement
+useFeature Cursor
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Fish",
+      "label": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isPTrackControllable true
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'fish.json' 0
+useFeature AgentWidgets
+// useFeature Movement
+# PROGRAM EVENT
+// onEvent Tick [[ ]]
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1000",
+      "label": "Bee1",
+      "bpid": "Bee",
+      "initScript": `// initScript Bee`
+    }
+  ]
+}
