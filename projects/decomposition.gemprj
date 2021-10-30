@@ -143,11 +143,13 @@ prop zIndex setTo -210`
     {
       "id": "Worm",
       "label": "Worm",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
       "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 
+useFeature Cursor
 useFeature Costume
 featCall Costume setCostume 'worm.json' 1
 
@@ -273,13 +275,17 @@ every 1 runAtStart [[
     {
       "id": "Bunny",
       "label": "Bunny",
-      "isCharControllable": true,
       "scriptText": `# BLUEPRINT Bunny
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 
 useFeature Population
 useFeature Global
 useFeature Costume
+useFeature Cursor
+
 
 featCall Costume setCostume \"bunnies.json\" 1
 
@@ -673,31 +679,6 @@ onEvent Tick [[
   exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
   propPop graphValue
 ]]`
-    },
-    {
-      "id": "Cursor",
-      "label": "Cursor",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
-      "scriptText": `# BLUEPRINT Cursor
-# PROGRAM DEFINE
-useFeature Costume
-featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorizeHSV 1 1 1
-featCall Costume randomizeColorHSV 1 0 0
-
-useFeature Physics
-featProp Physics scale setTo 0.05
-
-useFeature Movement
-
-useFeature Cursor
-
-useFeature Touches
-
-
-useFeature AgentWidgets
-`
     }
   ],
   "instances": [
@@ -904,6 +885,13 @@ prop y setTo -260.99`
       "bpid": "Plant",
       "initScript": `prop x setTo 88.12
 prop y setTo -43.58`
+    },
+    {
+      "id": "1811",
+      "label": "Bunny1811",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -2
+prop y setTo -8`
     }
   ]
 }

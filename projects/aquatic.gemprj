@@ -19,13 +19,15 @@
     {
       "id": "Fish",
       "label": "Fish",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
       "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
 useFeature Movement
 useFeature AgentWidgets
+useFeature Cursor
 
 featCall Costume setCostume 'fish.json' 0
 
@@ -180,9 +182,10 @@ every 1 runAtStart [[
     {
       "id": "Algae",
       "label": "Algae",
-      "isCharControllable": true,
-      "isPozyxControllable": false,
       "scriptText": `# BLUEPRINT Algae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 
 useFeature Costume
@@ -308,8 +311,6 @@ when Algae lastTouches Sunbeam [[
     {
       "id": "Sunbeam",
       "label": "Sunbeam",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
 useFeature Costume
@@ -358,8 +359,6 @@ onEvent Tick [[
     {
       "id": "AlgaeAvgMeter",
       "label": "Algae Energy Meter",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT AlgaeAvgMeter
 # PROGRAM DEFINE
 addProp reportSubject String Algae
@@ -420,8 +419,6 @@ onEvent Tick [[
     {
       "id": "FishAvgMeter",
       "label": "Fish Energy Meter",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT FishAvgMeter
 # PROGRAM DEFINE
 addProp reportSubject String Fish
@@ -482,8 +479,6 @@ onEvent Tick [[
     {
       "id": "Timer",
       "label": "Timer",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM DEFINE
       useFeature AgentWidgets
@@ -502,8 +497,6 @@ onEvent Tick [[
     {
       "id": "Rock",
       "label": "Rock",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Rock
 
       # PROGRAM DEFINE
@@ -516,10 +509,10 @@ onEvent Tick [[
     {
       "id": "Turtle",
       "label": "Turtle",
-      "isCharControllable": true,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Turtle
-
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
 useFeature AgentWidgets
@@ -621,8 +614,6 @@ when Turtle lastTouches Trash [[
     {
       "id": "Trash",
       "label": "Trash",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Trash
 
       # PROGRAM DEFINE
@@ -638,8 +629,6 @@ when Turtle lastTouches Trash [[
     {
       "id": "Graph1",
       "label": "Graph1",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Graph1
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
@@ -700,8 +689,6 @@ when Turtle lastTouches Trash [[
     {
       "id": "Graph2",
       "label": "Graph2",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT Graph2
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
@@ -763,8 +750,6 @@ when Turtle lastTouches Trash [[
     {
       "id": "TextLabel",
       "label": "TextLabel",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT TextLabel
       # PROGRAM DEFINE
       useFeature AgentWidgets
@@ -773,39 +758,12 @@ when Turtle lastTouches Trash [[
     {
       "id": "ColorChip",
       "label": "ColorChip",
-      "isCharControllable": null,
-      "isPozyxControllable": null,
       "scriptText": `# BLUEPRINT ColorChip
       # PROGRAM DEFINE
       useFeature Costume
       featCall Costume setCostume 'square.json' 0
 
       useFeature Physics`
-    },
-    {
-      "id": "Cursor",
-      "label": "Cursor",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
-      "scriptText": `# BLUEPRINT Cursor
-# PROGRAM DEFINE
-useFeature Costume
-featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorizeHSV 1 1 1
-featCall Costume randomizeColorHSV 1 0 0
-
-useFeature Physics
-featProp Physics scale setTo 0.05
-
-useFeature Movement
-
-useFeature Cursor
-
-useFeature Touches
-
-
-useFeature AgentWidgets
-`
     }
   ],
   "instances": [
@@ -955,6 +913,13 @@ featCall Physics setSize 100 30`
       "bpid": "Trash",
       "initScript": `prop x setTo -210.46
 prop y setTo 380.16`
+    },
+    {
+      "id": "1709",
+      "label": "Fish1709",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
