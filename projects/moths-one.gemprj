@@ -88,10 +88,10 @@
     {
       "id": "Moth",
       "label": "Moth",
-      "isCharControllable": false,
-      "isPozyxControllable": false,
       "scriptText": `# BLUEPRINT Moth
-
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'moth.json' 0
@@ -270,10 +270,10 @@ ifExpr {{ agent.getProp('isInert').value }} [[
     {
       "id": "Predator",
       "label": "Predator",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
       "scriptText": `# BLUEPRINT Predator
-
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
 //featCall Costume setCostume 'predator.json' 0
@@ -392,31 +392,6 @@ when Predator centerTouchesCenter Moth [[
       prop zIndex setTo -199
 
       # PROGRAM UPDATE
-`
-    },
-    {
-      "id": "Cursor",
-      "label": "Cursor",
-      "isCharControllable": true,
-      "isPozyxControllable": true,
-      "scriptText": `# BLUEPRINT Cursor
-# PROGRAM DEFINE
-useFeature Costume
-featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorizeHSV 1 1 1
-featCall Costume randomizeColorHSV 1 0 0
-
-useFeature Physics
-featProp Physics scale setTo 0.05
-
-useFeature Movement
-
-useFeature Cursor
-
-useFeature Touches
-
-
-useFeature AgentWidgets
 `
     }
   ],
