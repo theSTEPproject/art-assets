@@ -23,7 +23,8 @@
       "outtro": "Here they come!!",
       "initScript": `dbgOut 'roundDef: Round1'`,
       "endScript": `dbgOut 'END HIDING!'`
-    }, {
+    }, 
+    {
       "id": "r2",
       "label": "Seeking",
       "time": 60,
@@ -36,6 +37,7 @@
           featProp Movement distance setTo 4
           featCall Movement seekNearestVisibleCone Moth
 
+
           prop bIsActive setTo true
       ]]
 
@@ -45,14 +47,15 @@
         //get the predators out of the way 
         featCall Population agentsForEach Predator [[
           featProp Vision viewDistance setTo 0
-          prop agent.isInert setTo true
           featCall Movement queuePosition 800 800
           prop agent.alpha setTo 0
         ]]
 
         // make the moth color numbers visible again
         featCall Population agentsForEach Moth [[
-          
+        
+        prop isInert setTo false
+        featCall agent.Costume setPose 0
         prop alpha setTo 1
         featPropPush Costume colorScaleIndex
         featPropPop AgentWidgets text
@@ -241,7 +244,6 @@ when Predator centerTouchesCenter Moth [[
   // Only if Moth is not camouflaged
   ifExpr {{ Moth.getProp('vulnerable').value  > 0 }} [[
     featCall Moth.Costume setGlow 1
-
       featCall Moth.Costume setCostume 'smallsquare.json' 0
 
       prop Moth.alpha setTo 0.1
