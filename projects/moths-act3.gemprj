@@ -1,6 +1,6 @@
 {
   "id": "moths-act3",
-  "label": "Moths Activity One",
+  "label": "Moths Activity Three",
   "metadata": {
     "top": -400,
     "right": 400, 
@@ -244,13 +244,12 @@ when Predator centerTouchesCenter Moth [[
   // Only if Moth is not camouflaged
   ifExpr {{ Moth.getProp('vulnerable').value  > 0 }} [[
     featCall Moth.Costume setGlow 1
-      featCall Moth.Costume setCostume 'smallsquare.json' 0
-
-      prop Moth.alpha setTo 0.1
-
-      featProp Moth.Movement useAutoOrientation setTo false
+      
       prop Moth.orientation setTo 3.14
       prop Moth.isInert setTo true
+      featCall Moth.Costume setCostume 'smallsquare.json' 0
+      prop Moth.alpha setTo 0.3
+      featProp Moth.Movement useAutoOrientation setTo false
 
       // Stop sim if half of the moths are eaten
       ifExpr {{ Moth.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') < 11 }} [[
