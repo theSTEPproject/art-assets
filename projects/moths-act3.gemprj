@@ -247,7 +247,7 @@ when Predator centerTouchesCenter Moth [[
       
       prop Moth.orientation setTo 3.14
       prop Moth.isInert setTo true
-      featCall Moth.Costume setCostume 'smallsquare.json' 0
+      featCall Moth.Costume setCostume 'smallgraysquare.json' 0
       prop Moth.alpha setTo 0.3
       featProp Moth.Movement useAutoOrientation setTo false
 
