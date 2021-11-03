@@ -120,14 +120,36 @@ prop vulnerable setMin 0
 prop vulnerable setMax 1
 prop vulnerable setTo 1
 
-// allow access to global darkMoths/lightMoths values
 useFeature Global
 useFeature Cursor
 
+// STUDENTS_MAY_CHANGE - set this to true if you want truly random colors, but leave it as false
+// if you want 1 each starting at 1
+addProp bUseRandomColors Boolean false
+
 # PROGRAM INIT
 
-// pick a color index
-prop colorIndx addRndInt 1 11
+// set the moth color index randomly, or in a sequence?
+ifExpr{{agent.prop.bUseRandomColors.value === true}} [[
+  // pick a random color index
+  prop colorIndx addRndInt 0 11
+]] [[
+  // if we are trying to sequence
+  // create a global counter if it doesn't exist
+  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'mothColorCounter') == undefined }} [[
+    featCall Global addGlobalProp mothColorCounter Number 2
+  ]]
+
+  // loop if we create loads of new moths to keep an even distribution
+  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'mothColorCounter').value == 10}} [[
+      featCall Global globalProp mothColorCounter setTo 1   
+  ]]
+  
+  featCall Global globalProp mothColorCounter add 1   
+  exprPush {{ agent.callFeatMethod('Global', 'getGlobalProp', 'mothColorCounter').value }}
+  propPop colorIndx
+]]
+
 
 // set the colorScaleIndex to the internal colorIndx
 propPush colorIndx
@@ -167,7 +189,6 @@ prop Moth.energyLevel setTo 21
 ]]
 
 when Moth centerLastTouches TreeTrunk [[
-  dbgOut {{ Moth.name + ' will be visible ' }}
   prop vulnerable setTo 1
   featProp Vision visionable setTo true
   featCall Moth.Costume setPose 0
@@ -255,13 +276,6 @@ when Predator centerTouchesCenter Moth [[
       featCall Moth.Costume setCostume 'smallgraysquare.json' 0
       prop Moth.alpha setTo 0.3
       featProp Moth.Movement useAutoOrientation setTo false
-
-      // Stop sim if half of the moths are eaten
-      ifExpr {{ Moth.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') < 11 }} [[
-        // featCall Predator.Timer stopRound
-        // This will be added to the end of round message
-        // featCall Moth.AgentWidgets showMessage 'Predators have eaten over half of the Moth population!'
-      ]]
   ]]
 ]]
 
