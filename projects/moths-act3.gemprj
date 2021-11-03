@@ -106,7 +106,7 @@ addProp energyLevel Number 15
 prop energyLevel setMax 100
 prop energyLevel setMin 0
 
-addProp colorIndx Number 5
+addProp colorIndx Number 0
 prop colorIndx setMax 11
 prop colorIndx setMin 0
 
@@ -122,13 +122,18 @@ prop vulnerable setTo 1
 
 // allow access to global darkMoths/lightMoths values
 useFeature Global
-
 useFeature Cursor
+
+# PROGRAM INIT
+
+// pick a color index
+prop colorIndx addRndInt 1 11
 
 // set the colorScaleIndex to the internal colorIndx
 propPush colorIndx
 featPropPop Costume colorScaleIndex
 
+// display the color index under the moth
 useFeature AgentWidgets
 featPropPush Costume colorScaleIndex
 featPropPop AgentWidgets text
