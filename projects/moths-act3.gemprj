@@ -3,7 +3,7 @@
   "label": "Moths Activity Three",
   "metadata": {
     "top": -400,
-    "right": 400, 
+    "right": 400,
     "bottom": 400,
     "left": -400,
     "wrap": [
@@ -23,7 +23,7 @@
       "outtro": "Here they come!!",
       "initScript": `dbgOut 'roundDef: Round1'`,
       "endScript": `dbgOut 'END HIDING!'`
-    }, 
+    },
     {
       "id": "r2",
       "label": "Seeking",
@@ -252,6 +252,10 @@ useFeature Population
 useFeature Global
 useFeature Timer
 
+# PROGRAM INIT
+prop zIndex setTo 200
+
+
 # PROGRAM UPDATE
 
 // animate the predator
@@ -280,7 +284,7 @@ when Predator centerTouchesCenter Moth [[
 ]]
 
 `
-    },    
+    },
     {
       "id": "TreeTrunk",
       "label": "TreeTrunk",
