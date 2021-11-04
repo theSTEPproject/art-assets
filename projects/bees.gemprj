@@ -1,0 +1,69 @@
+{
+  "id": "bees",
+  "label": "PTrack Demo",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      "false",
+      "false"
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Bee",
+      "label": "Bee",
+      "scriptText": `# BLUEPRINT Bee
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'bee.json'
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Flower",
+      "label": "Flower",
+      "scriptText": `# BLUEPRINT Flower
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'flower.json' 0
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1000",
+      "label": "Bee1",
+      "bpid": "Bee",
+      "initScript": `// initScript Bee`
+    },
+    {
+      "id": "1003",
+      "label": "Flower1003",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 192.86
+prop y setTo -252.76`
+    },
+    {
+      "id": "1004",
+      "label": "Flower1004",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -172.96
+prop y setTo -187.44`
+    }
+  ]
+}
