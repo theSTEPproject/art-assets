@@ -1,0 +1,44 @@
+{
+  "id": "_template_starter",
+  "label": "Starter Project",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      "false",
+      "false"
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Character1",
+      "label": "Character1",
+      "scriptText": `# BLUEPRINT Character1
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'circle.json'
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1000",
+      "label": "Character1_1",
+      "bpid": "Character1",
+      "initScript": `// initScript Character1`
+    }
+  ]
+}
