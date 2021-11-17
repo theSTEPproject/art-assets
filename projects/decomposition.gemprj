@@ -282,7 +282,7 @@ every 1 runAtStart [[
 # PROGRAM DEFINE
 
 useFeature Population
-useFeature Global
+// useFeature Global
 useFeature Costume
 useFeature Cursor
 
@@ -410,7 +410,7 @@ every 1 runAtStart [[
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'plants.json' 0
-useFeature Global
+// useFeature Global
 useFeature Population
 
 addProp energyLevel Number 50

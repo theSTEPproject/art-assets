@@ -24,6 +24,9 @@
 # TAG isCharControllable true
 # PROGRAM DEFINE
 useFeature Costume
+useFeature Movement
+useFeature Cursor 
+
 featCall Costume setCostume 'bee.json'
 
 # PROGRAM INIT 

@@ -25,6 +25,20 @@ useFeature Costume
 featCall Costume setCostume 'bee.json'
 useFeature Movement
 useFeature Cursor
+
+useFeature Global
+addProp a Number 10
+featCall Global addGlobalProp b Number 5
+addProp c Number 0
+
+# PROGRAM INIT 
+
+propPush a
+propPush global.b
+stackSub
+propPop c
+dbgOut 'after sub, c: ' agent.c
+
 # PROGRAM EVENT
 # PROGRAM UPDATE
 `
