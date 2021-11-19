@@ -284,6 +284,7 @@ every 1 runAtStart [[
 useFeature Population
 // useFeature Global
 useFeature Costume
+useFeature Movement
 useFeature Cursor
 
 
