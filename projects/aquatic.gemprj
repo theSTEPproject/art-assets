@@ -633,19 +633,19 @@ when Turtle lastTouches Trash [[
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
 
-            addProp characterType String 'Fish'
+            addProp characterType String 'Algae'
             addProp countType String 'avg'
             addProp variableToGraph String 'energyLevel'
-            addProp labelText String 'Fish energyLevel'
+            addProp labelText String 'Algae energyLevel'
 
             // STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
             // -- Character options: Fish, Algae
             // -- Variable options: energyLevel
             // -- Population options: sum, avg, min, max
-            prop characterType setTo 'Fish'
+            prop characterType setTo 'Algae'
             prop countType setTo 'avg'
             prop variableToGraph setTo 'energyLevel'
-            prop labelText setTo 'Fish energyLevel'
+            prop labelText setTo 'Algae energyLevel'
 
             useFeature AgentWidgets
             useFeature Population
@@ -918,8 +918,36 @@ prop y setTo 380.16`
       "id": "1709",
       "label": "Fish1709",
       "bpid": "Fish",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "initScript": `prop x setTo -85.71
+prop y setTo 110.31`
+    },
+    {
+      "id": "1710",
+      "label": "FishAvgMeter1710",
+      "bpid": "FishAvgMeter",
+      "initScript": `prop x setTo 505.91
+prop y setTo 27.51`
+    },
+    {
+      "id": "1711",
+      "label": "AlgaeAvgMeter1711",
+      "bpid": "AlgaeAvgMeter",
+      "initScript": `prop x setTo 504.83
+prop y setTo -103.99`
+    },
+    {
+      "id": "1712",
+      "label": "Graph11712",
+      "bpid": "Graph1",
+      "initScript": `prop x setTo 508.95
+prop y setTo 171.88`
+    },
+    {
+      "id": "1713",
+      "label": "Graph21713",
+      "bpid": "Graph2",
+      "initScript": `prop x setTo 511.24
+prop y setTo 293.31`
     }
   ]
 }
