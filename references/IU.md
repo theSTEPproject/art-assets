@@ -27,7 +27,7 @@ To change the MQTT server and / or local assets location simply edit:
 
 To change or check the location of the art assets, see local-settings (above).
 
-### For basic images:
+### For basic images
 - Any art can simply be added to the `gem-step/gs_assets/art-assets/sprites` folder.
 - There is no need to use TexturePacker to create a spritesheet (.json file) if you do not need it.
 - There is no need to create an asset manifest file.
@@ -38,3 +38,22 @@ To change or check the location of the art assets, see local-settings (above).
 - Name your graphic files with a number at the end representing the animation frame, e.g. fly1.png, fly2.png, fly3.png.
 - Save them in `gem-step/gs_assets/art-assets/sprites`.
 - Instead of using `setCostume`, call `setAnimatedCostume`.  e.g.
+
+### Using the iPad (notes from Corey, removing some aspects that are no-longer needed)
+
+I found a free iPad app, Sketchbook, which supports layers, transparency, and resizing canvas.  The steps for a kid to make a character --- sketching a few frames of an animation (using layers as a guide) and then export and use airdrop to send to a computer with TexturePacker --- are manageable. 
+ 
+So, if you only want a static character or scene element, you don’t need the layers idea.
+ 
+But if you want to make “ant1” “ant2” … etc to make an animated character, you would
+ 
+1. Start from a starter file that is the right canvas size
+2. Make sure you’re pointing the character in the way you will need to (facing to the right for overhead perspectives)
+3. Sketch image1
+4. Add a layer, sketch image 2
+5. Make the image 1 layer invisible
+6. Add a layer, sketch image 3
+7. Etc
+8. Then, export each of the frames as images.
+9. Then, send to the laptop via airdrop and put them in the sprites folder.
+10. Then modift the code to reference them.
