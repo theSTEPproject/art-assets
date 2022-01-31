@@ -28,7 +28,7 @@ To change the MQTT server and / or local assets location simply edit:
 To change or check the location of the art assets, see local-settings (above).
 
 ### For basic images:
-- Any art can simply be added to the `/gs_assets/art-assets/sprites` folder.
+- Any art can simply be added to the `gem-step/gs_assets/art-assets/sprites` folder.
 - There is no need to use TexturePacker to create a spritesheet (.json file) if you do not need it.
 - There is no need to create an asset manifest file.
 - Use the filename to set the costume name, e.g. `featCall Costume setCostume 'bird.jpg'`
@@ -36,5 +36,5 @@ To change or check the location of the art assets, see local-settings (above).
 ### For animations
 
 - Name your graphic files with a number at the end representing the animation frame, e.g. fly1.png, fly2.png, fly3.png.
-- Save them in `/gs_assets/art-assets/sprites`.
+- Save them in `gem-step/gs_assets/art-assets/sprites`.
 - Instead of using `setCostume`, call `setAnimatedCostume`.  e.g.
