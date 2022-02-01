@@ -20,7 +20,12 @@
       "label": "Predation Round",
       "time": 10,
       "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
-      "initScript": `\n        `,
+      "initScript": `\n       
+        // ----------------------------------------------
+        // DO SOME INIT IF IT IS NOT THE VERY FIRST ROUND
+        // ----------------------------------------------
+
+       `,
       "outtro": "How did the colors of the moths that survived compare to the colors of the moths that were eaten?",
       "endScript": `
 
@@ -260,7 +265,7 @@
     {
       "id": "r3",
       "label": "Reproduction Round",
-      "time": 130,
+      "time": 10,
       "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
       "initScript": `featCall Population agentsForEach Predator [[
   prop agent.isInert setTo false
@@ -412,7 +417,7 @@ featCall Population populateBySpawning Moth [[
     {
       "id": "r4",
       "label": "Reproduction Round",
-      "time": 130,
+      "time": 10,
       "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
       "initScript": `featCall Population agentsForEach Predator [[
   prop agent.isInert setTo false
@@ -1145,7 +1150,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "Grass",
       "initScript": `
     featCall Movement queuePosition 0 265
-     //featCall Costume setColorize 0.1 0.8 0
      featProp Physics scale setTo 0.55
      featProp Physics scaleY setTo 0.9
      prop initx setTo 0
@@ -1158,7 +1162,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeTrunk",
       "initScript": `
       featCall Movement queuePosition -250 -145
-     //featCall Costume setColorizeHSV 0 0 0.66
      featProp Physics scale setTo 0.5
      featProp Physics scaleY setTo 0.55
      prop initx setTo -250
@@ -1172,7 +1175,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeRoots",
       "initScript": `
       featCall Movement queuePosition -250 125
-     //featCall Costume setColorizeHSV 0 0 0.66
      featProp Physics scale setTo 0.35
      featProp Physics scaleY setTo 0.35
      prop initx setTo -250
@@ -1185,7 +1187,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeTrunk",
       "initScript": `
       featCall Movement queuePosition 50 -145
-      //featCall Costume setColorizeHSV 0 0 0.67
       featProp Physics scale setTo 0.5
       featProp Physics scaleY setTo 0.55
       prop initx setTo 50
@@ -1198,7 +1199,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeRoots",
       "initScript": `
       featCall Movement queuePosition 50 125
-     //featCall Costume setColorizeHSV 0 0 0.67
      featProp Physics scale setTo 0.35
      featProp Physics scaleY setTo 0.35
      prop initx setTo 50
@@ -1211,7 +1211,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeTrunk",
       "initScript": `
     featCall Movement queuePosition 250 -145
-     // featCall Costume setColorizeHSV 0 0 0.68
      featProp Physics scale setTo 0.5
      featProp Physics scaleY setTo 0.55
      prop initx setTo 250
@@ -1224,7 +1223,6 @@ when Predator centerTouchesCenter Moth [[
       "bpid": "TreeRoots",
       "initScript": `
       featCall Movement queuePosition 250 125
-     //featCall Costume setColorizeHSV 0 0 0.68
      featProp Physics scale setTo 0.35
      featProp Physics scaleY setTo 0.35
      prop initx setTo 250
