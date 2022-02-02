@@ -27,12 +27,13 @@ ifExpr {{ agent.getProp('roundCounter') == undefined }} [[
   addProp roundCounter Number 0
   addProp treeColorChange Number 0
   addProp mothColorChangeRange Number 0
+  addProp randomHack Number 0
 ]]
 
 // start us out in round 1 and increment eacha additional round
 prop roundCounter add 1
 
-// *******************************  
+// *******************************
 // STUDENTS_MAY_CHANGE
 prop treeColorChange setTo 1
 prop mothColorChangeRange setTo 1
@@ -40,7 +41,7 @@ prop mothColorChangeRange setTo 1
 
 // return the predators to a starting position
 featCall Population agentsForEach Predator [[
-  prop agent.isInert setTo false
+  prop agent.isInert setTo falsen
   prop orientation setTo 0.1
   prop alpha setTo 1
   propPush initx
@@ -65,11 +66,9 @@ featCall Population agentsForEach TreeTrunk [[
   propPop y
   featCall Movement jitterPos -2 2
 
-// also in rounds after the first, adjust the color based on the treeColorChange value
-   ifExpr {{true}} [[ 
-   // CHANGE true to {{ ROUND.getProp('roundCounter').value > 1 }} 
-    exprPush {{ agent.getProp('colorIndx').value - 1}}
-    // CHANGE 1 to  ROUND.getProp('treeColorChange').value
+  // also in rounds after the first, adjust the color based on the treeColorChange value
+  ifExpr {{ global.getProp('roundCounter').value > 1 }} [[
+    exprPush {{ agent.getProp('colorIndx').value - global.getProp('treeColorChange').value }}
     propPop colorIndx
     propPush colorIndx
     featPropPop Costume colorScaleIndex
@@ -90,10 +89,8 @@ featCall Population agentsForEach TreeRoots [[
   featCall Movement jitterPos -2 2
 
   // also in rounds after the first, adjust the color based on the treeColorChange value
-   ifExpr {{true}} [[ 
-   // CHANGE true to {{ ROUND.getProp('roundCounter').value > 1 }} 
-    exprPush {{ agent.getProp('colorIndx').value - 1}}
-    // CHANGE 1 to  ROUND.getProp('treeColorChange').value
+  ifExpr {{ global.getProp('roundCounter').value > 1 }} [[
+    exprPush {{ agent.getProp('colorIndx').value - global.getProp('treeColorChange').value }}
     propPop colorIndx
     propPush colorIndx
     featPropPop Costume colorScaleIndex
@@ -124,12 +121,17 @@ featCall Population populateBySpawning Moth [[
   featCall Movement jitterPos -2 2
 
   // also in rounds after the first, adjust the color based on the treeColorChange value
-   ifExpr {{true}} [[ 
-   // CHANGE true to {{ ROUND.getProp('roundCounter').value > 1 }} 
+  ifExpr {{ true }} [[
+    // CHANGE true to {{ ROUND.getProp('roundCounter').value > 1 }}
 
-    // CHANGE to be based on mothColorChangeRange
-    // prop colorIndx addRndInt -1 1
-    exprPush {{ agent.getProp('colorIndx').value - 1}}
+    // CHANGE to be based on mothColorChangeRange (remove the line with -1 as that was intended to just make this work)
+    // was: prop colorIndx addRndInt -1 1
+    // and want to make the 1 a variable instead
+    // work-around to the fact that I cannot actually get a random number directly, so I have a randomNumber holding property, and set the colorIndx to that - range / 2 + range * rnd so that we get a range
+    // prop ROUND.randomHack setToRnd
+    // exprPush {{ agent.getProp('colorIndx').value + ( agent.getProp('colorIndx').value * agent.getProp('mothColorChangeRange').value * 2  ) - agent.getProp('mothColorChangeRange').value / 2}}
+
+    exprPush {{ agent.getProp('colorIndx').value - 1 }}
     propPop colorIndx
     propPush colorIndx
     featPropPop Costume colorScaleIndex
@@ -411,7 +413,6 @@ useFeature Timer
 
 every 1 [[
   prop tickCounter add 1
-  //dbgOut{{  agent.getProp('tickCounter').value  }}
   ifExpr {{ agent.getProp('tickCounter').value > 88 }} [[
     //dbgOut{{ 'setting the movemnt info' }}
     featProp Movement distance setTo 4
@@ -829,7 +830,7 @@ when Predator centerTouchesCenter Moth [[
       "label": "Moth9c",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition 240 320
-`
+  `
     }
   ]
 }
