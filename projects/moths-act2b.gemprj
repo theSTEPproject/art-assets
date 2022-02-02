@@ -150,9 +150,6 @@ featCall Population populateBySpawning Moth [[
     featPropPop AgentWidgets text
     prop costumenum setTo 0
 
-    featPropPush Costume colorScaleIndex
-    featPropPop AgentWidgets text
-
   ]]
 
 
@@ -181,21 +178,6 @@ featCall Population populateBySpawning Moth [[
               exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
               propPop x
               prop y setTo -200
-              prop y addRnd -150 150
-              featCall Movement jitterPos -2 2
-            ]]
-          ]]
-
-          // do it again
-          // **CHANGE** can we delete this or the prior forEach as repeating itself
-          featCall Population agentsForEach Moth [[
-            ifExpr {{ agent.getProp('isInert').value }} [[
-              featCall agent.Costume setPose 0
-              prop alpha setTo 1
-              featCall Movement queuePosition 0 0
-              exprPush {{ -420 + ( agent.getProp('colorIndx').value  * 70 ) }}
-              propPop x
-              prop y setTo 200
               prop y addRnd -150 150
               featCall Movement jitterPos -2 2
             ]]
@@ -257,6 +239,10 @@ featProp Costume colorScaleSteps setTo 10
 featCall Costume initHSVColorScale
 featProp Costume colorScaleIndex setTo 11
 
+addProp colorIndx Number 11
+prop colorIndx setMax 11
+prop colorIndx setMin 1
+
 // Fully visible
 prop alpha setTo 1
 prop alpha setMin 1
@@ -279,9 +265,7 @@ addProp energyLevel Number 15
 prop energyLevel setMax 100
 prop energyLevel setMin 0
 
-addProp colorIndx Number 11
-prop colorIndx setMax 11
-prop colorIndx setMin 0
+
 
 addProp costumenum Number 0
 prop costumenum setMin 0
@@ -299,7 +283,7 @@ useFeature Global
 useFeature Cursor
 
 useFeature AgentWidgets
-featPropPush Costume colorScaleIndex
+propPush colorIndx
 featPropPop AgentWidgets text
 
 # PROGRAM INIT
@@ -486,7 +470,7 @@ when Predator centerTouchesCenter Moth [[
 
           addProp colorIndx Number 11
           prop colorIndx setMax 11
-          prop colorIndx setMin 0
+          prop colorIndx setMin 1
 
           useFeature Physics
           useFeature Population
@@ -553,7 +537,7 @@ when Predator centerTouchesCenter Moth [[
 
       addProp colorIndx Number 11
       prop colorIndx setMax 11
-      prop colorIndx setMin 0
+      prop colorIndx setMin 1
 
 
       
