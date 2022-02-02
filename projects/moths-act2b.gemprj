@@ -27,7 +27,6 @@ ifExpr {{ agent.getProp('roundCounter') == undefined }} [[
   addProp roundCounter Number 0
   addProp treeColorChange Number 0
   addProp mothColorChangeRange Number 0
-  addProp randomHack Number 0
 ]]
 
 // start us out in round 1 and increment eacha additional round
@@ -41,7 +40,7 @@ prop mothColorChangeRange setTo 1
 
 // return the predators to a starting position
 featCall Population agentsForEach Predator [[
-  prop agent.isInert setTo falsen
+  prop agent.isInert setTo false
   prop orientation setTo 0.1
   prop alpha setTo 1
   propPush initx
@@ -121,18 +120,30 @@ featCall Population populateBySpawning Moth [[
   featCall Movement jitterPos -2 2
 
   // also in rounds after the first, adjust the color based on the treeColorChange value
-  ifExpr {{ true }} [[
-    // CHANGE true to {{ ROUND.getProp('roundCounter').value > 1 }}
+  ifExpr {{ global.getProp('roundCounter').value > 1 }} [[
 
-    // CHANGE to be based on mothColorChangeRange (remove the line with -1 as that was intended to just make this work)
-    // was: prop colorIndx addRndInt -1 1
-    // and want to make the 1 a variable instead
-    // work-around to the fact that I cannot actually get a random number directly, so I have a randomNumber holding property, and set the colorIndx to that - range / 2 + range * rnd so that we get a range
-    // prop ROUND.randomHack setToRnd
-    // exprPush {{ agent.getProp('colorIndx').value + ( agent.getProp('colorIndx').value * agent.getProp('mothColorChangeRange').value * 2  ) - agent.getProp('mothColorChangeRange').value / 2}}
+    // this is an absurd hack beause we can't yet parametrize this, but the scripting UI will, so ... 
+    ifExpr {{ global.getProp('mothColorChangeRange').value == 1 }} [[
+      prop colorIndx addRndInt -1 1
+    ]] 
+    
+    ifExpr {{ global.getProp('mothColorChangeRange').value == 2 }} [[
+      prop colorIndx addRndInt -2 2
+    ]] 
 
-    exprPush {{ agent.getProp('colorIndx').value - 1 }}
-    propPop colorIndx
+    ifExpr {{ global.getProp('mothColorChangeRange').value == 3 }} [[
+      prop colorIndx addRndInt -3 3
+    ]] 
+
+
+    ifExpr {{ global.getProp('mothColorChangeRange').value == 4 }} [[
+      prop colorIndx addRndInt -4 4
+    ]] 
+
+    ifExpr {{ global.getProp('mothColorChangeRange').value >= 5 }} [[
+      prop colorIndx addRndInt -5 5
+    ]] 
+
     propPush colorIndx
     featPropPop Costume colorScaleIndex
     propPush colorIndx
