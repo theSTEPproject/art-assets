@@ -74,8 +74,6 @@ featCall Population agentsForEach TreeTrunk [[
   ]]
 ]]
 
-
-
 featCall Population agentsForEach TreeRoots [[
   prop agent.isInert setTo false
   featProp Physics scale setTo 0.35
