@@ -7,8 +7,8 @@
     "bottom": 400,
     "left": -400,
     "wrap": [
-      "false",
-      "false"
+      false,
+      false
     ],
     "bounce": true,
     "bgcolor": 4474094,
@@ -18,7 +18,7 @@
     {
       "id": "r1",
       "label": "Watch out for the predators!",
-      "time": 10,
+      "time": 90,
       "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
       "initScript": `\n
 // this is to track our rounds and other local variables
@@ -406,7 +406,7 @@ useFeature Timer
 
 every 1 [[
   prop tickCounter add 1
-  ifExpr {{ agent.getProp('tickCounter').value > 88 }} [[
+  ifExpr {{ agent.getProp('tickCounter').value > 0 }} [[
     //dbgOut{{ 'setting the movemnt info' }}
     featProp Movement distance setTo 4
     featCall Movement seekNearestVisibleCone Moth

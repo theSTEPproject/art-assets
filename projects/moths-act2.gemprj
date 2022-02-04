@@ -7,8 +7,8 @@
     "bottom": 400,
     "left": -400,
     "wrap": [
-      "false",
-      "false"
+      false,
+      false
     ],
     "bounce": true,
     "bgcolor": 4474094,
