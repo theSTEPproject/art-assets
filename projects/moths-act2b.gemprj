@@ -109,7 +109,7 @@ featCall Population agentsForEach Grass [[
 
 // remove all the dead stuff and creaate the new moths
 featCall Population removeInertAgents
-featProp Population targetPopulationSize setTo 21
+featProp Population targetPopulationSize setTo 9
 featCall Population populateBySpawning Moth [[
   prop y setTo 280
   prop x setTo 0
@@ -243,7 +243,7 @@ prop colorIndx setMin 1
 
 // Fully visible
 prop alpha setTo 1
-prop alpha setMin 1
+prop alpha setMin 0.1
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
@@ -338,8 +338,8 @@ when Moth centerTouches TreeTrunk [[
 //eaten moths become postit-markers
 ifExpr {{ agent.getProp('isInert').value }} [[
   featCall Costume setPose 0
-  prop alpha setMin 0.1
-  prop alpha setTo 0.1
+  //prop alpha setMin 0.1
+  //prop alpha setTo 0.1
   prop orientation setTo 3.14
   featProp AgentWidgets text setTo ''
 ]]
@@ -431,18 +431,10 @@ when Predator centerTouchesCenter Moth [[
     every 0.12 [[
 
       featCall Moth.Costume setCostume 'smallsquare.json' 0
-      prop Moth.alpha setMin 0.1
-      prop Moth.alpha setTo 0.1
+      prop Moth.alpha setTo 0.5
       prop Moth.orientation setTo 3.14
       featProp Moth.AgentWidgets text setTo ''
       prop Moth.isInert setTo true
-
-      // Stop sim if half of the moths are eaten
-      ifExpr {{ Moth.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') < 11 }} [[
-        featCall Predator.Timer stopRound
-        // This will be added to the end of round message
-        featCall Moth.AgentWidgets showMessage 'Predators have eaten over half of the Moth population!'
-      ]]
     ]]
   ]]
 ]]
