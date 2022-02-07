@@ -19,7 +19,7 @@
       "id": "r1",
       "label": "Watch out for the predators!",
       "time": 90,
-      "intro": "You have 90 seconds to hide your moths.  Then the birds will come....",
+      "intro": "Watch out for the predators!",
       "initScript": `\n
 // this is to track our rounds and other local variables
 // only add the properties when they are undefined
@@ -650,151 +650,82 @@ when Predator centerTouchesCenter Moth [[
     },
     {
       "id": "1203",
-      "label": "Moth3a",
+      "label": "Moth1",
       "bpid": "Moth",
       "initScript": `
       featCall Movement queuePosition -340 320
 
-`
-    },
-    {
-      "id": "12031",
-      "label": "Moth3b",
-      "bpid": "Moth",
-      "initScript": `
-      featCall Movement queuePosition -40 320
 
-`
-    },
-    {
-      "id": "12032",
-      "label": "Moth3c",
-      "bpid": "Moth",
-      "initScript": `
-      featCall Movement queuePosition 320 320
-
-`
+prop x setTo -357.12
+prop y setTo 234.20`
     },
     {
       "id": "1204",
-      "label": "Moth4a",
+      "label": "Moth7",
       "bpid": "Moth",
       "initScript": `
       featCall Movement queuePosition 125 250
 
-`
-    },
-    {
-      "id": "1205",
-      "label": "Moth5a",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition -180 320
-`
-    },
-    {
-      "id": "1206",
-      "label": "Moth6a",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition -300 280
-`
+
+prop x setTo 138.92
+prop y setTo 243.48`
     },
     {
       "id": "1207",
-      "label": "Moth7a",
+      "label": "Moth8",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition 200 260
-`
+
+prop x setTo 219.18
+prop y setTo 247.99`
     },
     {
       "id": "1208",
-      "label": "Moth8a",
+      "label": "Moth4",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition -140 280
-`
+
+prop x setTo -112.53
+prop y setTo 242.75`
     },
     {
       "id": "1209",
-      "label": "Moth9a",
+      "label": "Moth2",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition -260 240
-`
+
+prop x setTo -275.76
+prop y setTo 242.83`
     },
     {
       "id": "12041",
-      "label": "Moth4b",
+      "label": "Moth3",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition -210 240
 `
     },
     {
       "id": "12051",
-      "label": "Moth5b",
+      "label": "Moth5",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition -10 240
 `
     },
     {
       "id": "12061",
-      "label": "Moth6b",
+      "label": "Moth6",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition 60 240
 `
     },
     {
-      "id": "12071",
-      "label": "Moth7b",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition -60 240
-`
-    },
-    {
       "id": "12081",
-      "label": "Moth8b",
+      "label": "Moth9",
       "bpid": "Moth",
       "initScript": `featCall Movement queuePosition 290 240
-`
-    },
-    {
-      "id": "12091",
-      "label": "Moth9b",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition 0 320
-`
-    },
-    {
-      "id": "12042",
-      "label": "Moth4c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition 40 320
-`
-    },
-    {
-      "id": "12052",
-      "label": "Moth5c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition -90 320
-`
-    },
-    {
-      "id": "12062",
-      "label": "Moth6c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition 90 320
-`
-    },
-    {
-      "id": "12072",
-      "label": "Moth7c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition 160 320
-`
-    },
-    {
-      "id": "12082",
-      "label": "Moth8c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition -240 320
-`
+
+prop x setTo 315.32
+prop y setTo 243.67`
     },
     {
       "id": "1301",
@@ -817,13 +748,6 @@ when Predator centerTouchesCenter Moth [[
       prop inity setTo -300
       prop frame setTo 1
       `
-    },
-    {
-      "id": "12092",
-      "label": "Moth9c",
-      "bpid": "Moth",
-      "initScript": `featCall Movement queuePosition 240 320
-  `
     }
   ]
 }
