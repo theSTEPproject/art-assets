@@ -273,7 +273,6 @@ prop costumenum setTo 0
 addProp vulnerable Number 1
 prop vulnerable setMin 0
 prop vulnerable setMax 1
-prop vulnerable setTo 1
 
 // allow access to global darkMoths/lightMoths values
 useFeature Global
@@ -309,6 +308,13 @@ prop Moth.energyLevel setTo 21
 prop vulnerable setTo 1
 ]]
 
+// if the moth pops off the tree, set it back to visible, etc.
+when Moth centerLastTouches TreeTrunk [[
+    prop alpha setMin 1
+    prop alpha add 1
+    featProp Vision visionable setTo true
+    prop vulnerable setTo 1
+]]
 
 
 when Moth centerTouches TreeTrunk [[
