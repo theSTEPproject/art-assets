@@ -1,6 +1,7 @@
 {
   "id": "aquatic",
   "label": "Aquatic Ecosystems",
+  "description":"Added all of the graphs in, before other major changes",
   "metadata": {
     "top": -400,
     "right": 400,
