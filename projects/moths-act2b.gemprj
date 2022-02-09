@@ -307,7 +307,9 @@ onEvent Start [[
 
 
 when Moth centerFirstTouches TreeTrunk [[
-ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+// ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+
+ifExpr {{ TreeTrunk.getProp('colorIndx').value >= (Moth.getProp('colorIndx').value - 1) && TreeTrunk.getProp('colorIndx').value <= (Moth.getProp('colorIndx').value + 1) }} [[
   dbgOut {{ Moth.name + ' will be hidden ' }}
   dbgOut {{  ( Moth.prop.color.value )  }}
 ]] [[
@@ -333,7 +335,9 @@ when Moth centerTouches TreeTrunk [[
     prop Moth.costumenum setTo 2
   ]]
 
-  ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+//   ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
+
+ifExpr {{ TreeTrunk.getProp('colorIndx').value >= (Moth.getProp('colorIndx').value - 1) && TreeTrunk.getProp('colorIndx').value <= (Moth.getProp('colorIndx').value + 1) }} [[
     prop alpha setMin 0.1
     prop alpha sub 0.1
     featProp Vision visionable setTo false
