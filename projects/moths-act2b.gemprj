@@ -38,7 +38,7 @@ prop roundCounter add 1
 // *******************************
 // STUDENTS_MAY_CHANGE 
 prop treeColorChange setTo 1
-prop mothColorChangeRange setTo 1
+prop mothColorChangeRange setTo 2
 // *******************************
 
 // return the predators to a starting position
@@ -243,6 +243,10 @@ featProp Costume colorScaleIndex setTo 11
 addProp colorIndx Number 11
 prop colorIndx setMax 11
 prop colorIndx setMin 1
+
+// give us some range
+prop colorIndx addRndInt -4 0
+
 
 // Fully visible
 prop alpha setTo 1
