@@ -75,6 +75,9 @@ featCall Population agentsForEach TreeTrunk [[
     propPush colorIndx
     featPropPop Costume colorScaleIndex
   ]]
+
+    propPush colorIndx
+    featPropPop AgentWidgets text
 ]]
 
 featCall Population agentsForEach TreeRoots [[
@@ -462,6 +465,8 @@ when Predator centerTouchesCenter Moth [[
           useFeature Costume
           featCall Costume setCostume 'trunk.json' 0
 
+          useFeature AgentWidgets
+
           // COLOR
           featProp Costume colorScaleHue setTo 0
           featProp Costume colorScaleSaturation setTo 0
@@ -474,6 +479,9 @@ when Predator centerTouchesCenter Moth [[
           addProp colorIndx Number 11
           prop colorIndx setMax 11
           prop colorIndx setMin 1
+
+          propPush colorIndx
+          featPropPop AgentWidgets text
 
           useFeature Physics
           useFeature Population
