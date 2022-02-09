@@ -21,6 +21,9 @@
       "time": 90,
       "intro": "Watch out for the predators!",
       "initScript": `\n
+ 
+      featCall Population releaseAllAgents
+
 // this is to track our rounds and other local variables
 // only add the properties when they are undefined
 ifExpr {{ agent.getProp('roundCounter') == undefined }} [[
