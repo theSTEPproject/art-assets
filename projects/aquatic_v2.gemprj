@@ -442,8 +442,8 @@ every 1 runAtStart [[
   propPop agent.energyLevel
   
   ifExpr {{ agent.getProp('energyLevel').value == 0}} [[
-  \tprop agent.isInert setTo true 
-  \tprop agent.alpha setTo 0.3
+  prop agent.isInert setTo true 
+  prop agent.alpha setTo 0.3
   ]]
 ]]
   
@@ -459,7 +459,7 @@ when Turtle touches Fish [[
     // Turtle gains some energy
     prop Turtle.energyLevel add 20
 
-\t// Fish is dead 
+    // Fish is dead 
     prop Fish.isInert setTo true
     prop Fish.alpha setTo 0.3
     featCall Fish.Costume setPose 2

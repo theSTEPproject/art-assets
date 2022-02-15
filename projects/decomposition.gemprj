@@ -193,7 +193,6 @@ featProp AgentWidgets meterColor setTo 65280
 
 # PROGRAM UPDATE
 
-
 when Worm touches Waste [[
   every 1 runAtStart [[
 
