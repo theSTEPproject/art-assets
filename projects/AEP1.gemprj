@@ -251,6 +251,7 @@ when Energy firstTouches Algae [[
 when Energy firstTouches Fish [[
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
    ifExpr {{Energy.getProp('eType').value == 'producer'}} [[ 
+  prop eType setTo 'consumer'   
   prop energyLevel setTo 10
   prop Fish.energyLevel add 10
   featProp AgentWidgets meterColor setTo 5475327
