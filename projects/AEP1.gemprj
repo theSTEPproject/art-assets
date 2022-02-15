@@ -259,6 +259,24 @@ when Energy firstTouches Fish [[
 ]]
 
 `
+    },
+    {
+      "id": "Timer",
+      "label": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+      # PROGRAM DEFINE
+      useFeature AgentWidgets
+      prop skin setTo 'onexone.json'
+      addProp time Number 0
+
+      featProp AgentWidgets text setTo 'Time: 0'
+
+      # PROGRAM EVENT
+      onEvent Tick [[
+        prop time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop AgentWidgets text
+      ]]`
     }
   ],
   "instances": [
@@ -296,6 +314,13 @@ prop y setTo -41`
       "bpid": "Fish",
       "initScript": `prop x setTo 16.35
 prop y setTo 55.83`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 335.53
+prop y setTo -390.22`
     }
   ]
 }
