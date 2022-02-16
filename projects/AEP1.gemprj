@@ -27,7 +27,7 @@
 useFeature Costume
 featCall Costume setCostume 'circle.json' 0
 featCall Costume setColorize 1 1 0
-prop zIndex setTo 100
+prop zIndex setTo 0
 
 useFeature Physics
 featProp Physics scale setTo 0.6
