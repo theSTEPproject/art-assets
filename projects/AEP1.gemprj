@@ -26,12 +26,11 @@
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'circle.json' 0
-featCall Costume setScale 0.5
 featCall Costume setColorize 1 1 0
-prop agent.alpha setTo 0.7
 prop zIndex setTo 100
 
 useFeature Physics
+featProp Physics scale setTo 0.6
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
 addProp eType String 'source'
@@ -184,7 +183,14 @@ featProp AgentWidgets meterColor setTo 65280
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'square.json' 0
-featCall Costume setScale 1
+featCall Costume setColorize 53 81 92
+
+useFeature Physics
+featCall Physics setSize 800 200
+
+prop zIndex setTo -100
+
+
 `
     },
     {
@@ -268,6 +274,7 @@ when Energy firstTouches Fish [[
       useFeature AgentWidgets
       prop skin setTo 'onexone.json'
       addProp time Number 0
+      prop zIndex setTo 500
 
       featProp AgentWidgets text setTo 'Time: 0'
 
@@ -284,8 +291,8 @@ when Energy firstTouches Fish [[
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo -317.92
-prop y setTo -327.23`
+      "initScript": `prop x setTo -315.15
+prop y setTo -313.18`
     },
     {
       "id": "1",
@@ -319,8 +326,15 @@ prop y setTo 55.83`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 335.53
-prop y setTo -390.22`
+      "initScript": `prop x setTo 354.35
+prop y setTo -394.62`
+    },
+    {
+      "id": "6",
+      "label": "Sky6",
+      "bpid": "Sky",
+      "initScript": `prop x setTo 0
+prop y setTo -300`
     }
   ]
 }
