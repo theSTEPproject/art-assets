@@ -242,6 +242,9 @@ when Energy firstTouches Sun [[
   prop eType setTo 'source'
   prop energyLevel setTo 100
   featProp AgentWidgets meterColor setTo 16776960
+  
+  featCall Costume setColorize 255 255 0
+
 
 ]]
 
@@ -254,6 +257,9 @@ when Energy firstTouches Algae [[
   prop energyLevel setTo 50
   prop Algae.energyLevel add 50
   featProp AgentWidgets meterColor setTo 65280
+
+  featCall Costume setColorize 0 255 0
+
   ]]
 ]]
 
@@ -266,6 +272,9 @@ when Energy firstTouches Fish [[
   prop energyLevel setTo 10
   prop Fish.energyLevel add 10
   featProp AgentWidgets meterColor setTo 5475327
+
+  featCall Costume setColorize 83 139 255
+
    ]]
 ]]
 
