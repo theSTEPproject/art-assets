@@ -26,7 +26,7 @@
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorize 1 1 0
+featCall Costume setColorize 255 215 0
 prop zIndex setTo 0
 
 useFeature Physics
@@ -259,6 +259,8 @@ when Energy firstTouches Algae [[
   featProp AgentWidgets meterColor setTo 65280
 
   featCall Costume setColorize 0 255 0
+  
+  featCall Algae.Costume setGlow 1
 
   ]]
 ]]
@@ -274,6 +276,9 @@ when Energy firstTouches Fish [[
   featProp AgentWidgets meterColor setTo 5475327
 
   featCall Costume setColorize 83 139 255
+
+  featCall Fish.Costume setGlow 1
+
 
    ]]
 ]]
