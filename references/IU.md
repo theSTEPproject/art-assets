@@ -1,7 +1,7 @@
 # Running GEM-STEP
 
 ## After a major change / download
-Anytime we get new code from Inquirium, it's not a bad idea to do this. 
+**NOTE**: This refers to updates from  the gem-step repo in gitlab / sourcetree. These aare usually due  to a change / new feature implemented  by Inquirium, and we'll let you know if this is needed. Though note  that it never hurts to do this, so feel free if you are unsure.
 
 `npm ci`
 
@@ -22,10 +22,12 @@ To change the MQTT server and / or local assets location simply edit:
 `gem-step/gs-packages/gem-srv/config/local-settings.json`
 
 # Art assets
-- Merge request with basics: [159](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/159) 
-- Merge request for adding art: [177](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/177)
+**NOTE**: The art assets, which are divided into references (documents like this), projects, and sprites are all stored in the art-assets repo. I've setup the lab mac to place this inside of gem-step, otherwise you'd have to downoad then copy by hand.
 
 To change or check the location of the art assets, see local-settings (above).
+
+- Merge request with basics: [159](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/159) 
+- Merge request for adding art: [177](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/177)
 
 ### For basic images
 - Any art can simply be added to the `gem-step/gs_assets/art-assets/sprites` folder.
@@ -39,7 +41,7 @@ To change or check the location of the art assets, see local-settings (above).
 - Save them in `gem-step/gs_assets/art-assets/sprites`.
 - Instead of using `setCostume`, call `setAnimatedCostume`.  e.g.
 
-### Using the iPad (notes from Corey, removing some aspects that are no-longer needed)
+### Using the iPad
 
 I found a free iPad app, Sketchbook, which supports layers, transparency, and resizing canvas.  The steps for a kid to make a character --- sketching a few frames of an animation (using layers as a guide) and then export and use airdrop to send to a computer with TexturePacker --- are manageable. 
  
