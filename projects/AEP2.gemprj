@@ -1,0 +1,369 @@
+{
+  "id": "AEP2",
+  "label": "Aquatic Energy Play 2",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Sun",
+      "label": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'circle.json' 0
+featCall Costume setColorize 255 215 0
+prop zIndex setTo 0
+
+useFeature Physics
+featProp Physics scale setTo 0.6
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'source'
+
+// TO DO
+// create energy ball that has an originator id and displayedEnergy count to help identify it
+// displayedEnergy shadow variable for displayed energy
+// prop sizeOfEnergy (so that we know the size)
+// each of the producer / consumer / source entities needs a energySize variable for how big it's energy balls are 
+// on UPDATE
+  // if dispayedEnergy is < energy 
+    // loop through difference
+    // create new energy balls 
+    // position to right of character
+    // place based on character Y, adding displayedEnergy
+    // assign it the id of this consumer as an id
+    // assign it the displayedEnergy so that we can find it
+    // set the size
+    // set the color
+    // increment displayedEnergy
+// if displayedEnergy is > energy
+  // loop through population
+  // if displayedEnergy < energyID and originatorID are equal to this, destroy (remove / hide the ball)
+
+// what size should energyBalls be scaled to?
+addProp energyBallSize Number 0.3
+
+
+`
+    },
+    {
+      "id": "Fish",
+      "label": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'fish.json' 0
+
+useFeature Physics
+featProp Physics scale setTo 1.5
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'consumer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 5
+prop energyLevel setMax 10
+prop energyLevel setMin 0
+
+// this shadow variable will help us know what is displayed and adapt it as needed
+addProp displayEnergyLevel Number 0
+prop displayEnergyLevel setMax 10
+prop displayEnergyLevel setMin 0
+
+// what size should energyBalls be scaled to?
+addProp energyBallSize Number 0.1
+
+// STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
+addProp energyUse Number 1
+
+# PROGRAM UPDATE
+  every 1 runAtStart [[
+  // foodLevel goes down every n seconds
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  propPop agent.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // sated
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    featCall Costume setPose 0
+  ]]
+  // could eat
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    featCall Costume setPose 1
+  ]]
+  // hungry
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    featCall Costume setPose 1
+  ]]
+  // dead
+  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+    featCall Costume setPose 2
+    // featCall Movement setMovementType 'float'
+    prop agent.isInert setTo true
+
+  ]]
+
+]]
+
+`
+    },
+    {
+      "id": "Algae",
+      "label": "Algae",
+      "scriptText": `# BLUEPRINT Algae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'algae.json' 0
+
+useFeature Physics
+featProp Physics scale setTo 3
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'producer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 5
+prop energyLevel setMax 10
+prop energyLevel setMin 0
+
+// this shadow variable will help us know what is displayed and adapt it as needed
+addProp displayEnergyLevel Number 0
+prop displayEnergyLevel setMax 10
+prop displayEnergyLevel setMin 0
+
+// what size should energyBalls be scaled to?
+addProp energyBallSize Number 0.2
+
+// STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+// useFeature AgentWidgets
+// featProp AgentWidgets meterProp setTo energyLevel
+// Green = 0x00FF00
+// featProp AgentWidgets meterColor setTo 65280
+
+# PROGRAM UPDATE
+  every 1 runAtStart [[
+
+    // decrease energy each tick, using the energyUse varable to determine how much
+    ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+    propPop agent.energyLevel
+    ]]
+
+    // re-scale the algae based on its energy level
+    exprPush {{ (agent.getProp('energyLevel').value / 10)* 3}}
+    featPropPop agent.Physics scale
+
+  ]]
+
+`
+    },
+    {
+      "id": "Sky",
+      "label": "Sky",
+      "scriptText": `# BLUEPRINT Sky
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'square.json' 0
+featCall Costume setColorize 53 81 92
+
+useFeature Physics
+featCall Physics setSize 800 200
+
+prop zIndex setTo -100
+
+
+`
+    },
+    {
+      "id": "EnergyBall",
+      "label": "EnergyBall",
+      "scriptText": `# BLUEPRINT EnergyBall
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+`
+    },
+    {
+      "id": "EnergyCarrier",
+      "label": "EnergyCarrier",
+      "scriptText": `# BLUEPRINT EnergyCarrier
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+useFeature Costume
+featCall Costume setCostume 'square.json' 0
+
+useFeature Physics
+
+// sset the size 
+featProp Physics scale setTo 0.1
+
+// setup energy properties
+addProp energyLevel Number 0
+prop energyLevel setMax 10
+prop energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp eType String 'none'
+
+// set it up so we know when the energyCarrier touches the sun or algae or fish
+useFeature Touches
+featCall Touches monitor Sun b2b
+featCall Touches monitor Algae b2b
+featCall Touches monitor Fish b2b
+
+# PROGRAM UPDATE
+when EnergyCarrier firstTouches Sun [[
+  dbgOut 'touching sun'
+  // when touch Sun, get energy, change meter color to yellow, reset type to source
+  // currently, use sun to re-set so always add so we don't need an expression
+  // also the sun doesn't go down, so no worries there either
+  prop eType setTo 'source'
+  // carrying lots of energy
+  prop energyLevel setTo 10
+  // set to yellow so we know that's what is being carried  
+  featCall Costume setColorize 255 255 0
+
+]]
+
+when EnergyCarrier firstTouches Algae [[
+  // when touch Fish and type producer and energy isn't 0, lose energy, change meter color to green, change type to none
+  ifExpr {{EnergyCarrier.getProp('eType').value == 'source'}} [[ 
+  prop eType setTo 'producer'
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+  prop energyLevel setTo 5
+  prop Algae.energyLevel add 5
+  // featProp AgentWidgets meterColor setTo 65280
+
+  featCall Costume setColorize 0 255 0
+  
+  featCall Algae.Costume setGlow 1
+
+  ]]
+]]
+
+when EnergyCarrier firstTouches Fish [[
+  // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
+   ifExpr {{EnergyCarrier.getProp('eType').value == 'producer'}} [[ 
+  prop eType setTo 'consumer'   
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+  prop energyLevel setTo 1
+  prop Fish.energyLevel add 1
+  // featProp AgentWidgets meterColor setTo 5475327
+
+  featCall Costume setColorize 83 139 255
+
+  featCall Fish.Costume setGlow 1
+
+
+   ]]
+]]
+
+`
+    },
+    {
+      "id": "Timer",
+      "label": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+      # PROGRAM DEFINE
+      useFeature AgentWidgets
+      prop skin setTo 'onexone.json'
+      addProp time Number 0
+      prop zIndex setTo 500
+
+      featProp AgentWidgets text setTo 'Time: 0'
+
+      # PROGRAM EVENT
+      onEvent Tick [[
+        prop time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop AgentWidgets text
+      ]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Sun",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -315.15
+prop y setTo -313.18`
+    },
+    {
+      "id": "1",
+      "label": "Fish1",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -264.69
+prop y setTo 103.39`
+    },
+    {
+      "id": "2",
+      "label": "Algae1",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -173.44
+prop y setTo -113.23`
+    },
+    {
+      "id": "3",
+      "label": "Algae2",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 24.83
+prop y setTo -95.11`
+    },
+    {
+      "id": "4",
+      "label": "Fish2",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 16.35
+prop y setTo 55.83`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 354.35
+prop y setTo -394.62`
+    },
+    {
+      "id": "6",
+      "label": "Sky6",
+      "bpid": "Sky",
+      "initScript": `prop x setTo 0
+prop y setTo -300`
+    }
+  ]
+}
