@@ -17,12 +17,33 @@
   "rounds": [],
   "blueprints": [
     {
+      "id": "EnergyBall",
+      "label": "EnergyBall",
+      "scriptText": `# BLUEPRINT EnergyBall
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'circle.json' 0
+
+useFeature Physics
+
+addProp creatorID String 'undefined'
+addProp myID String 'undefined'
+
+// sset the size 
+featProp Physics scale setTo 0.01
+`
+    },
+    {
       "id": "Sun",
       "label": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'circle.json' 0
@@ -33,31 +54,108 @@ useFeature Physics
 featProp Physics scale setTo 0.6
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
+// INQ: I'd like to possibly make a base class that has these types, but for now they help us 
+// to both branch below, and to highlight what kind of entity this is for kids
 addProp eType String 'source'
 
-// TO DO
-// create energy ball that has an originator id and displayedEnergy count to help identify it
-// displayedEnergy shadow variable for displayed energy
-// prop sizeOfEnergy (so that we know the size)
-// each of the producer / consumer / source entities needs a energySize variable for how big it's energy balls are 
-// on UPDATE
-  // if dispayedEnergy is < energy 
-    // loop through difference
-    // create new energy balls 
-    // position to right of character
-    // place based on character Y, adding displayedEnergy
-    // assign it the id of this consumer as an id
-    // assign it the displayedEnergy so that we can find it
-    // set the size
-    // set the color
-    // increment displayedEnergy
-// if displayedEnergy is > energy
-  // loop through population
-  // if displayedEnergy < energyID and originatorID are equal to this, destroy (remove / hide the ball)
+// used for identifying the energy balls associated with this character
+addProp myCreatorId String 'undefined'
 
-// what size should energyBalls be scaled to?
-addProp energyBallSize Number 0.3
+useFeature Global
 
+// setup global variables to pass in the info needed for the energy ball placement
+// this feels a bit unintuitive but should work for now
+// INQ: how would you do this?
+
+  // INQ: Because of  the potential timing issues, I prefer to check if the variables exist and then create them ... 
+  // in other models that was necessary (e.g., looping a round) but here it might be overkill? 
+
+  // create a global counter if it doesn't exist
+  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyBallIncrement') == undefined }} [[
+    // a global count of things using energyBalls since I didn't see an easy way to get IDs to later find the balls
+    featCall Global addGlobalProp energyBallOwnerCount Number 0
+
+    // energyBallIncrement will let us basically loop through as we set id's in the energy ball so they are easier to find later 
+    featCall Global addGlobalProp energyBallIncrement Number 0
+
+    // location for bottom ball, with x remaining the same and y getting incremented
+    featCall Global addGlobalProp energyBallX Number 0
+    featCall Global addGlobalProp energyBallY Number 0
+
+    // size of energy balls
+    featCall Global addGlobalProp energyBallSize Number 0
+
+    // space between balls, based on size
+    featCall Global addGlobalProp energyBallSpacing Number 0
+
+    // color - for now, hard-code in each Costume, but it could go here
+    // INQ - I wasn't sure if this would carry as a number so I just didn't bother
+
+
+  ]]
+
+// INQ: I was gonna set this here so it is part of this, but it seems easier to just set it to the global for passing in (below)
+// addProp energyBallSize Number 0.3
+
+useFeature Population
+
+# PROGRAM INIT
+
+// INQ: I want to basically create 10 of these, next to the sun, and at different heights
+// I struggled to figure out how to pass in the positions and ids and ultiamately went with globals
+
+// setup the global variables that will let us do the population spawning - see the sun or where they are first created
+featCall Global globalProp energyBallIncrement setTo 0
+featCall Global globalProp energyBallX setTo -360
+featCall Global globalProp energyBallY setTo -245
+featCall Global globalProp energyBallSpacing setTo -15
+featCall Global globalProp energyBallSize setTo 0.05
+
+// increment the creator ID and then keep track of which creator this is for finding the energy balls later
+featCall Global globalProp energyBallOwnerCount add 1
+// INQ is there a better way to reference this?
+exprPush {{ global.getProp('energyBallOwnerCount').value }}
+propPop myCreatorId
+
+// spawn 10 ernergyballs next to the sun
+featProp Population targetPopulationSize setTo 10
+featProp Population deleteAfterSpawning setTo false
+featCall Population populateBySpawning EnergyBall [[
+//  <initScript>
+
+  // place ball based on X and Y passed in
+  propPush global.energyBallX
+  propPop x
+
+  propPush global.energyBallY
+  propPop y
+
+  propPush global.energyBallSize
+  featPropPop Physics scale
+
+  featCall Costume setColorize 255 215 0
+
+  exprPush {{global.getProp('energyBallY').value + global.getProp('energyBallSpacing').value}}
+  propPop global.energyBallY
+
+  // tell each ball who owns it (set locally above) [TODO]
+  propPush global.energyBallOwnerCount
+  propPop agent.creatorID
+
+  propPush global.energyBallIncrement
+  propPop agent.myID
+  
+  // Increase the energyBallCount for those associated with this specific creator
+  // INQ I was unsure at first how to access the global here - it was a bit confusing
+  exprPush {{global.getProp('energyBallIncrement').value + 1}}
+  propPop global.energyBallIncrement
+
+]]
+
+# PROGRAM UPDATE
+// every second - for any other character related to the energy cycle, but the sun has effectively infinite energy so ignore
+// update the current energy level
+// update the visibility of the balls based on  the current energy
 
 `
     },
@@ -94,6 +192,81 @@ addProp energyBallSize Number 0.1
 // STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
 addProp energyUse Number 1
 
+// used for identifying the energy balls associated with this character
+addProp myCreatorId String 'undefined'
+
+useFeature Global
+
+useFeature Population
+
+# PROGRAM INIT
+
+// INQ: This is a copy and paste from the sun with new numbers. Ideally we'll eventually have some way of using 
+// features or inheritance to minimize that kind of redundancy. If you see better ways here, please let me know.
+// Of course, this is more complex then a kid might even try for, but it'd still be nice to streamline for us if we can
+
+// setup the global variables that will let us do the population spawning - see the sun or where they are first created
+
+// TODO: Use pop and push to set these to reflect this specific current agent
+// ONCE THAT IS WORKING, do an onUPDATE to update which are visible
+
+featCall Global globalProp energyBallIncrement setTo 0
+
+// TODO: NEED TO FIX THIS 
+// BEN: this is where I Was trying to set global properties and can't make it work ... 
+// set the x and y based on this current character instance 
+//exprPush {{agent.getProp('x').value - 30}} 
+//propPop global.energyBallX
+
+//exprPush {{agent.getProp('y').value + 30}} 
+//propPop global.energyBallY
+
+// comment out so we can use the prior settings for now?
+// featCall Global globalProp energyBallSpacing setTo -10
+// featCall Global globalProp energyBallSize setTo 0.03
+
+// increment the creator ID and then keep track of which creator this is for finding the energy balls later
+featCall Global globalProp energyBallOwnerCount add 1
+// INQ is there a better way to reference this?
+
+exprPush {{ global.getProp('energyBallOwnerCount').value }}
+propPop myCreatorId
+
+// spawn 10 ernergyballs next to the sun
+featProp Population targetPopulationSize setTo 5
+featProp Population deleteAfterSpawning setTo false
+featCall Population populateBySpawning EnergyBall [[
+//  <initScript>
+
+  // place ball based on X and Y passed in
+  propPush global.energyBallX
+  propPop x
+
+  propPush global.energyBallY
+  propPop y
+
+  propPush global.energyBallSize
+  featPropPop Physics scale
+
+  featCall Costume setColorize 0 215 0
+
+  exprPush {{global.getProp('energyBallY').value + global.getProp('energyBallSpacing').value}}
+  propPop global.energyBallY
+
+  // tell each ball who owns it (set locally above) [TODO]
+  propPush global.energyBallOwnerCount
+  propPop agent.creatorID
+
+  propPush global.energyBallIncrement
+  propPop agent.myID
+  
+  // Increase the energyBallCount for those associated with this specific creator
+  // INQ I was unsure at first how to access the global here - it was a bit confusing
+  exprPush {{global.getProp('energyBallIncrement').value + 1}}
+  propPop global.energyBallIncrement
+
+]]
+
 # PROGRAM UPDATE
   every 1 runAtStart [[
   // foodLevel goes down every n seconds
@@ -122,6 +295,7 @@ addProp energyUse Number 1
   ]]
 
 ]]
+
 
 `
     },
@@ -158,11 +332,11 @@ addProp energyBallSize Number 0.2
 // STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
 addProp energyUse Number 1
 
-// use a widget to depict the current energy, and color it green (maybe change later)
-// useFeature AgentWidgets
-// featProp AgentWidgets meterProp setTo energyLevel
-// Green = 0x00FF00
-// featProp AgentWidgets meterColor setTo 65280
+// used for identifying the energy balls associated with this character
+addProp myCreatorId String 'undefined'
+
+useFeature Global
+
 
 # PROGRAM UPDATE
   every 1 runAtStart [[
@@ -198,17 +372,6 @@ featCall Physics setSize 800 200
 
 prop zIndex setTo -100
 
-
-`
-    },
-    {
-      "id": "EnergyBall",
-      "label": "EnergyBall",
-      "scriptText": `# BLUEPRINT EnergyBall
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-# PROGRAM DEFINE
 
 `
     },
@@ -260,6 +423,9 @@ when EnergyCarrier firstTouches Sun [[
 
 when EnergyCarrier firstTouches Algae [[
   // when touch Fish and type producer and energy isn't 0, lose energy, change meter color to green, change type to none
+
+  // do different things if source or empty
+
   ifExpr {{EnergyCarrier.getProp('eType').value == 'source'}} [[ 
   prop eType setTo 'producer'
 
@@ -277,7 +443,10 @@ when EnergyCarrier firstTouches Algae [[
 
 when EnergyCarrier firstTouches Fish [[
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-   ifExpr {{EnergyCarrier.getProp('eType').value == 'producer'}} [[ 
+
+  // do different things if source or empty
+
+  ifExpr {{EnergyCarrier.getProp('eType').value == 'producer'}} [[ 
   prop eType setTo 'consumer'   
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
@@ -317,11 +486,20 @@ when EnergyCarrier firstTouches Fish [[
   ],
   "instances": [
     {
+      "id": "7",
+      "label": "EB to Copy",
+      "bpid": "EnergyBall",
+      "initScript": `prop x setTo -400
+      prop y setTo -400
+      // INQ: Do we HAVE TO have a add this here just to populate?  
+`
+    },
+    {
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo -315.15
-prop y setTo -313.18`
+      "initScript": `prop x setTo -271.64
+prop y setTo -312.66`
     },
     {
       "id": "1",
@@ -360,7 +538,7 @@ prop y setTo -394.62`
     },
     {
       "id": "6",
-      "label": "Sky6",
+      "label": "Sky",
       "bpid": "Sky",
       "initScript": `prop x setTo 0
 prop y setTo -300`
