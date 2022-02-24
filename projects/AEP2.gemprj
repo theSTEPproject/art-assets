@@ -215,11 +215,11 @@ featCall Global globalProp energyBallIncrement setTo 0
 // TODO: NEED TO FIX THIS 
 // BEN: this is where I Was trying to set global properties and can't make it work ... 
 // set the x and y based on this current character instance 
-//exprPush {{agent.getProp('x').value - 30}} 
-//propPop global.energyBallX
+exprPush {{agent.getProp('x').value - 30}} 
+featPropPop Global energyballX
 
-//exprPush {{agent.getProp('y').value + 30}} 
-//propPop global.energyBallY
+exprPush {{agent.getProp('y').value + 30}} 
+featPropPop Global energyBallY
 
 // comment out so we can use the prior settings for now?
 // featCall Global globalProp energyBallSpacing setTo -10
