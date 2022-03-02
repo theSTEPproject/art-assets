@@ -113,6 +113,7 @@ featCall Global globalProp energyBallSize setTo 0.05
 
 // increment the creator ID and then keep track of which creator this is for finding the energy balls later
 featCall Global globalProp energyBallOwnerCount add 1
+
 // INQ is there a better way to reference this?
 exprPush {{ global.getProp('energyBallOwnerCount').value }}
 propPop myCreatorId
@@ -151,6 +152,7 @@ featCall Population populateBySpawning EnergyBall [[
   propPop global.energyBallIncrement
 
 ]]
+
 
 # PROGRAM UPDATE
 // every second - for any other character related to the energy cycle, but the sun has effectively infinite energy so ignore
@@ -212,13 +214,17 @@ useFeature Population
 
 featCall Global globalProp energyBallIncrement setTo 0
 
-// TODO: NEED TO FIX THIS 
-// BEN: this is where I Was trying to set global properties and can't make it work ... 
-// set the x and y based on this current character instance 
-exprPush {{agent.getProp('x').value - 30}} 
-featPropPop Global energyballX
+// INQ I wanted to place this here in init, after the initScript but am realizing that it comes before
+// so I am again wishing there was some other call because I keep expecting it to be define, then initscrip, then program init 
 
-exprPush {{agent.getProp('y').value + 30}} 
+// TODO move this to after the darn thing is placed
+// create and hide here, but then go ahead and place when updating coloring every
+// single tick or similar that way they'll move and re-color
+
+// set the x and y based on this current character instance 
+exprPush {{ (agent.getProp('x').value - 20) }} 
+featPropPop Global energyBallX
+exprPush {{ (agent.getProp('y').value - 80) }} 
 featPropPop Global energyBallY
 
 // comment out so we can use the prior settings for now?
@@ -227,8 +233,8 @@ featPropPop Global energyBallY
 
 // increment the creator ID and then keep track of which creator this is for finding the energy balls later
 featCall Global globalProp energyBallOwnerCount add 1
-// INQ is there a better way to reference this?
 
+// INQ is there a better way to reference this?
 exprPush {{ global.getProp('energyBallOwnerCount').value }}
 propPop myCreatorId
 
@@ -265,6 +271,13 @@ featCall Population populateBySpawning EnergyBall [[
   exprPush {{global.getProp('energyBallIncrement').value + 1}}
   propPop global.energyBallIncrement
 
+]]
+
+# PROGRAM EVENT 
+
+onEvent Start [[
+
+  
 ]]
 
 # PROGRAM UPDATE
@@ -337,6 +350,73 @@ addProp myCreatorId String 'undefined'
 
 useFeature Global
 
+useFeature Population
+
+# PROGRAM INIT
+
+// INQ: This is a copy and paste from the sun with new numbers. Ideally we'll eventually have some way of using 
+// features or inheritance to minimize that kind of redundancy. If you see better ways here, please let me know.
+// Of course, this is more complex then a kid might even try for, but it'd still be nice to streamline for us if we can
+
+// setup the global variables that will let us do the population spawning - see the sun or where they are first created
+
+// TODO: Use pop and push to set these to reflect this specific current agent
+// ONCE THAT IS WORKING, do an onUPDATE to update which are visible
+
+featCall Global globalProp energyBallIncrement setTo 0
+
+// set the x and y based on this current character instance 
+exprPush {{agent.getProp('x').value - 20}} 
+featPropPop Global energyBallX
+
+exprPush {{agent.getProp('y').value - 80}} 
+featPropPop Global energyBallY
+
+// comment out so we can use the prior settings for now?
+// featCall Global globalProp energyBallSpacing setTo -10
+// featCall Global globalProp energyBallSize setTo 0.03
+
+// increment the creator ID and then keep track of which creator this is for finding the energy balls later
+featCall Global globalProp energyBallOwnerCount add 1
+
+// INQ is there a better way to reference this?
+exprPush {{ global.getProp('energyBallOwnerCount').value }}
+propPop myCreatorId
+
+// spawn 10 ernergyballs next to the sun
+featProp Population targetPopulationSize setTo 5
+featProp Population deleteAfterSpawning setTo false
+featCall Population populateBySpawning EnergyBall [[
+//  <initScript>
+
+  // place ball based on X and Y passed in
+  propPush global.energyBallX
+  propPop x
+
+  propPush global.energyBallY
+  propPop y
+
+  propPush global.energyBallSize
+  featPropPop Physics scale
+
+  featCall Costume setColorize 0 215 0
+
+  exprPush {{global.getProp('energyBallY').value + global.getProp('energyBallSpacing').value}}
+  propPop global.energyBallY
+
+  // tell each ball who owns it (set locally above) [TODO]
+  propPush global.energyBallOwnerCount
+  propPop agent.creatorID
+
+  propPush global.energyBallIncrement
+  propPop agent.myID
+  
+  // Increase the energyBallCount for those associated with this specific creator
+  // INQ I was unsure at first how to access the global here - it was a bit confusing
+  exprPush {{global.getProp('energyBallIncrement').value + 1}}
+  propPop global.energyBallIncrement
+
+]]
 
 # PROGRAM UPDATE
   every 1 runAtStart [[

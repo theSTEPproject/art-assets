@@ -196,21 +196,19 @@ prop zIndex setTo -100
 `
     },
     {
-      "id": "EnergyCarrier",
-      "label": "EnergyCarrier",
-      "scriptText": `# BLUEPRINT EnergyCarrier
+      "id": "EnergyRepresentation",
+      "label": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
 useFeature Costume
-featCall Costume setCostume 'square.json' 0
+featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
 
 useFeature Physics
 
-// sset the size 
-featProp Physics scale setTo 0.1
 
 // setup energy properties
 addProp energyLevel Number 0
@@ -222,9 +220,9 @@ prop energyLevel setMin 0
 addProp eType String 'none'
 
 // use a widget to depict the current energy
-useFeature AgentWidgets
+//useFeature AgentWidgets
 // link these
-featCall AgentWidgets bindMeterTo energyLevel 100
+//featCall AgentWidgets bindMeterTo energyLevel 100
 
 
 // TODO give everything else energy, and start at 1/2, and decrease it over time
@@ -236,40 +234,45 @@ featCall Touches monitor Algae b2b
 featCall Touches monitor Fish b2b
 
 # PROGRAM UPDATE
-when EnergyCarrier firstTouches Sun [[
+when EnergyRepresentation firstTouches Sun [[
   // when touch Sun, get energy, change meter color to yellow, reset type to source
   // currently, use sun to re-set so always add so we don't need an expression
   prop eType setTo 'source'
   prop energyLevel setTo 100
-  featProp AgentWidgets meterColor setTo 16776960
+  //featProp AgentWidgets meterColor setTo 16776960
   
+  featCall Costume setCostume 'EnergyAnnotation_Sun.png' 0
   featCall Costume setColorize 255 255 0
 
 
 ]]
 
-when EnergyCarrier firstTouches  Algae [[
+when EnergyRepresentation firstTouches  Algae [[
 
   // if you have no energy type, take some energy from the algae
-  ifExpr {{EnergyCarrier.getProp('eType').value == 'none' && Algae.getProp('energyLevel').value > 25}} [[ 
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' && Algae.getProp('energyLevel').value > 25}} [[ 
   prop eType setTo 'producer'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
   prop energyLevel add 25 
   prop Algae.energyLevel sub 25
-  featProp AgentWidgets meterColor setTo 65280
+  //featProp AgentWidgets meterColor setTo 65280
+
+  featCall Costume setCostume 'EnergyAnnotation_Plant.png' 0
   featCall Costume setColorize 0 255 0
 
     ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
   // as heat or lost in other ways
-  ifExpr {{EnergyCarrier.getProp('eType').value == 'source'}} [[ 
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'source'}} [[ 
   prop eType setTo 'none'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
   prop energyLevel setTo 0
   prop Algae.energyLevel add 50
+
+  featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
   featCall Costume setColorize 255 255 255
 
   
@@ -280,17 +283,18 @@ when EnergyCarrier firstTouches  Algae [[
 
 ]]
 
-when EnergyCarrier firstTouches Fish [[
+when EnergyRepresentation firstTouches Fish [[
   
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-   ifExpr {{EnergyCarrier.getProp('eType').value == 'producer'}} [[ 
+   ifExpr {{EnergyRepresentation.getProp('eType').value == 'producer'}} [[ 
   prop eType setTo 'none'   
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
   prop energyLevel setTo 0
   prop Fish.energyLevel add 10
-  featProp AgentWidgets meterColor setTo 5475327
+  //featProp AgentWidgets meterColor setTo 5475327
 
+  featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
   featCall Costume setColorize 255 255 255
 
   featCall Fish.Costume setGlow 1
