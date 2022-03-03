@@ -235,32 +235,28 @@ featCall Touches monitor Fish b2b
 
 # PROGRAM UPDATE
 when EnergyRepresentation firstTouches Sun [[
-  // when touch Sun, get energy, change meter color to yellow, reset type to source
-  // currently, use sun to re-set so always add so we don't need an expression
-  prop eType setTo 'source'
-  prop energyLevel setTo 100
-  //featProp AgentWidgets meterColor setTo 16776960
-  
-  featCall Costume setCostume 'EnergyAnnotation_Sun.png' 0
-  featCall Costume setColorize 255 255 0
 
-
+  // when touching, show an annotation about how the sun produces energy
+  featCall Costume setCostume 'EnergyAnnotation_SunProducing.png' 0
+  featCall Costume setColorize 255 255 255
 ]]
 
-when EnergyRepresentation firstTouches  Algae [[
+when EnergyRepresentation lastTouches Sun [[
+  
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
+  prop eType setTo 'source'
+  prop energyLevel setTo 100
 
-  // if you have no energy type, take some energy from the algae
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' && Algae.getProp('energyLevel').value > 25}} [[ 
-  prop eType setTo 'producer'
+  featCall Costume setCostume 'EnergyAnnotation_Sun.png' 0
+  featCall Costume setColorize 255 255 0
+]]
+ 
 
-  // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
-  prop energyLevel add 25 
-  prop Algae.energyLevel sub 25
-  //featProp AgentWidgets meterColor setTo 65280
-
-  featCall Costume setCostume 'EnergyAnnotation_Plant.png' 0
-  featCall Costume setColorize 0 255 0
-
+when EnergyRepresentation firstTouches Algae [[
+    ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
+    prop eType setTo 'using'
+    featCall Costume setColorize 0 255 0
+    featCall Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
     ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
@@ -272,16 +268,40 @@ when EnergyRepresentation firstTouches  Algae [[
   prop energyLevel setTo 0
   prop Algae.energyLevel add 50
 
-  featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
-  featCall Costume setColorize 255 255 255
+  featCall Costume setCostume 'EnergyAnnotation_SunConv1.png' 0
+  featCall Costume setColorize 0 255 0
 
-  
   featCall Algae.Costume setGlow 1
 
   ]]
-  
-
 ]]
+
+
+
+  when EnergyRepresentation lastTouches Algae [[
+
+ // if you have no energy type, take some energy from the algae
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Algae.getProp('energyLevel').value > 25}} [[ 
+  prop eType setTo 'producer'
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
+  prop energyLevel add 25 
+  prop Algae.energyLevel sub 25
+
+  featCall Costume setCostume 'EnergyAnnotation_Plant.png' 0
+  featCall Costume setColorize 0 255 0
+
+    ]]
+
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
+  prop eType setTo 'none'
+  featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
+  featCall Costume setColorize 255 255 255
+  ]]
+
+
+  ]]
+
 
 when EnergyRepresentation firstTouches Fish [[
   
@@ -301,6 +321,10 @@ when EnergyRepresentation firstTouches Fish [[
 
 
    ]]
+
+     when EnergyRepresentation lastTouches  Fish [[
+    
+  ]]
 ]]
 
 `
@@ -337,8 +361,8 @@ prop y setTo -313.18`
       "id": "1",
       "label": "Fish1",
       "bpid": "Fish",
-      "initScript": `prop x setTo -252.66
-prop y setTo 23.53`
+      "initScript": `prop x setTo -253.37
+prop y setTo 68.88`
     },
     {
       "id": "2",
@@ -351,15 +375,15 @@ prop y setTo -97.26`
       "id": "3",
       "label": "Algae2",
       "bpid": "Algae",
-      "initScript": `prop x setTo 45
-prop y setTo -41`
+      "initScript": `prop x setTo 81.49
+prop y setTo -41.00`
     },
     {
       "id": "4",
       "label": "Fish2",
       "bpid": "Fish",
-      "initScript": `prop x setTo 16.35
-prop y setTo 55.83`
+      "initScript": `prop x setTo 61.43
+prop y setTo 121.66`
     },
     {
       "id": "5",
