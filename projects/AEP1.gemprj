@@ -238,7 +238,7 @@ when EnergyRepresentation firstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
   featCall Costume setCostume 'EnergyAnnotation_SunProducing.png' 0
-  featCall Costume setColorize 255 255 255
+  featCall Costume setColorize 255 255 0
 ]]
 
 when EnergyRepresentation lastTouches Sun [[
@@ -305,6 +305,12 @@ when EnergyRepresentation firstTouches Algae [[
 
 when EnergyRepresentation firstTouches Fish [[
   
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
+    prop eType setTo 'using'
+    featCall Costume setColorize 254 205 135
+    featCall Costume setCostume 'EnergyAnnotation_FishUsing.png' 0
+    ]]
+
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
    ifExpr {{EnergyRepresentation.getProp('eType').value == 'producer'}} [[ 
   prop eType setTo 'none'   
@@ -312,20 +318,27 @@ when EnergyRepresentation firstTouches Fish [[
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
   prop energyLevel setTo 0
   prop Fish.energyLevel add 10
-  //featProp AgentWidgets meterColor setTo 5475327
 
-  featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
-  featCall Costume setColorize 255 255 255
+  featCall Costume setCostume 'EnergyAnnotation_PlantConv1.png' 0
+  featCall Costume setColorize 254 205 135
 
   featCall Fish.Costume setGlow 1
 
 
    ]]
 
-     when EnergyRepresentation lastTouches  Fish [[
-    
-  ]]
 ]]
+
+when EnergyRepresentation lastTouches  Fish [[
+    
+
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
+    prop eType setTo 'none'
+    featCall Costume setCostume 'EnergyAnnotation_Pick.png' 0
+    featCall Costume setColorize 255 255 255
+  ]]
+
+  ]]
 
 `
     },
