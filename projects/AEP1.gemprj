@@ -229,19 +229,19 @@ addProp eType String 'none'
 // so it'll die and then not take energy if alone too long
 
 useFeature Touches
-featCall Touches monitor Sun b2b
-featCall Touches monitor Algae b2b
-featCall Touches monitor Fish b2b
+featCall Touches monitor Sun c2b
+featCall Touches monitor Algae c2b
+featCall Touches monitor Fish c2b
 
 # PROGRAM UPDATE
-when EnergyRepresentation firstTouches Sun [[
+when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
   featCall Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
   featCall Costume setColorize 255 255 0
 ]]
 
-when EnergyRepresentation lastTouches Sun [[
+when EnergyRepresentation centerLastTouches Sun [[
   
   // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
   prop eType setTo 'source'
@@ -252,11 +252,11 @@ when EnergyRepresentation lastTouches Sun [[
 ]]
  
 
-when EnergyRepresentation firstTouches Algae [[
+when EnergyRepresentation centerFirstTouches Algae [[
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
     featCall Costume setColorize 0 255 0
-    featCall Costume setCostume 'EnergyAnnotation_PlantUsing1.png' 0
+    featCall Costume setCostume 'EnergyAnnotation_PlantUsing2.png' 0
     ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
@@ -278,7 +278,7 @@ when EnergyRepresentation firstTouches Algae [[
 
 
 
-  when EnergyRepresentation lastTouches Algae [[
+  when EnergyRepresentation centerLastTouches Algae [[
 
  // if you have no energy type, take some energy from the algae
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Algae.getProp('energyLevel').value > 25}} [[ 
@@ -303,7 +303,7 @@ when EnergyRepresentation firstTouches Algae [[
   ]]
 
 
-when EnergyRepresentation firstTouches Fish [[
+when EnergyRepresentation centerFirstTouches Fish [[
   
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
@@ -329,7 +329,7 @@ when EnergyRepresentation firstTouches Fish [[
 
 ]]
 
-when EnergyRepresentation lastTouches  Fish [[
+when EnergyRepresentation centerLastTouches  Fish [[
     
 
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
