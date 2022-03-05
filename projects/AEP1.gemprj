@@ -377,6 +377,102 @@ when EnergyRepresentation centerLastTouches  Fish [[
         exprPush {{ 'Time: ' + agent.getProp('time').value }}
         featPropPop AgentWidgets text
       ]]`
+    },
+    {
+      "id": "EnergyInSysyem",
+      "label": "EnergyInSysyem",
+      "scriptText": `# BLUEPRINT EnergyInSysyem
+            # PROGRAM DEFINE
+            prop skin setTo 'onexone.json'
+
+            useFeature AgentWidgets
+            useFeature Population
+            featProp AgentWidgets isLargeGraphic setTo true
+
+            // using a generic name so that it is easier to change later
+            addProp totalEnergy Number 500
+            prop totalEnergy setMax 1000
+            prop totalEnergy setMin 0
+
+            // to store the current values of algae and fish separately
+            // I could just add them up below, but this way we can see them in the inspector
+            addProp totalAlgaeEnergy Number 0
+            addProp totalFishEnergy Number 0
+
+           
+           featCall AgentWidgets bindGraphTo totalEnergy 30
+
+            # PROGRAM INIT
+            // make sure something displays with some initial text, on bottom right at first
+            prop x setTo 495
+            prop y setTo 187
+            prop zIndex setTo 300
+
+            featProp AgentWidgets text setTo 'Energy in System'
+  
+            # PROGRAM EVENT
+
+            onEvent Tick [[
+
+              // count up the algae
+              featProp Population monitoredAgent setTo 'Algae'
+              featProp Population monitoredAgentProp setTo 'energyLevel'
+              featCall Population countAgentProp
+              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+              propPop totalAlgaeEnergy
+
+              // count up the fish
+              featProp Population monitoredAgent setTo 'Fish'
+              featProp Population monitoredAgentProp setTo 'energyLevel'
+              featCall Population countAgentProp
+              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+              propPop totalFishEnergy
+
+              // graph the sum
+              exprPush {{ agent.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
+              propPop totalEnergy
+
+
+            ]]
+`
+    },
+    {
+      "id": "GraphLostEnergy",
+      "label": "GraphLostEnergy",
+      "scriptText": `# BLUEPRINT GraphLostEnergy
+            # PROGRAM DEFINE
+            prop skin setTo 'onexone.json'
+
+            useFeature AgentWidgets
+            useFeature Population
+            featProp AgentWidgets isLargeGraphic setTo true
+
+            useFeature Global
+
+            // using a generic name so that it is easier to change later
+            addProp lostEnergy Number 500
+            prop lostEnergy setMax 1000
+            prop lostEnergy setMin 0
+
+           featCall AgentWidgets bindGraphTo lostEnergy 30
+
+            # PROGRAM INIT
+            // make sure something displays with some initial text, on bottom right at first
+            prop x setTo 495
+            prop y setTo 350
+            prop zIndex setTo 300
+
+            featProp AgentWidgets text setTo 'Lost Energy'
+  
+            # PROGRAM EVENT
+
+            onEvent Tick [[
+
+              exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+              propPop lostEnergy
+              dbgOut 'update on tick?'
+            ]]
+`
     }
   ],
   "instances": [
@@ -428,6 +524,20 @@ prop y setTo -394.62`
       "bpid": "Sky",
       "initScript": `prop x setTo 0
 prop y setTo -300`
+    },
+    {
+      "id": "7",
+      "label": "GraphLostEnergy7",
+      "bpid": "GraphLostEnergy",
+      "initScript": `prop x setTo 495
+prop y setTo 350`
+    },
+    {
+      "id": "8",
+      "label": "EnergyInSysyem8",
+      "bpid": "EnergyInSysyem",
+      "initScript": `prop x setTo 495
+prop y setTo 187`
     }
   ]
 }
