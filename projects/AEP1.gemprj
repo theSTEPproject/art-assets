@@ -229,15 +229,6 @@ prop energyLevel setMin 0
 // start with none
 addProp eType String 'none'
 
-// use a widget to depict the current energy
-//useFeature AgentWidgets
-// link these
-//featCall AgentWidgets bindMeterTo energyLevel 100
-
-
-// TODO give everything else energy, and start at 1/2, and decrease it over time
-// so it'll die and then not take energy if alone too long
-
 useFeature Touches
 featCall Touches monitor Sun c2b
 featCall Touches monitor Algae c2b
@@ -470,7 +461,7 @@ when EnergyRepresentation centerLastTouches  Fish [[
 
               exprPush {{ global.getProp('energyReleasedAsHeat').value }}
               propPop lostEnergy
-              dbgOut 'update on tick?'
+              
             ]]
 `
     }
