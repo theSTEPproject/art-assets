@@ -35,6 +35,12 @@ featProp Physics scale setTo 0.6
 // types to use for energy transfer: source, producer, consumer (we might add more later)
 addProp eType String 'source'
 
+useFeature Global
+
+  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
+      featCall Global addGlobalProp energyReleasedAsHeat Number 0
+  ]]
+
 `
     },
     {
@@ -183,6 +189,7 @@ featProp AgentWidgets meterColor setTo 65280
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
+//Note: this character doesn't do anyhting - it is just for show'
 useFeature Costume
 featCall Costume setCostume 'square.json' 0
 featCall Costume setColorize 53 81 92
@@ -208,6 +215,9 @@ useFeature Costume
 featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
 
 useFeature Physics
+
+// using this to record energyReleasedAsHeat
+useFeature Global
 
 
 // setup energy properties
@@ -267,6 +277,9 @@ when EnergyRepresentation centerFirstTouches Algae [[
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
   prop energyLevel setTo 0
   prop Algae.energyLevel add 50
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 50
+
 
   featCall Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
   featCall Costume setColorize 0 255 0
@@ -285,8 +298,10 @@ when EnergyRepresentation centerFirstTouches Algae [[
   prop eType setTo 'producer'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
-  prop energyLevel add 25 
   prop Algae.energyLevel sub 25
+  prop energyLevel add 25 
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 25
 
   featCall Costume setCostume 'EnergyAnnotation_Plant1.png' 0
   featCall Costume setColorize 0 255 0
@@ -318,6 +333,8 @@ when EnergyRepresentation centerFirstTouches Fish [[
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
   prop energyLevel setTo 0
   prop Fish.energyLevel add 10
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 15
 
   featCall Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
   featCall Costume setColorize 254 205 135
