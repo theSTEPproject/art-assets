@@ -485,22 +485,22 @@ prop y setTo 68.88`
       "id": "2",
       "label": "Algae1",
       "bpid": "Algae",
-      "initScript": `prop x setTo -179.40
-prop y setTo -97.26`
+      "initScript": `prop x setTo -288.59
+prop y setTo -118.14`
     },
     {
       "id": "3",
       "label": "Algae2",
       "bpid": "Algae",
-      "initScript": `prop x setTo 81.49
-prop y setTo -41.00`
+      "initScript": `prop x setTo -124.18
+prop y setTo -123.89`
     },
     {
       "id": "4",
       "label": "Fish2",
       "bpid": "Fish",
-      "initScript": `prop x setTo 61.43
-prop y setTo 121.66`
+      "initScript": `prop x setTo -119.56
+prop y setTo 111.73`
     },
     {
       "id": "5",
@@ -529,6 +529,48 @@ prop y setTo 350`
       "bpid": "EnergyInSysyem",
       "initScript": `prop x setTo 495
 prop y setTo 187`
+    },
+    {
+      "id": "9",
+      "label": "Algae3",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 44.81
+prop y setTo -98.89`
+    },
+    {
+      "id": "10",
+      "label": "Algae4",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 247.79
+prop y setTo -125.15`
+    },
+    {
+      "id": "11",
+      "label": "Algae5",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 340.27
+prop y setTo -121.93`
+    },
+    {
+      "id": "12",
+      "label": "Fish3",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 61.65
+prop y setTo 138.41`
+    },
+    {
+      "id": "13",
+      "label": "Fish4",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 205.24
+prop y setTo 59.01`
+    },
+    {
+      "id": "14",
+      "label": "Fish5",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 315.80
+prop y setTo 210.49`
     }
   ]
 }
