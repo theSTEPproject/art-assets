@@ -21,6 +21,20 @@ To change the MQTT server and / or local assets location simply edit:
 
 `gem-step/gs-packages/gem-srv/config/local-settings.json`
 
+The current settings should be updated to:
+
+
+    {
+      "_INFO": [
+        "Override constants defined gsgo-settings.js and gem-settings.js in this file",
+        "Settings added here can be set for your gsgo installation, and will not be",
+        "committed to the gsgo repo"
+      ],
+      "MQTT_URL": "10.0.0.254",
+      "GS_ASSETS_PROJECT_ROOT": "art-assets"
+    }
+
+
 # Art assets
 **NOTE**: The art assets, which are divided into references (documents like this), projects, and sprites are all stored in the art-assets repo. I've setup the lab mac to place this inside of gem-step, otherwise you'd have to downoad then copy by hand.
 
