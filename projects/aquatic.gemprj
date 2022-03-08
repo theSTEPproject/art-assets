@@ -1,7 +1,7 @@
 {
   "id": "aquatic",
   "label": "Aquatic Ecosystems",
-  "description":"Added all of the graphs in, before other major changes",
+  "description": "Tweaks for later runs",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -358,126 +358,6 @@ onEvent Tick [[
 ]]`
     },
     {
-      "id": "AlgaeAvgMeter",
-      "label": "Algae Energy Meter",
-      "scriptText": `# BLUEPRINT AlgaeAvgMeter
-# PROGRAM DEFINE
-addProp reportSubject String Algae
-addProp energyLevel Number 100
-
-useFeature Population
-useFeature AgentWidgets
-
-// setup the meter title
-exprPush {{ 'Algae avg energy' }}
-featPropPop AgentWidgets text
-
-// Make costume an invisible dot
-prop skin setTo 'onexone.json'
-
-// Show meter on start.
-featProp AgentWidgets isLargeGraphic setTo true
-featProp AgentWidgets meterColor setTo 65280
-// set to 1 so we can see something at start
-// I tried binding and it wasn't working so sticking with this hack for now
-featProp AgentWidgets meter setTo 1
-
-
-# PROGRAM INIT
-// default placement for the algae meter
-prop x setTo 75
-prop y setTo 320
-prop alpha setTo 0.3
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-    // Algae meter display
-    featCall Population countAgentProp 'Algae' 'energyLevel'
-    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-    propPop energyLevel
-
-    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-    featPropPop AgentWidgets meter
-
-    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
-    featPropPop AgentWidgets text
-
-    // set meter color for average energy
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
-
-]]`
-    },
-    {
-      "id": "FishAvgMeter",
-      "label": "Fish Energy Meter",
-      "scriptText": `# BLUEPRINT FishAvgMeter
-# PROGRAM DEFINE
-addProp reportSubject String Fish
-addProp energyLevel Number 100
-
-useFeature Population
-useFeature AgentWidgets
-
-// setup the meter title
-exprPush {{ 'Fish avg energy' }}
-featPropPop AgentWidgets text
-
-// Make costume an invisible dot
-prop skin setTo 'onexone.json'
-
-// Show meter on start.
-featProp AgentWidgets isLargeGraphic setTo true
-featProp AgentWidgets meterColor setTo 65280
-// set to 1 so we can see something at start
-// I tried binding and it wasn't working so sticking with this hack for now
-featProp AgentWidgets meter setTo 1
-
-
-# PROGRAM INIT
-// default placement for the fish meter
-prop x setTo -83
-prop y setTo 320
-prop alpha setTo 0.3
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-    // Fish meter display
-    featCall Population countAgentProp 'Fish' 'energyLevel'
-    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-    propPop energyLevel
-
-    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-    featPropPop AgentWidgets meter
-
-    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
-    featPropPop AgentWidgets text
-
-    // set meter color for average energy
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
-
-]]`
-    },
-    {
       "id": "Timer",
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
@@ -511,7 +391,7 @@ onEvent Tick [[
       "id": "Turtle",
       "label": "Turtle",
       "scriptText": `# BLUEPRINT Turtle
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
@@ -562,8 +442,8 @@ every 1 runAtStart [[
   propPop agent.energyLevel
   
   ifExpr {{ agent.getProp('energyLevel').value == 0}} [[
-  \tprop agent.isInert setTo true 
-  \tprop agent.alpha setTo 0.3
+  prop agent.isInert setTo true 
+  prop agent.alpha setTo 0.3
   ]]
 ]]
   
@@ -579,7 +459,7 @@ when Turtle touches Fish [[
     // Turtle gains some energy
     prop Turtle.energyLevel add 20
 
-\t// Fish is dead 
+    // Fish is dead 
     prop Fish.isInert setTo true
     prop Fish.alpha setTo 0.3
     featCall Fish.Costume setPose 2
@@ -628,9 +508,170 @@ when Turtle lastTouches Trash [[
 `
     },
     {
-      "id": "Graph1",
-      "label": "Graph1",
-      "scriptText": `# BLUEPRINT Graph1
+      "id": "TextLabel",
+      "label": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+      # PROGRAM DEFINE
+      useFeature AgentWidgets
+      prop skin setTo 'onexone.json'`
+    },
+    {
+      "id": "ColorChip",
+      "label": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+      # PROGRAM DEFINE
+      useFeature Costume
+      featCall Costume setCostume 'square.json' 0
+
+      useFeature Physics`
+    },
+    {
+      "id": "SettingsWidget",
+      "label": "SettingsWidget",
+      "scriptText": `# BLUEPRINT SettingsWidget
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+// This is to setup the model 
+// Make sure it is loaded first, and only once to avoid issues
+// We don't need a costume but it caused an error so use one and scale to 0
+      useFeature Costume
+      featCall Costume setCostume 'circle.json' 0
+      featCall Costume setScale 0
+
+// setup an oxygen variable (amount, and whether to track it)
+// then make other things change it / check it ()
+
+
+# PROGRAM INIT
+// add the global variable setup here
+`
+    },
+    {
+      "id": "MeterAlgaeEnergy",
+      "label": "MeterAlgaeEnergy",
+      "scriptText": `# BLUEPRINT MeterAlgaeEnergy
+# PROGRAM DEFINE
+addProp reportSubject String Algae
+addProp energyLevel Number 100
+
+useFeature Population
+useFeature AgentWidgets
+
+// setup the meter title
+exprPush {{ 'Algae avg energy' }}
+featPropPop AgentWidgets text
+
+// Make costume an invisible dot
+prop skin setTo 'onexone.json'
+
+// Show meter on start.
+featProp AgentWidgets isLargeGraphic setTo true
+featProp AgentWidgets meterColor setTo 65280
+// set to 1 so we can see something at start
+// I tried binding and it wasn't working so sticking with this hack for now
+featProp AgentWidgets meter setTo 1
+
+
+# PROGRAM INIT
+// default placement for the algae meter
+prop x setTo 505
+prop y setTo 320
+prop alpha setTo 0.3
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+    // Algae meter display
+    featCall Population countAgentProp 'Algae' 'energyLevel'
+    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
+    propPop energyLevel
+
+    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
+    featPropPop AgentWidgets meter
+
+    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
+    featPropPop AgentWidgets text
+
+    // set meter color for average energy
+    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+      featProp AgentWidgets meterColor setTo 65280
+    ]]
+    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+      featProp AgentWidgets meterColor setTo 16737792
+    ]]
+    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+      featProp AgentWidgets meterColor setTo 16711680
+    ]]
+
+]]`
+    },
+    {
+      "id": "MeterFishEnergy",
+      "label": "MeterFishEnergy",
+      "scriptText": `# BLUEPRINT MeterFishEnergy
+# PROGRAM DEFINE
+addProp reportSubject String Fish
+addProp energyLevel Number 100
+
+useFeature Population
+useFeature AgentWidgets
+
+// setup the meter title
+exprPush {{ 'Fish avg energy' }}
+featPropPop AgentWidgets text
+
+// Make costume an invisible dot
+prop skin setTo 'onexone.json'
+
+// Show meter on start.
+featProp AgentWidgets isLargeGraphic setTo true
+featProp AgentWidgets meterColor setTo 65280
+// set to 1 so we can see something at start
+// I tried binding and it wasn't working so sticking with this hack for now
+featProp AgentWidgets meter setTo 1
+
+
+# PROGRAM INIT
+// default placement for the fish meter
+prop x setTo 505
+prop y setTo 320
+prop alpha setTo 0.3
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+    // Fish meter display
+    featCall Population countAgentProp 'Fish' 'energyLevel'
+    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
+    propPop energyLevel
+
+    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
+    featPropPop AgentWidgets meter
+
+    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
+    featPropPop AgentWidgets text
+
+    // set meter color for average energy
+    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+      featProp AgentWidgets meterColor setTo 65280
+    ]]
+    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+      featProp AgentWidgets meterColor setTo 16737792
+    ]]
+    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+      featProp AgentWidgets meterColor setTo 16711680
+    ]]
+
+]]`
+    },
+    {
+      "id": "GraphAlgaeEnergy",
+      "label": "GraphAlgaeEnergy",
+      "scriptText": `# BLUEPRINT GraphAlgaeEnergy
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
 
@@ -661,7 +702,7 @@ when Turtle lastTouches Trash [[
 
             # PROGRAM INIT
             // make sure something displays with some initial text, on bottom right at first
-            prop x setTo 510
+            prop x setTo 505
             prop y setTo 230
             prop zIndex setTo 300
 
@@ -688,9 +729,9 @@ when Turtle lastTouches Trash [[
             ]]`
     },
     {
-      "id": "Graph2",
-      "label": "Graph2",
-      "scriptText": `# BLUEPRINT Graph2
+      "id": "GraphFishEnergy",
+      "label": "GraphFishEnergy",
+      "scriptText": `# BLUEPRINT GraphFishEnergy
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
 
@@ -721,7 +762,7 @@ when Turtle lastTouches Trash [[
 
             # PROGRAM INIT
             // make sure something displays with some initial text, on bottom right at first
-            prop x setTo 510
+            prop x setTo 505
             prop y setTo 370
             prop zIndex setTo 300
 
@@ -747,27 +788,17 @@ when Turtle lastTouches Trash [[
               propPop graphValue
             ]]
 `
-    },
-    {
-      "id": "TextLabel",
-      "label": "TextLabel",
-      "scriptText": `# BLUEPRINT TextLabel
-      # PROGRAM DEFINE
-      useFeature AgentWidgets
-      prop skin setTo 'onexone.json'`
-    },
-    {
-      "id": "ColorChip",
-      "label": "ColorChip",
-      "scriptText": `# BLUEPRINT ColorChip
-      # PROGRAM DEFINE
-      useFeature Costume
-      featCall Costume setCostume 'square.json' 0
-
-      useFeature Physics`
     }
   ],
   "instances": [
+    {
+      "id": "401",
+      "label": "1_Settings",
+      "bpid": "SettingsWidget",
+      "initScript": `
+      prop x setTo -400
+prop y setTo -400`
+    },
     {
       "id": "501",
       "label": "Algae 1",
@@ -907,48 +938,6 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
-    },
-    {
-      "id": "1708",
-      "label": "Trash1708",
-      "bpid": "Trash",
-      "initScript": `prop x setTo -210.46
-prop y setTo 380.16`
-    },
-    {
-      "id": "1709",
-      "label": "Fish1709",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -85.71
-prop y setTo 110.31`
-    },
-    {
-      "id": "1710",
-      "label": "FishAvgMeter1710",
-      "bpid": "FishAvgMeter",
-      "initScript": `prop x setTo 505.91
-prop y setTo 27.51`
-    },
-    {
-      "id": "1711",
-      "label": "AlgaeAvgMeter1711",
-      "bpid": "AlgaeAvgMeter",
-      "initScript": `prop x setTo 504.83
-prop y setTo -103.99`
-    },
-    {
-      "id": "1712",
-      "label": "Graph11712",
-      "bpid": "Graph1",
-      "initScript": `prop x setTo 508.95
-prop y setTo 171.88`
-    },
-    {
-      "id": "1713",
-      "label": "Graph21713",
-      "bpid": "Graph2",
-      "initScript": `prop x setTo 511.24
-prop y setTo 293.31`
     }
   ]
 }
