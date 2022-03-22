@@ -1,5 +1,5 @@
 {
-  "id": "aquatic",
+  "id": "Aquatic",
   "label": "Aquatic Ecosystems",
   "description": "Tweaks for later runs",
   "metadata": {
@@ -28,7 +28,7 @@
 useFeature Costume
 useFeature Movement
 useFeature AgentWidgets
-useFeature Cursor
+//useFeature Cursor
 
 featCall Costume setCostume 'fish.json' 0
 
@@ -803,23 +803,15 @@ prop y setTo -400`
       "id": "501",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo 300
-prop y setTo 220`
-    },
-    {
-      "id": "502",
-      "label": "Algae 2",
-      "bpid": "Algae",
-      "initScript": `prop energyLevel setTo 50
-prop x setTo -181.69
-prop y setTo -238.73`
+      "initScript": `prop x setTo 300.00
+prop y setTo 220.00`
     },
     {
       "id": "503",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo -239.88
-prop y setTo -272.43`
+      "initScript": `prop x setTo -184.37
+prop y setTo -281.66`
     },
     {
       "id": "504",
@@ -834,20 +826,6 @@ prop y setTo -297.17`
       "bpid": "Algae",
       "initScript": `prop x setTo 170.99
 prop y setTo 245.22`
-    },
-    {
-      "id": "506",
-      "label": "Algae 6",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 228.95
-prop y setTo 225.57`
-    },
-    {
-      "id": "507",
-      "label": "Algae 7",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 260
-prop y setTo 210`
     },
     {
       "id": "520",
