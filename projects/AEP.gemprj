@@ -1,5 +1,5 @@
 {
-  "id": "AquaticEnergyPlay",
+  "id": "AEP",
   "label": "Aquatic Energy Play",
   "metadata": {
     "top": -400,
@@ -75,7 +75,8 @@ featProp AgentWidgets meterProp setTo energyLevel
 featProp AgentWidgets meterColor setTo 65280
 
 # PROGRAM UPDATE
-  every 1 runAtStart [[
+  every 2 runAtStart [[
+
   // foodLevel goes down every n seconds
   exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
   propPop agent.energyLevel
@@ -362,8 +363,8 @@ when EnergyRepresentation centerLastTouches  Fish [[
 
       featProp AgentWidgets text setTo 'Time: 0'
 
-      # PROGRAM EVENT
-      onEvent Tick [[
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
         prop time add 1
         exprPush {{ 'Time: ' + agent.getProp('time').value }}
         featPropPop AgentWidgets text
@@ -569,7 +570,7 @@ prop y setTo 59.01`
       "id": "14",
       "label": "Fish5",
       "bpid": "Fish",
-      "initScript": `prop x setTo 315.80
+      "initScript": `prop x setTo 315.8
 prop y setTo 210.49`
     }
   ]
