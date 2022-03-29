@@ -368,8 +368,8 @@ onEvent Tick [[
 
       featProp AgentWidgets text setTo 'Time: 0'
 
-      # PROGRAM EVENT
-      onEvent Tick [[
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
         prop time add 1
         exprPush {{ 'Time: ' + agent.getProp('time').value }}
         featPropPop AgentWidgets text

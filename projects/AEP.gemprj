@@ -162,19 +162,24 @@ featProp AgentWidgets meterColor setTo 65280
     // this code sets the color of the energy bar based on how hungry the fish is
     // set algae energy meter color
     // doing great
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
       // Green
       featProp AgentWidgets meterColor setTo 65280
     ]]
     // needs some energy
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
       // Orange
       featProp AgentWidgets meterColor setTo 16737792
     ]]
     // in trouble
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
       // Red
       featProp AgentWidgets meterColor setTo 16711680
+
+      // avoid getting too
+      exprPush {{ .90 }}
+      featPropPop agent.Physics scale
+
     ]]
 
 
