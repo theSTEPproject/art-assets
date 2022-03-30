@@ -245,7 +245,6 @@ when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
   featCall Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
-  featCall Costume setColorize 255 255 0
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
@@ -255,14 +254,12 @@ when EnergyRepresentation centerLastTouches Sun [[
   prop energyLevel setTo 100
 
   featCall Costume setCostume 'EnergyAnnotation_Sun1.png' 0
-  featCall Costume setColorize 255 255 0
 ]]
  
 
 when EnergyRepresentation centerFirstTouches Algae [[
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
-    featCall Costume setColorize 0 255 0
     featCall Costume setCostume 'EnergyAnnotation_PlantUsing2.png' 0
     ]]
 
@@ -279,7 +276,6 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
 
   featCall Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
-  featCall Costume setColorize 0 255 0
 
   featCall Algae.Costume setGlow 1
 
@@ -301,14 +297,12 @@ when EnergyRepresentation centerFirstTouches Algae [[
   featCall Global globalProp energyReleasedAsHeat add 25
 
   featCall Costume setCostume 'EnergyAnnotation_Plant1.png' 0
-  featCall Costume setColorize 0 255 0
 
     ]]
 
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
   prop eType setTo 'none'
   featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
-  featCall Costume setColorize 255 255 255
   ]]
 
 
@@ -319,7 +313,6 @@ when EnergyRepresentation centerFirstTouches Fish [[
   
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
-    featCall Costume setColorize 254 205 135
     featCall Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
     ]]
 
@@ -334,8 +327,6 @@ when EnergyRepresentation centerFirstTouches Fish [[
   featCall Global globalProp energyReleasedAsHeat add 15
 
   featCall Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
-  featCall Costume setColorize 254 205 135
-
   featCall Fish.Costume setGlow 1
 
 
@@ -349,7 +340,6 @@ when EnergyRepresentation centerLastTouches  Fish [[
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
     prop eType setTo 'none'
     featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
-    featCall Costume setColorize 255 255 255
   ]]
 
   ]]
