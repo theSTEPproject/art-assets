@@ -1,5 +1,5 @@
 {
-  "id": "Aquatic",
+  "id": "aquatic",
   "label": "Aquatic Ecosystems",
   "description": "Tweaks for later runs",
   "metadata": {
@@ -916,6 +916,34 @@ prop y setTo -292
 featCall Costume setColorize 255 0 0
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1707",
+      "label": "Sunbeam1707",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -108.70
+prop y setTo -224.31`
+    },
+    {
+      "id": "1708",
+      "label": "Algae1708",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -22
+prop y setTo 42`
+    },
+    {
+      "id": "1709",
+      "label": "Algae1709",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 183.90
+prop y setTo -132.81`
+    },
+    {
+      "id": "1710",
+      "label": "Algae1710",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -281.54
+prop y setTo -68.22`
     }
   ]
 }

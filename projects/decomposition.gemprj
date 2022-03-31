@@ -149,6 +149,8 @@ prop zIndex setTo -210`
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
+useFeature Movement
+
 useFeature Cursor
 useFeature Costume
 featCall Costume setCostume 'worm.json' 1
@@ -166,7 +168,6 @@ addProp nutrientCountStart Number 0
 prop nutrientCountStart setTo 5
 addProp nutrientCount Number 0
 
-useFeature Movement
 featProp Movement useAutoOrientation setTo true
 
 addProp energyLevel Number 50
@@ -312,8 +313,6 @@ prop matter setMin 0
 useFeature Physics
 
 featProp Physics scale setTo 0.3
-
-useFeature Movement
 
 useFeature Touches
 featCall Touches monitor Plant b2b
