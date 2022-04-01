@@ -151,7 +151,7 @@ prop zIndex setTo -210`
 
 useFeature Movement
 
-useFeature Cursor
+// useFeature Cursor
 useFeature Costume
 featCall Costume setCostume 'worm.json' 1
 
@@ -285,7 +285,7 @@ useFeature Population
 // useFeature Global
 useFeature Costume
 useFeature Movement
-useFeature Cursor
+//useFeature Cursor
 
 
 featCall Costume setCostume \"bunnies.json\" 1
@@ -884,13 +884,6 @@ prop y setTo -260.99`
       "bpid": "Plant",
       "initScript": `prop x setTo 88.12
 prop y setTo -43.58`
-    },
-    {
-      "id": "1811",
-      "label": "Bunny1811",
-      "bpid": "Bunny",
-      "initScript": `prop x setTo -2
-prop y setTo -8`
     }
   ]
 }
