@@ -514,17 +514,17 @@ prop y setTo -300`
     },
     {
       "id": "7",
-      "label": "GraphLostEnergy7",
+      "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
       "initScript": `prop x setTo 516.26
 prop y setTo 360.68`
     },
     {
       "id": "8",
-      "label": "EnergyInSysyem8",
+      "label": "Energy In System Graph",
       "bpid": "EnergyInSysyem",
       "initScript": `prop x setTo 511.75
-prop y setTo 187.00`
+prop y setTo 187`
     },
     {
       "id": "9",
