@@ -926,9 +926,7 @@ prop y setTo -196.34
 prop energyRate setTo 50
 prop direction setTo 1
 prop speed setTo 20
-prop zIndex setTo 0
-prop orientation setTo 0
-prop skin setTo onexone.json`
+prop zIndex setTo 0`
     },
     {
       "id": "1708",
