@@ -260,7 +260,7 @@ when EnergyRepresentation centerLastTouches Sun [[
 when EnergyRepresentation centerFirstTouches Algae [[
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
-    featCall Costume setCostume 'EnergyAnnotation_PlantUsing2.png' 0
+    featCall Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
     ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
