@@ -1,6 +1,6 @@
 {
-  "id": "decomposition",
-  "label": "Decomposition",
+  "id": "decomposition1",
+  "label": "Decomposition1",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -144,8 +144,8 @@ prop zIndex setTo -210`
       "id": "Worm",
       "label": "Worm",
       "scriptText": `# BLUEPRINT Worm
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
@@ -277,7 +277,7 @@ every 1 runAtStart [[
       "label": "Bunny",
       "scriptText": `# BLUEPRINT Bunny
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
@@ -768,18 +768,6 @@ prop variableToGraph setTo 'energyLevel'
 prop labelText setTo 'Bunny Energy'`
     },
     {
-      "id": "1803",
-      "label": "Worm Energy",
-      "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 90
-prop characterType setTo 'Worm'
-prop countType setTo 'sum'
-prop variableToGraph setTo 'energyLevel'
-prop labelText setTo 'Worm Energy'
-`
-    },
-    {
       "id": "1201",
       "label": "Plant01",
       "bpid": "Plant",
@@ -875,8 +863,8 @@ prop y setTo 113.79`
       "id": "1809",
       "label": "Timer1809",
       "bpid": "Timer",
-      "initScript": `prop x setTo 453.76
-prop y setTo -260.99`
+      "initScript": `prop x setTo 338.60
+prop y setTo -394.99`
     },
     {
       "id": "1810",
