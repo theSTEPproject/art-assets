@@ -32,7 +32,7 @@ prop zIndex setTo 0
 useFeature Physics
 featProp Physics scale setTo 0.6
 
-// types to use for energy transfer: source, producer, consumer (we might add more later)
+// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later)
 addProp eType String 'source'
 
 useFeature Global
@@ -215,7 +215,7 @@ addProp energyUse Number 1
 useFeature AgentWidgets
 featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
-featProp AgentWidgets meterColor setTo 65280
+featProp AgentWidgets meterColor setTo 9055202
 
 `
     },
