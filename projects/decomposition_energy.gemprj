@@ -112,7 +112,6 @@ featProp AgentWidgets meterColor setTo 65280
   featCall AgentWidgets bindMeterTo energyLevel
 
 ]]
-
 `
     },
     {
@@ -153,7 +152,7 @@ featProp AgentWidgets meterColor setTo 65280
   exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
   propPop agent.energyLevel
 
-  // this code sets the color of the energy bar based on how hungry Worm Bunny is
+  // this code sets the color of the energy bar based on how hungry the Worm  is
   // sated
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featCall Costume setPose 0
@@ -184,6 +183,39 @@ featProp AgentWidgets meterColor setTo 65280
   featCall AgentWidgets bindMeterTo energyLevel
 
 ]]
+
+`
+    },
+    {
+      "id": "Waste",
+      "label": "Waste",
+      "scriptText": `# BLUEPRINT Waste
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'organic_matter.json' 0
+
+useFeature Physics
+featProp Physics scale setTo 1
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'waste'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make waste lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+useFeature AgentWidgets
+featProp AgentWidgets meterProp setTo energyLevel
+// Green = 0x00FF00
+featProp AgentWidgets meterColor setTo 65280
 
 `
     },
@@ -678,6 +710,13 @@ prop y setTo 300`
       "bpid": "Worm",
       "initScript": `prop x setTo -90.52
 prop y setTo 100.26`
+    },
+    {
+      "id": "1111",
+      "label": "Waste1",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -275.04
+prop y setTo 235.39`
     }
   ]
 }
