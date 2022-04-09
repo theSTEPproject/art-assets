@@ -1,0 +1,603 @@
+{
+  "id": "decomposition_energy",
+  "label": "Decomposition Energy",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x98f5ff",
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Sun",
+      "label": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'circle.json' 0
+featCall Costume setColorize 255 215 0
+prop zIndex setTo 0
+
+useFeature Physics
+featProp Physics scale setTo 0.6
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'source'
+
+useFeature Global
+
+  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
+      featCall Global addGlobalProp energyReleasedAsHeat Number 0
+  ]]
+
+`
+    },
+    {
+      "id": "Bunny",
+      "label": "Bunny",
+      "scriptText": `# BLUEPRINT Bunny
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'bunnies.json' 1
+
+useFeature Physics
+featProp Physics scale setTo 0.3
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'consumer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Bunny lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+useFeature AgentWidgets
+featProp AgentWidgets meterProp setTo energyLevel
+// Green = 0x00FF00
+featProp AgentWidgets meterColor setTo 65280
+
+# PROGRAM UPDATE
+  every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  propPop agent.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Bunny is
+  // sated
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    featCall Costume setPose 0
+    // Green
+    featProp AgentWidgets meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    featCall Costume setPose 1
+    // Orange
+    featProp AgentWidgets meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    featCall Costume setPose 1
+    // Red
+    featProp AgentWidgets meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+    featCall Costume setPose 2
+    // featCall Movement setMovementType 'float'
+    prop agent.alpha setTo 0.3
+    prop agent.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featCall AgentWidgets bindMeterTo energyLevel
+
+]]
+
+`
+    },
+    {
+      "id": "Plant",
+      "label": "Plant",
+      "scriptText": `# BLUEPRINT Plant
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'plants.json' 0
+
+useFeature Physics
+featProp Physics scale setTo 0.75
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'producer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Plant lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+useFeature AgentWidgets
+featProp AgentWidgets meterProp setTo energyLevel
+// Green = 0x00FF00
+featProp AgentWidgets meterColor setTo 65280
+
+# PROGRAM UPDATE
+  every 1 runAtStart [[
+
+    // decrease energy each tick, using the energyUse varable to determine how much
+    ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+    propPop agent.energyLevel
+    ]]
+
+    // re-scale the plant based on its energy level
+    exprPush {{ (agent.getProp('energyLevel').value / 100) * 2.25}}
+    featPropPop agent.Physics scale
+
+    // set plant energy meter color
+    // doing great
+    ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
+      // Green
+      featProp AgentWidgets meterColor setTo 65280
+    ]]
+    // needs some energy
+    ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
+      // Orange
+      featProp AgentWidgets meterColor setTo 16737792
+    ]]
+    // in trouble
+    ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
+      // Red
+      featProp AgentWidgets meterColor setTo 16711680
+
+      // avoid getting too small
+      exprPush {{ .3 }}
+      featPropPop agent.Physics scale
+
+    ]]
+  ]]
+`
+    },
+    {
+      "id": "EnergyRepresentation",
+      "label": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+useFeature Costume
+featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+
+useFeature Physics
+
+// using this to record energyReleasedAsHeat
+useFeature Global
+
+
+// setup energy properties
+addProp energyLevel Number 0
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp eType String 'none'
+
+useFeature Touches
+featCall Touches monitor Sun c2b
+featCall Touches monitor Plant c2b
+featCall Touches monitor Bunny c2b
+
+# PROGRAM UPDATE
+when EnergyRepresentation centerFirstTouches Sun [[
+
+  // when touching, show an annotation about how the sun produces energy
+  featCall Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
+]]
+
+when EnergyRepresentation centerLastTouches Sun [[
+  
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
+  prop eType setTo 'source'
+  prop energyLevel setTo 100
+
+  featCall Costume setCostume 'EnergyAnnotation_Sun1.png' 0
+]]
+ 
+
+when EnergyRepresentation centerFirstTouches Plant [[
+    ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
+    prop eType setTo 'using'
+    featCall Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
+    ]]
+
+  // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'source'}} [[ 
+  prop eType setTo 'none'
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun
+  prop energyLevel setTo 0
+  prop Plant.energyLevel add 50
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 50
+
+
+  featCall Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
+
+  featCall Plant.Costume setGlow 1
+
+  ]]
+]]
+
+
+
+  when EnergyRepresentation centerLastTouches Plant [[
+
+ // if you have no energy type, take some energy from the plant
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Plant.getProp('energyLevel').value > 25}} [[ 
+  prop eType setTo 'producer'
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the plant gives to a Bunny
+  prop Plant.energyLevel sub 25
+  prop energyLevel add 25 
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 25
+
+  featCall Costume setCostume 'EnergyAnnotation_Plant1.png' 0
+
+    ]]
+
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
+  prop eType setTo 'none'
+  featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+  ]]
+
+
+  ]]
+
+
+when EnergyRepresentation centerFirstTouches Bunny [[
+  
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
+    prop eType setTo 'using'
+    featCall Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
+    ]]
+
+  // when touch Plant and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
+   ifExpr {{EnergyRepresentation.getProp('eType').value == 'producer'}} [[ 
+  prop eType setTo 'none'   
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun, and what it does to the energy character
+  prop energyLevel setTo 0
+  prop Bunny.energyLevel add 10
+  // we are losing 50 of the hundred, so not that in the global
+  featCall Global globalProp energyReleasedAsHeat add 15
+
+  featCall Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
+  featCall Bunny.Costume setGlow 1
+
+
+   ]]
+
+]]
+
+when EnergyRepresentation centerLastTouches  Bunny [[
+    
+
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
+    prop eType setTo 'none'
+    featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+  ]]
+
+  ]]
+
+`
+    },
+    {
+      "id": "Timer",
+      "label": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+      # PROGRAM DEFINE
+      useFeature AgentWidgets
+      prop skin setTo 'onexone.json'
+      addProp time Number 0
+      prop zIndex setTo 500
+
+      featProp AgentWidgets text setTo 'Time: 0'
+
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
+        prop time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop AgentWidgets text
+      ]]`
+    },
+    {
+      "id": "EnergyInSysyem",
+      "label": "EnergyInSysyem",
+      "scriptText": `# BLUEPRINT EnergyInSysyem
+            # PROGRAM DEFINE
+            prop skin setTo 'onexone.json'
+
+            useFeature AgentWidgets
+            useFeature Population
+            featProp AgentWidgets isLargeGraphic setTo true
+
+            // using a generic name so that it is easier to change later
+            addProp totalEnergy Number 500
+            prop totalEnergy setMax 1000
+            prop totalEnergy setMin 0
+
+            // to store the current values of plant and Bunny separately
+            // I could just add them up below, but this way we can see them in the inspector
+            addProp totalPlantEnergy Number 0
+            addProp totalBunnyEnergy Number 0
+
+           
+           featCall AgentWidgets bindGraphTo totalEnergy 30
+
+            # PROGRAM INIT
+            // make sure something displays with some initial text, on bottom right at first
+            prop x setTo 495
+            prop y setTo 187
+            prop zIndex setTo 300
+
+            featProp AgentWidgets text setTo 'Energy in System'
+  
+            # PROGRAM EVENT
+
+            onEvent Tick [[
+
+              // count up the plant
+              featProp Population monitoredAgent setTo 'Plant'
+              featProp Population monitoredAgentProp setTo 'energyLevel'
+              featCall Population countAgentProp
+              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+              propPop totalPlantEnergy
+
+              // count up the Bunny
+              featProp Population monitoredAgent setTo 'Bunny'
+              featProp Population monitoredAgentProp setTo 'energyLevel'
+              featCall Population countAgentProp
+              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+              propPop totalBunnyEnergy
+
+              // graph the sum
+              exprPush {{ agent.getProp('totalPlantEnergy').value + agent.getProp('totalBunnyEnergy').value }}
+              propPop totalEnergy
+
+
+            ]]
+`
+    },
+    {
+      "id": "GraphLostEnergy",
+      "label": "GraphLostEnergy",
+      "scriptText": `# BLUEPRINT GraphLostEnergy
+            # PROGRAM DEFINE
+            prop skin setTo 'onexone.json'
+
+            useFeature AgentWidgets
+            useFeature Population
+            featProp AgentWidgets isLargeGraphic setTo true
+
+            useFeature Global
+
+            // using a generic name so that it is easier to change later
+            addProp lostEnergy Number 500
+            prop lostEnergy setMax 1000
+            prop lostEnergy setMin 0
+
+           featCall AgentWidgets bindGraphTo lostEnergy 30
+
+            # PROGRAM INIT
+            // make sure something displays with some initial text, on bottom right at first
+            prop x setTo 495
+            prop y setTo 350
+            prop zIndex setTo 300
+
+            featProp AgentWidgets text setTo 'Lost Energy'
+  
+            # PROGRAM EVENT
+
+            onEvent Tick [[
+
+              exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+              propPop lostEnergy
+              
+            ]]
+`
+    },
+    {
+      "id": "SoilBG",
+      "label": "SoilBG",
+      "scriptText": `# BLUEPRINT SoilBG
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'square.json' 0
+featCall Costume setColorize 0.56 0.52 0.40
+useFeature Physics
+featCall Physics setSize 800 400
+prop zIndex setTo -210`
+    },
+    {
+      "id": "Soil",
+      "label": "Soil",
+      "scriptText": `# BLUEPRINT Soil
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'dirt.json' 0
+
+addProp nutrients Number 50
+prop nutrients setMax 100
+prop nutrients setMin 0
+
+addProp sparkleCount Number 0
+
+useFeature Physics
+
+featProp Physics scale setTo 0.38
+
+prop zIndex setTo -200
+
+useFeature Touches
+featCall Touches monitor Worm b2b
+
+useFeature AgentWidgets
+// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+featProp AgentWidgets meterProp setTo nutrients
+
+featCall AgentWidgets setMeterPosition 'inside-left'
+// violet
+featProp AgentWidgets meterColor setTo 9055202
+featProp AgentWidgets text setTo ''
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  ifExpr {{ agent.getProp('sparkleCount').value > 0}} [[
+      prop sparkleCount sub 1
+  ]]
+  ifExpr {{ agent.getProp('sparkleCount').value == 0}} [[
+    featCall Costume setCostume 'dirt.json' 0
+  ]]
+]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Sun",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -315.15
+prop y setTo -313.18`
+    },
+    {
+      "id": "1",
+      "label": "Bunny1",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -83.68
+prop y setTo -31.46`
+    },
+    {
+      "id": "2",
+      "label": "Plant1",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -277.17
+prop y setTo -51.71`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 354.35
+prop y setTo -394.62`
+    },
+    {
+      "id": "7",
+      "label": "Lost Energy Graph",
+      "bpid": "GraphLostEnergy",
+      "initScript": `prop x setTo 516.26
+prop y setTo 360.68`
+    },
+    {
+      "id": "8",
+      "label": "Energy In System Graph",
+      "bpid": "EnergyInSysyem",
+      "initScript": `prop x setTo 511.75
+prop y setTo 187`
+    },
+    {
+      "id": "1101",
+      "label": "Soil01",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -300
+prop y setTo 100
+prop nutrients setTo 10`
+    },
+    {
+      "id": "1102",
+      "label": "Soil02",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -100
+prop y setTo 100`
+    },
+    {
+      "id": "1103",
+      "label": "Soil03",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 100
+prop y setTo 100`
+    },
+    {
+      "id": "1104",
+      "label": "Soil04",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 300
+prop y setTo 100`
+    },
+    {
+      "id": "1105",
+      "label": "Soil05",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -300
+prop y setTo 300`
+    },
+    {
+      "id": "1106",
+      "label": "Soil06",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -100
+prop y setTo 300`
+    },
+    {
+      "id": "1107",
+      "label": "Soil07",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 100
+prop y setTo 300`
+    },
+    {
+      "id": "1108",
+      "label": "Soil08",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 300
+prop y setTo 300`
+    },
+    {
+      "id": "1109",
+      "label": "SoilBG01",
+      "bpid": "SoilBG",
+      "initScript": `prop x setTo 0
+ prop y setTo 200`
+    }
+  ]
+}
