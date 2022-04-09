@@ -319,6 +319,8 @@ featCall Touches monitor Sun c2b
 featCall Touches monitor Plant c2b
 featCall Touches monitor Bunny c2b
 featCall Touches monitor Worm c2b
+featCall Touches monitor Waste c2b
+
 
 # PROGRAM UPDATE
 when EnergyRepresentation centerFirstTouches Sun [[
@@ -425,6 +427,24 @@ when EnergyRepresentation centerLastTouches  Bunny [[
   ]]
 
 `
+    },
+    {
+      "id": "TextLabel",
+      "label": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# PROGRAM DEFINE
+useFeature AgentWidgets
+useFeature Costume
+featCall Costume setCostume 'onexone.json' 0`
+    },
+    {
+      "id": "ColorChip",
+      "label": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'square.json' 0
+useFeature Physics`
     },
     {
       "id": "Timer",
@@ -717,6 +737,71 @@ prop y setTo 100.26`
       "bpid": "Waste",
       "initScript": `prop x setTo -275.04
 prop y setTo 235.39`
+    },
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+prop y setTo -400
+featProp AgentWidgets text setTo 'Key:'`
+    },
+    {
+      "id": "1701",
+      "label": "EnergyLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+    prop y setTo -373
+    featProp AgentWidgets text setTo 'Energy'
+    prop zIndex setTo 100`
+    },
+    {
+      "id": "1702",
+      "label": "NutrientsLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+prop y setTo -340
+featProp AgentWidgets text setTo 'Nutrients'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1703",
+      "label": "MatterLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+prop y setTo -308
+featProp AgentWidgets text setTo 'Matter'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1704",
+      "label": "EnergyChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455
+prop y setTo -351
+featCall Costume setColorize 0 255 0
+prop zIndex setTo 95
+featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1705",
+      "label": "NutrientsChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455
+prop y setTo -320
+featCall Costume setColorize 138 43 226
+prop zIndex setTo 95
+featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1706",
+      "label": "MatterChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455
+prop y setTo -290
+featCall Costume setColorize 0.56 0.52 0.40
+prop zIndex setTo 95
+featCall Physics setSize 100 30`
     }
   ]
 }
