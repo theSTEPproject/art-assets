@@ -116,6 +116,78 @@ featProp AgentWidgets meterColor setTo 65280
 `
     },
     {
+      "id": "Worm",
+      "label": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'worm.json' 1
+
+useFeature Physics
+featProp Physics scale setTo 0.5
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp eType String 'consumer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop energyLevel setMax 100
+prop energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Bunny lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+useFeature AgentWidgets
+featProp AgentWidgets meterProp setTo energyLevel
+// Green = 0x00FF00
+featProp AgentWidgets meterColor setTo 65280
+
+# PROGRAM UPDATE
+  every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  propPop agent.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry Worm Bunny is
+  // sated
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    featCall Costume setPose 0
+    // Green
+    featProp AgentWidgets meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    featCall Costume setPose 1
+    // Orange
+    featProp AgentWidgets meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    featCall Costume setPose 1
+    // Red
+    featProp AgentWidgets meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+    featCall Costume setPose 2
+    // featCall Movement setMovementType 'float'
+    prop agent.alpha setTo 0.3
+    prop agent.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featCall AgentWidgets bindMeterTo energyLevel
+
+]]
+
+`
+    },
+    {
       "id": "Plant",
       "label": "Plant",
       "scriptText": `# BLUEPRINT Plant
@@ -214,6 +286,7 @@ useFeature Touches
 featCall Touches monitor Sun c2b
 featCall Touches monitor Plant c2b
 featCall Touches monitor Bunny c2b
+featCall Touches monitor Worm c2b
 
 # PROGRAM UPDATE
 when EnergyRepresentation centerFirstTouches Sun [[
@@ -598,6 +671,13 @@ prop y setTo 300`
       "bpid": "SoilBG",
       "initScript": `prop x setTo 0
  prop y setTo 200`
+    },
+    {
+      "id": "1110",
+      "label": "Worm1",
+      "bpid": "Worm",
+      "initScript": `prop x setTo -90.52
+prop y setTo 100.26`
     }
   ]
 }
