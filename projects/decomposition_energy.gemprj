@@ -391,7 +391,7 @@ when EnergyRepresentation centerFirstTouches Sun [[
 
 when EnergyRepresentation centerLastTouches Sun [[
   
-  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
   prop eType setTo 'source'
   prop energyLevel setTo 100
 
@@ -565,7 +565,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
   // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
   featCall Global globalProp energyReleasedAsHeat add 5
 
-  featCall Costume setCostume 'worm_energy.png' 1
+  featCall Costume setCostume 'waste-to-worm.png' 1
   featCall Worm.Costume setGlow 1
 
 
@@ -578,7 +578,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
 
 // if you have no energy type, take some energy from the worm
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Worm.getProp('energyLevel').value > 25}} [[ 
+  ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Worm.getProp('energyLevel').value > 15}} [[ 
   prop eType setTo 'decomposer'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the plant gives to a Bunny
@@ -594,7 +594,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
     prop eType setTo 'none'
-    featCall Costume setCostume 'worm_energy.png' 0
+    featCall Costume setCostume 'empty_energy.png' 0
     ]]
 
 
@@ -606,9 +606,9 @@ when EnergyRepresentation centerFirstTouches  Waste [[
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'decomposer'}} [[ 
   prop eType setTo 'none'   
 
-  // set the energy on the waste, but then it'll get converted to matter
+  // give off a bunch of nutrients to the soil so the plant can grow
   prop energyLevel setTo 0
-  prop Soil.nutrients add 10
+  prop Soil.nutrients add 30
 
   // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
   featCall Global globalProp energyReleasedAsHeat add 5
