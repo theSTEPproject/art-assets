@@ -444,9 +444,10 @@ when EnergyRepresentation centerLastTouches Plant [[
 
     ]]
 
+  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-  prop eType setTo 'none'
-  featCall Costume setCostume 'empty_energy.png' 0
+  prop eType setTo 'producer'
+  featCall Costume setCostume 'plant_energy.png' 0
   ]]
 
 
@@ -494,8 +495,8 @@ when EnergyRepresentation centerLastTouches  Bunny [[
     ]]
 
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-    prop eType setTo 'none'
-    featCall Costume setCostume 'empty_energy.png' 0
+    prop eType setTo 'consumer'
+    featCall Costume setCostume 'bunny_energy.png' 0
     ]]
 
   ]]
@@ -545,8 +546,8 @@ when EnergyRepresentation centerFirstTouches  Waste [[
     ]]
 
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-    prop eType setTo 'none'
-    featCall Costume setCostume 'empty_energy.png' 0
+    prop eType setTo 'waste'
+    featCall Costume setCostume 'waste_energy.png' 0
     ]]
 
   ]]
@@ -597,8 +598,8 @@ when EnergyRepresentation centerFirstTouches  Waste [[
     ]]
 
     ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-    prop eType setTo 'none'
-    featCall Costume setCostume 'empty_energy.png' 0
+    prop eType setTo 'decomposer'
+    featCall Costume setCostume 'worm_energy.png' 0
     ]]
 
 
