@@ -53,6 +53,8 @@ useFeature Global
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'bunnies.json' 1
+featProp Costume flipX setTo true
+
 
 useFeature Physics
 featProp Physics scale setTo 0.3
@@ -606,9 +608,9 @@ when EnergyRepresentation centerFirstTouches  Waste [[
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'decomposer'}} [[ 
   prop eType setTo 'none'   
 
-  // give off a bunch of nutrients to the soil so the plant can grow
+  // set the energy on the waste, but then it'll get converted to matter
   prop energyLevel setTo 0
-  prop Soil.nutrients add 30
+  prop Soil.nutrients add 10
 
   // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
   featCall Global globalProp energyReleasedAsHeat add 5
@@ -820,8 +822,8 @@ every 1 runAtStart [[
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo -315.15
-prop y setTo -313.18`
+      "initScript": `prop x setTo -12.40
+prop y setTo -314.66`
     },
     {
       "id": "1",
@@ -1000,6 +1002,34 @@ prop y setTo -290
 featCall Costume setColorize 0.56 0.52 0.40
 prop zIndex setTo 95
 featCall Physics setSize 100 30`
+    },
+    {
+      "id": "1707",
+      "label": "Plant2",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 132.79
+prop y setTo -46.50`
+    },
+    {
+      "id": "1708",
+      "label": "Bunny2",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo 314.50
+prop y setTo -34.98`
+    },
+    {
+      "id": "1709",
+      "label": "Waste2",
+      "bpid": "Waste",
+      "initScript": `prop x setTo 339.85
+prop y setTo 143.75`
+    },
+    {
+      "id": "1710",
+      "label": "Worm2",
+      "bpid": "Worm",
+      "initScript": `prop x setTo 110.23
+prop y setTo 276.18`
     }
   ]
 }
