@@ -471,7 +471,7 @@ when EnergyRepresentation centerFirstTouches Bunny [[
    ]]
 ]]
 
-when EnergyRepresentation centerLastTouches  Bunny [[
+when EnergyRepresentation centerLastTouches Bunny [[
     
  // if you have no energy type, take some energy from the bunny
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Bunny.getProp('energyLevel').value > 25}} [[ 
@@ -494,7 +494,7 @@ when EnergyRepresentation centerLastTouches  Bunny [[
 
   ]]
 
-when EnergyRepresentation centerFirstTouches  Waste [[
+when EnergyRepresentation centerFirstTouches Waste [[
 
  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
@@ -520,7 +520,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   ]]
 
-  when EnergyRepresentation centerLastTouches  Waste [[
+  when EnergyRepresentation centerLastTouches Waste [[
 
 // if you have no energy type, take some energy from the bunny
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Waste.getProp('matterLevel').value > 15}} [[
@@ -545,7 +545,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   ]]
 
-  when EnergyRepresentation centerFirstTouches  Worm [[
+  when EnergyRepresentation centerFirstTouches Worm [[
 
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
     prop eType setTo 'using'
@@ -572,7 +572,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   ]]
 
-  when EnergyRepresentation centerLastTouches  Worm [[
+  when EnergyRepresentation centerLastTouches Worm [[
 
 
 // if you have no energy type, take some energy from the worm
@@ -598,11 +598,14 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   ]]
 
-  when EnergyRepresentation centerFirstTouches  Soil [[
+  when EnergyRepresentation centerFirstTouches Soil [[
 
   // if the last thing we touched was a worm
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'decomposer'}} [[ 
   prop eType setTo 'none'   
+
+      dbgOut 'touching soil'
+
 
   // set the energy on the waste, but then it'll get converted to matter
   prop energyLevel setTo 0
@@ -783,7 +786,7 @@ addProp sparkleCount Number 0
 
 useFeature Physics
 
-featProp Physics scale setTo 0.38
+featProp Physics scale setTo 0.76
 
 prop zIndex setTo -200
 
@@ -858,58 +861,16 @@ prop y setTo 187`
       "id": "1101",
       "label": "Soil01",
       "bpid": "Soil",
-      "initScript": `prop x setTo -300
-prop y setTo 100
+      "initScript": `prop x setTo -198
+prop y setTo 200
 prop nutrients setTo 10`
     },
     {
-      "id": "1102",
-      "label": "Soil02",
-      "bpid": "Soil",
-      "initScript": `prop x setTo -100
-prop y setTo 100`
-    },
-    {
-      "id": "1103",
-      "label": "Soil03",
-      "bpid": "Soil",
-      "initScript": `prop x setTo 100
-prop y setTo 100`
-    },
-    {
-      "id": "1104",
-      "label": "Soil04",
-      "bpid": "Soil",
-      "initScript": `prop x setTo 300
-prop y setTo 100`
-    },
-    {
-      "id": "1105",
-      "label": "Soil05",
-      "bpid": "Soil",
-      "initScript": `prop x setTo -300
-prop y setTo 300`
-    },
-    {
-      "id": "1106",
-      "label": "Soil06",
-      "bpid": "Soil",
-      "initScript": `prop x setTo -100
-prop y setTo 300`
-    },
-    {
       "id": "1107",
-      "label": "Soil07",
+      "label": "Soil2",
       "bpid": "Soil",
-      "initScript": `prop x setTo 100
-prop y setTo 300`
-    },
-    {
-      "id": "1108",
-      "label": "Soil08",
-      "bpid": "Soil",
-      "initScript": `prop x setTo 300
-prop y setTo 300`
+      "initScript": `prop x setTo 200
+prop y setTo 200`
     },
     {
       "id": "1109",
@@ -922,8 +883,8 @@ prop y setTo 300`
       "id": "1110",
       "label": "Worm1",
       "bpid": "Worm",
-      "initScript": `prop x setTo -284.52
-prop y setTo 263.50`
+      "initScript": `prop x setTo -264.00
+prop y setTo 258.57`
     },
     {
       "id": "1111",
