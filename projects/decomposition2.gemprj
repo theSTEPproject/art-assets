@@ -153,7 +153,7 @@ useFeature Movement
 
 // useFeature Cursor
 useFeature Costume
-featCall Costume setCostume 'worm.json' 1
+featCall Costume setCostume 'worm_hungry.png' 0
 
 // put above everything
 prop zIndex setTo 100
@@ -192,6 +192,16 @@ featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
 featProp AgentWidgets meterColor setTo 65280
 
+// ----------------------------------------------
+// add variables to cover distraction
+// ----------------------------------------------
+// counter - increment when hungry or distracted
+addProp distractionCounter Number 0
+// how long a distraction lasts (0 will skip it)
+addProp distractionLength Number 2
+// how long the focus lasts, during hunger, before we switch to distraction
+addProp focusLength Number 5
+
 # PROGRAM UPDATE
 
 when Worm touches Waste [[
@@ -199,29 +209,33 @@ when Worm touches Waste [[
 
     // if hungry, eat
     ifExpr {{ agent.getProp('feeling').value == 'hungry'}} [[
-      // move energy and matter from the waste to the worm and glow so we notice
-      // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
-      // waste loses matter
-      prop Waste.matter sub 10
-      // worms gain energy and matter
-      prop Worm.energyLevel add 10
-      prop Worm.matter add 10
-      // worm glowss so we know it is eating
-      featCall Costume setGlow 4
 
-      // if you are nice and full of energy, note you are full and start poop count-down
-        ifExpr {{ agent.getProp('energyLevel').value > 90 }} [[
-          prop feeling setTo 'full'
+        // not distracted so keep going 
 
-          // set the glow to 0 to reflect not eating while full
-          featCall Costume setGlow 0
+        // move energy and matter from the waste to the worm and glow so we notice
+        // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
+        // waste loses matter
+        prop Waste.matter sub 10
+        // worms gain energy and matter
+        prop Worm.energyLevel add 10
+        prop Worm.matter add 10
+        // worm glowss so we know it is eating
+        featCall Costume setGlow 4
 
-          // change costume so we know we are full
-          featCall Costume setCostume 'worm.json' 0
+        // if you are nice and full of energy, note you are full and start poop count-down
+          ifExpr {{ agent.getProp('energyLevel').value > 90 }} [[
+            prop feeling setTo 'full'
 
-          exprPush {{ agent.getProp('nutrientCountStart').value }}
-          propPop nutrientCount
-        ]]
+            // set the glow to 0 to reflect not eating while full
+            featCall Costume setGlow 0
+
+            // change costume so we know we are full
+            featCall Costume setCostume 'worm_full.png' 0
+
+            exprPush {{ agent.getProp('nutrientCountStart').value }}
+            propPop nutrientCount
+          ]]
+        
     ]]
   ]]
 ]]
@@ -257,6 +271,39 @@ every 1 runAtStart [[
   // energy goes down
   prop energyLevel sub 2
 
+  // increment distraction counter
+  prop distractionCounter add 1
+
+  // if you are hungry, and hit focus length, switch to distracted. 
+  ifExpr {{agent.getProp('feeling').value == 'hungry'}} [[
+    ifExpr {{ agent.getProp('distractionCounter').value >= agent.getProp('focusLength').value }} [[
+      
+      // we are now distracted so don't bother eating
+      prop feeling setTo 'distracted'
+      featCall Costume setCostume 'worm_distracted.png' 0
+     
+      // in case we were eating
+      featCall Costume setGlow 0
+
+      prop distractionCounter setTo 0
+    ]]
+  ]]
+  
+  // if you are distracted, and hit distracted length length, switch to hungry. 
+  ifExpr {{agent.getProp('feeling').value == 'distracted'}} [[
+      ifExpr {{ agent.getProp('distractionCounter').value >= agent.getProp('distractionLength').value }} [[
+        
+        // we are now distracted so don't bother eating
+        prop feeling setTo 'hungry'
+        featCall Costume setCostume 'worm_hungry.png' 0
+        prop distractionCounter setTo 0
+        dbgOut 'we are now hungry'
+      ]]
+    ]]
+
+
+
+
   // if out of energy ... die
   ifExpr {{agent.getProp('energyLevel').value == 0}} [[
     prop alpha setTo 0.3
@@ -287,8 +334,7 @@ useFeature Costume
 useFeature Movement
 //useFeature Cursor
 
-
-featCall Costume setCostume \"bunnies.json\" 1
+featCall Costume setCostume 'bunny_hungry.png' 0
 
 // set bunny energy
 addProp energyLevel Number 25
@@ -296,7 +342,7 @@ prop energyLevel setMax 50
 prop energyLevel setMin 0
 
 // to manage when it is full and releases waste
-addProp feeling String \"hungry\"
+addProp feeling String 'hungry'
 
 // used internally to delay waste release when full
 addProp wasteCountStart Number 0
@@ -325,6 +371,16 @@ featProp AgentWidgets meterColor setTo 65280
 
 prop zIndex setTo 110
 
+// ----------------------------------------------
+// add variables to cover distraction
+// ----------------------------------------------
+// counter - increment when hungry or distracted
+addProp distractionCounter Number 0
+// how long a distraction lasts (0 will skip it)
+addProp distractionLength Number 2
+// how long the focus lasts, during hunger, before we switch to distraction
+addProp focusLength Number 5
+
 # PROGRAM UPDATE
 
 ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
@@ -339,7 +395,6 @@ when Bunny touches Plant [[
 
     // if hungry, eat
     ifExpr {{ agent.getProp('feeling').value == 'hungry' }} [[
-      featCall Costume setCostume \"bunnies.json\" 1
 
       // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
       // Plant matter goes down as it is eaten, as does Plant energy
@@ -352,10 +407,10 @@ when Bunny touches Plant [[
 
       // if full, change costume and set timer to emit waste
       ifExpr {{ agent.getProp('energyLevel').value > 45 }} [[
-        featCall Costume setCostume \"bunnies.json\" 0
+        featCall Costume setCostume 'bunny_full.png' 0
 
         // set variables to be full and prepare to release waste
-        prop feeling setTo \"full\"
+        prop feeling setTo 'full'
         exprPush {{ agent.getProp('wasteCountStart').value }}
         propPop wasteCount
         featCall Bunny.Costume setGlow 0
@@ -369,14 +424,47 @@ when Bunny lastTouches Plant [[
 ]]
 
 every 1 runAtStart [[
+
+// increment distraction counter
+  prop distractionCounter add 1
+
+  // if you are hungry, and hit focus length, switch to distracted. 
+  ifExpr {{agent.getProp('feeling').value == 'hungry'}} [[
+    ifExpr {{ agent.getProp('distractionCounter').value >= agent.getProp('focusLength').value }} [[
+      
+      // we are now distracted so don't bother eating
+      prop feeling setTo 'distracted'
+      featCall Costume setCostume 'bunny_distracted.png' 0
+      prop distractionCounter setTo 0
+
+      // in case we were eating
+      featCall Costume setGlow 0
+
+    ]]
+  ]]
+  
+  // if you are distracted, and hit distracted length length, switch to hungry. 
+  ifExpr {{agent.getProp('feeling').value == 'distracted'}} [[
+      ifExpr {{ agent.getProp('distractionCounter').value >= agent.getProp('distractionLength').value }} [[
+        
+        // we are now distracted so don't bother eating
+        prop feeling setTo 'hungry'
+        featCall Costume setCostume 'bunny_hungry.png' 0
+        prop distractionCounter setTo 0
+        dbgOut 'we are now hungry'
+      ]]
+    ]]
+
   ifExpr {{ agent.getProp('feeling').value == 'full' }} [[
     ifExpr {{ agent.getProp('wasteCount').value == 0 }} [[
 
-      // STUDENTS_MAY_CHANGE - switching these numbers will change how bunnies produce waste [WORKS]
+      // STUDENTS_MAY_CHANGE - switching these numbers will change how bunnies produce waste
       prop energyLevel sub 20
       prop matter sub 20
-      prop feeling setTo \"hungry\"
-      featCall Costume setCostume \"bunnies.json\" 1
+      prop feeling setTo 'hungry'
+      featCall Costume setCostume 'bunny_hungry.png' 0
+      prop distractionCounter setTo 0
+
       featCall Population createAgent Waste [[
         // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
         prop x addRndInt -20 20
