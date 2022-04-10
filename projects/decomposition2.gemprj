@@ -495,7 +495,7 @@ every 1 runAtStart [[
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
   exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
-  featPropPop Physics scale  featPropPop Physics scale
+  featPropPop Physics scale
 
   // if the plant is basically dead
   ifExpr {{ agent.getProp('matter').value < 10 }} [[
