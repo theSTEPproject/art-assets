@@ -368,6 +368,7 @@ useFeature AgentWidgets
 featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
 featProp AgentWidgets meterColor setTo 65280
+featCall AgentWidgets setMeterPosition 'inside-left'
 
 prop zIndex setTo 110
 
