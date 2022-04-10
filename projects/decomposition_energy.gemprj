@@ -434,7 +434,8 @@ when EnergyRepresentation centerLastTouches Plant [[
   prop eType setTo 'producer'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the plant gives to a Bunny
-  prop Plant.energyLevel sub 25
+  // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+  prop Plant.energyLevel sub 10
   prop energyLevel add 25 
   // we are losing 25 of the hundred, so not that in the global
   featCall Global globalProp energyReleasedAsHeat add 25
