@@ -822,7 +822,7 @@ every 1 runAtStart [[
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo -12.40
+      "initScript": `prop x setTo 0
 prop y setTo -314.66`
     },
     {
