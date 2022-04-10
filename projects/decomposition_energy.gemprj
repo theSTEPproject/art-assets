@@ -411,7 +411,7 @@ when EnergyRepresentation centerFirstTouches Plant [[
   // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
   // as heat or lost in other ways
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'source'}} [[ 
-  prop eType setTo 'none'
+  prop eType setTo 'using'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun
   prop energyLevel setTo 0
@@ -463,7 +463,7 @@ when EnergyRepresentation centerFirstTouches Bunny [[
 
   // if the last thing we touched was a plant
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'producer'}} [[ 
-  prop eType setTo 'none'   
+  prop eType setTo 'using'   
 
   // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun, and what it does to the energy character
   prop energyLevel setTo 0
@@ -510,7 +510,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   // if the last thing we touched was a bunny
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'consumer'}} [[ 
-  prop eType setTo 'none'   
+  prop eType setTo 'using'   
 
   // set the energy on the waste, but then it'll get converted to matter
   prop energyLevel setTo 0
@@ -561,7 +561,7 @@ when EnergyRepresentation centerFirstTouches  Waste [[
 
   // if the last thing we touched was waste
   ifExpr {{EnergyRepresentation.getProp('eType').value == 'waste'}} [[ 
-  prop eType setTo 'none'   
+  prop eType setTo 'using'   
 
   // set the energy on the waste, but then it'll get converted to matter
   prop energyLevel setTo 0
