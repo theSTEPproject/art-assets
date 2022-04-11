@@ -179,7 +179,7 @@ prop matter setMax 100
 prop matter setMin 0
 
 useFeature Physics
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.2
 
 useFeature Touches
 featCall Touches monitor Waste b2b
@@ -358,7 +358,7 @@ prop matter setMin 0
 
 useFeature Physics
 
-featProp Physics scale setTo 0.3
+featProp Physics scale setTo 0.2
 
 useFeature Touches
 featCall Touches monitor Plant b2b

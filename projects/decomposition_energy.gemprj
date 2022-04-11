@@ -57,7 +57,7 @@ featProp Costume flipX setTo true
 
 
 useFeature Physics
-featProp Physics scale setTo 0.3
+featProp Physics scale setTo 0.2
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
 addProp eType String 'consumer'
@@ -128,7 +128,7 @@ useFeature Costume
 featCall Costume setCostume 'worm.json' 1
 
 useFeature Physics
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.2
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp eType String 'decomposer'
