@@ -1,0 +1,201 @@
+{
+  "id": "beeDissertation(v4)",
+  "label": "Starter Project",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Bee",
+      "label": "Bee",
+      "scriptText": `# BLUEPRINT Bee
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'bee.png' 
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.5
+      
+useFeature Movement
+featCall Movement setMovementType 'edgeToEdge' 1 0 180
+featProp Movement useAutoOrientation setTo true
+
+useFeature Touches
+featCall Touches monitor redFlower b2b
+featCall Touches monitor Hive b2b
+
+addProp nectarAmount Number 0
+prop nectarAmount setMax 100
+prop nectarAmount setMin 0
+
+addProp pollinateRed Boolean
+prop pollinateRed setTo false
+
+addProp redID Number
+prop redID setTo 0
+
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Bee'
+featCall AgentWidgets bindMeterTo nectarAmount
+
+# PROGRAM INIT 
+
+# PROGRAM EVENT
+
+# PROGRAM UPDATE
+
+//bee + red flower nectar exchange BUGGY
+when Bee touches redFlower [[
+\tevery 1 runAtStart [[
+\t\tfeatCall Bee.Costume setGlow 2
+        prop Bee.nectarAmount add 5
+        prop redFlower.nectarAmount sub 5
+        //setting pollination-related properties
+\t\tifExpr {{ Bee.getProp('pollinateRed').value == false}} [[
+\t\t\tfeatProp AgentWidgets text setTo 'pollinateRed is FALSE' 
+\t\t\tprop Bee.pollinateRed setTo true
+\t\t\tprop redID setTo redFlower.getProp('flowerID').value \t//currently assigning redID to object, not raw # value -- buggy
+\t\t]]
+\t]]
+]]
+
+//bee + red flower pollination / reproduction event BUGGY
+when Bee touches redFlower [[
+\tifExpr {{ Bee.redID != redFlower.flowerID && Bee.getProp('pollinateRed').value == true }} [[ 
+\t\tfeatProp AgentWidgets text setTo 'TRIGGERED' 
+\t\t//featCall Population createAgent redFlower [[
+\t\t\t//prop x addRndInt -50 50
+\t\t\t//prop y addRndInt -50 50
+\t\t\t//prop nectarAmount setTo 50
+\t\t\t//featProp Physics scale setTo .6
+\t\t//]]
+\t]]
+]]
+
+//bee + hive nectar exchange WORKING
+when Bee touches Hive [[
+\tevery 1 runAtStart [[
+\t\tifExpr {{ Bee.getProp('nectarAmount').value > 0}} [[
+\t\t\tfeatCall Bee.Costume setGlow 2
+\t\t\tprop Bee.nectarAmount sub 5
+\t\t\tprop Hive.nectarAmount add 5\t
+\t\t]] \t
+\t]]
+]]
+`
+    },
+    {
+      "id": "Hive",
+      "label": "Hive",
+      "scriptText": `# BLUEPRINT Hive
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'hive.png'
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.5
+
+useFeature Touches
+featCall Touches monitor Bee b2b
+
+addProp nectarAmount Number 0
+prop nectarAmount setMax 100
+prop nectarAmount setMin 0
+
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Hive'
+featCall AgentWidgets bindMeterTo nectarAmount`
+    },
+    {
+      "id": "redFlower",
+      "label": "redFlower",
+      "scriptText": `# BLUEPRINT redFlower
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'redFlower.png' 
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.5
+
+useFeature Touches
+featCall Touches monitor Bee b2b
+
+addProp nectarAmount Number 100 
+prop nectarAmount setMax 100
+prop nectarAmount setMin 0 
+
+addProp flowerID Number 0
+prop flowerID setToRnd 100 999
+
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Red Flower'
+featCall AgentWidgets bindMeterTo nectarAmount
+
+useFeature Population`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Bee0",
+      "bpid": "Bee",
+      "initScript": `prop x setTo -156.69
+prop y setTo -26.24`
+    },
+    {
+      "id": "1",
+      "label": "Hive1",
+      "bpid": "Hive",
+      "initScript": `prop x setTo -180.8
+prop y setTo 176.84
+prop scale setTo 0`
+    },
+    {
+      "id": "2",
+      "label": "redFlower2",
+      "bpid": "redFlower",
+      "initScript": `prop x setTo 18.79
+prop y setTo -26.36`
+    },
+    {
+      "id": "3",
+      "label": "Bee3",
+      "bpid": "Bee",
+      "initScript": `prop x setTo -115.04
+prop y setTo -186.68`
+    },
+    {
+      "id": "5",
+      "label": "redFlower5",
+      "bpid": "redFlower",
+      "initScript": `prop x setTo 252.71
+prop y setTo -218.3`
+    }
+  ]
+}

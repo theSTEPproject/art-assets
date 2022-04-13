@@ -1,0 +1,219 @@
+{
+  "id": "beeXtemplate",
+  "label": "Bees",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 9999,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Bee",
+      "label": "Bee",
+      "scriptText": `# BLUEPRINT Bee
+      # TAG isPozyxControllable true
+      # TAG isCharControllable true
+      # TAG isPTrackControllable false
+      # PROGRAM DEFINE
+      useFeature Costume
+      featCall Costume setCostume 'bee.json'
+      
+      //*********LOOK INTO LATER
+      //exprPush {{ agent.name }} //set agent names
+      //featPropPop AgentWidgets text
+      
+      useFeature Physics
+      featCall Physics init
+      featProp Physics scale setTo 1
+      
+      //faketrack, rotation, WORKING
+      useFeature Movement
+      featCall Movement setMovementType 'edgeToEdge' 1 0 180
+      featProp Movement useAutoOrientation setTo true
+      
+      useFeature Touches
+      featCall Touches monitor redFlower b2b
+      featCall Touches monitor Hive b2b
+      
+      
+      addProp nectarAmount Number 0
+      prop nectarAmount setMax 100
+      prop nectarAmount setMin 0
+      
+      addProp pollinateRed Boolean false
+      addProp redID String 'none'
+      
+      useFeature AgentWidgets
+      featProp AgentWidgets text setTo 'Bee'
+      featCall AgentWidgets bindMeterTo nectarAmount
+      
+      # PROGRAM INIT 
+      # PROGRAM EVENT
+      
+      # PROGRAM UPDATE
+      
+      //to be duplicated for all plants
+      when Bee touches redFlower [[
+       every 1 runAtStart [[
+          //bee + flower nectar exchange -- WORKING
+          featCall Bee.Costume setGlow 2
+        prop Bee.nectarAmount add 5
+        prop redFlower.nectarAmount sub 5
+        
+         //if a red flower has been visited before, and the current flower is different from that previous flower, spawn a new flower (pollination) -- BUGGY
+         ifExpr {{ Bee.redID != redFlower.flowerID && Bee.getProp('pollinateRed').value == true }} [[ 
+          featProp AgentWidgets text setTo 'TRIGGERED' 
+          //prop Bee.redID setTo 0
+          /* featCall Population createAgent redFlower [[
+                prop x addRndInt -50 50
+                 prop y addRndInt -50 50
+                prop nectarAmount setTo 50
+                 featProp Physics scale setTo .6
+             ]] */
+        ]]
+        
+        //if a redFlower has never been visited before, allow for red pollination (assign pollinateRed/redID) -- MAYBE BUGGY?
+        ifExpr {{ Bee.getProp('pollinateRed').value == false}} [[
+           prop Bee.pollinateRed setTo true
+           prop redID setTo redFlower.getProp('flowerID').value 	//currently assigning redID to object, not raw # value -- buggy
+         ]]
+         
+         //i know these two if-blocks shouldnt be in the ticker...but was getting an error otherwise :/ ^^
+       ]]
+      ]]
+      
+      //bee + hive nectar exchange
+      when Bee touches Hive [[
+       every 1 runAtStart [[
+         ifExpr {{ Bee.getProp('nectarAmount').value > 0}} [[
+            featCall Bee.Costume setGlow 2
+          prop Bee.nectarAmount sub 5
+          prop Hive.nectarAmount add 5	
+          ]] 	
+        ]]
+      ]]
+`
+    },
+    {
+      "id": "Hive",
+      "label": "Hive",
+      "scriptText": `# BLUEPRINT Hive
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'hive.json' 0
+featCall Costume setScale 1
+// useFeature Movement
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 1
+
+useFeature Touches
+featCall Touches monitor Bee b2b
+
+addProp nectarAmount Number 0
+prop nectarAmount setMax 100
+prop nectarAmount setMin 0
+
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Hive'
+featCall AgentWidgets bindMeterTo nectarAmount
+
+# PROGRAM EVENT
+// onEvent Tick [[ ]]
+
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]`
+    },
+    {
+      "id": "redFlower",
+      "label": "redFlower",
+      "scriptText": `# BLUEPRINT redFlower
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'flower.json' 0 // TWEAK ~~~~~~~
+featCall Costume setScale 1
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 1
+
+useFeature Touches
+featCall Touches monitor Bee b2b
+
+addProp nectarAmount Number 100 
+prop nectarAmount setMax 100
+prop nectarAmount setMin 0 
+
+addProp flowerID Number 0
+prop flowerID setToRnd 100 999
+
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Red Flower'
+featCall AgentWidgets bindMeterTo nectarAmount
+
+useFeature Population
+
+# PROGRAM EVENT
+
+# PROGRAM UPDATE
+//new flower spawns when a bee (that has already touched a red flower) touches red flower
+
+
+# PROGRAM INIT 
+
+
+ 
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "9",
+      "label": "Hive9",
+      "bpid": "Hive",
+      "initScript": `prop x setTo -213.10
+prop y setTo -233.82`
+    },
+    {
+      "id": "11",
+      "label": "Bee11",
+      "bpid": "Bee",
+      "initScript": `prop redID setTo 0
+prop nectarAmount setTo 0
+prop pollinateRed setTo false`
+    },
+    {
+      "id": "12",
+      "label": "redFlower12",
+      "bpid": "redFlower",
+      "initScript": `prop x setTo 105.94
+prop y setTo 4.25`
+    },
+    {
+      "id": "13",
+      "label": "redFlower13",
+      "bpid": "redFlower",
+      "initScript": `prop x setTo 277.87
+prop y setTo 12.83`
+    }
+  ]
+}
