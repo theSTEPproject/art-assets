@@ -398,7 +398,6 @@ addProp flowerID Number 0
 // set the id to the current count of agents so that it keeps incrementing
 exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'blueFlower') + 1 }}
 propPop flowerID
-dbgOut 'flowerID' {{agent.getProp('flowerID').value}}
 
 useFeature AgentWidgets
 featProp AgentWidgets text setTo 'Blue Flower'
