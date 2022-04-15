@@ -147,26 +147,29 @@ when Bee touches blueFlower [[
 //setting pollination-related properties for next flower
 when Bee lastTouches blueFlower [[
   ifExpr {{ Bee.getProp('pollinateBlue').value == false }} [[
-    // prop blueID setTo blueFlower.getProp('flowerID').value //BUG not assigning correctly
-    exprPush {{ blueFlower.getProp('flowerID').value }}
-    propPop blueID
+    // prop blueID setTo blueFlower.getProp('flowerID').value
     prop pollinateBlue setTo true
   ]]
+
+  // always set this ... that way you can always pollinate a different flower from this one and have to keep moving
+  exprPush {{ blueFlower.getProp('flowerID').value }}
+  propPop blueID
+
 ]]
 
 //pollination when new flower of same color is visited
 when Bee firstTouches blueFlower [[
-\tifExpr {{ Bee.getProp('pollinateBlue').value == true }} [[ //bee has visited color before
-\t\tifExpr {{ Bee.getProp('blueID').value != blueFlower.getProp('flowerID').value }} [[ // BUG ~ values not comparing correctly
-\t\t\tfeatCall Population createAgent blueFlower [[
-\t\t\t\tprop x addRndInt -50 50
-\t\t\t\tprop y addRndInt -50 50
-\t\t\t\tprop nectarAmount setTo 50
-\t\t\t\tfeatProp Physics scale setTo 0.25 
-\t\t\t]] 
-\t\t]] 
-\t]]
-\t//ifExpr {{ Bee.getProp('pollinateBlue').value == false }} [[ ]]
+  ifExpr {{ Bee.getProp('pollinateBlue').value == true }} [[ //bee has visited color before
+    ifExpr {{ Bee.getProp('blueID').value != blueFlower.getProp('flowerID').value }} [[ // BUG ~ values not comparing correctly
+      featCall Population createAgent blueFlower [[
+      prop x addRndInt -50 50
+      prop y addRndInt -50 50
+      prop nectarAmount setTo 50
+      featProp Physics scale setTo 0.25 
+    ]] 
+  ]] 
+]]
+//ifExpr {{ Bee.getProp('pollinateBlue').value == false }} [[ ]]
 ]]
 
 //RED FLOWER INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -388,16 +391,22 @@ addProp nectarAmount Number 100
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
 
+useFeature Population
+
 addProp flowerID Number 0
-prop flowerID setToRnd 100 999
+
+// set the id to the current count of agents so that it keeps incrementing
+exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'blueFlower') + 1 }}
+propPop flowerID
+dbgOut 'flowerID' {{agent.getProp('flowerID').value}}
 
 useFeature AgentWidgets
 featProp AgentWidgets text setTo 'Blue Flower'
 featCall AgentWidgets bindMeterTo nectarAmount
 
-useFeature Population
-
 # PROGRAM INIT
+
+
 `
     },
     {
