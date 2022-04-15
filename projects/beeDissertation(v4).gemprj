@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 0,
     "roundsCanLoop": true
   },
   "rounds": [],
@@ -30,7 +30,7 @@ featCall Costume setCostume 'bee.png'
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.3
       
 useFeature Movement
 featCall Movement setMovementType 'edgeToEdge' 1 0 180
@@ -537,99 +537,103 @@ useFeature Population
 
 # PROGRAM INIT
 `
+    },
+    {
+      "id": "background",
+      "label": "background",
+      "scriptText": `# BLUEPRINT background
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'background (filter).png' 0
+featCall Costume setScale 1
+// useFeature Movement
+# PROGRAM EVENT
+// onEvent Tick [[ ]]
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "Bee0",
-      "bpid": "Bee",
-      "initScript": `prop x setTo 15.69
-prop y setTo -25.14`
+      "label": "background0",
+      "bpid": "background",
+      "initScript": `prop x setTo -1.42
+prop y setTo 1.95
+prop scale setTo 0.8`
     },
     {
       "id": "1",
-      "label": "redFlower1",
-      "bpid": "redFlower",
-      "initScript": `prop x setTo -316.16
-prop y setTo -322.87`
+      "label": "blueFlower1",
+      "bpid": "blueFlower",
+      "initScript": `prop x setTo -265.80
+prop y setTo -111.06`
     },
     {
       "id": "2",
-      "label": "redFlower2",
-      "bpid": "redFlower",
-      "initScript": `prop x setTo 308.75
-prop y setTo 298.30`
+      "label": "yellowFlower2",
+      "bpid": "yellowFlower",
+      "initScript": `prop x setTo -330.85
+prop y setTo 10.72`
     },
     {
       "id": "3",
       "label": "blueFlower3",
       "bpid": "blueFlower",
-      "initScript": `prop x setTo -330.76
-prop y setTo 301.25`
+      "initScript": `prop x setTo -244.14
+prop y setTo 133.68`
     },
     {
-      "id": "5",
-      "label": "blueFlower5",
-      "bpid": "blueFlower",
-      "initScript": `prop x setTo 316.52
-prop y setTo -334.25`
+      "id": "4",
+      "label": "redFlower4",
+      "bpid": "redFlower",
+      "initScript": `prop x setTo -190.11
+prop y setTo 7.07`
+    },
+    {
+      "id": "6",
+      "label": "Hive6",
+      "bpid": "Hive",
+      "initScript": `prop x setTo 301.69
+prop y setTo -212.93`
     },
     {
       "id": "7",
-      "label": "squashVeggie7",
-      "bpid": "squashVeggie",
-      "initScript": `prop x setTo 50.17
-prop y setTo 304.15`
+      "label": "pumpVeggie7",
+      "bpid": "pumpVeggie",
+      "initScript": `prop x setTo 76.58
+prop y setTo 301.32`
     },
     {
       "id": "8",
       "label": "watermelonVeggie8",
       "bpid": "watermelonVeggie",
-      "initScript": `prop x setTo -199.93
-prop y setTo 294.42`
+      "initScript": `prop x setTo 170.77
+prop y setTo 104.67`
     },
     {
       "id": "9",
-      "label": "yellowFlower9",
-      "bpid": "yellowFlower",
-      "initScript": `prop x setTo 199.65
-prop y setTo -326.38`
+      "label": "squashVeggie9",
+      "bpid": "squashVeggie",
+      "initScript": `prop x setTo -35.24
+prop y setTo 123.20`
     },
     {
       "id": "10",
-      "label": "yellowFlower10",
-      "bpid": "yellowFlower",
-      "initScript": `prop x setTo 178.33
-prop y setTo 296.38`
+      "label": "pumpVeggie10",
+      "bpid": "pumpVeggie",
+      "initScript": `prop x setTo 324.65
+prop y setTo 294.78`
     },
     {
       "id": "11",
-      "label": "squashVeggie11",
-      "bpid": "squashVeggie",
-      "initScript": `prop x setTo -178.87
-prop y setTo -323.70`
-    },
-    {
-      "id": "12",
-      "label": "watermelonVeggie12",
-      "bpid": "watermelonVeggie",
-      "initScript": `prop x setTo 76.50
-prop y setTo -329.78`
-    },
-    {
-      "id": "13",
-      "label": "pumpVeggie13",
-      "bpid": "pumpVeggie",
-      "initScript": `prop x setTo -74.82
-prop y setTo 301.88`
-    },
-    {
-      "id": "14",
-      "label": "pumpVeggie14",
-      "bpid": "pumpVeggie",
-      "initScript": `prop x setTo -48.82
-prop y setTo -324.18`
+      "label": "Bee11",
+      "bpid": "Bee",
+      "initScript": `prop x setTo 31.99
+prop y setTo -99.49`
     }
   ]
 }
