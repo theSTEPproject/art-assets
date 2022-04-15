@@ -1,6 +1,6 @@
 {
   "id": "beeDissertation(v4)",
-  "label": "Starter Project",
+  "label": "Bee Dissertation",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -146,10 +146,12 @@ when Bee touches blueFlower [[
 
 //setting pollination-related properties for next flower
 when Bee lastTouches blueFlower [[
-\tifExpr {{ Bee.getProp('pollinateBlue').value == false }} [[
-\t\tprop blueID setTo blueFlower.getProp('flowerID').value //BUG not assigning correctly
-\t\tprop pollinateBlue setTo true
-\t]]
+  ifExpr {{ Bee.getProp('pollinateBlue').value == false }} [[
+    // prop blueID setTo blueFlower.getProp('flowerID').value //BUG not assigning correctly
+    exprPush {{ blueFlower.getProp('flowerID').value }}
+    propPop blueID
+    prop pollinateBlue setTo true
+  ]]
 ]]
 
 //pollination when new flower of same color is visited
