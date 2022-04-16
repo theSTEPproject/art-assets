@@ -35,17 +35,17 @@ featProp Physics scale setTo 0.3
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-// TODO: change to c2b? requires tweaking a centerFirstTouches
+// TODO: change to c2b? requires tweaking a centercenterFirstTouches
 
 useFeature Touches
-featCall Touches monitor redFlower b2b
-featCall Touches monitor blueFlower b2b
-featCall Touches monitor yellowFlower b2b
-featCall Touches monitor watermelonVeggie b2b
-featCall Touches monitor squashVeggie b2b
-featCall Touches monitor pumpVeggie b2b
+featCall Touches monitor redFlower c2b
+featCall Touches monitor blueFlower c2b
+featCall Touches monitor yellowFlower c2b
+featCall Touches monitor watermelonVeggie c2b
+featCall Touches monitor squashVeggie c2b
+featCall Touches monitor pumpVeggie c2b
 
-featCall Touches monitor Hive b2b
+featCall Touches monitor Hive c2b
 
 addProp nectarAmount Number 0
 prop nectarAmount setMax 100
@@ -108,8 +108,10 @@ addProp mode String 'user'
         // set it up to change later so the bounce isn't too redundant
         // change boundaries
 
+        // TODO: make the edgeToEdge speed a property 
+        
         prop mode setTo 'scout'
-        featCall Movement setMovementType 'edgeToEdge' 2 0 180
+        featCall Movement setMovementType 'edgeToEdge' 5 0 180
         featCall Movement setRandomDirection
         exprPush {{ 'Bee ' + (Bee.getProp('beeID').value - 1) }}
         featPropPop AgentWidgets text
@@ -118,7 +120,7 @@ addProp mode String 'user'
 
 # PROGRAM UPDATE
 //HIVE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-when Bee touches Hive [[
+when Bee centerTouches Hive [[
   every 1 runAtStart [[
     ifExpr {{ Bee.getProp('nectarAmount').value > 0}} [[
       featCall Bee.Costume setGlow 2
@@ -131,7 +133,7 @@ when Bee touches Hive [[
 
 //YELLOW FLOWER INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches yellowFlower [[
+when Bee centerTouches yellowFlower [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
@@ -140,7 +142,7 @@ when Bee touches yellowFlower [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches yellowFlower [[
+when Bee centerLastTouches yellowFlower [[
   featCall Bee.Costume setGlow 0
   prop pollinateYellow setTo true
 
@@ -153,7 +155,7 @@ when Bee lastTouches yellowFlower [[
 ]]
 
 //pollination when new flower of same color is visited
-  when Bee firstTouches yellowFlower [[
+  when Bee centerFirstTouches yellowFlower [[
     ifExpr {{ Bee.getProp('pollinateYellow').value == true }} [[ //bee has visited color before
       ifExpr {{ yellowFlower.getProp('generation').value == 1 && Bee.getProp('yellowID').value != yellowFlower.getProp('flowerID').value }} [[ 
         featCall Population createAgent yellowFlower [[
@@ -170,7 +172,7 @@ when Bee lastTouches yellowFlower [[
 
 //BLUE FLOWER INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches blueFlower [[
+when Bee centerTouches blueFlower [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
@@ -179,7 +181,7 @@ when Bee touches blueFlower [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches blueFlower [[
+when Bee centerLastTouches blueFlower [[
   featCall Bee.Costume setGlow 0
   prop pollinateBlue setTo true
 
@@ -193,7 +195,11 @@ when Bee lastTouches blueFlower [[
 ]]
 
 //pollination when new flower of same color is visited
-  when Bee firstTouches blueFlower [[
+  when Bee centerFirstTouches blueFlower [[
+
+    // found a flower, so pause ... 
+    featCall Movement setMovementType 'static'
+
     ifExpr {{ Bee.getProp('pollinateBlue').value == true }} [[ 
       ifExpr {{ blueFlower.getProp('generation').value == 1 &&  Bee.getProp('blueID').value != blueFlower.getProp('flowerID').value }} [[ 
         featCall Population createAgent blueFlower [[
@@ -209,7 +215,7 @@ when Bee lastTouches blueFlower [[
 
 //RED FLOWER INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches redFlower [[
+when Bee centerTouches redFlower [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
@@ -218,7 +224,7 @@ when Bee touches redFlower [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches redFlower [[
+when Bee centerLastTouches redFlower [[
   featCall Bee.Costume setGlow 0
   prop pollinateRed setTo true
 
@@ -231,7 +237,7 @@ when Bee lastTouches redFlower [[
 ]]
 
 //pollination when new flower of same color is visited
-when Bee firstTouches redFlower [[
+when Bee centerFirstTouches redFlower [[
   ifExpr {{ Bee.getProp('pollinateRed').value == true }} [[ //bee has visited color before
     ifExpr {{ redFlower.getProp('generation').value == 1 && Bee.getProp('redID').value != redFlower.getProp('flowerID').value }} [[ 
       featCall Population createAgent redFlower [[
@@ -248,7 +254,7 @@ when Bee firstTouches redFlower [[
 
 //PUMPKIN VEGGIE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches pumpVeggie [[
+when Bee centerTouches pumpVeggie [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
     prop Bee.nectarAmount add 5
@@ -257,7 +263,7 @@ when Bee touches pumpVeggie [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches pumpVeggie [[
+when Bee centerLastTouches pumpVeggie [[
   featCall Bee.Costume setGlow 0
   prop pollinatePump setTo true
 
@@ -270,7 +276,7 @@ when Bee lastTouches pumpVeggie [[
 ]]
 
 //pollination when new flower of same color is visited
-when Bee firstTouches pumpVeggie [[
+when Bee centerFirstTouches pumpVeggie [[
   ifExpr {{ Bee.getProp('pollinatePump').value == true }} [[ //bee has visited color before
     dbgOut 'here with pumpID: ' {{  Bee.getProp('pumpID').value }} ' and flowerID ' {{ pumpVeggie.getProp('flowerID').value }}
     ifExpr {{ pumpVeggie.getProp('generation').value == 1 && Bee.getProp('pumpID').value != pumpVeggie.getProp('flowerID').value }} [[ 
@@ -289,7 +295,7 @@ when Bee firstTouches pumpVeggie [[
 
 //WATERMELON VEGGIE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches watermelonVeggie [[
+when Bee centerTouches watermelonVeggie [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
@@ -298,7 +304,7 @@ when Bee touches watermelonVeggie [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches watermelonVeggie [[
+when Bee centerLastTouches watermelonVeggie [[
   featCall Bee.Costume setGlow 0
   prop pollinateWater setTo true
 
@@ -311,7 +317,7 @@ when Bee lastTouches watermelonVeggie [[
 ]]
 
 //pollination when new flower of same color is visited
-when Bee firstTouches watermelonVeggie [[
+when Bee centerFirstTouches watermelonVeggie [[
   ifExpr {{ Bee.getProp('pollinateWater').value == true }} [[ //bee has visited color before
     ifExpr {{ watermelonVeggie.getProp('generation').value == 1 && Bee.getProp('waterID').value != watermelonVeggie.getProp('flowerID').value }} [[ 
       featCall Population createAgent watermelonVeggie [[
@@ -328,7 +334,7 @@ when Bee firstTouches watermelonVeggie [[
 
 //SQUASH VEGGIE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //nectar exchange
-when Bee touches squashVeggie [[
+when Bee centerTouches squashVeggie [[
   every 1 runAtStart [[
     featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
@@ -337,7 +343,7 @@ when Bee touches squashVeggie [[
 ]]
 
 //setting pollination-related properties for next flower
-when Bee lastTouches squashVeggie [[
+when Bee centerLastTouches squashVeggie [[
   featCall Bee.Costume setGlow 0
   prop pollinateSquash setTo true
 
@@ -350,7 +356,7 @@ when Bee lastTouches squashVeggie [[
 ]]
 
 //pollination when new flower of same color is visited
-when Bee firstTouches squashVeggie [[
+when Bee centerFirstTouches squashVeggie [[
   ifExpr {{ Bee.getProp('pollinateSquash').value == true }} [[ //bee has visited color before
     ifExpr {{ squashVeggie.getProp('generation').value == 1 && Bee.getProp('squashID').value != squashVeggie.getProp('flowerID').value }} [[ 
       featCall Population createAgent squashVeggie [[
@@ -382,7 +388,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 // track hiveID in case we have more than one
 addProp hiveID Number 0
@@ -465,7 +471,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -505,7 +511,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -547,7 +553,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -587,7 +593,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -627,7 +633,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -667,7 +673,7 @@ featCall Physics init
 featProp Physics scale setTo 0.5
 
 useFeature Touches
-featCall Touches monitor Bee b2b
+featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
@@ -705,7 +711,7 @@ featCall Costume setScale 1
 # PROGRAM EVENT
 
 # PROGRAM UPDATE
-// when xxx touches yyy [[ ]]`
+`
     }
   ],
   "instances": [
@@ -721,8 +727,8 @@ prop scale setTo 0.8`
       "id": "1",
       "label": "blueFlower1",
       "bpid": "blueFlower",
-      "initScript": `prop x setTo -265.80
-prop y setTo -111.06`
+      "initScript": `prop x setTo 0.66
+prop y setTo -177.59`
     },
     {
       "id": "2",
@@ -735,15 +741,15 @@ prop y setTo 324.61`
       "id": "3",
       "label": "blueFlower3",
       "bpid": "blueFlower",
-      "initScript": `prop x setTo -307.43
-prop y setTo 54.86`
+      "initScript": `prop x setTo 103.69
+prop y setTo -31.38`
     },
     {
       "id": "4",
       "label": "redFlower4",
       "bpid": "redFlower",
-      "initScript": `prop x setTo 304.08
-prop y setTo -10.05`
+      "initScript": `prop x setTo 200.03
+prop y setTo 178.44`
     },
     {
       "id": "6",
@@ -764,8 +770,8 @@ prop y setTo 301.32`
       "id": "8",
       "label": "watermelonVeggie8",
       "bpid": "watermelonVeggie",
-      "initScript": `prop x setTo 170.77
-prop y setTo 104.67`
+      "initScript": `prop x setTo -338.67
+prop y setTo 234.34`
     },
     {
       "id": "9",
