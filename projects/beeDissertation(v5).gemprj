@@ -33,6 +33,7 @@ featCall Physics init
 featProp Physics scale setTo 0.3
       
 useFeature Movement
+featProp Movement useAutoOrientation setTo true
 
 useFeature Touches
 featCall Touches monitor redFlower b2b
@@ -97,10 +98,14 @@ addProp mode String 'user'
   onEvent Tick [[
       // if this is AI and set to start, start moving
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[ 
+       
+        // TODO: Make the random more consistently random
+        // set it up to change later so the bounce isn't too redundant
+        // change boundaries
+
         prop mode setTo 'scout'
-        featCall Movement setMovementType 'edgeToEdge' 1 0 180
+        featCall Movement setMovementType 'edgeToEdge' 2 0 180
         featCall Movement setRandomDirection
-        featProp Movement useAutoOrientation setTo true
         exprPush {{ 'Bee' + (Bee.getProp('beeID').value - 1) }}
         featPropPop AgentWidgets text
       ]]
@@ -678,7 +683,7 @@ featCall Costume setCostume 'background (filter).png' 0
 featCall Costume setScale 1
 // useFeature Movement
 # PROGRAM EVENT
-// onEvent Tick [[ ]]
+
 # PROGRAM UPDATE
 // when xxx touches yyy [[ ]]`
     }
@@ -703,8 +708,8 @@ prop y setTo -111.06`
       "id": "2",
       "label": "yellowFlower2",
       "bpid": "yellowFlower",
-      "initScript": `prop x setTo -121.93
-prop y setTo 343.61`
+      "initScript": `prop x setTo -127.61
+prop y setTo 324.61`
     },
     {
       "id": "3",
@@ -726,7 +731,7 @@ prop y setTo -10.05`
       "bpid": "Hive",
       "initScript": `prop x setTo 238.51
 prop y setTo -216.81
-prop aiBeeCount setTo 5`
+prop aiBeeCount setTo 0`
     },
     {
       "id": "7",
