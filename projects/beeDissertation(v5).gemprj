@@ -1,5 +1,5 @@
 {
-  "id": "beeDissertation(v4)",
+  "id": "beeDissertation(v5)",
   "label": "Bee Dissertation",
   "metadata": {
     "top": -400,
@@ -50,6 +50,10 @@ addProp nectarAmount Number 0
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0
 
+// this tracks the hive the bee belongs to. If it is 0, we assume kids control the bee and it can go anywhere. 
+// if it is a number, we assume code created the bee, and it will only go to its home hive
+addProp hiveID Number 0
+
 addProp pollinateRed Boolean
 prop pollinateRed setTo false
 addProp pollinateYellow Boolean
@@ -88,7 +92,7 @@ useFeature Population
 # PROGRAM EVENT
 
 # PROGRAM UPDATE
-//HIVER INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//HIVE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 when Bee touches Hive [[
   every 1 runAtStart [[
     ifExpr {{ Bee.getProp('nectarAmount').value > 0}} [[
@@ -354,6 +358,20 @@ featProp Physics scale setTo 0.5
 
 useFeature Touches
 featCall Touches monitor Bee b2b
+
+// track hiveID in case we have more than one
+addProp hiveID Number 0
+
+// number of AI bees to generate on runAtStart
+addProp aiBeeCount Number 0
+// set it separately so it'll appear in map editor - remove if that feature
+prop aiBeeCount setTo 0
+
+useFeature Population
+
+// set the id to the current count of agents so that it keeps incrementing 
+exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Hive') + 1 }} 
+propPop hiveID
 
 addProp nectarAmount Number 0
 prop nectarAmount setMax 100
@@ -662,10 +680,11 @@ prop y setTo -10.05`
     },
     {
       "id": "6",
-      "label": "Hive6",
+      "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop x setTo 301.69
-prop y setTo -212.93`
+prop y setTo -212.93
+prop aiBeeCount setTo 0`
     },
     {
       "id": "7",
