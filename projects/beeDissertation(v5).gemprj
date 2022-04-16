@@ -62,6 +62,9 @@ addProp pollinateSquash Boolean false
 addProp pollinateWater Boolean false
 addProp pollinatePump Boolean false
 
+addProp hiveX Number 0
+addProp hiveY Number 0
+
 addProp redID Number 0
 prop redID setTo 0
 addProp blueID Number 0
@@ -403,28 +406,43 @@ useFeature AgentWidgets
 featProp AgentWidgets text setTo 'Hive'
 featCall AgentWidgets bindMeterTo nectarAmount
 
+useFeature Global
+
+// setup a global variable so we can pass info into the creation of bees, but only do it once
+ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == undefined }} [[
+  featCall Global addGlobalProp hiveIDPassing Number 1
+]]
+
 # PROGRAM UPDATE
 every 0.1 runAtStart [[
 
   // Create ai bees if the count is > 0
   // NOTE: checking we have only 1 as a hack to avoid the bug that leads the start event to fire 3 times
   ifExpr {{ agent.getProp('aiBeeCount').value >  agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') }} [[ 
-    
-    // TODO finish
-    exprPush{{ Hive.getProp('aiBeeCount').value }} 
-    featPropPop Population targetPopulationSize
-    
-    featProp Population deleteAfterSpawning setTo true
 
-    featCall Population createAgent Bee [[
+  // send this hiveID to the global variable so we can grab it inside of createAgent  
+  exprPush {{ agent.getProp('hiveID').value }}
+  propPop global.hiveIDPassing
 
-        prop hiveID setTo 1 // change this to be dynamic so we can have multiple ids
-        exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }} 
-        propPop beeID
-        prop mode setTo 'start'
-        prop visible setTo true
+  featCall Population createAgent Bee [[
+        
+      // grab the hiveID we passed in, and set it to this bee's hiveID so we can check stuff later
+      exprPush {{global.getProp('hiveIDPassing').value}}
+      propPop hiveID  
 
-      ]]
+      // give it the next available ID, in order 
+      exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }}         propPop beeID
+        
+      // set to start mode so it'll switch to scouting (this is because a start event isn't called)
+      prop mode setTo 'start'
+
+      // set the hiveX and hiveY so we can go back to it later
+      // though we may need to update it in case the hive is move
+      exprPush {{ agent.x }}
+      propPop hiveX
+      exprPush {{ agent.y }}
+      propPop hiveY
+    ]]
   ]]
 ]]
 
