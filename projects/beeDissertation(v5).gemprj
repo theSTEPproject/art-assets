@@ -33,8 +33,6 @@ featCall Physics init
 featProp Physics scale setTo 0.3
       
 useFeature Movement
-featCall Movement setMovementType 'edgeToEdge' 1 0 180
-featProp Movement useAutoOrientation setTo true
 
 useFeature Touches
 featCall Touches monitor redFlower b2b
@@ -51,21 +49,15 @@ prop nectarAmount setMax 100
 prop nectarAmount setMin 0
 
 // this tracks the hive the bee belongs to. If it is 0, we assume kids control the bee and it can go anywhere. 
-// if it is a number, we assume code created the bee, and it will only go to its home hive
+// if it is a number, we assume code created the bee, and it will only go to its home hive 
 addProp hiveID Number 0
 
-addProp pollinateRed Boolean
-prop pollinateRed setTo false
-addProp pollinateYellow Boolean
-prop pollinateYellow setTo false
-addProp pollinateBlue Boolean
-prop pollinateBlue setTo false
-addProp pollinateSquash Boolean
-prop pollinateSquash setTo false
-addProp pollinateWater Boolean
-prop pollinateWater setTo false
-addProp pollinatePump Boolean
-prop pollinatePump setTo false
+addProp pollinateRed Boolean false
+addProp pollinateYellow Boolean false
+addProp pollinateBlue Boolean false
+addProp pollinateSquash Boolean false
+addProp pollinateWater Boolean false
+addProp pollinatePump Boolean false
 
 addProp redID Number 0
 prop redID setTo 0
@@ -80,16 +72,39 @@ prop waterID setTo 0
 addProp pumpID Number 0
 prop pumpID setTo 0
 
-
 useFeature AgentWidgets
 // featProp AgentWidgets text setTo 'Bee'
 featCall AgentWidgets bindMeterTo nectarAmount
 
 useFeature Population
 
-# PROGRAM INIT 
+addProp beeID Number 1
 
-# PROGRAM EVENT
+// mode to determine what AI bees do
+// if the mode is set to user, which is the default, assume the AI shouldn't do anything because it is controlled
+// via pozyx or ptrack. so we need to set the mode to something else if spawned by a hive
+// all modes
+  // user: controlled by a user, so no AI 
+  // forage: get the nectar it knows about
+  // scout: look for a new flower
+  // dance: dance so other bees know about nectar
+  // watch: watch for dance, then likely switch to forwage or scout 
+
+addProp mode String 'user'
+
+# PROGRAM EVENT 
+
+  onEvent Tick [[
+      // if this is AI and set to start, start moving
+      ifExpr {{ agent.getProp('mode').value == 'start' }} [[ 
+        prop mode setTo 'scout'
+        featCall Movement setMovementType 'edgeToEdge' 1 0 180
+        featCall Movement setRandomDirection
+        featProp Movement useAutoOrientation setTo true
+        exprPush {{ 'Bee' + (Bee.getProp('beeID').value - 1) }}
+        featPropPop AgentWidgets text
+      ]]
+    ]]
 
 # PROGRAM UPDATE
 //HIVE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -379,7 +394,34 @@ prop nectarAmount setMin 0
 
 useFeature AgentWidgets
 featProp AgentWidgets text setTo 'Hive'
-featCall AgentWidgets bindMeterTo nectarAmount`
+featCall AgentWidgets bindMeterTo nectarAmount
+
+# PROGRAM EVENT
+onEvent Start [[
+
+  // Create ai bees if the count is > 0
+  // NOTE: checking we have only 1 as a hack to avoid the bug that leads the start event to fire 3 times
+  ifExpr {{ agent.getProp('aiBeeCount').value > 0 && agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') == 1 }} [[ 
+    
+    // TODO finish
+    exprPush{{ Hive.getProp('aiBeeCount').value }} 
+    featPropPop Population targetPopulationSize
+    
+    featProp Population deleteAfterSpawning setTo true
+
+    featCall Population populateBySpawning Bee [[
+
+        prop hiveID setTo 1 // change this to be dynamic so we can have multiple ids
+        exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee')}} 
+        propPop beeID
+        prop mode setTo 'start'
+        prop visible setTo true
+
+      ]]
+  ]]
+]]
+
+`
     },
     {
       "id": "redFlower",
@@ -682,9 +724,9 @@ prop y setTo -10.05`
       "id": "6",
       "label": "Hive",
       "bpid": "Hive",
-      "initScript": `prop x setTo 301.69
-prop y setTo -212.93
-prop aiBeeCount setTo 0`
+      "initScript": `prop x setTo 238.51
+prop y setTo -216.81
+prop aiBeeCount setTo 5`
     },
     {
       "id": "7",
@@ -713,6 +755,14 @@ prop y setTo 123.20`
       "bpid": "pumpVeggie",
       "initScript": `prop x setTo 324.65
 prop y setTo 294.78`
+    },
+    {
+      "id": "11",
+      "label": "Starting Bee",
+      "bpid": "Bee",
+      "initScript": `prop x setTo 238.06
+prop y setTo -228.67
+prop visible setTo false`
     }
   ]
 }
