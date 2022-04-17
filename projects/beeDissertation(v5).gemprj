@@ -107,7 +107,7 @@ addProp mode String 'user'
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[  
        
         // TODO: 
-        // change boundaries
+        // change boundaries to work ??
         // make the edgeToEdge speed a property 
         // change random direction if the bee returns to the hive empty handed as an AI
         
@@ -133,6 +133,12 @@ when Bee centerTouches Hive [[
       prop Bee.nectarAmount sub 5
       prop Hive.nectarAmount add 5 
     ]] 
+      
+      ifExpr {{ Bee.getProp('mode').value == 'returning' }} [[ 
+        featCall Movement setMovementType 'static'
+        dbgOut 'returned to hive and got there'
+      ]]
+
   ]]
 ]]
 
@@ -186,6 +192,8 @@ when Bee centerTouches blueFlower [[
       featCall Bee.Costume setGlow 2
       prop Bee.nectarAmount add 5
       prop blueFlower.nectarAmount sub 5
+
+      //TODO: add a queueTarget call and hop over to the middle of the flower?
    ]]
 
     // TODO: note that this means we can't change the max with changing the 20 here .. would be nice to check
@@ -204,7 +212,6 @@ when Bee centerTouches blueFlower [[
         featPropPop Movement targetY
        
         featCall Movement setMovementType 'goLocation' 3
-        // TODO: handle when we get back to the hive
       ]]
     ]]
   ]]
