@@ -31,11 +31,11 @@ featCall Costume setCostume 'bee.png'
 useFeature Physics
 featCall Physics init
 featProp Physics scale setTo 0.3
-      
+
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-// TODO: change to c2b? requires tweaking a centercenterFirstTouches
+// TODO: indicate nectar quality in some way?
 
 useFeature Touches
 featCall Touches monitor redFlower c2b
@@ -104,11 +104,12 @@ addProp mode String 'user'
 
   onEvent Tick [[
       // if this is AI and set to start, start moving
-      ifExpr {{ agent.getProp('mode').value == 'start' }} [[ 
+      ifExpr {{ agent.getProp('mode').value == 'start' }} [[  
        
         // TODO: 
         // change boundaries
         // make the edgeToEdge speed a property 
+        // change random direction if the bee returns to the hive empty handed as an AI
         
         prop mode setTo 'scout'
         featCall Movement setMovementType 'edgeToEdge' 5 0 180
@@ -194,7 +195,16 @@ when Bee centerTouches blueFlower [[
       // and you max out on nectar, switch to heading back
       ifExpr {{ Bee.getProp('nectarAmount').value == 20 }} [[
         prop mode setTo 'returning'
-        dbgOut 'returning to hive ... '
+
+        // set the x and y of the hive, then go there
+        exprPush {{Bee.getProp('hiveX').value}}
+        featPropPop Movement targetX
+
+        exprPush {{Bee.getProp('hiveY').value}}
+        featPropPop Movement targetY
+       
+        featCall Movement setMovementType 'goLocation' 3
+        // TODO: handle when we get back to the hive
       ]]
     ]]
   ]]
@@ -782,25 +792,11 @@ prop scale setTo 0.8`
 prop y setTo -177.59`
     },
     {
-      "id": "2",
-      "label": "yellowFlower2",
-      "bpid": "yellowFlower",
-      "initScript": `prop x setTo -127.61
-prop y setTo 324.61`
-    },
-    {
       "id": "3",
       "label": "blueFlower3",
       "bpid": "blueFlower",
-      "initScript": `prop x setTo 103.69
-prop y setTo -31.38`
-    },
-    {
-      "id": "4",
-      "label": "redFlower4",
-      "bpid": "redFlower",
-      "initScript": `prop x setTo 200.03
-prop y setTo 178.44`
+      "initScript": `prop x setTo 331.55
+prop y setTo 7.13`
     },
     {
       "id": "6",
@@ -812,31 +808,25 @@ prop aiBeeCount setTo 5`
     },
     {
       "id": "7",
-      "label": "pumpVeggie7",
-      "bpid": "pumpVeggie",
-      "initScript": `prop x setTo 76.58
-prop y setTo 301.32`
+      "label": "blueFlower7",
+      "bpid": "blueFlower",
+      "initScript": `prop x setTo 192.55
+prop y setTo 271.17`
     },
     {
       "id": "8",
-      "label": "watermelonVeggie8",
-      "bpid": "watermelonVeggie",
-      "initScript": `prop x setTo -338.67
-prop y setTo 234.34`
+      "label": "blueFlower8",
+      "bpid": "blueFlower",
+      "initScript": `prop x setTo 68.36
+prop y setTo -12.61
+prop nectarQuality setTo 0`
     },
     {
       "id": "9",
-      "label": "squashVeggie9",
-      "bpid": "squashVeggie",
-      "initScript": `prop x setTo -35.24
-prop y setTo 123.20`
-    },
-    {
-      "id": "10",
-      "label": "pumpVeggie10",
-      "bpid": "pumpVeggie",
-      "initScript": `prop x setTo 324.65
-prop y setTo 294.78`
+      "label": "blueFlower9",
+      "bpid": "blueFlower",
+      "initScript": `prop x setTo -177.59
+prop y setTo -52.10`
     }
   ]
 }
