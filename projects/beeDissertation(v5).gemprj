@@ -48,7 +48,7 @@ featCall Touches monitor pumpVeggie c2b
 featCall Touches monitor Hive c2b
 
 addProp nectarAmount Number 0
-prop nectarAmount setMax 100
+prop nectarAmount setMax 20
 prop nectarAmount setMin 0
 
 // this tracks the hive the bee belongs to. If it is 0, we assume kids control the bee and it can go anywhere. 
@@ -408,6 +408,10 @@ addProp nectarAmount Number 0
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0
 
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
+
 useFeature AgentWidgets
 featProp AgentWidgets text setTo 'Hive'
 featCall AgentWidgets bindMeterTo nectarAmount
@@ -477,6 +481,10 @@ addProp nectarAmount Number 100
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
 
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
+
 addProp generation Number 1
 
 useFeature Population
@@ -516,6 +524,10 @@ featCall Touches monitor Bee c2b
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
+
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
 
 addProp generation Number 1
 
@@ -559,6 +571,10 @@ addProp nectarAmount Number 100
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
 
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
+
 addProp generation Number 1
 
 useFeature Population
@@ -598,6 +614,10 @@ featCall Touches monitor Bee c2b
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
+
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
 
 addProp generation Number 1
 
@@ -639,6 +659,10 @@ addProp nectarAmount Number 100
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
 
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
+
 addProp generation Number 1
 
 useFeature Population
@@ -678,6 +702,10 @@ featCall Touches monitor Bee c2b
 addProp nectarAmount Number 100 
 prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
+
+addProp nectarQuality Number 3
+prop nectarQuality setMax 5
+prop nectarQuality setMin 1
 
 addProp generation Number 1
 
