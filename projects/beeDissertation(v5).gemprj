@@ -669,7 +669,7 @@ every 1 runAtStart [[
   featPropPop AgentWidgets text 
 ]]
 
-every 0.1 runAtStart [[
+every 0.5 runAtStart [[
 
   // Create ai bees if the count is > 0
   // NOTE: checking we have only 1 as a hack to avoid the bug that leads the start event to fire 3 times
@@ -1037,7 +1037,7 @@ prop y setTo 3.18`
       "bpid": "Hive",
       "initScript": `prop x setTo 238.51
 prop y setTo -216.81
-prop aiBeeCount setTo 0`
+prop aiBeeCount setTo 5`
     },
     {
       "id": "7",
