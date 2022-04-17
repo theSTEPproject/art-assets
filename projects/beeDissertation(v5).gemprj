@@ -110,14 +110,16 @@ addProp watchingCounter Number 0
   // collecting: while grabbing the nectar at a flower
   // returning: we should head back to the hive
 
+  addProp mode String 'user'
+
   // give it the next available ID, in order 
   exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }}         
   propPop beeID
 
-  exprPush {{ 'Bee ' + (agent.getProp('beeID').value) }}
-  featPropPop AgentWidgets text
-
-  addProp mode String 'user'
+  ifExpr {{ agent.getProp('mode').value != 'user'}} [[
+    exprPush {{ 'Bee ' + (agent.getProp('beeID').value) }}
+    featPropPop AgentWidgets text
+    ]]
 
 # PROGRAM EVENT 
 
@@ -161,6 +163,12 @@ when Bee centerLastTouches Hive [[
   prop visitedY setTo 0
   prop visitedAmount setTo 0
   prop visitedQuality setTo 0
+
+  // if the user was also dancing, have them stop when they leave
+  ifExpr {{Bee.getProp('mode').value == 'user-dancing'}} [[
+      prop mode setTo 'user'
+      prop Hive.dancingBeesCounter sub 1
+    ]]
 ]]
 
 when Bee centerTouches Hive [[
@@ -171,6 +179,14 @@ when Bee centerTouches Hive [[
       prop Hive.nectarAmount add 5 
     ]] 
       
+    // if it's the user, and they have decent nectar, have them dance too
+    ifExpr {{Bee.getProp('mode').value == 'user'}} [[
+      ifExpr {{ Bee.getProp('visitedAmount').value >= 40 && Bee.getProp('visitedQuality').value >= 3}} [[
+        prop mode setTo 'user-dancing'
+        prop Hive.dancingBeesCounter add 1
+      ]]
+    ]]
+
     ifExpr {{ Bee.getProp('mode').value == 'returning' }} [[ 
 
         featCall Movement setMovementType 'static'
@@ -227,18 +243,41 @@ when Bee centerTouches Hive [[
 
     ifExpr {{ Bee.getProp('mode').value == 'watching' }} [[ 
 
-        // TODO: handle the rest of what to do when watching for a dance
-          // if we are watching, look for dancing or user-dancing (user controlled that had a decent amount of nectar)
-          // if we find one, switch to foraging
-          // if we watcch for a while and nothing, then go ahead and switch to scouting 
-          // modify so that if a bee is heading to something it knows of (foraging) it might stop if it finds something good
+        dbgOut 'inside watching'
 
-          // we hit 0 on watching, so just go scout
-          prop watchingCounter sub 1
-          ifExpr {{ agent.getProp('watchingCounter').value == 0 }} [[
-            // use start because it will switch to scout on the tick and keep that code all in one spot
-            prop mode setTo 'start'
+        // set to 0 so we can check if they got changed 
+        prop global.flowerXPassing setTo 0
+        prop global.flowerYPassing setTo 0
+
+        featCall Population agentsForEach Bee [[
+
+          ifExpr {{Bee.getProp('mode').value == 'dancing' || Bee.getProp('mode').value == 'user-dancing'}} [[
+              exprPush {{ Bee.getProp('visitedX').value }}
+              propPop global.flowerXPassing
+
+              exprPush {{ Bee.getProp('visitedY').value }}
+              propPop global.flowerYPassing
           ]]
+          
+          // if someone was dancing, have our watcher go there, if not keep watching in case someone appears
+          ifExpr {{ global.flowerXPassing != 0 }} [[
+
+            exprPush {{ global.getProp('flowerXPassing').value }}
+            propPop targetX
+            exprPush {{ global.getProp('flowerYPassing').value }}
+            propPop targetY
+            prop mode setTo 'foraging'
+          ]]
+        ]]
+
+
+        ifExpr {{ agent.getProp('watchingCounter').value == 0 }} [[
+          // use start because it will switch to scout on the tick and keep that code all in one spot
+          prop mode setTo 'start'
+        ]]
+
+        // we hit 0 on watching, so just go scout
+        prop watchingCounter sub 1
     ]] 
     // --- watching
 
@@ -368,10 +407,14 @@ when Bee centerLastTouches blueFlower [[
   when Bee centerFirstTouches blueFlower [[
 
     // if you are AI, found a flower, so pause to get the nectar if it has quality  of medium or higher (3-5)
-    ifExpr {{ Bee.getProp('mode').value == 'scouting' || Bee.getProp('mode').value == 'foraging'}} [[ 
+    ifExpr {{ Bee.getProp('mode').value == 'scouting' || Bee.getProp('mode').value == 'foraging' ||  Bee.getProp('mode').value == 'user' }} [[ 
       ifExpr {{ blueFlower.getProp('nectarQuality').value >= 3}} [[
-        featCall Movement setMovementType 'static'
-        prop mode setTo 'collecting'
+
+        // we are using user above for the values below, so this makes sure we only change non-user bees' mode
+        ifExpr {{ Bee.getProp('mode').value != 'user'}} [[
+          featCall Movement setMovementType 'static'
+          prop mode setTo 'collecting'
+        ]]
         
         // remember this location and other info so we can dance and / or come back later 
         // we only remember the last one, but assume we wouldn't move on if we didn't need it
@@ -612,6 +655,10 @@ useFeature Global
 // setup a global variable so we can pass info into the creation of bees, but only do it once
 ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == undefined }} [[
   featCall Global addGlobalProp hiveIDPassing Number 1
+
+  // use this global in the bee dance watching
+  featCall Global addGlobalProp flowerXPassing Number 0
+  featCall Global addGlobalProp flowerYPassing Number 0
 ]]
 
 # PROGRAM UPDATE
@@ -990,7 +1037,7 @@ prop y setTo 3.18`
       "bpid": "Hive",
       "initScript": `prop x setTo 238.51
 prop y setTo -216.81
-prop aiBeeCount setTo 1`
+prop aiBeeCount setTo 0`
     },
     {
       "id": "7",
