@@ -95,6 +95,8 @@ addProp beeID Number 1
   // scout: look for a new flower
   // dance: dance so other bees know about nectar
   // watch: watch for dance, then likely switch to forwage or scout 
+  // collecting: while grabbing the nectar at a flower
+  // returning: we should head back to the hive
 
 addProp mode String 'user'
 
@@ -104,15 +106,18 @@ addProp mode String 'user'
       // if this is AI and set to start, start moving
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[ 
        
-        // TODO: Make the random more consistently random
-        // set it up to change later so the bounce isn't too redundant
+        // TODO: 
         // change boundaries
-
-        // TODO: make the edgeToEdge speed a property 
+        // make the edgeToEdge speed a property 
         
         prop mode setTo 'scout'
         featCall Movement setMovementType 'edgeToEdge' 5 0 180
         featCall Movement setRandomDirection
+
+        // give it the next available ID, in order 
+        exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }}         
+        propPop beeID
+
         exprPush {{ 'Bee ' + (Bee.getProp('beeID').value - 1) }}
         featPropPop AgentWidgets text
       ]]
@@ -174,9 +179,24 @@ when Bee centerLastTouches yellowFlower [[
 //nectar exchange
 when Bee centerTouches blueFlower [[
   every 1 runAtStart [[
-    featCall Bee.Costume setGlow 2
-        prop Bee.nectarAmount add 5
-        prop blueFlower.nectarAmount sub 5
+
+   // only grab nectar if you aren't full
+   ifExpr {{ Bee.getProp('nectarAmount').value < 20 }} [[
+      featCall Bee.Costume setGlow 2
+      prop Bee.nectarAmount add 5
+      prop blueFlower.nectarAmount sub 5
+   ]]
+
+    // TODO: note that this means we can't change the max with changing the 20 here .. would be nice to check
+
+    // if you are AI and collecting 
+    ifExpr {{ Bee.getProp('mode').value == 'collecting' }} [[ 
+      // and you max out on nectar, switch to heading back
+      ifExpr {{ Bee.getProp('nectarAmount').value == 20 }} [[
+        prop mode setTo 'returning'
+        dbgOut 'returning to hive ... '
+      ]]
+    ]]
   ]]
 ]]
 
@@ -197,9 +217,15 @@ when Bee centerLastTouches blueFlower [[
 //pollination when new flower of same color is visited
   when Bee centerFirstTouches blueFlower [[
 
-    // found a flower, so pause ... 
-    featCall Movement setMovementType 'static'
+    // if you are AI, found a flower, so pause to get the nectar if it has quality  of medium or higher (3-5)
+    ifExpr {{ Bee.getProp('mode').value == 'scout' }} [[ 
+      ifExpr {{ blueFlower.getProp('nectarQuality').value >= 3}} [[
+        featCall Movement setMovementType 'static'
+        prop mode setTo 'collecting'
+      ]]
+    ]]
 
+    // grab some pollen whether you stop or not, since you checked it out ... 
     ifExpr {{ Bee.getProp('pollinateBlue').value == true }} [[ 
       ifExpr {{ blueFlower.getProp('generation').value == 1 &&  Bee.getProp('blueID').value != blueFlower.getProp('flowerID').value }} [[ 
         featCall Population createAgent blueFlower [[
@@ -439,9 +465,6 @@ every 0.1 runAtStart [[
       // grab the hiveID we passed in, and set it to this bee's hiveID so we can check stuff later
       exprPush {{global.getProp('hiveIDPassing').value}}
       propPop hiveID  
-
-      // give it the next available ID, in order 
-      exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }}         propPop beeID
         
       // set to start mode so it'll switch to scouting (this is because a start event isn't called)
       prop mode setTo 'start'
