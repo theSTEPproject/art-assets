@@ -292,35 +292,41 @@ when Bee centerTouches Hive [[
 when Bee centerTouches Flower [[
   every 1 runAtStart [[
 
-   // only grab nectar if you aren't full and there is some! 
+   // ------------------------------------------------------------------------
+   // AI or NOT AI, if you are not full and there is some food left, take some 
    ifExpr {{ Bee.getProp('nectarAmount').value < 20 }} [[
-      ifExpr {{ Flower.getProp('nectarAmount').value > 5 }} [[ 
+      ifExpr {{ Flower.getProp('nectarAmount').value >= 5 }} [[ 
         featCall Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
         prop Flower.nectarAmount sub 5
-
-        // if the nectar is low, we are collecting, and we aren't full, scout some more 
-        ifExpr {{  Bee.getProp('mode').value == 'collecting' }} [[
-          ifExpr {{  Flower.getProp('nectarAmount').value <= 5 }} [[
-            prop mode setTo 'scouting'
-          ]]
         ]]
+        // >5 nectar
       ]]
-      // >5 nectar
+      // ifExpr {{ Bee.getProp('nectarAmount').value < 20 }}
 
-      // TODO NEED TO DO MORE 
-
-    ]]
-    // ifExpr {{ Bee.getProp('nectarAmount').value < 20 }}
-
-    //TODO: add a queueTarget call and hop over to the middle of the flower?
-
-    // if you are AI and collecting  or the flower is out 
+    // ------------------------------------------------------------------------
+    // if you ARE AI (not user controlled)
     ifExpr {{ Bee.getProp('mode').value == 'collecting' }} [[ 
-      // and you max out on nectar, or the flowe is basically out, switch to heading back
+      // maxed out, switch to returning
       ifExpr {{ Bee.getProp('nectarAmount').value == 20 }} [[
         prop mode setTo 'returning'
+      ]]
 
+      // if the flower is running low, and you are middle / high, returning
+      ifExpr {{ Flower.getProp('nectarAmount').value <= 5 && Bee.getProp('nectarAmount').value > 10 }} [[
+        prop mode setTo 'returning'
+      ]]
+
+      // if the flowe is running low and you are low, switch to scouting
+       ifExpr {{ Flower.getProp('nectarAmount').value <= 5 && Bee.getProp('nectarAmount').value <= 10 }} [[
+        prop mode setTo 'returning'
+      ]]
+
+    ]]
+    // if 'collecting'
+
+    // do returning separately so that we fall through and only need to write that code once 
+    ifExpr {{ Bee.getProp('mode').value == 'returning' }} [[
         // set the x and y of the hive, then go there
         exprPush {{Bee.getProp('hiveX').value}}
         featPropPop Movement targetX
@@ -329,7 +335,6 @@ when Bee centerTouches Flower [[
         featPropPop Movement targetY
        
         featCall Movement setMovementType 'goLocation' 3
-      ]]
     ]]
   ]]
 ]]
@@ -355,6 +360,7 @@ when Bee centerLastTouches Flower [[
 ]]
 
 when Bee centerFirstTouches Flower [[
+  //TODO: add a queueTarget call and hop over to the middle of the flower?
 
   // track how many bees are at the flower so that we can re-hide (if that is set) upon leaving
   prop Flower.currentVisitorCount add 1
