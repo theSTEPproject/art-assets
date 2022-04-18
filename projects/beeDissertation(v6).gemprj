@@ -722,7 +722,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo true
+prop visible setTo false
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
