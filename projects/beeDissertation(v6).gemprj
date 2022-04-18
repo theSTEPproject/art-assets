@@ -48,22 +48,30 @@ prop nectarAmount setMin 0
 // if it is a number, we assume code created the bee, and it will only go to its home hive 
 addProp hiveID Number 0
 
+// where is our hive located?
+addProp hiveX Number 0
+addProp hiveY Number 0
+
+// remember if we are pollinating this color or not (might be redundant if we use the ID cleverly?)
 addProp pollinateRed Boolean false
 addProp pollinateYellow Boolean false
 addProp pollinateBlue Boolean false
 addProp pollinateSquash Boolean false
-addProp pollinateWater Boolean false
-addProp pollinatePump Boolean false
+addProp pollinateWaterMelon  Boolean false
+addProp pollinatePumpkin Boolean false
 
-addProp hiveX Number 0
-addProp hiveY Number 0
-
+// what was the last flower of a given color that we visited so that we don't self-pollinate
+// future iterations might use a separate variable for self-pollination
 addProp redID Number 0
 addProp blueID Number 0
 addProp yellowID Number 0
 addProp squashID Number 0
-addProp waterID Number 0
-addProp pumpID Number 0
+addProp watermelonID Number 0
+addProp pumpkinID Number 0
+
+// temp variables so that we can dynamically access the stuff above?
+addProp pollinatedColor Boolean false
+addProp pollinatedID Number 0
 
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo nectarAmount
@@ -349,13 +357,57 @@ when Bee centerTouches Flower [[
 //setting pollination-related properties for next Flower
 when Bee centerLastTouches Flower [[
   featCall Bee.Costume setGlow 0
-  prop pollinateBlue setTo true
+  
+ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
+   prop pollinateBlue setTo true
+]]
+ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
+   prop pollinateRed setTo true
+ ]]
+ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+ prop pollinateYellow setTo true
+]]
+ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
+ prop pollinateSquash setTo true
+]]
+ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
+ prop pollinatePumpkin setTo true
+]]
+ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
+   prop pollinateWaterMelon  setTo true
+
+]]
+
+
 
   // always set this ... that way you can always pollinate a different flower from this one and have to keep moving
   // for now, only if it is generation 1 so that we don't see baby flowers triggering new generations
   ifExpr {{ Flower.getProp('generation').value == 1 }} [[
-    exprPush {{ Flower.getProp('flowerID').value }}
-    propPop blueID
+        
+    ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop blueID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop redID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop yellowID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop squashID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop pumpkinID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
+        exprPush {{ Flower.getProp('flowerID').value }}
+        propPop watermelonID
+    ]]
   ]]
 
   // if rehide is set, and this is the last visitor, hide it
@@ -412,17 +464,61 @@ when Bee centerFirstTouches Flower [[
       ]]
     ]]
 
-    // grab some pollen whether you stop or not, since you checked it out ... 
-    // TODO: make sure we create the corret new flowers , and change the pollinate info as needed
 
-    ifExpr {{ Flower.getProp('spawnNewFlowers').value == true && Bee.getProp('pollinateBlue').value == true }} [[ 
-      ifExpr {{ Flower.getProp('generation').value == 1 &&  Bee.getProp('blueID').value != Flower.getProp('flowerID').value }} [[ 
+    // setup 
+
+    ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
+      exprPush {{ Bee.getProp('pollinateBlue').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('blueID').value }}
+      propPop pollinatedID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
+      exprPush {{ Bee.getProp('pollinateRed').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('redID').value }}
+      propPop pollinatedID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+      exprPush {{ Bee.getProp('pollinateYellow').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('yellowID').value }}
+      propPop pollinatedID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
+      exprPush {{ Bee.getProp('pollinateSquash').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('squashID').value }}
+      propPop pollinatedID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
+      exprPush {{ Bee.getProp('pollinatePumpkin').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('pumpkinID').value }}
+      propPop pollinatedID
+    ]]
+    ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
+      exprPush {{ Bee.getProp('pollinateWaterMelon').value }}
+      propPop pollinatedColor
+      exprPush {{ Bee.getProp('watermelonID').value }}
+      propPop pollinatedID
+    ]]
+
+    // grab some pollen whether you stop or not, since you checked it out ... 
+    ifExpr {{ Flower.getProp('spawnNewFlowers').value == true && Bee.getProp('pollinatedColor').value == true }} [[ 
+
+      exprPush {{ Flower.getProp('baseType').value }}
+      propPop global.baseTypePassing
+
+      ifExpr {{ Flower.getProp('generation').value == 1 &&  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value }} [[ 
         featCall Population createAgent Flower [[
         prop x addRndInt -50 50
         prop y addRndInt -50 50
         prop nectarAmount setTo 50
         featProp Physics scale setTo 0.25
         prop generation setTo 2 
+        exprPush {{global.getProp('baseTypePassing').value}} 
+        propPop baseType
       ]] 
     ]] 
   ]]
@@ -492,6 +588,9 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == und
   // for updating the hive counts to display 
   featCall Global addGlobalProp dancingBeesCounter Number 0
   featCall Global addGlobalProp watchingBeesCounter Number 0
+
+  // to create flowers of a specific type 
+  featCall Global addGlobalProp baseTypePassing String ''
 ]]
 
 useFeature AgentWidgets
@@ -584,6 +683,11 @@ every 0.5 runAtStart [[
 useFeature Costume
 //TODO: change the costume feature to do this via a property
 
+// setup a short name so that we can use to set all the other things
+// options are blue, red, yellow, squash, pumpkin, and watermelon
+addProp baseType String 'blue'
+prop baseType setTo 'blue'
+
 // setup the name and image info 
 addProp nameBase String 'Plant'
 prop nameBase setTo 'Blue Flower'
@@ -594,30 +698,29 @@ prop costumeName setTo 'blueFlower.png'
 //spawnNewFlowers
 // this determines whether new flowers get made
 addProp spawnNewFlowers Boolean false
-prop spawnNewFlowers setTo false
+prop spawnNewFlowers setTo true
 
-// TODO: make sure these can be set during map setup and then become visible?
-
-ifExpr {{ agent.getProp('costumeName').value == 'blueFlower.png'}} [[
+// set all the defaults for name, etc. 
+ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
   featCall Costume setCostume 'blueFlower.png' 
 ]]
-ifExpr {{ agent.getProp('costumeName').value == 'redFlower.png'}} [[
+ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
   featCall Costume setCostume 'redFlower.png'
  ]]
-ifExpr {{ agent.getProp('costumeName').value == 'yellowFlower.png'}} [[
+ifExpr {{ agent.getProp('baseType').value == 'yellow.png'}} [[
   featCall Costume setCostume 'yellowFlower.png' 
 ]]
-ifExpr {{ agent.getProp('costumeName').value == 'squashVeggie.png'}} [[
+ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
   featCall Costume setCostume 'squashVeggie.png' 
 ]]
-ifExpr {{ agent.getProp('costumeName').value == 'pumpkinVeggie.png'}} [[
+ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
   featCall Costume setCostume 'pumpkinVeggie.png' 
 ]]
-ifExpr {{ agent.getProp('costumeName').value == 'watermelonVeggie.png'}} [[
+ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
   featCall Costume setCostume 'watermelonVeggie.png' 
 ]]
 
-
+// CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
 prop visible setTo true
 
@@ -658,7 +761,49 @@ exprPush {{ agent.getProp('nameBase').value }}
 featPropPop  AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
 
-# PROGRAM INIT
+addProp doOnce Boolean true 
+
+# PROGRAM UPDATE
+  every 1 runAtStart [[
+
+  ifExpr {{ Flower.getProp('doOnce').value == true }} [[
+    prop doOnce setTo false
+  // TODO is there a better way to do this timing-wise?
+  // use placeholder art?  Or if they are invisible to start it doesn't really matter ... 
+
+  // change the costume
+  // for now, set names, etc., to match
+  // long-term, do we want that here or in the stage setup?
+  ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
+    featCall Costume setCostume 'blueFlower.png'
+    prop nameBase setTo 'Blue Flower' 
+  ]]
+  ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
+    featCall Costume setCostume 'redFlower.png'
+    prop nameBase setTo 'Red Flower' 
+  ]]
+  ifExpr {{ agent.getProp('baseType').value == 'yellow.png'}} [[
+    featCall Costume setCostume 'yellowFlower.png' 
+    prop nameBase setTo 'Yellow Flower' 
+  ]]
+  ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
+    featCall Costume setCostume 'squashVeggie.png' 
+    prop nameBase setTo 'Squash' 
+  ]]
+  ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
+    featCall Costume setCostume 'pumpkinVeggie.png' 
+    prop nameBase setTo 'Pumpkin' 
+  ]]
+  ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
+    featCall Costume setCostume 'watermelonVeggie.png'
+    prop nameBase setTo 'Watermelon' 
+  ]]
+
+  // make the name match
+  exprPush {{ agent.getProp('nameBase').value }}
+  featPropPop  AgentWidgets text
+  ]]
+]]
 
 `
     },
@@ -719,11 +864,12 @@ prop scale setTo 0.8`
       "bpid": "Flower",
       "initScript": `prop x setTo -56.80
 prop y setTo -190.88
-prop nectarQuality setTo 2`
+prop nectarQuality setTo 2
+prop baseType setTo blue`
     },
     {
       "id": "3",
-      "label": "Flower3",
+      "label": "Flower2",
       "bpid": "Flower",
       "initScript": `prop x setTo 296.62
 prop y setTo 3.18
@@ -739,27 +885,30 @@ prop aiBeeCount setTo 5`
     },
     {
       "id": "7",
-      "label": "Flower7",
+      "label": "Flower3",
       "bpid": "Flower",
       "initScript": `prop x setTo 192.55
 prop y setTo 271.17
-prop nectarQuality setTo 3`
+prop nectarQuality setTo 3
+prop baseType setTo 'red'`
     },
     {
       "id": "8",
-      "label": "Flower8",
+      "label": "Flower4",
       "bpid": "Flower",
       "initScript": `prop x setTo -132.09
 prop y setTo 222.74
-prop nectarQuality setTo 3`
+prop nectarQuality setTo 3
+prop baseType setTo 'squash'`
     },
     {
       "id": "9",
-      "label": "Flower9",
+      "label": "Flower5",
       "bpid": "Flower",
       "initScript": `prop x setTo -177.59
 prop y setTo -52.1
-prop nectarQuality setTo 0`
+prop nectarQuality setTo 0
+prop baseType setTo 'red'`
     },
     {
       "id": "1809",
