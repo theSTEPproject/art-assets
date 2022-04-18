@@ -82,6 +82,9 @@ addProp visitedAmount Number 0
 addProp dancingCounter Number 0
 addProp watchingCounter Number 0
 
+// speed of flight
+addProp beeSpeed Number 3
+prop beeSpeed setTo 10
 
 // mode to determine what AI bees do
 // if the mode is set to user, which is the default, assume the AI shouldn't do anything because it is controlled
@@ -113,13 +116,13 @@ addProp watchingCounter Number 0
       // if this is AI and set to start, start moving
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[  
        
-        // TODO: 
-        // make the edgeToEdge speed a property 
         
         prop mode setTo 'scouting'
         featCall Movement setMovementType 'edgeToEdge' 5 0 180
         featCall Movement setRandomDirection
-
+        
+        exprPush {{ Bee.getProp('beeSpeed').value }}
+        featPropPop Movement distance
       ]]
     ]]
 
@@ -280,7 +283,9 @@ when Bee centerTouches Hive [[
       exprPush {{Bee.getProp('visitedY').value}}
       featPropPop Movement targetY
     
-      featCall Movement setMovementType 'goLocation' 3
+      featCall Movement setMovementType 'goLocation' 5
+      exprPush {{ Bee.getProp('beeSpeed').value }}
+      featPropPop Movement distance
     ]]
 
   ]]
@@ -334,7 +339,9 @@ when Bee centerTouches Flower [[
         exprPush {{Bee.getProp('hiveY').value}}
         featPropPop Movement targetY
        
-        featCall Movement setMovementType 'goLocation' 3
+        featCall Movement setMovementType 'goLocation' 5
+        exprPush {{ Bee.getProp('beeSpeed').value }}
+        featPropPop Movement distance
     ]]
   ]]
 ]]
