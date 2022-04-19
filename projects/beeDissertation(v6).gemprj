@@ -135,6 +135,42 @@ prop beeSpeed setTo 10
     ]]
 
 # PROGRAM UPDATE
+
+  // see if the bee is looking for a flower that doesn't exist 
+
+  every 1 runAtStart [[
+      // if we are searching for a flower and it is gone, start scouting instead so we aren't stuck
+      // TODO - not yet working, as the issue is that it is not quite the exact spot, just really close 
+      // not sure the best way to test this 
+      ifExpr {{ Bee.getProp('mode').value == 'foraging' }} [[
+        //ifExpr {{ Bee.getProp('visitedX').value == Bee.getProp('x').value && Bee.getProp('visitedY').value == Bee.getProp('y').value}} [[
+        // if we stopped moving ...
+        ifExpr {{Bee.getFeatProp('Movement', 'isMoving').value == false}} [[
+          
+          // go back to the hive to re-set the key variables and the search etc.
+          prop mode setTo 'returning'
+
+          // also clear out our memory since nothing to see here
+          prop visitedX setTo 0
+          prop visitedY setTo 0
+          prop visitedAmount setTo 0
+          prop visitedQuality setTo 0
+
+          // set the x and y of the hive, then go there
+          exprPush {{Bee.getProp('hiveX').value}}
+          featPropPop Movement targetX
+
+          exprPush {{Bee.getProp('hiveY').value}}
+          featPropPop Movement targetY
+        
+          featCall Movement setMovementType 'goLocation' 5
+          exprPush {{ Bee.getProp('beeSpeed').value }}
+          featPropPop Movement distance
+
+        ]]
+      ]]
+  ]]
+
 //HIVE INTERACTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 when Bee centerFirstTouches Hive [[
@@ -157,12 +193,14 @@ when Bee centerFirstTouches Hive [[
 when Bee centerLastTouches Hive [[
   prop visible setTo true
 
-  // clear out any visited flower memory
-  // TODO, do we need to not do this if it is foraging?
-  prop visitedX setTo 0
-  prop visitedY setTo 0
-  prop visitedAmount setTo 0
-  prop visitedQuality setTo 0
+  // clear out any visited flower memory unless we are foraging in which case, that's our target
+  ifExpr {{Bee.getProp('mode').value != 'foraging'}} [[
+    prop visitedX setTo 0
+    prop visitedY setTo 0
+    prop visitedAmount setTo 0
+    prop visitedQuality setTo 0
+  ]]
+
 
   // if the user was also dancing, have them stop when they leave
   ifExpr {{Bee.getProp('mode').value == 'user-dancing'}} [[
@@ -358,25 +396,25 @@ when Bee centerTouches Flower [[
 when Bee centerLastTouches Flower [[
   featCall Bee.Costume setGlow 0
   
-ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
-   prop pollinateBlue setTo true
-]]
-ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
-   prop pollinateRed setTo true
- ]]
-ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
- prop pollinateYellow setTo true
-]]
-ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
- prop pollinateSquash setTo true
-]]
-ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
- prop pollinatePumpkin setTo true
-]]
-ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
-   prop pollinateWaterMelon  setTo true
+  ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
+    prop pollinateBlue setTo true
+  ]]
+  ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
+    prop pollinateRed setTo true
+  ]]
+  ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+  prop pollinateYellow setTo true
+  ]]
+  ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
+  prop pollinateSquash setTo true
+  ]]
+  ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
+  prop pollinatePumpkin setTo true
+  ]]
+  ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
+    prop pollinateWaterMelon  setTo true
 
-]]
+  ]]
 
 
 
@@ -416,10 +454,34 @@ ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
     prop Flower.visible setTo false
   ]]
 
+  // if the bee is still collecting, switch to returning and it'll re-orient in the hive 
+  ifExpr {{ Bee.getProp('mode').value == 'collecting'}} [[
+    prop mode setTo 'returning'
+    
+    exprPush {{Bee.getProp('hiveX').value}}
+    featPropPop Movement targetX
+
+    exprPush {{Bee.getProp('hiveY').value}}
+    featPropPop Movement targetY
+    
+    featCall Movement setMovementType 'goLocation' 5
+    exprPush {{ Bee.getProp('beeSpeed').value }}
+    featPropPop Movement distance 
+  ]]
+
 ]]
 
 when Bee centerFirstTouches Flower [[
-  //TODO: add a queueTarget call and hop over to the middle of the flower?
+//TODO: add a queueTarget call and hop over to the middle of the flower?
+
+// if we were forgaging, we xan now forget the flower location since we are here, and then update
+// based on the visit
+ ifExpr {{Bee.getProp('mode').value == 'foraging'}} [[
+    prop visitedX setTo 0
+    prop visitedY setTo 0
+    prop visitedAmount setTo 0
+    prop visitedQuality setTo 0
+  ]]
 
   // track how many bees are at the flower so that we can re-hide (if that is set) upon leaving
   prop Flower.currentVisitorCount add 1
@@ -465,7 +527,7 @@ when Bee centerFirstTouches Flower [[
     ]]
 
 
-    // setup 
+    // setup the type of flower before we create new ones due to pollination
 
     ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
       exprPush {{ Bee.getProp('pollinateBlue').value }}
