@@ -918,8 +918,8 @@ prop y setTo 324.15`
       "id": "10",
       "label": "Match Meter",
       "bpid": "MatchMeter",
-      "initScript": `prop x setTo 491.08
-prop y setTo 368.89`
+      "initScript": `prop x setTo 517.66
+prop y setTo 371.70`
     },
     {
       "id": "100",
