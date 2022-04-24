@@ -90,7 +90,7 @@
             // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            propr energy setTo 50
+            prop energy setTo 50
           ]]
 
         ]]
@@ -148,7 +148,7 @@
              // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            propr energy setTo 50
+            prop energy setTo 50
           ]]
 
         ]]
@@ -206,7 +206,7 @@
             // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            propr energy setTo 50
+            prop energy setTo 50
           ]]
 
         ]]
@@ -627,6 +627,70 @@ addProp regenFruitCounter Number 20
 `
     },
     {
+      "id": "MatchMeter",
+      "label": "Match Meter",
+      "scriptText": `# BLUEPRINT MatchMeter
+# PROGRAM DEFINE
+
+useFeature Population
+useFeature AgentWidgets
+
+// Make costume an invisible dot
+prop skin setTo 'onexone.json'
+
+// internal variable to be bound to the meter for the match count - see update for where it is set
+addProp matchCount Number 0
+prop matchCount setMin 0
+prop matchCount setMax 6
+
+useFeature Global
+
+// used for calculating so that it doesn't fluctuate too fast
+ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'tmpMatchCounter') == undefined }} [[
+    featCall Global addGlobalProp tmpMatchCounter Number 0
+
+    // in case we only want to run the meter updates while the predator is running around ... if so, set this to false, if we want it active during hiding
+    // then go ahead and set this to true
+    featCall Global addGlobalProp alwaysUpdateMeter Boolean true
+    
+]]
+
+featProp AgentWidgets isLargeGraphic setTo true
+featProp AgentWidgets meterColor setTo 65280
+
+featCall AgentWidgets bindMeterTo matchCount
+featProp AgentWidgets text setTo 'Matches: #/#'
+
+
+# PROGRAM INIT
+# PROGRAM EVENT
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+
+  
+  ifExpr {{ global.getProp('predatorIsActive').value == true ||  global.getProp('alwaysUpdateMeter').value == true}} [[
+
+    prop global.tmpMatchCounter setTo 0
+
+    // iterate through the moths to see how maany are camoflaged and udpate a counter to display on the meter
+    featCall Population agentsForEach Moth [[
+      ifExpr {{ agent.getProp('camouflaged').value == true}} [[
+        prop global.tmpMatchCounter add 1
+      ]]
+    ]]
+
+    propPush global.tmpMatchCounter
+    propPop matchCount
+
+    exprPush {{'Matches:' + agent.getProp('matchCount').value + '/6'}}
+    featPropPop AgentWidgets text
+  ]]
+
+]]`
+    },
+    {
       "id": "PopupEffect",
       "label": "PopupEffect",
       "scriptText": `# BLUEPRINT PopupEffect
@@ -739,6 +803,13 @@ prop y setTo 188.74`
       "bpid": "Moth",
       "initScript": `prop x setTo 318.71
 prop y setTo 324.15`
+    },
+    {
+      "id": "10",
+      "label": "Match Meter",
+      "bpid": "MatchMeter",
+      "initScript": `prop x setTo 491.08
+prop y setTo 368.89`
     }
   ]
 }
