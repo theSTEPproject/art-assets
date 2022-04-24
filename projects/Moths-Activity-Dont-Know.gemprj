@@ -240,6 +240,12 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
             prop global.foundOneToKill setTo true
             prop agent.causeOfDeath setTo 'ripped'
 
+            featCall Population createAgent PopupEffect [[
+               featCall agent.Costume setAnimatedCostume 'claws1.png' 1
+               featProp agent.Physics scale setTo 0.05
+
+            ]]
+
             ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
               featCall agent.Costume setCostume 'moth_ripped_dark.png' 0
               prop agent.isInert setTo true
@@ -248,6 +254,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
               featCall agent.Costume setCostume 'moth_ripped_light.png' 0
               prop agent.isInert setTo true
             ]]
+
           ]]
         ]]
 
@@ -325,6 +332,36 @@ addProp regenFruitCounter Number 20
     ]]
   ]]
 
+`
+    },
+    {
+      "id": "PopupEffect",
+      "label": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+// use a circle temorarily ... 
+useFeature Costume
+featCall Costume setCostume 'circle.json'
+
+useFeature Physics
+useFeature Population
+
+addProp countDown Number 2
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  prop countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall Population removeAgent
+  ]]
+]]
 `
     }
   ],
