@@ -1,6 +1,6 @@
 {
   "id": "Moths-Activity-Migration",
-  "label": "Moths-Activity-Migration",
+  "label": "Moths Activity Migration",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -842,8 +842,8 @@ featCall Costume setScale 1
       "id": "0",
       "label": "Predator",
       "bpid": "Predator",
-      "initScript": `prop x setTo -386.83
-prop y setTo -351.43
+      "initScript": `prop x setTo -395.33
+prop y setTo -333.63
 prop orientation setTo 45
 prop zIndex setTo 100
 `
@@ -852,7 +852,7 @@ prop zIndex setTo 100
       "id": "1",
       "label": "TreeBranch 1",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo -300.99
+      "initScript": `prop x setTo -321.21
 prop y setTo 33.95
 `
     },
@@ -860,52 +860,52 @@ prop y setTo 33.95
       "id": "2",
       "label": "TreeBranch 2",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo -109.74
-prop y setTo 44.66
+      "initScript": `prop x setTo -112.99
+prop y setTo -13.85
 `
     },
     {
       "id": "3",
       "label": "TreeBranch 3",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo 88.77
-prop y setTo 44.01
+      "initScript": `prop x setTo 78.24
+prop y setTo 34.10
       `
     },
     {
       "id": "4",
       "label": "Moth 1",
       "bpid": "Moth",
-      "initScript": `prop x setTo 311.42
-prop y setTo -265.50`
+      "initScript": `prop x setTo 328.92
+prop y setTo -196.36`
     },
     {
       "id": "5",
       "label": "Moth 2",
       "bpid": "Moth",
-      "initScript": `prop x setTo 315.30
-prop y setTo -165.61`
+      "initScript": `prop x setTo 325.22
+prop y setTo -98.94`
     },
     {
       "id": "6",
       "label": "Moth 3",
       "bpid": "Moth",
-      "initScript": `prop x setTo 321.10
-prop y setTo -45.84`
+      "initScript": `prop x setTo 320.40
+prop y setTo -2.20`
     },
     {
       "id": "7",
       "label": "Moth 4",
       "bpid": "Moth",
-      "initScript": `prop x setTo 321.48
-prop y setTo 69.28`
+      "initScript": `prop x setTo 322.52
+prop y setTo 108.74`
     },
     {
       "id": "8",
       "label": "Moth 5",
       "bpid": "Moth",
-      "initScript": `prop x setTo 320.50
-prop y setTo 188.74`
+      "initScript": `prop x setTo 321.26
+prop y setTo 213.15`
     },
     {
       "id": "9",
