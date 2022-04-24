@@ -183,7 +183,7 @@ when Moth centerTouches Fruit [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'branch_neutral.png' 0
+featCall Costume setCostume 'branch_dark.png' 0
 
 // note that this is updated in round
 addProp lightOrDark String 'dark'

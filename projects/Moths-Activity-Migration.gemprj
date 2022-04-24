@@ -275,6 +275,17 @@
       "outtro": "OK, here we go. When we press start again, the pedator will start looking around.",
       "endScript": `
 
+          featCall Population agentsForEach Moth [[
+            // re-initialize the key variables on the moths before we dive into the round where they hide
+            featCall Costume setCostume 'moth_outline.png' 0
+            prop causeOfDeath setTo 'alive'
+            // this is currently re-setting the energy. If we want to somehow indicate moths get tired during the first round, we could leave this alone
+            // though some will starve if we don't add fruit back in.
+            prop energy setTo 50
+          ]]
+
+
+
       `
     },
     {
