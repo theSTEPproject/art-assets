@@ -267,7 +267,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
         // if no one was killed, keep going and check those who are not flying, but not camouflaged
         ifExpr {{ global.getProp('foundOneToKill').value == false }} [[
           featCall Population agentsForEach Moth [[
-            ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('camouflaged').value == false }} [[
+            ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('camouflaged').value == false  && global.getProp('foundOneToKill').value == false }} [[
                 prop global.foundOneToKill setTo true
                 prop agent.causeOfDeath setTo 'ripped'
 
