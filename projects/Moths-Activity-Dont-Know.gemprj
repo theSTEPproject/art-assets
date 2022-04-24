@@ -27,6 +27,9 @@
 
           // set this back to outline mode so we are not sure what we are
           featCall Costume setCostume 'moth_outline.png' 0
+
+          // re-set the energy
+          prop energy setTo 50
         
           prop rndForColor setToRnd 1 10
           ifExpr {{  agent.getProp('rndForColor').value  < 5 }} [[ 
