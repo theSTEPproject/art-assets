@@ -180,7 +180,7 @@ when Moth centerTouches Fruit [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'trunk.json' 0
+featCall Costume setCostume 'branch_neutral.png' 0
 
 // note that this is updated in round
 addProp lightOrDark String 'dark'
@@ -389,7 +389,6 @@ prop orientation setTo 45
       "bpid": "TreeBranch",
       "initScript": `prop x setTo 231.11
 prop y setTo 58.26
-      featCall Costume setColorizeHSV 0 0 0.66
       featProp Physics scale setTo 0.5
       featProp Physics scaleY setTo 0.65`
     },
@@ -399,7 +398,6 @@ prop y setTo 58.26
       "bpid": "TreeBranch",
       "initScript": `prop x setTo -176.53
 prop y setTo 52.63
-      featCall Costume setColorizeHSV 0 0 0.66
       featProp Physics scale setTo 0.5
       featProp Physics scaleY setTo 0.65
       //prop orientation setTo 30

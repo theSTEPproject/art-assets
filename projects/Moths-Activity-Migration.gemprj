@@ -1,0 +1,744 @@
+{
+  "id": "Moths-Activity-Migration",
+  "label": "Moths-Activity-Migration",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 4474111,
+    "roundsCanLoop": true
+  },
+  "rounds": [
+    {
+      "id": "r1",
+      "label": "Pick and Hide",
+      "time": 30,
+      "intro": "Pick a character and then if you are a moth, hide!",
+      "initScript": `        
+
+        ifExpr {{global.getProp('didAddAgentWidgets').value == false }} [[
+          useFeature AgentWidgets
+          prop global.didAddAgentWidgets setTo true
+        ]]
+        
+        prop global.colorSet add 1
+
+        // assigna all the colors
+        ifExpr {{global.getProp('colorSet').value == 1}} [[
+          
+          // print out the color set
+          featCall AgentWidgets showMessage 'We are using color set 1.'
+
+          // set so we can loop the trees
+          prop global.characterCounter setTo 0
+
+          // loop the trees and set their color
+          featCall Population agentsForEach TreeBranch [[
+              prop global.characterCounter add 1
+              
+              ifExpr {{global.getProp('characterCounter').value == 1}} [[
+                prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'branch_light.png' 0
+
+                
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 2}} [[
+                prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'branch_dark.png' 0
+
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 3}} [[
+                prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'branch_light.png' 0
+
+              ]]
+
+          ]]
+
+          // set so we can loop the moths
+          prop global.characterCounter setTo 0
+          
+          // loop the moths and set their color
+          featCall Population agentsForEach Moth [[
+            prop global.characterCounter add 1
+
+            ifExpr {{global.getProp('characterCounter').value == 1}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 2}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 3}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 4}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 5}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 6}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+
+            // re-initialize the key variables
+            featCall Costume setCostume 'moth_outline.png' 0
+            prop causeOfDeath setTo 'alive'
+            propr energy setTo 50
+          ]]
+
+        ]]
+        
+        ifExpr {{global.getProp('colorSet').value == 2}} [[
+          // print out the color set
+          featCall AgentWidgets showMessage 'We are using color set 2.'
+
+          // loop the trees and set their color
+          featCall Population agentsForEach TreeBranch [[
+              prop global.characterCounter add 1
+              
+              // they are all hiding their colors 
+              featCall Costume setCostume 'branch_neutral.png' 0
+
+              ifExpr {{global.getProp('characterCounter').value == 1}} [[
+                prop lightOrDark setTo 'dark'
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 2}} [[
+                prop lightOrDark setTo 'light'
+
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 3}} [[
+                prop lightOrDark setTo 'light'
+              ]]
+
+          ]]
+
+          // set so we can loop the moths
+          prop global.characterCounter setTo 0
+          
+          // loop the moths and set their color
+          featCall Population agentsForEach Moth [[
+            prop global.characterCounter add 1
+
+            ifExpr {{global.getProp('characterCounter').value == 1}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 2}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 3}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 4}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 5}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 6}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+
+             // re-initialize the key variables
+            featCall Costume setCostume 'moth_outline.png' 0
+            prop causeOfDeath setTo 'alive'
+            propr energy setTo 50
+          ]]
+
+        ]]
+        
+        ifExpr {{global.getProp('colorSet').value == 3}} [[
+          // print out the color set
+          featCall AgentWidgets showMessage 'We are using color set 3.'
+
+          // loop the trees and set their color
+          featCall Population agentsForEach TreeBranch [[
+              prop global.characterCounter add 1
+              
+              ifExpr {{global.getProp('characterCounter').value == 1}} [[
+                prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'branch_dark.png' 0
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 2}} [[
+                prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'branch_dark.png' 0
+
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 3}} [[
+                prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'branch_light.png' 0
+              ]]
+
+          ]]
+
+          // set so we can loop the moths
+          prop global.characterCounter setTo 0
+          
+          // loop the moths and set their color
+          featCall Population agentsForEach Moth [[
+            prop global.characterCounter add 1
+
+            ifExpr {{global.getProp('characterCounter').value == 1}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 2}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 3}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 4}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 5}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 6}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+
+            // re-initialize the key variables
+            featCall Costume setCostume 'moth_outline.png' 0
+            prop causeOfDeath setTo 'alive'
+            propr energy setTo 50
+          ]]
+
+        ]]
+        
+        ifExpr {{global.getProp('colorSet').value == 4}} [[
+          // print out the color set
+          featCall AgentWidgets showMessage 'We are using color set 4.'
+
+          // loop the trees and set their color
+          featCall Population agentsForEach TreeBranch [[
+              prop global.characterCounter add 1
+              
+              featCall Costume setCostume 'branch_neutral.png' 0
+
+              ifExpr {{global.getProp('characterCounter').value == 1}} [[
+                prop lightOrDark setTo 'dark'
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 2}} [[
+                prop lightOrDark setTo 'light'
+              ]]
+               ifExpr {{global.getProp('characterCounter').value == 3}} [[
+                prop lightOrDark setTo 'dark'
+              ]]
+
+          ]]
+
+          // set so we can loop the moths
+          prop global.characterCounter setTo 0
+          
+          // loop the moths and set their color
+          featCall Population agentsForEach Moth [[
+            prop global.characterCounter add 1
+
+            ifExpr {{global.getProp('characterCounter').value == 1}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 2}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 3}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 4}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 5}} [[ 
+              prop lightOrDark setTo 'dark'
+            ]]
+            ifExpr {{global.getProp('characterCounter').value == 6}} [[ 
+              prop lightOrDark setTo 'light'
+            ]]
+
+             // re-initialize the key variables
+            featCall Costume setCostume 'moth_outline.png' 0
+            prop causeOfDeath setTo 'alive'
+            prop energy setTo 50
+          ]]
+
+          // cycle again
+          prop global.colorSet setTo 0
+        ]]
+
+        // predator won't do anything yet
+        prop global.predatorIsActive setTo false
+      `,
+      "outtro": "OK, here we go. When we press start again, the pedator will start looking around.",
+      "endScript": `
+
+      `
+    },
+    {
+      "id": "r2",
+      "label": "See what happens",
+      "time": 30,
+      "initScript": `
+
+        // start the predator moving
+        prop global.predatorIsActive setTo true
+
+      `,
+      "outtro": "We are now showing the moth colors. How'd we do?",
+      "endScript": `
+
+          // loop the trees and show their color
+          featCall Population agentsForEach TreeBranch [[
+            
+              // if it is light, show it
+              ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[
+                featCall Costume setCostume 'branch_light.png' 0
+              ]]
+
+              ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[
+                featCall Costume setCostume 'branch_dark.png' 0
+              ]]
+          ]]
+
+        featCall Population agentsForEach Moth [[
+          // if the moth is still alive 
+          ifExpr {{agent.getProp('causeOfDeath').value == 'alive' }} [[ 
+
+            // then show it's color 
+            ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
+              featCall agent.Costume setCostume 'moth_dark.png' 0
+            ]]
+            ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
+              featCall agent.Costume setCostume 'moth_light.png' 0
+            ]]
+
+            // stop moving 
+            prop agent.isInert setTo true 
+          ]]
+        ]]
+      `
+    }
+  ],
+  "blueprints": [
+    {
+      "id": "Moth",
+      "label": "Moth",
+      "scriptText": `# BLUEPRINT Moth
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+
+featCall Costume setCostume 'moth_outline.png' 0
+
+useFeature Physics
+featProp Physics scale setTo 0.05
+
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+useFeature Cursor
+
+useFeature Touches
+featCall Touches monitor TreeBranch c2b
+featCall Touches monitor Fruit c2b
+
+useFeature AgentWidgets
+useFeature Population
+
+addProp mothID Number 0
+// set the id to the current count of agents so that it keeps incrementing 
+exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') + 1 }} 
+propPop mothID
+
+exprPush {{ 'Moth ' + (agent.getProp('mothID').value) }}
+featPropPop AgentWidgets text
+
+// this is how much energy the moths have / start with. I picked 50 so that a moth sitting in the middle of nowhere will die of starvation
+// if it doesnt move at least once during the round
+addProp energy Number 50
+prop energy setMax 50
+prop energy setMin 0
+
+featCall AgentWidgets bindMeterTo energy
+
+// is this a dark or light moth / tree?  This is set in the round code
+addProp lightOrDark String 'dark'
+// camoflaged is set automatically when a moth goes onto a branch
+addProp camouflaged Boolean false
+// this sets automatically to false when going onto a branch, and true when moving off 
+addProp flying Boolean true
+// we use this to pick which image to use to indicate the moth is dead. alive is used to determine that it didn't actually die ... 
+addProp causeOfDeath String 'alive' // or starved, or ripped
+
+// property to help with setting the moth randomly since we can't delcare a temp variable
+addProp rndForColor Number 0
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+when Moth centerFirstTouches TreeBranch [[
+  // if the tree branch and the moth are the same color, it is now hidden 
+  prop flying setTo false
+  ifExpr {{ Moth.getProp('lightOrDark').value ==  TreeBranch.getProp('lightOrDark').value}} [[
+    prop camouflaged setTo true
+  ]]
+  // if not, make sure it is not camouflaged
+  ifExpr {{ Moth.getProp('lightOrDark').value !=  TreeBranch.getProp('lightOrDark').value}} [[
+    prop camouflaged setTo false
+  ]]
+]]
+
+when Moth centerLastTouches TreeBranch [[
+  prop camouflaged setTo false
+  prop flying setTo true
+]]
+
+when Moth centerTouches Fruit [[
+  every 1 runAtStart [[
+    ifExpr {{ Fruit.getProp('energy').value >= 2 }} [[ 
+      prop Moth.energy add 2
+      prop Fruit.energy sub 2
+    ]]
+
+    ifExpr {{ Fruit.getProp('energy').value == 0 }} [[
+      featCall Fruit.Costume setCostume 'fruit_empty.png' 0
+    ]] 
+  ]]
+
+]]
+
+
+  every 1 runAtStart [[
+    prop energy sub 1
+
+    // if you hit 0 energy and are still alive ... 
+    ifExpr {{Moth.getProp('energy').value == 0 && Moth.getProp('causeOfDeath').value == 'alive'}} [['
+      ifExpr {{ Moth.getProp('lightOrDark').value == 'dark' }} [[
+        featCall Moth.Costume setCostume 'moth_starved_dark.png' 0
+      ]]
+      ifExpr {{ Moth.getProp('lightOrDark').value == 'light' }} [[
+        featCall Moth.Costume setCostume 'moth_starved_light.png' 0
+      ]]
+      // TODO: change skin to be dead from energy
+      prop Moth.causeOfDeath setTo 'starved'
+      prop Moth.energy setTo 0
+      prop Moth.isInert setTo true
+    ]]
+    // TODO check if we are dead 
+  ]]
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "TreeBranch",
+      "label": "TreeBranch",
+      "scriptText": `# BLUEPRINT TreeBranch
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+useFeature Costume
+featCall Costume setCostume 'branch_neutral.png' 0
+
+// note that this is updated in round
+addProp lightOrDark String 'dark'
+
+useFeature Movement
+
+useFeature Cursor
+
+useFeature Physics
+
+useFeature Population
+
+addProp treeID Number 0
+// set the id to the current count of agents so that it keeps incrementing 
+exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'TreeBranch') + 1 }} 
+propPop treeID
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Predator",
+      "label": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'predator_s.png' 0
+
+useFeature Physics
+featProp Physics scale setTo 0.1
+
+addProp attackCounter Number 0
+// far more frequent attacks
+addProp attackCounterMax Number 5
+propPush attackCounterMax
+propPop attackCounter
+
+useFeature Population
+useFeature Global
+
+ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == undefined }} [[
+    // used in the attack function to make sure we kill one each round of attacks (assuming we can find one that isn't sitting camouflaged)
+    featCall Global addGlobalProp foundOneToKill Boolean false
+
+    // used to identify the set of colors for the internal rounds
+    // I find it easier to loop 2 rounds and set these in an if then to copy round info 7 times ...
+    // start at 0 so we can increment in round 1 code
+    featCall Global addGlobalProp colorSet Number 0
+
+    // used to help keep track of things during the round setup
+    featCall Global addGlobalProp characterCounter Number 0
+
+    // used so we can turn it on and off depending on the round in the cyce
+    featCall Global addGlobalProp predatorIsActive Boolean false
+
+    // so we only add the agentwidgets once in roudn 1
+    featCall Global addGlobalProp didAddAgentWidgets Boolean false
+]]
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+  every 1 runAtStart [[
+    ifExpr {{ global.getProp('predatorIsActive').value == true }} [[
+      prop attackCounter sub 1
+      ifExpr {{ Predator.getProp('attackCounter').value == 0 }} [[
+        prop global.foundOneToKill setTo false
+
+          featCall Population agentsForEach Moth [[
+
+            // first look for a living moth that is flying
+            ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('flying').value == true  && global.getProp('foundOneToKill').value == false}} [[
+              prop global.foundOneToKill setTo true
+              prop agent.causeOfDeath setTo 'ripped'
+              prop agent.energy setTo 0
+
+              featCall Population createAgent PopupEffect [[
+                featCall agent.Costume setAnimatedCostume 'claws1.png' 1
+                featProp agent.Physics scale setTo 0.05
+
+              ]]
+
+              ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
+                featCall agent.Costume setCostume 'moth_ripped_dark.png' 0
+                prop agent.isInert setTo true
+              ]]
+              ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
+                featCall agent.Costume setCostume 'moth_ripped_light.png' 0
+                prop agent.isInert setTo true
+              ]]
+
+            ]]
+          ]]
+
+          // if no one was killed, keep going and check those who are not flying, but not camouflaged
+          ifExpr {{ global.getProp('foundOneToKill').value == false }} [[
+            featCall Population agentsForEach Moth [[
+              ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('camouflaged').value == false  && global.getProp('foundOneToKill').value == false }} [[
+                  prop global.foundOneToKill setTo true
+                  prop agent.causeOfDeath setTo 'ripped'
+
+                  ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
+                    featCall agent.Costume setCostume 'moth_ripped_dark.png' 0
+                    prop agent.energy setTo 0
+                    prop agent.isInert setTo true
+                  ]]
+                  ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
+                    featCall agent.Costume setCostume 'moth_ripped_light.png' 0
+                    prop agent.energy setTo 0                 
+                    prop agent.isInert setTo true
+                  ]]
+
+              ]]
+            ]]
+          ]]
+      
+          // if still no one was killed  ... then let's look again next second so we can maybe catch someone 
+          ifExpr {{ global.getProp('foundOneToKill').value == false }} [[
+            prop attackCounter setTo 1
+          ]]
+          
+          // if someone was killed above in any of the conditions, reset the counter 
+          ifExpr {{ global.getProp('foundOneToKill').value == true }} [[
+              propPush attackCounterMax
+              propPop attackCounter
+          ]]
+      ]]
+    ]]
+  ]]
+`
+    },
+    {
+      "id": "Fruit",
+      "label": "Fruit",
+      "scriptText": `# BLUEPRINT Fruit
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'fruit.png' 0
+
+useFeature Physics
+featProp Physics scale setTo 0.05
+
+useFeature AgentWidgets
+
+addProp energy Number 10
+prop energy setMax 10
+prop energy setMin 0
+
+featCall AgentWidgets bindMeterTo energy
+featProp AgentWidgets text setTo ''
+
+addProp regenFruitCounter Number 20
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+  every 1 runAtStart [[
+
+    prop regenFruitCounter sub 1
+    ifExpr {{ Fruit.getProp('regenFruitCounter').value == 0 }} [[
+      featCall Costume setCostume 'fruit.png' 0
+      prop energy setTo 10
+      prop regenFruitCounter setTo 20
+    ]]
+  ]]
+
+`
+    },
+    {
+      "id": "PopupEffect",
+      "label": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+// use a circle temorarily ... 
+useFeature Costume
+featCall Costume setCostume 'circle.json'
+
+useFeature Physics
+useFeature Population
+
+addProp countDown Number 2
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  prop countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall Population removeAgent
+  ]]
+]]
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Predator",
+      "bpid": "Predator",
+      "initScript": `prop x setTo -386.83
+prop y setTo -351.43
+prop orientation setTo 45
+`
+    },
+    {
+      "id": "1",
+      "label": "TreeBranch 1",
+      "bpid": "TreeBranch",
+      "initScript": `prop x setTo -300.99
+prop y setTo 33.95
+      featProp Physics scale setTo 0.5
+      featProp Physics scaleY setTo 0.65`
+    },
+    {
+      "id": "2",
+      "label": "TreeBranch 2",
+      "bpid": "TreeBranch",
+      "initScript": `prop x setTo -109.74
+prop y setTo 54.66
+      featProp Physics scale setTo 0.5
+      featProp Physics scaleY setTo 0.65
+      //prop orientation setTo 30
+      `
+    },
+    {
+      "id": "3",
+      "label": "TreeBranch 3",
+      "bpid": "TreeBranch",
+      "initScript": `prop x setTo 88.77
+prop y setTo 44.01
+      featProp Physics scale setTo 0.5
+      featProp Physics scaleY setTo 0.65
+      //prop orientation setTo 30
+      `
+    },
+    {
+      "id": "4",
+      "label": "Moth 1",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 311.42
+prop y setTo -265.50`
+    },
+    {
+      "id": "5",
+      "label": "Moth 2",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 315.30
+prop y setTo -165.61`
+    },
+    {
+      "id": "6",
+      "label": "Moth 3",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 321.10
+prop y setTo -45.84`
+    },
+    {
+      "id": "7",
+      "label": "Moth 4",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 321.48
+prop y setTo 69.28`
+    },
+    {
+      "id": "8",
+      "label": "Moth 5",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 320.50
+prop y setTo 188.74`
+    },
+    {
+      "id": "9",
+      "label": "Moth 6",
+      "bpid": "Moth",
+      "initScript": `prop x setTo 318.71
+prop y setTo 324.15`
+    }
+  ]
+}
