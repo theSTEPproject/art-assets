@@ -20,7 +20,7 @@
       "label": "Hiding Round",
       "time": 60,
       "intro": "You are a moth trying to hide from predators. You also need to eat. Good luck!",
-      "initScript": `dbgOut 'BEGIN Hiding Round'
+      "initScript": `
         
         // randomly assign moths to be dark or light
         featCall Population agentsForEach Moth [[
@@ -38,7 +38,7 @@
         ]]
       `,
       "outtro": "We are now showing the moth colors. What do you notice about which ones lived?",
-      "endScript": `dbgOut 'END Hiding Round!'
+      "endScript": `
 
         featCall Population agentsForEach Moth [[
           // if the moth is still alive 
@@ -47,11 +47,9 @@
             // then show it's color 
             ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
               featCall agent.Costume setCostume 'moth_dark.png' 0
-              dbgOut 'moth_dark'
             ]]
             ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
               featCall agent.Costume setCostume 'moth_light.png' 0
-              dbgOut 'moth_light'
             ]]
 
             // stop moving 
@@ -95,6 +93,8 @@ propPop mothID
 exprPush {{ 'Moth ' + (agent.getProp('mothID').value) }}
 featPropPop AgentWidgets text
 
+// this is how much energy the moths have / start with. I picked 50 so that a moth sitting in the middle of nowhere will die of starvation
+// if it doesnt move at least once during the round
 addProp energy Number 50
 prop energy setMax 50
 prop energy setMin 0
@@ -103,9 +103,14 @@ featCall AgentWidgets bindMeterTo energy
 
 // is this a dark or light moth / tree?  This is set in the round code
 addProp lightOrDark String 'dark'
+// camoflaged is set automatically when a moth goes onto a branch
 addProp camouflaged Boolean false
+// this sets automatically to false when going onto a branch, and true when moving off 
 addProp flying Boolean true
+// we use this to pick which image to use to indicate the moth is dead. alive is used to determine that it didn't actually die ... 
 addProp causeOfDeath String 'alive' // or starved, or ripped
+
+// property to help with setting the moth randomly since we can't delcare a temp variable
 addProp rndForColor Number 0
 
 # PROGRAM INIT 
@@ -118,7 +123,8 @@ when Moth centerFirstTouches TreeBranch [[
   ifExpr {{ Moth.getProp('lightOrDark').value ==  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo true
   ]]
-  [[
+  // if not, make sure it is not camouflaged
+  ifExpr {{ Moth.getProp('lightOrDark').value !=  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo false
   ]]
 ]]
@@ -150,14 +156,13 @@ when Moth centerTouches Fruit [[
     ifExpr {{Moth.getProp('energy').value == 0 && Moth.getProp('causeOfDeath').value == 'alive'}} [['
       ifExpr {{ Moth.getProp('lightOrDark').value == 'dark' }} [[
         featCall Moth.Costume setCostume 'moth_starved_dark.png' 0
-        dbgOut 'moth_starved_dark'
       ]]
       ifExpr {{ Moth.getProp('lightOrDark').value == 'light' }} [[
         featCall Moth.Costume setCostume 'moth_starved_light.png' 0
-        dbgOut 'moth_starved_light'
       ]]
       // TODO: change skin to be dead from energy
       prop Moth.causeOfDeath setTo 'starved'
+      prop Moth.energy setTo 0
       prop Moth.isInert setTo true
     ]]
     // TODO check if we are dead 
@@ -239,6 +244,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
           ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('flying').value == true  && global.getProp('foundOneToKill').value == false}} [[
             prop global.foundOneToKill setTo true
             prop agent.causeOfDeath setTo 'ripped'
+            prop agent.energy setTo 0
 
             featCall Population createAgent PopupEffect [[
                featCall agent.Costume setAnimatedCostume 'claws1.png' 1
@@ -267,10 +273,12 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
 
                 ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
                   featCall agent.Costume setCostume 'moth_ripped_dark.png' 0
+                  prop agent.energy setTo 0
                   prop agent.isInert setTo true
                 ]]
                 ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
                   featCall agent.Costume setCostume 'moth_ripped_light.png' 0
+                  prop agent.energy setTo 0                 
                   prop agent.isInert setTo true
                 ]]
 
