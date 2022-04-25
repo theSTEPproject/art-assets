@@ -37,7 +37,6 @@ featProp Movement useAutoOrientation setTo true
 
 useFeature Touches
 featCall Touches monitor Flower c2b
-
 featCall Touches monitor Hive c2b
 
 addProp nectarAmount Number 0
@@ -402,7 +401,7 @@ when Bee centerLastTouches Flower [[
   ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
     prop pollinateRed setTo true
   ]]
-  ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+  ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
   prop pollinateYellow setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
@@ -430,7 +429,7 @@ when Bee centerLastTouches Flower [[
         exprPush {{ Flower.getProp('flowerID').value }}
         propPop redID
     ]]
-    ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+    ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
         propPop yellowID
     ]]
@@ -541,7 +540,7 @@ when Bee centerFirstTouches Flower [[
       exprPush {{ Bee.getProp('redID').value }}
       propPop pollinatedID
     ]]
-    ifExpr {{ Flower.getProp('baseType').value == 'yellow.png'}} [[
+    ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
       exprPush {{ Bee.getProp('pollinateYellow').value }}
       propPop pollinatedColor
       exprPush {{ Bee.getProp('yellowID').value }}
@@ -598,11 +597,23 @@ when Bee centerFirstTouches Flower [[
 
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'hive.png'
+featCall Costume setCostume 'hiveNatural.png'
 
 useFeature Physics
 featCall Physics init
 featProp Physics scale setTo 0.5
+
+addProp hiveType String 'commercial'
+ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
+  featCall Costume setCostume 'hiveCommercial.png' 
+    featProp Physics scale setTo 0.5
+
+]]
+ifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
+  featCall Costume setCostume 'hiveNatural.png' 
+    featProp Physics scale setTo 0.25
+
+]]
 
 useFeature Touches
 featCall Touches monitor Bee c2b
@@ -754,8 +765,8 @@ prop baseType setTo 'blue'
 addProp nameBase String 'Plant'
 prop nameBase setTo 'Blue Flower'
 
-addProp costumeName String 'blueFlower.png'
-prop costumeName setTo 'blueFlower.png'
+addProp costumeName String 'blue'
+prop costumeName setTo 'blue'
 
 //spawnNewFlowers
 // this determines whether new flowers get made
@@ -784,7 +795,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo false
+prop visible setTo true
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
@@ -807,6 +818,11 @@ prop nectarAmount setMin 0
 addProp nectarQuality Number 2
 prop nectarQuality setMax 3
 prop nectarQuality setMin 1
+
+addProp pollenAmount Number 0
+prop pollenAmount setMax 40
+prop pollenAmount setMin 0 
+prop pollenAmount setTo 0
 
 addProp generation Number 1
 
@@ -844,20 +860,20 @@ addProp doOnce Boolean true
     featCall Costume setCostume 'redFlower.png'
     prop nameBase setTo 'Red Flower' 
   ]]
-  ifExpr {{ agent.getProp('baseType').value == 'yellow.png'}} [[
+  ifExpr {{ agent.getProp('baseType').value == 'yellow'}} [[
     featCall Costume setCostume 'yellowFlower.png' 
     prop nameBase setTo 'Yellow Flower' 
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
-    featCall Costume setCostume 'squashVeggie.png' 
+    featCall Costume setCostume 'squashSprout.png' 
     prop nameBase setTo 'Squash' 
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
-    featCall Costume setCostume 'pumpkinVeggie.png' 
+    featCall Costume setCostume 'pumpkinSprout.png' 
     prop nameBase setTo 'Pumpkin' 
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
-    featCall Costume setCostume 'watermelonVeggie.png'
+    featCall Costume setCostume 'watermelonSprout.png'
     prop nameBase setTo 'Watermelon' 
   ]]
 
