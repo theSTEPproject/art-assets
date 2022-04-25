@@ -1011,88 +1011,18 @@ featCall Costume setScale 0.8
   ],
   "instances": [
     {
-      "id": "1",
-      "label": "Flower1",
-      "bpid": "Flower",
-      "initScript": `prop x setTo -306.76
-prop y setTo -178.40
-prop nectarQuality setTo 2
-prop baseType setTo \"watermelon\`
-    },
-    {
-      "id": "3",
-      "label": "Flower2",
-      "bpid": "Flower",
-      "initScript": `prop x setTo -293.08
-prop y setTo 127.52
-prop nectarQuality setTo 3
-prop baseType setTo \"watermelon\`
-    },
-    {
-      "id": "6",
-      "label": "Hive",
-      "bpid": "Hive",
-      "initScript": `prop x setTo 238.51
-prop y setTo -216.81
-prop aiBeeCount setTo 0
-prop hiveType setTo \"natural\`
-    },
-    {
-      "id": "7",
-      "label": "Flower3",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 250.60
-prop y setTo 115.91
-prop nectarQuality setTo 3
-prop baseType setTo \"squash\`
-    },
-    {
-      "id": "8",
-      "label": "Flower4",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 268.77
-prop y setTo 270.94
-prop nectarQuality setTo 3
-prop baseType setTo \"squash\`
-    },
-    {
-      "id": "9",
-      "label": "Flower5",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 238.16
-prop y setTo -33.09
-prop nectarQuality setTo 0
-prop baseType setTo \"pumpkin\`
-    },
-    {
-      "id": "1809",
-      "label": "Timer",
-      "bpid": "Timer",
-      "initScript": `prop x setTo 349.21
-prop y setTo -391.19`
-    },
-    {
-      "id": "1810",
-      "label": "Background1810",
+      "id": "0",
+      "label": "Background0",
       "bpid": "Background",
-      "initScript": `prop x setTo 0.91
-prop y setTo 4.3
-prop zIndex setTo -1`
+      "initScript": `prop x setTo 3.30
+prop y setTo 0.12`
     },
     {
-      "id": "1811",
-      "label": "Bee1811",
+      "id": "1",
+      "label": "Bee1",
       "bpid": "Bee",
-      "initScript": `prop x setTo -10
-prop y setTo -41`
-    },
-    {
-      "id": "1812",
-      "label": "Flower1812",
-      "bpid": "Flower",
-      "initScript": `prop x setTo -299.88
-prop y setTo -23.37
-prop baseType setTo \"pumpkin\`
+      "initScript": `prop x setTo -41
+prop y setTo -29`
     }
   ]
 }
