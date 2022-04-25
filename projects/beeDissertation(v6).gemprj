@@ -572,6 +572,15 @@ when Bee centerFirstTouches Flower [[
       propPop global.baseTypePassing
 
       ifExpr {{ Flower.getProp('generation').value == 1 &&  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value }} [[ 
+      
+      //POLLINATION IS HAPPENING HERE (for growth/costume logic)
+      prop Flower.pollenAmount add 1
+    //  ifExpr {{ Flower.getProp('pollenAmount').value > 0 }}[[
+    //    exprPush {{ Flower.getProp('costumeName').value + 'Pollen'}}
+    //  \tpropPop Flower.costumeName
+   //   ]]
+  
+      
         featCall Population createAgent Flower [[
         prop x addRndInt -50 50
         prop y addRndInt -50 50
@@ -783,7 +792,7 @@ addProp nameBase String 'Plant'
 prop nameBase setTo 'Blue Flower'
 
 addProp costumeName String 'blue'
-prop costumeName setTo 'blue'
+prop costumeName setTo ''
 
 //spawnNewFlowers
 // this determines whether new flowers get made
@@ -792,22 +801,34 @@ prop spawnNewFlowers setTo true
 
 // set all the defaults for name, etc. 
 ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
-  featCall Costume setCostume 'blueFlower.png' 
+  featCall Costume setCostume 'blueFlower.png'
+  prop costumeName setTo 'blue'
+
 ]]
 ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
   featCall Costume setCostume 'redFlower.png'
+  prop costumeName setTo 'red'
+
  ]]
 ifExpr {{ agent.getProp('baseType').value == 'yellow.png'}} [[
   featCall Costume setCostume 'yellowFlower.png' 
+  prop costumeName setTo 'yellow'
+
 ]]
 ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
-  featCall Costume setCostume 'squashVeggie.png' 
+  featCall Costume setCostume 'squashSprout.png' 
+  prop costumeName setTo 'squashSprout'
+
 ]]
 ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
-  featCall Costume setCostume 'pumpkinVeggie.png' 
+  featCall Costume setCostume 'pumpkinSprout.png' 
+  prop costumeName setTo 'pumpkinSprout'
+
 ]]
 ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
-  featCall Costume setCostume 'watermelonVeggie.png' 
+  featCall Costume setCostume 'watermelonSprout.png' 
+  prop costumeName setTo 'watermelonSprout'
+
 ]]
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
@@ -837,7 +858,7 @@ prop nectarQuality setMax 3
 prop nectarQuality setMin 1
 
 addProp pollenAmount Number 0
-prop pollenAmount setMax 40
+prop pollenAmount setMax 2
 prop pollenAmount setMin 0 
 prop pollenAmount setTo 0
 
@@ -861,6 +882,7 @@ addProp doOnce Boolean true
 # PROGRAM UPDATE
   every 1 runAtStart [[
 
+//START OF DOONCE
   ifExpr {{ Flower.getProp('doOnce').value == true }} [[
     prop doOnce setTo false
   // TODO is there a better way to do this timing-wise?
@@ -872,32 +894,75 @@ addProp doOnce Boolean true
   ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
     featCall Costume setCostume 'blueFlower.png'
     prop nameBase setTo 'Blue Flower' 
+          prop costumeName setTo 'blue'
+
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
     featCall Costume setCostume 'redFlower.png'
     prop nameBase setTo 'Red Flower' 
+          prop costumeName setTo 'red'
+
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'yellow'}} [[
     featCall Costume setCostume 'yellowFlower.png' 
     prop nameBase setTo 'Yellow Flower' 
+          prop costumeName setTo 'yellow'
+
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
     featCall Costume setCostume 'squashSprout.png' 
     prop nameBase setTo 'Squash' 
+      prop costumeName setTo 'squashSprout'
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
     featCall Costume setCostume 'pumpkinSprout.png' 
     prop nameBase setTo 'Pumpkin' 
+      prop costumeName setTo 'pumpkinSprout'
+
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
     featCall Costume setCostume 'watermelonSprout.png'
     prop nameBase setTo 'Watermelon' 
+      prop costumeName setTo 'watermelonSprout'
   ]]
 
   // make the name match
   exprPush {{ agent.getProp('nameBase').value }}
   featPropPop  AgentWidgets text
   ]]
+  //END OF DOONCE
+  
+  //START OF POLLEN COSTUMES
+  ifExpr {{ agent.getProp('baseType').value == 'red' && agent.getProp('pollenAmount').value > 0 }} [[
+   \t\tfeatCall Costume setCostume 'redPollen.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'blue' && agent.getProp('pollenAmount').value > 0 }} [[
+   \t\tfeatCall Costume setCostume 'bluePollen.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'yellow' && agent.getProp('pollenAmount').value > 0 }} [[
+   \t\tfeatCall Costume setCostume 'yellowPollen.png'
+  ]]
+    ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value == 1 }} [[
+   \t\tfeatCall Costume setCostume 'watermelonSproutPollen.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value == 1 }} [[
+   \t\tfeatCall Costume setCostume 'squashSproutPollen.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value == 1 }} [[
+   \t\tfeatCall Costume setCostume 'pumpkinSproutPollen.png'
+  ]]
+  //END OF POLLEN COSTUMES
+  //START OF VEGGIE GROWTH COSTUMES
+     ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value > 1 }} [[
+   \t\tfeatCall Costume setCostume 'watermelonVeggie.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value > 1 }} [[
+   \t\tfeatCall Costume setCostume 'squashVeggie.png'
+  ]]
+   ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value > 1  }} [[
+   \t\tfeatCall Costume setCostume 'pumpkinVeggie.png'
+  ]]
+  //END OF VEGGIE GROWTH COSTUMES
 ]]
 
 `
@@ -949,18 +1014,19 @@ featCall Costume setScale 0.8
       "id": "1",
       "label": "Flower1",
       "bpid": "Flower",
-      "initScript": `prop x setTo -56.80
-prop y setTo -190.88
+      "initScript": `prop x setTo -306.76
+prop y setTo -178.40
 prop nectarQuality setTo 2
-prop baseType setTo blue`
+prop baseType setTo \"watermelon\`
     },
     {
       "id": "3",
       "label": "Flower2",
       "bpid": "Flower",
-      "initScript": `prop x setTo 296.62
-prop y setTo 3.18
-prop nectarQuality setTo 3`
+      "initScript": `prop x setTo -293.08
+prop y setTo 127.52
+prop nectarQuality setTo 3
+prop baseType setTo \"watermelon\`
     },
     {
       "id": "6",
@@ -975,28 +1041,28 @@ prop hiveType setTo \"natural\`
       "id": "7",
       "label": "Flower3",
       "bpid": "Flower",
-      "initScript": `prop x setTo 192.55
-prop y setTo 271.17
+      "initScript": `prop x setTo 250.60
+prop y setTo 115.91
 prop nectarQuality setTo 3
-prop baseType setTo 'red'`
+prop baseType setTo \"squash\`
     },
     {
       "id": "8",
       "label": "Flower4",
       "bpid": "Flower",
-      "initScript": `prop x setTo -132.09
-prop y setTo 222.74
+      "initScript": `prop x setTo 268.77
+prop y setTo 270.94
 prop nectarQuality setTo 3
-prop baseType setTo 'squash'`
+prop baseType setTo \"squash\`
     },
     {
       "id": "9",
       "label": "Flower5",
       "bpid": "Flower",
-      "initScript": `prop x setTo -177.59
-prop y setTo -52.1
+      "initScript": `prop x setTo 238.16
+prop y setTo -33.09
 prop nectarQuality setTo 0
-prop baseType setTo 'red'`
+prop baseType setTo \"pumpkin\`
     },
     {
       "id": "1809",
@@ -1012,6 +1078,21 @@ prop y setTo -391.19`
       "initScript": `prop x setTo 0.91
 prop y setTo 4.3
 prop zIndex setTo -1`
+    },
+    {
+      "id": "1811",
+      "label": "Bee1811",
+      "bpid": "Bee",
+      "initScript": `prop x setTo -10
+prop y setTo -41`
+    },
+    {
+      "id": "1812",
+      "label": "Flower1812",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -299.88
+prop y setTo -23.37
+prop baseType setTo \"pumpkin\`
     }
   ]
 }
