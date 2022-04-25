@@ -611,7 +611,7 @@ ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
 ]]
 ifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
   featCall Costume setCostume 'hiveNatural.png' 
-    featProp Physics scale setTo 0.25
+    featProp Physics scale setTo 0.5
 
 ]]
 
@@ -671,12 +671,29 @@ exprPush {{'Hive [D:0; W:0]'}}
 featPropPop AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
 
+addProp doOnce Boolean true
+
 # PROGRAM UPDATE
 
 every 0.1 [[
   
   // update our name to reflect the number of dancing and watching bees
-  // first we need to calculate them, though 
+  // first we need to calculate them, though
+  
+  ifExpr {{ agent.getProp('doOnce').value == true }} [[
+  \tifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
+  \t\tfeatCall Costume setCostume 'hiveCommercial.png' 
+   \t featProp Physics scale setTo 0.5
+
+\t]]
+\tifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
+  \t\tfeatCall Costume setCostume 'hiveNatural.png' 
+    \tfeatProp Physics scale setTo 0.5
+
+\t]]
+\tprop doOnce setTo false
+  ]]
+   
 
   prop global.dancingBeesCounter setTo 0
   prop global.watchingBeesCounter setTo 0
@@ -951,7 +968,8 @@ prop nectarQuality setTo 3`
       "bpid": "Hive",
       "initScript": `prop x setTo 238.51
 prop y setTo -216.81
-prop aiBeeCount setTo 5`
+prop aiBeeCount setTo 0
+prop hiveType setTo \"natural\`
     },
     {
       "id": "7",
