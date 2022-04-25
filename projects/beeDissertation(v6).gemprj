@@ -886,23 +886,6 @@ addProp doOnce Boolean true
 `
     },
     {
-      "id": "background",
-      "label": "background",
-      "scriptText": `# BLUEPRINT background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
-# TAG isPTrackControllable false
-# PROGRAM DEFINE
-useFeature Costume
-featCall Costume setCostume 'background (filter).png' 0
-featCall Costume setScale 1
-// useFeature Movement
-# PROGRAM EVENT
-
-# PROGRAM UPDATE
-`
-    },
-    {
       "id": "Timer",
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
@@ -925,17 +908,26 @@ prop y setTo -256
   exprPush {{ 'Time: ' + agent.getProp('time').value }}
   featPropPop AgentWidgets text
 ]]`
+    },
+    {
+      "id": "Background",
+      "label": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'background (filter).png' 0
+featCall Costume setScale 0.8
+// useFeature Movement
+# PROGRAM EVENT
+
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
-    {
-      "id": "0",
-      "label": "background0",
-      "bpid": "background",
-      "initScript": `prop x setTo -1.42
-prop y setTo 1.95
-prop scale setTo 0.8`
-    },
     {
       "id": "1",
       "label": "Flower1",
@@ -994,6 +986,14 @@ prop baseType setTo 'red'`
       "bpid": "Timer",
       "initScript": `prop x setTo 349.21
 prop y setTo -391.19`
+    },
+    {
+      "id": "1810",
+      "label": "Background1810",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0.91
+prop y setTo 4.3
+prop zIndex setTo -1`
     }
   ]
 }
