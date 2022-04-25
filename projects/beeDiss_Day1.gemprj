@@ -564,6 +564,11 @@ when Bee centerFirstTouches Flower [[
       exprPush {{ Bee.getProp('watermelonID').value }}
       propPop pollinatedID
     ]]
+    
+    //toggling pollen costume when pollination is supposed to have happened even if no repro
+    ifExpr {{  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value && Bee.getProp('pollinatedColor').value == true &&  Flower.getProp('pollenVisibleOn').value == true && Flower.getProp('generation').value == 1 }} [[ 
+    \tprop Flower.pollenAmount add 1
+]]
 
     // grab some pollen whether you stop or not, since you checked it out ... 
     ifExpr {{ Flower.getProp('spawnNewFlowers').value == true && Bee.getProp('pollinatedColor').value == true }} [[ 
@@ -572,13 +577,7 @@ when Bee centerFirstTouches Flower [[
       propPop global.baseTypePassing
 
       ifExpr {{ Flower.getProp('generation').value == 1 &&  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value }} [[ 
-      
-      //POLLINATION IS HAPPENING HERE (for growth/costume logic)
-      prop Flower.pollenAmount add 1
-    //  ifExpr {{ Flower.getProp('pollenAmount').value > 0 }}[[
-    //    exprPush {{ Flower.getProp('costumeName').value + 'Pollen'}}
-    //  \tpropPop Flower.costumeName
-   //   ]]
+     
   
       
         featCall Population createAgent Flower [[
@@ -798,6 +797,10 @@ prop costumeName setTo ''
 // this determines whether new flowers get made
 addProp spawnNewFlowers Boolean false
 prop spawnNewFlowers setTo false
+
+addProp pollenVisibleOn Boolean true
+prop pollenVisibleOn setTo true
+
 
 // set all the defaults for name, etc. 
 ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
