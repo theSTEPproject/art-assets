@@ -823,8 +823,8 @@ every 1 runAtStart [[
       "id": "background",
       "label": "background",
       "scriptText": `# BLUEPRINT background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
