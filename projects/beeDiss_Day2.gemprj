@@ -995,8 +995,8 @@ prop y setTo -256
       "id": "Background",
       "label": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
