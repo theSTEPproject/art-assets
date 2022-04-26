@@ -349,7 +349,7 @@ addProp regenFruitCounter Number 20
 
     prop regenFruitCounter sub 1
     ifExpr {{ Fruit.getProp('regenFruitCounter').value == 0 }} [[
-      featCall Costume setCostume 'moth_fruit_green.png' 0
+      featCall Costume setCostume 'moth_fruits-green.png' 0
       prop energy setTo 10
       prop regenFruitCounter setTo 20
     ]]
