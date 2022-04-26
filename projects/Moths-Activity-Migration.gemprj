@@ -852,24 +852,24 @@ prop zIndex setTo 100
       "id": "1",
       "label": "TreeBranch 1",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo -326.90
-prop y setTo 34.66
+      "initScript": `prop x setTo -323.19
+prop y setTo 0.42
 `
     },
     {
       "id": "2",
       "label": "TreeBranch 2",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo -99.67
-prop y setTo -9.69
+      "initScript": `prop x setTo -101.04
+prop y setTo 1.26
 `
     },
     {
       "id": "3",
       "label": "TreeBranch 3",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo 154.48
-prop y setTo 39.63
+      "initScript": `prop x setTo 150.50
+prop y setTo -0.55
       `
     },
     {

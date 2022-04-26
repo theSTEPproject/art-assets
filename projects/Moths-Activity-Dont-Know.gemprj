@@ -349,7 +349,7 @@ addProp regenFruitCounter Number 20
 
     prop regenFruitCounter sub 1
     ifExpr {{ Fruit.getProp('regenFruitCounter').value == 0 }} [[
-      featCall Costume setCostume 'moth_fruit_eaten.png' 0
+      featCall Costume setCostume 'moth_fruit_green.png' 0
       prop energy setTo 10
       prop regenFruitCounter setTo 20
     ]]
@@ -419,15 +419,15 @@ prop orientation setTo 45
       "id": "1",
       "label": "TreeBranch1",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo 231.11
-prop y setTo 36.21`
+      "initScript": `prop x setTo 225.78
+prop y setTo -0.43`
     },
     {
       "id": "2",
       "label": "TreeBranch2",
       "bpid": "TreeBranch",
-      "initScript": `prop x setTo -164.44
-prop y setTo 40.10
+      "initScript": `prop x setTo -164.93
+prop y setTo 0.21
       `
     },
     {
@@ -455,8 +455,8 @@ prop y setTo -161.05`
       "id": "6",
       "label": "Fruit6",
       "bpid": "Fruit",
-      "initScript": `prop x setTo 298.85
-prop y setTo -13.43`
+      "initScript": `prop x setTo 161.85
+prop y setTo 1.09`
     },
     {
       "id": "7",
