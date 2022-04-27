@@ -841,7 +841,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo true
+prop visible setTo false
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
@@ -1038,7 +1038,7 @@ prop y setTo -396.19`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
 prop nectarQuality setTo 1
-prop x setTo 295.07
+prop x setTo 270.24
 prop y setTo -215.77`
     },
     {
@@ -1047,8 +1047,8 @@ prop y setTo -215.77`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"blue\"
 prop nectarQuality setTo 1
-prop x setTo -316.20
-prop y setTo 63.67`
+prop x setTo 46.78
+prop y setTo 80.73`
     },
     {
       "id": "8",
@@ -1066,8 +1066,8 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo 48.36
-prop y setTo 41.07`
+prop x setTo -300.56
+prop y setTo 8.43`
     },
     {
       "id": "11",
@@ -1075,17 +1075,8 @@ prop y setTo 41.07`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 1
 prop baseType setTo \"yellow\"
-prop x setTo 146.88
-prop y setTo 122.25`
-    },
-    {
-      "id": "12",
-      "label": "blue2",
-      "bpid": "Flower",
-      "initScript": `prop nectarQuality setTo 3
-prop baseType setTo blue
-prop x setTo -214.20
-prop y setTo -128.77`
+prop x setTo 288.69
+prop y setTo 175.7`
     },
     {
       "id": "13",
@@ -1093,8 +1084,8 @@ prop y setTo -128.77`
       "bpid": "Flower",
       "initScript": `prop baseType setTo blue
 prop nectarQuality setTo 3
-prop x setTo -71.48
-prop y setTo -190.64`
+prop x setTo -108.52
+prop y setTo -172.55`
     }
   ]
 }
