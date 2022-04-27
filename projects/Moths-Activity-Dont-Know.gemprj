@@ -28,7 +28,7 @@
           featCall Costume setCostume 'moth_outline.png' 0
 
           // re-set the energy
-          prop energy setTo 50
+          prop energy setTo 25
         
           prop rndForColor setToRnd 1 10
           ifExpr {{  agent.getProp('rndForColor').value  < 5 }} [[ 
@@ -230,7 +230,7 @@ useFeature Physics
 featProp Physics scale setTo 0.1
 
 addProp attackCounter Number 0
-addProp attackCounterMax Number 10
+addProp attackCounterMax Number 5
 propPush attackCounterMax
 propPop attackCounter
 
@@ -413,6 +413,7 @@ featCall Costume setScale 1
       "initScript": `prop x setTo -400.57
 prop y setTo -342.27
 prop orientation setTo 45
+prop visible setTo false
 `
     },
     {

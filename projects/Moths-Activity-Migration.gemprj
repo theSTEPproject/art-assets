@@ -846,6 +846,8 @@ featCall Costume setScale 1
 prop y setTo -333.63
 prop orientation setTo 45
 prop zIndex setTo 100
+prop visible setTo false
+
 `
     },
     {
