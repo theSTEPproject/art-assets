@@ -841,7 +841,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo true
+prop visible setTo false
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
@@ -1003,8 +1003,8 @@ prop y setTo -256
       "id": "Background",
       "label": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable false
-# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
@@ -1034,57 +1034,67 @@ prop y setTo -396.19`
     },
     {
       "id": "3",
-      "label": "BlueLARGE",
+      "label": "red1",
       "bpid": "Flower",
-      "initScript": `prop scale setTo 1
-prop baseType setTo \"blue\"
-prop nectarQuality setTo 1
-prop x setTo 236.05
-prop y setTo -121.91`
+      "initScript": `prop baseType setTo \"red\"
+prop nectarQuality setTo 2
+prop x setTo -221.44
+prop y setTo -202.47`
     },
     {
       "id": "4",
-      "label": "yellowMED",
+      "label": "blue1",
       "bpid": "Flower",
-      "initScript": `prop baseType setTo \"yellow\"
-prop scale setTo 0.5
-prop x setTo 185.26
-prop y setTo 175.1`
+      "initScript": `prop baseType setTo \"blue\"
+prop nectarQuality setTo 2
+prop x setTo 299.38
+prop y setTo -2.72`
     },
     {
       "id": "5",
-      "label": "redLARGE",
+      "label": "red3",
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
-prop scale setTo 1
-prop x setTo -166.13
-prop y setTo 254.58`
+prop nectarQuality setTo 2
+prop x setTo 269.88
+prop y setTo -194.85`
     },
     {
       "id": "7",
-      "label": "blueMINI",
+      "label": "red2",
       "bpid": "Flower",
-      "initScript": `prop scale setTo 0.25
-prop baseType setTo \"blue\"
-prop x setTo -283.56
-prop y setTo 60.86`
+      "initScript": `prop baseType setTo \"red\"
+prop nectarQuality setTo 2
+prop x setTo 14.65
+prop y setTo -217.79`
     },
     {
       "id": "8",
       "label": "Hive8",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo \"natural\"
-prop x setTo -259.2
-prop y setTo -188.41
+prop x setTo -43.52
+prop y setTo 279.51
 prop scale setTo 2
 prop hiveID setTo 0`
     },
     {
-      "id": "9",
-      "label": "Bee9",
-      "bpid": "Bee",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "id": "10",
+      "label": "yellow2",
+      "bpid": "Flower",
+      "initScript": `prop nectarQuality setTo 2
+prop baseType setTo \"yellow\"
+prop x setTo -101.89
+prop y setTo 18.44`
+    },
+    {
+      "id": "11",
+      "label": "yellow1",
+      "bpid": "Flower",
+      "initScript": `prop nectarQuality setTo 2
+prop baseType setTo \"yellow\"
+prop x setTo 184.82
+prop y setTo 202.18`
     }
   ]
 }
