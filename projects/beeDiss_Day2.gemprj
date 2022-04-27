@@ -841,7 +841,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo true
+prop visible setTo false
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
@@ -1037,44 +1037,26 @@ prop y setTo -396.19`
       "label": "red1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
-prop nectarQuality setTo 2
-prop x setTo -272.73
-prop y setTo -208.03`
+prop nectarQuality setTo 1
+prop x setTo 311.33
+prop y setTo 86.43`
     },
     {
       "id": "4",
       "label": "blue1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"blue\"
-prop nectarQuality setTo 2
-prop x setTo -155.04
-prop y setTo 153.99`
-    },
-    {
-      "id": "5",
-      "label": "red3",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"red\"
-prop nectarQuality setTo 2
-prop x setTo 284.38
-prop y setTo -202.77`
-    },
-    {
-      "id": "7",
-      "label": "red2",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"red\"
-prop nectarQuality setTo 2
-prop x setTo 3.95
-prop y setTo -214.25`
+prop nectarQuality setTo 1
+prop x setTo -275.4
+prop y setTo -192.34`
     },
     {
       "id": "8",
       "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo \"natural\"
-prop x setTo -43.52
-prop y setTo 279.51
+prop x setTo 70.75
+prop y setTo 277.77
 prop scale setTo 2
 prop hiveID setTo 0`
     },
@@ -1084,17 +1066,26 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo -275.91
-prop y setTo -0.89`
+prop x setTo -240.38
+prop y setTo 34.12`
     },
     {
       "id": "11",
       "label": "yellow1",
       "bpid": "Flower",
-      "initScript": `prop nectarQuality setTo 2
+      "initScript": `prop nectarQuality setTo 1
 prop baseType setTo \"yellow\"
-prop x setTo 39.55
-prop y setTo -3.1`
+prop x setTo 62.4
+prop y setTo 30.13`
+    },
+    {
+      "id": "12",
+      "label": "blue2",
+      "bpid": "Flower",
+      "initScript": `prop nectarQuality setTo 3
+prop baseType setTo blue
+prop x setTo 34.23
+prop y setTo -192.97`
     }
   ]
 }
