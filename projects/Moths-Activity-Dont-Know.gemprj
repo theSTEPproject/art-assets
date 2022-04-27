@@ -134,10 +134,13 @@ when Moth centerFirstTouches TreeBranch [[
   prop flying setTo false
   ifExpr {{ Moth.getProp('lightOrDark').value ==  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo true
+    dbgOut 'setting camo'
   ]]
   // if not, make sure it is not camouflaged
   ifExpr {{ Moth.getProp('lightOrDark').value !=  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo false
+    dbgOut 'unsetting camo'
+
   ]]
 ]]
 
@@ -192,7 +195,7 @@ when Moth centerTouches Fruit [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'tree_1_medium.png' 0
+featCall Costume setCostume 'tree_1_dark.png' 0
 
 // note that this is updated in round
 addProp lightOrDark String 'dark'
@@ -210,13 +213,13 @@ exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'TreeBran
 propPop treeID
 
 ifExpr {{agent.getProp('treeID').value == 1}} [[
-  featCall Costume setCostume 'tree_1_medium.png' 0
+  featCall Costume setCostume 'tree_1_dark.png' 0
 ]]
 ifExpr {{agent.getProp('treeID').value == 2}} [[
-  featCall Costume setCostume 'tree_2_medium.png' 0
+  featCall Costume setCostume 'tree_2_dark.png' 0
 ]]
 ifExpr {{agent.getProp('treeID').value == 3}} [[
-  featCall Costume setCostume 'tree_3_medium.png' 0
+  featCall Costume setCostume 'tree_3_dark.png' 0
 ]]
 
 
