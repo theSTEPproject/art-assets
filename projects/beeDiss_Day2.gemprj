@@ -1,5 +1,5 @@
 {
-  "id": "beeDiss_Day1",
+  "id": "beeDiss_Day2",
   "label": "Bee Dissertation",
   "metadata": {
     "top": -400,
@@ -612,7 +612,7 @@ useFeature Physics
 featCall Physics init
 featProp Physics scale setTo 0.5
 
-addProp hiveType String 'commercial'
+addProp hiveType String 'natural'
 ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
   featCall Costume setCostume 'hiveCommercial.png' 
     featProp Physics scale setTo 0.5
@@ -676,15 +676,24 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == und
 ]]
 
 useFeature AgentWidgets
-exprPush {{'Hive [D:0; W:0]'}}
+exprPush {{'Hive Nectar Amount: 0'}}
 featPropPop AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
 
 addProp doOnce Boolean true
 
+addProp tempNectarDisplay Number 0
+prop tempNectarDisplay setTo 0
+
 # PROGRAM UPDATE
 
 every 0.1 [[
+  
+  exprPush {{agent.getProp('nectarAmount').value / 5}} 
+  propPop agent.tempNectarDisplay
+  
+  exprPush {{'Hive Nectar Amount: ' + agent.getProp('tempNectarDisplay').value}}
+  featPropPop AgentWidgets text 
   
   // update our name to reflect the number of dancing and watching bees
   // first we need to calculate them, though
@@ -703,9 +712,8 @@ every 0.1 [[
 \tprop doOnce setTo false
   ]]
    
-
-  prop global.dancingBeesCounter setTo 0
-  prop global.watchingBeesCounter setTo 0
+\t prop global.dancingBeesCounter setTo 0
+ \t prop global.watchingBeesCounter setTo 0
 
   exprPush {{agent.getProp('hiveID').value}}
   propPop global.hiveIDPassing
@@ -729,8 +737,8 @@ every 0.1 [[
     ]]
   ]]
 
-  exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
-  featPropPop AgentWidgets text 
+ // exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
+ // featPropPop AgentWidgets text 
 ]]
 
 every 0.5 runAtStart [[
@@ -837,7 +845,7 @@ prop visible setTo true
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
 addProp rehideAfterVisit Boolean true
-prop rehideAfterVisit setTo false 
+prop rehideAfterVisit setTo true 
 
 // to make sure we re-hide only if no one is here anymore 
 addProp currentVisitorCount Number 0
@@ -1070,6 +1078,13 @@ prop x setTo -259.2
 prop y setTo -188.41
 prop scale setTo 2
 prop hiveID setTo 0`
+    },
+    {
+      "id": "9",
+      "label": "Bee9",
+      "bpid": "Bee",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
