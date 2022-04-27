@@ -1038,8 +1038,8 @@ prop y setTo -396.19`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
 prop nectarQuality setTo 1
-prop x setTo 270.24
-prop y setTo -215.77`
+prop x setTo 128.87
+prop y setTo 236.31`
     },
     {
       "id": "4",
@@ -1047,16 +1047,16 @@ prop y setTo -215.77`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"blue\"
 prop nectarQuality setTo 1
-prop x setTo 46.78
-prop y setTo 80.73`
+prop x setTo 72.75
+prop y setTo -208.45`
     },
     {
       "id": "8",
       "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo \"natural\"
-prop x setTo -149.81
-prop y setTo 278.47
+prop x setTo -146.09
+prop y setTo 279.34
 prop scale setTo 2
 prop hiveID setTo 0`
     },
@@ -1066,8 +1066,8 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo -300.56
-prop y setTo 8.43`
+prop x setTo -164.65
+prop y setTo 28.71`
     },
     {
       "id": "11",
@@ -1075,8 +1075,8 @@ prop y setTo 8.43`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 1
 prop baseType setTo \"yellow\"
-prop x setTo 288.69
-prop y setTo 175.7`
+prop x setTo 125.81
+prop y setTo 15.18`
     },
     {
       "id": "13",
@@ -1084,8 +1084,8 @@ prop y setTo 175.7`
       "bpid": "Flower",
       "initScript": `prop baseType setTo blue
 prop nectarQuality setTo 3
-prop x setTo -108.52
-prop y setTo -172.55`
+prop x setTo -246.25
+prop y setTo -203.53`
     }
   ]
 }
