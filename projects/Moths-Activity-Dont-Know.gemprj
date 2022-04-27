@@ -134,13 +134,10 @@ when Moth centerFirstTouches TreeBranch [[
   prop flying setTo false
   ifExpr {{ Moth.getProp('lightOrDark').value ==  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo true
-    dbgOut 'setting camo'
   ]]
   // if not, make sure it is not camouflaged
   ifExpr {{ Moth.getProp('lightOrDark').value !=  TreeBranch.getProp('lightOrDark').value}} [[
     prop camouflaged setTo false
-    dbgOut 'unsetting camo'
-
   ]]
 ]]
 
