@@ -436,9 +436,19 @@ featCall Touches monitor Fruit c2b
 useFeature AgentWidgets
 useFeature Population
 
+useFeature Global 
+
 addProp mothID Number 0
+
+ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'mothCount') == undefined }} [[
+    featCall Global addGlobalProp mothCount Number 0
+]]
+
+prop global.mothCount add 1
+propPush global.mothCount
+
 // set the id to the current count of agents so that it keeps incrementing 
-exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') + 1 }} 
+// exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Moth') + 1 }} 
 propPop mothID
 
 exprPush {{ 'Moth ' + (agent.getProp('mothID').value) }}
