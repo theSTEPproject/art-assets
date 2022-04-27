@@ -1020,14 +1020,14 @@ featCall Costume setScale 0.8
   "instances": [
     {
       "id": "0",
-      "label": "Background0",
+      "label": "Background",
       "bpid": "Background",
       "initScript": `prop x setTo 3.30
 prop y setTo 0.12`
     },
     {
       "id": "2",
-      "label": "Timer2",
+      "label": "Timer",
       "bpid": "Timer",
       "initScript": `prop x setTo 356.96
 prop y setTo -396.19`
@@ -1038,8 +1038,8 @@ prop y setTo -396.19`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
 prop nectarQuality setTo 2
-prop x setTo -221.44
-prop y setTo -202.47`
+prop x setTo -272.73
+prop y setTo -208.03`
     },
     {
       "id": "4",
@@ -1047,8 +1047,8 @@ prop y setTo -202.47`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"blue\"
 prop nectarQuality setTo 2
-prop x setTo 299.38
-prop y setTo -2.72`
+prop x setTo -155.04
+prop y setTo 153.99`
     },
     {
       "id": "5",
@@ -1056,8 +1056,8 @@ prop y setTo -2.72`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
 prop nectarQuality setTo 2
-prop x setTo 269.88
-prop y setTo -194.85`
+prop x setTo 284.38
+prop y setTo -202.77`
     },
     {
       "id": "7",
@@ -1065,12 +1065,12 @@ prop y setTo -194.85`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"red\"
 prop nectarQuality setTo 2
-prop x setTo 14.65
-prop y setTo -217.79`
+prop x setTo 3.95
+prop y setTo -214.25`
     },
     {
       "id": "8",
-      "label": "Hive8",
+      "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo \"natural\"
 prop x setTo -43.52
@@ -1084,8 +1084,8 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo -101.89
-prop y setTo 18.44`
+prop x setTo -275.91
+prop y setTo -0.89`
     },
     {
       "id": "11",
@@ -1093,8 +1093,8 @@ prop y setTo 18.44`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo 184.82
-prop y setTo 202.18`
+prop x setTo 39.55
+prop y setTo -3.1`
     }
   ]
 }
