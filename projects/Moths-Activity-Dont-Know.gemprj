@@ -294,6 +294,12 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
             ifExpr {{ agent.getProp('causeOfDeath').value == 'alive' && agent.getProp('camouflaged').value == false  && global.getProp('foundOneToKill').value == false }} [[
                 prop global.foundOneToKill setTo true
                 prop agent.causeOfDeath setTo 'ripped'
+                prop agent.energy setTo 0
+
+              featCall Population createAgent PopupEffect [[
+                featCall agent.Costume setAnimatedCostume 'claws1.png' 1
+                featProp agent.Physics scale setTo 0.05
+              ]]
 
                 ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
                   featCall agent.Costume setCostume 'moth_ripped_dark.png' 0
