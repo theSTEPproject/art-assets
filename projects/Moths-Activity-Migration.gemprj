@@ -794,7 +794,6 @@ every 1 runAtStart [[
 
     // iterate through the moths to see how maany are camoflaged and udpate a counter to display on the meter
     featCall Population agentsForEach Moth [[
-      dbgOut 'checking ... camo: ' {{agent.getProp('camouflaged').value}}
       ifExpr {{ agent.getProp('camouflaged').value == true}} [[
         prop global.tmpMatchCounter add 1
 
