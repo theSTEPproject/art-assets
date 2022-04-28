@@ -82,7 +82,7 @@ featProp Movement useAutoOrientation setTo true
 
 useFeature Touches
 featCall Touches monitor TreeBranch c2b
-featCall Touches monitor Fruit c2b
+featCall Touches monitor Fruit b2b
 
 useFeature AgentWidgets
 useFeature Population
@@ -146,7 +146,7 @@ when Moth centerLastTouches TreeBranch [[
   prop flying setTo true
 ]]
 
-when Moth centerTouches Fruit [[
+when Moth touches Fruit [[
   every 1 runAtStart [[
     ifExpr {{ Fruit.getProp('energy').value >= 2 }} [[ 
       prop Moth.energy add 2
@@ -240,7 +240,7 @@ useFeature Physics
 featProp Physics scale setTo 0.1
 
 addProp attackCounter Number 0
-addProp attackCounterMax Number 5
+addProp attackCounterMax Number 100
 propPush attackCounterMax
 propPop attackCounter
 
@@ -257,7 +257,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
 # PROGRAM EVENT
 # PROGRAM UPDATE
 
-  every 1 runAtStart [[
+  every 1 [[
     prop attackCounter sub 1
     ifExpr {{ Predator.getProp('attackCounter').value == 0 }} [[
       prop global.foundOneToKill setTo false
