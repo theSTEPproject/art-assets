@@ -29,6 +29,9 @@
 
           // re-set the energy
           prop energy setTo 25
+
+          prop agent.isInert setTo false 
+          prop agent.causeOfDeath setTo 'alive'
         
           prop rndForColor setToRnd 1 10
           ifExpr {{  agent.getProp('rndForColor').value  < 5 }} [[ 
