@@ -89,7 +89,8 @@
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
             prop energy setTo 100
-             prop agent.isInert setTo false
+            prop agent.isInert setTo false
+            prop flying setTo false
 
           ]]
 
@@ -154,7 +155,8 @@
              // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            prop energy setTo 50
+            prop energy setTo 100
+            prop flying setTo false
           ]]
 
         ]]
@@ -221,7 +223,8 @@
             // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            prop energy setTo 50
+            prop energy setTo 100
+            prop flying setTo false
           ]]
 
         ]]
@@ -304,7 +307,8 @@
              // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            prop energy setTo 50
+            prop energy setTo 100
+            prop flying setTo false
           ]]
 
           // cycle again
@@ -323,7 +327,8 @@
             prop causeOfDeath setTo 'alive'
             // this is currently re-setting the energy. If we want to somehow indicate moths get tired during the first round, we could leave this alone
             // though some will starve if we don't add fruit back in.
-            prop energy setTo 50
+            prop energy setTo 100
+            prop flying setTo false
           ]]
       `
     },
@@ -783,15 +788,16 @@ featProp AgentWidgets text setTo 'Matches: #/#'
 
 every 1 runAtStart [[
 
-  
-  ifExpr {{ global.getProp('predatorIsActive').value == true ||  global.getProp('alwaysUpdateMeter').value == true}} [[
+  ifExpr {{global.getProp('alwaysUpdateMeter').value == true}} [[
 
     prop global.tmpMatchCounter setTo 0
 
     // iterate through the moths to see how maany are camoflaged and udpate a counter to display on the meter
     featCall Population agentsForEach Moth [[
+      dbgOut 'checking ... camo: ' {{agent.getProp('camouflaged').value}}
       ifExpr {{ agent.getProp('camouflaged').value == true}} [[
         prop global.tmpMatchCounter add 1
+
       ]]
     ]]
 
