@@ -240,7 +240,7 @@ useFeature Physics
 featProp Physics scale setTo 0.1
 
 addProp attackCounter Number 0
-addProp attackCounterMax Number 100
+addProp attackCounterMax Number 5
 propPush attackCounterMax
 propPop attackCounter
 
