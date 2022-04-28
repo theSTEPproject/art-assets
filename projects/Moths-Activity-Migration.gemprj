@@ -44,38 +44,17 @@
               
               ifExpr {{global.getProp('characterCounter').value == 1}} [[
                 prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'tree_1_light.png' 0
               ]]
                ifExpr {{global.getProp('characterCounter').value == 2}} [[
                 prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'tree_2_dark.png' 0
+
               ]]
                ifExpr {{global.getProp('characterCounter').value == 3}} [[
                 prop lightOrDark setTo 'light'
-              ]]
+                featCall Costume setCostume 'tree_3_light.png' 0
 
-               // since we have 3 different art templates, figure out the right one and color
-              ifExpr {{agent.getProp('treeID').value == 1}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_1_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_1_dark.png' 0
-                ]]
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 2}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_2_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_2_dark.png' 0
-                ]]              
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 3}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_3_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_3_dark.png' 0
-                ]]              
               ]]
 
           ]]
@@ -109,39 +88,39 @@
             // re-initialize the key variables
             featCall Costume setCostume 'moth_outline.png' 0
             prop causeOfDeath setTo 'alive'
-            prop energy setTo 50
+            prop energy setTo 100
+             prop agent.isInert setTo false
+
           ]]
 
         ]]
         
         ifExpr {{global.getProp('colorSet').value == 2}} [[
+
           // print out the color set
           featCall AgentWidgets showMessage 'We are using color set 2.'
+
+                    // set so we can loop the trees
+          prop global.characterCounter setTo 0
 
           // loop the trees and set their color
           featCall Population agentsForEach TreeBranch [[
               prop global.characterCounter add 1
-              
-              // they are all hiding their colors 
-              ifExpr {{agent.getProp('treeID').value == 1}} [[
-                featCall Costume setCostume 'tree_1_medium.png' 0
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 2}} [[
-                featCall Costume setCostume 'tree_2_medium.png' 0
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 3}} [[
-                featCall Costume setCostume 'tree_3_medium.png' 0
-              ]]
-              
+
               ifExpr {{global.getProp('characterCounter').value == 1}} [[
+
                 prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'tree_1_dark.png' 0
+
               ]]
                ifExpr {{global.getProp('characterCounter').value == 2}} [[
                 prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'tree_2_light.png' 0
 
               ]]
                ifExpr {{global.getProp('characterCounter').value == 3}} [[
                 prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'tree_3_light.png' 0
               ]]
 
           ]]
@@ -179,10 +158,14 @@
           ]]
 
         ]]
-        
+      
+          
         ifExpr {{global.getProp('colorSet').value == 3}} [[
           // print out the color set
           featCall AgentWidgets showMessage 'We are using color set 3.'
+
+          // set so we can loop the trees
+          prop global.characterCounter setTo 0
 
           // loop the trees and set their color
           featCall Population agentsForEach TreeBranch [[
@@ -190,40 +173,22 @@
               
               ifExpr {{global.getProp('characterCounter').value == 1}} [[
                 prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'tree_1_dark.png' 0
+
               ]]
                ifExpr {{global.getProp('characterCounter').value == 2}} [[
                 prop lightOrDark setTo 'dark'
+                featCall Costume setCostume 'tree_2_dark.png' 0
+
 
               ]]
                ifExpr {{global.getProp('characterCounter').value == 3}} [[
                 prop lightOrDark setTo 'light'
+                featCall Costume setCostume 'tree_3_light.png' 0
+
               ]]
 
-              // since we have 3 different art templates, figure out the right one and color
-              ifExpr {{agent.getProp('treeID').value == 1}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_1_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_1_dark.png' 0
-                ]]
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 2}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_2_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_2_dark.png' 0
-                ]]              
-              ]]
-              ifExpr {{agent.getProp('treeID').value == 3}} [[
-                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
-                 featCall Costume setCostume 'tree_3_light.png' 0
-                ]]
-                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
-                 featCall Costume setCostume 'tree_3_dark.png' 0
-                ]]              
-              ]]
+
 
           ]]
 
@@ -265,18 +230,37 @@
           // print out the color set
           featCall AgentWidgets showMessage 'We are using color set 4.'
 
+          // set so we can loop the trees
+          prop global.characterCounter setTo 0
+
           // loop the trees and set their color
           featCall Population agentsForEach TreeBranch [[
               prop global.characterCounter add 1
               
+              // since we have 3 different art templates, figure out the right one and color
               ifExpr {{agent.getProp('treeID').value == 1}} [[
-                featCall Costume setCostume 'tree_1_medium.png' 0
+                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+                 featCall Costume setCostume 'tree_1_light.png' 0
+                ]]
+                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+                 featCall Costume setCostume 'tree_1_dark.png' 0
+                ]]
               ]]
               ifExpr {{agent.getProp('treeID').value == 2}} [[
-                featCall Costume setCostume 'tree_2_medium.png' 0
+                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+                 featCall Costume setCostume 'tree_2_light.png' 0
+                ]]
+                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+                 featCall Costume setCostume 'tree_2_dark.png' 0
+                ]]              
               ]]
               ifExpr {{agent.getProp('treeID').value == 3}} [[
-                featCall Costume setCostume 'tree_3_medium.png' 0
+                ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+                 featCall Costume setCostume 'tree_3_light.png' 0
+                ]]
+                ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+                 featCall Costume setCostume 'tree_3_dark.png' 0
+                ]]              
               ]]
 
               ifExpr {{global.getProp('characterCounter').value == 1}} [[
@@ -341,9 +325,6 @@
             // though some will starve if we don't add fruit back in.
             prop energy setTo 50
           ]]
-
-
-
       `
     },
     {
@@ -460,7 +441,7 @@ addProp energy Number 50
 prop energy setMax 50
 prop energy setMin 0
 
-featCall AgentWidgets bindMeterTo energy
+// featCall AgentWidgets bindMeterTo energy
 
 // is this a dark or light moth / tree?  This is set in the round code
 addProp lightOrDark String 'dark'
@@ -562,15 +543,31 @@ addProp treeID Number 0
 exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'TreeBranch') + 1 }} 
 propPop treeID
 
-ifExpr {{agent.getProp('treeID').value == 1}} [[
-  featCall Costume setCostume 'tree_1_medium.png' 0
-]]
-ifExpr {{agent.getProp('treeID').value == 2}} [[
-  featCall Costume setCostume 'tree_2_medium.png' 0
-]]
-ifExpr {{agent.getProp('treeID').value == 3}} [[
-  featCall Costume setCostume 'tree_3_medium.png' 0
-]]
+    // since we have 3 different art templates, figure out the right one and color
+    ifExpr {{agent.getProp('treeID').value == 1}} [[
+      ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+        featCall Costume setCostume 'tree_1_light.png' 0
+      ]]
+      ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+        featCall Costume setCostume 'tree_1_dark.png' 0
+      ]]
+    ]]
+    ifExpr {{agent.getProp('treeID').value == 2}} [[
+      ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+        featCall Costume setCostume 'tree_2_light.png' 0
+      ]]
+      ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+        featCall Costume setCostume 'tree_2_dark.png' 0
+      ]]              
+    ]]
+    ifExpr {{agent.getProp('treeID').value == 3}} [[
+      ifExpr {{agent.getProp('lightOrDark').value == 'light'}} [[ 
+        featCall Costume setCostume 'tree_3_light.png' 0
+      ]]
+      ifExpr {{agent.getProp('lightOrDark').value == 'dark'}} [[ 
+        featCall Costume setCostume 'tree_3_dark.png' 0
+      ]]              
+    ]]
 
 # PROGRAM INIT 
 # PROGRAM EVENT

@@ -34,6 +34,7 @@ The current settings should be updated to:
       "GS_ASSETS_PROJECT_ROOT": "art-assets"
     }
 
+**NOTE**: if you'd like to setup local tracking numbers that will carry over beyond any clearing of local settings, you can edit dbinit-loki.json
 
 # Art assets
 **NOTE**: The art assets, which are divided into references (documents like this), projects, and sprites are all stored in the art-assets repo. I've setup the lab mac to place this inside of gem-step, otherwise you'd have to downoad then copy by hand.
