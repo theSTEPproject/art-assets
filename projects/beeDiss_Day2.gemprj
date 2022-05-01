@@ -128,7 +128,7 @@ prop beeSpeed setTo 10
         featCall Movement setMovementType 'edgeToEdge' 5 0 180
         featCall Movement setRandomDirection
         
-        exprPush {{ Bee.getProp('beeSpeed').value }}
+        exprPush {{ agent.getProp('beeSpeed').value }}
         featPropPop Movement distance
       ]]
     ]]
@@ -141,10 +141,10 @@ prop beeSpeed setTo 10
       // if we are searching for a flower and it is gone, start scouting instead so we aren't stuck
       // TODO - not yet working, as the issue is that it is not quite the exact spot, just really close 
       // not sure the best way to test this 
-      ifExpr {{ Bee.getProp('mode').value == 'foraging' }} [[
-        //ifExpr {{ Bee.getProp('visitedX').value == Bee.getProp('x').value && Bee.getProp('visitedY').value == Bee.getProp('y').value}} [[
+      ifExpr {{ agent.getProp('mode').value == 'foraging' }} [[
+        //ifExpr {{ agent.getProp('visitedX').value == agent.getProp('x').value && agent.getProp('visitedY').value == agent.getProp('y').value}} [[
         // if we stopped moving ...
-        ifExpr {{Bee.getFeatProp('Movement', 'isMoving').value == false}} [[
+        ifExpr {{agent.getFeatProp('Movement', 'isMoving').value == false}} [[
           
           // go back to the hive to re-set the key variables and the search etc.
           prop mode setTo 'returning'
@@ -156,14 +156,14 @@ prop beeSpeed setTo 10
           prop visitedQuality setTo 0
 
           // set the x and y of the hive, then go there
-          exprPush {{Bee.getProp('hiveX').value}}
+          exprPush {{agent.getProp('hiveX').value}}
           featPropPop Movement targetX
 
           exprPush {{Bee.getProp('hiveY').value}}
           featPropPop Movement targetY
         
           featCall Movement setMovementType 'goLocation' 5
-          exprPush {{ Bee.getProp('beeSpeed').value }}
+          exprPush {{ agent.getProp('beeSpeed').value }}
           featPropPop Movement distance
 
         ]]
@@ -891,7 +891,7 @@ addProp doOnce Boolean true
   every 1 runAtStart [[
 
 //START OF DOONCE
-  ifExpr {{ Flower.getProp('doOnce').value == true }} [[
+  ifExpr {{ agent.getProp('doOnce').value == true }} [[
     prop doOnce setTo false
   // TODO is there a better way to do this timing-wise?
   // use placeholder art?  Or if they are invisible to start it doesn't really matter ... 

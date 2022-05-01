@@ -883,7 +883,7 @@ addProp doOnce Boolean true
   every 1 runAtStart [[
 
 //START OF DOONCE
-  ifExpr {{ Flower.getProp('doOnce').value == true }} [[
+  ifExpr {{ agent.getProp('doOnce').value == true }} [[
     prop doOnce setTo false
   // TODO is there a better way to do this timing-wise?
   // use placeholder art?  Or if they are invisible to start it doesn't really matter ... 
