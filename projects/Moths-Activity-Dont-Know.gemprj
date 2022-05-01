@@ -168,17 +168,16 @@ when Moth touches Fruit [[
     prop energy sub 1
 
     // if you hit 0 energy and are still alive ... 
-    ifExpr {{Moth.getProp('energy').value == 0 && Moth.getProp('causeOfDeath').value == 'alive'}} [['
-      ifExpr {{ Moth.getProp('lightOrDark').value == 'dark' }} [[
-        featCall Moth.Costume setCostume 'moth_starved_dark.png' 0
+    ifExpr {{agent.getProp('energy').value == 0 && agent.getProp('causeOfDeath').value == 'alive'}} [['
+      ifExpr {{ agent.getProp('lightOrDark').value == 'dark' }} [[
+        featCall agent.Costume setCostume 'moth_starved_dark.png' 0
       ]]
-      ifExpr {{ Moth.getProp('lightOrDark').value == 'light' }} [[
-        featCall Moth.Costume setCostume 'moth_starved_light.png' 0
+      ifExpr {{ agent.getProp('lightOrDark').value == 'light' }} [[
+        featCall agent.Costume setCostume 'moth_starved_light.png' 0
       ]]
-      // TODO: change skin to be dead from energy
-      prop Moth.causeOfDeath setTo 'starved'
-      prop Moth.energy setTo 0
-      prop Moth.isInert setTo true
+      prop agent.causeOfDeath setTo 'starved'
+      prop agent.energy setTo 0
+      prop agent.isInert setTo true
     ]]
     // TODO check if we are dead 
   ]]
