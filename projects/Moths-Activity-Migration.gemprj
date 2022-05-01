@@ -416,7 +416,6 @@ useFeature Cursor
 
 useFeature Touches
 featCall Touches monitor TreeBranch c2b
-featCall Touches monitor Fruit c2b
 
 useFeature AgentWidgets
 useFeature Population
@@ -598,7 +597,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
   every 1 runAtStart [[
     ifExpr {{ global.getProp('predatorIsActive').value == true }} [[
       prop attackCounter sub 1
-      ifExpr {{ Predator.getProp('attackCounter').value == 0 }} [[
+      ifExpr {{ agent.getProp('attackCounter').value == 0 }} [[
         prop global.foundOneToKill setTo false
 
           featCall Population agentsForEach Moth [[

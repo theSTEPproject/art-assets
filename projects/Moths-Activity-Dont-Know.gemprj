@@ -257,11 +257,13 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
 
 # PROGRAM INIT 
 # PROGRAM EVENT
+
+
 # PROGRAM UPDATE
 
   every 1 [[
     prop attackCounter sub 1
-    ifExpr {{ Predator.getProp('attackCounter').value == 0 }} [[
+    ifExpr {{ agent.getProp('attackCounter').value == 0 }} [[
       prop global.foundOneToKill setTo false
 
         featCall Population agentsForEach Moth [[
@@ -366,7 +368,7 @@ addProp regenFruitCounter Number 20
   every 1 runAtStart [[
 
     prop regenFruitCounter sub 1
-    ifExpr {{ Fruit.getProp('regenFruitCounter').value == 0 }} [[
+    ifExpr {{ agent.getProp('regenFruitCounter').value == 0 }} [[
       featCall Costume setCostume 'moth_fruits-green.png' 0
       prop energy setTo 10
       prop regenFruitCounter setTo 20
