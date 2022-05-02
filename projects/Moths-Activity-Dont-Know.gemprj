@@ -34,7 +34,7 @@
           prop agent.causeOfDeath setTo 'alive'
         
           prop rndForColor setToRnd 1 10
-          ifExpr {{  agent.getProp('rndForColor').value  < 7 }} [[ 
+          ifExpr {{  agent.getProp('rndForColor').value  < 2 }} [[ 
               prop lightOrDark setTo 'light'
           ]]
           [[
