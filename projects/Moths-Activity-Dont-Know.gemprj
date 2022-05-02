@@ -34,7 +34,7 @@
           prop agent.causeOfDeath setTo 'alive'
         
           prop rndForColor setToRnd 1 10
-          ifExpr {{  agent.getProp('rndForColor').value  < 5 }} [[ 
+          ifExpr {{  agent.getProp('rndForColor').value  < 7 }} [[ 
               prop lightOrDark setTo 'light'
           ]]
           [[
@@ -257,8 +257,6 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
 
 # PROGRAM INIT 
 # PROGRAM EVENT
-
-
 # PROGRAM UPDATE
 
   every 1 [[
