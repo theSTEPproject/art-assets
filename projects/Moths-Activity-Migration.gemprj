@@ -504,8 +504,6 @@ addProp lightOrDark String 'dark'
 
 useFeature Movement
 
-useFeature Cursor
-
 useFeature Physics
 
 featProp Physics scale setTo 0.3
@@ -778,6 +776,96 @@ featCall Costume setScale 1
 `
     },
     {
+      "id": "spirit1",
+      "label": "spirit1",
+      "scriptText": `# BLUEPRINT spirit1
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_1_grey.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
+      "id": "spirit2",
+      "label": "spirit2",
+      "scriptText": `# BLUEPRINT spirit2
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_2_grey.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
+      "id": "spirit3",
+      "label": "spirit3",
+      "scriptText": `# BLUEPRINT spirit3
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_3_grey.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
+      "id": "spirit4",
+      "label": "spirit4",
+      "scriptText": `# BLUEPRINT spirit4
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_4_green.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
+      "id": "spirit5",
+      "label": "spirit5",
+      "scriptText": `# BLUEPRINT spirit5
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_5_green.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
+      "id": "spirit6",
+      "label": "spirit6",
+      "scriptText": `# BLUEPRINT spirit6
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'spirit_6_green.png' 0
+useFeature Movement
+useFeature Cursor
+
+`
+    },
+    {
       "id": "SetLabel",
       "label": "SetLabel",
       "scriptText": `# BLUEPRINT SetLabel
@@ -900,6 +988,48 @@ prop zIndex setTo -500`
       "bpid": "SetLabel",
       "initScript": `prop x setTo 496.34
 prop y setTo -411.91`
+    },
+    {
+      "id": "103",
+      "label": "spirit103",
+      "bpid": "spirit1",
+      "initScript": `prop x setTo 192.69
+prop y setTo 191.51`
+    },
+    {
+      "id": "104",
+      "label": "spirit2104",
+      "bpid": "spirit2",
+      "initScript": `prop x setTo -292.10
+prop y setTo 3.69`
+    },
+    {
+      "id": "105",
+      "label": "spirit3105",
+      "bpid": "spirit3",
+      "initScript": `prop x setTo 198.48
+prop y setTo -74.88`
+    },
+    {
+      "id": "106",
+      "label": "spirit4106",
+      "bpid": "spirit4",
+      "initScript": `prop x setTo -56.99
+prop y setTo 239.13`
+    },
+    {
+      "id": "107",
+      "label": "spirit5107",
+      "bpid": "spirit5",
+      "initScript": `prop x setTo -48.98
+prop y setTo 102.45`
+    },
+    {
+      "id": "108",
+      "label": "spirit6108",
+      "bpid": "spirit6",
+      "initScript": `prop x setTo -329.67
+prop y setTo 128.31`
     }
   ]
 }
