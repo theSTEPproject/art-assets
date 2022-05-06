@@ -1034,12 +1034,12 @@ prop y setTo -396.19`
     },
     {
       "id": "3",
-      "label": "blue3",
+      "label": "red4",
       "bpid": "Flower",
-      "initScript": `prop baseType setTo \"blue\"
-prop nectarQuality setTo 3
-prop x setTo 17.55
-prop y setTo 130.70`
+      "initScript": `prop baseType setTo \"red\"
+prop nectarQuality setTo 1
+prop x setTo -58.61
+prop y setTo -225.21`
     },
     {
       "id": "4",
@@ -1047,8 +1047,8 @@ prop y setTo 130.70`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"yellow\"
 prop nectarQuality setTo 2
-prop x setTo -169.65
-prop y setTo 65.10`
+prop x setTo -76.74
+prop y setTo 11.56`
     },
     {
       "id": "8",
@@ -1066,17 +1066,8 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 1
 prop baseType setTo \"red\"
-prop x setTo 319.71
+prop x setTo 298.76
 prop y setTo -221.20`
-    },
-    {
-      "id": "11",
-      "label": "blue1",
-      "bpid": "Flower",
-      "initScript": `prop nectarQuality setTo 3
-prop baseType setTo \"blue\"
-prop x setTo -24.55
-prop y setTo -39.93`
     },
     {
       "id": "13",
@@ -1091,8 +1082,8 @@ prop y setTo 314.15`
       "id": "14",
       "label": "",
       "bpid": "Flower",
-      "initScript": `prop x setTo 172.81
-prop y setTo 27.35`
+      "initScript": `prop x setTo 595.30
+prop y setTo 26.23`
     },
     {
       "id": "15",
@@ -1100,8 +1091,8 @@ prop y setTo 27.35`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"yellow\"
 prop nectarQuality setTo 2
-prop x setTo 320.21
-prop y setTo 297.12`
+prop x setTo 178.48
+prop y setTo 337.59`
     },
     {
       "id": "16",
@@ -1109,8 +1100,17 @@ prop y setTo 297.12`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 2
 prop baseType setTo \"yellow\"
-prop x setTo -241.43
-prop y setTo -145.91`
+prop x setTo -242.92
+prop y setTo -45.08`
+    },
+    {
+      "id": "17",
+      "label": "blue5",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo blue
+prop nectarQuality setTo 3
+prop x setTo 161.39
+prop y setTo -13.53`
     }
   ]
 }
