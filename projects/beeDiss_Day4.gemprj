@@ -1,5 +1,5 @@
 {
-  "id": "beeDiss_Day2",
+  "id": "beeDiss_Day4",
   "label": "Bee Dissertation",
   "metadata": {
     "top": -400,
@@ -650,7 +650,7 @@ addProp dancingBeesCounter Number 0
 addProp watchingBeesCounter Number 0
 
 addProp nectarAmount Number 0
-prop nectarAmount setMax 100
+prop nectarAmount setMax 10000
 prop nectarAmount setMin 0
 
 addProp nectarQuality Number 2
@@ -804,8 +804,8 @@ prop costumeName setTo ''
 
 //spawnNewFlowers
 // this determines whether new flowers get made
-addProp spawnNewFlowers Boolean false
-prop spawnNewFlowers setTo false
+addProp spawnNewFlowers Boolean true
+prop spawnNewFlowers setTo true
 
 // set all the defaults for name, etc. 
 ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
@@ -841,11 +841,11 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 
 // CHANGE THIS TO MAKE INVISIBLE AT START
 // start invisible?
-prop visible setTo false
+prop visible setTo true
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
-addProp rehideAfterVisit Boolean true
-prop rehideAfterVisit setTo true 
+addProp rehideAfterVisit Boolean false
+prop rehideAfterVisit setTo false 
 
 // to make sure we re-hide only if no one is here anymore 
 addProp currentVisitorCount Number 0
