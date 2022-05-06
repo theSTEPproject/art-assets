@@ -1038,8 +1038,8 @@ prop y setTo -396.19`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"blue\"
 prop nectarQuality setTo 3
-prop x setTo -326.83
-prop y setTo 26.98`
+prop x setTo -39.28
+prop y setTo 176.92`
     },
     {
       "id": "4",
@@ -1047,8 +1047,8 @@ prop y setTo 26.98`
       "bpid": "Flower",
       "initScript": `prop baseType setTo \"yellow\"
 prop nectarQuality setTo 2
-prop x setTo 175.85
-prop y setTo 192.17`
+prop x setTo -309.18
+prop y setTo -184.21`
     },
     {
       "id": "8",
@@ -1066,8 +1066,8 @@ prop hiveID setTo 0`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 1
 prop baseType setTo \"red\"
-prop x setTo -4.05
-prop y setTo 203.28`
+prop x setTo 308.59
+prop y setTo -180.31`
     },
     {
       "id": "11",
@@ -1075,24 +1075,33 @@ prop y setTo 203.28`
       "bpid": "Flower",
       "initScript": `prop nectarQuality setTo 3
 prop baseType setTo \"blue\"
-prop x setTo 316.79
-prop y setTo -51.76`
+prop x setTo -80.02
+prop y setTo 48.99`
     },
     {
       "id": "13",
-      "label": "yellow",
+      "label": "red3",
       "bpid": "Flower",
-      "initScript": `prop baseType setTo \"yellow\"
-prop nectarQuality setTo 2
-prop x setTo 19.37
-prop y setTo 15.91`
+      "initScript": `prop baseType setTo \"red\"
+prop nectarQuality setTo 1
+prop x setTo -0.2
+prop y setTo -188.61`
     },
     {
       "id": "14",
       "label": "",
       "bpid": "Flower",
-      "initScript": `prop x setTo -55.03
-prop y setTo -242.60`
+      "initScript": `prop x setTo 88.03
+prop y setTo 135.60`
+    },
+    {
+      "id": "15",
+      "label": "yellow2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"yellow\"
+prop nectarQuality setTo 2
+prop x setTo 320.21
+prop y setTo 297.12`
     }
   ]
 }
