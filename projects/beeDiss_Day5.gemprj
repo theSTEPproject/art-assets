@@ -862,8 +862,8 @@ prop nectarAmount setMax 100
 prop nectarAmount setMin 0 
 
 addProp nectarQuality Number 0
-prop nectarQuality setMax 3
-prop nectarQuality setMin 1
+prop nectarQuality setMax 0
+prop nectarQuality setMin 0
 
 addProp pollenAmount Number 0
 prop pollenAmount setMax 2
@@ -1043,11 +1043,153 @@ prop scale setTo 2
 prop hiveID setTo 0`
     },
     {
-      "id": "14",
-      "label": "",
+      "id": "9",
+      "label": "squash2",
       "bpid": "Flower",
-      "initScript": `prop x setTo 595.3
-prop y setTo 26.23`
+      "initScript": `prop baseType setTo \"squash\"
+prop x setTo -608.81
+prop y setTo 25.96`
+    },
+    {
+      "id": "10",
+      "label": "watermelon1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"watermelon\"
+prop x setTo -590.80
+prop y setTo 227.45`
+    },
+    {
+      "id": "11",
+      "label": "squash1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"squash\"
+prop x setTo -604.76
+prop y setTo -33.3`
+    },
+    {
+      "id": "12",
+      "label": "pumpkin2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"pumpkin\"
+prop x setTo 311.20
+prop y setTo 290.55`
+    },
+    {
+      "id": "13",
+      "label": "pumpkin1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"pumpkin\"
+prop x setTo -623.28
+prop y setTo -274.00`
+    },
+    {
+      "id": "14",
+      "label": "watermelon2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"watermelon\"
+prop x setTo -274.94
+prop y setTo 153.57`
+    },
+    {
+      "id": "15",
+      "label": "squash4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"squash\"
+prop x setTo -671.01
+prop y setTo 13.87`
+    },
+    {
+      "id": "16",
+      "label": "watermelon4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"watermelon\"
+prop x setTo -580.63
+prop y setTo 278.46`
+    },
+    {
+      "id": "18",
+      "label": "squash3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"squash\"
+prop x setTo -64.40
+prop y setTo -59.42`
+    },
+    {
+      "id": "17",
+      "label": "pumpkin4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"pumpkin\"
+prop x setTo 308.05
+prop y setTo 69.56`
+    },
+    {
+      "id": "19",
+      "label": "pumpkin3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"pumpkin\"
+prop x setTo 113.90
+prop y setTo -36.17`
+    },
+    {
+      "id": "20",
+      "label": "watermelon3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"watermelon\"
+prop x setTo -282.50
+prop y setTo 41.34`
+    },
+    {
+      "id": "21",
+      "label": "blue1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo blue
+prop x setTo -523.48
+prop y setTo 102.95`
+    },
+    {
+      "id": "22",
+      "label": "red1",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 106.62
+prop y setTo 143.83
+prop baseType setTo \"red\`
+    },
+    {
+      "id": "23",
+      "label": "blue2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo blue
+prop x setTo -570.81
+prop y setTo 108.15`
+    },
+    {
+      "id": "24",
+      "label": "Flower24",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 318.38
+prop y setTo -153.50`
+    },
+    {
+      "id": "25",
+      "label": "Flower25",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 628.53
+prop y setTo -235.37`
+    },
+    {
+      "id": "26",
+      "label": "Flower26",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -287.97
+prop y setTo -128.16
+prop baseType setTo \"yellow\`
+    },
+    {
+      "id": "27",
+      "label": "Flower27",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 83.66
+prop y setTo -161.79`
     }
   ]
 }
