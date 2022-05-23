@@ -128,7 +128,7 @@ useFeature Costume
 featCall Costume setCostume 'worm.json' 1
 
 useFeature Physics
-featProp Physics scale setTo 0.2
+featProp Physics scale setTo 0.15
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp eType String 'decomposer'
@@ -931,8 +931,8 @@ prop y setTo 300`
       "id": "1110",
       "label": "Worm1",
       "bpid": "Worm",
-      "initScript": `prop x setTo -284.52
-prop y setTo 263.50`
+      "initScript": `prop x setTo -272.54
+prop y setTo 288.83`
     },
     {
       "id": "1111",
@@ -1031,8 +1031,8 @@ prop y setTo 143.75`
       "id": "1710",
       "label": "Worm2",
       "bpid": "Worm",
-      "initScript": `prop x setTo 110.23
-prop y setTo 276.18`
+      "initScript": `prop x setTo 131.82
+prop y setTo 293.27`
     }
   ]
 }
