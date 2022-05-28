@@ -30,6 +30,7 @@ The current settings should be updated to:
         "Settings added here can be set for your gsgo installation, and will not be",
         "committed to the gsgo repo"
       ],
+      "_MQTT_URL_COMMENT": "IU MQTT",
       "MQTT_URL": "10.0.0.254",
       "GS_ASSETS_PROJECT_ROOT": "art-assets"
     }
