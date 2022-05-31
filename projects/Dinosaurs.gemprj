@@ -1,0 +1,49 @@
+{
+  "id": "Dinosaurs",
+  "label": "Starter Project",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Background",
+      "label": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'map 1.1.png'
+useFeature Physics
+featProp Physics scale setTo 0.8
+prop x setTo 0
+prop y setTo 0
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Background0",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
+    }
+  ]
+}
