@@ -26,8 +26,10 @@
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'map 1.1.png'
+
 useFeature Physics
 featProp Physics scale setTo 0.8
+
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -5
@@ -44,6 +46,7 @@ prop zIndex setTo -5
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'pc_triceratops.png' 0
@@ -55,7 +58,7 @@ featProp Physics scale setTo 0.15
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-addProp hp Number 55
+addProp hp Number 60
 prop hp setMax 100
 prop hp setMin 0
 
@@ -63,6 +66,8 @@ useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
 
+useFeature Touches
+featCall Touches monitor Fern b2b
 
 # PROGRAM EVENT
 # PROGRAM UPDATE
@@ -81,7 +86,27 @@ every 1 runAtStart [[
 \t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
 \t\tfeatProp AgentWidgets meterColor setTo 65280
 \t]]
+\tifExpr {{ agent.getProp('hp').value <= 0 }} [[
+\t\tfeatCall Costume setCostume 'pc_triceratops_dead.png' 0
+\t]]
 ]]
+
+when Triceratops touches Fern [[
+  every 1 runAtStart [[
+  \tifExpr {{ agent.getProp('hp').value > 0 && agent.getProp('hp').value < 100}} [[
+  \t\tfeatCall Fern.Costume setGlow 0.1
+\t  \tprop Fern.hp sub 1
+  \t\tprop agent.hp add 5
+  \t\t
+  \t\texprPush {{(Fern.getProp('hp').value * 0.02)}}
+    \tfeatPropPop Fern.Physics scale
+  \t]]
+  ]]
+]]
+
+   \t\t
+
+
 
 `
     },
@@ -95,12 +120,29 @@ every 1 runAtStart [[
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'npc_fern.png' 0
-featCall Costume setScale 0.15
-// useFeature Movement
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.1
+
+useFeature Touches
+featCall Touches monitor Triceratops b2b
+
+addProp hp Number 5
+prop hp setMax 5
+prop hp setMin 0
+
 # PROGRAM EVENT
-// onEvent Tick [[ ]]
 # PROGRAM UPDATE
-// when xxx touches yyy [[ ]]`
+
+every 1 runAtStart [[
+\tifExpr {{agent.getProp('hp').value <= 0}} [[
+\t\tprop isInert setTo true
+\t\tprop visible setTo false
+]]
+]]
+
+`
     }
   ],
   "instances": [
@@ -125,7 +167,15 @@ prop hp setTo 55`
       "label": "Fern2",
       "bpid": "Fern",
       "initScript": `prop x setTo 59.34
-prop y setTo -265.21`
+prop y setTo -265.21
+prop scale setTo 0.4`
+    },
+    {
+      "id": "4",
+      "label": "Fern4",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 251.12
+prop y setTo -142.11`
     }
   ]
 }
