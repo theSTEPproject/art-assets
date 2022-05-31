@@ -30,6 +30,7 @@ useFeature Physics
 featProp Physics scale setTo 0.8
 prop x setTo 0
 prop y setTo 0
+prop zIndex setTo -5
 
 # PROGRAM INIT 
 # PROGRAM EVENT
@@ -46,7 +47,55 @@ prop y setTo 0
 # PROGRAM DEFINE
 useFeature Costume
 featCall Costume setCostume 'pc_triceratops.png' 0
-featCall Costume setScale 0.2
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.15
+
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+addProp hp Number 55
+prop hp setMax 100
+prop hp setMin 0
+
+useFeature AgentWidgets
+featCall AgentWidgets bindMeterTo hp
+featProp AgentWidgets meterColor setTo 65280
+
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+every 1 runAtStart [[
+\tprop agent.hp sub 1
+
+\tifExpr {{ agent.getProp('hp').value <= 25 }} [[
+\t\tfeatCall Costume setCostume 'pc_triceratops_hungry.png' 0
+\t\tfeatProp AgentWidgets meterColor setTo 16711680
+\t]]
+\tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value >= 25}} [[
+\t\tfeatCall Costume setCostume 'pc_triceratops_hungry.png' 0
+\t\tfeatProp AgentWidgets meterColor setTo 16737792
+\t]]
+\tifExpr {{ agent.getProp('hp').value > 50 }} [[
+\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\tfeatProp AgentWidgets meterColor setTo 65280
+\t]]
+]]
+
+`
+    },
+    {
+      "id": "Fern",
+      "label": "Fern",
+      "scriptText": `# BLUEPRINT Fern
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'npc_fern.png' 0
+featCall Costume setScale 0.15
 // useFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
@@ -68,7 +117,15 @@ prop zIndex setTo -5`
       "label": "Triceratops1",
       "bpid": "Triceratops",
       "initScript": `prop x setTo 0
-prop y setTo 0`
+prop y setTo 0
+prop hp setTo 55`
+    },
+    {
+      "id": "2",
+      "label": "Fern2",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 59.34
+prop y setTo -265.21`
     }
   ]
 }
