@@ -155,13 +155,14 @@ when Triceratops touches Fern [[
 when Triceratops firstTouches Tyrannosaurus [[
 \tprop agent.attacked setTo true
 \tprop Tyrannosaurus.hp add 25
-  \tifExpr {{ Triceratops.getProp('hp').value > 50 }} [[
+  \tifExpr {{ agent.getProp('hp').value > 50 }} [[
   \t  \tprop agent.hp setTo 40
   \t]]
-  \tifExpr {{ Triceratops.getProp('hp').value < 50 }} [[
+  \tifExpr {{ agent.getProp('hp').value < 50 }} [[
   \t  \tprop agent.hp sub 15
   \t]]
  ]]
+
 
    \t\t
 
@@ -186,6 +187,7 @@ featProp Physics scale setTo 0.1
 
 useFeature Touches
 featCall Touches monitor Triceratops b2b
+featCall Touches monitor Parasaurolophus b2b
 
 addProp hp Number 5
 prop hp setMax 5
@@ -233,11 +235,14 @@ featProp AgentWidgets text setTo 'T-Rex'
 
 useFeature Touches
 featCall Touches monitor Triceratops b2b
+featCall Touches monitor Parasaurolophus b2b
 
 useFeature Vision
-featCall Vision monitor Triceratops
 featProp Vision viewDistance setTo 200
 featProp Vision viewAngle setTo 90
+
+featCall Vision monitor Triceratops
+featCall Vision monitor Parasaurolophus
 
 addProp state String 'normal'
 
@@ -283,7 +288,143 @@ when Tyrannosaurus sees Triceratops [[
 when Tyrannosaurus doesNotSee Triceratops [[
   \tprop Triceratops.spooked setTo false
 ]]
+
+when Tyrannosaurus sees Parasaurolophus [[
+  \tprop Parasaurolophus.spooked setTo true
+]]
+when Tyrannosaurus doesNotSee Parasaurolophus [[
+  \tprop Parasaurolophus.spooked setTo false
+]]
+
+
+
+`
+    },
+    {
+      "id": "Parasaurolophus",
+      "label": "Parasaurolophus",
+      "scriptText": `# BLUEPRINT Parasaurolophus
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'pc_parasaurolophus.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.15
+
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+addProp hp Number 60
+prop hp setMax 100
+prop hp setMin 0
+
+useFeature AgentWidgets
+featCall AgentWidgets bindMeterTo hp
+featProp AgentWidgets meterColor setTo 65280
+featProp AgentWidgets text setTo 'Parasaurolophus'
+
+useFeature Touches
+featCall Touches monitor Fern b2b
+featCall Touches monitor Tyrannosaurus b2b
+
+useFeature Vision
+featProp Vision visionable setTo true
+
+addProp state String 'default'
+addProp spooked Boolean false
+addProp attacked Boolean false
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+every 1 runAtStart [[
+//health goes down naturally over time
+\tprop agent.hp sub 1
 \t
+//COSTUME + STATE SWAPS
+//when the pc hasn't encountered a predator, costumes will change based on hunger/hp level
+//when a pc is \"spooked\" (i.e. has been seen by a predator), they will appear scared until out of sight
+//when a pc is \"attacked\" (i.e. has been touched by a predator), they will appear scared until >50 hp has been gained
+//death state overrides all other states
+\tifExpr {{agent.getProp('isInert').value === false }} [[ // if alive
+\t\tifExpr {{agent.getProp('spooked').value === false && agent.getProp('attacked').value === false}} [[ //no predator engaged
+\t\t\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_hungry.png' 0
+\t\t\t]]
+\t\t\tifExpr {{agent.getProp('state').value == 'default'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus.png' 0
+\t\t\t]]
+\t\t]]
+\t
+\t\tifExpr {{agent.getProp('spooked').value === true}} [[ //seen by predator
+\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_scared.png' 0
+\t\t]]
+\t
+\t\tifExpr {{agent.getProp('attacked').value === true}} [[ //attacked by predator
+\t\t\tifExpr {{agent.getProp('hp').value <= 50 }} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_scared.png' 0
+\t\t\t]]
+\t\t\tifExpr {{agent.getProp('hp').value > 50 }} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus.png' 0
+\t\t\t\tprop attacked setTo false
+\t\t\t]]
+\t\t]]
+\t]]
+\tifExpr {{agent.getProp('isInert').value === true }} [[ //is dead
+\t\tfeatCall Costume setCostume 'pc_parasaurolophus_dead.png' 0
+\t]]\t
+\t
+
+\t
+//update color of meter & state based on hunger level
+\tifExpr {{ agent.getProp('hp').value <= 25}} [[
+\t\tprop state setTo 'hungry'
+\t\tfeatProp AgentWidgets meterColor setTo 16711680 //red
+\t]]
+\tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value > 25}} [[
+\t\tprop state setTo 'hungry'
+\t\tfeatProp AgentWidgets meterColor setTo 16737792 //orange
+\t]]
+\tifExpr {{ agent.getProp('hp').value > 50}} [[
+\t\tprop state setTo 'default'
+\t\tfeatProp AgentWidgets meterColor setTo 65280 //green
+\t]]
+\tifExpr {{ agent.getProp('hp').value <= 0 }} [[
+\t\tprop isInert setTo true
+\t]]
+]]
+
+//gains health when eating fern -- fern shrinks when eaten
+when Parasaurolophus touches Fern [[
+  every 1 runAtStart [[
+  \tifExpr {{ agent.getProp('hp').value > 0 && agent.getProp('hp').value < 100}} [[
+  \t\tfeatCall Fern.Costume setGlow 0.1
+\t  \tprop Fern.hp sub 1
+  \t\tprop agent.hp add 5
+  \t\t
+  \t\texprPush {{(Fern.getProp('hp').value * 0.02)}}
+    \tfeatPropPop Fern.Physics scale
+  \t]]
+  ]]
+]]
+
+//when t-rex attacks Parasaurolophus
+when Parasaurolophus firstTouches Tyrannosaurus [[
+\tprop agent.attacked setTo true
+\tprop Tyrannosaurus.hp add 25
+  \tifExpr {{ agent.getProp('hp').value > 50 }} [[
+  \t  \tprop agent.hp setTo 40
+  \t]]
+  \tifExpr {{ agent.getProp('hp').value < 50 }} [[
+  \t  \tprop agent.hp sub 15
+  \t]]
+ ]]
+
+   \t\t
 
 
 
@@ -329,6 +470,13 @@ prop y setTo -132.15`
 prop y setTo 146.28
 prop attacked setTo false
 prop state setTo default`
+    },
+    {
+      "id": "8",
+      "label": "Parasaurolophus8",
+      "bpid": "Parasaurolophus",
+      "initScript": `prop x setTo -156.74
+prop y setTo 70.93`
     }
   ]
 }
