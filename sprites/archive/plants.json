@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "plant.png",
+	"frame": {"x":0,"y":0,"w":244,"h":418},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":244,"h":418},
+	"sourceSize": {"w":244,"h":418}
+},
+{
+	"filename": "plant_mediumhealth.png",
+	"frame": {"x":0,"y":418,"w":244,"h":417},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":244,"h":417},
+	"sourceSize": {"w":244,"h":417}
+},
+{
+	"filename": "plant_unhealthy.png",
+	"frame": {"x":0,"y":835,"w":244,"h":418},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":244,"h":418},
+	"sourceSize": {"w":244,"h":418}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "plants.png",
+	"format": "RGBA8888",
+	"size": {"w":244,"h":1253},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d9ac802951cafe5fde6ea545126bec44:ea4b8808449e2921488c6cd441262a0c:1289142517ebf077ccf29c1aafcf4ff4$"
+}
+}

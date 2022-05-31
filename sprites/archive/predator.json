@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "predator_right1.png",
+	"frame": {"x":0,"y":0,"w":411,"h":411},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":411,"h":411},
+	"sourceSize": {"w":411,"h":411}
+},
+{
+	"filename": "predator_right2.png",
+	"frame": {"x":411,"y":0,"w":411,"h":411},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":411,"h":411},
+	"sourceSize": {"w":411,"h":411}
+},
+{
+	"filename": "predator_right3.png",
+	"frame": {"x":822,"y":0,"w":411,"h":411},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":411,"h":411},
+	"sourceSize": {"w":411,"h":411}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "predator.png",
+	"format": "RGBA8888",
+	"size": {"w":1233,"h":411},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d6b2c1bef023edbc5d54cb7a7b02071f:665aa85ae6b47fb66b1d3f1c78355fc7:6a90803b6ea63582bd1c124b05222703$"
+}
+}

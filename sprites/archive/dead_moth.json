@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "dead_moth.png",
+	"frame": {"x":0,"y":0,"w":639,"h":638},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":639,"h":638},
+	"sourceSize": {"w":639,"h":638}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dead_moth.png",
+	"format": "RGBA8888",
+	"size": {"w":639,"h":638},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:95468323745f049ab5f900149fd5e33b:740f962aa15bd0dde9af618ca5ea9320:39fc34771c8f9a9555475e46e8b29f51$"
+}
+}

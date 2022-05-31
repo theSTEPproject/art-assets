@@ -1,0 +1,36 @@
+{"frames": [
+
+{
+	"filename": "worm_distracted.png",
+	"frame": {"x":0,"y":0,"w":1000,"h":1000},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":1000},
+	"sourceSize": {"w":1000,"h":1000}
+},
+{
+	"filename": "worm_full.png",
+	"frame": {"x":1000,"y":0,"w":1000,"h":1000},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":1000},
+	"sourceSize": {"w":1000,"h":1000}
+},
+{
+	"filename": "worm_hungry.png",
+	"frame": {"x":0,"y":1000,"w":1000,"h":1000},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1000,"h":1000},
+	"sourceSize": {"w":1000,"h":1000}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "worm.png",
+	"format": "RGBA8888",
+	"size": {"w":2000,"h":2000},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:71584cbad5fa46494a8aaa2411319fbc:3fc8c5ad1fe571bcc6a4fdfb86ac698b:4ac2f3c273e27116194387cba1e414e0$"
+}
+}

@@ -1,0 +1,60 @@
+{
+  "frames": {
+    "bee_fly0.png": {
+      "frame": { "x": 89, "y": 1, "w": 77, "h": 112 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 6, "w": 77, "h": 112 },
+      "sourceSize": { "w": 128, "h": 128 }
+    },
+    "bee_fly1.png": {
+      "frame": { "x": 1, "y": 1, "w": 86, "h": 95 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 16, "w": 86, "h": 95 },
+      "sourceSize": { "w": 128, "h": 128 }
+    },
+    "bee_fly2.png": {
+      "frame": { "x": 1, "y": 98, "w": 77, "h": 114 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 5, "w": 77, "h": 114 },
+      "sourceSize": { "w": 128, "h": 128 }
+    },
+    "bee_fly3.png": {
+      "frame": { "x": 117, "y": 80, "w": 77, "h": 92 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 17, "w": 77, "h": 92 },
+      "sourceSize": { "w": 128, "h": 128 }
+    },
+    "bee_walk0.png": {
+      "frame": { "x": 1, "y": 177, "w": 77, "h": 50 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 39, "w": 77, "h": 50 },
+      "sourceSize": { "w": 128, "h": 128 }
+    },
+    "bee_walk1.png": {
+      "frame": { "x": 117, "y": 174, "w": 77, "h": 51 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 16, "y": 37, "w": 77, "h": 51 },
+      "sourceSize": { "w": 128, "h": 128 }
+    }
+  },
+  "animations": {
+    "bee_walk": ["bee_walk0.png", "bee_walk1.png"],
+    "bee_fly": ["bee_fly0.png", "bee_fly1.png", "bee_fly2.png", "bee_fly3.png"]
+  },
+
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "bee.png",
+    "format": "RGBA8888",
+    "size": { "w": 202, "h": 228 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:7b2c0be66a4bd54477eab1ee2ba22142:899d6f5da03353a29c6a6ed1c5a1fd71:1370451075ca5a23531a09c50c3033e0$"
+  }
+}
