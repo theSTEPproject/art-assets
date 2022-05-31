@@ -62,8 +62,6 @@ addProp hp Number 60
 prop hp setMax 100
 prop hp setMin 0
 
-addProp state String 'normal'
-
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
@@ -73,44 +71,73 @@ useFeature Touches
 featCall Touches monitor Fern b2b
 featCall Touches monitor Tyrannosaurus b2b
 
+useFeature Vision
+featProp Vision visionable setTo true
+
+addProp state String 'default'
+addProp spooked Boolean false
+addProp attacked Boolean false
+
 # PROGRAM EVENT
 # PROGRAM UPDATE
 every 1 runAtStart [[
 //health goes down naturally over time
 \tprop agent.hp sub 1
 \t
-//swap between costumes based on pc state (hungry, dead, scared, normal)
-\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
-\t\tfeatCall Costume setCostume 'pc_triceratops_hungry.png' 0
+//COSTUME + STATE SWAPS
+//when the pc hasn't encountered a predator, costumes will change based on hunger/hp level
+//when a pc is \"spooked\" (i.e. has been seen by a predator), they will appear scared until out of sight
+//when a pc is \"attacked\" (i.e. has been touched by a predator), they will appear scared until >50 hp has been gained
+//death state overrides all other states
+\tifExpr {{agent.getProp('isInert').value === false }} [[ // if alive
+\t\tifExpr {{agent.getProp('spooked').value === false && agent.getProp('attacked').value === false}} [[ //no predator engaged
+\t\t\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops_hungry.png' 0
+\t\t\t]]
+\t\t\tifExpr {{agent.getProp('state').value == 'default'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\t\t]]
+\t\t]]
+\t
+\t\tifExpr {{agent.getProp('spooked').value === true}} [[ //seen by predator
+\t\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
+\t\t]]
+\t
+\t\tifExpr {{agent.getProp('attacked').value === true}} [[ //attacked by predator
+\t\t\tifExpr {{agent.getProp('hp').value <= 50 }} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
+\t\t\t]]
+\t\t\tifExpr {{agent.getProp('hp').value > 50 }} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\t\t\tprop attacked setTo false
+\t\t\t]]
+\t\t]]
 \t]]
-\tifExpr {{agent.getProp('state').value == 'dead'}} [[
+\tifExpr {{agent.getProp('isInert').value === true }} [[ //is dead
 \t\tfeatCall Costume setCostume 'pc_triceratops_dead.png' 0
-\t]]
-\tifExpr {{agent.getProp('state').value == 'scared'}} [[
-\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
-\t]]
-\tifExpr {{agent.getProp('state').value == 'normal'}} [[
-\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
-\t]]
+\t]]\t
+\t
 
+\t
 //update color of meter & state based on hunger level
-\tifExpr {{ agent.getProp('hp').value <= 25 }} [[
+\tifExpr {{ agent.getProp('hp').value <= 25}} [[
 \t\tprop state setTo 'hungry'
-\t\tfeatProp AgentWidgets meterColor setTo 16711680
+\t\tfeatProp AgentWidgets meterColor setTo 16711680 //red
 \t]]
-\tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value >= 25}} [[
+\tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value > 25}} [[
 \t\tprop state setTo 'hungry'
-\t\tfeatProp AgentWidgets meterColor setTo 16737792
+\t\tfeatProp AgentWidgets meterColor setTo 16737792 //orange
 \t]]
-\tifExpr {{ agent.getProp('hp').value > 50 }} [[
-\t\tprop state setTo 'normal'
-\t\tfeatProp AgentWidgets meterColor setTo 65280
+\tifExpr {{ agent.getProp('hp').value > 50}} [[
+\t\tprop state setTo 'default'
+\t\tfeatProp AgentWidgets meterColor setTo 65280 //green
 \t]]
 \tifExpr {{ agent.getProp('hp').value <= 0 }} [[
-\t\tprop state setTo 'dead'
+\t\tprop isInert setTo true
 \t]]
 ]]
 
+//gains health when eating fern -- fern shrinks when eaten
 when Triceratops touches Fern [[
   every 1 runAtStart [[
   \tifExpr {{ agent.getProp('hp').value > 0 && agent.getProp('hp').value < 100}} [[
@@ -124,15 +151,17 @@ when Triceratops touches Fern [[
   ]]
 ]]
 
-when Triceratops touches Tyrannosaurus [[
-  every 1 runAtStart [[
-  \tifExpr {{ agent.getProp('hp').value > 0 && agent.getProp('hp').value < 100}} [[
-  \t\tfeatCall Triceratops.Costume setGlow 0.05
-  \t\tprop agent.hp add 10
-  \t\t
+//when t-rex attacks triceratops
+when Triceratops firstTouches Tyrannosaurus [[
+\tprop agent.attacked setTo true
+\tprop Tyrannosaurus.hp add 25
+  \tifExpr {{ Triceratops.getProp('hp').value > 50 }} [[
+  \t  \tprop agent.hp setTo 40
   \t]]
-  ]]
-]]
+  \tifExpr {{ Triceratops.getProp('hp').value < 50 }} [[
+  \t  \tprop agent.hp sub 15
+  \t]]
+ ]]
 
    \t\t
 
@@ -205,29 +234,56 @@ featProp AgentWidgets text setTo 'T-Rex'
 useFeature Touches
 featCall Touches monitor Triceratops b2b
 
+useFeature Vision
+featCall Vision monitor Triceratops
+featProp Vision viewDistance setTo 200
+featProp Vision viewAngle setTo 90
+
+addProp state String 'normal'
+
 # PROGRAM EVENT
 # PROGRAM UPDATE
 every 1 runAtStart [[
+//gets hungry over time
 \tprop agent.hp sub 1
-
-\tifExpr {{ agent.getProp('hp').value <= 25 }} [[
+\t
+//swap between costumes based on pc state (hungry, dead, scared, normal)
+\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
 \t\tfeatCall Costume setCostume 'pc_tyrannosaurus_hungry.png' 0
+\t]]
+\tifExpr {{agent.getProp('state').value == 'dead'}} [[
+\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
+\t]]
+\tifExpr {{agent.getProp('state').value == 'normal'}} [[
+\t\tfeatCall Costume setCostume 'pc_tyrannosaurus.png' 0
+\t]]
+
+//change state based on hunger/health
+\tifExpr {{ agent.getProp('hp').value <= 25 }} [[
+\t  \tprop Tyrannosaurus.state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16711680
 \t]]
 \tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value >= 25}} [[
-\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_hungry.png' 0
+\t\tprop Tyrannosaurus.state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16737792
 \t]]
 \tifExpr {{ agent.getProp('hp').value > 50 }} [[
-\t\tfeatCall Costume setCostume 'pc_tyrannosaurus.png' 0
+\t\tprop Tyrannosaurus.state setTo 'normal'
 \t\tfeatProp AgentWidgets meterColor setTo 65280
 \t]]
 \tifExpr {{ agent.getProp('hp').value <= 0 }} [[
+\t\tprop Tyrannosaurus.state setTo 'dead'
 \t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
 \t]]
 ]]
 
-   \t\t
+when Tyrannosaurus sees Triceratops [[
+  \tprop Triceratops.spooked setTo true
+]]
+when Tyrannosaurus doesNotSee Triceratops [[
+  \tprop Triceratops.spooked setTo false
+]]
+\t
 
 
 
@@ -242,14 +298,6 @@ every 1 runAtStart [[
       "initScript": `prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -5`
-    },
-    {
-      "id": "1",
-      "label": "Triceratops1",
-      "bpid": "Triceratops",
-      "initScript": `prop x setTo -236.47
-prop y setTo 126.02
-prop hp setTo 55`
     },
     {
       "id": "2",
@@ -267,13 +315,6 @@ prop scale setTo 0.4`
 prop y setTo -142.11`
     },
     {
-      "id": "5",
-      "label": "Tyrannosaurus5",
-      "bpid": "Tyrannosaurus",
-      "initScript": `prop x setTo -43
-prop y setTo 38`
-    },
-    {
       "id": "6",
       "label": "Tyrannosaurus6",
       "bpid": "Tyrannosaurus",
@@ -284,8 +325,10 @@ prop y setTo -132.15`
       "id": "7",
       "label": "Triceratops7",
       "bpid": "Triceratops",
-      "initScript": `prop x setTo 177.49
-prop y setTo -88.58`
+      "initScript": `prop x setTo 75.95
+prop y setTo 146.28
+prop attacked setTo false
+prop state setTo default`
     }
   ]
 }
