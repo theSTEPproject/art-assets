@@ -139,8 +139,63 @@ every 1 runAtStart [[
 \tifExpr {{agent.getProp('hp').value <= 0}} [[
 \t\tprop isInert setTo true
 \t\tprop visible setTo false
+\t]]
 ]]
+
+`
+    },
+    {
+      "id": "Tyrannosaurus",
+      "label": "Tyrannosaurus",
+      "scriptText": `# BLUEPRINT Tyrannosaurus
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'pc_tyrannosaurus.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.2
+
+useFeature Movement
+featProp Movement useAutoOrientation setTo true
+
+addProp hp Number 60
+prop hp setMax 100
+prop hp setMin 0
+
+useFeature AgentWidgets
+featCall AgentWidgets bindMeterTo hp
+featProp AgentWidgets meterColor setTo 65280
+
+useFeature Touches
+featCall Touches monitor Triceratops b2b
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+every 1 runAtStart [[
+\tprop agent.hp sub 1
+
+\tifExpr {{ agent.getProp('hp').value <= 25 }} [[
+\t\tfeatProp AgentWidgets meterColor setTo 16711680
+\t]]
+\tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value >= 25}} [[
+\t\tfeatProp AgentWidgets meterColor setTo 16737792
+\t]]
+\tifExpr {{ agent.getProp('hp').value > 50 }} [[
+\t\tfeatProp AgentWidgets meterColor setTo 65280
+\t]]
+\tifExpr {{ agent.getProp('hp').value <= 0 }} [[
+\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
+\t]]
 ]]
+
+   \t\t
+
+
 
 `
     }
@@ -176,6 +231,13 @@ prop scale setTo 0.4`
       "bpid": "Fern",
       "initScript": `prop x setTo 251.12
 prop y setTo -142.11`
+    },
+    {
+      "id": "5",
+      "label": "Tyrannosaurus5",
+      "bpid": "Tyrannosaurus",
+      "initScript": `prop x setTo -43
+prop y setTo 38`
     }
   ]
 }
