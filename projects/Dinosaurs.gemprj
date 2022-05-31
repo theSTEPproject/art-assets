@@ -35,6 +35,23 @@ prop y setTo 0
 # PROGRAM EVENT
 # PROGRAM UPDATE
 `
+    },
+    {
+      "id": "Triceratops",
+      "label": "Triceratops",
+      "scriptText": `# BLUEPRINT Triceratops
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'pc_triceratops.png' 0
+featCall Costume setScale 0.2
+// useFeature Movement
+# PROGRAM EVENT
+// onEvent Tick [[ ]]
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]`
     }
   ],
   "instances": [
@@ -42,6 +59,14 @@ prop y setTo 0
       "id": "0",
       "label": "Background0",
       "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -5`
+    },
+    {
+      "id": "1",
+      "label": "Triceratops1",
+      "bpid": "Triceratops",
       "initScript": `prop x setTo 0
 prop y setTo 0`
     }
