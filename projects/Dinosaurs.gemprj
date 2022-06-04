@@ -43,8 +43,8 @@ prop zIndex setTo -5
       "id": "Triceratops",
       "label": "Triceratops",
       "scriptText": `# BLUEPRINT Triceratops
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -58,7 +58,7 @@ featProp Physics scale setTo 0.15
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-addProp hp Number 60
+addProp hp Number 70
 prop hp setMax 100
 prop hp setMin 0
 
@@ -151,7 +151,6 @@ when Triceratops touches Fern [[
   ]]
 ]]
 
-//when t-rex attacks triceratops
 when Triceratops firstTouches Tyrannosaurus [[
 \tprop agent.attacked setTo true
 \tprop Tyrannosaurus.hp add 25
@@ -210,7 +209,7 @@ every 1 runAtStart [[
       "label": "Tyrannosaurus",
       "scriptText": `# BLUEPRINT Tyrannosaurus
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -238,6 +237,7 @@ featCall Touches monitor Triceratops b2b
 featCall Touches monitor Parasaurolophus b2b
 
 useFeature Vision
+featProp Vision visionable setTo true
 featProp Vision viewDistance setTo 200
 featProp Vision viewAngle setTo 90
 
@@ -304,7 +304,7 @@ when Tyrannosaurus doesNotSee Parasaurolophus [[
       "id": "Parasaurolophus",
       "label": "Parasaurolophus",
       "scriptText": `# BLUEPRINT Parasaurolophus
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
@@ -318,6 +318,8 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 1.0
 
 addProp hp Number 60
 prop hp setMax 100
@@ -331,6 +333,9 @@ featProp AgentWidgets text setTo 'Parasaurolophus'
 useFeature Touches
 featCall Touches monitor Fern b2b
 featCall Touches monitor Tyrannosaurus b2b
+
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 0.2
 
 useFeature Vision
 featProp Vision visionable setTo true
@@ -444,39 +449,51 @@ prop zIndex setTo -5`
       "id": "2",
       "label": "Fern2",
       "bpid": "Fern",
-      "initScript": `prop x setTo 59.34
-prop y setTo -265.21
+      "initScript": `prop x setTo 83.84
+prop y setTo -314.93
 prop scale setTo 0.4`
     },
     {
       "id": "4",
       "label": "Fern4",
       "bpid": "Fern",
-      "initScript": `prop x setTo 251.12
-prop y setTo -142.11`
+      "initScript": `prop x setTo 292.67
+prop y setTo -193.56`
     },
     {
-      "id": "6",
-      "label": "Tyrannosaurus6",
+      "id": "9",
+      "label": "Fern9",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -180.43
+prop y setTo 317.62`
+    },
+    {
+      "id": "10",
+      "label": "Fern10",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 327.14
+prop y setTo 48.08`
+    },
+    {
+      "id": "11",
+      "label": "Fern11",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -322.03
+prop y setTo 172.98`
+    },
+    {
+      "id": "12",
+      "label": "Fern12",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 270.34
+prop y setTo 299.05`
+    },
+    {
+      "id": "13",
+      "label": "Tyrannosaurus13",
       "bpid": "Tyrannosaurus",
-      "initScript": `prop x setTo -24.27
-prop y setTo -132.15`
-    },
-    {
-      "id": "7",
-      "label": "Triceratops7",
-      "bpid": "Triceratops",
-      "initScript": `prop x setTo 75.95
-prop y setTo 146.28
-prop attacked setTo false
-prop state setTo default`
-    },
-    {
-      "id": "8",
-      "label": "Parasaurolophus8",
-      "bpid": "Parasaurolophus",
-      "initScript": `prop x setTo -156.74
-prop y setTo 70.93`
+      "initScript": `prop x setTo 30
+prop y setTo 35`
     }
   ]
 }
