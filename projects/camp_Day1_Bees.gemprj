@@ -1,6 +1,6 @@
 {
-  "id": "beeDiss_Day1",
-  "label": "Bee Dissertation",
+  "id": "Day 1: Bees",
+  "label": "Camp EIP",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -487,18 +487,18 @@ when Bee centerFirstTouches Flower [[
   prop Flower.visible setTo true
 
   // TODO: add the hearts to the name now that we know what the quality might be
-  ifExpr{{ Flower.getProp('nectarQuality').value == 1}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
-  ifExpr{{ Flower.getProp('nectarQuality').value == 2}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
-  ifExpr{{ Flower.getProp('nectarQuality').value == 3}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
+//  ifExpr{{ Flower.getProp('nectarQuality').value == 1}} [[
+  //  exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+//  ]]
+ // ifExpr{{ Flower.getProp('nectarQuality').value == 2}} [[
+ //   exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+ // ]]
+//  ifExpr{{ Flower.getProp('nectarQuality').value == 3}} [[
+ //   exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+//  ]]
 
 
     // if you are AI, found a flower, so pause to get the nectar if it has quality  of medium or higher (3-5)
@@ -675,7 +675,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == und
 ]]
 
 useFeature AgentWidgets
-exprPush {{'Hive [D:0; W:0]'}}
+exprPush {{'Hive'}}
 featPropPop AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
 
@@ -728,8 +728,8 @@ every 0.1 [[
     ]]
   ]]
 
-  exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
-  featPropPop AgentWidgets text 
+  //exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
+ // featPropPop AgentWidgets text 
 ]]
 
 every 0.5 runAtStart [[
@@ -852,8 +852,8 @@ featProp Physics scale setTo 0.5
 useFeature Touches
 featCall Touches monitor Bee c2b
 
-addProp nectarAmount Number 100 
-prop nectarAmount setMax 100
+addProp nectarAmount Number 70 
+prop nectarAmount setMax 70
 prop nectarAmount setMin 0 
 
 addProp nectarQuality Number 2
@@ -1073,6 +1073,13 @@ prop x setTo -259.2
 prop y setTo -188.41
 prop scale setTo 2
 prop hiveID setTo 0`
+    },
+    {
+      "id": "9",
+      "label": "Bee9",
+      "bpid": "Bee",
+      "initScript": `prop x setTo -15
+prop y setTo 21`
     }
   ]
 }
