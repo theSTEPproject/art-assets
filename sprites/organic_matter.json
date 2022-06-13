@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "organic-matter.png",
+	"frame": {"x":0,"y":0,"w":165,"h":189},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":165,"h":189},
+	"sourceSize": {"w":165,"h":189}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "organic_matter.png",
+	"format": "RGBA8888",
+	"size": {"w":165,"h":189},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9eac9a40313c1a6c3c8c22b1e78f390e:ba69ceb721dd96f829d507e18e0ccc4d:e67d8697b2e5ebfca9f803e3c66fcf85$"
+}
+}

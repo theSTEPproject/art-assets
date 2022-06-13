@@ -635,11 +635,9 @@ prop matter setMin 0
 
 // scale up because the art is a bit small
 useFeature Physics
-featProp Physics scale setTo 2
+featProp Physics scale setTo 0.4
 
 // pick a random rotation to keep things looking interesting
-prop orientation setTo 0
-prop orientation addRnd 0 6
 
 // we need to be able to see when the waste is on soil and / or being eaten by a worm
 useFeature Touches
@@ -973,6 +971,13 @@ prop y setTo -394.99`
       "bpid": "Plant",
       "initScript": `prop x setTo 88.12
 prop y setTo -43.58`
+    },
+    {
+      "id": "1811",
+      "label": "Waste1811",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -202.22
+prop y setTo -69.67`
     }
   ]
 }
