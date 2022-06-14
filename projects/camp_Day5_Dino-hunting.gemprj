@@ -44,7 +44,7 @@ prop zIndex setTo -5
       "label": "Triceratops",
       "scriptText": `# BLUEPRINT Triceratops
 # TAG isCharControllable false
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -71,7 +71,7 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-exprPush {{ 'Tracy #' + agent.id }}
+exprPush {{ '' }}
 featPropPop AgentWidgets text
 
 useFeature Touches
@@ -173,7 +173,7 @@ every 1 runAtStart [[
       "id": "Fern",
       "label": "Fern",
       "scriptText": `# BLUEPRINT Fern
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
@@ -272,7 +272,7 @@ when Fern touches Parasaurolophus [[
       "label": "Tyrannosaurus",
       "scriptText": `# BLUEPRINT Tyrannosaurus
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -368,15 +368,14 @@ when Tyrannosaurus doesNotSee Triceratops [[
 when Tyrannosaurus firstTouches Parasaurolophus [[
 \tprop Parasaurolophus.attacked setTo true
 \tprop agent.hp add 25
-\t\tprop Parasaurolophus.hp sub 75
-
+\t\tprop Parasaurolophus.hp sub 60
  ]]
  
  
  when Tyrannosaurus firstTouches Triceratops [[
 \tprop Triceratops.attacked setTo true
 \tprop agent.hp add 25
-\tprop Triceratops.hp sub 75
+\tprop Triceratops.hp sub 60
 
  ]]
  
@@ -384,7 +383,7 @@ when Tyrannosaurus firstTouches Parasaurolophus [[
  when Tyrannosaurus firstTouches Ankylosaurus [[
 \tprop Ankylosaurus.attacked setTo true
 \tprop agent.hp add 25
-\tprop Ankylosaurus.hp sub 75
+\tprop Ankylosaurus.hp sub 60
 
  ]]
  
@@ -425,7 +424,7 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-exprPush {{ 'Percy #' + agent.id }}
+exprPush {{ '' }}
 featPropPop AgentWidgets text
 
 useFeature Touches
@@ -775,11 +774,8 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-exprPush {{ 'Annie #' + agent.id }}
+exprPush {{ '' }}
 featPropPop AgentWidgets text
-
-exprPush {{ agent}}
-dbgStack
 
 useFeature Touches
 featCall Touches monitor Fern b2b
@@ -894,7 +890,7 @@ prop y setTo -394.48`
       "label": "Fern18",
       "bpid": "Fern",
       "initScript": `prop x setTo 178.23
-prop y setTo 139.10`
+prop y setTo 139.1`
     },
     {
       "id": "19",
@@ -915,7 +911,7 @@ prop y setTo 338.17`
       "label": "Fern21",
       "bpid": "Fern",
       "initScript": `prop x setTo -117.73
-prop y setTo -300.60`
+prop y setTo -300.6`
     },
     {
       "id": "22",
@@ -1035,6 +1031,20 @@ prop y setTo 230.27`
       "bpid": "Triceratops",
       "initScript": `prop x setTo 262.14
 prop y setTo -257.29`
+    },
+    {
+      "id": "43",
+      "label": "Triceratops43",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 43
+prop y setTo 0`
+    },
+    {
+      "id": "44",
+      "label": "Triceratops44",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 5
+prop y setTo -35`
     }
   ]
 }
