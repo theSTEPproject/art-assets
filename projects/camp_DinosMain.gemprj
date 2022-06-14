@@ -8,7 +8,7 @@
     "left": -400,
     "wrap": [
       false,
-      false
+      true
     ],
     "bounce": true,
     "bgcolor": 102,
@@ -25,7 +25,7 @@
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'map 1.2.png'
+featCall Costume setCostume 'map 2.1.png'
 
 useFeature Physics
 featProp Physics scale setTo 0.8
@@ -57,8 +57,10 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
-//featProp Movement movementType setTo 'wander'
-//featProp Movement distance setTo 0.2
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 3
+featCall Movement seekNearest Fern
+
 
 addProp maxHealth Number 250
 
@@ -69,7 +71,8 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-featProp AgentWidgets text setTo 'Tracy'
+exprPush {{ 'Tracy #' + agent.id }}
+featPropPop AgentWidgets text
 
 useFeature Touches
 featCall Touches monitor Fern b2b
@@ -100,25 +103,36 @@ every 1 runAtStart [[
 \t\tifExpr {{agent.getProp('spooked').value === false && agent.getProp('attacked').value === false}} [[ //no predator engaged
 \t\t\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops_hungry.png' 0
+\t\t\t\tfeatCall Movement seekNearest Fern
+\t\t\t\tfeatProp Movement distance setTo 3
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'default'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\t\t\tfeatProp Movement distance setTo 3
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'sick'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops_sick.png' 0
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'drowning'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops_drowning.png' 0
+\t\t\t\tfeatCall Movement jitterRotate
+\t\t\t\tfeatProp Movement distance setTo 0.5
+
+\t\t\t\t
 \t\t\t]]
 \t\t]]
 \t
 \t\tifExpr {{agent.getProp('spooked').value === true}} [[ //seen by predator
 \t\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
+\t\t\tfeatCall Movement jitterRotate
 \t\t]]
 \t
 \t\tifExpr {{agent.getProp('attacked').value === true}} [[ //attacked by predator
 \t\t\tifExpr {{agent.getProp('hp').value <= 50 }} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
+\t\t\t\tfeatCall Movement jitterRotate
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('hp').value > 50 }} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
@@ -149,23 +163,7 @@ every 1 runAtStart [[
 \t\tprop isInert setTo true
 \t]]
 ]]
-
-//when t-rex attacks Triceratops
-when Triceratops firstTouches Tyrannosaurus [[
-\tprop agent.attacked setTo true
-\tprop Tyrannosaurus.hp add 25
-  \tifExpr {{ agent.getProp('hp').value > 50 }} [[
-  \t  \tprop agent.hp setTo 40
-  \t]]
-  \tifExpr {{ agent.getProp('hp').value < 50 }} [[
-  \t  \tprop agent.hp sub 15
-  \t]]
- ]]
- 
-
-
-
-   \t\t
+ \t\t
 
 
 
@@ -175,7 +173,7 @@ when Triceratops firstTouches Tyrannosaurus [[
       "id": "Fern",
       "label": "Fern",
       "scriptText": `# BLUEPRINT Fern
-# TAG isCharControllable false
+# TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
@@ -240,7 +238,7 @@ when Fern touches Triceratops [[
   \tifExpr {{ Triceratops.getProp('hp').value > 0 && Triceratops.getProp('hp').value < Triceratops.getProp('maxHealth').value}} [[
   \t\tfeatCall agent.Costume setGlow 0.1
 \t  \tprop agent.hp sub 1
-  \t\tprop Triceratops.hp add 5
+  \t\tprop Triceratops.hp add 15
   \t]]
   ]]
 ]]
@@ -250,7 +248,7 @@ when Fern touches Ankylosaurus [[
   \tifExpr {{ Ankylosaurus.getProp('hp').value > 0 && Ankylosaurus.getProp('hp').value < Ankylosaurus.getProp('maxHealth').value}} [[
   \t\tfeatCall agent.Costume setGlow 0.1
 \t  \tprop agent.hp sub 1
-  \t\tprop Ankylosaurus.hp add 5
+  \t\tprop Ankylosaurus.hp add 15
   \t]]
   ]]
 ]]
@@ -259,9 +257,9 @@ when Fern touches Ankylosaurus [[
 when Fern touches Parasaurolophus [[
   every 1 runAtStart [[
   \tifExpr {{ Parasaurolophus.getProp('hp').value > 0 && Parasaurolophus.getProp('hp').value < Parasaurolophus.getProp('maxHealth').value}} [[
-  \t\tprop Parasaurolophus.hp sub 5
-  \t\tprop Parasaurolophus.state setTo 'sick'
   \t\tfeatCall agent.Costume setGlow 0.1
+\t  \tprop agent.hp sub 1
+  \t\tprop Parasaurolophus.hp add 15
   \t]]
   ]]
 ]]
@@ -273,8 +271,8 @@ when Fern touches Parasaurolophus [[
       "id": "Tyrannosaurus",
       "label": "Tyrannosaurus",
       "scriptText": `# BLUEPRINT Tyrannosaurus
-# TAG isCharControllable false
-# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -295,20 +293,13 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-featProp AgentWidgets text setTo 'T-Rex'
+exprPush {{ 'T-Rex #' + agent.id }}
+featPropPop AgentWidgets text
 
 useFeature Touches
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Parasaurolophus b2b
 featCall Touches monitor Ankylosaurus b2b
-
-useFeature Vision
-featProp Vision viewDistance setTo 200
-featProp Vision viewAngle setTo 90
-featProp Vision visionable setTo true
-featCall Vision monitor Triceratops
-featCall Vision monitor Parasaurolophus
-featCall Vision monitor Ankylosaurus
 
 addProp state String 'normal'
 
@@ -328,6 +319,10 @@ every 1 runAtStart [[
 \tifExpr {{agent.getProp('state').value == 'normal'}} [[
 \t\tfeatCall Costume setCostume 'pc_tyrannosaurus.png' 0
 \t]]
+\tifExpr {{agent.getProp('state').value == 'drowning'}} [[
+\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_drowning.png' 0
+\t]]
+
 
 //change state based on hunger/health
 \tifExpr {{ agent.getProp('hp').value <= 25 && agent.getProp('hp').value > 0 }} [[
@@ -369,6 +364,29 @@ when Tyrannosaurus doesNotSee Triceratops [[
   \tprop Triceratops.spooked setTo false
 ]]
 
+when Tyrannosaurus firstTouches Parasaurolophus [[
+\tprop Parasaurolophus.attacked setTo true
+\tprop agent.hp add 25
+\t\tprop Parasaurolophus.hp sub 100
+
+ ]]
+ 
+ 
+ when Tyrannosaurus firstTouches Triceratops [[
+\tprop Triceratops.attacked setTo true
+\tprop agent.hp add 25
+\tprop Triceratops.hp sub 100
+
+ ]]
+ 
+ 
+ when Tyrannosaurus firstTouches Ankylosaurus [[
+\tprop Ankylosaurus.attacked setTo true
+\tprop agent.hp add 25
+\tprop Ankylosaurus.hp sub 100
+
+ ]]
+ 
 
 
 
@@ -379,8 +397,8 @@ when Tyrannosaurus doesNotSee Triceratops [[
       "id": "Parasaurolophus",
       "label": "Parasaurolophus",
       "scriptText": `# BLUEPRINT Parasaurolophus
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -393,8 +411,9 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
-//featProp Movement movementType setTo 'wander'
-featProp Movement distance setTo 0.2
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 5
+featCall Movement seekNearest Berries
 
 addProp maxHealth Number 250
 
@@ -405,7 +424,8 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-featProp AgentWidgets text setTo 'Percy'
+exprPush {{ 'Percy #' + agent.id }}
+featPropPop AgentWidgets text
 
 useFeature Touches
 featCall Touches monitor Fern b2b
@@ -436,15 +456,21 @@ every 1 runAtStart [[
 \t\tifExpr {{agent.getProp('spooked').value === false && agent.getProp('attacked').value === false}} [[ //no predator engaged
 \t\t\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_hungry.png' 0
+\t\t\t\t\t\t\t\t\t\t\t\tfeatProp Movement distance setTo 5
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'default'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus.png' 0
+\t\t\t\t\t\t\t\t\t\t\t\tfeatProp Movement distance setTo 5
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'sick'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_sick.png' 0
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'swimming'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_parasaurolophus_swimming.png' 0
+\t\t\t\t\t\t\t\tfeatProp Movement distance setTo 6
+
 \t\t\t]]
 \t\t]]
 \t
@@ -485,16 +511,6 @@ every 1 runAtStart [[
 \t\tprop isInert setTo true
 \t]]
 ]]
-
-//when t-rex attacks Parasaurolophus
-when Parasaurolophus firstTouches Tyrannosaurus [[
-\tprop agent.attacked setTo true
-\tprop Tyrannosaurus.hp add 25
-  ]]
-
-   \t\t
-
-
 
 `
     },
@@ -563,7 +579,7 @@ every 1 runAtStart [[
 //gains health when eating Berries -- Berries shrinks when eaten
 when Berries touches Parasaurolophus [[
   every 1 runAtStart [[
-  \tifExpr {{ Parasaurolophus.getProp('hp').value > 0 && Parasaurolophus.getProp('hp').value < 100}} [[
+  \tifExpr {{ Parasaurolophus.getProp('hp').value > 0 && Parasaurolophus.getProp('hp').value < Parasaurolophus.getProp('maxHealth').value}} [[
   \t\tfeatCall agent.Costume setGlow 0.1
 \t  \tprop agent.hp sub 1
   \t\tprop Parasaurolophus.hp add 5
@@ -631,7 +647,7 @@ useFeature Costume
 featCall Costume setCostume 'npc_lake.png'
 
 useFeature Physics
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.4
 
 prop x setTo 0
 prop y setTo 0
@@ -642,7 +658,6 @@ featCall Touches monitor Parasaurolophus b2b
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Tyrannosaurus b2b
 featCall Touches monitor Ankylosaurus b2b
-
 
 # PROGRAM INIT 
 # PROGRAM EVENT
@@ -656,9 +671,16 @@ when Lake touches Triceratops [[
 
 when Lake touches Ankylosaurus [[
   every 1 runAtStart [[
-  \tprop Triceratops.state setTo 'drowning'
+  \tprop Ankylosaurus.state setTo 'drowning'
   ]]
 ]]
+
+when Lake touches Tyrannosaurus [[
+  every 1 runAtStart [[
+  \tprop Tyrannosaurus.state setTo 'drowning'
+  ]]
+]]
+
 
 when Lake touches Parasaurolophus [[
   every 1 runAtStart [[
@@ -679,7 +701,7 @@ useFeature Costume
 featCall Costume setCostume 'npc_river.png'
 
 useFeature Physics
-featProp Physics scale setTo 0.5
+featProp Physics scale setTo 0.6
 
 prop x setTo 0
 prop y setTo 0
@@ -690,7 +712,6 @@ featCall Touches monitor Parasaurolophus b2b
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Tyrannosaurus b2b
 featCall Touches monitor Ankylosaurus b2b
-
 
 # PROGRAM INIT 
 # PROGRAM EVENT
@@ -704,7 +725,14 @@ when River touches Triceratops [[
 
 when River touches Ankylosaurus [[
   every 1 runAtStart [[
-  \tprop Triceratops.state setTo 'drowning'
+  \tprop Ankylosaurus.state setTo 'drowning'
+  ]]
+]]
+
+
+when River touches Tyrannosaurus [[
+  every 1 runAtStart [[
+  \tprop Tyrannosaurus.state setTo 'drowning'
   ]]
 ]]
 
@@ -719,8 +747,8 @@ when River touches Parasaurolophus [[
       "id": "Ankylosaurus",
       "label": "Ankylosaurus",
       "scriptText": `# BLUEPRINT Ankylosaurus
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
@@ -733,8 +761,9 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
-//featProp Movement movementType setTo 'wander'
-featProp Movement distance setTo 0.2
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 1.5
+featCall Movement seekNearest Fern
 
 addProp maxHealth Number 250
 
@@ -745,7 +774,12 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-featProp AgentWidgets text setTo 'Annie'
+
+exprPush {{ 'Annie #' + agent.id }}
+featPropPop AgentWidgets text
+
+exprPush {{ agent}}
+dbgStack
 
 useFeature Touches
 featCall Touches monitor Fern b2b
@@ -776,15 +810,23 @@ every 1 runAtStart [[
 \t\tifExpr {{agent.getProp('spooked').value === false && agent.getProp('attacked').value === false}} [[ //no predator engaged
 \t\t\tifExpr {{agent.getProp('state').value == 'hungry'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_ankylosaurus_hungry.png' 0
+\t\t\t\tfeatProp Movement distance setTo 1.5
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'default'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_ankylosaurus.png' 0
+\t\t\t\tfeatProp Movement distance setTo 1.5
+
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('state').value == 'sick'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_ankylosaurus_sick.png' 0
+\t\t\t\tfeatProp Movement distance setTo 1.5
+
 \t\t\t]]
-\t\t\tifExpr {{agent.getProp('state').value == 'swimming'}} [[
-\t\t\t\tfeatCall Costume setCostume 'pc_ankylosaurus.png' 0
+\t\t\tifExpr {{agent.getProp('state').value == 'drowning'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_ankylosaurus_drowning.png' 0
+\t\t\t\tfeatProp Movement distance setTo 0.5
+
 \t\t\t]]
 \t\t]]
 \t
@@ -826,14 +868,6 @@ every 1 runAtStart [[
 \t]]
 ]]
 
-//when t-rex attacks Parasaurolophus
-when Ankylosaurus firstTouches Tyrannosaurus [[
-\tprop agent.attacked setTo true
-\tprop Tyrannosaurus.hp add 25
-  ]]
-
-   \t\t
-
 
 
 `
@@ -844,45 +878,9 @@ when Ankylosaurus firstTouches Tyrannosaurus [[
       "id": "0",
       "label": "Background0",
       "bpid": "Background",
-      "initScript": `prop x setTo 0
-prop y setTo 0
+      "initScript": `prop x setTo -1.09
+prop y setTo 0.54
 prop zIndex setTo -5`
-    },
-    {
-      "id": "2",
-      "label": "Fern2",
-      "bpid": "Fern",
-      "initScript": `prop x setTo 184.13
-prop y setTo -225.04
-prop scale setTo 0.4`
-    },
-    {
-      "id": "4",
-      "label": "Fern4",
-      "bpid": "Fern",
-      "initScript": `prop x setTo 313.89
-prop y setTo -314.21`
-    },
-    {
-      "id": "12",
-      "label": "Fern12",
-      "bpid": "Fern",
-      "initScript": `prop x setTo -271.71
-prop y setTo -324.28`
-    },
-    {
-      "id": "15",
-      "label": "Berries15",
-      "bpid": "Berries",
-      "initScript": `prop x setTo 281.11
-prop y setTo -51.78`
-    },
-    {
-      "id": "16",
-      "label": "Berries16",
-      "bpid": "Berries",
-      "initScript": `prop x setTo 361.94
-prop y setTo 109.35`
     },
     {
       "id": "17",
@@ -892,74 +890,74 @@ prop y setTo 109.35`
 prop y setTo -394.48`
     },
     {
+      "id": "18",
+      "label": "Fern18",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 129.21
+prop y setTo 103.70`
+    },
+    {
       "id": "19",
-      "label": "Lake19",
-      "bpid": "Lake",
-      "initScript": `prop x setTo -280
-prop y setTo -26.77`
+      "label": "Fern19",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 118.89
+prop y setTo -97.07`
     },
     {
       "id": "20",
-      "label": "Berries20",
-      "bpid": "Berries",
-      "initScript": `prop x setTo 202.69
-prop y setTo 255.53`
+      "label": "Fern20",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -14
+prop y setTo -5`
     },
     {
       "id": "21",
-      "label": "Berries21",
-      "bpid": "Berries",
-      "initScript": `prop x setTo -199.86
-prop y setTo 302.58`
+      "label": "Fern21",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -136.11
+prop y setTo 63.95`
     },
     {
       "id": "22",
-      "label": "Berries22",
-      "bpid": "Berries",
-      "initScript": `prop x setTo -20
-prop y setTo 3`
+      "label": "Fern22",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -146.28
+prop y setTo -127.82`
     },
     {
       "id": "23",
-      "label": "Berries23",
-      "bpid": "Berries",
-      "initScript": `prop x setTo 206.26
-prop y setTo 121.34`
+      "label": "Lake23",
+      "bpid": "Lake",
+      "initScript": `prop x setTo 1.43
+prop y setTo 228.35`
     },
     {
       "id": "24",
-      "label": "Berries24",
-      "bpid": "Berries",
-      "initScript": `prop x setTo -15
-prop y setTo 288.36`
-    },
-    {
-      "id": "25",
-      "label": "Tyrannosaurus25",
+      "label": "Tyrannosaurus24",
       "bpid": "Tyrannosaurus",
-      "initScript": `prop x setTo 34
-prop y setTo -4`
+      "initScript": `prop x setTo 210.60
+prop y setTo 15.85`
     },
     {
       "id": "26",
-      "label": "Triceratops26",
-      "bpid": "Triceratops",
-      "initScript": `prop x setTo 10.56
-prop y setTo 159.85`
+      "label": "Ankylosaurus26",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo -6.61
+prop y setTo -120.89`
     },
     {
       "id": "27",
       "label": "Parasaurolophus27",
       "bpid": "Parasaurolophus",
-      "initScript": `prop x setTo -40.09
-prop y setTo -165.91`
+      "initScript": `prop x setTo -269.16
+prop y setTo -15.83`
     },
     {
       "id": "28",
-      "label": "Ankylosaurus28",
-      "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo 88.70
-prop y setTo -334.43`
+      "label": "Triceratops28",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo -218.17
+prop y setTo 167.06`
     }
   ]
 }
