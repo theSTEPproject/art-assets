@@ -53,7 +53,7 @@ featCall Costume setCostume 'pc_triceratops.png' 0
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.15
+featProp Physics scale setTo 0.1
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
@@ -281,7 +281,7 @@ featCall Costume setCostume 'pc_tyrannosaurus.png' 0
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.2
+featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
@@ -292,8 +292,8 @@ prop hp setMax 100
 prop hp setMin 0
 
 useFeature AgentWidgets
-featCall AgentWidgets bindMeterTo hp
-featProp AgentWidgets meterColor setTo 65280
+//featCall AgentWidgets bindMeterTo hp
+//featProp AgentWidgets meterColor setTo 65280
 exprPush {{ 'T-Rex #' + agent.id }}
 featPropPop AgentWidgets text
 
@@ -314,9 +314,9 @@ every 1 runAtStart [[
 \tifExpr {{agent.getProp('state').value == 'hungry'}} [[
 \t\tfeatCall Costume setCostume 'pc_tyrannosaurus_hungry.png' 0
 \t]]
-\tifExpr {{agent.getProp('state').value == 'dead'}} [[
-\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
-\t]]
+//\tifExpr {{agent.getProp('state').value == 'dead'}} [[
+//\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
+//\t]]
 \tifExpr {{agent.getProp('state').value == 'normal'}} [[
 \t\tfeatCall Costume setCostume 'pc_tyrannosaurus.png' 0
 \t]]
@@ -328,20 +328,20 @@ every 1 runAtStart [[
 //change state based on hunger/health
 \tifExpr {{ agent.getProp('hp').value <= 25 && agent.getProp('hp').value > 0 }} [[
 \t  \tprop Tyrannosaurus.state setTo 'hungry'
-\t\tfeatProp AgentWidgets meterColor setTo 16711680
+//\t\tfeatProp AgentWidgets meterColor setTo 16711680
 \t]]
 \tifExpr {{ agent.getProp('hp').value <= 50 && agent.getProp('hp').value >= 25}} [[
 \t\tprop Tyrannosaurus.state setTo 'hungry'
-\t\tfeatProp AgentWidgets meterColor setTo 16737792
+//\t\tfeatProp AgentWidgets meterColor setTo 16737792
 \t]]
 \tifExpr {{ agent.getProp('hp').value > 50 }} [[
 \t\tprop Tyrannosaurus.state setTo 'normal'
-\t\tfeatProp AgentWidgets meterColor setTo 65280
+//\t\tfeatProp AgentWidgets meterColor setTo 65280
 \t]]
-\tifExpr {{ agent.getProp('hp').value <= 0 }} [[
-\t\tprop Tyrannosaurus.state setTo 'dead'
-\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
-\t]]
+//\tifExpr {{ agent.getProp('hp').value <= 0 }} [[
+//\t\tprop Tyrannosaurus.state setTo 'dead'
+//\t\tfeatCall Costume setCostume 'pc_tyrannosaurus_dead.png' 0
+//\t]]
 ]]
 
 when Tyrannosaurus sees Ankylosaurus [[
@@ -368,7 +368,7 @@ when Tyrannosaurus doesNotSee Triceratops [[
 when Tyrannosaurus firstTouches Parasaurolophus [[
 \tprop Parasaurolophus.attacked setTo true
 \tprop agent.hp add 25
-\t\tprop Parasaurolophus.hp sub 100
+\t\tprop Parasaurolophus.hp sub 75
 
  ]]
  
@@ -376,7 +376,7 @@ when Tyrannosaurus firstTouches Parasaurolophus [[
  when Tyrannosaurus firstTouches Triceratops [[
 \tprop Triceratops.attacked setTo true
 \tprop agent.hp add 25
-\tprop Triceratops.hp sub 100
+\tprop Triceratops.hp sub 75
 
  ]]
  
@@ -384,7 +384,7 @@ when Tyrannosaurus firstTouches Parasaurolophus [[
  when Tyrannosaurus firstTouches Ankylosaurus [[
 \tprop Ankylosaurus.attacked setTo true
 \tprop agent.hp add 25
-\tprop Ankylosaurus.hp sub 100
+\tprop Ankylosaurus.hp sub 75
 
  ]]
  
@@ -408,7 +408,7 @@ featCall Costume setCostume 'pc_parasaurolophus.png' 0
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.15
+featProp Physics scale setTo 0.1
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
@@ -758,7 +758,7 @@ featCall Costume setCostume 'pc_ankylosaurus.png' 0
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.15
+featProp Physics scale setTo 0.1
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
@@ -775,7 +775,6 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-
 exprPush {{ 'Annie #' + agent.id }}
 featPropPop AgentWidgets text
 
@@ -944,7 +943,7 @@ prop y setTo -120.31`
       "label": "Ankylosaurus28",
       "bpid": "Ankylosaurus",
       "initScript": `prop x setTo 161.22
-prop y setTo 348.60`
+prop y setTo 348.6`
     },
     {
       "id": "30",
@@ -999,7 +998,7 @@ prop y setTo 10.59`
       "id": "37",
       "label": "Triceratops37",
       "bpid": "Triceratops",
-      "initScript": `prop x setTo 83.20
+      "initScript": `prop x setTo 83.2
 prop y setTo -355.42`
     },
     {
