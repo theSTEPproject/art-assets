@@ -285,6 +285,7 @@ featProp Physics scale setTo 0.2
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
+featProp Movement movementType setTo 'edgeToEdge'
 
 addProp hp Number 60
 prop hp setMax 100
@@ -647,7 +648,7 @@ useFeature Costume
 featCall Costume setCostume 'npc_lake.png'
 
 useFeature Physics
-featProp Physics scale setTo 0.4
+featProp Physics scale setTo 0.45
 
 prop x setTo 0
 prop y setTo 0
@@ -878,8 +879,8 @@ every 1 runAtStart [[
       "id": "0",
       "label": "Background0",
       "bpid": "Background",
-      "initScript": `prop x setTo -1.09
-prop y setTo 0.54
+      "initScript": `prop x setTo -1.97
+prop y setTo -2.15
 prop zIndex setTo -5`
     },
     {
@@ -893,29 +894,29 @@ prop y setTo -394.48`
       "id": "18",
       "label": "Fern18",
       "bpid": "Fern",
-      "initScript": `prop x setTo 129.21
-prop y setTo 103.70`
+      "initScript": `prop x setTo 178.23
+prop y setTo 139.10`
     },
     {
       "id": "19",
       "label": "Fern19",
       "bpid": "Fern",
-      "initScript": `prop x setTo 118.89
-prop y setTo -97.07`
+      "initScript": `prop x setTo 152.11
+prop y setTo -116.23`
     },
     {
       "id": "20",
       "label": "Fern20",
       "bpid": "Fern",
-      "initScript": `prop x setTo -14
-prop y setTo -5`
+      "initScript": `prop x setTo -55.21
+prop y setTo 338.17`
     },
     {
       "id": "21",
       "label": "Fern21",
       "bpid": "Fern",
-      "initScript": `prop x setTo -136.11
-prop y setTo 63.95`
+      "initScript": `prop x setTo -117.73
+prop y setTo -300.60`
     },
     {
       "id": "22",
@@ -928,36 +929,78 @@ prop y setTo -127.82`
       "id": "23",
       "label": "Lake23",
       "bpid": "Lake",
-      "initScript": `prop x setTo 1.43
-prop y setTo 228.35`
-    },
-    {
-      "id": "24",
-      "label": "Tyrannosaurus24",
-      "bpid": "Tyrannosaurus",
-      "initScript": `prop x setTo 210.60
-prop y setTo 15.85`
+      "initScript": `prop x setTo 3.76
+prop y setTo 8.19`
     },
     {
       "id": "26",
       "label": "Ankylosaurus26",
       "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo -6.61
-prop y setTo -120.89`
+      "initScript": `prop x setTo 266.72
+prop y setTo -297.55`
     },
     {
       "id": "27",
-      "label": "Parasaurolophus27",
-      "bpid": "Parasaurolophus",
-      "initScript": `prop x setTo -269.16
-prop y setTo -15.83`
+      "label": "Ankylosaurus27",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo 345.65
+prop y setTo -121.46`
     },
     {
       "id": "28",
-      "label": "Triceratops28",
-      "bpid": "Triceratops",
-      "initScript": `prop x setTo -218.17
-prop y setTo 167.06`
+      "label": "Ankylosaurus28",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo 242.83
+prop y setTo 277.68`
+    },
+    {
+      "id": "29",
+      "label": "Ankylosaurus29",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo 381.14
+prop y setTo 156.60`
+    },
+    {
+      "id": "30",
+      "label": "Fern30",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 41.55
+prop y setTo -240.47`
+    },
+    {
+      "id": "31",
+      "label": "Fern31",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 82.34
+prop y setTo 235.92`
+    },
+    {
+      "id": "32",
+      "label": "Fern32",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -69.35
+prop y setTo 169.95`
+    },
+    {
+      "id": "33",
+      "label": "Fern33",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -239.72
+prop y setTo 248.21`
+    },
+    {
+      "id": "34",
+      "label": "Fern34",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -235.94
+prop y setTo 40.69`
+    },
+    {
+      "id": "35",
+      "label": "Fern35",
+      "bpid": "Fern",
+      "initScript": `prop x setTo -294.25
+prop y setTo -230.32`
     }
   ]
 }
