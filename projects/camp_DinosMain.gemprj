@@ -58,7 +58,9 @@ featProp Physics scale setTo 0.15
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
 //featProp Movement movementType setTo 'wander'
-featProp Movement distance setTo 0.2
+//featProp Movement distance setTo 0.2
+
+addProp maxHealth Number 250
 
 addProp hp Number 200
 prop hp setMax 250
@@ -67,7 +69,7 @@ prop hp setMin 0
 useFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
-featProp AgentWidgets text setTo 'Triceratops'
+featProp AgentWidgets text setTo 'Tracy'
 
 useFeature Touches
 featCall Touches monitor Fern b2b
@@ -75,7 +77,6 @@ featCall Touches monitor Berries b2b
 featCall Touches monitor Tyrannosaurus b2b
 featCall Touches monitor Lake b2b
 featCall Touches monitor River b2b
-
 
 useFeature Vision
 featProp Vision visionable setTo true
@@ -106,8 +107,8 @@ every 1 runAtStart [[
 \t\t\tifExpr {{agent.getProp('state').value == 'sick'}} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops_sick.png' 0
 \t\t\t]]
-\t\t\tifExpr {{agent.getProp('state').value == 'swimming'}} [[
-\t\t\t\tfeatCall Costume setCostume 'pc_triceratops_swimming.png' 0
+\t\t\tifExpr {{agent.getProp('state').value == 'drowning'}} [[
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops_drowning.png' 0
 \t\t\t]]
 \t\t]]
 \t
@@ -117,7 +118,7 @@ every 1 runAtStart [[
 \t
 \t\tifExpr {{agent.getProp('attacked').value === true}} [[ //attacked by predator
 \t\t\tifExpr {{agent.getProp('hp').value <= 50 }} [[
-\t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\t\t\tfeatCall Costume setCostume 'pc_triceratops_scared.png' 0
 \t\t\t]]
 \t\t\tifExpr {{agent.getProp('hp').value > 50 }} [[
 \t\t\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
@@ -126,7 +127,7 @@ every 1 runAtStart [[
 \t\t]]
 \t]]
 \tifExpr {{agent.getProp('isInert').value === true }} [[ //is dead
-\t\tfeatCall Costume setCostume 'pc_triceratops.png' 0
+\t\tfeatCall Costume setCostume 'pc_triceratops_dead.png' 0
 \t]]\t
 \t
 
@@ -149,7 +150,7 @@ every 1 runAtStart [[
 \t]]
 ]]
 
-//when t-rex attacks Parasaurolophus
+//when t-rex attacks Triceratops
 when Triceratops firstTouches Tyrannosaurus [[
 \tprop agent.attacked setTo true
 \tprop Tyrannosaurus.hp add 25
@@ -160,6 +161,9 @@ when Triceratops firstTouches Tyrannosaurus [[
   \t  \tprop agent.hp sub 15
   \t]]
  ]]
+ 
+
+
 
    \t\t
 
@@ -171,7 +175,7 @@ when Triceratops firstTouches Tyrannosaurus [[
       "id": "Fern",
       "label": "Fern",
       "scriptText": `# BLUEPRINT Fern
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
@@ -229,10 +233,10 @@ every 1 runAtStart [[
 \t]]
 ]]
 
-//gains health when eating fern -- fern shrinks when eaten
+ //gains health when eating fern -- fern shrinks when eaten
 when Fern touches Triceratops [[
   every 1 runAtStart [[
-  \tifExpr {{ Triceratops.getProp('hp').value > 0 && Triceratops.getProp('hp').value < 100}} [[
+  \tifExpr {{ Triceratops.getProp('hp').value > 0 && Triceratops.getProp('hp').value < Triceratops.getProp('maxHealth').value}} [[
   \t\tfeatCall agent.Costume setGlow 0.1
 \t  \tprop agent.hp sub 1
   \t\tprop Triceratops.hp add 5
@@ -242,15 +246,13 @@ when Fern touches Triceratops [[
 
 when Fern touches Parasaurolophus [[
   every 1 runAtStart [[
-  \tifExpr {{ Parasaurolophus.getProp('hp').value > 0 && Parasaurolophus.getProp('hp').value < 100}} [[
+  \tifExpr {{ Parasaurolophus.getProp('hp').value > 0 && Parasaurolophus.getProp('hp').value < Parasaurolophus.getProp('maxHealth').value}} [[
   \t\tprop Parasaurolophus.hp sub 5
   \t\tprop Parasaurolophus.state setTo 'sick'
-  \t\t  \t\tfeatCall agent.Costume setGlow 0.1
-
+  \t\tfeatCall agent.Costume setGlow 0.1
   \t]]
   ]]
 ]]
-
 
 
 `
@@ -373,11 +375,13 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
-featProp Movement movementType setTo 'wander'
+//featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.2
 
-addProp hp Number 60
-prop hp setMax 100
+addProp maxHealth Number 250
+
+addProp hp Number 200
+prop hp setMax 250
 prop hp setMin 0
 
 useFeature AgentWidgets
@@ -447,11 +451,11 @@ every 1 runAtStart [[
 
 \t
 //update color of meter & state based on hunger level
-\tifExpr {{ agent.getProp('hp').value <= 50}} [[
+\tifExpr {{ agent.getProp('hp').value <= 75}} [[
 \t\tprop state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16711680 //red
 \t]]
-\tifExpr {{ agent.getProp('hp').value <= 150 && agent.getProp('hp').value > 50}} [[
+\tifExpr {{ agent.getProp('hp').value <= 150 && agent.getProp('hp').value > 75}} [[
 \t\tprop state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16737792 //orange
 \t]]
@@ -468,13 +472,7 @@ every 1 runAtStart [[
 when Parasaurolophus firstTouches Tyrannosaurus [[
 \tprop agent.attacked setTo true
 \tprop Tyrannosaurus.hp add 25
-  \tifExpr {{ agent.getProp('hp').value > 50 }} [[
-  \t  \tprop agent.hp setTo 40
-  \t]]
-  \tifExpr {{ agent.getProp('hp').value < 50 }} [[
-  \t  \tprop agent.hp sub 15
-  \t]]
- ]]
+  ]]
 
    \t\t
 
@@ -556,11 +554,10 @@ when Berries touches Parasaurolophus [[
 
 when Berries touches Triceratops [[
   every 1 runAtStart [[
-  \tifExpr {{ Triceratops.getProp('hp').value > 0 && Triceratops.getProp('hp').value < 100}} [[
+  \tifExpr {{ Triceratops.getProp('hp').value > 0 && Triceratops.getProp('hp').value < Triceratops.getProp('maxHealth').value}} [[
   \t\tprop Triceratops.hp sub 5
   \t\tprop Triceratops.state setTo 'sick'
-  \t\t  \t\tfeatCall agent.Costume setGlow 0.1
-
+  \t\tfeatCall agent.Costume setGlow 0.1
   \t]]
   ]]
 ]]
@@ -765,7 +762,7 @@ prop y setTo 121.34`
       "id": "24",
       "label": "Berries24",
       "bpid": "Berries",
-      "initScript": `prop x setTo -15.00
+      "initScript": `prop x setTo -15
 prop y setTo 288.36`
     },
     {
