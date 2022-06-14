@@ -933,32 +933,18 @@ prop y setTo -127.82`
 prop y setTo 8.19`
     },
     {
-      "id": "26",
-      "label": "Ankylosaurus26",
-      "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo 266.72
-prop y setTo -297.55`
-    },
-    {
       "id": "27",
       "label": "Ankylosaurus27",
       "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo 345.65
-prop y setTo -121.46`
+      "initScript": `prop x setTo 353.27
+prop y setTo -120.31`
     },
     {
       "id": "28",
       "label": "Ankylosaurus28",
       "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo 242.83
-prop y setTo 277.68`
-    },
-    {
-      "id": "29",
-      "label": "Ankylosaurus29",
-      "bpid": "Ankylosaurus",
-      "initScript": `prop x setTo 381.14
-prop y setTo 156.60`
+      "initScript": `prop x setTo 161.22
+prop y setTo 348.60`
     },
     {
       "id": "30",
@@ -1001,6 +987,34 @@ prop y setTo 40.69`
       "bpid": "Fern",
       "initScript": `prop x setTo -294.25
 prop y setTo -230.32`
+    },
+    {
+      "id": "36",
+      "label": "Triceratops36",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 277.26
+prop y setTo 10.59`
+    },
+    {
+      "id": "37",
+      "label": "Triceratops37",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 83.20
+prop y setTo -355.42`
+    },
+    {
+      "id": "38",
+      "label": "Triceratops38",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 345.94
+prop y setTo 155.67`
+    },
+    {
+      "id": "39",
+      "label": "Fern39",
+      "bpid": "Fern",
+      "initScript": `prop x setTo 373.16
+prop y setTo 252.35`
     }
   ]
 }
