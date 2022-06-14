@@ -57,11 +57,11 @@ featProp Physics scale setTo 0.15
 
 useFeature Movement
 featProp Movement useAutoOrientation setTo true
-//featProp Movement movementType setTo 'wander'
+featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.2
 
-addProp hp Number 200
-prop hp setMax 250
+addProp hp Number 250
+prop hp setMax 300
 prop hp setMin 0
 
 useFeature AgentWidgets
@@ -132,11 +132,11 @@ every 1 runAtStart [[
 
 \t
 //update color of meter & state based on hunger level
-\tifExpr {{ agent.getProp('hp').value <= 75}} [[
+\tifExpr {{ agent.getProp('hp').value <= 50}} [[
 \t\tprop state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16711680 //red
 \t]]
-\tifExpr {{ agent.getProp('hp').value <= 150 && agent.getProp('hp').value > 75}} [[
+\tifExpr {{ agent.getProp('hp').value <= 150 && agent.getProp('hp').value > 50}} [[
 \t\tprop state setTo 'hungry'
 \t\tfeatProp AgentWidgets meterColor setTo 16737792 //orange
 \t]]
@@ -767,27 +767,6 @@ prop y setTo 121.34`
       "bpid": "Berries",
       "initScript": `prop x setTo -15.00
 prop y setTo 288.36`
-    },
-    {
-      "id": "25",
-      "label": "Tyrannosaurus25",
-      "bpid": "Tyrannosaurus",
-      "initScript": `prop x setTo 34
-prop y setTo -4`
-    },
-    {
-      "id": "26",
-      "label": "Triceratops26",
-      "bpid": "Triceratops",
-      "initScript": `prop x setTo 10.56
-prop y setTo 159.85`
-    },
-    {
-      "id": "27",
-      "label": "Parasaurolophus27",
-      "bpid": "Parasaurolophus",
-      "initScript": `prop x setTo -40.09
-prop y setTo -165.91`
     }
   ]
 }
