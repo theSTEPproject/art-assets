@@ -666,13 +666,13 @@ featCall Touches monitor Ankylosaurus b2b
 
 when Lake touches Triceratops [[
   every 1 runAtStart [[
-  \tprop Triceratops.state setTo 'drowning'
+//  \tprop Triceratops.state setTo 'drowning'
   ]]
 ]]
 
 when Lake touches Ankylosaurus [[
   every 1 runAtStart [[
-  \tprop Ankylosaurus.state setTo 'drowning'
+  //\tprop Ankylosaurus.state setTo 'drowning'
   ]]
 ]]
 
@@ -685,7 +685,7 @@ when Lake touches Tyrannosaurus [[
 
 when Lake touches Parasaurolophus [[
   every 1 runAtStart [[
-  \tprop Parasaurolophus.state setTo 'swimming'
+//  \tprop Parasaurolophus.state setTo 'swimming'
   ]]
 ]]
 `
@@ -1014,6 +1014,27 @@ prop y setTo 155.67`
       "bpid": "Fern",
       "initScript": `prop x setTo 373.16
 prop y setTo 252.35`
+    },
+    {
+      "id": "40",
+      "label": "Ankylosaurus40",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo -71.02
+prop y setTo 252.77`
+    },
+    {
+      "id": "41",
+      "label": "Ankylosaurus41",
+      "bpid": "Ankylosaurus",
+      "initScript": `prop x setTo 205.13
+prop y setTo 230.27`
+    },
+    {
+      "id": "42",
+      "label": "Triceratops42",
+      "bpid": "Triceratops",
+      "initScript": `prop x setTo 262.14
+prop y setTo -257.29`
     }
   ]
 }
