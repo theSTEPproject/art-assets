@@ -919,18 +919,11 @@ prop y setTo 338.17`
 prop y setTo -300.60`
     },
     {
-      "id": "22",
-      "label": "Fern22",
-      "bpid": "Fern",
-      "initScript": `prop x setTo -146.28
-prop y setTo -127.82`
-    },
-    {
       "id": "23",
       "label": "Lake23",
       "bpid": "Lake",
-      "initScript": `prop x setTo 3.76
-prop y setTo 8.19`
+      "initScript": `prop x setTo -1.52
+prop y setTo 18.73`
     },
     {
       "id": "27",
@@ -954,13 +947,6 @@ prop y setTo 348.60`
 prop y setTo -240.47`
     },
     {
-      "id": "31",
-      "label": "Fern31",
-      "bpid": "Fern",
-      "initScript": `prop x setTo 82.34
-prop y setTo 235.92`
-    },
-    {
       "id": "32",
       "label": "Fern32",
       "bpid": "Fern",
@@ -973,13 +959,6 @@ prop y setTo 169.95`
       "bpid": "Fern",
       "initScript": `prop x setTo -239.72
 prop y setTo 248.21`
-    },
-    {
-      "id": "34",
-      "label": "Fern34",
-      "bpid": "Fern",
-      "initScript": `prop x setTo -235.94
-prop y setTo 40.69`
     },
     {
       "id": "35",
@@ -1015,6 +994,48 @@ prop y setTo 155.67`
       "bpid": "Fern",
       "initScript": `prop x setTo 373.16
 prop y setTo 252.35`
+    },
+    {
+      "id": "40",
+      "label": "Berries40",
+      "bpid": "Berries",
+      "initScript": `prop x setTo -150.72
+prop y setTo 26.99`
+    },
+    {
+      "id": "41",
+      "label": "Berries41",
+      "bpid": "Berries",
+      "initScript": `prop x setTo 142.04
+prop y setTo 8.84`
+    },
+    {
+      "id": "42",
+      "label": "Berries42",
+      "bpid": "Berries",
+      "initScript": `prop x setTo -58.88
+prop y setTo -163.50`
+    },
+    {
+      "id": "43",
+      "label": "Berries43",
+      "bpid": "Berries",
+      "initScript": `prop x setTo 52.96
+prop y setTo 205.67`
+    },
+    {
+      "id": "44",
+      "label": "Parasaurolophus44",
+      "bpid": "Parasaurolophus",
+      "initScript": `prop x setTo 265.50
+prop y setTo 262.90`
+    },
+    {
+      "id": "45",
+      "label": "Parasaurolophus45",
+      "bpid": "Parasaurolophus",
+      "initScript": `prop x setTo 249.37
+prop y setTo -226.84`
     }
   ]
 }
