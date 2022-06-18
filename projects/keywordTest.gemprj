@@ -1,0 +1,100 @@
+{
+  "id": "keywordTest",
+  "label": "keywords",
+  "metadata": {
+    "top": -200,
+    "right": 400,
+    "bottom": 200,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "TestKeywordAgent",
+      "scriptText": `# blueprint TestKeywordAgent
+
+# program define
+useFeature Costume
+featCall Costume setCostume 'circle.json'
+useFeature Physics
+featCall Physics setSize 20
+useFeature Touches
+featCall Touches monitor TestKeywordAgent b2b
+addProp myNumber number 0
+addProp myString string 'hello'
+addProp copiedString string 'empty'
+addProp copiedNumber number 0
+
+useFeature AgentWidgets
+featCall AgentWidgets bindTextTo myString
+
+# program init
+prop myNumber setTo 1
+prop agent.myNumber setTo 2
+// radius is not used
+featProp Physics radius setTo 100
+featCall Physics setSize 10 10
+
+# program event
+// Commented out because it results in too much output
+// onEvent Tick [[
+//   dbgOut 'Tick'
+// ]]
+
+# program update
+
+every 1 [[
+  ifExpr {{ agent.getProp('myString').value === 'hello' }} [[
+    prop myString setTo 'goodbye'
+  ]] [[
+    prop myString setTo 'hello'
+  ]]
+
+  // increase width every second
+  featPropPush Physics width
+  propPop myNumber
+  prop myNumber add 10
+  propPush myNumber
+  featPropPop Physics width
+  
+  // console log the result
+  propPush myNumber
+  exprPush {{ agent.getProp('myNumber').value + 1 }}
+  propPop copiedNumber
+  propPush copiedNumber
+  // should show [n, n+1]
+  dbgStack
+]]
+
+when TestKeywordAgent touches TestKeywordAgent [[
+  // when they touch each other, shrink back down
+  prop myString setTo 'touched'
+  featCall TestKeywordAgent.Physics setSize 10
+]]
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "TestKeywordAgent0",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1",
+      "label": "TestKeywordAgent1",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo -37.91
+prop y setTo 28.14`
+    }
+  ]
+}
