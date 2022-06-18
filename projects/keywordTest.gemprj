@@ -21,18 +21,18 @@
       "scriptText": `# blueprint TestKeywordAgent
 
 # program define
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json'
-useFeature Physics
+addFeature Physics
 featCall Physics setSize 20
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TestKeywordAgent b2b
 addProp myNumber number 0
 addProp myString string 'hello'
 addProp copiedString string 'empty'
 addProp copiedNumber number 0
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 featCall AgentWidgets bindTextTo myString
 
 # program init
