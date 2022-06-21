@@ -1,0 +1,690 @@
+{
+  "id": "camp_Day8_Magical-creatures",
+  "label": "Camp EIP",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Background",
+      "label": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'background_magic.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.8
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -5
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Wand",
+      "label": "Wand",
+      "scriptText": `# BLUEPRINT Wand
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'pc_wand_alive.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.25
+
+useFeature Movement
+
+useFeature AgentWidgets
+exprPush {{ '' + agent.id }}
+featPropPop AgentWidgets text
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp state String 'recharged'
+
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+every 1 runAtStart [[
+ifExpr {{ agent.getProp('state').value == 'recharged'}} [[
+\tfeatCall Costume setCostume 'pc_wand_alive.png' 0
+]]
+ifExpr {{ agent.getProp('state').value == 'dead'}} [[
+\tfeatCall Costume setCostume 'pc_wand_dead.png' 0
+]]
+]]
+   \t\t
+
+
+
+`
+    },
+    {
+      "id": "Cauldron",
+      "label": "Cauldron",
+      "scriptText": `# BLUEPRINT Cauldron
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'cauldron.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.5
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Wand b2b
+featCall Touches monitor Fish b2b
+featCall Touches monitor Puppy b2b
+featCall Touches monitor Egg b2b
+featCall Touches monitor Lamp b2b
+featCall Touches monitor Bird b2b
+featCall Touches monitor Horse b2b
+
+
+
+useFeature Population
+
+addProp mermaidReady Boolean false
+addProp genieReady Boolean false
+addProp werewolfReady Boolean false
+addProp dragonReady Boolean false
+addProp phoenixReady Boolean false
+addProp unicornReady Boolean false
+
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+when Cauldron touches Wand [[
+\tifExpr {{Wand.getProp('state').value == 'recharged'}} [[
+
+  \tifExpr {{agent.getProp('mermaidReady').value == true }} [[
+  \t\tfeatCall Population createAgent Mermaid [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.mermaidReady setTo false
+  \t\tprop Wand.state setTo 'dead'
+  \t]]
+  \t ifExpr {{agent.getProp('genieReady').value == true }} [[
+  \t\tfeatCall Population createAgent Genie [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.genieReady setTo false
+  \t\t  \t\tprop Wand.state setTo 'dead'
+
+  \t]]
+  \tifExpr {{agent.getProp('werewolfReady').value == true }} [[
+  \t\tfeatCall Population createAgent Werewolf [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.werewolfReady setTo false
+  \t\t  \t\tprop Wand.state setTo 'dead'
+
+  \t]]
+  \t ifExpr {{agent.getProp('dragonReady').value == true }} [[
+  \t\tfeatCall Population createAgent Dragon [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.dragonReady setTo false
+  \t\t  \t\tprop Wand.state setTo 'dead'
+
+  \t]]
+  \tifExpr {{agent.getProp('phoenixReady').value == true }} [[
+  \t\tfeatCall Population createAgent Phoenix [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.phoenixReady setTo false
+  \t\t  \t\tprop Wand.state setTo 'dead'
+
+  \t]]
+  \tifExpr {{agent.getProp('unicornReady').value == true }} [[
+  \t\tfeatCall Population createAgent Unicorn [[
+  \t\t\tprop x setToRnd -25 25
+  \t\t\tprop y setToRnd -25 25
+  \t\t]]
+  \t\tprop agent.unicornReady setTo false
+  \t\t prop Wand.state setTo 'dead'
+\t]]
+  \t]]
+]]
+
+when Cauldron touches Fish [[
+\tprop agent.mermaidReady setTo true
+\tprop Fish.isInert setTo true
+]]
+
+when Cauldron touches Lamp [[
+\tprop agent.genieReady setTo true
+\t\tprop Lamp.isInert setTo true
+
+]]
+
+when Cauldron touches Puppy [[
+\tprop agent.werewolfReady setTo true
+\t\tprop Puppy.isInert setTo true
+
+]]
+
+when Cauldron touches Bird [[
+\tprop agent.phoenixReady setTo true
+\t\tprop Bird.isInert setTo true
+
+]]
+
+when Cauldron touches Horse [[
+\tprop agent.unicornReady setTo true
+\t\tprop Horse.isInert setTo true
+
+]]
+when Cauldron touches Egg [[
+\tprop agent.dragonReady setTo true
+\t\tprop Egg.isInert setTo true
+
+]]
+
+
+
+`
+    },
+    {
+      "id": "Mermaid",
+      "label": "Mermaid",
+      "scriptText": `# BLUEPRINT Mermaid
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'mermaid.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Fish",
+      "label": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'fishmaid.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Lamp",
+      "label": "Lamp",
+      "scriptText": `# BLUEPRINT Lamp
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'lamp.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Horse",
+      "label": "Horse",
+      "scriptText": `# BLUEPRINT Horse
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'horse.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.2
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Bird",
+      "label": "Bird",
+      "scriptText": `# BLUEPRINT Bird
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'bird.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Puppy",
+      "label": "Puppy",
+      "scriptText": `# BLUEPRINT Puppy
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'puppy.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.2
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Egg",
+      "label": "Egg",
+      "scriptText": `# BLUEPRINT Egg
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'egg.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Genie",
+      "label": "Genie",
+      "scriptText": `# BLUEPRINT Genie
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'genie.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Unicorn",
+      "label": "Unicorn",
+      "scriptText": `# BLUEPRINT Unicorn
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'unicorn.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Dragon",
+      "label": "Dragon",
+      "scriptText": `# BLUEPRINT Dragon
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'dragon.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Werewolf",
+      "label": "Werewolf",
+      "scriptText": `# BLUEPRINT Werewolf
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'wolf.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "Phoenix",
+      "label": "Phoenix",
+      "scriptText": `# BLUEPRINT Phoenix
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'phoenix.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Cauldron b2b
+
+addProp hasTransformed Boolean setToTrue
+
+useFeature Movement
+featCall Movement setMovementType wander
+featProp Movement distance setTo 0.2
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "id": "CrystalBall",
+      "label": "CrystalBall",
+      "scriptText": `# BLUEPRINT CrystalBall
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'crystal.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.4
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -2
+
+useFeature Touches
+featCall Touches monitor Wand b2b
+
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+when CrystalBall touches Wand [[
+  \tprop Wand.isInert setTo false
+  \tprop Wand.state setTo 'recharged'
+]]
+
+
+
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Background0",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -5`
+    },
+    {
+      "id": "1",
+      "label": "Cauldron1",
+      "bpid": "Cauldron",
+      "initScript": `prop x setTo 213.72
+prop y setTo 272.48`
+    },
+    {
+      "id": "4",
+      "label": "Fish4",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 29.11
+prop y setTo 34.10`
+    },
+    {
+      "id": "5",
+      "label": "Wand5",
+      "bpid": "Wand",
+      "initScript": `prop x setTo -207.97
+prop y setTo -123.71`
+    },
+    {
+      "id": "6",
+      "label": "Bird6",
+      "bpid": "Bird",
+      "initScript": `prop x setTo -85.46
+prop y setTo 72.77`
+    },
+    {
+      "id": "7",
+      "label": "Egg7",
+      "bpid": "Egg",
+      "initScript": `prop x setTo 192.12
+prop y setTo -42.36`
+    },
+    {
+      "id": "8",
+      "label": "Lamp8",
+      "bpid": "Lamp",
+      "initScript": `prop x setTo -214.07
+prop y setTo 22.53`
+    },
+    {
+      "id": "9",
+      "label": "Puppy9",
+      "bpid": "Puppy",
+      "initScript": `prop x setTo 244.79
+prop y setTo -281.23`
+    },
+    {
+      "id": "10",
+      "label": "Horse10",
+      "bpid": "Horse",
+      "initScript": `prop x setTo -4.8
+prop y setTo -173.95`
+    },
+    {
+      "id": "11",
+      "label": "CrystalBall11",
+      "bpid": "CrystalBall",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    }
+  ]
+}

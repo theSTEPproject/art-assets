@@ -1,0 +1,457 @@
+{
+  "id": "camp_Day7_Space",
+  "label": "Camp EIP",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "id": "Background",
+      "label": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'background_space.png'
+
+useFeature Physics
+featProp Physics scale setTo 0.8
+
+prop x setTo 0
+prop y setTo 0
+prop zIndex setTo -5
+
+# PROGRAM INIT 
+# PROGRAM EVENT
+# PROGRAM UPDATE
+`
+    },
+    {
+      "id": "Timer",
+      "label": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# PROGRAM DEFINE
+useFeature AgentWidgets
+useFeature Costume
+featCall Costume setCostume 'onexone.json' 0
+addProp time Number 0
+
+featProp AgentWidgets text setTo 'Time: 0'
+
+# PROGRAM INIT
+
+prop x setTo 445
+prop y setTo -256
+
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
+  prop time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop AgentWidgets text
+]]`
+    },
+    {
+      "id": "Astronaut",
+      "label": "Astronaut",
+      "scriptText": `# BLUEPRINT Astronaut
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'pc_astronaut_default.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.1
+
+useFeature Movement
+//featProp Movement useAutoOrientation setTo true
+//featProp Movement movementType setTo 'wander'
+//featProp Movement distance setTo 5
+//featCall Movement seekNearest Berries
+
+useFeature AgentWidgets
+//featCall AgentWidgets bindMeterTo hp
+//featProp AgentWidgets meterColor setTo 65280
+exprPush {{ '' + agent.id }}
+featPropPop AgentWidgets text
+
+useFeature Population
+
+useFeature Touches
+featCall Touches monitor Satellite_LEFT b2b
+featCall Touches monitor Satellite_RIGHT b2b
+featCall Touches monitor Moon b2b
+//featCall Touches monitor Satellite_FIXED
+
+addProp state String 'searching'
+
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+every 0.25 runAtStart [[
+\tifExpr {{agent.getProp('state').value == 'searching'}} [[
+\t\tfeatCall Costume setCostume 'pc_astronaut_default.png' 0
+\t]]
+\tifExpr {{agent.getProp('state').value == 'foundRight'}} [[
+\t\tfeatCall Costume setCostume 'pc_astronaut_right.png' 0
+\t]]
+\tifExpr {{agent.getProp('state').value == 'foundLeft'}} [[
+\t\tfeatCall Costume setCostume 'pc_astronaut_left.png' 0
+\t]]
+]]
+
+when Astronaut firstTouches Satellite_RIGHT [[
+\tifExpr {{agent.getProp('state').value == 'searching'}} [[
+\t\tprop agent.state setTo 'foundRight'
+\t\tprop Satellite_RIGHT.isInert setTo true
+\t\tprop Satellite_RIGHT.visible setTo false
+\t]]
+]]
+
+when Astronaut firstTouches Satellite_LEFT [[
+\tifExpr {{agent.getProp('state').value == 'searching'}} [[
+\t\tprop agent.state setTo 'foundLeft'
+\t\tprop Satellite_LEFT.isInert setTo true
+\t\tprop Satellite_LEFT.visible setTo false
+\t]]
+]]
+
+
+
+`
+    },
+    {
+      "id": "Satellite_RIGHT",
+      "label": "Satellite_RIGHT",
+      "scriptText": `# BLUEPRINT Satellite_RIGHT
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'npc_right satellite.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.2
+
+useFeature Touches
+featCall Touches monitor Astonaut b2b
+
+useFeature Movement
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 0.1
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+\t
+]]
+`
+    },
+    {
+      "id": "Satellite_LEFT",
+      "label": "Satellite_LEFT",
+      "scriptText": `# BLUEPRINT Satellite_LEFT
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'npc_left satellite.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.15
+
+useFeature Touches
+featCall Touches monitor Astonaut b2b
+
+useFeature Movement
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 0.1
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+\t
+]]
+`
+    },
+    {
+      "id": "Moon",
+      "label": "Moon",
+      "scriptText": `# BLUEPRINT Moon
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'npc_moon.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.7
+
+useFeature Touches
+featCall Touches monitor Astronaut b2b
+featCall Touches monitor Satellite_FIXED b2b
+featCall Touches monitor Counter b2b
+
+useFeature Movement
+featProp Movement movementType setTo 'static'
+
+addProp hasRight Boolean false
+prop hasRight setTo false
+
+addProp hasLeft Boolean false
+prop hasLeft setTo false
+
+useFeature Population
+
+addProp fixedCounter Number 0
+prop fixedCounter setMin 0
+
+addProp readyToFix Boolean false
+
+addProp currentFixed Number 0
+prop currentFixed setMin 0
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 10 runAtStart [[
+\t\tifExpr {{Moon.getProp('readyToFix').value == true }} [[
+\t\tdbgOut 'SPAWN FIXED SATELLITE'
+\t\tfeatCall Population createAgent Satellite_FIXED [[
+\t\t]]\t
+\t]]
+]]
+
+
+when Moon touches Astronaut [[
+\tifExpr {{agent.getProp('hasRight').value == true && agent.getProp('hasLeft').value == true }} [[
+\t\tprop Astronaut.state setTo 'searching'
+\t\tdbgOut 'RESET ASTRONAUT COSTUMES'
+\t\tprop agent.readyToFix setTo true
+\t]]
+\t
+\tifExpr {{ Astronaut.getProp('state').value == 'foundRight'}} [[
+\t\tprop agent.hasRight setTo true
+\t\tdbgOut {{ agent.hasRight + ' -- FOUND RIGHT ' }}
+\t]]
+\tifExpr {{ Astronaut.getProp('state').value == 'foundLeft' }} [[
+\t\tprop agent.hasLeft setTo true
+\t\tdbgOut {{ agent.hasLeft + ' -- FOUND LEFT ' }}
+
+\t]]
+]]
+
+when Moon touches Counter [[
+\texprPush {{ agent.getProp('fixedCounter').value }}
+\tpropPop Counter.count
+]]
+
+when Moon lastTouches Satellite_FIXED [[
+\tprop agent.fixedCounter add 1
+]]
+`
+    },
+    {
+      "id": "Satellite_FIXED",
+      "label": "Satellite_FIXED",
+      "scriptText": `# BLUEPRINT Satellite_FIXED
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+useFeature Costume
+featCall Costume setCostume 'npc_fixed satellite.png' 0
+
+useFeature Physics
+featCall Physics init
+featProp Physics scale setTo 0.1
+
+useFeature Touches
+featCall Touches monitor Astonaut b2b
+featCall Touches monitor Moon b2b
+
+useFeature Movement
+featProp Movement movementType setTo 'wander'
+featProp Movement distance setTo 1.5
+//featureCall Movement setDirection 90
+
+prop zIndex setTo 10
+prop x setTo 0
+prop y setTo -300
+
+featCall Movement queuePosition 0 400
+
+addProp runOnce Boolean true
+
+# PROGRAM EVENT
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+dbgOut agent
+
+\t//featCall Movement queuePosition 0 400
+\t//featureCall Movement setDirection 90
+]]
+
+
+`
+    },
+    {
+      "id": "Counter",
+      "label": "Counter",
+      "scriptText": `# BLUEPRINT Counter
+# PROGRAM DEFINE
+useFeature AgentWidgets
+featProp AgentWidgets text setTo 'Satellites Fixed: 0'
+
+useFeature Costume
+featCall Costume setCostume 'onexone.json' 0
+
+useFeature Physics
+featCall Physics init
+
+useFeature Touches
+featCall Touches monitor Moon b2b
+
+addProp count Number 0
+
+# PROGRAM INIT
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+\texprPush {{ 'Satellites Fixed: ' + agent.getProp('count').value }}
+\tfeatPropPop AgentWidgets text
+]]
+
+
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Background0",
+      "bpid": "Background",
+      "initScript": `prop x setTo -1.97
+prop y setTo -2.15
+prop zIndex setTo -5`
+    },
+    {
+      "id": "19",
+      "label": "Satellite_LEFT19",
+      "bpid": "Satellite_LEFT",
+      "initScript": `prop x setTo 224.27
+prop y setTo -78.62`
+    },
+    {
+      "id": "20",
+      "label": "Timer20",
+      "bpid": "Timer",
+      "initScript": `prop x setTo -353.72
+prop y setTo -393.65`
+    },
+    {
+      "id": "23",
+      "label": "Moon23",
+      "bpid": "Moon",
+      "initScript": `prop x setTo 13.32
+prop y setTo 320.27
+prop zIndex setTo -5`
+    },
+    {
+      "id": "24",
+      "label": "Counter24",
+      "bpid": "Counter",
+      "initScript": `prop x setTo 28.74
+prop y setTo 359.72`
+    },
+    {
+      "id": "26",
+      "label": "Satellite_RIGHT26",
+      "bpid": "Satellite_RIGHT",
+      "initScript": `prop x setTo 226.55
+prop y setTo -254.71`
+    },
+    {
+      "id": "27",
+      "label": "Satellite_LEFT27",
+      "bpid": "Satellite_LEFT",
+      "initScript": `prop x setTo 87.53
+prop y setTo -245.75`
+    },
+    {
+      "id": "28",
+      "label": "Satellite_RIGHT28",
+      "bpid": "Satellite_RIGHT",
+      "initScript": `prop x setTo -159.75
+prop y setTo -270.68`
+    },
+    {
+      "id": "29",
+      "label": "Satellite_LEFT29",
+      "bpid": "Satellite_LEFT",
+      "initScript": `prop x setTo -229.39
+prop y setTo -112.24`
+    },
+    {
+      "id": "33",
+      "label": "Satellite_RIGHT33",
+      "bpid": "Satellite_RIGHT",
+      "initScript": `prop x setTo 331.38
+prop y setTo 304.69`
+    },
+    {
+      "id": "34",
+      "label": "Satellite_LEFT34",
+      "bpid": "Satellite_LEFT",
+      "initScript": `prop x setTo -288.25
+prop y setTo -281.76`
+    },
+    {
+      "id": "35",
+      "label": "Satellite_RIGHT35",
+      "bpid": "Satellite_RIGHT",
+      "initScript": `prop x setTo 108.59
+prop y setTo 114.34`
+    },
+    {
+      "id": "36",
+      "label": "Satellite_LEFT36",
+      "bpid": "Satellite_LEFT",
+      "initScript": `prop x setTo -42
+prop y setTo -13`
+    },
+    {
+      "id": "37",
+      "label": "Satellite_RIGHT37",
+      "bpid": "Satellite_RIGHT",
+      "initScript": `prop x setTo -336.90
+prop y setTo 26.68`
+    }
+  ]
+}

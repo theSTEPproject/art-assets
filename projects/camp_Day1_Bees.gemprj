@@ -1,6 +1,6 @@
 {
-  "id": "beeDiss_Day5",
-  "label": "Bee Dissertation",
+  "id": "Day 1: Bees",
+  "label": "Camp EIP",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -487,18 +487,18 @@ when Bee centerFirstTouches Flower [[
   prop Flower.visible setTo true
 
   // TODO: add the hearts to the name now that we know what the quality might be
-  ifExpr{{ Flower.getProp('nectarQuality').value == 1}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
-  ifExpr{{ Flower.getProp('nectarQuality').value == 2}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
-  ifExpr{{ Flower.getProp('nectarQuality').value == 3}} [[
-    exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
-  ]]
+//  ifExpr{{ Flower.getProp('nectarQuality').value == 1}} [[
+  //  exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+//  ]]
+ // ifExpr{{ Flower.getProp('nectarQuality').value == 2}} [[
+ //   exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+ // ]]
+//  ifExpr{{ Flower.getProp('nectarQuality').value == 3}} [[
+ //   exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️❤️' }}
+ //   featPropPop  Flower.AgentWidgets text
+//  ]]
 
 
     // if you are AI, found a flower, so pause to get the nectar if it has quality  of medium or higher (3-5)
@@ -564,6 +564,11 @@ when Bee centerFirstTouches Flower [[
       exprPush {{ Bee.getProp('watermelonID').value }}
       propPop pollinatedID
     ]]
+    
+    //toggling pollen costume when pollination is supposed to have happened even if no repro
+    ifExpr {{  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value && Bee.getProp('pollinatedColor').value == true &&  Flower.getProp('pollenVisibleOn').value == true && Flower.getProp('generation').value == 1 }} [[ 
+    \tprop Flower.pollenAmount add 1
+]]
 
     // grab some pollen whether you stop or not, since you checked it out ... 
     ifExpr {{ Flower.getProp('spawnNewFlowers').value == true && Bee.getProp('pollinatedColor').value == true }} [[ 
@@ -572,13 +577,7 @@ when Bee centerFirstTouches Flower [[
       propPop global.baseTypePassing
 
       ifExpr {{ Flower.getProp('generation').value == 1 &&  Bee.getProp('pollinatedID').value != Flower.getProp('flowerID').value }} [[ 
-      
-      //POLLINATION IS HAPPENING HERE (for growth/costume logic)
-      prop Flower.pollenAmount add 1
-    //  ifExpr {{ Flower.getProp('pollenAmount').value > 0 }}[[
-    //    exprPush {{ Flower.getProp('costumeName').value + 'Pollen'}}
-    //  \tpropPop Flower.costumeName
-   //   ]]
+     
   
       
         featCall Population createAgent Flower [[
@@ -612,7 +611,7 @@ useFeature Physics
 featCall Physics init
 featProp Physics scale setTo 0.5
 
-addProp hiveType String 'natural'
+addProp hiveType String 'commercial'
 ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
   featCall Costume setCostume 'hiveCommercial.png' 
     featProp Physics scale setTo 0.5
@@ -631,7 +630,7 @@ featCall Touches monitor Bee c2b
 addProp hiveID Number 0
 
 // number of AI bees to generate on runAtStart
-addProp aiBeeCount Number 8
+addProp aiBeeCount Number 0
 // set it separately so it'll appear in map editor - remove if that feature
 prop aiBeeCount setTo 0
 
@@ -650,7 +649,7 @@ addProp dancingBeesCounter Number 0
 addProp watchingBeesCounter Number 0
 
 addProp nectarAmount Number 0
-prop nectarAmount setMax 10000
+prop nectarAmount setMax 100
 prop nectarAmount setMin 0
 
 addProp nectarQuality Number 2
@@ -676,24 +675,15 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == und
 ]]
 
 useFeature AgentWidgets
-exprPush {{'Hive Nectar Amount: 0'}}
+exprPush {{'Hive'}}
 featPropPop AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
 
 addProp doOnce Boolean true
 
-addProp tempNectarDisplay Number 0
-prop tempNectarDisplay setTo 0
-
 # PROGRAM UPDATE
 
 every 0.1 [[
-  
-  exprPush {{agent.getProp('nectarAmount').value / 5}} 
-  propPop agent.tempNectarDisplay
-  
-  exprPush {{'Hive Nectar Amount: ' + agent.getProp('tempNectarDisplay').value}}
-  featPropPop AgentWidgets text 
   
   // update our name to reflect the number of dancing and watching bees
   // first we need to calculate them, though
@@ -712,8 +702,9 @@ every 0.1 [[
 \tprop doOnce setTo false
   ]]
    
-\t prop global.dancingBeesCounter setTo 0
- \t prop global.watchingBeesCounter setTo 0
+
+  prop global.dancingBeesCounter setTo 0
+  prop global.watchingBeesCounter setTo 0
 
   exprPush {{agent.getProp('hiveID').value}}
   propPop global.hiveIDPassing
@@ -737,7 +728,7 @@ every 0.1 [[
     ]]
   ]]
 
- // exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
+  //exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
  // featPropPop AgentWidgets text 
 ]]
 
@@ -804,8 +795,12 @@ prop costumeName setTo ''
 
 //spawnNewFlowers
 // this determines whether new flowers get made
-addProp spawnNewFlowers Boolean true
-prop spawnNewFlowers setTo true
+addProp spawnNewFlowers Boolean false
+prop spawnNewFlowers setTo false
+
+addProp pollenVisibleOn Boolean true
+prop pollenVisibleOn setTo true
+
 
 // set all the defaults for name, etc. 
 ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
@@ -844,7 +839,7 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 prop visible setTo true
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
-addProp rehideAfterVisit Boolean false
+addProp rehideAfterVisit Boolean true
 prop rehideAfterVisit setTo false 
 
 // to make sure we re-hide only if no one is here anymore 
@@ -857,13 +852,13 @@ featProp Physics scale setTo 0.5
 useFeature Touches
 featCall Touches monitor Bee c2b
 
-addProp nectarAmount Number 100 
-prop nectarAmount setMax 100
+addProp nectarAmount Number 70 
+prop nectarAmount setMax 70
 prop nectarAmount setMin 0 
 
-addProp nectarQuality Number 0
-prop nectarQuality setMax 0
-prop nectarQuality setMin 0
+addProp nectarQuality Number 2
+prop nectarQuality setMax 3
+prop nectarQuality setMin 1
 
 addProp pollenAmount Number 0
 prop pollenAmount setMax 2
@@ -1003,8 +998,8 @@ prop y setTo -256
       "id": "Background",
       "label": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
@@ -1020,176 +1015,71 @@ featCall Costume setScale 0.8
   "instances": [
     {
       "id": "0",
-      "label": "Background",
+      "label": "Background0",
       "bpid": "Background",
       "initScript": `prop x setTo 3.30
 prop y setTo 0.12`
     },
     {
       "id": "2",
-      "label": "Timer",
+      "label": "Timer2",
       "bpid": "Timer",
       "initScript": `prop x setTo 356.96
 prop y setTo -396.19`
     },
     {
+      "id": "3",
+      "label": "BlueLARGE",
+      "bpid": "Flower",
+      "initScript": `prop scale setTo 1
+prop baseType setTo \"blue\"
+prop nectarQuality setTo 1
+prop x setTo 236.05
+prop y setTo -121.91`
+    },
+    {
+      "id": "4",
+      "label": "yellowMED",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"yellow\"
+prop scale setTo 0.5
+prop x setTo 185.26
+prop y setTo 175.1`
+    },
+    {
+      "id": "5",
+      "label": "redLARGE",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo \"red\"
+prop scale setTo 1
+prop x setTo -166.13
+prop y setTo 254.58`
+    },
+    {
+      "id": "7",
+      "label": "blueMINI",
+      "bpid": "Flower",
+      "initScript": `prop scale setTo 0.25
+prop baseType setTo \"blue\"
+prop x setTo -283.56
+prop y setTo 60.86`
+    },
+    {
       "id": "8",
-      "label": "Hive",
+      "label": "Hive8",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo \"natural\"
-prop x setTo -146.09
-prop y setTo 279.34
+prop x setTo -259.2
+prop y setTo -188.41
 prop scale setTo 2
 prop hiveID setTo 0`
     },
     {
       "id": "9",
-      "label": "squash2",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"squash\"
-prop x setTo -608.81
-prop y setTo 25.96`
-    },
-    {
-      "id": "10",
-      "label": "watermelon1",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"watermelon\"
-prop x setTo -590.80
-prop y setTo 227.45`
-    },
-    {
-      "id": "11",
-      "label": "squash1",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"squash\"
-prop x setTo -604.76
-prop y setTo -33.3`
-    },
-    {
-      "id": "12",
-      "label": "pumpkin2",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"pumpkin\"
-prop x setTo 311.20
-prop y setTo 290.55`
-    },
-    {
-      "id": "13",
-      "label": "pumpkin1",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"pumpkin\"
-prop x setTo -623.28
-prop y setTo -274.00`
-    },
-    {
-      "id": "14",
-      "label": "watermelon2",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"watermelon\"
-prop x setTo -274.94
-prop y setTo 153.57`
-    },
-    {
-      "id": "15",
-      "label": "squash4",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"squash\"
-prop x setTo -671.01
-prop y setTo 13.87`
-    },
-    {
-      "id": "16",
-      "label": "watermelon4",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"watermelon\"
-prop x setTo -580.63
-prop y setTo 278.46`
-    },
-    {
-      "id": "18",
-      "label": "squash3",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"squash\"
-prop x setTo -64.40
-prop y setTo -59.42`
-    },
-    {
-      "id": "17",
-      "label": "pumpkin4",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"pumpkin\"
-prop x setTo 308.05
-prop y setTo 69.56`
-    },
-    {
-      "id": "19",
-      "label": "pumpkin3",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"pumpkin\"
-prop x setTo 113.90
-prop y setTo -36.17`
-    },
-    {
-      "id": "20",
-      "label": "watermelon3",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo \"watermelon\"
-prop x setTo -282.50
-prop y setTo 41.34`
-    },
-    {
-      "id": "21",
-      "label": "blue1",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo blue
-prop x setTo -523.48
-prop y setTo 102.95`
-    },
-    {
-      "id": "22",
-      "label": "red1",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 106.62
-prop y setTo 143.83
-prop baseType setTo \"red\`
-    },
-    {
-      "id": "23",
-      "label": "blue2",
-      "bpid": "Flower",
-      "initScript": `prop baseType setTo blue
-prop x setTo -570.81
-prop y setTo 108.15`
-    },
-    {
-      "id": "24",
-      "label": "Flower24",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 318.38
-prop y setTo -153.50`
-    },
-    {
-      "id": "25",
-      "label": "Flower25",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 628.53
-prop y setTo -235.37`
-    },
-    {
-      "id": "26",
-      "label": "Flower26",
-      "bpid": "Flower",
-      "initScript": `prop x setTo -287.97
-prop y setTo -128.16
-prop baseType setTo \"yellow\`
-    },
-    {
-      "id": "27",
-      "label": "Flower27",
-      "bpid": "Flower",
-      "initScript": `prop x setTo 83.66
-prop y setTo -161.79`
+      "label": "Bee9",
+      "bpid": "Bee",
+      "initScript": `prop x setTo -15
+prop y setTo 21`
     }
   ]
 }
