@@ -18,8 +18,7 @@
   "rounds": [],
   "blueprints": [
     {
-      "id": "Fish",
-      "label": "Fish",
+      "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
 # TAG isCharControllable true
 # TAG isPozyxControllable true
@@ -181,8 +180,7 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "id": "Algae",
-      "label": "Algae",
+      "name": "Algae",
       "scriptText": `# BLUEPRINT Algae
 # TAG isCharControllable true
 # TAG isPozyxControllable false
@@ -196,122 +194,130 @@ useFeature AgentWidgets
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
 addProp type String 'change'
-prop type setTo 'change'
+prop agent.type setTo 'change'
 
 // default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
 addProp spawns Boolean false
 
 // STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
-prop spawns setTo false
+prop agent.spawns setTo false
 
-featCall Costume setCostume 'algae.json' 0
+featCall agent.Costume setCostume 'algae.json' 0
 
 // show meter immediately
-featCall AgentWidgets bindMeterTo energyLevel
+featCall agent.AgentWidgets bindMeterTo energyLevel
 
 // setup energyLevel variablee
 addProp energyLevel Number 100
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop agent.energyLevel setMax 100
+prop agent.energyLevel setMin 0
 
 // set algae energy meter color for start
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
+ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+  featProp AgentWidgets meterColor setTo 65280
+]]
+ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+  featProp AgentWidgets meterColor setTo 16737792
+]]
+ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+  featProp AgentWidgets meterColor setTo 16711680
+]]
 
 addProp energyUse Number 0
 
 // STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
-prop energyUse setTo 0
+prop agent.energyUse setTo 0
 
 useFeature Physics
-featCall Physics init
+featCall agent.Physics init
 
 useFeature Touches
-featCall Touches monitor Fish b2b
-featCall Touches monitor Sunbeam b2b
+featCall agent.Touches monitor 'Fish' b2b
+featCall agent.Touches monitor 'Sunbeam' b2b
 
-featProp AgentWidgets text setTo ''
+featProp agent.AgentWidgets.text setTo ''
 
 // STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
-featProp Movement movementType setTo 'wander'
-featProp Movement distance setTo 0.2
+featProp agent.Movement.movementType setTo 'wander'
+featProp agent.Movement.distance setTo 0.2
 
-exprPush {{ (agent.getProp('energyLevel').value / 100)* 3}}
-featPropPop Physics scale
+exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
+featPropPop agent.Physics scale
 
-prop zIndex setTo -110
+prop agent.zIndex setTo -110
 
 # PROGRAM UPDATE
 when Algae touches Sunbeam [[
   every 1 [[
-      featCall Algae.Costume setGlow 4
-      exprPush {{Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value}}
-      propPop energyLevel
+    featCall Algae.Costume setGlow 4
+    exprPush {{ Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value }}
+    propPop energyLevel
 
     // if Spawning is active, create more algae when we hit 100
     ifExpr {{ agent.getProp('spawns').value }} [[
       // Only spawn more if we are under 200 total ... to avoid crashing the system
       ifExpr {{ Algae.callFeatMethod('Population', 'getActiveAgentsCount', 'Algae') < 200 }} [[
         ifExpr {{ agent.getProp('energyLevel').value == 100 }} [[
-          prop energyLevel sub 50
-          featCall Population createAgent Algae [[
+          prop Algae.energyLevel sub 50
+          featCall Algae.Population createAgent Algae [[
             // STUDENTS_MAY_CHANGE - maybe change the new energy level (currently 40) or the threshold (from 100) or the new position or other things
-            prop energyLevel setTo 40
-            prop x add 25
-            prop y add 25
+            prop Algae.energyLevel setTo 40
+            prop Algae.x add 25
+            prop Algae.y add 25
           ]]
         ]]
       ]]
-    ]] 
-  ]] 
-]] 
-
-when Algae lastTouches Sunbeam [[
-  featCall Costume setGlow 0
+    ]]
+  ]]
 ]]
 
-  every 1 runAtStart [[
+when Algae lastTouches Sunbeam [[
+  featCall Algae.Costume setGlow 0
+]]
 
-    // decrease energy each tick, using the energyUse varable to determine how much
-    ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
     propPop agent.energyLevel
-    ]]
+  ]]
 
-    // re-scale the algae based on its energy level
-  exprPush {{ (agent.getProp('energyLevel').value / 100)* 3}}
+  // re-scale the algae based on its energy level
+  exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
   featPropPop agent.Physics scale
 
-    // set algae energy meter color
-    // doing great
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      // Green
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    // needs some energy
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      // Orange
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    // in trouble
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      // Red
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
+  // set algae energy meter color
+  // doing great
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    // Green
+    featProp AgentWidgets meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    // Orange
+    featProp AgentWidgets meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    // Red
+    featProp AgentWidgets meterColor setTo 16711680
+  ]]
 
 
-  ]]`
+]]
+
+// required directive
+# PROGRAM INIT 
+
+// required directive
+# PROGRAM CONDITION
+
+// required directive
+# PROGRAM EVENT`
     },
     {
-      "id": "Sunbeam",
-      "label": "Sunbeam",
+      "name": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
 useFeature Costume
@@ -358,8 +364,7 @@ onEvent Tick [[
 ]]`
     },
     {
-      "id": "Timer",
-      "label": "Timer",
+      "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM DEFINE
       useFeature AgentWidgets
@@ -376,8 +381,7 @@ onEvent Tick [[
       ]]`
     },
     {
-      "id": "Rock",
-      "label": "Rock",
+      "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
 
       # PROGRAM DEFINE
@@ -388,8 +392,7 @@ onEvent Tick [[
       useFeature Physics`
     },
     {
-      "id": "Turtle",
-      "label": "Turtle",
+      "name": "Turtle",
       "scriptText": `# BLUEPRINT Turtle
 # TAG isCharControllable false
 # TAG isPozyxControllable false
@@ -493,8 +496,7 @@ when Turtle lastTouches Trash [[
 `
     },
     {
-      "id": "Trash",
-      "label": "Trash",
+      "name": "Trash",
       "scriptText": `# BLUEPRINT Trash
 
       # PROGRAM DEFINE
@@ -508,16 +510,14 @@ when Turtle lastTouches Trash [[
 `
     },
     {
-      "id": "TextLabel",
-      "label": "TextLabel",
+      "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
       # PROGRAM DEFINE
       useFeature AgentWidgets
       prop skin setTo 'onexone.json'`
     },
     {
-      "id": "ColorChip",
-      "label": "ColorChip",
+      "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
       # PROGRAM DEFINE
       useFeature Costume
@@ -526,8 +526,7 @@ when Turtle lastTouches Trash [[
       useFeature Physics`
     },
     {
-      "id": "SettingsWidget",
-      "label": "SettingsWidget",
+      "name": "SettingsWidget",
       "scriptText": `# BLUEPRINT SettingsWidget
 # TAG isCharControllable false
 # TAG isPozyxControllable false
@@ -549,8 +548,7 @@ when Turtle lastTouches Trash [[
 `
     },
     {
-      "id": "MeterAlgaeEnergy",
-      "label": "MeterAlgaeEnergy",
+      "name": "MeterAlgaeEnergy",
       "scriptText": `# BLUEPRINT MeterAlgaeEnergy
 # PROGRAM DEFINE
 addProp reportSubject String Algae
@@ -609,8 +607,7 @@ onEvent Tick [[
 ]]`
     },
     {
-      "id": "MeterFishEnergy",
-      "label": "MeterFishEnergy",
+      "name": "MeterFishEnergy",
       "scriptText": `# BLUEPRINT MeterFishEnergy
 # PROGRAM DEFINE
 addProp reportSubject String Fish
@@ -669,8 +666,7 @@ onEvent Tick [[
 ]]`
     },
     {
-      "id": "GraphAlgaeEnergy",
-      "label": "GraphAlgaeEnergy",
+      "name": "GraphAlgaeEnergy",
       "scriptText": `# BLUEPRINT GraphAlgaeEnergy
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
@@ -729,8 +725,7 @@ onEvent Tick [[
             ]]`
     },
     {
-      "id": "GraphFishEnergy",
-      "label": "GraphFishEnergy",
+      "name": "GraphFishEnergy",
       "scriptText": `# BLUEPRINT GraphFishEnergy
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
@@ -803,8 +798,8 @@ prop y setTo -400`
       "id": "501",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo 300.00
-prop y setTo 220.00`
+      "initScript": `prop x setTo 300
+prop y setTo 220`
     },
     {
       "id": "503",
@@ -939,7 +934,7 @@ prop y setTo 42`
       "id": "1709",
       "label": "Algae1709",
       "bpid": "Algae",
-      "initScript": `prop x setTo 183.90
+      "initScript": `prop x setTo 183.9
 prop y setTo -132.81`
     },
     {

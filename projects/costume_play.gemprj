@@ -17,8 +17,7 @@
   "rounds": [],
   "blueprints": [
     {
-      "id": "Bee",
-      "label": "Bee",
+      "name": "Bee",
       "scriptText": `# BLUEPRINT Bee
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -34,8 +33,7 @@ featCall Costume setCostume 'bee.json'
 `
     },
     {
-      "id": "Flower",
-      "label": "Flower",
+      "name": "Flower",
       "scriptText": `# BLUEPRINT Flower
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -49,8 +47,7 @@ featCall Costume setCostume 'flower.json' 0
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Turtle",
-      "label": "Turtle",
+      "name": "Turtle",
       "scriptText": `# BLUEPRINT Turtle
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -65,8 +62,7 @@ featCall Costume setScale 0.2
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Fish",
-      "label": "Fish",
+      "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -81,24 +77,29 @@ featCall Costume setScale 1.5
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Algae",
-      "label": "Algae",
+      "name": "Algae",
       "scriptText": `# BLUEPRINT Algae
 # TAG isPozyxControllable true
 # TAG isCharControllable true
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 useFeature Costume
-featCall Costume setCostume 'algae.json' 0
-featCall Costume setScale 3
+featCall agent.Costume setCostume 'algae.json' '0'
+featCall agent.Costume setScale 3
 // useFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
-// when xxx touches yyy [[ ]]`
+// when xxx touches yyy [[ ]]
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM CONDITION`
     },
     {
-      "id": "Moth",
-      "label": "Moth",
+      "name": "Moth",
       "scriptText": `# BLUEPRINT Moth
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -113,8 +114,7 @@ featCall Costume setScale 0.5
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Predator",
-      "label": "Predator",
+      "name": "Predator",
       "scriptText": `# BLUEPRINT Predator
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -129,8 +129,7 @@ featCall Costume setScale 1
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Worm",
-      "label": "Worm",
+      "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -145,8 +144,7 @@ featCall Costume setScale 0.5
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Bunny",
-      "label": "Bunny",
+      "name": "Bunny",
       "scriptText": `# BLUEPRINT Bunny
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -161,8 +159,7 @@ featCall Costume setScale 0.3
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "House",
-      "label": "House",
+      "name": "House",
       "scriptText": `# BLUEPRINT House
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -177,8 +174,7 @@ featCall Costume setScale 2
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Hive",
-      "label": "Hive",
+      "name": "Hive",
       "scriptText": `# BLUEPRINT Hive
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -193,8 +189,7 @@ featCall Costume setScale 0.5
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Trash",
-      "label": "Trash",
+      "name": "Trash",
       "scriptText": `# BLUEPRINT Trash
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -209,8 +204,7 @@ featCall Costume setScale 0.1
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Plant",
-      "label": "Plant",
+      "name": "Plant",
       "scriptText": `# BLUEPRINT Plant
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -225,8 +219,7 @@ featCall Costume setScale 0.3
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Boulder",
-      "label": "Boulder",
+      "name": "Boulder",
       "scriptText": `# BLUEPRINT Boulder
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -241,8 +234,7 @@ featCall Costume setScale 1
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Circle",
-      "label": "Circle",
+      "name": "Circle",
       "scriptText": `# BLUEPRINT Circle
 # TAG isPozyxControllable true
 # TAG isCharControllable true
@@ -257,8 +249,7 @@ featCall Costume setScale 0.3
 // when xxx touches yyy [[ ]]`
     },
     {
-      "id": "Square",
-      "label": "Square",
+      "name": "Square",
       "scriptText": `# BLUEPRINT Square
 # TAG isPozyxControllable true
 # TAG isCharControllable true
