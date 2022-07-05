@@ -308,7 +308,7 @@ every 1 runAtStart [[
 ]]
 
 // required directive
-# PROGRAM INIT 
+# PROGRAM INIT
 
 // required directive
 # PROGRAM CONDITION
