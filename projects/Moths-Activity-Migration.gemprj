@@ -23,7 +23,7 @@
       "initScript": `        
 
         ifExpr {{global.getProp('didAddAgentWidgets').value == false }} [[
-          useFeature AgentWidgets
+          addFeature AgentWidgets
           prop global.didAddAgentWidgets setTo true
         ]]
         
@@ -402,25 +402,25 @@
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 
 featCall Costume setCostume 'moth_outline.png' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.05
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Cursor
+addFeature Cursor
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TreeBranch c2b
 
-useFeature AgentWidgets
-useFeature Population
+addFeature AgentWidgets
+addFeature Population
 
-useFeature Global 
+addFeature Global 
 
 addProp mothID Number 0
 
@@ -496,19 +496,19 @@ when Moth centerLastTouches TreeBranch [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'tree_1_medium.png' 0
 
 // note that this is updated in round
 addProp lightOrDark String 'dark'
 
-useFeature Movement
+addFeature Movement
 
-useFeature Physics
+addFeature Physics
 
 featProp Physics scale setTo 0.3
 
-useFeature Population
+addFeature Population
 
 addProp treeID Number 0
 // set the id to the current count of agents so that it keeps incrementing 
@@ -554,10 +554,10 @@ propPop treeID
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'predator_s.png' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.1
 
 addProp attackCounter Number 0
@@ -566,8 +566,8 @@ addProp attackCounterMax Number 5
 propPush attackCounterMax
 propPop attackCounter
 
-useFeature Population
-useFeature Global
+addFeature Population
+addFeature Global
 
 ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == undefined }} [[
     // used in the attack function to make sure we kill one each round of attacks (assuming we can find one that isn't sitting appearscamouflaged)
@@ -670,8 +670,8 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
       "scriptText": `# BLUEPRINT MatchMeter
 # PROGRAM DEFINE
 
-useFeature Population
-useFeature AgentWidgets
+addFeature Population
+addFeature AgentWidgets
 
 // Make costume an invisible dot
 prop skin setTo 'onexone.json'
@@ -681,7 +681,7 @@ addProp matchCount Number 0
 prop matchCount setMin 0
 prop matchCount setMax 6
 
-useFeature Global
+addFeature Global
 
 // used for calculating so that it doesn't fluctuate too fast
 ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'tmpMatchCounter') == undefined }} [[
@@ -738,11 +738,11 @@ every 0.5 runAtStart [[
 # PROGRAM DEFINE
 
 // use a circle temorarily ... 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json'
 
-useFeature Physics
-useFeature Population
+addFeature Physics
+addFeature Population
 
 addProp countDown Number 2
 
@@ -766,10 +766,10 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth_sky.png' 0
 featCall Costume setScale 1
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 
 # PROGRAM UPDATE
@@ -783,10 +783,10 @@ featCall Costume setScale 1
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_1_grey.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -798,10 +798,10 @@ useFeature Cursor
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_2_grey.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -813,10 +813,10 @@ useFeature Cursor
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_3_grey.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -828,10 +828,10 @@ useFeature Cursor
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_4_green.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -843,10 +843,10 @@ useFeature Cursor
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_5_green.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -858,10 +858,10 @@ useFeature Cursor
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'spirit_6_green.png' 0
-useFeature Movement
-useFeature Cursor
+addFeature Movement
+addFeature Cursor
 
 `
     },
@@ -870,8 +870,8 @@ useFeature Cursor
       "label": "SetLabel",
       "scriptText": `# BLUEPRINT SetLabel
       # PROGRAM DEFINE
-      useFeature Global
-      useFeature AgentWidgets
+      addFeature Global
+      addFeature AgentWidgets
       prop skin setTo 'onexone.json'
       featProp AgentWidgets text setTo 'Set: 0'
 

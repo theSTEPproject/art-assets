@@ -24,10 +24,10 @@
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'background_space.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.8
 
 prop x setTo 0
@@ -44,8 +44,8 @@ prop zIndex setTo -5
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
 # PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
+addFeature AgentWidgets
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 addProp time Number 0
 
@@ -72,28 +72,28 @@ prop y setTo -256
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'pc_astronaut_default.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.1
 
-useFeature Movement
+addFeature Movement
 //featProp Movement useAutoOrientation setTo true
 //featProp Movement movementType setTo 'wander'
 //featProp Movement distance setTo 5
 //featCall Movement seekNearest Berries
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 //featCall AgentWidgets bindMeterTo hp
 //featProp AgentWidgets meterColor setTo 65280
 exprPush {{ '' + agent.id }}
 featPropPop AgentWidgets text
 
-useFeature Population
+addFeature Population
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Satellite_LEFT b2b
 featCall Touches monitor Satellite_RIGHT b2b
 featCall Touches monitor Moon b2b
@@ -144,17 +144,17 @@ when Astronaut firstTouches Satellite_LEFT [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_right satellite.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Astonaut b2b
 
-useFeature Movement
+addFeature Movement
 featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.1
 
@@ -174,17 +174,17 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_left satellite.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Astonaut b2b
 
-useFeature Movement
+addFeature Movement
 featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.1
 
@@ -204,19 +204,19 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_moon.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.7
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Astronaut b2b
 featCall Touches monitor Satellite_FIXED b2b
 featCall Touches monitor Counter b2b
 
-useFeature Movement
+addFeature Movement
 featProp Movement movementType setTo 'static'
 
 addProp hasRight Boolean false
@@ -225,7 +225,7 @@ prop hasRight setTo false
 addProp hasLeft Boolean false
 prop hasLeft setTo false
 
-useFeature Population
+addFeature Population
 
 addProp fixedCounter Number 0
 prop fixedCounter setMin 0
@@ -283,18 +283,18 @@ when Moon lastTouches Satellite_FIXED [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_fixed satellite.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.1
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Astonaut b2b
 featCall Touches monitor Moon b2b
 
-useFeature Movement
+addFeature Movement
 featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 1.5
 //featureCall Movement setDirection 90
@@ -325,16 +325,16 @@ dbgOut agent
       "label": "Counter",
       "scriptText": `# BLUEPRINT Counter
 # PROGRAM DEFINE
-useFeature AgentWidgets
+addFeature AgentWidgets
 featProp AgentWidgets text setTo 'Satellites Fixed: 0'
 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
 
-useFeature Touches
+
+addFeature Touches
 featCall Touches monitor Moon b2b
 
 addProp count Number 0

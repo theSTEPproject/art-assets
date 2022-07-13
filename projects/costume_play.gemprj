@@ -22,7 +22,7 @@
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 
 
 featCall Costume setCostume 'bee.json'
@@ -38,7 +38,7 @@ featCall Costume setCostume 'bee.json'
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 
 featCall Costume setCostume 'flower.json' 0
 
@@ -52,10 +52,10 @@ featCall Costume setCostume 'flower.json' 0
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'turtle_sprites.json' 0
 featCall Costume setScale 0.2
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -67,10 +67,10 @@ featCall Costume setScale 0.2
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'fish.json' 0
 featCall Costume setScale 1.5
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -83,10 +83,10 @@ featCall Costume setScale 1.5
 # TAG isCharControllable true
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall agent.Costume setCostume 'algae.json' '0'
 featCall agent.Costume setScale 3
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -104,10 +104,10 @@ featCall agent.Costume setScale 3
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth.json' 0
 featCall Costume setScale 0.5
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -119,10 +119,10 @@ featCall Costume setScale 0.5
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'predator.json' 0
 featCall Costume setScale 1
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -134,10 +134,10 @@ featCall Costume setScale 1
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'worm.json' 1
 featCall Costume setScale 0.5
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -149,10 +149,10 @@ featCall Costume setScale 0.5
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'bunnies.json' 0
 featCall Costume setScale 0.3
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -164,10 +164,10 @@ featCall Costume setScale 0.3
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'house.json' 0
 featCall Costume setScale 2
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -179,10 +179,10 @@ featCall Costume setScale 2
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'hive.json' 0
 featCall Costume setScale 0.5
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -194,10 +194,10 @@ featCall Costume setScale 0.5
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'trash.json' 0
 featCall Costume setScale 0.1
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -209,10 +209,10 @@ featCall Costume setScale 0.1
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'plants.json' 0
 featCall Costume setScale 0.3
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -224,10 +224,10 @@ featCall Costume setScale 0.3
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'boulder.json' 0
 featCall Costume setScale 1
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -239,10 +239,10 @@ featCall Costume setScale 1
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json' 0
 featCall Costume setScale 0.3
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE
@@ -254,10 +254,10 @@ featCall Costume setScale 0.3
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'square.json' 0
 featCall Costume setScale 0.3
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE

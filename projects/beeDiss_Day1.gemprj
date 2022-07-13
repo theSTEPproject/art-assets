@@ -25,17 +25,17 @@
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'bee.png' 
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.3
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Flower c2b
 featCall Touches monitor Hive c2b
 
@@ -72,10 +72,10 @@ addProp pumpkinID Number 0
 addProp pollinatedColor Boolean false
 addProp pollinatedID Number 0
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 featCall AgentWidgets bindMeterTo nectarAmount
 
-useFeature Population
+addFeature Population
 
 addProp beeID Number 1
 
@@ -604,11 +604,11 @@ when Bee centerFirstTouches Flower [[
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'hiveNatural.png'
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.5
 
 addProp hiveType String 'commercial'
@@ -623,7 +623,7 @@ ifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
 
 ]]
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Bee c2b
 
 // track hiveID in case we have more than one
@@ -637,7 +637,7 @@ prop aiBeeCount setTo 0
 // temp variable for use in creating AI bees
 addProp aiBeeCountTemp Number 0
 
-useFeature Population
+addFeature Population
 
 // set the id to the current count of agents so that it keeps incrementing 
 exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Hive') + 1 }} 
@@ -656,7 +656,7 @@ addProp nectarQuality Number 2
 prop nectarQuality setMax 3
 prop nectarQuality setMin 1
 
-useFeature Global
+addFeature Global
 
 // setup a global variable so we can pass info into the creation of bees, but only do it once
 ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == undefined }} [[
@@ -674,7 +674,7 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == und
   featCall Global addGlobalProp baseTypePassing String ''
 ]]
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 exprPush {{'Hive [D:0; W:0]'}}
 featPropPop AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
@@ -778,7 +778,7 @@ every 0.5 runAtStart [[
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 //TODO: change the costume feature to do this via a property
 
 // setup a short name so that we can use to set all the other things
@@ -845,11 +845,11 @@ prop rehideAfterVisit setTo false
 // to make sure we re-hide only if no one is here anymore 
 addProp currentVisitorCount Number 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.5
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Bee c2b
 
 addProp nectarAmount Number 100 
@@ -867,7 +867,7 @@ prop pollenAmount setTo 0
 
 addProp generation Number 1
 
-useFeature Population
+addFeature Population
 
 addProp flowerID Number 0
 
@@ -875,7 +875,7 @@ addProp flowerID Number 0
 exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Flower') + 1 }}
 propPop flowerID
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 exprPush {{ agent.getProp('nameBase').value }}
 featPropPop  AgentWidgets text
 featCall AgentWidgets bindMeterTo nectarAmount
@@ -975,8 +975,8 @@ addProp doOnce Boolean true
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
 # PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
+addFeature AgentWidgets
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 addProp time Number 0
 
@@ -1002,10 +1002,10 @@ prop y setTo -256
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'background (filter).png' 0
 featCall Costume setScale 0.8
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 
 # PROGRAM UPDATE

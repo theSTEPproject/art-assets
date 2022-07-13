@@ -24,10 +24,10 @@
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
-useFeature Movement
-useFeature AgentWidgets
-//useFeature Cursor
+addFeature Costume
+addFeature Movement
+addFeature AgentWidgets
+//addFeature Cursor
 
 featCall Costume setCostume 'fish.json' 0
 
@@ -56,13 +56,12 @@ prop grows setTo false
 
 addProp startDirection Number 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
 featProp Physics scale setTo 1
 
 
 // set Touches
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Algae b2b
 
 // show meter immediately
@@ -187,10 +186,10 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Costume
-useFeature Movement
-useFeature Population
-useFeature AgentWidgets
+addFeature Costume
+addFeature Movement
+addFeature Population
+addFeature AgentWidgets
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
 addProp type String 'change'
@@ -214,13 +213,13 @@ prop agent.energyLevel setMin 0
 
 // set algae energy meter color for start
 ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-  featProp AgentWidgets meterColor setTo 65280
+  featProp agent.AgentWidgets.meterColor setTo 62850
 ]]
 ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-  featProp AgentWidgets meterColor setTo 16737792
+  featProp agent.AgentWidgets.meterColor setTo 16737792
 ]]
 ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-  featProp AgentWidgets meterColor setTo 16711680
+  featProp agent.AgentWidgets.meterColor setTo 16711680
 ]]
 
 addProp energyUse Number 0
@@ -228,22 +227,21 @@ addProp energyUse Number 0
 // STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
 prop agent.energyUse setTo 0
 
-useFeature Physics
-featCall agent.Physics init
+addFeature Physics
 
-useFeature Touches
+addFeature Touches
 featCall agent.Touches monitor 'Fish' b2b
 featCall agent.Touches monitor 'Sunbeam' b2b
 
-featProp agent.AgentWidgets.text setTo ''
+featProp AgentWidgets text setTo ''
 
 // STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
 featProp agent.Movement.movementType setTo 'wander'
 featProp agent.Movement.distance setTo 0.2
 
 exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-featPropPop agent.Physics scale
-
+featPropPop agent.Physics.scale
+    
 prop agent.zIndex setTo -110
 
 # PROGRAM UPDATE
@@ -251,7 +249,7 @@ when Algae touches Sunbeam [[
   every 1 [[
     featCall Algae.Costume setGlow 4
     exprPush {{ Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value }}
-    propPop energyLevel
+    propPop Algae.energyLevel
 
     // if Spawning is active, create more algae when we hit 100
     ifExpr {{ agent.getProp('spawns').value }} [[
@@ -285,23 +283,23 @@ every 1 runAtStart [[
 
   // re-scale the algae based on its energy level
   exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-  featPropPop agent.Physics scale
+  featPropPop Physics scale
 
   // set algae energy meter color
   // doing great
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     // Green
-    featProp AgentWidgets meterColor setTo 65280
+    featProp agent.AgentWidgets.meterColor setTo 65280
   ]]
   // needs some energy
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
     // Orange
-    featProp AgentWidgets meterColor setTo 16737792
+    featProp agent.AgentWidgets.meterColor setTo 16737792
   ]]
   // in trouble
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
     // Red
-    featProp AgentWidgets meterColor setTo 16711680
+    featProp agent.AgentWidgets.meterColor setTo 16711680
   ]]
 
 
@@ -320,7 +318,7 @@ every 1 runAtStart [[
       "name": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json' 0
 featCall Costume setColorize 1 1 0
 prop agent.alpha setTo 0.3
@@ -338,14 +336,13 @@ addProp direction Number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
 prop direction setTo 1
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
 featProp Physics scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Physics scaleY setTo 2.5
 
-useFeature Touches
+addFeature Touches
 
 # PROGRAM INIT
 // default position for moving across the top
@@ -366,30 +363,44 @@ onEvent Tick [[
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-      # PROGRAM DEFINE
-      useFeature AgentWidgets
-      prop skin setTo 'onexone.json'
-      addProp time Number 0
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature AgentWidgets
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
 
-      featProp AgentWidgets text setTo 'Time: 0'
+addProp time Number 0
 
-      # PROGRAM UPDATE
-  every 1 runAtStart [[
-        prop time add 1
-        exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop AgentWidgets text
-      ]]`
+featProp agent.AgentWidgets.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop agent.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop agent.AgentWidgets.text 
+]]
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM CONDITION
+
+// required directive
+# PROGRAM EVENT`
     },
     {
       "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
 
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
 
       featCall Costume setCostume 'boulder.json' 0
 
-      useFeature Physics`
+      addFeature Physics`
     },
     {
       "name": "Turtle",
@@ -398,9 +409,9 @@ onEvent Tick [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
-useFeature AgentWidgets
-useFeature Movement
+addFeature Costume
+addFeature AgentWidgets
+addFeature Movement
 
 // temp until we get new art
 featCall Costume setCostume 'turtle_sprites.json' 0
@@ -416,12 +427,12 @@ addProp health String 'healthy'
 // STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
 prop energyUse setTo 1
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.15
       
       // set Touches
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Fish b2b
 featCall Touches monitor Trash b2b
 
@@ -500,11 +511,11 @@ when Turtle lastTouches Trash [[
       "scriptText": `# BLUEPRINT Trash
 
       # PROGRAM DEFINE
-      useFeature Costume
-      useFeature Population
+      addFeature Costume
+      addFeature Population
       featCall Costume setCostume 'trash.json' 0
 
-      useFeature Physics
+      addFeature Physics
 
 \t  featProp Physics scale setTo 0.05
 `
@@ -513,17 +524,32 @@ when Turtle lastTouches Trash [[
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
       # PROGRAM DEFINE
-      useFeature AgentWidgets
+      addFeature AgentWidgets
       prop skin setTo 'onexone.json'`
     },
     {
       "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
-      # PROGRAM DEFINE
-      useFeature Costume
-      featCall Costume setCostume 'square.json' 0
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featCall agent.Costume setCostume 'square.json' 0
 
-      useFeature Physics`
+addFeature Physics
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM UPDATE
+
+// required directive
+# PROGRAM CONDITION
+
+// required directive
+# PROGRAM EVENT`
     },
     {
       "name": "SettingsWidget",
@@ -535,7 +561,7 @@ when Turtle lastTouches Trash [[
 // This is to setup the model 
 // Make sure it is loaded first, and only once to avoid issues
 // We don't need a costume but it caused an error so use one and scale to 0
-      useFeature Costume
+      addFeature Costume
       featCall Costume setCostume 'circle.json' 0
       featCall Costume setScale 0
 
@@ -554,8 +580,8 @@ when Turtle lastTouches Trash [[
 addProp reportSubject String Algae
 addProp energyLevel Number 100
 
-useFeature Population
-useFeature AgentWidgets
+addFeature Population
+addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Algae avg energy' }}
@@ -613,8 +639,8 @@ onEvent Tick [[
 addProp reportSubject String Fish
 addProp energyLevel Number 100
 
-useFeature Population
-useFeature AgentWidgets
+addFeature Population
+addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Fish avg energy' }}
@@ -685,8 +711,8 @@ onEvent Tick [[
             prop variableToGraph setTo 'energyLevel'
             prop labelText setTo 'Algae energyLevel'
 
-            useFeature AgentWidgets
-            useFeature Population
+            addFeature AgentWidgets
+            addFeature Population
             featProp AgentWidgets isLargeGraphic setTo true
 
             // using a generic name so that it is easier to change later
@@ -744,8 +770,8 @@ onEvent Tick [[
             prop variableToGraph setTo 'energyLevel'
             prop labelText setTo 'Fish energyLevel'
 
-            useFeature AgentWidgets
-            useFeature Population
+            addFeature AgentWidgets
+            addFeature Population
             featProp AgentWidgets isLargeGraphic setTo true
 
             // using a generic name so that it is easier to change later
@@ -821,13 +847,6 @@ prop y setTo -297.17`
       "bpid": "Algae",
       "initScript": `prop x setTo 170.99
 prop y setTo 245.22`
-    },
-    {
-      "id": "520",
-      "label": "Timer",
-      "bpid": "Timer",
-      "initScript": `prop x setTo 0
-prop y setTo -350`
     },
     {
       "id": "521",

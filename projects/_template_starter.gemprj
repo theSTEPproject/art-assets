@@ -27,7 +27,7 @@
 # PROGRAM DEFINE
 // This is the most basic setup of properties that happens as soon as this character is saved
 
-useFeature Costume
+addFeature Costume
 featCall agent.Costume setCostume 'circle.json' 0
 
 # PROGRAM INIT 

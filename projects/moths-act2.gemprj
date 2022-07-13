@@ -730,12 +730,12 @@ featCall Population populateBySpawning Moth [[
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth.json' 0
 
-useFeature Physics
-useFeature Touches
-useFeature Population
+addFeature Physics
+addFeature Touches
+addFeature Population
 
 featProp Physics scale setTo 0.6
 
@@ -752,11 +752,11 @@ featCall Touches monitor Moth c2c
 featCall Touches monitor TreeTrunk c2c c2b b2b binb
 
 // needed for orientation to be nice for pozyx or finger puppet.
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Global
-useFeature Timer
+addFeature Global
+addFeature Timer
 
 //for knowing whether they can attract/pick up a baby moth.
 addProp carrying Number 0
@@ -802,7 +802,7 @@ when Myth centerTouches TreeTrunk [[
       "label": "Moth",
       "scriptText": `# BLUEPRINT Moth
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth.json' 0
 
 // COLOR
@@ -817,19 +817,19 @@ featCall Costume initHSVColorScale
 prop alpha setTo 1
 prop alpha setMin 1
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.4
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TreeTrunk c2c c2b b2b binb
 
-useFeature Population
+addFeature Population
 
 // allow Predator to see us
-useFeature Vision
+addFeature Vision
 
 addProp energyLevel Number 15
 prop energyLevel setMax 100
@@ -850,11 +850,11 @@ prop vulnerable setMax 1
 prop vulnerable setTo 1
 
 // allow access to global darkMoths/lightMoths values
-useFeature Global
+addFeature Global
 
-useFeature Cursor
+addFeature Cursor
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 featPropPush Costume colorScaleIndex
 featPropPop AgentWidgets text
 
@@ -927,23 +927,23 @@ ifExpr {{ agent.getProp('isInert').value }} [[
       "scriptText": `# BLUEPRINT Predator
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 //featCall Costume setCostume 'predator.json' 0
 //featCall Costume setCostume 'hawk.json' 0
 featCall Costume setCostume 'robin.json' 0
 
-useFeature Physics
-useFeature Touches
+addFeature Physics
+addFeature Touches
 featCall Touches monitor Moth c2c
 
 // needed for Seek
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
 //featProp Physics scale setTo 0.75  //FOR 'predator'
 featProp Physics scale setTo 0.5
 
-useFeature Vision
+addFeature Vision
 featCall Vision monitor Moth
 featProp Vision viewDistance setTo 250
 featProp Vision viewAngle setTo 90
@@ -970,10 +970,10 @@ prop tickCounter setTo 0
 
 // AI Movement
 featProp Movement distance setTo 4
-useFeature Population
+addFeature Population
 
-useFeature Global
-useFeature Timer
+addFeature Global
+addFeature Timer
 
 # PROGRAM UPDATE
 
@@ -1029,12 +1029,12 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeTrunk",
       "scriptText": `# BLUEPRINT TreeTrunk
           # PROGRAM DEFINE
-          useFeature Costume
+          addFeature Costume
           featCall Costume setCostume 'trunk.json' 0
 
-          useFeature Physics
-          useFeature Population
-          useFeature Movement
+          addFeature Physics
+          addFeature Population
+          addFeature Movement
 
           addProp initx Number 0
           prop initx setMax 400
@@ -1056,12 +1056,12 @@ when Predator centerTouchesCenter Moth [[
       "label": "Grass",
       "scriptText": `# BLUEPRINT Grass
           # PROGRAM DEFINE
-          useFeature Costume
+          addFeature Costume
           featCall Costume setCostume 'grass.json' 0
 
-          useFeature Physics
-          useFeature Population
-          useFeature Movement
+          addFeature Physics
+          addFeature Population
+          addFeature Movement
 
           addProp initx Number 0
           prop initx setMax 400
@@ -1082,13 +1082,13 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeRoots",
       "scriptText": `# BLUEPRINT TreeRoots
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
       featCall Costume setCostume 'roots.json' 0
       //featCall Costume setColorizeHSV 0 .8 0.5
 
-      useFeature Physics
-      useFeature AgentWidgets
-      useFeature Movement
+      addFeature Physics
+      addFeature AgentWidgets
+      addFeature Movement
 
       addProp initx Number 0
       prop initx setMax 400

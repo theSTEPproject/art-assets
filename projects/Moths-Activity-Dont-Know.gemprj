@@ -73,24 +73,24 @@
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 
 featCall Costume setCostume 'moth_outline.png' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.05
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TreeBranch c2b
 featCall Touches monitor Fruit b2b
 
-useFeature AgentWidgets
-useFeature Population
+addFeature AgentWidgets
+addFeature Population
 
-useFeature Global 
+addFeature Global 
 
 addProp mothID Number 0
 
@@ -193,18 +193,18 @@ when Moth touches Fruit [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'tree_1_dark.png' 0
 
 // note that this is updated in round
 addProp lightOrDark String 'dark'
 
-useFeature Movement
-useFeature Physics
+addFeature Movement
+addFeature Physics
 
 featProp Physics scale setTo 0.3
 
-useFeature Population
+addFeature Population
 
 addProp treeID Number 0
 // set the id to the current count of agents so that it keeps incrementing 
@@ -235,10 +235,10 @@ ifExpr {{agent.getProp('treeID').value == 3}} [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'predator_s.png' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.1
 
 addProp attackCounter Number 0
@@ -246,8 +246,8 @@ addProp attackCounterMax Number 5
 propPush attackCounterMax
 propPop attackCounter
 
-useFeature Population
-useFeature Global
+addFeature Population
+addFeature Global
 
 ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == undefined }} [[
     featCall Global addGlobalProp foundOneToKill Boolean false
@@ -341,13 +341,13 @@ ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'foundOneToKill') == un
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth_fruits-green.png' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.05
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 
 addProp energy Number 10
 prop energy setMax 10
@@ -385,11 +385,11 @@ addProp regenFruitCounter Number 20
 # PROGRAM DEFINE
 
 // use a circle temorarily ... 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json'
 
-useFeature Physics
-useFeature Population
+addFeature Physics
+addFeature Population
 
 addProp countDown Number 2
 
@@ -413,10 +413,10 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth_sky.png' 0
 featCall Costume setScale 1
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 
 # PROGRAM UPDATE

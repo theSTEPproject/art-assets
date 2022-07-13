@@ -24,18 +24,18 @@
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json' 0
 featCall Costume setColorize 255 215 0
 prop zIndex setTo 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.6
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
 addProp eType String 'source'
 
-useFeature Global
+addFeature Global
 
   ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
       featCall Global addGlobalProp energyReleasedAsHeat Number 0
@@ -51,10 +51,10 @@ useFeature Global
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'fish.json' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 1.5
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
@@ -69,7 +69,7 @@ prop energyLevel setMin 0
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-useFeature AgentWidgets
+addFeature AgentWidgets
 featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
 featProp AgentWidgets meterColor setTo 65280
@@ -123,10 +123,10 @@ featProp AgentWidgets meterColor setTo 65280
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'algae.json' 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 3
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
@@ -141,7 +141,7 @@ prop energyLevel setMin 0
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-useFeature AgentWidgets
+addFeature AgentWidgets
 featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
 featProp AgentWidgets meterColor setTo 65280
@@ -196,11 +196,11 @@ featProp AgentWidgets meterColor setTo 65280
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 //Note: this character doesn't do anyhting - it is just for show'
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'square.json' 0
 featCall Costume setColorize 53 81 92
 
-useFeature Physics
+addFeature Physics
 featCall Physics setSize 800 200
 
 prop zIndex setTo -100
@@ -217,13 +217,13 @@ prop zIndex setTo -100
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
 
-useFeature Physics
+addFeature Physics
 
 // using this to record energyReleasedAsHeat
-useFeature Global
+addFeature Global
 
 
 // setup energy properties
@@ -235,7 +235,7 @@ prop energyLevel setMin 0
 // start with none
 addProp eType String 'none'
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Sun c2b
 featCall Touches monitor Algae c2b
 featCall Touches monitor Fish c2b
@@ -351,7 +351,7 @@ when EnergyRepresentation centerLastTouches  Fish [[
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM DEFINE
-      useFeature AgentWidgets
+      addFeature AgentWidgets
       prop skin setTo 'onexone.json'
       addProp time Number 0
       prop zIndex setTo 500
@@ -372,8 +372,8 @@ when EnergyRepresentation centerLastTouches  Fish [[
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
 
-            useFeature AgentWidgets
-            useFeature Population
+            addFeature AgentWidgets
+            addFeature Population
             featProp AgentWidgets isLargeGraphic setTo true
 
             // using a generic name so that it is easier to change later
@@ -430,11 +430,11 @@ when EnergyRepresentation centerLastTouches  Fish [[
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
 
-            useFeature AgentWidgets
-            useFeature Population
+            addFeature AgentWidgets
+            addFeature Population
             featProp AgentWidgets isLargeGraphic setTo true
 
-            useFeature Global
+            addFeature Global
 
             // using a generic name so that it is easier to change later
             addProp lostEnergy Number 500

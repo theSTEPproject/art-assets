@@ -24,10 +24,10 @@
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'map 1.2.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.8
 
 prop x setTo 0
@@ -48,14 +48,14 @@ prop zIndex setTo -5
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'pc_triceratops.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.15
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.2
@@ -64,12 +64,12 @@ addProp hp Number 250
 prop hp setMax 300
 prop hp setMin 0
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
 featProp AgentWidgets text setTo 'Triceratops'
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Fern b2b
 featCall Touches monitor Berries b2b
 featCall Touches monitor Tyrannosaurus b2b
@@ -77,7 +77,7 @@ featCall Touches monitor Lake b2b
 featCall Touches monitor River b2b
 
 
-useFeature Vision
+addFeature Vision
 featProp Vision visionable setTo true
 
 addProp state String 'default'
@@ -175,14 +175,14 @@ when Triceratops firstTouches Tyrannosaurus [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_fern.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.1
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Parasaurolophus b2b
 
@@ -190,7 +190,7 @@ addProp hp Number 6
 prop hp setMax 6
 prop hp setMin 0
 
-useFeature Population
+addFeature Population
 
 addProp time Number 0
 prop time setMax 50
@@ -264,14 +264,14 @@ when Fern touches Parasaurolophus [[
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'pc_tyrannosaurus.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.2
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 featProp Movement movementType setTo 'wander'
 featProp Movement distance setTo 0.5
@@ -282,16 +282,16 @@ addProp hp Number 60
 prop hp setMax 100
 prop hp setMin 0
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 featCall AgentWidgets bindMeterTo hp
 featProp AgentWidgets meterColor setTo 65280
 featProp AgentWidgets text setTo 'T-Rex'
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Parasaurolophus b2b
 
-useFeature Vision
+addFeature Vision
 featProp Vision viewDistance setTo 200
 featProp Vision viewAngle setTo 90
 featProp Vision visionable setTo true
@@ -360,8 +360,8 @@ when Tyrannosaurus doesNotSee Triceratops [[
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
 # PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
+addFeature AgentWidgets
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 addProp time Number 0
 
@@ -387,17 +387,17 @@ prop y setTo -256
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'npc_lake.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.5
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Parasaurolophus b2b
 featCall Touches monitor Triceratops b2b
 featCall Touches monitor Tyrannosaurus b2b

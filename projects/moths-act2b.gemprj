@@ -231,7 +231,7 @@ featCall Population populateBySpawning Moth [[
       "label": "Moth",
       "scriptText": `# BLUEPRINT Moth
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth.json' 0
 
 // COLOR
@@ -255,19 +255,19 @@ prop colorIndx addRndInt -4 0
 prop alpha setTo 1
 prop alpha setMin 0.1
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.4
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TreeTrunk c2c c2b b2b binb
 
-useFeature Population
+addFeature Population
 
 // allow Predator to see us
-useFeature Vision
+addFeature Vision
 
 addProp energyLevel Number 15
 prop energyLevel setMax 100
@@ -285,11 +285,11 @@ prop vulnerable setMin 0
 prop vulnerable setMax 1
 
 // allow access to global darkMoths/lightMoths values
-useFeature Global
+addFeature Global
 
-useFeature Cursor
+addFeature Cursor
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 propPush colorIndx
 featPropPop AgentWidgets text
 
@@ -373,23 +373,23 @@ ifExpr {{ agent.getProp('isInert').value }} [[
       "scriptText": `# BLUEPRINT Predator
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 //featCall Costume setCostume 'predator.json' 0
 //featCall Costume setCostume 'hawk.json' 0
 featCall Costume setCostume 'robin.json' 0
 
-useFeature Physics
-useFeature Touches
+addFeature Physics
+addFeature Touches
 featCall Touches monitor Moth c2c
 
 // needed for Seek
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
 //featProp Physics scale setTo 0.75  //FOR 'predator'
 featProp Physics scale setTo 0.5
 
-useFeature Vision
+addFeature Vision
 featCall Vision monitor Moth
 featProp Vision viewDistance setTo 250
 featProp Vision viewAngle setTo 90
@@ -416,10 +416,10 @@ prop tickCounter setTo 0
 
 // AI Movement
 featProp Movement distance setTo 4
-useFeature Population
+addFeature Population
 
-useFeature Global
-useFeature Timer
+addFeature Global
+addFeature Timer
 
 # PROGRAM UPDATE
 
@@ -466,10 +466,10 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeTrunk",
       "scriptText": `# BLUEPRINT TreeTrunk
           # PROGRAM DEFINE
-          useFeature Costume
+          addFeature Costume
           featCall Costume setCostume 'trunk.json' 0
 
-          useFeature AgentWidgets
+          addFeature AgentWidgets
 
           // COLOR
           featProp Costume colorScaleHue setTo 0
@@ -487,9 +487,9 @@ when Predator centerTouchesCenter Moth [[
           propPush colorIndx
           featPropPop AgentWidgets text
 
-          useFeature Physics
-          useFeature Population
-          useFeature Movement
+          addFeature Physics
+          addFeature Population
+          addFeature Movement
 
           addProp initx Number 0
           prop initx setMax 400
@@ -511,12 +511,12 @@ when Predator centerTouchesCenter Moth [[
       "label": "Grass",
       "scriptText": `# BLUEPRINT Grass
           # PROGRAM DEFINE
-          useFeature Costume
+          addFeature Costume
           featCall Costume setCostume 'grass.json' 0
 
-          useFeature Physics
-          useFeature Population
-          useFeature Movement
+          addFeature Physics
+          addFeature Population
+          addFeature Movement
 
           addProp initx Number 0
           prop initx setMax 400
@@ -537,7 +537,7 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeRoots",
       "scriptText": `# BLUEPRINT TreeRoots
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
       featCall Costume setCostume 'roots.json' 0
       //featCall Costume setColorizeHSV 0 .8 0.5
 
@@ -557,9 +557,9 @@ when Predator centerTouchesCenter Moth [[
 
       
 
-      useFeature Physics
-      useFeature AgentWidgets
-      useFeature Movement
+      addFeature Physics
+      addFeature AgentWidgets
+      addFeature Movement
 
       addProp initx Number 0
       prop initx setMax 400

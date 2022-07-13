@@ -25,10 +25,10 @@
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
-useFeature Movement
-useFeature AgentWidgets
-useFeature Cursor
+addFeature Costume
+addFeature Movement
+addFeature AgentWidgets
+addFeature Cursor
 
 featCall Costume setCostume 'fish.png' 0
 
@@ -58,13 +58,13 @@ prop grows setTo false
 
 addProp startDirection Number 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.4
 
 
 // set Touches
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Algae b2b
 
 // show meter immediately
@@ -190,10 +190,10 @@ featCall Costume setCostume 'fish_dead.png' 0
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Costume
-useFeature Movement
-useFeature Population
-useFeature AgentWidgets
+addFeature Costume
+addFeature Movement
+addFeature Population
+addFeature AgentWidgets
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
 addProp type String 'change'
@@ -231,10 +231,10 @@ addProp energyUse Number 0
 // STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
 prop energyUse setTo 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
 
-useFeature Touches
+
+addFeature Touches
 featCall Touches monitor Fish b2b
 featCall Touches monitor Sunbeam b2b
 
@@ -316,7 +316,7 @@ when Algae lastTouches Sunbeam [[
       "label": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'sunbeam.png' 0
 //featCall Costume setColorize 1 1 0
 //prop agent.alpha setTo 0.3
@@ -334,14 +334,14 @@ addProp direction Number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
 prop direction setTo 1
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
 featProp Physics scale setTo 1.0
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Physics scaleY setTo 2.0
 
-useFeature Touches
+addFeature Touches
 
 # PROGRAM INIT
 // default position for moving across the top
@@ -364,7 +364,7 @@ onEvent Tick [[
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM DEFINE
-      useFeature AgentWidgets
+      addFeature AgentWidgets
       prop skin setTo 'onexone.json'
       addProp time Number 0
 
@@ -383,11 +383,11 @@ onEvent Tick [[
       "scriptText": `# BLUEPRINT Rock
 
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
 
       featCall Costume setCostume 'boulder.json' 0
 
-      useFeature Physics`
+      addFeature Physics`
     },
     {
       "id": "Turtle",
@@ -397,9 +397,9 @@ onEvent Tick [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
-useFeature AgentWidgets
-useFeature Movement
+addFeature Costume
+addFeature AgentWidgets
+addFeature Movement
 
 // temp until we get new art
 featCall Costume setCostume 'turtle_sprites.json' 0
@@ -415,12 +415,12 @@ addProp health String 'healthy'
 // STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
 prop energyUse setTo 1
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.15
       
       // set Touches
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Fish b2b
 featCall Touches monitor Trash b2b
 
@@ -523,11 +523,11 @@ when Turtle lastTouches Trash [[
       "scriptText": `# BLUEPRINT Trash
 
       # PROGRAM DEFINE
-      useFeature Costume
-      useFeature Population
+      addFeature Costume
+      addFeature Population
       featCall Costume setCostume 'trash.json' 0
 
-      useFeature Physics
+      addFeature Physics
 
 \t  featProp Physics scale setTo 0.05
 `
@@ -540,10 +540,10 @@ when Turtle lastTouches Trash [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'background.png' 0
 featCall Costume setScale 1.34
-// useFeature Movement
+// addFeature Movement
 # PROGRAM EVENT
 // onEvent Tick [[ ]]
 # PROGRAM UPDATE

@@ -21,7 +21,7 @@
       "label": "Soil",
       "scriptText": `# BLUEPRINT Soil
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'dirt.json' 0
 
 addProp nutrients Number 50
@@ -30,16 +30,16 @@ prop nutrients setMin 0
 
 addProp sparkleCount Number 0
 
-useFeature Physics
+addFeature Physics
 
 featProp Physics scale setTo 0.38
 
 prop zIndex setTo -200
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Worm b2b
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp AgentWidgets meterProp setTo nutrients
 
@@ -64,7 +64,7 @@ every 1 runAtStart [[
       "label": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'circle.json' 0
 featCall Costume setColorize 1 1 0
 prop agent.alpha setTo 0.3
@@ -77,14 +77,14 @@ addProp energyRate Number 5
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
 addProp direction Number 1
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
 featProp Physics scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Physics scaleY setTo 2
 
-useFeature Touches
+addFeature Touches
 
 # PROGRAM INIT
 // default position for moving across the top
@@ -107,11 +107,11 @@ onEvent Tick [[
       "label": "Rock",
       "scriptText": `# BLUEPRINT Rock
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'boulder.json' 0
 
-useFeature Physics
-useFeature AgentWidgets
+addFeature Physics
+addFeature AgentWidgets
 
 featProp Physics scale setTo 0.5`
     },
@@ -120,11 +120,11 @@ featProp Physics scale setTo 0.5`
       "label": "House",
       "scriptText": `# BLUEPRINT House
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'house.json' 0
 
-useFeature Physics
-useFeature AgentWidgets
+addFeature Physics
+addFeature AgentWidgets
 
 featProp Physics scale setTo 2`
     },
@@ -133,10 +133,10 @@ featProp Physics scale setTo 2`
       "label": "SoilBG",
       "scriptText": `# BLUEPRINT SoilBG
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'square.json' 0
 featCall Costume setColorize 0.56 0.52 0.40
-useFeature Physics
+addFeature Physics
 featCall Physics setSize 800 400
 prop zIndex setTo -210`
     },
@@ -149,10 +149,10 @@ prop zIndex setTo -210`
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Movement
+addFeature Movement
 
-// useFeature Cursor
-useFeature Costume
+// addFeature Cursor
+addFeature Costume
 featCall Costume setCostume 'worm.json' 1
 
 // put above everything
@@ -178,14 +178,14 @@ addProp matter Number 50
 prop matter setMax 100
 prop matter setMin 0
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Waste b2b
 featCall Touches monitor Soil b2b
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp AgentWidgets meterProp setTo energyLevel
 
@@ -281,11 +281,11 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 
-useFeature Population
-// useFeature Global
-useFeature Costume
-useFeature Movement
-//useFeature Cursor
+addFeature Population
+// addFeature Global
+addFeature Costume
+addFeature Movement
+//addFeature Cursor
 
 
 featCall Costume setCostume \"bunnies.json\" 1
@@ -310,14 +310,14 @@ addProp matter Number 50
 prop matter setMax 50
 prop matter setMin 0
 
-useFeature Physics
+addFeature Physics
 
 featProp Physics scale setTo 0.2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Plant b2b
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp AgentWidgets meterProp setTo energyLevel
 // Green = 0x00FF00
@@ -407,10 +407,10 @@ every 1 runAtStart [[
       "label": "Plant",
       "scriptText": `# BLUEPRINT Plant
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'plants.json' 0
-// useFeature Global
-useFeature Population
+// addFeature Global
+addFeature Population
 
 addProp energyLevel Number 50
 
@@ -443,13 +443,13 @@ prop matter setMin 0
 
 prop zIndex setTo -110
 
-useFeature Physics
-useFeature Touches
+addFeature Physics
+addFeature Touches
 featCall Touches monitor Sunbeam b2b
 featCall Touches monitor Soil b2b
 featCall Touches monitor Bunny b2b
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp AgentWidgets meterProp setTo energyLevel
 // Green
@@ -535,9 +535,9 @@ every 1 runAtStart [[
       "label": "Organic Waste",
       "scriptText": `# BLUEPRINT Waste
 # PROGRAM DEFINE
-useFeature Population
+addFeature Population
 
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'organic_matter.json' 0
 
 addProp matter Number 100
@@ -545,7 +545,7 @@ prop matter setMax 100
 prop matter setMin 0
 
 // scale up because the art is a bit small
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 2
 
 // pick a random rotation to keep things looking interesting
@@ -553,14 +553,14 @@ prop orientation setTo 0
 prop orientation addRnd 0 6
 
 // we need to be able to see when the waste is on soil and / or being eaten by a worm
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Worm b2b
 featCall Touches monitor Soil b2b
 
 // make sure it is in front of the soil but behind the worms
 prop zIndex setTo -150
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter
 featProp AgentWidgets meterProp setTo matter
 
@@ -593,8 +593,8 @@ every 1 runAtStart [[
       "label": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
 # PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
+addFeature AgentWidgets
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0`
     },
     {
@@ -602,17 +602,17 @@ featCall Costume setCostume 'onexone.json' 0`
       "label": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'square.json' 0
-useFeature Physics`
+addFeature Physics`
     },
     {
       "id": "Timer",
       "label": "Timer",
       "scriptText": `# BLUEPRINT Timer
 # PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
+addFeature AgentWidgets
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 addProp time Number 0
 
@@ -635,7 +635,7 @@ prop y setTo -256
       "label": "CharacterGraph",
       "scriptText": `# BLUEPRINT CharacterGraph
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'onexone.json' 0
 // setting these all up to so they can be changed in the map editor
 addProp characterType String 'Worm'
@@ -643,8 +643,8 @@ addProp countType String 'sum'
 addProp variableToGraph String 'energyLevel'
 addProp labelText String 'Worm Energy'
 
-useFeature AgentWidgets
-useFeature Population
+addFeature AgentWidgets
+addFeature Population
 featProp AgentWidgets isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later

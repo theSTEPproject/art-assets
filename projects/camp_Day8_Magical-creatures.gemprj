@@ -24,10 +24,10 @@
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'background_magic.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.8
 
 prop x setTo 0
@@ -48,20 +48,20 @@ prop zIndex setTo -5
 # TAG isPTrackControllable false
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'pc_wand_alive.png' 0
 
-useFeature Physics
-featCall Physics init
+addFeature Physics
+
 featProp Physics scale setTo 0.25
 
-useFeature Movement
+addFeature Movement
 
-useFeature AgentWidgets
+addFeature AgentWidgets
 exprPush {{ '' + agent.id }}
 featPropPop AgentWidgets text
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp state String 'recharged'
@@ -91,17 +91,17 @@ ifExpr {{ agent.getProp('state').value == 'dead'}} [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'cauldron.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.5
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Wand b2b
 featCall Touches monitor Fish b2b
 featCall Touches monitor Puppy b2b
@@ -112,7 +112,7 @@ featCall Touches monitor Horse b2b
 
 
 
-useFeature Population
+addFeature Population
 
 addProp mermaidReady Boolean false
 addProp genieReady Boolean false
@@ -231,18 +231,18 @@ when Cauldron touches Egg [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'mermaid.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -261,17 +261,17 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'fishmaid.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -290,17 +290,17 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'lamp.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -319,17 +319,17 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'horse.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.2
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -348,17 +348,17 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'bird.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -377,17 +377,17 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'puppy.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.2
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -406,17 +406,17 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'egg.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
@@ -435,18 +435,18 @@ addProp hasTransformed Boolean setToTrue
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'genie.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -465,18 +465,18 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'unicorn.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -495,18 +495,18 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'dragon.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -525,18 +525,18 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'wolf.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -555,18 +555,18 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'phoenix.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.15
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Cauldron b2b
 
 addProp hasTransformed Boolean setToTrue
 
-useFeature Movement
+addFeature Movement
 featCall Movement setMovementType wander
 featProp Movement distance setTo 0.2
 
@@ -585,17 +585,17 @@ featProp Movement distance setTo 0.2
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'crystal.png'
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.4
 
 prop x setTo 0
 prop y setTo 0
 prop zIndex setTo -2
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor Wand b2b
 
 

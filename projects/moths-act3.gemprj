@@ -74,7 +74,7 @@
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'moth.json' 0
 
 // COLOR SCALE FOR MOTHS.
@@ -88,19 +88,19 @@ featCall Costume initHSVColorScale
 // Fully visible
 prop alpha setTo 1
 
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
-useFeature Physics
+addFeature Physics
 featProp Physics scale setTo 0.4
 
-useFeature Touches
+addFeature Touches
 featCall Touches monitor TreeTrunk c2c c2b b2b binb
 
-useFeature Population
+addFeature Population
 
 // allow Predator to see us
-useFeature Vision
+addFeature Vision
 
 addProp energyLevel Number 15
 prop energyLevel setMax 100
@@ -120,8 +120,8 @@ prop vulnerable setMin 0
 prop vulnerable setMax 1
 prop vulnerable setTo 1
 
-useFeature Global
-useFeature Cursor
+addFeature Global
+addFeature Cursor
 
 // STUDENTS_MAY_CHANGE - set this to true if you want truly random colors, but leave it as false
 // if you want 1 each starting at 1
@@ -156,7 +156,7 @@ propPush colorIndx
 featPropPop Costume colorScaleIndex
 
 // display the color index under the moth
-useFeature AgentWidgets
+addFeature AgentWidgets
 featPropPush Costume colorScaleIndex
 featPropPop AgentWidgets text
 
@@ -203,15 +203,15 @@ when Moth centerLastTouches TreeTrunk [[
       "scriptText": `# BLUEPRINT Predator
 
 # PROGRAM DEFINE
-useFeature Costume
+addFeature Costume
 featCall Costume setCostume 'robin.json' 0
 
-useFeature Physics
-useFeature Touches
+addFeature Physics
+addFeature Touches
 featCall Touches monitor Moth c2c
 
 // needed for Seek
-useFeature Movement
+addFeature Movement
 featProp Movement useAutoOrientation setTo true
 
 featProp Physics scale setTo 0.5
@@ -219,7 +219,7 @@ featProp Physics scale setTo 0.5
 // to get them moving only in round 2
 addProp bIsActive Boolean false
 
-useFeature Vision
+addFeature Vision
 featCall Vision monitor Moth
 // keep this from appearing until round 2 when it starts moving
 featProp Vision viewDistance setTo 0
@@ -247,10 +247,10 @@ prop tickCounter setTo 0
 
 // AI Movement
 featProp Movement distance setTo 4
-useFeature Population
+addFeature Population
 
-useFeature Global
-useFeature Timer
+addFeature Global
+addFeature Timer
 
 # PROGRAM INIT
 prop zIndex setTo 200
@@ -290,13 +290,13 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeTrunk",
       "scriptText": `# BLUEPRINT TreeTrunk
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
       featCall Costume setCostume 'trunk.json' 0
       //featCall Costume setColorize 0 0 0.9
 
-      useFeature Physics
-      useFeature AgentWidgets
-      useFeature Movement
+      addFeature Physics
+      addFeature AgentWidgets
+      addFeature Movement
 
       featProp AgentWidgets text setTo ''
 
@@ -324,13 +324,13 @@ when Predator centerTouchesCenter Moth [[
       "label": "TreeFoliage",
       "scriptText": `# BLUEPRINT TreeFoliage
       # PROGRAM DEFINE
-      useFeature Costume
+      addFeature Costume
       featCall Costume setCostume 'canopy.json' 0
       //featCall Costume setColorizeHSV 0 .8 0.5
 
-      useFeature Physics
-      useFeature AgentWidgets
-      useFeature Movement
+      addFeature Physics
+      addFeature AgentWidgets
+      addFeature Movement
 
       featProp AgentWidgets text setTo ''
 
