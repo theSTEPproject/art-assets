@@ -233,7 +233,7 @@ addFeature Touches
 featCall agent.Touches monitor 'Fish' b2b
 featCall agent.Touches monitor 'Sunbeam' b2b
 
-featProp AgentWidgets text setTo ''
+featProp agent.AgentWidgets.text setTo ''
 
 // STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
 featProp agent.Movement.movementType setTo 'wander'
@@ -241,7 +241,7 @@ featProp agent.Movement.distance setTo 0.2
 
 exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
 featPropPop agent.Physics.scale
-    
+
 prop agent.zIndex setTo -110
 
 # PROGRAM UPDATE
@@ -283,7 +283,7 @@ every 1 runAtStart [[
 
   // re-scale the algae based on its energy level
   exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-  featPropPop Physics scale
+  featPropPop agent.Physics.scale
 
   // set algae energy meter color
   // doing great
