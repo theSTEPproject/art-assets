@@ -1,0 +1,141 @@
+{
+  "id": "starter_model_JDTest",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Movement
+addFeature Costume
+featCall agent.Costume setCostume 'fish.json' 0
+
+addFeature Physics
+addFeature Touches
+addProp energy number 0
+# PROGRAM INIT
+// This is stuff that happens when a character is added to the map.
+// This is a good place to set properties, but any updates you want to see are best handled in an event (onStart) or update
+prop agent.energy setTo 10
+featCall agent.Touches monitor 'Algae' b2b
+
+# PROGRAM EVENT
+// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // prop agent.energy sub 1
+  when Fish touches Algae [[
+    featCall Fish.Costume setGlow 2
+    prop Fish.energy add 1
+    prop Algae.energy sub 1
+  ]]
+]]
+// required directive
+# PROGRAM CONDITION`
+    },
+    {
+      "name": "Algae",
+      "scriptText": `# BLUEPRINT Algae
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Movement
+addFeature Costume
+featCall agent.Costume setCostume 'algae.json' 0
+addFeature Physics
+addFeature Touches
+addProp energy number 10
+
+# PROGRAM INIT
+// This is stuff that happens when a character is added to the map.
+// This is a good place to set properties, but any updates you want to see are best handled in an event (onStart) or update
+featCall agent.Movement setMovementType 'wander'
+featProp agent.Movement.distance setTo 0.3
+
+# PROGRAM EVENT
+// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+// required directive
+# PROGRAM CONDITION`
+    },
+    {
+      "name": "AvgFishEnergyGraph",
+      "scriptText": `# BLUEPRINT AvgFishEnergyGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
+featCall agent.Costume setScale 1
+
+addFeature AgentWidgets
+addFeature Population
+featProp agent.AgentWidgets.isLargeGraphic setTo true
+addProp totalFishEnergy number 0
+featCall agent.AgentWidgets bindGraphTo totalFishEnergy 30
+
+# PROGRAM EVENT
+// every 5 runAfter [[ ]]
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]
+every 1 runAtStart [[
+  featCall agent.Population countAgentProp 'Fish' 'energy'
+  featPropPush agent.Population.avg
+  propPop agent.totalFishEnergy
+
+]]
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM CONDITION`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1",
+      "label": "Algae1",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "2",
+      "label": "EnergyGraph",
+      "bpid": "AvgFishEnergyGraph",
+      "initScript": `prop x setTo 486.07
+prop y setTo 354.06`
+    }
+  ]
+}

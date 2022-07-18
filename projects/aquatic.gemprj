@@ -36,10 +36,10 @@ prop agent.energyLevel setMax 100
 prop agent.energyLevel setMin 0
 
 addProp type String 'change'
-addProp movementType String 'edgeToEdge'
+addProp movementType String 'wander'
 
 // STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
-prop agent.movementType setTo 'edgeToEdge'
+prop agent.movementType setTo 'wander'
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
 prop agent.type setTo 'change'
@@ -74,22 +74,32 @@ featPropPop agent.AgentWidgets.text
 
 # PROGRAM EVENT
 onEvent Start [[
+
   // start at normal size unless you eat
   featProp agent.Physics.scale setTo 1
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
+  dbgOut 'about to push'
+  exprPush {{ agent.getProp('movementType').value == 'wander' }}
+  dbgStack
+
   // if the movementType is wander
   ifExpr {{ agent.getProp('movementType').value == 'wander' }} [[
     featCall agent.Movement setMovementType 'wander' 0.5
+    dbgOut 'inside wander'
   ]]
 
   // if it is edgetoedge
   ifExpr {{ agent.getProp('movementType').value == 'edgeToEdge' }} [[
     featCall agent.Movement setMovementType 'edgeToEdge' 1 0 180
+    dbgOut 'inside edgeetoedge'
     exprPush {{ agent.getProp('startDirection').value }}
     featPropPop agent.Movement.direction
   ]]
+
+  dbgOut 'after edgeetoedge'
+
 
   // STUDENTS_MAY_CHANGE to make fish move faster when they are automatic
   featProp agent.Movement.distance setTo 2
@@ -759,62 +769,74 @@ onEvent Tick [[
     {
       "name": "GraphFishEnergy",
       "scriptText": `# BLUEPRINT GraphFishEnergy
-            # PROGRAM DEFINE
-            prop skin setTo 'onexone.json'
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
 
-            addProp characterType String 'Fish'
-            addProp countType String 'avg'
-            addProp variableToGraph String 'energyLevel'
-            addProp labelText String 'Fish energyLevel'
+addProp characterType String 'Fish'
+addProp countType String 'avg'
+addProp variableToGraph String 'energyLevel'
+addProp labelText String 'Fish energyLevel'
 
-            // STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
-            // -- Character options: Fish, Algae
-            // -- Variable options: energyLevel
-            // -- Population options: sum, avg, min, max
-            prop characterType setTo 'Fish'
-            prop countType setTo 'avg'
-            prop variableToGraph setTo 'energyLevel'
-            prop labelText setTo 'Fish energyLevel'
+// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+// -- Character options: Fish, Algae
+// -- Variable options: energyLevel
+// -- Population options: sum, avg, min, max
+prop agent.characterType setTo 'Fish'
+prop agent.countType setTo 'avg'
+prop agent.variableToGraph setTo 'energyLevel'
+prop agent.labelText setTo 'Fish energyLevel'
 
-            addFeature AgentWidgets
-            addFeature Population
-            featProp AgentWidgets isLargeGraphic setTo true
+addFeature AgentWidgets
+addFeature Population
+featProp agent.AgentWidgets.isLargeGraphic setTo true
 
-            // using a generic name so that it is easier to change later
-            addProp graphValue Number 0
-            prop graphValue setMax 1000
-            prop graphValue setMin 0
+// using a generic name so that it is easier to change later
+addProp graphValue Number 0
+prop agent.graphValue setMax 1000
+prop agent.graphValue setMin 0
 
-           featCall AgentWidgets bindGraphTo graphValue 30
+featCall agent.AgentWidgets bindGraphTo graphValue 30
 
-            # PROGRAM INIT
-            // make sure something displays with some initial text, on bottom right at first
-            prop x setTo 505
-            prop y setTo 370
-            prop zIndex setTo 300
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop agent.x setTo 505
+prop agent.y setTo 370
+prop agent.zIndex setTo 300
 
-            exprPush {{agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value}}
-            propPop labelText
+exprPush {{ agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value }}
+propPop agent.labelText
+exprPush {{ agent.getProp('labelText').value }}
 
-            exprPush {{agent.getProp('labelText').value}}
-            featPropPop AgentWidgets text
+featPropPop agent.AgentWidgets.text
 
-            # PROGRAM EVENT
+# PROGRAM EVENT
 
-            onEvent Tick [[
+// required directive
+# PROGRAM UPDATE
 
-              exprPush {{agent.getProp('characterType').value}}
-              featPropPop Population monitoredAgent
+every 1 runAtStart [[
 
-              exprPush {{agent.getProp('variableToGraph').value}}
-              featPropPop Population monitoredAgentProp
 
-              featCall Population countAgentProp
+  exprPush {{ agent.getProp('characterType').value }}
+  featPropPop Population monitoredAgent
 
-              exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
-              propPop graphValue
-            ]]
-`
+  exprPush {{ agent.getProp('variableToGraph').value }}
+  featPropPop Population monitoredAgentProp
+
+  featCall Population countAgentProp
+
+  exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
+  propPop graphValue
+  
+]]
+
+
+// required directive
+# PROGRAM CONDITION`
     }
   ],
   "instances": [
@@ -968,6 +990,20 @@ prop y setTo -132.81`
       "bpid": "Algae",
       "initScript": `prop x setTo -281.54
 prop y setTo -68.22`
+    },
+    {
+      "id": "1711",
+      "label": "Fish1711",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -45
+prop y setTo 29`
+    },
+    {
+      "id": "1712",
+      "label": "GraphFishEnergy1712",
+      "bpid": "GraphFishEnergy",
+      "initScript": `prop x setTo 502.67
+prop y setTo 267.93`
     }
   ]
 }
