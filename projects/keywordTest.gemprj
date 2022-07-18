@@ -19,6 +19,10 @@
     {
       "name": "TestKeywordAgent",
       "scriptText": `# blueprint TestKeywordAgent
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// BUG: 'add line' will result in 'unexpected level underflow'
+// error because of the 'if' 'alt' construction
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # program define
 addFeature Costume
