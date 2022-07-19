@@ -34,7 +34,6 @@ addFeature Touches
 addProp energy number 10
 prop agent.energy setMin 0
 prop agent.energy setMax 22
-# PROGRAM INIT
 featCall agent.Touches monitor 'Algae' b2b
 featCall agent.AgentWidgets bindMeterTo energy
 
@@ -75,7 +74,6 @@ addFeature Physics
 addFeature Touches
 addProp energy number 0
 
-# PROGRAM INIT
 featCall agent.Movement setMovementType 'wander'
 featProp agent.Movement.distance setTo 0.2
 prop agent.energy setTo 10
@@ -119,8 +117,6 @@ every 1 runAtStart [[
 ]]
 //every 1 runAfter [[
 //]]
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM CONDITION`
@@ -132,7 +128,8 @@ every 1 runAtStart [[
       "label": "Algae0",
       "bpid": "Algae",
       "initScript": `prop x setTo -23
-prop y setTo 45`
+prop y setTo 45
+`
     },
     {
       "id": "1",
