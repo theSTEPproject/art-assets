@@ -59,9 +59,10 @@ every 1 [[
     // gllow to show we are interacting
     featCall PC.Costume setGlow 1
 
-// check if the NPC has the virus (or whatever else)
-    ifExpr {{ NPC.getProp('virus').value}} [[
+    // check if the NPC has the virus (or whatever else)
+    ifExpr {{ NPC.getProp('virus').value == true }} [[
       // we are in contact with the virus, so we have it now too
+      dbgOut 'getting virus '
       prop PC.virus setTo true
     ]]
   ]]
