@@ -38,11 +38,11 @@ addFeature Touches
 
 # PROGRAM EVENT
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
+// This is also where you can handle touches between characters such as When Algae touches Fish
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
 
 
 `
@@ -60,19 +60,17 @@ addFeature Touches
 addFeature Physics
 addFeature Touches
 
-
 # PROGRAM INIT
 // This is stuff that happens when a character is added to the map.
 // This is a good place to set properties, but any updates you want to see are best handled in an event (onStart) or update
 
 # PROGRAM EVENT
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
+// This is also where you can handle touches between characters such as When Algae touches Fish
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-
 
 `
     }
