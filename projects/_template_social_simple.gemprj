@@ -72,8 +72,15 @@ every 1 [[
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 
-every 1 runAfter [[
+every 1 runAtStart [[
   // insert code here to run all the time
+  ifExpr {{ agent.getProp('virus').value == true }} [[
+    featProp agent.AgentWidgets.text setTo '🤢'
+  ]]
+
+  ifExpr {{ agent.getProp('virus').value == false }} [[
+    featProp agent.AgentWidgets.text setTo '🙂'
+  ]]
 
 ]]
 
@@ -95,6 +102,7 @@ featCall agent.Costume setCostume 'bunny.json' 1
 
 // add other features
 addFeature Movement
+addFeature AgentWidgets
 addFeature Physics
 addFeature Touches
 
@@ -122,8 +130,20 @@ featProp agent.Movement.distance setTo 0.2
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // insert code here to run all the time
+  ifExpr {{ agent.getProp('virus').value == true }} [[
+    featProp agent.AgentWidgets.text setTo '🤢'
+  ]]
 
-`
+  ifExpr {{ agent.getProp('virus').value == false }} [[
+    featProp agent.AgentWidgets.text setTo '🙂'
+  ]]
+
+]]
+
+// required directive
+# PROGRAM INIT`
     }
   ],
   "instances": [
@@ -133,10 +153,9 @@ featProp agent.Movement.distance setTo 0.2
       "bpid": "NPC",
       "initScript": `prop x setTo 136.88
 prop y setTo 50.13
-prop virus setTo true 
+prop virus setTo true
 prop role setTo 'one'
-featCall agent.Costume setCostume 'bunny.json' 1
-`
+featCall agent.Costume setCostume 'bunny.json' 1`
     },
     {
       "id": "1",
