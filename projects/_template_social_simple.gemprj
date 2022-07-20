@@ -23,7 +23,7 @@
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // add the features we are likely to use
 addFeature Costume
 
@@ -83,10 +83,7 @@ every 1 runAtStart [[
   ]]
 
 ]]
-
-// IGNORE
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "NPC",
@@ -95,7 +92,7 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
 featCall agent.Costume setCostume 'bunny.json' 1
@@ -123,9 +120,6 @@ addProp virus Boolean false
 featCall agent.Movement setMovementType 'wander'
 featProp agent.Movement.distance setTo 0.2
 
-# PROGRAM EVENT
-// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
-
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
@@ -141,9 +135,7 @@ every 1 runAtStart [[
   ]]
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     }
   ],
   "instances": [

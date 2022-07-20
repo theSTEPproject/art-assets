@@ -23,7 +23,7 @@
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
@@ -37,7 +37,7 @@ prop agent.energy setMax 22
 featCall agent.Touches monitor 'Algae' b2b
 featCall agent.AgentWidgets bindMeterTo energy
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
 every 1 [[
@@ -49,7 +49,6 @@ every 1 [[
   ]]
 ]]
 
-# PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 
@@ -65,7 +64,7 @@ every 1 runAfter [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featCall agent.Costume setCostume 'algae.json' 0
@@ -80,9 +79,6 @@ prop agent.energy setTo 10
 // This is stuff that happens when a character is added to the map.
 // This is a good place to set properties, but any updates you want to see are best handled in an event (onStart) or update
 
-# PROGRAM EVENT
-// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
-
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
@@ -96,7 +92,8 @@ prop agent.energy setTo 10
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+
+# PROGRAM INIT
 addFeature Costume
 addFeature AgentWidgets
 addFeature Population
@@ -105,8 +102,7 @@ addProp totalFishEnergy number 0
 featCall agent.AgentWidgets bindGraphTo totalFishEnergy 1
 featCall agent.Costume setCostume 'onexone.json' 0
 featCall agent.Costume setScale 1
-# PROGRAM EVENT
-// every 5 runAfter [[ ]]
+
 # PROGRAM UPDATE
 // when xxx touches yyy [[ ]]
 every 1 runAtStart [[
@@ -120,8 +116,7 @@ every 1 runAtStart [[
 // required directive
 # PROGRAM CONDITION
 
-// required directive
-# PROGRAM INIT
+
 `
     }
   ],
