@@ -875,7 +875,8 @@ when Moth centerFirstTouches TreeTrunk [[
 ifExpr {{ Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2)}} [[
   dbgOut {{ Moth.name + ' will be hidden ' }}
   dbgOut {{  ( Moth.prop.color.value )  }}
-]] [[
+]] 
+ifExpr {{ ! (Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2))}} [[
   dbgOut {{ Moth.name + ' will be visible ' }}
 ]]
 //timer for dropping
@@ -897,7 +898,8 @@ when Moth centerTouches TreeTrunk [[
     featProp Vision visionable setTo false
     prop vulnerable setTo 0
   ]]
-  [[
+
+  ifExpr {{ !(Moth.callFeatMethod('Costume', 'colorHSVWithinRange', Moth.prop.color.value, TreeTrunk.prop.color.value, 0.2, 1, 0.2))}} [[
     prop alpha setMin 1
     prop alpha add 1
     featProp Vision visionable setTo true

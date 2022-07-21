@@ -343,7 +343,7 @@ ifExpr {{ TreeTrunk.getProp('colorIndx').value >= (Moth.getProp('colorIndx').val
     featProp Vision visionable setTo false
     prop vulnerable setTo 0
   ]]
-  [[
+ifExpr {{ !( TreeTrunk.getProp('colorIndx').value >= (Moth.getProp('colorIndx').value - 1) && TreeTrunk.getProp('colorIndx').value <= (Moth.getProp('colorIndx').value + 1)) }} [[
     prop alpha setMin 1
     prop alpha add 1
     featProp Vision visionable setTo true
