@@ -54,8 +54,7 @@ every 1 [[
 
 every 1 runAfter [[
   prop agent.energy sub 1
-]]
-`
+]]`
     },
     {
       "name": "Algae",
