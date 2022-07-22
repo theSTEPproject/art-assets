@@ -1,0 +1,489 @@
+{
+  "id": "food_web_tinkering",
+  "label": "Food Web",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Lion",
+      "scriptText": `# BLUEPRINT Lion
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_lion.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Goat' b2b
+featCall agent.Touches monitor 'Jackal' b2b
+featCall agent.Touches monitor 'WildCat' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Lion touches Goat [[
+
+    ifExpr {{ Lion.getProp('alive').value == true &&  Goat.getProp('alive').value == true }} [[
+      featCall Lion.Costume setGlow 1
+      prop Goat.alive setTo false
+      prop Goat.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Lion touches Jackal [[
+
+    ifExpr {{ Lion.getProp('alive').value == true &&  Jackal.getProp('alive').value == true }} [[
+      featCall Lion.Costume setGlow 1
+      prop Jackal.alive setTo false
+      prop Jackal.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Lion touches WildCat [[
+
+    ifExpr {{ Lion.getProp('alive').value == true &&  WildCat.getProp('alive').value == true }} [[
+      featCall Lion.Costume setGlow 1
+      prop WildCat.alive setTo false
+      prop WildCat.alpha setTo 0.3
+    ]]
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Goat",
+      "scriptText": `# BLUEPRINT Goat
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_goat.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Plant' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Goat touches Plant [[
+    ifExpr {{ Goat.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
+      featCall Goat.Costume setGlow 1
+      prop Plant.alive setTo false
+      prop Plant.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Goat touches Reincarnator [[
+    ifExpr {{ Goat.getProp('alive').value == false }} [[
+      featCall Goat.Costume setGlow 1
+      prop Goat.alive setTo true
+      prop Goat.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Jackal",
+      "scriptText": `# BLUEPRINT Jackal
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_jackal.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Goat' b2b
+featCall agent.Touches monitor 'Rabbit' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Jackal touches Goat [[
+    ifExpr {{ Jackal.getProp('alive').value == true &&  Goat.getProp('alive').value == true }} [[
+      featCall Jackal.Costume setGlow 1
+      prop Goat.alive setTo false
+      prop Goat.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Jackal touches Rabbit [[
+    ifExpr {{ Jackal.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
+      featCall Jackal.Costume setGlow 1
+      prop Rabbit.alive setTo false
+      prop Rabbit.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Jackal touches Reincarnator [[
+    ifExpr {{ Jackal.getProp('alive').value == false }} [[
+      featCall Jackal.Costume setGlow 1
+      prop Jackal.alive setTo true
+      prop Jackal.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Rabbit",
+      "scriptText": `# BLUEPRINT Rabbit
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_rabbit.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Plant' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Rabbit touches Plant [[
+    ifExpr {{ Rabbit.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
+      featCall Rabbit.Costume setGlow 1
+      prop Plant.alive setTo false
+      prop Plant.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Rabbit touches Reincarnator [[
+    ifExpr {{ Rabbit.getProp('alive').value == false }} [[
+      featCall Rabbit.Costume setGlow 1
+      prop Rabbit.alive setTo true
+      prop Rabbit.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Plant",
+      "scriptText": `# BLUEPRINT Plant
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_plant.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+
+  when Plant touches Reincarnator [[
+    ifExpr {{ Plant.getProp('alive').value == false }} [[
+      featCall Plant.Costume setGlow 1
+      prop Plant.alive setTo true
+      prop Plant.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Mouse",
+      "scriptText": `# BLUEPRINT Mouse
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_mouse.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Plant' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Mouse touches Plant [[
+    ifExpr {{ Mouse.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
+      featCall Mouse.Costume setGlow 1
+      prop Plant.alive setTo false
+      prop Plant.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Mouse touches Reincarnator [[
+    ifExpr {{ Mouse.getProp('alive').value == false }} [[
+      featCall Mouse.Costume setGlow 1
+      prop Mouse.alive setTo true
+      prop Mouse.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "WildCat",
+      "scriptText": `# BLUEPRINT WildCat
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_wildcat.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Mouse' b2b
+featCall agent.Touches monitor 'Snake' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when WildCat touches Mouse [[
+    ifExpr {{ WildCat.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
+      featCall WildCat.Costume setGlow 1
+      prop Mouse.alive setTo false
+      prop Mouse.alpha setTo 0.3
+    ]]
+  ]]
+
+  when WildCat touches Snake [[
+    ifExpr {{ WildCat.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
+      featCall WildCat.Costume setGlow 1
+      prop Snake.alive setTo false
+      prop Snake.alpha setTo 0.3
+    ]]
+  ]]
+
+  when WildCat touches Reincarnator [[
+    ifExpr {{ WildCat.getProp('alive').value == false }} [[
+      featCall WildCat.Costume setGlow 1
+      prop WildCat.alive setTo true
+      prop WildCat.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Reincarnator",
+      "scriptText": `# BLUEPRINT Reincarnator
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featCall agent.Costume setCostume 'square.json' 0
+featProp agent.Physics.scale setTo 0.5
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1",
+      "label": "Goat1",
+      "bpid": "Goat",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "2",
+      "label": "Reincarnator2",
+      "bpid": "Reincarnator",
+      "initScript": `prop x setTo 345.72
+prop y setTo 345.41`
+    },
+    {
+      "id": "3",
+      "label": "Plant3",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -284.23
+prop y setTo 68.99`
+    },
+    {
+      "id": "4",
+      "label": "Jackal4",
+      "bpid": "Jackal",
+      "initScript": `prop x setTo 243.42
+prop y setTo -125.74`
+    },
+    {
+      "id": "5",
+      "label": "Rabbit5",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -229.58
+prop y setTo 278.29`
+    },
+    {
+      "id": "6",
+      "label": "Mouse6",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 14.48
+prop y setTo 289.71`
+    },
+    {
+      "id": "7",
+      "label": "WildCat7",
+      "bpid": "WildCat",
+      "initScript": `prop x setTo 238.05
+prop y setTo 140.88`
+    }
+  ]
+}
