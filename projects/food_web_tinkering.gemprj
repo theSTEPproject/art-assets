@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 931,
     "roundsCanLoop": true
   },
   "rounds": [],
@@ -19,7 +19,7 @@
     {
       "name": "Lion",
       "scriptText": `# BLUEPRINT Lion
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -84,7 +84,7 @@ every 1 [[
     {
       "name": "Goat",
       "scriptText": `# BLUEPRINT Goat
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -138,7 +138,7 @@ every 1 [[
     {
       "name": "Jackal",
       "scriptText": `# BLUEPRINT Jackal
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -201,7 +201,7 @@ every 1 [[
     {
       "name": "Rabbit",
       "scriptText": `# BLUEPRINT Rabbit
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -255,7 +255,7 @@ every 1 [[
     {
       "name": "Plant",
       "scriptText": `# BLUEPRINT Plant
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -301,7 +301,7 @@ every 1 [[
     {
       "name": "Mouse",
       "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -355,7 +355,7 @@ every 1 [[
     {
       "name": "WildCat",
       "scriptText": `# BLUEPRINT WildCat
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -418,7 +418,7 @@ every 1 [[
     {
       "name": "Owl",
       "scriptText": `# BLUEPRINT Owl
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -470,6 +470,114 @@ every 1 [[
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
+      "name": "Snake",
+      "scriptText": `# BLUEPRINT Snake
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_snake.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Mouse' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Snake touches Mouse [[
+    ifExpr {{ Snake.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
+      featCall Snake.Costume setGlow 1
+      prop Mouse.alive setTo false
+      prop Mouse.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Snake touches Reincarnator [[
+    ifExpr {{ Snake.getProp('alive').value == false }} [[
+      featCall Snake.Costume setGlow 1
+      prop Snake.alive setTo true
+      prop Snake.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Kite",
+      "scriptText": `# BLUEPRINT Kite
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featCall agent.Costume setCostume 'web_kite.png' 0
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Physics.scale setTo 0.2
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall agent.Touches monitor 'Snake' b2b
+featCall agent.Touches monitor 'Reincarnator' b2b
+
+
+# PROGRAM EVENT
+
+every 1 [[
+  when Kite touches Snake [[
+    ifExpr {{ Kite.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
+      featCall Kite.Costume setGlow 1
+      prop Snake.alive setTo false
+      prop Snake.alpha setTo 0.3
+    ]]
+  ]]
+
+  when Kite touches Reincarnator [[
+    ifExpr {{ Kite.getProp('alive').value == false }} [[
+      featCall Kite.Costume setGlow 1
+      prop Kite.alive setTo true
+      prop Kite.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
       "name": "Reincarnator",
       "scriptText": `# BLUEPRINT Reincarnator
 # TAG isCharControllable false
@@ -494,8 +602,8 @@ featProp agent.Physics.scale setTo 0.5
       "id": "1",
       "label": "Goat1",
       "bpid": "Goat",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "initScript": `prop x setTo 228.15
+prop y setTo -167.23`
     },
     {
       "id": "2",
@@ -508,22 +616,22 @@ prop y setTo 345.41`
       "id": "3",
       "label": "Plant3",
       "bpid": "Plant",
-      "initScript": `prop x setTo -284.23
-prop y setTo 68.99`
+      "initScript": `prop x setTo 254.97
+prop y setTo 213.46`
     },
     {
       "id": "4",
       "label": "Jackal4",
       "bpid": "Jackal",
-      "initScript": `prop x setTo 243.42
-prop y setTo -125.74`
+      "initScript": `prop x setTo -29.96
+prop y setTo -253.34`
     },
     {
       "id": "5",
       "label": "Rabbit5",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo -229.58
-prop y setTo 278.29`
+      "initScript": `prop x setTo 62.54
+prop y setTo 70.64`
     },
     {
       "id": "6",
@@ -536,15 +644,36 @@ prop y setTo 289.71`
       "id": "7",
       "label": "WildCat7",
       "bpid": "WildCat",
-      "initScript": `prop x setTo 238.05
-prop y setTo 140.88`
+      "initScript": `prop x setTo -13.32
+prop y setTo -98.82`
     },
     {
       "id": "8",
       "label": "Owl8",
       "bpid": "Owl",
-      "initScript": `prop x setTo -326.76
-prop y setTo -110.17`
+      "initScript": `prop x setTo -144.76
+prop y setTo 123.99`
+    },
+    {
+      "id": "10",
+      "label": "Snake10",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -319.25
+prop y setTo 177.92`
+    },
+    {
+      "id": "11",
+      "label": "Kite11",
+      "bpid": "Kite",
+      "initScript": `prop x setTo -386.72
+prop y setTo -42.58`
+    },
+    {
+      "id": "12",
+      "label": "Lion12",
+      "bpid": "Lion",
+      "initScript": `prop x setTo -308.96
+prop y setTo -283.00`
     }
   ]
 }
