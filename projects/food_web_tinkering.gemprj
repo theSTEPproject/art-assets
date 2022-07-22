@@ -612,6 +612,23 @@ featCall agent.Costume setCostume 'background (no filter).png' 0
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]`
+    },
+    {
+      "name": "ParkRanger",
+      "scriptText": `# BLUEPRINT ParkRanger
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featCall agent.Costume setCostume 'bunny.json' 0
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
     }
   ],
   "instances": [
@@ -714,6 +731,13 @@ prop y setTo 300.10`
       "bpid": "Plant",
       "initScript": `prop x setTo 145.17
 prop y setTo 216.34`
+    },
+    {
+      "id": "16",
+      "label": "ParkRanger1",
+      "bpid": "ParkRanger",
+      "initScript": `prop x setTo 154.48
+prop y setTo -281.29`
     }
   ]
 }
