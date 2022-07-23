@@ -41,7 +41,7 @@ featCall agent.AgentWidgets bindMeterTo energy
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
 every 1 [[
-  when Fish touches Algae [[
+  when Fish firsttouches Algae [[
     // insert code here
     featCall Fish.Costume setGlow 1
     prop Fish.energy add 1

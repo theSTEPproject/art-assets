@@ -49,7 +49,7 @@ featCall agent.Touches monitor 'WildCat' b2b
 # PROGRAM EVENT
 
 every 1 [[
-  when Lion touches Goat [[
+  when Lion firsttouches Goat [[
 
     ifExpr {{ Lion.getProp('alive').value == true &&  Goat.getProp('alive').value == true }} [[
       featCall Lion.Costume setGlow 1
