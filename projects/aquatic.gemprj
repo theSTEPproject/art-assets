@@ -23,7 +23,7 @@
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 addFeature Movement
 addFeature AgentWidgets
@@ -72,7 +72,7 @@ exprPush {{ agent.name }}
 featPropPop agent.AgentWidgets.text
 
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 onEvent Start [[
 
   // start at normal size unless you eat
@@ -109,7 +109,6 @@ onEvent Start [[
   featPropPop agent.AgentWidgets.text
 
 ]]
-# PROGRAM UPDATE
 
 ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
   featProp agent.Costume.flipX setTo false
@@ -135,7 +134,7 @@ when Fish touches Algae [[
     ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
 
       // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
-      featProp Physics scale setTo 2
+      featProp Fish.Physics.scale setTo 2
       prop Fish.energyUse setTo 2
     ]]
 
@@ -192,7 +191,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 
 // required directive
-# PROGRAM CONDITION`
+ `
     },
     {
       "name": "Algae",
@@ -200,7 +199,7 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 
 addFeature Costume
 addFeature Movement
@@ -320,59 +319,54 @@ every 1 runAtStart [[
 
 
 ]]
-
-// required directive
-# PROGRAM INIT
-
-// required directive
-# PROGRAM CONDITION
-
-// required directive
-# PROGRAM EVENT`
+ 
+`
     },
     {
       "name": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
-# PROGRAM DEFINE
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
 addFeature Costume
-featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorize 1 1 0
+featCall agent.Costume setCostume 'circle.json' 0
+featCall agent.Costume setColorize 1 1 0
 prop agent.alpha setTo 0.3
-prop zIndex setTo 100
+prop agent.zIndex setTo 100
 
 addProp speed Number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
-prop speed setTo 20
+prop agent.speed setTo 20
 
 addProp energyRate Number 5
 // STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
-prop energyRate setTo 5
+prop agent.energyRate setTo 5
 
 addProp direction Number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
-prop direction setTo 1
+prop agent.direction setTo 1
 
 addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp Physics scale setTo 0.4
+featProp agent.Physics.scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp Physics scaleY setTo 2.5
+featProp agent.Physics.scaleY setTo 2.5
 
 addFeature Touches
 
-# PROGRAM INIT
 // default position for moving across the top
-prop x setTo -400
-prop y setTo -180
+prop agent.x setTo -400
+prop agent.y setTo -180
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 onEvent Tick [[
-  exprPush {{agent.x + agent.getProp('direction').value * (agent.getProp('speed').value); }}
-  propPop x
+  exprPush {{ agent.x + agent.getProp('direction').value * (agent.getProp('speed').value); }}
+  propPop agent.x
 
-  ifExpr {{ ((agent.getProp('direction').value == 1) && (agent.x > 400)) || ((agent.getProp('direction').value == -1) && (agent.x < -400))}} [[
-      exprPush {{400 * agent.getProp('direction').value * -1}}
-      propPop x
+  ifExpr {{ ((agent.getProp('direction').value == 1) && (agent.x > 400)) || ((agent.getProp('direction').value == -1) && (agent.x < -400)) }} [[
+    exprPush {{ 400 * agent.getProp('direction').value * -1 }}
+    propPop agent.x
   ]]
 ]]`
     },
@@ -382,7 +376,7 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
 featCall agent.Costume setCostume 'onexone.json' 0
@@ -397,26 +391,24 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + agent.getProp('time').value }}
   featPropPop agent.AgentWidgets.text 
 ]]
-
-// required directive
-# PROGRAM INIT
-
-// required directive
-# PROGRAM CONDITION
-
-// required directive
-# PROGRAM EVENT`
+ `
     },
     {
       "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 
-      # PROGRAM DEFINE
-      addFeature Costume
+# PROGRAM INIT
+addFeature Costume
 
-      featCall Costume setCostume 'boulder.json' 0
+featCall agent.Costume setCostume 'boulder.json' 0
 
-      addFeature Physics`
+addFeature Physics
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Turtle",
@@ -424,124 +416,135 @@ every 1 runAtStart [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 addFeature AgentWidgets
 addFeature Movement
 
 // temp until we get new art
-featCall Costume setCostume 'turtle_sprites.json' 0
-      
+featCall agent.Costume setCostume 'turtle_sprites.json' 0
+
 addProp energyLevel Number 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
-\t  
+prop agent.energyLevel setMax 100
+prop agent.energyLevel setMin 0
+
 addProp energyUse Number 1
 
 addProp health String 'healthy'
 
 // STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
-prop energyUse setTo 1
+prop agent.energyUse setTo 1
 
 addFeature Physics
 
-featProp Physics scale setTo 0.15
-      
-      // set Touches
+featProp agent.Physics.scale setTo 0.15
+
+// set Touches
 addFeature Touches
-featCall Touches monitor Fish b2b
-featCall Touches monitor Trash b2b
+featCall agent.Touches monitor 'Fish' b2b
+featCall agent.Touches monitor 'Trash' b2b
 
 // show meter immediately
-featCall AgentWidgets bindMeterTo energyLevel    
+featCall agent.AgentWidgets bindMeterTo energyLevel
 
-featProp AgentWidgets text setTo ''
+featProp agent.AgentWidgets.text setTo ' ' ''
 
 # PROGRAM UPDATE
 
 ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
-  featProp Costume flipX setTo false
+  featProp agent.Costume.flipX setTo false
 ]]
 ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
-  featProp Costume flipX setTo true
+  featProp agent.Costume.flipX setTo true
 ]]
 
 every 1 runAtStart [[
   // foodLevel goes down every n seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
   propPop agent.energyLevel
-  
-  ifExpr {{ agent.getProp('energyLevel').value == 0}} [[
-  prop agent.isInert setTo true 
-  prop agent.alpha setTo 0.3
+
+  ifExpr {{ agent.getProp('energyLevel').value == 0 }} [[
+    prop agent.isInert setTo true
+    prop agent.alpha setTo 0.3
   ]]
 ]]
-  
+
 when Turtle touches Fish [[
   every 1 runAtStart [[
-    
-    // only eat the fish if you are under 50% full or healthy
-    ifExpr {{(Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy')}} [[
-    
-    // only glow when we are healthy and can eat
-    featCall Costume setGlow 1
-    
-    // Turtle gains some energy
-    prop Turtle.energyLevel add 20
 
-    // Fish is dead 
-    prop Fish.isInert setTo true
-    prop Fish.alpha setTo 0.3
-    featCall Fish.Costume setPose 2
-    prop Fish.energyLevel setTo 0
+    // only eat the fish if you are under 50% full or healthy
+    ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+
+      // only glow when we are healthy and can eat
+      featCall agent.Costume setGlow 1
+
+      // Turtle gains some energy
+      prop Turtle.energyLevel add 20
+
+      // Fish is dead
+      prop Fish.isInert setTo true
+      prop Fish.alpha setTo 0.3
+      featCall Fish.Costume setPose 2
+      prop Fish.energyLevel setTo 0
     ]]
-      
+
   ]]
 ]]
 
 when Turtle lastTouches Fish [[
-  featCall Costume setGlow 0
+  featCall agent.Costume setGlow 0
 ]]
 
 when Turtle touches Trash [[
   every 1 runAtStart [[
     // always glow to show the interaction
-    featCall Costume setGlow 0.5
-    
-    prop health setTo 'hurt'
-    featCall Costume setColorizeHSV 0.5 1 0.5
-  \tfeatCall Trash.Population removeAgent
-  \t
+    featCall agent.Costume setGlow 0.5
+
+    prop agent.health setTo 'hurt'
+    featCall agent.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeAgent
+
     // change art
   ]]
 ]]
 
 when Turtle lastTouches Trash [[
-  featCall Costume setGlow 0
-    
-]]
-`
+  featCall agent.Costume setGlow 0
+
+]]`
     },
     {
       "name": "Trash",
       "scriptText": `# BLUEPRINT Trash
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 
-      # PROGRAM DEFINE
-      addFeature Costume
-      addFeature Population
-      featCall Costume setCostume 'trash.json' 0
+# PROGRAM INIT
+addFeature Costume
+addFeature Population
+featCall agent.Costume setCostume 'trash.json' 0
 
-      addFeature Physics
+addFeature Physics
 
-\t  featProp Physics scale setTo 0.05
-`
+featProp agent.Physics.scale setTo 0.05
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
-      # PROGRAM DEFINE
-      addFeature AgentWidgets
-      prop skin setTo 'onexone.json'`
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature AgentWidgets
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "ColorChip",
@@ -549,51 +552,29 @@ when Turtle lastTouches Trash [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featCall agent.Costume setCostume 'square.json' 0
 
 addFeature Physics
 
 // required directive
-# PROGRAM INIT
-
-// required directive
 # PROGRAM UPDATE
 
 // required directive
-# PROGRAM CONDITION
+ 
 
 // required directive
 # PROGRAM EVENT`
     },
     {
-      "name": "SettingsWidget",
-      "scriptText": `# BLUEPRINT SettingsWidget
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-# PROGRAM DEFINE
-// This is to setup the model 
-// Make sure it is loaded first, and only once to avoid issues
-// We don't need a costume but it caused an error so use one and scale to 0
-      addFeature Costume
-      featCall Costume setCostume 'circle.json' 0
-      featCall Costume setScale 0
-
-// setup an oxygen variable (amount, and whether to track it)
-// then make other things change it / check it ()
-
-
-# PROGRAM INIT
-// add the global variable setup here
-`
-    },
-    {
       "name": "MeterAlgaeEnergy",
       "scriptText": `# BLUEPRINT MeterAlgaeEnergy
-# PROGRAM DEFINE
-addProp reportSubject String Algae
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addProp reportSubject String 'Algae'
 addProp energyLevel Number 100
 
 addFeature Population
@@ -601,58 +582,60 @@ addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Algae avg energy' }}
-featPropPop AgentWidgets text
+featPropPop agent.AgentWidgets.text
 
 // Make costume an invisible dot
-prop skin setTo 'onexone.json'
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
 
 // Show meter on start.
-featProp AgentWidgets isLargeGraphic setTo true
-featProp AgentWidgets meterColor setTo 65280
+featProp agent.AgentWidgets.isLargeGraphic setTo true
+featProp agent.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
-featProp AgentWidgets meter setTo 1
+featProp agent.AgentWidgets.meter setTo 1
 
-
-# PROGRAM INIT
 // default placement for the algae meter
-prop x setTo 505
-prop y setTo 320
-prop alpha setTo 0.3
+prop agent.x setTo 505
+prop agent.y setTo 320
+prop agent.alpha setTo 0.3
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 
 onEvent Tick [[
 
-    // Algae meter display
-    featCall Population countAgentProp 'Algae' 'energyLevel'
-    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-    propPop energyLevel
+  // Algae meter display
+  featCall agent.Population countAgentProp 'Algae' 'energyLevel'
+  exprPush {{ agent.getFeatProp('Population', 'avg').value }}
+  propPop agent.energyLevel
 
-    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-    featPropPop AgentWidgets meter
+  exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop agent.AgentWidgets.meter
 
-    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
-    featPropPop AgentWidgets text
+  exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value }}
+  featPropPop agent.AgentWidgets.text
 
-    // set meter color for average energy
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
+  // set meter color for average energy
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 62580
+  ]]
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 16711680
+  ]]
 
 ]]`
     },
     {
       "name": "MeterFishEnergy",
       "scriptText": `# BLUEPRINT MeterFishEnergy
-# PROGRAM DEFINE
-addProp reportSubject String Fish
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addProp reportSubject String 'Fish'
 addProp energyLevel Number 100
 
 addFeature Population
@@ -660,111 +643,114 @@ addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Fish avg energy' }}
-featPropPop AgentWidgets text
+featPropPop agent.AgentWidgets.text
 
 // Make costume an invisible dot
-prop skin setTo 'onexone.json'
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
 
 // Show meter on start.
-featProp AgentWidgets isLargeGraphic setTo true
-featProp AgentWidgets meterColor setTo 65280
+featProp agent.AgentWidgets.isLargeGraphic setTo true
+featProp agent.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
-featProp AgentWidgets meter setTo 1
+featProp agent.AgentWidgets.meter setTo 1
 
 
-# PROGRAM INIT
 // default placement for the fish meter
-prop x setTo 505
-prop y setTo 320
-prop alpha setTo 0.3
+prop agent.x setTo 505
+prop agent.y setTo 320
+prop agent.alpha setTo 0.3
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 
 onEvent Tick [[
 
-    // Fish meter display
-    featCall Population countAgentProp 'Fish' 'energyLevel'
-    exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-    propPop energyLevel
+  // Fish meter display
+  featCall agent.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ agent.getFeatProp('Population', 'avg').value }}
+  propPop agent.energyLevel
 
-    exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-    featPropPop AgentWidgets meter
+  exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop agent.AgentWidgets.meter
 
-    exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value}}
-    featPropPop AgentWidgets text
+  exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value }}
+  featPropPop agent.AgentWidgets.text
 
-    // set meter color for average energy
-    ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-      featProp AgentWidgets meterColor setTo 16711680
-    ]]
+  // set meter color for average energy
+  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 65280
+  ]]
+  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+    featProp agent.AgentWidgets.meterColor setTo 16711680
+  ]]
 
 ]]`
     },
     {
       "name": "GraphAlgaeEnergy",
       "scriptText": `# BLUEPRINT GraphAlgaeEnergy
-            # PROGRAM DEFINE
-            prop skin setTo 'onexone.json'
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
 
-            addProp characterType String 'Algae'
-            addProp countType String 'avg'
-            addProp variableToGraph String 'energyLevel'
-            addProp labelText String 'Algae energyLevel'
+addProp characterType String 'Algae'
+addProp countType String 'avg'
+addProp variableToGraph String 'energyLevel'
+addProp labelText String 'Algae energyLevel'
 
-            // STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
-            // -- Character options: Fish, Algae
-            // -- Variable options: energyLevel
-            // -- Population options: sum, avg, min, max
-            prop characterType setTo 'Algae'
-            prop countType setTo 'avg'
-            prop variableToGraph setTo 'energyLevel'
-            prop labelText setTo 'Algae energyLevel'
+// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+// -- Character options: Fish, Algae
+// -- Variable options: energyLevel
+// -- Population options: sum, avg, min, max
+prop agent.characterType setTo 'Algae'
+prop agent.countType setTo 'avg'
+prop agent.variableToGraph setTo 'energyLevel'
+prop agent.labelText setTo 'Algae energyLevel'
 
-            addFeature AgentWidgets
-            addFeature Population
-            featProp AgentWidgets isLargeGraphic setTo true
+addFeature AgentWidgets
+addFeature Population
+featProp agent.AgentWidgets.isLargeGraphic setTo true
 
-            // using a generic name so that it is easier to change later
-            addProp graphValue Number 0
-            prop graphValue setMax 1000
-            prop graphValue setMin 0
+// using a generic name so that it is easier to change later
+addProp graphValue Number 0
+prop agent.graphValue setMax 1000
+prop agent.graphValue setMin 0
 
-           featCall AgentWidgets bindGraphTo graphValue 30
+featCall agent.AgentWidgets bindGraphTo graphValue 30
 
-            # PROGRAM INIT
-            // make sure something displays with some initial text, on bottom right at first
-            prop x setTo 505
-            prop y setTo 230
-            prop zIndex setTo 300
+// make sure something displays with some initial text, on bottom right at first
+prop agent.x setTo 505
+prop agent.y setTo 230
+prop agent.zIndex setTo 300
 
-            exprPush {{agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value}}
-            propPop labelText
+exprPush {{ agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value }}
+propPop agent.labelText
 
-            exprPush {{agent.getProp('labelText').value}}
-            featPropPop AgentWidgets text
+exprPush {{ agent.getProp('labelText').value }}
+featPropPop agent.AgentWidgets.text text
 
-            # PROGRAM EVENT
+# PROGRAM UPDATE
 
-            onEvent Tick [[
+onEvent Tick [[
 
-              exprPush {{agent.getProp('characterType').value}}
-              featPropPop Population monitoredAgent
+  exprPush {{ agent.getProp('characterType').value }}
+  featPropPop agent.Population.monitoredAgent
 
-              exprPush {{agent.getProp('variableToGraph').value}}
-              featPropPop Population monitoredAgentProp
+  exprPush {{ agent.getProp('variableToGraph').value }}
+  featPropPop agent.Population.monitoredAgentProp
 
-              featCall Population countAgentProp
+  featCall agent.Population countAgentProp
 
-              exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
-              propPop graphValue
-            ]]`
+  exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
+  propPop agent.graphValue
+]]`
     },
     {
       "name": "GraphFishEnergy",
@@ -772,7 +758,7 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featCall agent.Costume setCostume 'onexone.json' 0
 
@@ -801,7 +787,6 @@ prop agent.graphValue setMin 0
 
 featCall agent.AgentWidgets bindGraphTo graphValue 30
 
-# PROGRAM INIT
 // make sure something displays with some initial text, on bottom right at first
 prop agent.x setTo 505
 prop agent.y setTo 370
@@ -813,9 +798,6 @@ exprPush {{ agent.getProp('labelText').value }}
 
 featPropPop agent.AgentWidgets.text
 
-# PROGRAM EVENT
-
-// required directive
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
@@ -836,18 +818,10 @@ every 1 runAtStart [[
 
 
 // required directive
-# PROGRAM CONDITION`
+ `
     }
   ],
   "instances": [
-    {
-      "id": "401",
-      "label": "1_Settings",
-      "bpid": "SettingsWidget",
-      "initScript": `
-      prop x setTo -400
-prop y setTo -400`
-    },
     {
       "id": "501",
       "label": "Algae 1",
@@ -990,20 +964,6 @@ prop y setTo -132.81`
       "bpid": "Algae",
       "initScript": `prop x setTo -281.54
 prop y setTo -68.22`
-    },
-    {
-      "id": "1711",
-      "label": "Fish1711",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -45
-prop y setTo 29`
-    },
-    {
-      "id": "1712",
-      "label": "GraphFishEnergy1712",
-      "bpid": "GraphFishEnergy",
-      "initScript": `prop x setTo 502.67
-prop y setTo 267.93`
     }
   ]
 }
