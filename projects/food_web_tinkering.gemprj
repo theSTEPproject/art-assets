@@ -39,7 +39,6 @@ addFeature Touches
 featProp agent.Physics.scale setTo 0.2
 
 addProp alive Boolean true
-
 // make sure we track interactions with the other creatures
 featCall agent.Touches monitor 'Goat' b2b
 featCall agent.Touches monitor 'Jackal' b2b
@@ -707,7 +706,7 @@ prop y setTo -30.90`
       "label": "Lion12",
       "bpid": "Lion",
       "initScript": `prop x setTo -308.96
-prop y setTo -283.00`
+prop y setTo -283`
     },
     {
       "id": "13",
