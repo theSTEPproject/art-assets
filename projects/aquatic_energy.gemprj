@@ -284,7 +284,7 @@ prop Sky.zIndex setTo -100
 # PROGRAM DEFINE
 
 addFeature Costume
-featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
 
 addFeature Physics
 
@@ -294,123 +294,124 @@ addFeature Global
 
 // setup energy properties
 addProp energyLevel Number 0
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
 
 // setup energy type so that we know what we can give it to
 // start with none
 addProp energyType String 'none'
 
 addFeature Touches
-featCall Touches monitor Sun c2b
-featCall Touches monitor Algae c2b
-featCall Touches monitor Fish c2b
+featCall EnergyRepresentation.Touches monitor 'Sun' c2b
+featCall EnergyRepresentation.Touches monitor 'Algae' c2b
+featCall EnergyRepresentation.Touches monitor 'Fish' c2b
 
 # PROGRAM UPDATE
 when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
-  featCall Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
+  featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
-  
-  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
-  prop energyType setTo 'source'
-  prop energyLevel setTo 100
 
-  featCall Costume setCostume 'EnergyAnnotation_Sun1.png' 0
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
+  prop EnergyRepresentation.energyType setTo 'source'
+  prop EnergyRepresentation.energyLevel setTo 100
+
+  featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Sun1.png' 0
 ]]
- 
+
 
 when EnergyRepresentation centerFirstTouches Algae [[
-    ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none'}} [[ 
-    prop energyType setTo 'using'
-    featCall Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
-    ]]
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'using'
+    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
+  ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
   // as heat or lost in other ways
-  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'source'}} [[ 
-  prop energyType setTo 'none'
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'source' }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
 
-  // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
-  prop energyLevel setTo 0
-  prop Algae.energyLevel add 50
-  // we are losing 50 of the hundred, so not that in the global
-  featCall Global globalProp energyReleasedAsHeat add 50
+    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Algae.energyLevel add 50
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 50
 
 
-  featCall Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
+    featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
 
-  featCall Algae.Costume setGlow 1
+    featCall Algae.Costume setGlow 1
 
   ]]
 ]]
 
 
 
-  when EnergyRepresentation centerLastTouches Algae [[
+when EnergyRepresentation centerLastTouches Algae [[
 
- // if you have no energy type, take some energy from the algae
-  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'using' && Algae.getProp('energyLevel').value > 25}} [[ 
-  prop energyType setTo 'producer'
+  // if you have no energy type, take some energy from the algae
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Algae.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'producer'
 
-  // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
-  prop Algae.energyLevel sub 25
-  prop energyLevel add 25 
-  // we are losing 50 of the hundred, so not that in the global
-  featCall Global globalProp energyReleasedAsHeat add 25
+    // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
+    prop Algae.energyLevel sub 25
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
 
-  featCall Costume setCostume 'EnergyAnnotation_Plant1.png' 0
+    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Plant1.png' 0
 
-    ]]
+  ]]
 
-  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using'}} [[ 
-  prop energyType setTo 'none'
-  featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
   ]]
 
 
-  ]]
+]]
 
 
 when EnergyRepresentation centerFirstTouches Fish [[
-  
-  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none'}} [[ 
-    prop energyType setTo 'using'
-    featCall Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
-    ]]
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'using'
+    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
+  ]]
 
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-   ifExpr {{EnergyRepresentation.getProp('energyType').value == 'producer'}} [[ 
-  prop energyType setTo 'none'   
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
 
-  // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
-  prop energyLevel setTo 0
-  prop Fish.energyLevel add 10
-  // we are losing 50 of the hundred, so not that in the global
-  featCall Global globalProp energyReleasedAsHeat add 15
+    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Fish.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 15
 
-  featCall Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
-  featCall Fish.Costume setGlow 1
+    featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
+    featCall Fish.Costume setGlow 1
 
 
-   ]]
+  ]]
 
 ]]
 
-when EnergyRepresentation centerLastTouches  Fish [[
-    
+when EnergyRepresentation centerLastTouches Fish [[
 
-  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using'}} [[ 
-    prop energyType setTo 'none'
-    featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
   ]]
 
-  ]]
+]]
 
-`
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "Timer",
