@@ -17,35 +17,84 @@
   "rounds": [],
   "blueprints": [
     {
-      "id": "Sun",
-      "label": "Sun",
+      "name": "Explanation",
+      "scriptText": `# BLUEPRINT Explanation
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// ----------------------------------------------------------------------------------------------------------------
+// This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
+// ---------------------------------------------------------------------------------------------------------------- 
+
+// The goal of this model is to let students explore the energy in the aquatic system by being a 
+// representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
+// character using either pozyx or charController 
+
+// The system is intended to mirror the aquatic model in that energy is meant to go from the sun to algae to fish. 
+// To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't 
+// hurry and give it to them
+
+// The main chaaracter is therefore the EnergyRepresentation, which stuents can use to look around. As they touch
+// an energy source, they will pick up / become that kind of energy
+// So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around 
+
+# PROGRAM INIT
+addFeature Costume
+featCall agent.Costume setCostume 'onexone.json' 0
+featCall agent.Costume setScale 1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    },
+    {
+      "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
+// The sun is one of the characters that produces energy
+// Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// simple, and just needs the variables for the EnergyRepresentation to read
+
+
 addFeature Costume
-featCall Costume setCostume 'circle.json' 0
-featCall Costume setColorize 255 215 0
-prop zIndex setTo 0
+featCall Sun.Costume setCostume 'circle.json' 0
+// Instead of sun art, we are using a generic circle, so the next line tints it yellow
+featCall Sun.Costume setColorize 255 215 0
+// This makess sure the sunu is behind everything else
+prop Sun.zIndex setTo 0
 
 addFeature Physics
 featProp Physics scale setTo 0.6
 
-// types to use for energy transfer: source, producer, consumer (we might add more later)
-addProp eType String 'source'
+// types to use for energy transfer. The types are source, producer, consumer (we might add more later)
+// these are referenced by EnergyRepresentation
+addProp energyType String 'source'
 
 addFeature Global
 
-  ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-      featCall Global addGlobalProp energyReleasedAsHeat Number 0
-  ]]
+// This is a hack, using the Sun to initaliize this variable since I know it is the first 
+// Character added under instances
+// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not, 
+// creates one 
+// The EnergyRepresentation and graphs then reference this global variable
+ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
+  featCall Global addGlobalProp energyReleasedAsHeat Number 0
+]]
 
-`
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
-      "id": "Fish",
-      "label": "Fish",
+      "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
 # TAG isCharControllable true
 # TAG isPozyxControllable false
@@ -57,8 +106,9 @@ featCall Costume setCostume 'fish.json' 0
 addFeature Physics
 featProp Physics scale setTo 1.5
 
-// types to use for energy transfer: source, producer, consumer (we might add more later)
-addProp eType String 'consumer'
+// types to use for energy transfer. The types are source, producer, consumer (we might add more later)
+// these are referenced by EnergyRepresentation
+addProp energyType String 'consumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -116,80 +166,86 @@ featProp AgentWidgets meterColor setTo 65280
 `
     },
     {
-      "id": "Algae",
-      "label": "Algae",
+      "name": "Algae",
       "scriptText": `# BLUEPRINT Algae
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
 # PROGRAM DEFINE
+// The algae is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
 addFeature Costume
-featCall Costume setCostume 'algae.json' 0
+featCall Algae.Costume setCostume 'algae.json' 0
 
 addFeature Physics
-featProp Physics scale setTo 3
+featProp Algae.Physics.scale setTo 3
 
-// types to use for energy transfer: source, producer, consumer (we might add more later)
-addProp eType String 'producer'
+// types to use for energy transfer. The types are source, producer, consumer (we might add more later)
+// these are referenced by EnergyRepresentation
+addProp energyType String 'producer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop Algae.energyLevel setMax 100
+prop Algae.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
-featProp AgentWidgets meterProp setTo energyLevel
+featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp AgentWidgets meterColor setTo 65280
+featProp Algae.AgentWidgets.meterColor setTo 65280
 
 # PROGRAM UPDATE
-  every 1 runAtStart [[
+every 1 runAtStart [[
 
-    // decrease energy each tick, using the energyUse varable to determine how much
-    ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
-    propPop agent.energyLevel
-    ]]
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Algae.getProp('energyLevel').value - Algae.getProp('energyUse').value }}
+    propPop Algae.energyLevel
+  ]]
 
-    // re-scale the algae based on its energy level
-    exprPush {{ (agent.getProp('energyLevel').value / 100)* 3}}
-    featPropPop agent.Physics scale
+  // re-scale the algae based on its energy level
+  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+  featPropPop Algae.Physics.scale
 
-    // this code sets the color of the energy bar based on how hungry the fish is
-    // set algae energy meter color
-    // doing great
-    ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
-      // Green
-      featProp AgentWidgets meterColor setTo 65280
-    ]]
-    // needs some energy
-    ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
-      // Orange
-      featProp AgentWidgets meterColor setTo 16737792
-    ]]
-    // in trouble
-    ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
-      // Red
-      featProp AgentWidgets meterColor setTo 16711680
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // set algae energy meter color
+  // doing great
+  ifExpr {{ Algae.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Algae.AgentWidgets.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Algae.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Algae.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Algae.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Algae.AgentWidgets.meterColor setTo 16711680
 
-      // avoid getting too
-      exprPush {{ .90 }}
-      featPropPop agent.Physics scale
-
-    ]]
-
+    // avoid getting too
+    exprPush {{ .90 }}
+    featPropPop Algae.Physics scale
 
   ]]
 
-`
+
+]]
+
+// required directive
+# PROGRAM INIT`
     },
     {
-      "id": "Sky",
-      "label": "Sky",
+      "name": "Sky",
       "scriptText": `# BLUEPRINT Sky
 # TAG isCharControllable false
 # TAG isPozyxControllable false
@@ -209,8 +265,7 @@ prop zIndex setTo -100
 `
     },
     {
-      "id": "EnergyRepresentation",
-      "label": "EnergyRepresentation",
+      "name": "EnergyRepresentation",
       "scriptText": `# BLUEPRINT EnergyRepresentation
 # TAG isCharControllable true
 # TAG isPozyxControllable true
@@ -233,7 +288,7 @@ prop energyLevel setMin 0
 
 // setup energy type so that we know what we can give it to
 // start with none
-addProp eType String 'none'
+addProp energyType String 'none'
 
 addFeature Touches
 featCall Touches monitor Sun c2b
@@ -250,7 +305,7 @@ when EnergyRepresentation centerFirstTouches Sun [[
 when EnergyRepresentation centerLastTouches Sun [[
   
   // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
-  prop eType setTo 'source'
+  prop energyType setTo 'source'
   prop energyLevel setTo 100
 
   featCall Costume setCostume 'EnergyAnnotation_Sun1.png' 0
@@ -258,15 +313,15 @@ when EnergyRepresentation centerLastTouches Sun [[
  
 
 when EnergyRepresentation centerFirstTouches Algae [[
-    ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
-    prop eType setTo 'using'
+    ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none'}} [[ 
+    prop energyType setTo 'using'
     featCall Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
     ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
   // as heat or lost in other ways
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'source'}} [[ 
-  prop eType setTo 'none'
+  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'source'}} [[ 
+  prop energyType setTo 'none'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
   prop energyLevel setTo 0
@@ -287,8 +342,8 @@ when EnergyRepresentation centerFirstTouches Algae [[
   when EnergyRepresentation centerLastTouches Algae [[
 
  // if you have no energy type, take some energy from the algae
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'using' && Algae.getProp('energyLevel').value > 25}} [[ 
-  prop eType setTo 'producer'
+  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'using' && Algae.getProp('energyLevel').value > 25}} [[ 
+  prop energyType setTo 'producer'
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
   prop Algae.energyLevel sub 25
@@ -300,8 +355,8 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
     ]]
 
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-  prop eType setTo 'none'
+  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using'}} [[ 
+  prop energyType setTo 'none'
   featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
   ]]
 
@@ -311,14 +366,14 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
 when EnergyRepresentation centerFirstTouches Fish [[
   
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none'}} [[ 
-    prop eType setTo 'using'
+  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none'}} [[ 
+    prop energyType setTo 'using'
     featCall Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
     ]]
 
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-   ifExpr {{EnergyRepresentation.getProp('eType').value == 'producer'}} [[ 
-  prop eType setTo 'none'   
+   ifExpr {{EnergyRepresentation.getProp('energyType').value == 'producer'}} [[ 
+  prop energyType setTo 'none'   
 
   // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
   prop energyLevel setTo 0
@@ -337,8 +392,8 @@ when EnergyRepresentation centerFirstTouches Fish [[
 when EnergyRepresentation centerLastTouches  Fish [[
     
 
-  ifExpr {{EnergyRepresentation.getProp('eType').value == 'none' || EnergyRepresentation.getProp('eType').value == 'using'}} [[ 
-    prop eType setTo 'none'
+  ifExpr {{EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using'}} [[ 
+    prop energyType setTo 'none'
     featCall Costume setCostume 'EnergyAnnotation_Pick1.png' 0
   ]]
 
@@ -347,8 +402,7 @@ when EnergyRepresentation centerLastTouches  Fish [[
 `
     },
     {
-      "id": "Timer",
-      "label": "Timer",
+      "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM DEFINE
       addFeature AgentWidgets
@@ -366,8 +420,7 @@ when EnergyRepresentation centerLastTouches  Fish [[
       ]]`
     },
     {
-      "id": "EnergyInSysyem",
-      "label": "EnergyInSysyem",
+      "name": "EnergyInSysyem",
       "scriptText": `# BLUEPRINT EnergyInSysyem
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
@@ -424,8 +477,7 @@ when EnergyRepresentation centerLastTouches  Fish [[
 `
     },
     {
-      "id": "GraphLostEnergy",
-      "label": "GraphLostEnergy",
+      "name": "GraphLostEnergy",
       "scriptText": `# BLUEPRINT GraphLostEnergy
             # PROGRAM DEFINE
             prop skin setTo 'onexone.json'
