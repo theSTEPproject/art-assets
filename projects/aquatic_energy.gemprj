@@ -70,7 +70,7 @@ featCall Sun.Costume setColorize 255 215 0
 prop Sun.zIndex setTo 0
 
 addFeature Physics
-featProp Physics scale setTo 0.6
+featProp Sun.Physics.scale setTo 0.6
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -78,10 +78,10 @@ addProp energyType String 'source'
 
 addFeature Global
 
-// This is a hack, using the Sun to initaliize this variable since I know it is the first 
+// This is a hack, using the Sun to initaliize this variable since I know it is the first
 // Character added under instances
-// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not, 
-// creates one 
+// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not,
+// creates one
 // The EnergyRepresentation and graphs then reference this global variable
 ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
   featCall Global addGlobalProp energyReleasedAsHeat Number 0
@@ -99,12 +99,19 @@ ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat'
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
 # PROGRAM DEFINE
+// The fish is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
 addFeature Costume
-featCall Costume setCostume 'fish.json' 0
+featCall Fish.Costume setCostume 'fish.json' 0
 
 addFeature Physics
-featProp Physics scale setTo 1.5
+featProp Fish.Physics.scale setTo 1.5
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -112,58 +119,59 @@ addProp energyType String 'consumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop Fish.energyLevel setMax 100
+prop Fish.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
-featProp AgentWidgets meterProp setTo energyLevel
+featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp AgentWidgets meterColor setTo 65280
+featProp Fish.AgentWidgets.meterColor setTo 65280
 
 # PROGRAM UPDATE
-  every 2 runAtStart [[
+every 2 runAtStart [[
 
   // foodLevel goes down every n seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
-  propPop agent.energyLevel
+  exprPush {{ Fish.getProp('energyLevel').value - Fish.getProp('energyUse').value }}
+  propPop Fish.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the fish is
   // sated
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featCall Costume setPose 0
+  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+    featCall Fish.Costume setPose 0
     // Green
-    featProp AgentWidgets meterColor setTo 65280
+    featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-    featCall Costume setPose 1
+  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+    featCall Fish.Costume setPose 1
     // Orange
-    featProp AgentWidgets meterColor setTo 16737792
+    featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-    featCall Costume setPose 1
+  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+    featCall Fish.Costume setPose 1
     // Red
-    featProp AgentWidgets meterColor setTo 16711680
+    featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
-    featCall Costume setPose 2
+  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+    featCall Fish.Costume setPose 2
     // featCall Movement setMovementType 'float'
-    prop agent.alpha setTo 0.3
-    prop agent.isInert setTo true
+    prop Fish.alpha setTo 0.3
+    prop Fish.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
-  featCall AgentWidgets bindMeterTo energyLevel
+  featCall Fish.AgentWidgets bindMeterTo energyLevel
 
 ]]
 
-`
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "Algae",
