@@ -259,15 +259,18 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
-//Note: this character doesn't do anyhting - it is just for show'
+//Note: this character doesn't do anyhting - it is just for show since there is no 
+// other easy way to add background art
 addFeature Costume
-featCall Costume setCostume 'square.json' 0
-featCall Costume setColorize 53 81 92
+featCall Sky.Costume setCostume 'square.json' 0
+featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
-featCall Physics setSize 800 200
+featCall Sky.Physics setSize 800 200
 
-prop zIndex setTo -100
+// make sure this is always way in the back behind all 
+// of the other characters
+prop Sky.zIndex setTo -100
 
 
 `
@@ -412,20 +415,33 @@ when EnergyRepresentation centerLastTouches  Fish [[
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-      # PROGRAM DEFINE
-      addFeature AgentWidgets
-      prop skin setTo 'onexone.json'
-      addProp time Number 0
-      prop zIndex setTo 500
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+// This character isn't interactive and just shows the tine, and decreses it every second
+addFeature AgentWidgets
 
-      featProp AgentWidgets text setTo 'Time: 0'
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featCall Timer.Costume setCostume 'onexone.json' 0
+featCall Timer.Costume setScale 1
 
-      # PROGRAM UPDATE
-  every 1 runAtStart [[
-        prop time add 1
-        exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop AgentWidgets text
-      ]]`
+addProp time Number 0
+
+// set the initial label and then update it below during update
+featProp Timer.AgentWidgets.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// every second, add one to the time property and display the new time in the format \"Time: #\"\"
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.AgentWidgets.text
+]]
+
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "EnergyInSysyem",
