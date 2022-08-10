@@ -525,22 +525,22 @@ prop EnergyInSystem.x setTo 495
 prop EnergyInSystem.y setTo 187
 prop EnergyInSystem.zIndex setTo 300
 
-featProp EnergyInSystem.AgentWidgets text setTo 'Energy in System'
+featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
   
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
               // count up the algae
-              featProp EnergyInSystem.Population monitoredAgent setTo 'Algae'
-              featProp EnergyInSystem.Population monitoredAgentProp setTo 'energyLevel'
-              featCall Population countAgentProp
+              featProp EnergyInSystem.Population.monitoredAgent setTo 'Algae'
+              featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+              featCall EnergyInSystem.Population countAgentProp
               exprPush {{EnergyInSystem.getFeatProp('Population', 'sum').value }}
               propPop EnergyInSystem.totalAlgaeEnergy
 
               // count up the fish
-              featProp EnergyInSystem.Population monitoredAgent setTo 'Fish'
-              featProp EnergyInSystem.Population monitoredAgentProp setTo 'energyLevel'
+              featProp EnergyInSystem.Population.monitoredAgent setTo 'Fish'
+              featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
               featCall EnergyInSystem.Population countAgentProp
               exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
               propPop EnergyInSystem.totalFishEnergy
