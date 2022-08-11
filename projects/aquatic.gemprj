@@ -32,51 +32,51 @@ addFeature AgentWidgets
 featProp Fish.Costume.costumeName setTo 'fish.json'
 
 addProp energyLevel Number 30
-prop agent.energyLevel setMax 100
-prop agent.energyLevel setMin 0
+prop Fish.energyLevel setMax 100
+prop Fish.energyLevel setMin 0
 
 addProp type String 'change'
 addProp movementType String 'wander'
 
 // STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
-prop agent.movementType setTo 'wander'
+prop Fish.movementType setTo 'wander'
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
-prop agent.type setTo 'change'
+prop Fish.type setTo 'change'
 
 addProp energyUse Number 0
 
 // STUDENTS_MAY_CHANGE - to change how quickly Fish use up energy and get hungry
-prop agent.energyUse setTo 3
+prop Fish.energyUse setTo 3
 
 addProp grows Boolean false
 
 // STUDENTS_MAY_CHANGE - change to 1 (true) turns on the feature that allows the fish to grow if this is 1
-prop agent.grows setTo false
+prop Fish.grows setTo false
 
 addProp startDirection Number 0
 
 addFeature Physics
-featProp agent.Costume.scale setTo 1
+featProp Fish.Costume.scale setTo 1
 
 
 // set Touches
 addFeature Touches
-featCall agent.Touches monitor 'Algae' b2b
+featCall Fish.Touches monitor 'Algae' b2b
 
 // show meter immediately
 featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
 // set name
-exprPush {{ agent.name }}
-featPropPop agent.AgentWidgets.text
+exprPush {{ Fish.name }}
+featPropPop Fish.AgentWidgets.text
 
 
 # PROGRAM UPDATE
 onEvent Start [[
 
   // start at normal size unless you eat
-  featProp agent.Costume.scale setTo 1
+  featProp Fish.Costume.scale setTo 1
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
@@ -85,36 +85,34 @@ onEvent Start [[
   dbgStack
 
   // if the movementType is wander
-  ifExpr {{ agent.getProp('movementType').value == 'wander' }} [[
-    featCall agent.Movement setMovementType 'wander' 0.5
+  ifExpr {{ Fish.getProp('movementType').value == 'wander' }} [[
+    featCall Fish.Movement setMovementType 'wander' 0.5
     dbgOut 'inside wander'
   ]]
 
   // if it is edgetoedge
-  ifExpr {{ agent.getProp('movementType').value == 'edgeToEdge' }} [[
-    featCall agent.Movement setMovementType 'edgeToEdge' 1 0 180
+  ifExpr {{ Fish.getProp('movementType').value == 'edgeToEdge' }} [[
+    featCall Fish.Movement setMovementType 'edgeToEdge' 1 0 180
     dbgOut 'inside edgeetoedge'
-    exprPush {{ agent.getProp('startDirection').value }}
-    featPropPop agent.Movement.direction
+    exprPush {{ Fish.getProp('startDirection').value }}
+    featPropPop Fish.Movement.direction
   ]]
-
-  dbgOut 'after edgeetoedge'
 
 
   // STUDENTS_MAY_CHANGE to make fish move faster when they are automatic
-  featProp agent.Movement.distance setTo 2
+  featProp Fish.Movement.distance setTo 2
 
   // set name + energyLevel
-  exprPush {{ agent.name }}
-  featPropPop agent.AgentWidgets.text
+  exprPush {{ Fish.name }}
+  featPropPop Fish.AgentWidgets.text
 
 ]]
 
-ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
-  featProp agent.Costume.flipX setTo false
+ifExpr {{ Fish.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Fish.Costume.flipX setTo false
 ]]
-ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
-  featProp agent.Costume.flipX setTo true
+ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Fish.Costume.flipX setTo true
 ]]
 
 when Fish touches Algae [[
@@ -153,33 +151,33 @@ when Fish lastTouches Algae [[
 
 every 1 runAtStart [[
   // foodLevel goes down every n seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
-  propPop agent.energyLevel
+  exprPush {{ Fish.getProp('energyLevel').value - Fish.getProp('energyUse').value }}
+  propPop Fish.energyLevel
 
   // sated
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
     featProp Fish.Costume.currentFrame setTo 0
     // Green
-    featProp agent.AgentWidgets.meterColor setTo 65280
+    featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
     featProp Fish.Costume.currentFrame setTo 1
     // Orange
-    featProp agent.AgentWidgets.meterColor setTo 16737792
+    featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
     featProp Fish.Costume.currentFrame setTo 1
     // Red
-    featProp agent.AgentWidgets.meterColor setTo 16711680
+    featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
     featProp Fish.Costume.currentFrame setTo 2
-    featCall agent.Movement setMovementType 'float'
-    prop agent.alpha setTo 0.3
-    prop agent.isInert setTo true
+    featCall Fish.Movement setMovementType 'float'
+    prop Fish.alpha setTo 0.3
+    prop Fish.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
@@ -207,15 +205,15 @@ addFeature AgentWidgets
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
 addProp type String 'change'
-prop agent.type setTo 'change'
+prop Algae.type setTo 'change'
 
 // default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
 addProp spawns Boolean false
 
 // STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
-prop agent.spawns setTo false
+prop Algae.spawns setTo false
 
-featProp agent.Costume.costumeName setTo 'algae.json'
+featProp Algae.Costume.costumeName setTo 'algae.json'
 
 // show meter immediately
 featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
@@ -223,41 +221,41 @@ featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 
 // setup energyLevel variablee
 addProp energyLevel Number 100
-prop agent.energyLevel setMax 100
-prop agent.energyLevel setMin 0
+prop Algae.energyLevel setMax 100
+prop Algae.energyLevel setMin 0
 
 // set algae energy meter color for start
-ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-  featProp agent.AgentWidgets.meterColor setTo 62850
+ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 62850
 ]]
-ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-  featProp agent.AgentWidgets.meterColor setTo 16737792
+ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 16737792
 ]]
-ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-  featProp agent.AgentWidgets.meterColor setTo 16711680
+ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 16711680
 ]]
 
 addProp energyUse Number 0
 
 // STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
-prop agent.energyUse setTo 0
+prop Algae.energyUse setTo 0
 
 addFeature Physics
 
 addFeature Touches
-featCall agent.Touches monitor 'Fish' b2b
-featCall agent.Touches monitor 'Sunbeam' b2b
+featCall Algae.Touches monitor 'Fish' b2b
+featCall Algae.Touches monitor 'Sunbeam' b2b
 
 featProp Algae.AgentWidgets.text setTo ''
 
 // STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
-featProp agent.Movement.movementType setTo 'wander'
-featProp agent.Movement.distance setTo 0.2
+featProp Algae.Movement.movementType setTo 'wander'
+featProp Algae.Movement.distance setTo 0.2
 
-exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
+exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
 featPropPop Algae.Costume.scale
 
-prop agent.zIndex setTo -110
+prop Algae.zIndex setTo -110
 
 # PROGRAM UPDATE
 when Algae touches Sunbeam [[
@@ -267,10 +265,10 @@ when Algae touches Sunbeam [[
     propPop Algae.energyLevel
 
     // if Spawning is active, create more algae when we hit 100
-    ifExpr {{ agent.getProp('spawns').value }} [[
+    ifExpr {{ Algae.getProp('spawns').value }} [[
       // Only spawn more if we are under 200 total ... to avoid crashing the system
       ifExpr {{ Algae.callFeatMethod('Population', 'getActiveAgentsCount', 'Algae') < 200 }} [[
-        ifExpr {{ agent.getProp('energyLevel').value == 100 }} [[
+        ifExpr {{ Algae.getProp('energyLevel').value == 100 }} [[
           prop Algae.energyLevel sub 50
           featCall Algae.Population createAgent Algae [[
             // STUDENTS_MAY_CHANGE - maybe change the new energy level (currently 40) or the threshold (from 100) or the new position or other things
@@ -291,30 +289,30 @@ when Algae lastTouches Sunbeam [[
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
-    propPop agent.energyLevel
+  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Algae.getProp('energyLevel').value - agent.getProp('energyUse').value }}
+    propPop Algae.energyLevel
   ]]
 
   // re-scale the algae based on its energy level
-  exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-  featPropPop agent.Costume.scale
+  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+  featPropPop Algae.Costume.scale
 
   // set algae energy meter color
   // doing great
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+  ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
     // Green
-    featProp agent.AgentWidgets.meterColor setTo 65280
+    featProp Algae.AgentWidgets.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+  ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
     // Orange
-    featProp agent.AgentWidgets.meterColor setTo 16737792
+    featProp Algae.AgentWidgets.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+  ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
     // Red
-    featProp agent.AgentWidgets.meterColor setTo 16711680
+    featProp Algae.AgentWidgets.meterColor setTo 16711680
   ]]
 
 
@@ -328,43 +326,43 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'circle.json'
-featCall agent.Costume setColorize 1 1 0
-prop agent.alpha setTo 0.3
-prop agent.zIndex setTo 100
+featProp Sunbeam.Costume.costumeName setTo 'circle.json'
+featCall Sunbeam.Costume setColorize 1 1 0
+prop Sunbeam.alpha setTo 0.3
+prop Sunbeam.zIndex setTo 100
 
 addProp speed Number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
-prop agent.speed setTo 20
+prop Sunbeam.speed setTo 20
 
 addProp energyRate Number 5
 // STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
-prop agent.energyRate setTo 5
+prop Sunbeam.energyRate setTo 5
 
 addProp direction Number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
-prop agent.direction setTo 1
+prop Sunbeam.direction setTo 1
 
 addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp agent.Costume.scale setTo 0.4
+featProp Sunbeam.Costume.scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp agent.Costume.scaleY setTo 2.5
+featProp Sunbeam.Costume.scaleY setTo 2.5
 
 addFeature Touches
 
 // default position for moving across the top
-prop agent.x setTo -400
-prop agent.y setTo -180
+prop Sunbeam.x setTo -400
+prop Sunbeam.y setTo -180
 
 # PROGRAM UPDATE
 onEvent Tick [[
-  exprPush {{ agent.x + agent.getProp('direction').value * (agent.getProp('speed').value); }}
-  propPop agent.x
+  exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
+  propPop Sunbeam.x
 
-  ifExpr {{ ((agent.getProp('direction').value == 1) && (agent.x > 400)) || ((agent.getProp('direction').value == -1) && (agent.x < -400)) }} [[
-    exprPush {{ 400 * agent.getProp('direction').value * -1 }}
-    propPop agent.x
+  ifExpr {{ ((Sunbeam.getProp('direction').value == 1) && (Sunbeam.x > 400)) || ((Sunbeam.getProp('direction').value == -1) && (agent.x < -400)) }} [[
+    exprPush {{ 400 * Sunbeam.getProp('direction').value * -1 }}
+    propPop Sunbeam.x
   ]]
 ]]`
     },
@@ -377,17 +375,17 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json'
+featProp Timer.Costume.costumeName setTo 'onexone.json'
 
 addProp time Number 0
 
-featProp agent.AgentWidgets.text setTo 'Time: 0'
+featProp Timer.AgentWidgets.text setTo 'Time: 0'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  prop agent.time add 1
-  exprPush {{ 'Time: ' + agent.getProp('time').value }}
-  featPropPop agent.AgentWidgets.text 
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.AgentWidgets.text 
 ]]
  `
     },
@@ -401,7 +399,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 
-featProp agent.Costume.costumeName setTo 'boulder.json'
+featProp Rock.Costume.costumeName setTo 'boulder.json'
 
 addFeature Physics
 
@@ -420,50 +418,50 @@ addFeature AgentWidgets
 addFeature Movement
 
 // temp until we get new art
-featProp agent.Costume.costumeName setTo 'turtle_sprites.json'
+featProp Turtle.Costume.costumeName setTo 'turtle_sprites.json'
 
 addProp energyLevel Number 50
-prop agent.energyLevel setMax 100
-prop agent.energyLevel setMin 0
+prop Turtle.energyLevel setMax 100
+prop Turtle.energyLevel setMin 0
 
 addProp energyUse Number 1
 
 addProp health String 'healthy'
 
 // STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
-prop agent.energyUse setTo 1
+prop Turtle.energyUse setTo 1
 
 addFeature Physics
 
-featProp agent.Costume.scale setTo 0.15
+featProp Turtle.Costume.scale setTo 0.15
 
 // set Touches
 addFeature Touches
-featCall agent.Touches monitor 'Fish' b2b
-featCall agent.Touches monitor 'Trash' b2b
+featCall Turtle.Touches monitor 'Fish' b2b
+featCall Turtle.Touches monitor 'Trash' b2b
 
 // show meter immediately
 featProp Turtle.AgentWidgets.meterProp setTo 'energyLevel'
 
-featProp agent.AgentWidgets.text setTo ''
+featProp Turtle.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 
-ifExpr {{ agent.prop.Movement.compassDirection.value === 'E' }} [[
-  featProp agent.Costume.flipX setTo false
+ifExpr {{ Turtle.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Turtle.Costume.flipX setTo false
 ]]
-ifExpr {{ agent.prop.Movement.compassDirection.value === 'W' }} [[
-  featProp agent.Costume.flipX setTo true
+ifExpr {{ Turtle.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Turtle.Costume.flipX setTo true
 ]]
 
 every 1 runAtStart [[
   // foodLevel goes down every n seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
-  propPop agent.energyLevel
+  exprPush {{ Turtle.getProp('energyLevel').value - Turtle.getProp('energyUse').value }}
+  propPop Turtle.energyLevel
 
-  ifExpr {{ agent.getProp('energyLevel').value == 0 }} [[
-    prop agent.isInert setTo true
-    prop agent.alpha setTo 0.3
+  ifExpr {{ Turtle.getProp('energyLevel').value == 0 }} [[
+    prop Turtle.isInert setTo true
+    prop Turtle.alpha setTo 0.3
   ]]
 ]]
 
@@ -474,7 +472,7 @@ when Turtle touches Fish [[
     ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
 
       // only glow when we are healthy and can eat
-      featProp agent.Costume.glow setTo 1
+      featProp Turtle.Costume.glow setTo 1
 
       // Turtle gains some energy
       prop Turtle.energyLevel add 20
@@ -490,16 +488,16 @@ when Turtle touches Fish [[
 ]]
 
 when Turtle lastTouches Fish [[
-  featProp agent.Costume.glow setTo 0
+  featProp Turtle.Costume.glow setTo 0
 ]]
 
 when Turtle touches Trash [[
   every 1 runAtStart [[
     // always glow to show the interaction
-    featProp agent.Costume.glow setTo 0.5
+    featProp Turtle.Costume.glow setTo 0.5
 
-    prop agent.health setTo 'hurt'
-    featProp agent.Costume setColorizeHSV 0.5 1 0.5
+    prop Turtle.health setTo 'hurt'
+    featProp Turtle.Costume setColorizeHSV 0.5 1 0.5
     featCall Trash.Population removeAgent
 
     // change art
@@ -507,7 +505,7 @@ when Turtle touches Trash [[
 ]]
 
 when Turtle lastTouches Trash [[
-  featProp agent.Costume.glow setTo 0
+  featProp Turtle.Costume.glow setTo 0
 
 ]]`
     },
@@ -521,11 +519,11 @@ when Turtle lastTouches Trash [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Population
-featProp agent.Costume.costumeName setTo 'trash.json'
+featProp Trash.Costume.costumeName setTo 'trash.json'
 
 addFeature Physics
 
-featProp agent.Costume.scale setTo 0.05
+featProp Trash.Costume.scale setTo 0.05
 
 // required directive
 # PROGRAM UPDATE`
@@ -539,7 +537,7 @@ featProp agent.Costume.scale setTo 0.05
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
@@ -552,7 +550,7 @@ featProp agent.Costume.costumeName setTo 'onexone.json'
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'square.json'
+featProp ColorChip.Costume.costumeName setTo 'square.json'
 
 addFeature Physics
 
@@ -580,48 +578,48 @@ addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Algae avg energy' }}
-featPropPop agent.AgentWidgets.text
+featPropPop MeterAlgaeEnergy.AgentWidgets.text
 
 // Make costume an invisible dot
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json'
+featProp MeterAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
 
 // Show meter on start.
-featProp agent.AgentWidgets.isLargeGraphic setTo true
-featProp agent.AgentWidgets.meterColor setTo 65280
+featProp MeterAlgaeEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
 featProp MeterAlgaeEnergy.AgentWidgets.meterProp setTo 1
 
 // default placement for the algae meter
-prop agent.x setTo 505
-prop agent.y setTo 320
-prop agent.alpha setTo 0.3
+prop MeterAlgaeEnergy.x setTo 505
+prop MeterAlgaeEnergy.y setTo 320
+prop MeterAlgaeEnergy.alpha setTo 0.3
 
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
   // Algae meter display
-  featCall agent.Population countAgentProp 'Algae' 'energyLevel'
-  exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-  propPop agent.energyLevel
+  featCall MeterAlgaeEnergy.Population countAgentProp 'Algae' 'energyLevel'
+  exprPush {{ MeterAlgaeEnergy.getFeatProp('Population', 'avg').value }}
+  propPop MeterAlgaeEnergy.energyLevel
 
-  exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-  featPropPop agent.AgentWidgets.meter
+  exprPush {{ MeterAlgaeEnergy.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop MeterAlgaeEnergy.AgentWidgets.meter
 
-  exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value }}
-  featPropPop agent.AgentWidgets.text
+  exprPush {{ MeterAlgaeEnergy.getProp('reportSubject').value + ' avg: ' + MeterAlgaeEnergy.getProp('energyLevel').value }}
+  featPropPop MeterAlgaeEnergy.AgentWidgets.text
 
   // set meter color for average energy
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 62580
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value > 50 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 62580
   ]]
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 16737792
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value < 50 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 16737792
   ]]
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 16711680
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value < 20 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 16711680
   ]]
 
 ]]`
@@ -641,49 +639,49 @@ addFeature AgentWidgets
 
 // setup the meter title
 exprPush {{ 'Fish avg energy' }}
-featPropPop agent.AgentWidgets.text
+featPropPop MeterFishEnergy.AgentWidgets.text
 
 // Make costume an invisible dot
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json'
+featProp MeterFishEnergy.Costume.costumeName setTo 'onexone.json'
 
 // Show meter on start.
-featProp agent.AgentWidgets.isLargeGraphic setTo true
-featProp agent.AgentWidgets.meterColor setTo 65280
+featProp MeterFishEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp MeterFishEnergy.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
-featProp agent.AgentWidgets.meterProp setTo 1
+featProp MeterFishEnergy.AgentWidgets.meterProp setTo 1
 
 
 // default placement for the fish meter
-prop agent.x setTo 505
-prop agent.y setTo 320
-prop agent.alpha setTo 0.3
+prop MeterFishEnergy.x setTo 505
+prop MeterFishEnergy.y setTo 320
+prop MeterFishEnergy.alpha setTo 0.3
 
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
   // Fish meter display
-  featCall agent.Population countAgentProp 'Fish' 'energyLevel'
-  exprPush {{ agent.getFeatProp('Population', 'avg').value }}
-  propPop agent.energyLevel
+  featCall MeterFishEnergy.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ MeterFishEnergy.getFeatProp('Population', 'avg').value }}
+  propPop MeterFishEnergy.energyLevel
 
-  exprPush {{ agent.getFeatProp('Population', 'avg').value / 100 }}
-  featPropPop agent.AgentWidgets.meter
+  exprPush {{ MeterFishEnergy.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop MeterFishEnergy.AgentWidgets.meter
 
-  exprPush {{ agent.getProp('reportSubject').value + ' avg: ' + agent.getProp('energyLevel').value }}
-  featPropPop agent.AgentWidgets.text
+  exprPush {{ MeterFishEnergy.getProp('reportSubject').value + ' avg: ' + MeterFishEnergy.getProp('energyLevel').value }}
+  featPropPop MeterFishEnergy.AgentWidgets.text
 
   // set meter color for average energy
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 65280
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value > 50 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 65280
   ]]
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 16737792
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value < 50 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 16737792
   ]]
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-    featProp agent.AgentWidgets.meterColor setTo 16711680
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value < 20 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 16711680
   ]]
 
 ]]`
@@ -707,47 +705,47 @@ addProp labelText String 'Algae energyLevel'
 // -- Character options: Fish, Algae
 // -- Variable options: energyLevel
 // -- Population options: sum, avg, min, max
-prop agent.characterType setTo 'Algae'
-prop agent.countType setTo 'avg'
-prop agent.variableToGraph setTo 'energyLevel'
-prop agent.labelText setTo 'Algae energyLevel'
+prop GraphAlgaeEnergy.characterType setTo 'Algae'
+prop GraphAlgaeEnergy.countType setTo 'avg'
+prop GraphAlgaeEnergy.variableToGraph setTo 'energyLevel'
+prop GraphAlgaeEnergy.labelText setTo 'Algae energyLevel'
 
 addFeature AgentWidgets
 addFeature Population
-featProp agent.AgentWidgets.isLargeGraphic setTo true
+featProp GraphAlgaeEnergy.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp graphValue Number 0
-prop agent.graphValue setMax 1000
-prop agent.graphValue setMin 0
+prop GraphAlgaeEnergy.graphValue setMax 1000
+prop GraphAlgaeEnergy.graphValue setMin 0
 
-featCall agent.AgentWidgets bindGraphTo graphValue 30
+featCall GraphAlgaeEnergy.AgentWidgets bindGraphTo graphValue 30
 
 // make sure something displays with some initial text, on bottom right at first
-prop agent.x setTo 505
-prop agent.y setTo 230
-prop agent.zIndex setTo 300
+prop GraphAlgaeEnergy.x setTo 505
+prop GraphAlgaeEnergy.y setTo 230
+prop GraphAlgaeEnergy.zIndex setTo 300
 
-exprPush {{ agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value }}
-propPop agent.labelText
+exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
+propPop GraphAlgaeEnergy.labelText
 
-exprPush {{ agent.getProp('labelText').value }}
-featPropPop agent.AgentWidgets.text text
+exprPush {{ GraphAlgaeEnergy.getProp('labelText').value }}
+featPropPop GraphAlgaeEnergy.AgentWidgets.text text
 
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
-  exprPush {{ agent.getProp('characterType').value }}
-  featPropPop agent.Population.monitoredAgent
+  exprPush {{ GraphAlgaeEnergy.getProp('characterType').value }}
+  featPropPop GraphAlgaeEnergy.Population.monitoredAgent
 
-  exprPush {{ agent.getProp('variableToGraph').value }}
-  featPropPop agent.Population.monitoredAgentProp
+  exprPush {{ GraphAlgaeEnergy.getProp('variableToGraph').value }}
+  featPropPop GraphAlgaeEnergy.Population.monitoredAgentProp
 
-  featCall agent.Population countAgentProp
+  featCall GraphAlgaeEnergy.Population countAgentProp
 
-  exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
-  propPop agent.graphValue
+  exprPush {{ GraphAlgaeEnergy.getFeatProp('Population', GraphAlgaeEnergy.prop.countType.value).value }}
+  propPop GraphAlgaeEnergy.graphValue
 ]]`
     },
     {
@@ -769,47 +767,47 @@ addProp labelText String 'Fish energyLevel'
 // -- Character options: Fish, Algae
 // -- Variable options: energyLevel
 // -- Population options: sum, avg, min, max
-prop agent.characterType setTo 'Fish'
-prop agent.countType setTo 'avg'
-prop agent.variableToGraph setTo 'energyLevel'
-prop agent.labelText setTo 'Fish energyLevel'
+prop GraphFishEnergy.characterType setTo 'Fish'
+prop GraphFishEnergy.countType setTo 'avg'
+prop GraphFishEnergy.variableToGraph setTo 'energyLevel'
+prop GraphFishEnergy.labelText setTo 'Fish energyLevel'
 
 addFeature AgentWidgets
 addFeature Population
-featProp agent.AgentWidgets.isLargeGraphic setTo true
+featProp GraphFishEnergy.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp graphValue Number 0
-prop agent.graphValue setMax 1000
-prop agent.graphValue setMin 0
+prop GraphFishEnergy.graphValue setMax 1000
+prop GraphFishEnergy.graphValue setMin 0
 
-featCall agent.AgentWidgets bindGraphTo graphValue 30
+featCall GraphFishEnergy.AgentWidgets bindGraphTo graphValue 30
 
 // make sure something displays with some initial text, on bottom right at first
-prop agent.x setTo 505
-prop agent.y setTo 370
-prop agent.zIndex setTo 300
+prop GraphFishEnergy.x setTo 505
+prop GraphFishEnergy.y setTo 370
+prop GraphFishEnergy.zIndex setTo 300
 
-exprPush {{ agent.getProp('characterType').value + ' ' + agent.getProp('countType').value + ' ' + agent.getProp('variableToGraph').value }}
-propPop agent.labelText
-exprPush {{ agent.getProp('labelText').value }}
+exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
+propPop GraphFishEnergy.labelText
+exprPush {{ GraphFishEnergy.getProp('labelText').value }}
 
-featPropPop agent.AgentWidgets.text
+featPropPop GraphFishEnergy.AgentWidgets.text
 
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
 
 
-  exprPush {{ agent.getProp('characterType').value }}
+  exprPush {{ GraphFishEnergy.getProp('characterType').value }}
   featPropPop Population monitoredAgent
 
-  exprPush {{ agent.getProp('variableToGraph').value }}
+  exprPush {{ GraphFishEnergy.getProp('variableToGraph').value }}
   featPropPop Population monitoredAgentProp
 
   featCall Population countAgentProp
 
-  exprPush {{ agent.getFeatProp('Population', agent.prop.countType.value).value }}
+  exprPush {{ GraphFishEnergy.getFeatProp('Population', GraphFishEnergy.prop.countType.value).value }}
   propPop graphValue
   
 ]]
