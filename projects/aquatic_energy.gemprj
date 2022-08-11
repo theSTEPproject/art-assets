@@ -41,8 +41,8 @@
 
 # PROGRAM INIT
 addFeature Costume
-feafeatProptCall agent.Costume.costumeName setTo 'onexone.json' 0
-featCall agent.Costume setScale 1
+featProp agent.Costume.costumeName setTo 'onexone.json' 0
+featProp agent.Costume.scale setTo 1
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -70,7 +70,7 @@ featCall Sun.Costume setColorize 255 215 0
 prop Sun.zIndex setTo 0
 
 addFeature Physics
-featProp Sun.Physics.scale setTo 0.6
+featProp Sun.Costume.scale setTo 0.6
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -111,7 +111,7 @@ addFeature Costume
 featProp Fish.Costume.costumeName setTo 'fish.json'
 
 addFeature Physics
-featProp Fish.Physics.scale setTo 1.5
+featProp Fish.Costume.scale setTo 1.5
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -141,32 +141,32 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the fish is
   // sated
   ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
-    featCall Fish.Costume setPose 0
+    featProp Fish.Costume.currentFrame setTo 0
     // Green
     featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
-    featCall Fish.Costume setPose 1
+    featProp Fish.Costume.currentFrame setTo 1
     // Orange
     featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
-    featCall Fish.Costume setPose 1
+    featProp Fish.Costume.currentFrame setTo 1
     // Red
     featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
-    featCall Fish.Costume setPose 2
+    featProp Fish.Costume.currentFrame setTo 2
     // featCall Movement setMovementType 'float'
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
-  featCall Fish.AgentWidgets bindMeterTo energyLevel
+  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
 ]]
 
@@ -190,7 +190,7 @@ addFeature Costume
 featProp Algae.Costume.costumeName setTo 'algae.json'
 
 addFeature Physics
-featProp Algae.Physics.scale setTo 3
+featProp Algae.Costume.scale setTo 3
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -221,7 +221,7 @@ every 1 runAtStart [[
 
   // re-scale the algae based on its energy level
   exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
-  featPropPop Algae.Physics.scale
+  featPropPop Algae.Costume.scale
 
   // this code sets the color of the energy bar based on how hungry the fish is
   // set algae energy meter color
@@ -242,7 +242,7 @@ every 1 runAtStart [[
 
     // avoid getting too
     exprPush {{ .90 }}
-    featPropPop Algae.Physics scale
+    featPropPop Algae.Costume scale
 
   ]]
 
@@ -266,7 +266,8 @@ featProp Sky.Costume.costumeName setTo 'square.json'
 featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
-featCall Sky.Physics setSize 800 200
+featProp Sky.Costume.width setTo 800 
+featProp Sky.Costume.height setTo 200 
 
 // make sure this is always way in the back behind all 
 // of the other characters
@@ -343,7 +344,7 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
     featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
 
-    featCall Algae.Costume.glow setTo 1
+    featProp Algae.Costume.glow setTo 1
 
   ]]
 ]]
@@ -393,7 +394,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
     featCall Global globalProp energyReleasedAsHeat add 15
 
     featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
-    featCall Fish.Costume.glow setTo 1
+    featProp Fish.Costume.glow setTo 1
 
 
   ]]
@@ -426,7 +427,7 @@ addFeature AgentWidgets
 // hide the actual art since we just want the text to displaay
 addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
-featCall Timer.Costume setScale 1
+featProp Timer.Costume.scale setTo 1
 
 addProp time Number 0
 
@@ -459,7 +460,7 @@ every 1 runAtStart [[
 // hide the actual art since we just want the text to displaay
 addFeature Costume
 featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
-featCall GraphLostEnergy.Costume setScale 1
+featProp GraphLostEnergy.Costume.scale setTo 1
 
 addFeature AgentWidgets
 addFeature Population
@@ -472,7 +473,7 @@ addProp lostEnergy Number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-featCall GraphLostEnergy.AgentWidgets bindGraphTo lostEnergy 30
+featProp GraphLostEnergy.AgentWidgets.meterProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
 prop GraphLostEnergy.x setTo 495
@@ -496,12 +497,15 @@ onEvent Tick [[
     {
       "name": "EnergyInSystem",
       "scriptText": `# BLUEPRINT EnergyInSystem
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
-featCall EnergyInSystem.Costume setScale 1
+featProp EnergyInSystem.Costume.scale setTo 1
 
 addFeature AgentWidgets
 addFeature Population
@@ -517,8 +521,8 @@ prop EnergyInSystem.totalEnergy setMin 0
 addProp totalAlgaeEnergy Number 0
 addProp totalFishEnergy Number 0
 
-           
-featCall EnergyInSystem.AgentWidgets bindGraphTo totalEnergy 30
+
+featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
 prop EnergyInSystem.x setTo 495
@@ -526,32 +530,34 @@ prop EnergyInSystem.y setTo 187
 prop EnergyInSystem.zIndex setTo 300
 
 featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
-  
+
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
-              // count up the algae
-              featProp EnergyInSystem.Population.monitoredAgent setTo 'Algae'
-              featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-              featCall EnergyInSystem.Population countAgentProp
-              exprPush {{EnergyInSystem.getFeatProp('Population', 'sum').value }}
-              propPop EnergyInSystem.totalAlgaeEnergy
+  // count up the algae
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'Algae'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalAlgaeEnergy
 
-              // count up the fish
-              featProp EnergyInSystem.Population.monitoredAgent setTo 'Fish'
-              featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-              featCall EnergyInSystem.Population countAgentProp
-              exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-              propPop EnergyInSystem.totalFishEnergy
+  // count up the fish
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'Fish'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalFishEnergy
 
-              // graph the sum
-              exprPush {{EnergyInSystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
-              propPop EnergyInSystem.totalEnergy
+  // graph the sum
+  exprPush {{ EnergyInSystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
+  propPop EnergyInSystem.totalEnergy
 
 
 ]]
-`
+
+// required directive
+# PROGRAM INIT`
     }
   ],
   "instances": [
