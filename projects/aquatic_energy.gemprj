@@ -41,7 +41,7 @@
 
 # PROGRAM INIT
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+feafeatProptCall agent.Costume.costumeName setTo 'onexone.json' 0
 featCall agent.Costume setScale 1
 
 # PROGRAM UPDATE
@@ -63,7 +63,7 @@ featCall agent.Costume setScale 1
 
 
 addFeature Costume
-featCall Sun.Costume setCostume 'circle.json' 0
+featProp Sun.Costume.costumeName setTo 'circle.json'
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
 featCall Sun.Costume setColorize 255 215 0
 // This makess sure the sunu is behind everything else
@@ -108,7 +108,7 @@ ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat'
 
 
 addFeature Costume
-featCall Fish.Costume setCostume 'fish.json' 0
+featProp Fish.Costume.costumeName setTo 'fish.json'
 
 addFeature Physics
 featProp Fish.Physics.scale setTo 1.5
@@ -187,7 +187,7 @@ every 2 runAtStart [[
 // how much energy it has
 
 addFeature Costume
-featCall Algae.Costume setCostume 'algae.json' 0
+featProp Algae.Costume.costumeName setTo 'algae.json'
 
 addFeature Physics
 featProp Algae.Physics.scale setTo 3
@@ -262,7 +262,7 @@ every 1 runAtStart [[
 //Note: this character doesn't do anyhting - it is just for show since there is no 
 // other easy way to add background art
 addFeature Costume
-featCall Sky.Costume setCostume 'square.json' 0
+featProp Sky.Costume.costumeName setTo 'square.json'
 featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
@@ -284,7 +284,7 @@ prop Sky.zIndex setTo -100
 # PROGRAM DEFINE
 
 addFeature Costume
-featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
 
 addFeature Physics
 
@@ -310,7 +310,7 @@ featCall EnergyRepresentation.Touches monitor 'Fish' c2b
 when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
-  featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_SunProducing1.png' 0
+  featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_SunProducing1.png'
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
@@ -319,14 +319,14 @@ when EnergyRepresentation centerLastTouches Sun [[
   prop EnergyRepresentation.energyType setTo 'source'
   prop EnergyRepresentation.energyLevel setTo 100
 
-  featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Sun1.png' 0
+  featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Sun1.png'
 ]]
 
 
 when EnergyRepresentation centerFirstTouches Algae [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
-    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_PlantUsing.png' 0
+    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_PlantUsing.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
@@ -343,7 +343,7 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
     featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
 
-    featCall Algae.Costume setGlow 1
+    featCall Algae.Costume.glow setTo 1
 
   ]]
 ]]
@@ -362,13 +362,13 @@ when EnergyRepresentation centerLastTouches Algae [[
     // we are losing 50 of the hundred, so not that in the global
     featCall Global globalProp energyReleasedAsHeat add 25
 
-    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Plant1.png' 0
+    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Plant1.png'
 
   ]]
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
   ]]
 
 
@@ -379,7 +379,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
-    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_FishUsing1.png' 0
+    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_FishUsing1.png'
   ]]
 
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
@@ -393,7 +393,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
     featCall Global globalProp energyReleasedAsHeat add 15
 
     featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
-    featCall Fish.Costume setGlow 1
+    featCall Fish.Costume.glow setTo 1
 
 
   ]]
@@ -405,7 +405,7 @@ when EnergyRepresentation centerLastTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featCall EnergyRepresentation.Costume setCostume 'EnergyAnnotation_Pick1.png' 0
+    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
   ]]
 
 ]]
@@ -425,7 +425,7 @@ addFeature AgentWidgets
 
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featCall Timer.Costume setCostume 'onexone.json' 0
+featProp Timer.Costume.costumeName setTo 'onexone.json'
 featCall Timer.Costume setScale 1
 
 addProp time Number 0
@@ -458,7 +458,7 @@ every 1 runAtStart [[
 
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featCall GraphLostEnergy.Costume setCostume 'onexone.json' 0
+featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
 featCall GraphLostEnergy.Costume setScale 1
 
 addFeature AgentWidgets
@@ -500,7 +500,7 @@ onEvent Tick [[
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featCall EnergyInSystem.Costume setCostume 'onexone.json' 0
+featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 featCall EnergyInSystem.Costume setScale 1
 
 addFeature AgentWidgets

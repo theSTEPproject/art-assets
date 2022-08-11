@@ -29,7 +29,7 @@ addFeature Movement
 addFeature AgentWidgets
 // addFeature Cursor
 
-featCall agent.Costume setCostume 'fish.json' 0
+featProp Fish.Costume.costumeName setTo 'fish.json'
 
 addProp energyLevel Number 30
 prop agent.energyLevel setMax 100
@@ -57,7 +57,7 @@ prop agent.grows setTo false
 addProp startDirection Number 0
 
 addFeature Physics
-featProp agent.Physics.scale setTo 1
+featProp agent.Costume.scale setTo 1
 
 
 // set Touches
@@ -65,7 +65,7 @@ addFeature Touches
 featCall agent.Touches monitor 'Algae' b2b
 
 // show meter immediately
-featCall agent.AgentWidgets bindMeterTo energyLevel
+featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
 // set name
 exprPush {{ agent.name }}
@@ -76,7 +76,7 @@ featPropPop agent.AgentWidgets.text
 onEvent Start [[
 
   // start at normal size unless you eat
-  featProp agent.Physics.scale setTo 1
+  featProp agent.Costume.scale setTo 1
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
@@ -121,7 +121,7 @@ when Fish touches Algae [[
   every 1 runAtStart [[
     // always glow to show the interaction
     ifExpr {{ Fish.getProp('isInert').value != true }} [[
-      featCall Fish.Costume setGlow 4
+      featProp Fish.Costume.glow setTo 4
     ]]
 
     // only eat if the algae is above 0
@@ -134,7 +134,7 @@ when Fish touches Algae [[
     ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
 
       // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
-      featProp Fish.Physics.scale setTo 2
+      featProp Fish.Costume.scale setTo 2
       prop Fish.energyUse setTo 2
     ]]
 
@@ -147,7 +147,7 @@ when Fish touches Algae [[
 ]]
 
 when Fish lastTouches Algae [[
-  featCall Fish.Costume setGlow 0
+  featProp Fish.Costume.glow setTo 0
 ]]
 
 
@@ -158,40 +158,39 @@ every 1 runAtStart [[
 
   // sated
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featCall agent.Costume setPose 0
+    featProp Fish.Costume.currentFrame setTo 0
     // Green
     featProp agent.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-    featCall agent.Costume setPose 1
+    featProp Fish.Costume.currentFrame setTo 1
     // Orange
     featProp agent.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-    featCall agent.Costume setPose 1
+    featProp Fish.Costume.currentFrame setTo 1
     // Red
     featProp agent.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
-    featCall agent.Costume setPose 2
+    featProp Fish.Costume.currentFrame setTo 2
     featCall agent.Movement setMovementType 'float'
     prop agent.alpha setTo 0.3
     prop agent.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
-  featCall agent.AgentWidgets bindMeterTo energyLevel
+  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
 ]]
 
 // required directive
 # PROGRAM INIT
 
-// required directive
- `
+// required directive`
     },
     {
       "name": "Algae",
@@ -216,10 +215,11 @@ addProp spawns Boolean false
 // STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
 prop agent.spawns setTo false
 
-featCall agent.Costume setCostume 'algae.json' 0
+featProp agent.Costume.costumeName setTo 'algae.json'
 
 // show meter immediately
-featCall agent.AgentWidgets bindMeterTo energyLevel
+featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
+
 
 // setup energyLevel variablee
 addProp energyLevel Number 100
@@ -248,21 +248,21 @@ addFeature Touches
 featCall agent.Touches monitor 'Fish' b2b
 featCall agent.Touches monitor 'Sunbeam' b2b
 
-featProp agent.AgentWidgets.text setTo ''
+featProp Algae.AgentWidgets.text setTo ''
 
 // STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
 featProp agent.Movement.movementType setTo 'wander'
 featProp agent.Movement.distance setTo 0.2
 
 exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-featPropPop agent.Physics.scale
+featPropPop Algae.Costume.scale
 
 prop agent.zIndex setTo -110
 
 # PROGRAM UPDATE
 when Algae touches Sunbeam [[
   every 1 runAfter [[
-    featCall Algae.Costume setGlow 4
+    featProp Algae.Costume.glow setTo 4
     exprPush {{ Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value }}
     propPop Algae.energyLevel
 
@@ -285,7 +285,7 @@ when Algae touches Sunbeam [[
 ]]
 
 when Algae lastTouches Sunbeam [[
-  featCall Algae.Costume setGlow 0
+  featProp Algae.Costume.glow setTo 0
 ]]
 
 every 1 runAtStart [[
@@ -298,7 +298,7 @@ every 1 runAtStart [[
 
   // re-scale the algae based on its energy level
   exprPush {{ (agent.getProp('energyLevel').value / 100)* 3 }}
-  featPropPop agent.Physics.scale
+  featPropPop agent.Costume.scale
 
   // set algae energy meter color
   // doing great
@@ -318,9 +318,7 @@ every 1 runAtStart [[
   ]]
 
 
-]]
- 
-`
+]]`
     },
     {
       "name": "Sunbeam",
@@ -330,7 +328,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featCall agent.Costume setCostume 'circle.json' 0
+featProp agent.Costume.costumeName setTo 'circle.json'
 featCall agent.Costume setColorize 1 1 0
 prop agent.alpha setTo 0.3
 prop agent.zIndex setTo 100
@@ -349,9 +347,9 @@ prop agent.direction setTo 1
 
 addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp agent.Physics.scale setTo 0.4
+featProp agent.Costume.scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp agent.Physics.scaleY setTo 2.5
+featProp agent.Costume.scaleY setTo 2.5
 
 addFeature Touches
 
@@ -379,7 +377,7 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp agent.Costume.costumeName setTo 'onexone.json'
 
 addProp time Number 0
 
@@ -403,7 +401,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 
-featCall agent.Costume setCostume 'boulder.json' 0
+featProp agent.Costume.costumeName setTo 'boulder.json'
 
 addFeature Physics
 
@@ -422,7 +420,7 @@ addFeature AgentWidgets
 addFeature Movement
 
 // temp until we get new art
-featCall agent.Costume setCostume 'turtle_sprites.json' 0
+featProp agent.Costume.costumeName setTo 'turtle_sprites.json'
 
 addProp energyLevel Number 50
 prop agent.energyLevel setMax 100
@@ -437,7 +435,7 @@ prop agent.energyUse setTo 1
 
 addFeature Physics
 
-featProp agent.Physics.scale setTo 0.15
+featProp agent.Costume.scale setTo 0.15
 
 // set Touches
 addFeature Touches
@@ -445,9 +443,9 @@ featCall agent.Touches monitor 'Fish' b2b
 featCall agent.Touches monitor 'Trash' b2b
 
 // show meter immediately
-featCall agent.AgentWidgets bindMeterTo energyLevel
+featProp Turtle.AgentWidgets.meterProp setTo 'energyLevel'
 
-featProp agent.AgentWidgets.text setTo ' ' ''
+featProp agent.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 
@@ -476,7 +474,7 @@ when Turtle touches Fish [[
     ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
 
       // only glow when we are healthy and can eat
-      featCall agent.Costume setGlow 1
+      featProp agent.Costume.glow setTo 1
 
       // Turtle gains some energy
       prop Turtle.energyLevel add 20
@@ -484,7 +482,7 @@ when Turtle touches Fish [[
       // Fish is dead
       prop Fish.isInert setTo true
       prop Fish.alpha setTo 0.3
-      featCall Fish.Costume setPose 2
+      featProp Fish.Costume setPose 2
       prop Fish.energyLevel setTo 0
     ]]
 
@@ -492,16 +490,16 @@ when Turtle touches Fish [[
 ]]
 
 when Turtle lastTouches Fish [[
-  featCall agent.Costume setGlow 0
+  featProp agent.Costume.glow setTo 0
 ]]
 
 when Turtle touches Trash [[
   every 1 runAtStart [[
     // always glow to show the interaction
-    featCall agent.Costume setGlow 0.5
+    featProp agent.Costume.glow setTo 0.5
 
     prop agent.health setTo 'hurt'
-    featCall agent.Costume setColorizeHSV 0.5 1 0.5
+    featProp agent.Costume setColorizeHSV 0.5 1 0.5
     featCall Trash.Population removeAgent
 
     // change art
@@ -509,7 +507,7 @@ when Turtle touches Trash [[
 ]]
 
 when Turtle lastTouches Trash [[
-  featCall agent.Costume setGlow 0
+  featProp agent.Costume.glow setTo 0
 
 ]]`
     },
@@ -523,11 +521,11 @@ when Turtle lastTouches Trash [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Population
-featCall agent.Costume setCostume 'trash.json' 0
+featProp agent.Costume.costumeName setTo 'trash.json'
 
 addFeature Physics
 
-featProp agent.Physics.scale setTo 0.05
+featProp agent.Costume.scale setTo 0.05
 
 // required directive
 # PROGRAM UPDATE`
@@ -541,7 +539,7 @@ featProp agent.Physics.scale setTo 0.05
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp agent.Costume.costumeName setTo 'onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
@@ -554,7 +552,7 @@ featCall agent.Costume setCostume 'onexone.json' 0
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featCall agent.Costume setCostume 'square.json' 0
+featProp agent.Costume.costumeName setTo 'square.json'
 
 addFeature Physics
 
@@ -586,14 +584,14 @@ featPropPop agent.AgentWidgets.text
 
 // Make costume an invisible dot
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp agent.Costume.costumeName setTo 'onexone.json'
 
 // Show meter on start.
 featProp agent.AgentWidgets.isLargeGraphic setTo true
 featProp agent.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
-featProp agent.AgentWidgets.meter setTo 1
+featProp MeterAlgaeEnergy.AgentWidgets.meterProp setTo 1
 
 // default placement for the algae meter
 prop agent.x setTo 505
@@ -647,14 +645,14 @@ featPropPop agent.AgentWidgets.text
 
 // Make costume an invisible dot
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp agent.Costume.costumeName setTo 'onexone.json'
 
 // Show meter on start.
 featProp agent.AgentWidgets.isLargeGraphic setTo true
 featProp agent.AgentWidgets.meterColor setTo 65280
 // set to 1 so we can see something at start
 // I tried binding and it wasn't working so sticking with this hack for now
-featProp agent.AgentWidgets.meter setTo 1
+featProp agent.AgentWidgets.meterProp setTo 1
 
 
 // default placement for the fish meter
@@ -698,7 +696,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp GraphAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
 
 addProp characterType String 'Algae'
 addProp countType String 'avg'
@@ -760,7 +758,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featCall agent.Costume setCostume 'onexone.json' 0
+featProp GraphFishEnergy.Costume.costumeName setTo 'onexone.json'
 
 addProp characterType String 'Fish'
 addProp countType String 'avg'
@@ -826,29 +824,25 @@ every 1 runAtStart [[
       "id": "501",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo 300
-prop y setTo 220`
+      "initScript": `prop x setTo 300`
     },
     {
       "id": "503",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo -184.37
-prop y setTo -281.66`
+      "initScript": `prop x setTo -184.37`
     },
     {
       "id": "504",
       "label": "Algae 4",
       "bpid": "Algae",
-      "initScript": `prop x setTo -295.58
-prop y setTo -297.17`
+      "initScript": `prop x setTo -295.58`
     },
     {
       "id": "505",
       "label": "Algae 5",
       "bpid": "Algae",
-      "initScript": `prop x setTo 170.99
-prop y setTo 245.22`
+      "initScript": `prop x setTo 170.99`
     },
     {
       "id": "521",
@@ -856,8 +850,8 @@ prop y setTo 245.22`
       "bpid": "Rock",
       "initScript": `prop x setTo -350
 prop y setTo 368
-featProp Physics scale setTo 1.3
-prop zIndex setTo 210`
+featProp agent.Costume.scale setTo 1.3
+prop agent.zIndex setTo 210`
     },
     {
       "id": "522",
@@ -866,14 +860,14 @@ prop zIndex setTo 210`
       "initScript": `prop x setTo 339.19
 prop y setTo 387.94
 featProp Costume flipX setTo true
-prop zIndex setTo 210`
+prop agent.zIndex setTo 210`
     },
     {
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
-prop y setTo -400
+prop agent.y setTo -400
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
@@ -883,16 +877,16 @@ featProp AgentWidgets text setTo 'Energy Key:'`
       "initScript": `prop x setTo 455
 prop y setTo -370
 featProp AgentWidgets text setTo 'High'
-prop zIndex setTo 100`
+prop agent.zIndex setTo 100`
     },
     {
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
-prop y setTo -340
+prop y setTo -339.64
 featProp AgentWidgets text setTo 'Medium'
-prop zIndex setTo 100`
+prop agent.zIndex setTo 100`
     },
     {
       "id": "1703",
@@ -901,37 +895,41 @@ prop zIndex setTo 100`
       "initScript": `prop x setTo 455
 prop y setTo -308
 featProp AgentWidgets text setTo 'Low'
-prop zIndex setTo 100`
+prop agent.zIndex setTo 100`
     },
     {
       "id": "1704",
       "label": "HighChip",
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
-prop y setTo -351
-featCall Costume setColorize 0 255 0
-prop zIndex setTo 95
-featCall Physics setSize 100 30`
+prop y setTo -337.79
+featCall agent.Costume setColorize 0 255 0
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100
+`
     },
     {
       "id": "1705",
       "label": "MediumChip",
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
-prop y setTo -322
+prop y setTo -307.35
 featCall Costume setColorize 210 140 0
-prop zIndex setTo 95
-featCall Physics setSize 100 30`
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
     },
     {
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
-prop y setTo -292
+prop y setTo -275.80
 featCall Costume setColorize 255 0 0
-prop zIndex setTo 95
-featCall Physics setSize 100 30`
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
     },
     {
       "id": "1707",
@@ -942,7 +940,7 @@ prop y setTo -196.34
 prop energyRate setTo 50
 prop direction setTo 1
 prop speed setTo 20
-prop zIndex setTo 0`
+prop agent.zIndex setTo 0`
     },
     {
       "id": "1708",
