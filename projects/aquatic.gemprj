@@ -42,7 +42,7 @@ addProp movementType String 'wander'
 prop Fish.movementType setTo 'wander'
 
 // STUDENTS_MAY_CHANGE - set as consumer or producer
-prop Fish.type setTo 'Consumer'
+prop Fish.type setTo 'change'
 
 addProp energyUse Number 0
 
@@ -62,7 +62,7 @@ featProp Fish.Costume.scale setTo 1
 
 // set Touches
 addFeature Touches
-featCall Fish.Touches monitor 'Algae' b2b
+featCall Fish.Touches monitor 'Algae' B2b
 
 // show meter immediately
 featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
@@ -80,6 +80,7 @@ onEvent Start [[
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
+  dbgOut 'about to push'
   exprPush {{ agent.getProp('movementType').value == 'wander' }}
   dbgStack
 
@@ -91,7 +92,7 @@ onEvent Start [[
 
   // if it is edgetoedge
   ifExpr {{ Fish.getProp('movementType').value == 'edgeToEdge' }} [[
-    featProp Fish.Movement.movementType setTo 'edgetoedge'
+    featProp Fish.Movement.movementType setTo 'edgetoedge'  
     featProp Fish.Movement.bounceAngle setTo 180
 
     exprPush {{ Fish.getProp('startDirection').value }}
@@ -175,7 +176,7 @@ every 1 runAtStart [[
   // dead
   ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
     featProp Fish.Costume.currentFrame setTo 2
-    featProp Fish.Movement.movementType setTo 'float'
+    featProp Fish.Movement.movementType setTo 'float'  
 
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
@@ -244,6 +245,7 @@ prop Algae.energyUse setTo 0
 addFeature Physics
 
 addFeature Touches
+featCall Algae.Touches monitor 'Fish' b2b
 featCall Algae.Touches monitor 'Sunbeam' b2b
 
 featProp Algae.AgentWidgets.text setTo ''
