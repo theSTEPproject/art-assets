@@ -473,7 +473,7 @@ addProp lostEnergy Number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-featProp GraphLostEnergy.AgentWidgets.meterProp setTo 'lostEnergy'
+featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
 prop GraphLostEnergy.x setTo 495
