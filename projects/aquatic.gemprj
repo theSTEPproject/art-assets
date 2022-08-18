@@ -958,8 +958,8 @@ prop y setTo -132.81`
       "id": "1710",
       "label": "Algae1710",
       "bpid": "Algae",
-      "initScript": `prop x setTo -281.54
-prop y setTo -68.22`
+      "initScript": `prop x setTo -187.58
+prop y setTo 97.15`
     }
   ]
 }
