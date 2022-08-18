@@ -32,7 +32,7 @@ addProp sparkleCount Number 0
 
 addFeature Physics
 
-featProp Physics scale setTo 0.38
+featProp Soil.Costume.scale setTo 0.38
 
 prop zIndex setTo -200
 
@@ -82,9 +82,9 @@ addProp direction Number 1
 addFeature Physics
 
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp Physics scale setTo 0.4
+featProp Sunbeam.Costume.scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp Physics scaleY setTo 2
+featProp Sunbeam.Costume.scaleY setTo 2
 
 addFeature Touches
 
@@ -114,8 +114,7 @@ featProp Rock.Costume.costumeName setTo 'boulder.json'
 
 addFeature Physics
 addFeature AgentWidgets
-
-featProp Physics scale setTo 0.5`
+featProp agent.Costume.scale setTo 0.5`
     },
     {
       "id": "House",
@@ -129,7 +128,7 @@ featProp House.Costume.costumeName setTo 'house.json'
 addFeature Physics
 addFeature AgentWidgets
 
-featProp Physics scale setTo 2`
+featProp House.Costume.scale setTo 2`
     },
     {
       "id": "SoilBG",
@@ -141,7 +140,8 @@ featProp SoilBG.Costume.costumeName setTo 'square.json'
 
 featCall Costume setColorize 0.56 0.52 0.40
 addFeature Physics
-featCall Physics setSize 800 400
+featProp agent.Costume.width setTo 800
+featProp agent.Costume.height setTo 400
 prop zIndex setTo -210`
     },
     {
@@ -183,7 +183,7 @@ prop matter setMax 100
 prop matter setMin 0
 
 addFeature Physics
-featProp Physics scale setTo 0.2
+featProp Worm.Costume.scale setTo 0.2
 
 addFeature Touches
 featCall Touches monitor Waste b2b
@@ -367,7 +367,7 @@ prop matter setMin 0
 
 addFeature Physics
 
-featProp Physics scale setTo 0.2
+featProp Bunny.Costume.scale setTo 0.2
 
 addFeature Touches
 featCall Touches monitor Plant b2b
@@ -505,6 +505,7 @@ every 1 runAtStart [[
       "label": "Plant",
       "scriptText": `# BLUEPRINT Plant
 # PROGRAM DEFINE
+addFeature Costume
 featProp Plant.Costume.costumeName setTo 'plants.json'
 
 // addFeature Global
@@ -564,7 +565,7 @@ prop y addRnd -10 10
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
   exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
-  featPropPop Physics scale
+  featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
 
@@ -593,7 +594,7 @@ every 1 runAtStart [[
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
   exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
-  featPropPop Physics scale
+  featPropPop agent.Costume.scale
 
   // if the plant is basically dead
   ifExpr {{ Plant.getProp('matter').value < 10 }} [[
@@ -637,8 +638,8 @@ every 1 runAtStart [[
       "scriptText": `# BLUEPRINT Waste
 # PROGRAM DEFINE
 addFeature Population
-
 addFeature Costume
+
 featProp Waste.Costume.costumeName setTo 'organic_matter.json'
 
 addProp matter Number 100
@@ -647,7 +648,8 @@ prop matter setMin 0
 
 // scale up because the art is a bit small
 addFeature Physics
-featProp Physics scale setTo 2
+
+featProp Waste.Costume.scale setTo 2.0
 
 // pick a random rotation to keep things looking interesting
 prop orientation setTo 0
@@ -685,7 +687,7 @@ every 1 runAtStart [[
 
   // scale based on amount of matter
     exprPush {{ (Waste.getProp('matter').value / 50)}}
-    featPropPop Waste.Physics scale
+    featPropPop Waste.Costume.scale
 
 ]]`
     },
@@ -757,7 +759,8 @@ addProp graphValue Number 0
 prop graphValue setMax 1000
 prop graphValue setMin 0
 
-featCall AgentWidgets bindGraphTo graphValue 30
+featProp CharacterGraph.AgentWidgets.graphProp setTo 'graphValue'
+
 
 # PROGRAM EVENT
 
@@ -940,7 +943,9 @@ prop zIndex setTo 100`
 prop y setTo -351
 featCall Costume setColorize 0 255 0
 prop zIndex setTo 95
-featCall Physics setSize 100 30`
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
     },
     {
       "id": "1705",
@@ -950,7 +955,8 @@ featCall Physics setSize 100 30`
 prop y setTo -320
 featCall Costume setColorize 138 43 226
 prop zIndex setTo 95
-featCall Physics setSize 100 30`
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
     },
     {
       "id": "1706",
@@ -960,7 +966,8 @@ featCall Physics setSize 100 30`
 prop y setTo -290
 featCall Costume setColorize 0.56 0.52 0.40
 prop zIndex setTo 95
-featCall Physics setSize 100 30`
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
     },
     {
       "id": "1804",
