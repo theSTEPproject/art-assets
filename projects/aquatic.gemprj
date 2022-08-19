@@ -80,10 +80,6 @@ onEvent Start [[
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
-  dbgOut 'about to push'
-  exprPush {{ agent.getProp('movementType').value == 'wander' }}
-  dbgStack
-
   // if the movementType is wander
   ifExpr {{ Fish.getProp('movementType').value == 'wander' }} [[
     featProp Fish.Movement.movementType setTo wander
@@ -117,10 +113,16 @@ ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
 ]]
 
 when Fish touches Algae [[
+   dbgOut 'touches'
+
   every 1 runAtStart [[
+   dbgOut 'touches every 1'
+
     // always glow to show the interaction
     ifExpr {{ Fish.getProp('isInert').value != true }} [[
       featProp Fish.Costume.glow setTo 4
+      
+      dbgOut 'startGlow 4'
     ]]
 
     // only eat if the algae is above 0
@@ -146,6 +148,7 @@ when Fish touches Algae [[
 ]]
 
 when Fish lastTouches Algae [[
+  dbgOut 'stop glow in last touches'
   featProp Fish.Costume.glow setTo 0
 ]]
 
@@ -245,7 +248,6 @@ prop Algae.energyUse setTo 0
 addFeature Physics
 
 addFeature Touches
-featCall Algae.Touches monitor 'Fish' b2b
 featCall Algae.Touches monitor 'Sunbeam' b2b
 
 featProp Algae.AgentWidgets.text setTo ''
