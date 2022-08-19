@@ -54,7 +54,7 @@ every 1 runAtStart [[
       prop sparkleCount sub 1
   ]]
   ifExpr {{ Soil.getProp('sparkleCount').value == 0}} [[
-     featProp Worm.Costume.costumeName setTo 'dirt.json'
+     featProp Soil.Costume.costumeName setTo 'dirt.json'
 
   ]]
 ]]`
@@ -264,30 +264,30 @@ when Worm touches Soil [[
 
       ]]
       ifExpr {{ Worm.getProp('nutrientCount').value > 0 }} [[
-        prop nutrientCount sub 1
+        prop Worm.nutrientCount sub 1
       ]]
     ]]
   ]]
 ]]
 every 1 runAtStart [[
   // energy goes down
-  prop energyLevel sub 2
+  prop Worm.energyLevel sub 2
 
   // increment distraction counter
-  prop distractionCounter add 1
+  prop Worm.distractionCounter add 1
 
   // if you are hungry, and hit focus length, switch to distracted.
   ifExpr {{ Worm.getProp('feeling').value == 'hungry' }} [[
     ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('focusLength').value }} [[
 
       // we are now distracted so don't bother eating
-      prop feeling setTo 'distracted'
+      prop Worm.feeling setTo 'distracted'
       featProp Worm.Costume.costumeName setTo 'worm_distracted.png'
 
       // in case we were eating
-      featCall Costume setGlow 0
+      featProp Worm.Costume.glow setTo 0
 
-      prop distractionCounter setTo 0
+      prop Worm.distractionCounter setTo 0
     ]]
   ]]
 
@@ -296,10 +296,9 @@ every 1 runAtStart [[
     ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('distractionLength').value }} [[
 
       // we are now distracted so don't bother eating
-      prop feeling setTo 'hungry'
+      prop Worm.feeling setTo 'hungry'
       featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
-      prop distractionCounter setTo 0
-      dbgOut 'we are now hungry'
+      prop Worm.istractionCounter setTo 0
     ]]
   ]]
 
@@ -308,16 +307,16 @@ every 1 runAtStart [[
 
   // if out of energy ... die
   ifExpr {{ Worm.getProp('energyLevel').value == 0 }} [[
-    prop alpha setTo 0.3
-    prop isInert setTo true
+    prop Worm.alpha setTo 0.3
+    prop Worm.isInert setTo true
   ]]
 
 
   ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
-    featProp Costume flipY setTo false
+    featProp Worm.Costume.flipY setTo false
   ]]
   ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
-    featProp Costume flipY setTo true
+    featProp Worm.Costume.flipY setTo true
   ]]
 ]]
 
