@@ -62,7 +62,7 @@ featProp Fish.Costume.scale setTo 1
 
 // set Touches
 addFeature Touches
-featCall Fish.Touches monitor 'Algae' B2b
+featCall Fish.Touches monitor 'Algae' b2b
 
 // show meter immediately
 featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'

@@ -639,97 +639,97 @@ featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
       "id": "1",
       "label": "Goat1",
       "bpid": "Goat",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 282.11
-featProp agent.Movement.targetY setTo -141.59`
+      "initScript": ` 
+      prop x setTo 282.11
+prop y setTo -141.59`
     },
     {
       "id": "2",
       "label": "Reincarnator2",
       "bpid": "Reincarnator",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 452.98
-featProp agent.Movement.targetY setTo 326.27`
+      "initScript": ` 
+      prop x setTo 452.98
+prop y setTo 326.27`
     },
     {
       "id": "3",
       "label": "Plant3",
       "bpid": "Plant",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 257.13
-featProp agent.Movement.targetY setTo 179.20`
+      "initScript": ` 
+      prop x setTo 257.13
+prop y setTo 179.20`
     },
     {
       "id": "4",
       "label": "Jackal4",
       "bpid": "Jackal",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -29.96
-featProp agent.Movement.targetY setTo -253.34`
+      "initScript": ` 
+      prop x setTo -29.96
+prop y setTo -253.34`
     },
     {
       "id": "5",
       "label": "Rabbit5",
       "bpid": "Rabbit",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 62.54
-featProp agent.Movement.targetY setTo 70.64`
+      "initScript": ` 
+      prop x setTo 62.54
+prop y setTo 70.64`
     },
     {
       "id": "6",
       "label": "Mouse6",
       "bpid": "Mouse",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 14.48
-featProp agent.Movement.targetY setTo 289.71`
+      "initScript": ` 
+      prop x setTo 14.48
+prop y setTo 289.71`
     },
     {
       "id": "7",
       "label": "WildCat7",
       "bpid": "WildCat",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -13.32
-featProp agent.Movement.targetY setTo -98.82`
+      "initScript": ` 
+      prop x setTo -13.32
+prop y setTo -98.82`
     },
     {
       "id": "8",
       "label": "Owl8",
       "bpid": "Owl",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -144.76
-featProp agent.Movement.targetY setTo 123.99`
+      "initScript": ` 
+      prop x setTo -144.76
+prop y setTo 123.99`
     },
     {
       "id": "10",
       "label": "Snake10",
       "bpid": "Snake",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -319.25
-featProp agent.Movement.targetY setTo 177.92`
+      "initScript": ` 
+      prop x setTo -319.25
+prop y setTo 177.92`
     },
     {
       "id": "11",
       "label": "Kite11",
       "bpid": "Kite",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -316.40
-featProp agent.Movement.targetY setTo -30.90`
+      "initScript": ` 
+      prop x setTo -316.40
+prop y setTo -30.90`
     },
     {
       "id": "12",
       "label": "Lion12",
       "bpid": "Lion",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo -308.96
-featProp agent.Movement.targetY setTo -283`
+      "initScript": ` 
+      prop x setTo -308.96
+prop y setTo -283`
     },
     {
       "id": "13",
       "label": "Background13",
       "bpid": "Background",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 29
-featProp agent.Movement.targetY setTo 30
+      "initScript": ` 
+      prop x setTo 29
+prop y setTo 30
 prop agent.zIndex setTo -500
 `
     },
@@ -737,25 +737,25 @@ prop agent.zIndex setTo -500
       "id": "14",
       "label": "Plant14",
       "bpid": "Plant",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 220.10
-featProp agent.Movement.targetY setTo 300.10`
+      "initScript": ` 
+      prop x setTo 220.10
+prop y setTo 300.10`
     },
     {
       "id": "15",
       "label": "Plant15",
       "bpid": "Plant",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-      featProp agent.Movement.targetX setTo 145.17
-featProp agent.Movement.targetY setTo 216.34`
+      "initScript": ` 
+      prop x setTo 145.17
+prop y setTo 216.34`
     },
     {
       "id": "16",
       "label": "ParkRanger1",
       "bpid": "ParkRanger",
-      "initScript": `featProp agent.Movement.movementType setTo 'setLocation'
-featProp agent.Movement.targetX setTo 154.48
-featProp agent.Movement.targetY setTo -281.29`
+      "initScript": ` 
+prop x setTo 154.48
+prop y setTo -281.29`
     }
   ]
 }

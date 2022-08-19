@@ -160,7 +160,6 @@ every 2 runAtStart [[
   // dead
   ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
     featProp Fish.Costume.currentFrame setTo 2
-    // featCall Movement setMovementType 'float'
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
   ]]

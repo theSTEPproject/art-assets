@@ -17,16 +17,15 @@
   "rounds": [],
   "blueprints": [
     {
-      "id": "Soil",
-      "label": "Soil",
+      "name": "Soil",
       "scriptText": `# BLUEPRINT Soil
 # PROGRAM DEFINE
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'dirt.json'
 
 addProp nutrients Number 50
-prop nutrients setMax 100
-prop nutrients setMin 0
+prop Soil.nutrients setMax 100
+prop Soil.nutrients setMin 0
 
 addProp sparkleCount Number 0
 
@@ -34,7 +33,7 @@ addFeature Physics
 
 featProp Soil.Costume.scale setTo 0.38
 
-prop zIndex setTo -200
+prop Soil.zIndex setTo -200
 
 addFeature Touches
 featCall Touches monitor Worm b2b
@@ -61,8 +60,7 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "id": "Sunbeam",
-      "label": "Sunbeam",
+      "name": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
 # PROGRAM DEFINE
 addFeature Costume
@@ -105,8 +103,7 @@ onEvent Tick [[
 ]]`
     },
     {
-      "id": "Rock",
-      "label": "Rock",
+      "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
 # PROGRAM DEFINE
 addFeature Costume
@@ -117,8 +114,7 @@ addFeature AgentWidgets
 featProp agent.Costume.scale setTo 0.5`
     },
     {
-      "id": "House",
-      "label": "House",
+      "name": "House",
       "scriptText": `# BLUEPRINT House
 # PROGRAM DEFINE
 addFeature Costume
@@ -131,8 +127,7 @@ addFeature AgentWidgets
 featProp House.Costume.scale setTo 2`
     },
     {
-      "id": "SoilBG",
-      "label": "SoilBG",
+      "name": "SoilBG",
       "scriptText": `# BLUEPRINT SoilBG
 # PROGRAM DEFINE
 addFeature Costume
@@ -145,8 +140,7 @@ featProp agent.Costume.height setTo 400
 prop zIndex setTo -210`
     },
     {
-      "id": "Worm",
-      "label": "Worm",
+      "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
 # TAG isCharControllable true
 # TAG isPozyxControllable true
@@ -160,7 +154,7 @@ addFeature Costume
 featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
 
 // put above everything
-prop zIndex setTo 100
+prop Worm.zIndex setTo 100
 
 // move between hungry and full where hungry will eat and full will release nutrients
 addProp feeling String 'hungry'
@@ -169,32 +163,32 @@ addProp feeling String 'hungry'
 addProp nutrientCountStart Number 0
 
 // STUDENTS_MAY_CHANGE set this lower for instant dispersal of nutrients, or higher to stretch it out
-prop nutrientCountStart setTo 5
+prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount Number 0
 
 featProp Movement useAutoOrientation setTo true
 
 addProp energyLevel Number 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
 
 addProp matter Number 50
-prop matter setMax 100
-prop matter setMin 0
+prop Worm.matter setMax 100
+prop Worm.matter setMin 0
 
 addFeature Physics
 featProp Worm.Costume.scale setTo 0.2
 
 addFeature Touches
-featCall Touches monitor Waste b2b
-featCall Touches monitor Soil b2b
+featCall Worm.Touches monitor 'Waste' b2b
+featCall Worm.Touches monitor 'Soil' b2b
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp AgentWidgets meterProp setTo energyLevel
+featProp Worm.AgentWidgets.meterProp setTo 'energyLevel'
 
 // Green = 0x00FF00
-featProp AgentWidgets meterColor setTo 65280
+featProp Worm.AgentWidgets.meterColor setTo 85280
 
 // ----------------------------------------------
 // add variables to cover distraction
@@ -212,40 +206,40 @@ when Worm touches Waste [[
   every 1 runAtStart [[
 
     // if hungry, eat
-    ifExpr {{ Worm.getProp('feeling').value == 'hungry'}} [[
+    ifExpr {{ Worm.getProp('feeling').value == 'hungry' }} [[
 
-        // not distracted so keep going 
+      // not distracted so keep going
 
-        // move energy and matter from the waste to the worm and glow so we notice
-        // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
-        // waste loses matter
-        prop Waste.matter sub 10
-        // worms gain energy and matter
-        prop Worm.energyLevel add 10
-        prop Worm.matter add 10
-        // worm glowss so we know it is eating
-        featCall Costume setGlow 4
+      // move energy and matter from the waste to the worm and glow so we notice
+      // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
+      // waste loses matter
+      prop Waste.matter sub 10
+      // worms gain energy and matter
+      prop Worm.energyLevel add 10
+      prop Worm.matter add 10
+      // worm glowss so we know it is eating
+      featProp Worm.Costume.glow setTo 4
 
-        // if you are nice and full of energy, note you are full and start poop count-down
-          ifExpr {{ Worm.getProp('energyLevel').value > 90 }} [[
-            prop feeling setTo 'full'
+      // if you are nice and full of energy, note you are full and start poop count-down
+      ifExpr {{ Worm.getProp('energyLevel').value > 90 }} [[
+        prop Worm.feeling setTo 'full'
 
-            // set the glow to 0 to reflect not eating while full
-            featCall Costume setGlow 0
+        // set the glow to 0 to reflect not eating while full
+        featProp Worm.Costume.glow setTo 0
 
-            // change costume so we know we are full
-            featProp Worm.Costume.costumeName setTo 'worm_full.png'
+        // change costume so we know we are full
+        featProp Worm.Costume.costumeName setTo 'worm_full.png'
 
-            exprPush {{ Worm.getProp('nutrientCountStart').value }}
-            propPop nutrientCount
-          ]]
-        
+        exprPush {{ Worm.getProp('nutrientCountStart').value }}
+        propPop Worm.nutrientCount
+      ]]
+
     ]]
   ]]
 ]]
 
 when Worm lastTouches Waste [[
-  featCall Costume setGlow 0
+  featProp Worm.Costume.glow setTo 0
 ]]
 
 when Worm touches Soil [[
@@ -253,8 +247,8 @@ when Worm touches Soil [[
 
     // if you are full, check if enough time has passed to release nutrients... do so and then switch to being hungry again
     // if not, just update counter
-    ifExpr {{ Worm.getProp('feeling').value == 'full'}} [[
-      ifExpr {{ Worm.getProp('nutrientCount').value == 0}} [[
+    ifExpr {{ Worm.getProp('feeling').value == 'full' }} [[
+      ifExpr {{ Worm.getProp('nutrientCount').value == 0 }} [[
         prop Worm.energyLevel sub 50
         prop Worm.matter sub 50
         prop Soil.nutrients add 50
@@ -269,7 +263,7 @@ when Worm touches Soil [[
         featProp Worm.Costume.costumeName setTo 'worm.png'
 
       ]]
-      ifExpr {{ Worm.getProp('nutrientCount').value > 0}} [[
+      ifExpr {{ Worm.getProp('nutrientCount').value > 0 }} [[
         prop nutrientCount sub 1
       ]]
     ]]
@@ -282,38 +276,38 @@ every 1 runAtStart [[
   // increment distraction counter
   prop distractionCounter add 1
 
-  // if you are hungry, and hit focus length, switch to distracted. 
-  ifExpr {{Worm.getProp('feeling').value == 'hungry'}} [[
+  // if you are hungry, and hit focus length, switch to distracted.
+  ifExpr {{ Worm.getProp('feeling').value == 'hungry' }} [[
     ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('focusLength').value }} [[
-      
+
       // we are now distracted so don't bother eating
       prop feeling setTo 'distracted'
       featProp Worm.Costume.costumeName setTo 'worm_distracted.png'
-     
+
       // in case we were eating
       featCall Costume setGlow 0
 
       prop distractionCounter setTo 0
     ]]
   ]]
-  
-  // if you are distracted, and hit distracted length length, switch to hungry. 
-  ifExpr {{Worm.getProp('feeling').value == 'distracted'}} [[
-      ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('distractionLength').value }} [[
-        
-        // we are now distracted so don't bother eating
-        prop feeling setTo 'hungry'
+
+  // if you are distracted, and hit distracted length length, switch to hungry.
+  ifExpr {{ Worm.getProp('feeling').value == 'distracted' }} [[
+    ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('distractionLength').value }} [[
+
+      // we are now distracted so don't bother eating
+      prop feeling setTo 'hungry'
       featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
-        prop distractionCounter setTo 0
-        dbgOut 'we are now hungry'
-      ]]
+      prop distractionCounter setTo 0
+      dbgOut 'we are now hungry'
     ]]
+  ]]
 
 
 
 
   // if out of energy ... die
-  ifExpr {{Worm.getProp('energyLevel').value == 0}} [[
+  ifExpr {{ Worm.getProp('energyLevel').value == 0 }} [[
     prop alpha setTo 0.3
     prop isInert setTo true
   ]]
@@ -325,11 +319,13 @@ every 1 runAtStart [[
   ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
     featProp Costume flipY setTo true
   ]]
-]]`
+]]
+
+// required directive
+# PROGRAM INIT`
     },
     {
-      "id": "Bunny",
-      "label": "Bunny",
+      "name": "Bunny",
       "scriptText": `# BLUEPRINT Bunny
 # TAG isCharControllable true
 # TAG isPozyxControllable false
@@ -501,8 +497,7 @@ every 1 runAtStart [[
 `
     },
     {
-      "id": "Plant",
-      "label": "Plant",
+      "name": "Plant",
       "scriptText": `# BLUEPRINT Plant
 # PROGRAM DEFINE
 addFeature Costume
@@ -633,8 +628,7 @@ every 1 runAtStart [[
 `
     },
     {
-      "id": "Waste",
-      "label": "Organic Waste",
+      "name": "Waste",
       "scriptText": `# BLUEPRINT Waste
 # PROGRAM DEFINE
 addFeature Population
@@ -692,8 +686,7 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "id": "TextLabel",
-      "label": "TextLabel",
+      "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
 # PROGRAM DEFINE
 addFeature AgentWidgets
@@ -702,8 +695,7 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 `
     },
     {
-      "id": "ColorChip",
-      "label": "ColorChip",
+      "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
 # PROGRAM DEFINE
 addFeature Costume
@@ -712,8 +704,7 @@ featProp ColorChip.Costume.costumeName setTo 'square.json'
 addFeature Physics`
     },
     {
-      "id": "Timer",
-      "label": "Timer",
+      "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
 # PROGRAM DEFINE
 addFeature AgentWidgets
@@ -737,8 +728,7 @@ prop y setTo -256
 ]]`
     },
     {
-      "id": "CharacterGraph",
-      "label": "CharacterGraph",
+      "name": "CharacterGraph",
       "scriptText": `# BLUEPRINT CharacterGraph
 # PROGRAM DEFINE
 addFeature Costume
