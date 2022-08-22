@@ -82,13 +82,13 @@ onEvent Start [[
 
   // if the movementType is wander
   ifExpr {{ Fish.getProp('movementType').value == 'wander' }} [[
-    featProp Fish.Movement.movementType setTo wander
+    featProp Fish.Movement.movementType setTo 'wander'
     featProp Fish.Movement.distance setTo 0.5
   ]]
 
   // if it is edgetoedge
   ifExpr {{ Fish.getProp('movementType').value == 'edgeToEdge' }} [[
-    featProp Fish.Movement.movementType setTo 'edgetoedge'  
+    featProp Fish.Movement.movementType setTo 'edgetoedge'
     featProp Fish.Movement.bounceAngle setTo 180
 
     exprPush {{ Fish.getProp('startDirection').value }}
@@ -113,16 +113,13 @@ ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
 ]]
 
 when Fish touches Algae [[
-   dbgOut 'touches'
 
   every 1 runAtStart [[
-   dbgOut 'touches every 1'
 
     // always glow to show the interaction
     ifExpr {{ Fish.getProp('isInert').value != true }} [[
       featProp Fish.Costume.glow setTo 4
-      
-      dbgOut 'startGlow 4'
+
     ]]
 
     // only eat if the algae is above 0
@@ -148,7 +145,6 @@ when Fish touches Algae [[
 ]]
 
 when Fish lastTouches Algae [[
-  dbgOut 'stop glow in last touches'
   featProp Fish.Costume.glow setTo 0
 ]]
 
@@ -179,7 +175,7 @@ every 1 runAtStart [[
   // dead
   ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
     featProp Fish.Costume.currentFrame setTo 2
-    featProp Fish.Movement.movementType setTo 'float'  
+    featProp Fish.Movement.movementType setTo 'float'
 
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
@@ -826,25 +822,29 @@ every 1 runAtStart [[
       "id": "501",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo 300`
+      "initScript": `prop x setTo 230.20
+prop y setTo 95.48`
     },
     {
       "id": "503",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo -184.37`
+      "initScript": `prop x setTo 25.26
+prop y setTo -72.88`
     },
     {
       "id": "504",
       "label": "Algae 4",
       "bpid": "Algae",
-      "initScript": `prop x setTo -295.58`
+      "initScript": `prop x setTo -142.79
+prop y setTo -136.95`
     },
     {
       "id": "505",
       "label": "Algae 5",
       "bpid": "Algae",
-      "initScript": `prop x setTo 170.99`
+      "initScript": `prop x setTo 278.51
+prop y setTo -268.32`
     },
     {
       "id": "521",
@@ -948,22 +948,22 @@ prop agent.zIndex setTo 0`
       "id": "1708",
       "label": "Algae1708",
       "bpid": "Algae",
-      "initScript": `prop x setTo -22
-prop y setTo 42`
+      "initScript": `prop x setTo -287.68
+prop y setTo 73.66`
     },
     {
       "id": "1709",
       "label": "Algae1709",
       "bpid": "Algae",
-      "initScript": `prop x setTo 183.9
-prop y setTo -132.81`
+      "initScript": `prop x setTo -248.70
+prop y setTo -327.97`
     },
     {
       "id": "1710",
       "label": "Algae1710",
       "bpid": "Algae",
-      "initScript": `prop x setTo -187.58
-prop y setTo 97.15`
+      "initScript": `prop x setTo -81.33
+prop y setTo 138.60`
     }
   ]
 }
