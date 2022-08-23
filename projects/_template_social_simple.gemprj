@@ -28,7 +28,7 @@
 addFeature Costume
 
 // set the costume
-featCall agent.Costume setCostume 'bunny.json' 0
+featProp PC.Costume.costumeName setTo 'bunny.json'
 
 // add other features
 addFeature AgentWidgets
@@ -57,7 +57,7 @@ addProp virus Boolean false
 every 1 [[
   when PC firstTouches NPC [[
     // gllow to show we are interacting
-    featCall PC.Costume setGlow 1
+    featProp PC.Costume.glow setTo 1
 
     // check if the NPC has the virus (or whatever else)
     ifExpr {{ NPC.getProp('virus').value == true }} [[
@@ -82,8 +82,7 @@ every 1 runAtStart [[
     featProp agent.AgentWidgets.text setTo '🙂'
   ]]
 
-]]
-`
+]]`
     },
     {
       "name": "NPC",
@@ -95,7 +94,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
-featCall agent.Costume setCostume 'bunny.json' 1
+featProp NPC.Costume.costumeName setTo 'bunny.json'
 
 // add other features
 addFeature Movement
@@ -117,7 +116,7 @@ addProp virus Boolean false
 // featCall agent.AgentWidgets bindMeterTo energy
 
 // Set the NPC to move if relevant (wander by default)
-featCall agent.Movement setMovementType 'wander'
+featProp agent.Movement.movementType setTo 'wander'
 featProp agent.Movement.distance setTo 0.2
 
 # PROGRAM UPDATE
@@ -134,8 +133,7 @@ every 1 runAtStart [[
     featProp agent.AgentWidgets.text setTo '🙂'
   ]]
 
-]]
-`
+]]`
     }
   ],
   "instances": [
@@ -147,7 +145,7 @@ every 1 runAtStart [[
 prop y setTo 50.13
 prop virus setTo true
 prop role setTo 'one'
-featCall agent.Costume setCostume 'bunny.json' 1`
+featCall agent.Costume.costumeName setTo 'bunny.json' 1`
     },
     {
       "id": "1",
@@ -157,7 +155,7 @@ featCall agent.Costume setCostume 'bunny.json' 1`
 prop y setTo 48.39
 prop virus setTo false
 prop role setTo 'two'
-featCall agent.Costume setCostume 'bunny.json' 2`
+featCall agent.Costume.costumeName setTo 'bunny.json' 2`
     }
   ]
 }
