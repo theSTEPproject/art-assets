@@ -298,7 +298,8 @@ every 1 runAtStart [[
       // we are now distracted so don't bother eating
       prop Worm.feeling setTo 'hungry'
       featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
-      prop Worm.istractionCounter setTo 0
+
+      prop Worm.distractionCounter setTo 0
     ]]
   ]]
 
@@ -847,7 +848,7 @@ prop y setTo 300`
       "label": "Plant Energy",
       "bpid": "CharacterGraph",
       "initScript": `prop x setTo 470
-prop y setTo 370
+prop y setTo 360
 prop characterType setTo 'Plant'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -858,7 +859,7 @@ prop labelText setTo 'Plant Energy'`
       "label": "Bunny Energy",
       "bpid": "CharacterGraph",
       "initScript": `prop x setTo 470
-prop y setTo 230
+prop y setTo 210
 prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -869,7 +870,7 @@ prop labelText setTo 'Bunny Energy'`
       "label": "Worm Energy",
       "bpid": "CharacterGraph",
       "initScript": `prop x setTo 470
-prop y setTo 90
+prop y setTo 50
 prop characterType setTo 'Worm'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
