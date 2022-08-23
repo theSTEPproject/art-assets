@@ -54,7 +54,8 @@ every 1 runAtStart [[
       prop sparkleCount sub 1
   ]]
   ifExpr {{ Soil.getProp('sparkleCount').value == 0}} [[
-     featProp Soil.Costume.costumeName setTo 'dirt.json'
+     //featProp Soil.Costume.costumeName setTo 'dirt.json'
+     featProp Soil.Costume.currentFrame setTo 0
 
   ]]
 ]]`
@@ -254,8 +255,8 @@ when Worm touches Soil [[
         prop Soil.nutrients add 50
         featCall Soil.Costume setGlow 1
         prop Soil.sparkleCount setTo 3
-        // featCall Soil.Costume setCostume 'dirt.json' 1
         featProp Soil.Costume.costumeName setTo 'dirt.json'
+        featProp Soil.Costume.currentFrame setTo 1
 
         prop feeling setTo 'hungry'
         // revert costume now that we are hungry again
