@@ -27,7 +27,7 @@
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featCall agent.Costume setCostume 'circle.json' 0
+featProp EmbodiedCharacter1.Costume.costumeName setTo 'circle.json'
 
 addFeature Physics
 addFeature Touches
@@ -49,6 +49,9 @@ addFeature Touches
 
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp InteractingCharacter1.Costume.costumeName setTo 'square.json'
 
 addFeature Physics
 addFeature Touches

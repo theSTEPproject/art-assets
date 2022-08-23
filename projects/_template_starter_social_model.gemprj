@@ -1,6 +1,6 @@
 {
-  "id": "_template_social_simple",
-  "label": "Social Model",
+  "id": "_template_starter_social_model",
+  "label": "Starter Social Model",
   "metadata": {
     "top": -400,
     "right": 400,
