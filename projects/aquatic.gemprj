@@ -427,10 +427,11 @@ addProp energyLevel Number 50
 prop Turtle.energyLevel setMax 100
 prop Turtle.energyLevel setMin 0
 
-// The predator is a consumer, that consumes energy 
+// The predator is a consumer, that consumes energy
 addProp eType string 'consumer'
 
 // set to carnivore or omnivore
+// we will always eat fish, but if we are an omnivore we'll eat algae too
 addProp consumerType string 'carnivore'
 
 addProp energyUse Number 1
@@ -472,6 +473,34 @@ every 1 runAtStart [[
   ifExpr {{ Turtle.getProp('energyLevel').value == 0 }} [[
     prop Turtle.isInert setTo true
     prop Turtle.alpha setTo 0.3
+  ]]
+]]
+
+when Turtle touches Algae [[
+  every 1 runAtStart [[
+    // only eat algae if this is an omnivore
+    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' }} [[
+
+      // only eat f you are under 50% full or healthy
+      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+
+        // only glow when we are healthy and can eat
+        featProp Turtle.Costume.glow setTo 1
+
+        // only eat if the algae is above 0
+        ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+          prop Turtle.energyLevel add 10
+          prop Algae.energyLevel sub 10
+        ]]
+
+        ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
+          prop Algae.alpha setTo 0.3
+          prop Algae.isInert setTo true
+        ]]
+
+      ]]
+
+    ]]
   ]]
 ]]
 
@@ -974,6 +1003,20 @@ prop y setTo -327.97`
       "bpid": "Algae",
       "initScript": `prop x setTo -81.33
 prop y setTo 138.60`
+    },
+    {
+      "id": "1711",
+      "label": "Fish1711",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1712",
+      "label": "Turtle1712",
+      "bpid": "Turtle",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
     }
   ]
 }
