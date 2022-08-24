@@ -1,0 +1,105 @@
+{
+  "id": "keywordTest",
+  "label": "keywords",
+  "metadata": {
+    "top": -200,
+    "right": 400,
+    "bottom": 200,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "TestKeywordAgent",
+      "scriptText": `# BLUEPRINT TestKeywordAgent
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// BUG: 'add line' will result in 'unexpected level underflow'
+// error because of the 'if' 'alt' construction
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+# PROGRAM INIT
+addFeature Costume
+featProp TestKeywordAgent.Costume.costumeName setTo 'circle.json'
+featProp TestKeywordAgent.Costume.scale setTo 2
+
+addFeature Physics
+addFeature Touches
+
+featCall TestKeywordAgent.Touches monitor 'TestKeywordAgent' b2b
+addProp myNumber number 0
+addProp myString string 'hello'
+addProp copiedString string 'empty'
+addProp copiedNumber number 0
+
+addFeature AgentWidgets
+featProp TestKeywordAgent.AgentWidgets.textProp setTo 'myString'
+
+prop TestKeywordAgent.myNumber setTo 1
+prop TestKeywordAgent.myNumber setTo 2
+// radius is not used
+featProp TestKeywordAgent.Physics.bodyRadius setTo 10
+
+featProp TestKeywordAgent.Costume.width setTo 10
+featProp TestKeywordAgent.Costume.height setTo 10
+
+# PROGRAM UPDATE
+
+
+every 1 [[
+  ifExpr {{ agent.getProp('myString').value === 'hello' }} [[
+    prop TestKeywordAgent.myString setTo 'goodbye'
+  ]]
+
+  ifExpr {{ agent.getProp('myString').value != 'hello' }} [[
+
+    prop TestKeywordAgent.myString setTo 'hello'
+  ]]
+
+  // increase width every second
+  featPropPush TestKeywordAgent.Physics.bodyWidth
+  propPop TestKeywordAgent.myNumber
+  prop TestKeywordAgent.myNumber add 10
+  propPush TestKeywordAgent.myNumber
+
+  // console log the result
+  propPush TestKeywordAgent.myNumber
+  exprPush {{ agent.getProp('myNumber').value + 1 }}
+  propPop TestKeywordAgent.copiedNumber
+  propPush TestKeywordAgent.copiedNumber
+  // should show [n, n+1]
+  dbgStack
+]]
+
+when TestKeywordAgent touches TestKeywordAgent [[
+  // when they touch each other, shrink back down
+  prop TestKeywordAgent.myString setTo 'touched'
+]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "TestKeywordAgent0",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1",
+      "label": "TestKeywordAgent1",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo -37.91
+prop y setTo 28.14`
+    }
+  ]
+}
