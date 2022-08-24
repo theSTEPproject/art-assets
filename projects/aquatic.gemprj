@@ -36,7 +36,7 @@ prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
 // this is a producer
-addProp eType string 'consumer'
+addProp energyType string 'consumer'
 addProp consumerType string 'herbivore'
 
 // have the fish move around if it is not controlled by users
@@ -206,7 +206,7 @@ addFeature Population
 addFeature AgentWidgets
 
 // algae produce energy via the sun
-addProp eType string 'producer'
+addProp energyType string 'producer'
 
 // default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
 addProp spawns Boolean false
@@ -332,7 +332,7 @@ prop Sunbeam.alpha setTo 0.3
 prop Sunbeam.zIndex setTo 100
 
 // the sun is a source of energy 
-addProp eType string 'source'
+addProp energyType string 'source'
 
 addProp speed Number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
@@ -428,7 +428,7 @@ prop Turtle.energyLevel setMax 100
 prop Turtle.energyLevel setMin 0
 
 // The predator is a consumer, that consumes energy
-addProp eType string 'consumer'
+addProp energyType string 'consumer'
 
 // set to carnivore or omnivore
 // we will always eat fish, but if we are an omnivore we'll eat algae too
