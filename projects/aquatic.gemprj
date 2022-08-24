@@ -35,14 +35,15 @@ addProp energyLevel Number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
-addProp type String 'change'
+// this is a producer
+addProp eType string 'consumer'
+addProp consumerType string 'herbivore'
+
+// have the fish move around if it is not controlled by users
 addProp movementType String 'wander'
 
 // STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
 prop Fish.movementType setTo 'wander'
-
-// STUDENTS_MAY_CHANGE - set as consumer or producer
-prop Fish.type setTo 'change'
 
 addProp energyUse Number 0
 
@@ -204,9 +205,8 @@ addFeature Movement
 addFeature Population
 addFeature AgentWidgets
 
-// STUDENTS_MAY_CHANGE - set as consumer or producer
-addProp type String 'change'
-prop Algae.type setTo 'change'
+// algae produce energy via the sun
+addProp eType string 'producer'
 
 // default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
 addProp spawns Boolean false
@@ -331,6 +331,9 @@ featCall Sunbeam.Costume setColorize 1 1 0
 prop Sunbeam.alpha setTo 0.3
 prop Sunbeam.zIndex setTo 100
 
+// the sun is a source of energy 
+addProp eType string 'source'
+
 addProp speed Number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
 prop Sunbeam.speed setTo 20
@@ -424,6 +427,12 @@ addProp energyLevel Number 50
 prop Turtle.energyLevel setMax 100
 prop Turtle.energyLevel setMin 0
 
+// The predator is a consumer, that consumes energy 
+addProp eType string 'consumer'
+
+// set to carnivore or omnivore
+addProp consumerType string 'carnivore'
+
 addProp energyUse Number 1
 
 addProp health String 'healthy'
@@ -439,6 +448,7 @@ featProp Turtle.Costume.scale setTo 0.15
 addFeature Touches
 featCall Turtle.Touches monitor 'Fish' b2b
 featCall Turtle.Touches monitor 'Trash' b2b
+featCall Turtle.Touches monitor 'Algae' b2b
 
 // show meter immediately
 featProp Turtle.AgentWidgets.meterProp setTo 'energyLevel'
