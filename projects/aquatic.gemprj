@@ -227,7 +227,7 @@ prop Algae.energyLevel setMin 0
 
 // set algae energy meter color for start
 ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
-  featProp Algae.AgentWidgets.meterColor setTo 62850
+  featProp Algae.AgentWidgets.meterColor setTo 65280
 ]]
 ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
   featProp Algae.AgentWidgets.meterColor setTo 16737792
