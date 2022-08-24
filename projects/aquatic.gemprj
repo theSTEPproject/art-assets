@@ -1003,20 +1003,6 @@ prop y setTo -327.97`
       "bpid": "Algae",
       "initScript": `prop x setTo -81.33
 prop y setTo 138.60`
-    },
-    {
-      "id": "1711",
-      "label": "Fish1711",
-      "bpid": "Fish",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
-    },
-    {
-      "id": "1712",
-      "label": "Turtle1712",
-      "bpid": "Turtle",
-      "initScript": `prop x setTo -23
-prop y setTo 45`
     }
   ]
 }
