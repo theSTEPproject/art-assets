@@ -430,9 +430,9 @@ prop Turtle.energyLevel setMin 0
 // The predator is a consumer, that consumes energy
 addProp energyType string 'consumer'
 
-// set to carnivore or omnivore
-// we will always eat fish, but if we are an omnivore we'll eat algae too
-addProp consumerType string 'carnivore'
+// set to carnivore, omnivore, or herbivore
+// this setting determines whether we will eat fish or algae
+addProp consumerType string 'omnivore'
 
 addProp energyUse Number 1
 
@@ -478,8 +478,8 @@ every 1 runAtStart [[
 
 when Turtle touches Algae [[
   every 1 runAtStart [[
-    // only eat algae if this is an omnivore
-    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' }} [[
+    // only eat algae if this is an omnivore or herbivore
+    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' || Turtle.getProp('consumerType').value == 'herbivore' }} [[
 
       // only eat f you are under 50% full or healthy
       ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
@@ -506,23 +506,26 @@ when Turtle touches Algae [[
 
 when Turtle touches Fish [[
   every 1 runAtStart [[
+    // only eat algae if this is an omnivore or carnivore
+    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' || Turtle.getProp('consumerType').value == 'carnivore' }} [[
 
-    // only eat the fish if you are under 50% full or healthy
-    ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+      // only eat the fish if you are under 50% full or healthy
+      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
 
-      // only glow when we are healthy and can eat
-      featProp Turtle.Costume.glow setTo 1
+        // only glow when we are healthy and can eat
+        featProp Turtle.Costume.glow setTo 1
 
-      // Turtle gains some energy
-      prop Turtle.energyLevel add 20
+        // Turtle gains some energy
+        prop Turtle.energyLevel add 20
 
-      // Fish is dead
-      prop Fish.isInert setTo true
-      prop Fish.alpha setTo 0.3
-      featProp Fish.Costume setPose 2
-      prop Fish.energyLevel setTo 0
+        // Fish is dead
+        prop Fish.isInert setTo true
+        prop Fish.alpha setTo 0.3
+        featProp Fish.Costume setPose 2
+        prop Fish.energyLevel setTo 0
+      ]]
+
     ]]
-
   ]]
 ]]
 
@@ -1003,6 +1006,13 @@ prop y setTo -327.97`
       "bpid": "Algae",
       "initScript": `prop x setTo -81.33
 prop y setTo 138.60`
+    },
+    {
+      "id": "1711",
+      "label": "Turtle1711",
+      "bpid": "Turtle",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
