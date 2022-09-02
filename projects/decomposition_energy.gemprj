@@ -753,38 +753,41 @@ onEvent Tick [[
     {
       "name": "GraphLostEnergy",
       "scriptText": `# BLUEPRINT GraphLostEnergy
-            # PROGRAM DEFINE
-            prop skin setTo 'onexone.json'
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
+addFeature AgentWidgets
+addFeature Population
+featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
-            addFeature AgentWidgets
-            addFeature Population
-            featProp AgentWidgets isLargeGraphic setTo true
+addFeature Global
 
-            addFeature Global
+// using a generic name so that it is easier to change later
+addProp lostEnergy Number 500
+prop GraphLostEnergy.lostEnergy setMax 1000
+prop GraphLostEnergy.lostEnergy setMin 0
 
-            // using a generic name so that it is easier to change later
-            addProp lostEnergy Number 500
-            prop lostEnergy setMax 1000
-            prop lostEnergy setMin 0
+featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
 
-           featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
+// make sure something displays with some initial text, on bottom right at first
+prop GraphLostEnergy.x setTo 495
+prop GraphLostEnergy.y setTo 350
+prop GraphLostEnergy.zIndex setTo 300
 
-            # PROGRAM INIT
-            // make sure something displays with some initial text, on bottom right at first
-            prop x setTo 495
-            prop y setTo 350
-            prop zIndex setTo 300
+featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy'
 
-            featProp AgentWidgets text setTo 'Lost Energy'
-  
-            # PROGRAM EVENT
+# PROGRAM UPDATE
 
-            onEvent Tick [[
+onEvent Tick [[
 
-              exprPush {{ global.getProp('energyReleasedAsHeat').value }}
-              propPop lostEnergy
-              
-            ]]
+  exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPop GraphLostEnergy.lostEnergy
+
+]]
+
 `
     },
     {
