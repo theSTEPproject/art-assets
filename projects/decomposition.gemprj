@@ -648,6 +648,9 @@ every 1 runAtStart [[
     {
       "name": "Waste",
       "scriptText": `# BLUEPRINT Waste
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Population
 addFeature Costume
@@ -661,7 +664,7 @@ prop Waste.matter setMin 0
 // scale up because the art is a bit small
 addFeature Physics
 
-featProp Waste.Costume.scale setTo 2.0
+featProp Waste.Costume.scale setTo 2
 
 // pick a random rotation to keep things looking interesting
 prop Waste.orientation setTo 0
@@ -669,15 +672,15 @@ prop Waste.orientation addRnd 0 6
 
 // we need to be able to see when the waste is on soil and / or being eaten by a worm
 addFeature Touches
-featCall Waste.Touches monitor Worm b2b
-featCall Waste.Touches monitor Soil b2b
+featCall Waste.Touches monitor 'Worm' b2b
+featCall Waste.Touches monitor 'Soil' b2b
 
 // make sure it is in front of the soil but behind the worms
 prop Waste.zIndex setTo -150
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter
-featProp Waste.AgentWidgets.meterProp setTo matter
+featProp Waste.AgentWidgets.meterProp setTo 'matter'
 
 featProp Waste.AgentWidgets.meterColor setTo 5783616
 featProp Waste.AgentWidgets.text setTo ''
@@ -685,7 +688,7 @@ featProp Waste.AgentWidgets.text setTo ''
 # PROGRAM UPDATE
 when Waste touches Soil [[
   // STUDENTS_MAY_CHANGE - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria)
-  every 1 [[
+  every 1 runAtStart [[
     // Bacteria decomposes waste
     prop Waste.matter sub 1
     prop Soil.nutrients add 1
@@ -694,19 +697,22 @@ when Waste touches Soil [[
 every 1 runAtStart [[
   // remove if there is nothing left
   ifExpr {{ Waste.getProp('matter').value < 1 }} [[
-    featCall Population removeAgent
+    featCall Waste.Population removeAgent
   ]]
 
   // scale based on amount of matter
-    exprPush {{ (Waste.getProp('matter').value / 50)}}
-    featPropPop Waste.Costume.scale
+  exprPush {{ (Waste.getProp('matter').value / 50) }}
+  featPropPop Waste.Costume.scale
 
-]]`
+]]
+
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
 featProp TextLabel.Costume.costumeName setTo 'onexone.json'
@@ -924,9 +930,9 @@ featProp AgentWidgets text setTo 'Key:'`
       "label": "EnergyLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
-    prop y setTo -373
-    featProp AgentWidgets text setTo 'Energy'
-    prop zIndex setTo 100`
+prop y setTo -373
+featProp AgentWidgets text setTo 'Energy'
+prop zIndex setTo 100`
     },
     {
       "id": "1702",
