@@ -216,12 +216,13 @@ prop Waste.matterLevel setMin 0
 
 // use a widget to depict the current nutrients
 addFeature AgentWidgets
-featProp Waste.AgentWidgets.meterProp setTo matterLevel
+featProp Waste.AgentWidgets.meterProp setTo 'matterLevel'
 
 // set the waste to be purple because it has nutrients, not energy
 featProp Waste.AgentWidgets.meterColor setTo 5783616
 
-`
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Plant",
@@ -649,7 +650,7 @@ when EnergyRepresentation centerFirstTouches Soil [[
 # PROGRAM DEFINE
 addFeature AgentWidgets
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json'`
+featProp TextLabel.Costume.costumeName setTo 'onexone.json'`
     },
     {
       "name": "ColorChip",
@@ -671,7 +672,7 @@ addFeature Physics
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-      # PROGRAM DEFINE
+      # PROGRAM INIT
       addFeature AgentWidgets
       addFeature Costume
       featProp Timer.Costume.costumeName setTo 'onexone.json'
@@ -793,14 +794,23 @@ onEvent Tick [[
     {
       "name": "SoilBG",
       "scriptText": `# BLUEPRINT SoilBG
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
 featProp SoilBG.Costume.costumeName setTo 'square.json'
-featCall SoilBG.Costume setColorize 0.56 0.52 0.40
+featCall SoilBG.Costume setColorize 0.56 0.52 0.4
 addFeature Physics
-featProp SoilBG.Costume.width setTo 800 
+featProp SoilBG.Costume.width setTo 800
 featProp SoilBG.Costume.height setTo 400
-prop zIndex setTo -210`
+prop SoilBG.zIndex setTo -210
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Soil",
@@ -953,7 +963,7 @@ prop y setTo 300`
       "label": "SoilBG01",
       "bpid": "SoilBG",
       "initScript": `prop x setTo 0
- prop y setTo 200`
+prop y setTo 200`
     },
     {
       "id": "1110",
@@ -982,9 +992,9 @@ featProp AgentWidgets text setTo 'Key:'`
       "label": "EnergyLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
-    prop y setTo -373
-    featProp AgentWidgets text setTo 'Energy'
-    prop zIndex setTo 100`
+prop y setTo -373
+featProp AgentWidgets text setTo 'Energy'
+prop zIndex setTo 100`
     },
     {
       "id": "1702",
