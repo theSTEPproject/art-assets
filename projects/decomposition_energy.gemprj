@@ -805,7 +805,10 @@ prop zIndex setTo -210`
     {
       "name": "Soil",
       "scriptText": `# BLUEPRINT Soil
-# PROGRAM DEFINE
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'dirt.json'
 
@@ -822,24 +825,24 @@ featProp Soil.Costume.scale setTo 0.38
 prop Soil.zIndex setTo -200
 
 addFeature Touches
-featCall Touches monitor Worm b2b
+featCall Soil.Touches monitor 'Worm' b2b
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp AgentWidgets meterProp setTo nutrients
+featProp Soil.AgentWidgets.meterProp setTo 'nutrients'
 
-featCall AgentWidgets setMeterPosition 'inside-left'
+featCall Soil.AgentWidgets setMeterPosition 'inside-left'
 // violet
-featProp AgentWidgets meterColor setTo 9055202
-featProp AgentWidgets text setTo ''
+featProp Soil.AgentWidgets.meterColor setTo 9055202
+featProp Soil.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  ifExpr {{ agent.getProp('sparkleCount').value > 0}} [[
-      prop sparkleCount sub 1
+  ifExpr {{ agent.getProp('sparkleCount').value > 0 }} [[
+    prop Soil.sparkleCount sub 1
   ]]
-  ifExpr {{ agent.getProp('sparkleCount').value == 0}} [[
+  ifExpr {{ agent.getProp('sparkleCount').value == 0 }} [[
     featProp Soil.Costume.costumeName setTo 'dirt.json'
   ]]
 ]]`
