@@ -186,7 +186,7 @@ every 2 runAtStart [[
 // how much energy it has
 
 addFeature Costume
-featProp Algae.Costume.costumeName setTo 'algae.json'
+featProp Algae.Costume.costumeName setTo 'algae.png'
 
 addFeature Physics
 featProp Algae.Costume.scale setTo 3

@@ -70,23 +70,23 @@ addProp eType String 'consumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop Bunny.energyLevel setMax 100
+prop Bunny.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Bunny lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
-featProp AgentWidgets meterProp setTo energyLevel
+featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
 
-featProp AgentWidgets meterColor setTo 65280
+featProp Bunny.AgentWidgets.meterColor setTo 65280
 
 # PROGRAM UPDATE
-  every 2 runAtStart [[
+every 2 runAtStart [[
 
   // energyLevel goes down every 2 seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
   propPop agent.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the Bunny is
@@ -94,19 +94,19 @@ featProp AgentWidgets meterColor setTo 65280
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featProp Bunny.Costume.currentFrame setTo 0
     // Green
-    featProp AgentWidgets meterColor setTo 65280
+    featProp Bunny.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
     featProp Bunny.Costume.currentFrame setTo 1
     // Orange
-    featProp AgentWidgets meterColor setTo 16737792
+    featProp Bunny.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
     featProp Bunny.Costume.currentFrame setTo 1
     // Red
-    featProp AgentWidgets meterColor setTo 16711680
+    featProp Bunny.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
@@ -117,11 +117,13 @@ featProp AgentWidgets meterColor setTo 65280
   ]]
 
   // set meter to mirror energyLevel
- featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
 
 
 ]]
-`
+
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "Worm",
@@ -280,7 +282,7 @@ featCall AgentWidgets setMeterPosition 'inside-left'
 addFeature Touches
 
 // we need to touch the soil to know the nutrients
-featCall Touches monitor Soil b2b
+featCall Plant.Touches monitor Soil b2b
 
 # PROGRAM INIT
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
@@ -384,12 +386,12 @@ prop EnergyRepresentation.energyLevel setMin 0
 addProp eType String 'none'
 
 addFeature Touches
-featCall Touches monitor Sun c2b
-featCall Touches monitor Plant c2b
-featCall Touches monitor Bunny c2b
-featCall Touches monitor Worm c2b
-featCall Touches monitor Waste c2b
-featCall Touches monitor Soil c2b
+featCall EnergyRepresentation.Touches monitor Sun c2b
+featCall EnergyRepresentation.Touches monitor Plant c2b
+featCall EnergyRepresentation.Touches monitor Bunny c2b
+featCall EnergyRepresentation.Touches monitor Worm c2b
+featCall EnergyRepresentation.Touches monitor Waste c2b
+featCall EnergyRepresentation.Touches monitor Soil c2b
 
 
 # PROGRAM UPDATE
@@ -656,10 +658,19 @@ featProp agent.Costume.costumeName setTo 'onexone.json'`
     {
       "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp agent.Costume.costumeName setTo'square.json' 
-addFeature Physics`
+featProp ColorChip.Costume.costumeName setTo 'square.json'
+addFeature Physics
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Timer",
@@ -990,24 +1001,22 @@ prop zIndex setTo 100`
       "id": "1704",
       "label": "EnergyChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
+      "initScript": `prop x setTo 455
 prop y setTo -337.62
 featCall Costume setColorize 0 255 0
 prop zIndex setTo 95
-featProp agent.Costume.width setTo 100 
-featProp agent.Costume.height setTo 30
-
-`
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
     },
     {
       "id": "1705",
       "label": "NutrientsChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
+      "initScript": `prop x setTo 455
 prop y setTo -305.89
 featCall Costume setColorize 138 43 226
 prop zIndex setTo 95
-featProp agent.Costume.width setTo 100 
+featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30`
     },
     {
@@ -1016,9 +1025,9 @@ featProp agent.Costume.height setTo 30`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 454.66
 prop y setTo -274.96
-featCall Costume setColorize 0.56 0.52 0.40
+featCall Costume setColorize 0.56 0.52 0.4
 prop zIndex setTo 95
-featProp agent.Costume.width setTo 100 
+featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30`
     },
     {
@@ -1032,7 +1041,7 @@ prop y setTo -46.5`
       "id": "1708",
       "label": "Bunny2",
       "bpid": "Bunny",
-      "initScript": `prop x setTo 314.50
+      "initScript": `prop x setTo 314.5
 prop y setTo -34.98`
     },
     {
