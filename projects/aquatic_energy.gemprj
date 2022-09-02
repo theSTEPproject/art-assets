@@ -108,10 +108,10 @@ ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat'
 
 
 addFeature Costume
-featProp Fish.Costume.costumeName setTo 'fish.json'
+featProp Fish.Costume.costumeName setTo 'fish.png'
 
 addFeature Physics
-featProp Fish.Costume.scale setTo 1.5
+featProp Fish.Costume.scale setTo 0.3
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -141,19 +141,19 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the fish is
   // sated
   ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
-    featProp Fish.Costume.currentFrame setTo 0
+    featProp Fish.Costume.costumeName setTo 'fish.png'
     // Green
     featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
-    featProp Fish.Costume.currentFrame setTo 1
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Orange
     featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
-    featProp Fish.Costume.currentFrame setTo 1
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Red
     featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
@@ -189,7 +189,7 @@ addFeature Costume
 featProp Algae.Costume.costumeName setTo 'algae.png'
 
 addFeature Physics
-featProp Algae.Costume.scale setTo 3
+featProp Algae.Costume.scale setTo 0.2
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -219,7 +219,7 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the algae based on its energy level
-  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
   featPropPop Algae.Costume.scale
 
   // this code sets the color of the energy bar based on how hungry the fish is
@@ -240,7 +240,7 @@ every 1 runAtStart [[
     featProp Algae.AgentWidgets.meterColor setTo 16711680
 
     // avoid getting too
-    exprPush {{ .90 }}
+    exprPush {{ .1 }}
     featPropPop Algae.Costume scale
 
   ]]
