@@ -48,7 +48,7 @@ featCall Lion.Touches monitor 'WildCat' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Lion touches Goat [[
 
     ifExpr {{ Lion.getProp('alive').value == true &&  Goat.getProp('alive').value == true }} [[
@@ -113,7 +113,7 @@ featCall Goat.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Goat touches Plant [[
     ifExpr {{ Goat.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
       featProp Goat.Costume.glow setTo 1
@@ -168,7 +168,7 @@ featCall Jackal.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Jackal touches Goat [[
     ifExpr {{ Jackal.getProp('alive').value == true &&  Goat.getProp('alive').value == true }} [[
       featProp Jackal.Costume.glow setTo 1
@@ -230,7 +230,7 @@ featCall Rabbit.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Rabbit touches Plant [[
     ifExpr {{ Rabbit.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
       featProp Rabbit.Costume.glow setTo 1
@@ -283,7 +283,7 @@ featCall Plant.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
 
   when Plant touches Reincarnator [[
     ifExpr {{ Plant.getProp('alive').value == false }} [[
@@ -319,7 +319,7 @@ featProp Mouse.Costume.costumeName setTo 'web_mouse.png'
 addFeature Physics
 addFeature Touches
 
-featProp agent.Costume.scale setTo 0.2
+featProp Mouse.Costume.scale setTo 0.2
 
 addProp alive Boolean true
 
@@ -330,7 +330,7 @@ featCall Mouse.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Mouse touches Plant [[
     ifExpr {{ Mouse.getProp('alive').value == true &&  Plant.getProp('alive').value == true }} [[
       featProp Mouse.Costume.glow setTo 1
@@ -385,7 +385,7 @@ featCall WildCat.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when WildCat touches Mouse [[
     ifExpr {{ WildCat.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
       featProp WildCat.Costume.glow setTo 1
@@ -447,7 +447,7 @@ featCall Owl.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Owl touches Mouse [[
     ifExpr {{ Owl.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
       featProp Owl.Costume.glow setTo 1
@@ -501,7 +501,7 @@ featCall Snake.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Snake touches Mouse [[
     ifExpr {{ Snake.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
       featProp Snake.Costume.glow setTo 1
@@ -555,7 +555,7 @@ featCall Kite.Touches monitor 'Reincarnator' b2b
 
 # PROGRAM EVENT
 
-every 1 [[
+every 1 runAtStart [[
   when Kite touches Snake [[
     ifExpr {{ Kite.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
       featProp Kite.Costume.glow setTo 1
@@ -591,7 +591,7 @@ addFeature Physics
 
 featProp Reincarnator.Costume.costumeName setTo 'square.json'
 
-featProp agent.Costume.scale setTo 0.5
+featProp Reincarnator.Costume.scale setTo 0.5
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
@@ -639,16 +639,14 @@ featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
       "id": "1",
       "label": "Goat1",
       "bpid": "Goat",
-      "initScript": ` 
-      prop x setTo 282.11
+      "initScript": `prop x setTo 282.11
 prop y setTo -141.59`
     },
     {
       "id": "2",
       "label": "Reincarnator2",
       "bpid": "Reincarnator",
-      "initScript": ` 
-      prop x setTo 452.98
+      "initScript": `prop x setTo 452.98
 prop y setTo 326.27`
     },
     {
@@ -679,8 +677,7 @@ prop y setTo 70.64`
       "id": "6",
       "label": "Mouse6",
       "bpid": "Mouse",
-      "initScript": ` 
-      prop x setTo 14.48
+      "initScript": `prop x setTo 14.48
 prop y setTo 289.71`
     },
     {
