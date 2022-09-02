@@ -29,7 +29,7 @@ addFeature Movement
 addFeature AgentWidgets
 // addFeature Cursor
 
-featProp Fish.Costume.costumeName setTo 'fish.json'
+featProp Fish.Costume.costumeName setTo 'fish.png'
 
 addProp energyLevel Number 30
 prop Fish.energyLevel setMax 100
@@ -58,7 +58,7 @@ prop Fish.grows setTo false
 addProp startDirection Number 0
 
 addFeature Physics
-featProp Fish.Costume.scale setTo 1
+featProp Fish.Costume.scale setTo 0.5
 
 
 // set Touches
@@ -77,7 +77,7 @@ featPropPop Fish.AgentWidgets.text
 onEvent Start [[
 
   // start at normal size unless you eat
-  featProp Fish.Costume.scale setTo 1
+  featProp Fish.Costume.scale setTo 0.5
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
@@ -133,7 +133,7 @@ when Fish touches Algae [[
     ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
 
       // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
-      featProp Fish.Costume.scale setTo 2
+      featProp Fish.Costume.scale setTo 0.7
       prop Fish.energyUse setTo 2
     ]]
 
@@ -157,25 +157,25 @@ every 1 runAtStart [[
 
   // sated
   ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
-    featProp Fish.Costume.currentFrame setTo 0
+    featProp Fish.Costume.costumeName setTo 'fish.png'
     // Green
     featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
-    featProp Fish.Costume.currentFrame setTo 1
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Orange
     featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
-    featProp Fish.Costume.currentFrame setTo 1
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Red
     featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
-    featProp Fish.Costume.currentFrame setTo 2
+    featProp Fish.Costume.costumeName setTo 'fish_dead'
     featProp Fish.Movement.movementType setTo 'float'
 
     prop Fish.alpha setTo 0.3
@@ -214,7 +214,7 @@ addProp spawns Boolean false
 // STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
 prop Algae.spawns setTo false
 
-featProp Algae.Costume.costumeName setTo 'algae.json'
+featProp Algae.Costume.costumeName setTo 'algae.png'
 
 // show meter immediately
 featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
@@ -224,6 +224,7 @@ featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 addProp energyLevel Number 100
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
+prop Algae.zIndex setTo 1
 
 // set algae energy meter color for start
 ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
@@ -252,7 +253,7 @@ featProp Algae.AgentWidgets.text setTo ''
 featProp Algae.Movement.movementType setTo 'wander'
 featProp Algae.Movement.distance setTo 0.2
 
-exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
 featPropPop Algae.Costume.scale
 
 prop Algae.zIndex setTo -110
@@ -295,7 +296,7 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the algae based on its energy level
-  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+  exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
   featPropPop Algae.Costume.scale
 
   // set algae energy meter color
@@ -326,12 +327,9 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Sunbeam.Costume.costumeName setTo 'circle.json'
-featCall Sunbeam.Costume setColorize 1 1 0
-prop Sunbeam.alpha setTo 0.3
-prop Sunbeam.zIndex setTo 100
+featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 
-// the sun is a source of energy 
+// the sun is a source of energy
 addProp energyType string 'source'
 
 addProp speed Number 20
@@ -348,9 +346,9 @@ prop Sunbeam.direction setTo 1
 
 addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp Sunbeam.Costume.scale setTo 0.4
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Sunbeam.Costume.scaleY setTo 2.5
+
 
 addFeature Touches
 
@@ -857,61 +855,33 @@ every 1 runAtStart [[
 
 // required directive
  `
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background LOAD
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// required directive
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'background_aquatic.png'
+featProp Background.Costume.scale setTo 1.33
+prop Background.zIndex setTo -999
+
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
     {
-      "id": "501",
-      "label": "Algae 1",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 230.20
-prop y setTo 95.48`
-    },
-    {
-      "id": "503",
-      "label": "Algae 3",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 25.26
-prop y setTo -72.88`
-    },
-    {
-      "id": "504",
-      "label": "Algae 4",
-      "bpid": "Algae",
-      "initScript": `prop x setTo -142.79
-prop y setTo -136.95`
-    },
-    {
-      "id": "505",
-      "label": "Algae 5",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 278.51
-prop y setTo -268.32`
-    },
-    {
-      "id": "521",
-      "label": "Rock1",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -350
-prop y setTo 368
-featProp agent.Costume.scale setTo 1.3
-prop agent.zIndex setTo 210`
-    },
-    {
-      "id": "522",
-      "label": "Rock2",
-      "bpid": "Rock",
-      "initScript": `prop x setTo 339.19
-prop y setTo 387.94
-featProp Costume flipX setTo true
-prop agent.zIndex setTo 210`
-    },
-    {
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop agent.y setTo -400
+      "initScript": `prop x setTo 460.49
+prop y setTo -405.29
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
@@ -927,8 +897,8 @@ prop agent.zIndex setTo 100`
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -339.64
+      "initScript": `prop x setTo 456.53
+prop y setTo -339.67
 featProp AgentWidgets text setTo 'Medium'
 prop agent.zIndex setTo 100`
     },
@@ -968,8 +938,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -275.80
+      "initScript": `prop x setTo 456.78
+prop y setTo -277.58
 featCall Costume setColorize 255 0 0
 prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
@@ -977,35 +947,62 @@ featProp agent.Costume.width setTo 100`
     },
     {
       "id": "1707",
-      "label": "Sunbeam",
-      "bpid": "Sunbeam",
-      "initScript": `prop x setTo -404.2
-prop y setTo -196.34
-prop energyRate setTo 50
-prop direction setTo 1
-prop speed setTo 20
-prop agent.zIndex setTo 0`
+      "label": "Background1707",
+      "bpid": "Background",
+      "initScript": `prop x setTo -1.20
+prop y setTo -0.20
+`
     },
     {
       "id": "1708",
-      "label": "Algae1708",
-      "bpid": "Algae",
-      "initScript": `prop x setTo -287.68
-prop y setTo 73.66`
+      "label": "Fish1708",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -63
+prop y setTo -157.42`
     },
     {
       "id": "1709",
       "label": "Algae1709",
       "bpid": "Algae",
-      "initScript": `prop x setTo -248.70
-prop y setTo -327.97`
+      "initScript": `prop x setTo -58.02
+prop y setTo 30`
     },
     {
       "id": "1710",
       "label": "Algae1710",
       "bpid": "Algae",
-      "initScript": `prop x setTo -81.33
-prop y setTo 138.60`
+      "initScript": `prop x setTo -248.71
+prop y setTo -95.88`
+    },
+    {
+      "id": "1711",
+      "label": "Algae1711",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 55.29
+prop y setTo -103.3`
+    },
+    {
+      "id": "1712",
+      "label": "Sunbeam1712",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -379.33
+prop y setTo -129.71`
+    },
+    {
+      "id": "1713",
+      "label": "Rock1713",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -301.41
+prop y setTo 349.49`
+    },
+    {
+      "id": "1714",
+      "label": "Rock1714",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 318.43
+prop y setTo 347.53
+featProp Rock.Costume.flipX setTo true
+\n`
     }
   ]
 }
