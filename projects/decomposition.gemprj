@@ -337,15 +337,15 @@ addFeature Population
 // addFeature Global
 addFeature Costume
 addFeature Movement
-//addFeature Cursor
+// addFeature Cursor
 
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
 
 
 // set bunny energy
 addProp energyLevel Number 25
-prop energyLevel setMax 50
-prop energyLevel setMin 0
+prop Bunny.energyLevel setMax 50
+prop Bunny.energyLevel setMin 0
 
 // to manage when it is full and releases waste
 addProp feeling String 'hungry'
@@ -432,16 +432,16 @@ when Bunny lastTouches Plant [[
 
 every 1 runAtStart [[
 
-// increment distraction counter
+  // increment distraction counter
   prop distractionCounter add 1
 
-  // if you are hungry, and hit focus length, switch to distracted. 
-  ifExpr {{Bunny.getProp('feeling').value == 'hungry'}} [[
+  // if you are hungry, and hit focus length, switch to distracted.
+  ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
     ifExpr {{ Bunny.getProp('distractionCounter').value >= Bunny.getProp('focusLength').value }} [[
-      
+
       // we are now distracted so don't bother eating
       prop feeling setTo 'distracted'
-      featProp Bunny.Costume.costumeName setTo 'bunny_distracted.png' 
+      featProp Bunny.Costume.costumeName setTo 'bunny_distracted.png'
       prop distractionCounter setTo 0
 
       // in case we were eating
@@ -449,18 +449,18 @@ every 1 runAtStart [[
 
     ]]
   ]]
-  
-  // if you are distracted, and hit distracted length length, switch to hungry. 
-  ifExpr {{Bunny.getProp('feeling').value == 'distracted'}} [[
-      ifExpr {{ Bunny.getProp('distractionCounter').value >= Bunny.getProp('distractionLength').value }} [[
-        
-        // we are now distracted so don't bother eating
-        prop feeling setTo 'hungry'
-        featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
-        prop distractionCounter setTo 0
-        dbgOut 'we are now hungry'
-      ]]
+
+  // if you are distracted, and hit distracted length length, switch to hungry.
+  ifExpr {{ Bunny.getProp('feeling').value == 'distracted' }} [[
+    ifExpr {{ Bunny.getProp('distractionCounter').value >= Bunny.getProp('distractionLength').value }} [[
+
+      // we are now distracted so don't bother eating
+      prop feeling setTo 'hungry'
+      featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
+      prop distractionCounter setTo 0
+      dbgOut 'we are now hungry'
     ]]
+  ]]
 
   ifExpr {{ Bunny.getProp('feeling').value == 'full' }} [[
     ifExpr {{ Bunny.getProp('wasteCount').value == 0 }} [[
@@ -495,7 +495,9 @@ every 1 runAtStart [[
   ]]
 
 ]]
-`
+
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "Plant",
