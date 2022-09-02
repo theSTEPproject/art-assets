@@ -502,6 +502,9 @@ every 1 runAtStart [[
     {
       "name": "Plant",
       "scriptText": `# BLUEPRINT Plant
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'plants.json'
@@ -512,58 +515,58 @@ addFeature Population
 addProp energyLevel Number 50
 
 // STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random)
-prop energyLevel setTo 50
-prop energyLevel setMax 100
-prop energyLevel setMin 0
+prop Plant.energyLevel setTo 50
+prop Plant.energyLevel setMax 100
+prop Plant.energyLevel setMin 0
 
 // setup so that we can tweak the size more dynamically, and plant by plant
 addProp minimumScale Number 0
 
 // STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
-prop minimumScale setTo 0
-prop minimumScale setMax 1.0
-prop minimumScale setMin -0.5
+prop Plant.minimumScale setTo 0
+prop Plant.minimumScale setMax 1
+prop Plant.minimumScale setMin -0.5
 
 addProp nutrients Number 8
 
 // STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
-prop nutrients setTo 8
-prop nutrients setMax 10
-prop nutrients setMin 0
+prop Plant.nutrients setTo 8
+prop Plant.nutrients setMax 10
+prop Plant.nutrients setMin 0
 
 addProp matter Number 50
 
 // STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
-prop matter setTo 50
-prop matter setMax 100
-prop matter setMin 0
+prop Plant.matter setTo 50
+prop Plant.matter setMax 100
+prop Plant.matter setMin 0
 
-prop zIndex setTo -110
+prop Plant.zIndex setTo -110
 
 addFeature Physics
 addFeature Touches
-featCall Touches monitor Sunbeam b2b
-featCall Touches monitor Soil b2b
-featCall Touches monitor Bunny b2b
+featCall Plant.Touches monitor 'Sunbeam' b2b
+featCall Plant.Touches monitor 'Soil' b2b
+featCall Plant.Touches monitor 'Bunny' b2b
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp AgentWidgets meterProp setTo energyLevel
+featProp Plant.AgentWidgets.meterProp setTo 'energyLevel'
 // Green
-featProp AgentWidgets meterColor setTo 65280
+featProp Plant.AgentWidgets.meterColor setTo 65280
 
-featCall AgentWidgets setMeterPosition 'middle'
-featProp AgentWidgets text setTo ''
+featProp Plant.AgentWidgets.meterPosition setTo 'middle'
+featProp Plant.AgentWidgets.text setTo ''
 
 // always keep it right near the edge of the dirt, but give some variability
-prop y setTo -50
-prop y addRnd -10 10
+prop Plant.y setTo -50
+prop Plant.y addRnd -10 10
 
 # PROGRAM INIT
 
-  // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
-  featPropPop Plant.Costume.scale
+// set size based on matter (assume matter max of 100) and that we waver between 80-100%
+exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
+featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
 
@@ -576,11 +579,11 @@ when Plant touches Sunbeam [[
 ]]
 
 when Plant lastTouches Sunbeam [[
-    featProp Plant.Costume.glow setTo 0
+  featProp Plant.Costume.glow setTo 0
 ]]
 
 when Plant touches Soil [[
-  every 1 [[
+  every 1 runAtStart [[
     ifExpr {{ Soil.getProp('nutrients').value > 0 }} [[
       prop Soil.nutrients sub 1
       prop Plant.nutrients add 1
@@ -592,30 +595,30 @@ every 1 runAtStart [[
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
   exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
-  featPropPop agent.Costume.scale
+  featPropPop Plant.Costume.scale
 
   // if the plant is basically dead
   ifExpr {{ Plant.getProp('matter').value < 10 }} [[
 
     // create a little bit of inorganic matter
-    featCall Population createAgent Waste [[
+    featCall Plant.Population createAgent Waste [[
       // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
-      prop x addRndInt -5 5
-      prop y addRndInt 50 100
-      prop matter setTo 20
+      prop Plant.x addRndInt -5 5
+      prop Plant.y addRndInt 50 100
+      prop Plant.matter setTo 20
     ]]
 
     // then remove the plant
-    featCall Population removeAgent
+    featCall Plant.Population removeAgent
   ]]
 
 
   // is it healthy?  Use some nutrients and then set color
-  prop nutrients sub 1
+  prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
     featProp Plant.Costume.costumeName setTo 'plants.json'
-    // SET TO THE DIFFERENT FRAMES 
+    // SET TO THE DIFFERENT FRAMES
     dbgOut 'needs to be set'
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
@@ -625,10 +628,9 @@ every 1 runAtStart [[
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
     featProp Plant.Costume.costumeName setTo 'plants.json'
-    prop matter sub 1
+    prop Plant.matter sub 1
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Waste",
@@ -640,8 +642,8 @@ addFeature Costume
 featProp Waste.Costume.costumeName setTo 'organic_matter.json'
 
 addProp matter Number 100
-prop matter setMax 100
-prop matter setMin 0
+prop Waste.matter setMax 100
+prop Waste.matter setMin 0
 
 // scale up because the art is a bit small
 addFeature Physics
@@ -649,23 +651,23 @@ addFeature Physics
 featProp Waste.Costume.scale setTo 2.0
 
 // pick a random rotation to keep things looking interesting
-prop orientation setTo 0
-prop orientation addRnd 0 6
+prop Waste.orientation setTo 0
+prop Waste.orientation addRnd 0 6
 
 // we need to be able to see when the waste is on soil and / or being eaten by a worm
 addFeature Touches
-featCall Touches monitor Worm b2b
-featCall Touches monitor Soil b2b
+featCall Waste.Touches monitor Worm b2b
+featCall Waste.Touches monitor Soil b2b
 
 // make sure it is in front of the soil but behind the worms
-prop zIndex setTo -150
+prop Waste.zIndex setTo -150
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter
-featProp AgentWidgets meterProp setTo matter
+featProp Waste.AgentWidgets.meterProp setTo matter
 
-featProp AgentWidgets meterColor setTo 5783616
-featProp AgentWidgets text setTo ''
+featProp Waste.AgentWidgets.meterColor setTo 5783616
+featProp Waste.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 when Waste touches Soil [[
