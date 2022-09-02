@@ -63,13 +63,16 @@ every 1 runAtStart [[
     {
       "name": "Sunbeam",
       "scriptText": `# BLUEPRINT Sunbeam
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
 featProp Sunbeam.Costume.costumeName setTo 'circle.json'
 
-featCall Costume setColorize 1 1 0
+featCall Sunbeam.Costume setColorize 1 1 0
 prop Sunbeam.alpha setTo 0.3
-//prop zIndex setTo 100
+// prop zIndex setTo 100
 
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
 addProp speed Number 20
@@ -89,19 +92,22 @@ addFeature Touches
 
 # PROGRAM INIT
 // default position for moving across the top
-prop x setTo -400
-prop y setTo -180
+prop Sunbeam.x setTo -400
+prop Sunbeam.y setTo -180
 
 # PROGRAM EVENT
 onEvent Tick [[
-  exprPush {{Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
-  propPop x
+  exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
+  propPop Sunbeam.x
 
-  ifExpr {{ ((Sunbeam.getProp('direction').value == 1) && (Sunbeam.x > 400)) || ((Sunbeam.getProp('direction').value == -1) && (Sunbeam.x < -400))}} [[
-      exprPush {{400 * Sunbeam.getProp('direction').value * -1}}
-      propPop x
+  ifExpr {{ ((Sunbeam.getProp('direction').value == 1) && (Sunbeam.x > 400)) || ((Sunbeam.getProp('direction').value == -1) && (Sunbeam.x < -400)) }} [[
+    exprPush {{ 400 * Sunbeam.getProp('direction').value * -1 }}
+    propPop Sunbeam.x
   ]]
-]]`
+]]
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Rock",
@@ -167,7 +173,7 @@ addProp nutrientCountStart Number 0
 prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount Number 0
 
-featProp Movement useAutoOrientation setTo true
+// featProp Movement useAutoOrientation setTo true
 
 addProp energyLevel Number 50
 prop Worm.energyLevel setMax 100
@@ -202,6 +208,13 @@ addProp distractionLength Number 2
 addProp focusLength Number 5
 
 # PROGRAM UPDATE
+
+ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Worm.Costume.flipX setTo false
+]]
+ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Worm.Costume.flipX setTo true
+]]
 
 when Worm touches Waste [[
   every 1 runAtStart [[
@@ -253,12 +266,12 @@ when Worm touches Soil [[
         prop Worm.energyLevel sub 50
         prop Worm.matter sub 50
         prop Soil.nutrients add 50
-        featCall Soil.Costume setGlow 1
+        featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
         featProp Soil.Costume.costumeName setTo 'dirt.json'
         featProp Soil.Costume.currentFrame setTo 1
 
-        prop feeling setTo 'hungry'
+        prop Worm.feeling setTo 'hungry'
         // revert costume now that we are hungry again
         // featCall Costume setCostume 'worm.json' 1
         featProp Worm.Costume.costumeName setTo 'worm.png'
@@ -314,12 +327,12 @@ every 1 runAtStart [[
   ]]
 
 
-  ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
-    featProp Worm.Costume.flipY setTo false
-  ]]
-  ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
-    featProp Worm.Costume.flipY setTo true
-  ]]
+  //ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
+  //  featProp Worm.Costume.flipY setTo false
+  //]]
+  //ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
+  //  featProp Worm.Costume.flipY setTo true
+  //]]
 ]]
 
 // required directive
@@ -555,7 +568,7 @@ featProp Plant.AgentWidgets.meterProp setTo 'energyLevel'
 // Green
 featProp Plant.AgentWidgets.meterColor setTo 65280
 
-featProp Plant.AgentWidgets.meterPosition setTo 'middle'
+featCall Plant.AgentWidgets.meterPosition setMeterPosition 'middle'
 featProp Plant.AgentWidgets.text setTo ''
 
 // always keep it right near the edge of the dirt, but give some variability
@@ -711,6 +724,9 @@ addFeature Physics`
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature AgentWidgets
 addFeature Costume
@@ -718,15 +734,15 @@ featProp Timer.Costume.costumeName setTo 'onexone.json'
 
 addProp time Number 0
 
-featProp AgentWidgets text setTo 'Time: 0'
+featProp Timer.AgentWidgets.text setTo 'Time: 0'
 
 # PROGRAM INIT
 
-prop x setTo 445
-prop y setTo -256
+prop Timer.x setTo 445
+prop Timer.y setTo -256
 
-      # PROGRAM UPDATE
-  every 1 runAtStart [[
+# PROGRAM UPDATE
+every 1 runAtStart [[
   prop Timer.time add 1
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.AgentWidgets.text
@@ -982,7 +998,7 @@ prop y setTo 113.79`
       "id": "1809",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 338.60
+      "initScript": `prop x setTo 338.6
 prop y setTo -394.99`
     },
     {
