@@ -17,40 +17,6 @@
   "rounds": [],
   "blueprints": [
     {
-      "name": "Explanation",
-      "scriptText": `# BLUEPRINT Explanation
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-// ----------------------------------------------------------------------------------------------------------------
-// This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
-// ---------------------------------------------------------------------------------------------------------------- 
-
-// The goal of this model is to let students explore the energy in the aquatic system by being a 
-// representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
-// character using either pozyx or charController 
-
-// The system is intended to mirror the aquatic model in that energy is meant to go from the sun to algae to fish. 
-// To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't 
-// hurry and give it to them
-
-// The main chaaracter is therefore the EnergyRepresentation, which stuents can use to look around. As they touch
-// an energy source, they will pick up / become that kind of energy
-// So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around 
-
-# PROGRAM INIT
-addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json' 0
-featProp agent.Costume.scale setTo 1
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
-    },
-    {
       "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
@@ -241,7 +207,7 @@ every 1 runAtStart [[
 
     // avoid getting too
     exprPush {{ .1 }}
-    featPropPop Algae.Costume scale
+    featPropPop Algae.Costume.scale
 
   ]]
 
