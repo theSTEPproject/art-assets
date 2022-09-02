@@ -22,7 +22,7 @@
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Sun.Costume.costumeName setTo 'circle.json'
 featCall Sun.Costume setColorize 255 215 0
@@ -41,8 +41,6 @@ ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') 
   featCall Global addGlobalProp energyReleasedAsHeat Number 0
 ]]
 
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM UPDATE`
@@ -53,7 +51,7 @@ ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') 
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Bunny.Costume.costumeName setTo 'bunnies.json'
 featProp Bunny.Costume.currentFrame setTo 0
@@ -121,9 +119,7 @@ every 2 runAtStart [[
 
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Worm",
@@ -131,7 +127,7 @@ every 2 runAtStart [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Worm.Costume.costumeName setTo 'worm.json' 
 
@@ -202,7 +198,7 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 
 addFeature Costume
 featProp Waste.Costume.costumeName setTo 'organic_matter.json'
@@ -386,12 +382,12 @@ prop EnergyRepresentation.energyLevel setMin 0
 addProp eType String 'none'
 
 addFeature Touches
-featCall EnergyRepresentation.Touches monitor Sun c2b
-featCall EnergyRepresentation.Touches monitor Plant c2b
-featCall EnergyRepresentation.Touches monitor Bunny c2b
-featCall EnergyRepresentation.Touches monitor Worm c2b
-featCall EnergyRepresentation.Touches monitor Waste c2b
-featCall EnergyRepresentation.Touches monitor Soil c2b
+featCall EnergyRepresentation.Touches monitor 'Sun' c2b
+featCall EnergyRepresentation.Touches monitor 'Plant' c2b
+featCall EnergyRepresentation.Touches monitor 'Bunny' c2b
+featCall EnergyRepresentation.Touches monitor 'Worm' c2b
+featCall EnergyRepresentation.Touches monitor 'Waste' c2b
+featCall EnergyRepresentation.Touches monitor 'Soil' c2b
 
 
 # PROGRAM UPDATE
@@ -694,60 +690,65 @@ addFeature Physics
     {
       "name": "EnergyInSystem",
       "scriptText": `# BLUEPRINT EnergyInSystem
-            # PROGRAM DEFINE
-            addFeature Costume
-            featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 
-            addFeature AgentWidgets
-            addFeature Population
-            featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+addFeature AgentWidgets
+addFeature Population
+featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
 
-            // using a generic name so that it is easier to change later
-            addProp totalEnergy Number 500
-            prop EnergyInSystem.totalEnergy setMax 1000
-            prop EnergyInSystem.totalEnergy setMin 0
+// using a generic name so that it is easier to change later
+addProp totalEnergy Number 500
+prop EnergyInSystem.totalEnergy setMax 1000
+prop EnergyInSystem.totalEnergy setMin 0
 
-            // to store the current values of plant and Bunny separately
-            // I could just add them up below, but this way we can see them in the inspector
-            addProp totalPlantEnergy Number 0
-            addProp totalBunnyEnergy Number 0
-
-           
-           featProp EnergyInSystem.AgentWidgets graphProp setTo 'totalEnergy' 
-
-            # PROGRAM INIT
-            // make sure something displays with some initial text, on bottom right at first
-            prop EnergyInSystem.x setTo 495
-            prop EnergyInSystem.y setTo 187
-            prop EnergyInSystem.zIndex setTo 300
-
-            featProp AgentWidgets text setTo 'Energy in System'
-  
-            # PROGRAM EVENT
-
-            onEvent Tick [[
-
-              // count up the plant
-              featProp EnergyInSystem.Population.monitoredAgent setTo 'Plant'
-              featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-              featCall EnergyInSystem.Population countAgentProp
-              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-              propPop EnergyInSystem.totalPlantEnergy
-
-              // count up the Bunny
-              featProp Population monitoredAgent setTo 'Bunny'
-              featProp Population monitoredAgentProp setTo 'energyLevel'
-              featCall Population countAgentProp
-              exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-              propPop totalBunnyEnergy
-
-              // graph the sum
-              exprPush {{ agent.getProp('totalPlantEnergy').value + agent.getProp('totalBunnyEnergy').value }}
-              propPop totalEnergy
+// to store the current values of plant and Bunny separately
+// I could just add them up below, but this way we can see them in the inspector
+addProp totalPlantEnergy Number 0
+addProp totalBunnyEnergy Number 0
 
 
-            ]]
-`
+featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop EnergyInSystem.x setTo 495
+prop EnergyInSystem.y setTo 187
+prop EnergyInSystem.zIndex setTo 300
+
+featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+  // count up the plant
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'Plant'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalPlantEnergy
+
+  // count up the Bunny
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'Bunny'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalBunnyEnergy
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalPlantEnergy').value + agent.getProp('totalBunnyEnergy').value }}
+  propPop EnergyInSystem.totalEnergy
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "GraphLostEnergy",
