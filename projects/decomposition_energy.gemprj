@@ -272,13 +272,13 @@ prop Plant.matter setMin 0
 addFeature AgentWidgets
 featProp Plant.AgentWidgets.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp Plant.AgentWidgets meterColor setTo 65280
-featCall AgentWidgets setMeterPosition 'inside-left'
+featProp Plant.AgentWidgets.meterColor setTo 65280
+featCall Plant.AgentWidgets setMeterPosition 'inside-left'
 
 addFeature Touches
 
 // we need to touch the soil to know the nutrients
-featCall Plant.Touches monitor Soil b2b
+featCall Plant.Touches monitor 'Soil' b2b
 
 # PROGRAM INIT
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
@@ -288,7 +288,7 @@ featPropPop Plant.Costume.scale
 # PROGRAM UPDATE
 
 when Plant touches Soil [[
-  every 1 [[
+  every 1 runAtStart [[
     ifExpr {{ Soil.getProp('nutrients').value > 0 }} [[
       prop Soil.nutrients sub 1
       prop Plant.nutrients add 1
@@ -315,40 +315,40 @@ every 1 runAtStart [[
 
   // change how it looks to reflect it's health level (meter below)
   // is it healthy?  Use some nutrients and then set color
-  prop nutrients sub 1
+  prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
-    featProp Plant.Costume.costumeName setTo 'plants.json' 
+    featProp Plant.Costume.costumeName setTo 'plants.json'
     featProp Plant.Costume.currentFrame setTo 0
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great
-    featProp Plant.Costume.costumeName setTo 'plants.json' 
+    featProp Plant.Costume.costumeName setTo 'plants.json'
     featProp Plant.Costume.currentFrame setTo 1
 
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'plants.json' 
-        featProp Plant.Costume.currentFrame setTo 2
-      prop Plant.matter sub 1
+    featProp Plant.Costume.costumeName setTo 'plants.json'
+    featProp Plant.Costume.currentFrame setTo 2
+    prop Plant.matter sub 1
   ]]
 
   // set plant energy meter color
   // doing great
   ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
     // Green
-    featProp AgentWidgets meterColor setTo 65280
+    featProp Plant.AgentWidgets.meterColor setTo 65280
   ]]
   // needs some energy
   ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
     // Orange
-    featProp AgentWidgets meterColor setTo 16737792
+    featProp Plant.AgentWidgets.meterColor setTo 16737792
   ]]
   // in trouble
   ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
     // Red
-    featProp AgentWidgets meterColor setTo 16711680
+    featProp Plant.AgentWidgets.meterColor setTo 16711680
 
   ]]
 ]]`
