@@ -84,9 +84,9 @@ addProp direction Number 1
 addFeature Physics
 
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp Sunbeam.Costume.scale setTo 0.5
+featProp Sunbeam.Costume.scale setTo 1
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp Sunbeam.Costume.scaleY setTo 2
+featProp Sunbeam.Costume.scaleY setTo 2.5
 
 addFeature Touches
 
@@ -630,8 +630,6 @@ every 1 runAtStart [[
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
     featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
-    // SET TO THE DIFFERENT FRAMES
-    dbgOut 'needs to be set'
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great

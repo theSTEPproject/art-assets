@@ -346,6 +346,7 @@ prop Sunbeam.direction setTo 1
 
 addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
+featProp Sunbeam.Costume.scale setTo 1
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Sunbeam.Costume.scaleY setTo 2.5
 
