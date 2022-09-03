@@ -39,7 +39,7 @@ addFeature Touches
 featCall Touches monitor Worm b2b
 
 addFeature AgentWidgets
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below) 
 featProp AgentWidgets meterProp setTo nutrients
 
 featCall AgentWidgets setMeterPosition 'inside-left'
