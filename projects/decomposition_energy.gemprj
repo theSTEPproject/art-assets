@@ -201,10 +201,10 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
 # PROGRAM INIT
 
 addFeature Costume
-featProp Waste.Costume.costumeName setTo 'organic_matter.json'
+featProp Waste.Costume.costumeName setTo 'organic_matter.png'
 
 addFeature Physics
-featProp Waste.Costume.scale setTo 1
+featProp Waste.Costume.scale setTo 0.5
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType String 'waste'
@@ -232,7 +232,7 @@ featProp Waste.AgentWidgets.meterColor setTo 5783616
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp Plant.Costume.costumeName setTo 'plants.json'
+featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
 
 addFeature Physics
 
@@ -319,18 +319,18 @@ every 1 runAtStart [[
   prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
-    featProp Plant.Costume.costumeName setTo 'plants.json'
+featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
     featProp Plant.Costume.currentFrame setTo 0
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great
-    featProp Plant.Costume.costumeName setTo 'plants.json'
+featProp Plant.Costume.costumeName setTo 'plant_mediumhealth.png'
     featProp Plant.Costume.currentFrame setTo 1
 
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'plants.json'
+featProp Plant.Costume.costumeName setTo 'plant_unhealthy.png'
     featProp Plant.Costume.currentFrame setTo 2
     prop Plant.matter sub 1
   ]]
