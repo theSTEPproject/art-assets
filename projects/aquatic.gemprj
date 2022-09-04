@@ -136,11 +136,15 @@ when Fish touches Algae [[
 
     // if we have turned the grow feature on
     // grow if above 90% energy
+    // TO DO: Change to work with the ifProp
     ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
-      dbgOut 'growing'
-      // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
-      featProp Fish.Costume.scale setTo 0.7
-      prop Fish.energyUse setTo 2
+    //ifProp Fish.grows equal true [[
+      //ifProp Fish.energyLevel greaterThan 90 [[
+        dbgOut 'growing'
+        // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
+        featProp Fish.Costume.scale setTo 0.7
+        prop Fish.energyUse setTo 2
+      //]]
     ]]
   ]]
 ]]

@@ -191,17 +191,17 @@ every 1 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the fish is
   // set algae energy meter color
   // doing great
-  ifExpr {{ Algae.getProp('energyLevel').value > 60 }} [[
+  ifProp Algae.energyLevel greaterThanOrEqual 60 [[
     // Green
     featProp Algae.AgentWidgets.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ Algae.getProp('energyLevel').value < 60 }} [[
+  ifProp Algae.energyLevel lessThan 60 [[
     // Orange
     featProp Algae.AgentWidgets.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ Algae.getProp('energyLevel').value < 30 }} [[
+  ifProp Algae.energyLevel lessThan 30 [[
     // Red
     featProp Algae.AgentWidgets.meterColor setTo 16711680
 
@@ -290,14 +290,14 @@ when EnergyRepresentation centerLastTouches Sun [[
 
 
 when EnergyRepresentation centerFirstTouches Algae [[
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_PlantUsing.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
   // as heat or lost in other ways
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'source' }} [[
+  ifProp EnergyRepresentation.energyType equal 'source' [[
     prop EnergyRepresentation.energyType setTo 'none'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
