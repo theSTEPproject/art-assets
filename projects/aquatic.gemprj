@@ -926,8 +926,8 @@ prop agent.zIndex setTo 100`
       "id": "1704",
       "label": "HighChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -337.79
+      "initScript": `prop x setTo 455.00
+prop y setTo -353.04
 featCall agent.Costume setColorize 0 255 0
 prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
@@ -938,8 +938,8 @@ featProp agent.Costume.width setTo 100
       "id": "1705",
       "label": "MediumChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -307.35
+      "initScript": `prop x setTo 455.00
+prop y setTo -319.93
 featCall Costume setColorize 210 140 0
 prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
@@ -949,8 +949,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.61
-prop y setTo -274.72
+      "initScript": `prop x setTo 455.00
+prop y setTo -287.28
 featCall Costume setColorize 255 0 0
 prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30

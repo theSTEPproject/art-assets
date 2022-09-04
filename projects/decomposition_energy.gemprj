@@ -1018,8 +1018,8 @@ prop zIndex setTo 100`
       "id": "1704",
       "label": "EnergyChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -337.62
+      "initScript": `prop x setTo 455.00
+prop y setTo -353.03
 featCall Costume setColorize 0 255 0
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
@@ -1029,8 +1029,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1705",
       "label": "NutrientsChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -305.89
+      "initScript": `prop x setTo 455.00
+prop y setTo -321.93
 featCall Costume setColorize 138 43 226
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
@@ -1040,8 +1040,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1706",
       "label": "MatterChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 454.66
-prop y setTo -274.96
+      "initScript": `prop x setTo 455.00
+prop y setTo -292.43
 featCall Costume setColorize 0.56 0.52 0.4
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
