@@ -949,8 +949,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 456.78
-prop y setTo -277.58
+      "initScript": `prop x setTo 455.61
+prop y setTo -274.72
 featCall Costume setColorize 255 0 0
 prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30

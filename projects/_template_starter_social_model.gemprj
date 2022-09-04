@@ -56,13 +56,12 @@ addProp virus Boolean false
 // This is also where you can handle touches between characters such as When Algae touches Fish
 every 1 [[
   when PC firstTouches NPC [[
-    // gllow to show we are interacting
+    // glow to show we are interacting
     featProp PC.Costume.glow setTo 1
 
     // check if the NPC has the virus (or whatever else)
     ifExpr {{ NPC.getProp('virus').value == true }} [[
       // we are in contact with the virus, so we have it now too
-      dbgOut 'getting virus '
       prop PC.virus setTo true
     ]]
   ]]
