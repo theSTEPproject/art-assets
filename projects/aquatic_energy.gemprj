@@ -179,7 +179,7 @@ featProp Algae.AgentWidgets.meterColor setTo 65280
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+  ifProp Algae.energyLevel greaterThan 0 [[
     exprPush {{ Algae.getProp('energyLevel').value - Algae.getProp('energyUse').value }}
     propPop Algae.energyLevel
   ]]

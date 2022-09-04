@@ -128,7 +128,7 @@ when Fish touches Algae [[
     // if the algae is out of energy, it is dead so make it
     // faded and inert which means it won't interact with other things
     // also set it to be really small so we know it is just the leftover bits
-    ifProp Algae.energyLevel lte 0 [[
+    ifProp Algae.energyLevel lessThanOrEqual 0 [[
       prop Algae.alpha setTo 0.5
       //featProp Algae.Costume.scale setTo 0.1
       prop Algae.isInert setTo true
@@ -187,10 +187,7 @@ every 1 runAtStart [[
 
 ]]
 
-// required directive
-# PROGRAM INIT
-
-// required directive`
+`
     },
     {
       "name": "Algae",
@@ -298,12 +295,12 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the algae based on its energy level
-  ifProp Algae.energyLevel gt 0 [[
+  ifProp Algae.energyLevel greaterThan 0 [[
     exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
     featPropPop Algae.Costume.scale
   ]]
 
-  ifFeatProp Algae.Costume.scale lte 0.1 [[
+  ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
     featProp Algae.Costume.scale setTo 0.1
   ]]
 
