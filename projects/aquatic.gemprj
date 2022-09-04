@@ -50,10 +50,9 @@ addProp energyUse Number 0
 // STUDENTS_MAY_CHANGE - to change how quickly Fish use up energy and get hungry
 prop Fish.energyUse setTo 3
 
+// advanced feature - if this is true, the fish will
+// get bigger an hungrier if it eats enough food
 addProp grows Boolean false
-
-// STUDENTS_MAY_CHANGE - change to 1 (true) turns on the feature that allows the fish to grow if this is 1
-prop Fish.grows setTo false
 
 addProp startDirection Number 0
 
@@ -77,7 +76,7 @@ featPropPop Fish.AgentWidgets.text
 onEvent Start [[
 
   // start at normal size unless you eat
-  featProp Fish.Costume.scale setTo 0.5
+  // featProp Fish.Costume.scale setTo 0.5
 
   // **** OPTIONS TO CHANGE BEHAVIOR ****
 
@@ -113,35 +112,36 @@ ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
   featProp Fish.Costume.flipX setTo true
 ]]
 
+// whenever the fish is touching an algae
 when Fish touches Algae [[
-
+  // do the rerst of this once every second (instead of 30 times a second which is too much)
   every 1 runAtStart [[
 
-    // always glow to show the interaction
-    ifExpr {{ Fish.getProp('isInert').value != true }} [[
-      featProp Fish.Costume.glow setTo 4
+    // first, take the energy from the algae
+    prop Algae.energyLevel sub 10
+    // next have the fish gain some energy
+    prop Fish.energyLevel add 10
+    // finally, make the fish glow so tha we know something is happening
+    featProp Fish.Costume.glow setTo 4
 
+
+    // if the algae is out of energy, it is dead so make it
+    // faded and inert which means it won't interact with other things
+    // also set it to be really small so we know it is just the leftover bits
+    ifProp Algae.energyLevel lte 0 [[
+      prop Algae.alpha setTo 0.5
+      //featProp Algae.Costume.scale setTo 0.1
+      prop Algae.isInert setTo true
     ]]
 
-    // only eat if the algae is above 0
-    ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
-      prop Fish.energyLevel add 10
-      prop Algae.energyLevel sub 10
-    ]]
-
+    // if we have turned the grow feature on
     // grow if above 90% energy
     ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
-
+      dbgOut 'growing'
       // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
       featProp Fish.Costume.scale setTo 0.7
       prop Fish.energyUse setTo 2
     ]]
-
-    ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
-      prop Algae.alpha setTo 0.3
-      prop Algae.isInert setTo true
-    ]]
-
   ]]
 ]]
 
@@ -253,8 +253,10 @@ featProp Algae.AgentWidgets.text setTo ''
 featProp Algae.Movement.movementType setTo 'wander'
 featProp Algae.Movement.distance setTo 0.2
 
+// scale the algae to it's starting size
 exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
 featPropPop Algae.Costume.scale
+
 
 prop Algae.zIndex setTo -110
 
@@ -296,8 +298,15 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the algae based on its energy level
-  exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
-  featPropPop Algae.Costume.scale
+  ifProp Algae.energyLevel gt 0 [[
+    exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
+    featPropPop Algae.Costume.scale
+  ]]
+
+  ifFeatProp Algae.Costume.scale lte 0.1 [[
+    featProp Algae.Costume.scale setTo 0.1
+  ]]
+
 
   // set algae energy meter color
   // doing great
@@ -493,7 +502,7 @@ when Turtle touches Algae [[
         ]]
 
         ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
-          prop Algae.alpha setTo 0.3
+          prop Algae.alpha setTo 0.5
           prop Algae.isInert setTo true
         ]]
 
@@ -953,13 +962,6 @@ featProp agent.Costume.width setTo 100`
       "initScript": `prop x setTo -1.20
 prop y setTo -0.20
 `
-    },
-    {
-      "id": "1708",
-      "label": "Fish1708",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -63
-prop y setTo -157.42`
     },
     {
       "id": "1709",
