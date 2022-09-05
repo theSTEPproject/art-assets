@@ -269,7 +269,7 @@ when Algae touches Sunbeam [[
     propPop Algae.energyLevel
 
     // if Spawning is active, create more algae when we hit 100
-    ifExpr {{ Algae.getProp('spawns').value }} [[
+    ifProp Algae.spawns equal true [[
       // Only spawn more if we are under 200 total ... to avoid crashing the system
       ifExpr {{ Algae.callFeatMethod('Population', 'getActiveAgentsCount', 'Algae') < 200 }} [[
         ifExpr {{ Algae.getProp('energyLevel').value == 100 }} [[
