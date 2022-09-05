@@ -40,7 +40,7 @@ featProp Sun.Costume.scale setTo 0.6
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
-addProp energyType String 'source'
+addProp energyType string 'source'
 
 addFeature Global
 
@@ -50,7 +50,7 @@ addFeature Global
 // creates one
 // The EnergyRepresentation and graphs then reference this global variable
 ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-  featCall Global addGlobalProp energyReleasedAsHeat Number 0
+  featCall Global addGlobalProp energyReleasedAsHeat number 0
 ]]
 
 // required directive
@@ -81,15 +81,15 @@ featProp Fish.Costume.scale setTo 0.3
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
-addProp energyType String 'consumer'
+addProp energyType string 'consumer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
@@ -159,15 +159,15 @@ featProp Algae.Costume.scale setTo 0.2
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
-addProp energyType String 'producer'
+addProp energyType string 'producer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
@@ -259,13 +259,13 @@ addFeature Global
 
 
 // setup energy properties
-addProp energyLevel Number 0
+addProp energyLevel number 0
 prop EnergyRepresentation.energyLevel setMax 100
 prop EnergyRepresentation.energyLevel setMin 0
 
 // setup energy type so that we know what we can give it to
 // start with none
-addProp energyType String 'none'
+addProp energyType string 'none'
 
 addFeature Touches
 featCall EnergyRepresentation.Touches monitor 'Sun' c2b
@@ -394,7 +394,7 @@ addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 featProp Timer.Costume.scale setTo 1
 
-addProp time Number 0
+addProp time number 0
 
 // set the initial label and then update it below during update
 featProp Timer.AgentWidgets.text setTo 'Time: 0'
@@ -434,7 +434,7 @@ featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 addFeature Global
 
 // using a generic name so that it is easier to change later
-addProp lostEnergy Number 500
+addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
@@ -477,14 +477,14 @@ addFeature Population
 featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp totalEnergy Number 500
+addProp totalEnergy number 500
 prop EnergyInSystem.totalEnergy setMax 1000
 prop EnergyInSystem.totalEnergy setMin 0
 
 // to store the current values of algae and fish separately
 // I could just add them up below, but this way we can see them in the inspector
-addProp totalAlgaeEnergy Number 0
-addProp totalFishEnergy Number 0
+addProp totalAlgaeEnergy number 0
+addProp totalFishEnergy number 0
 
 
 featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'

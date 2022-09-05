@@ -23,11 +23,11 @@
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'dirt.json'
 
-addProp nutrients Number 50
+addProp nutrients number 50
 prop Soil.nutrients setMax 100
 prop Soil.nutrients setMin 0
 
-addProp sparkleCount Number 0
+addProp sparkleCount number 0
 
 addFeature Physics
 
@@ -75,11 +75,11 @@ prop Sunbeam.alpha setTo 0.3
 // prop zIndex setTo 100
 
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
-addProp speed Number 20
+addProp speed number 20
 // STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
-addProp energyRate Number 5
+addProp energyRate number 5
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
-addProp direction Number 1
+addProp direction number 1
 
 addFeature Physics
 
@@ -164,22 +164,22 @@ featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
 prop Worm.zIndex setTo 100
 
 // move between hungry and full where hungry will eat and full will release nutrients
-addProp feeling String 'hungry'
+addProp feeling string 'hungry'
 
 // used internally to delay nutrient release when full
-addProp nutrientCountStart Number 0
+addProp nutrientCountStart number 0
 
 // STUDENTS_MAY_CHANGE set this lower for instant dispersal of nutrients, or higher to stretch it out
 prop Worm.nutrientCountStart setTo 5
-addProp nutrientCount Number 0
+addProp nutrientCount number 0
 
 // featProp Movement useAutoOrientation setTo true
 
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
-addProp matter Number 50
+addProp matter number 50
 prop Worm.matter setMax 100
 prop Worm.matter setMin 0
 
@@ -201,11 +201,11 @@ featProp Worm.AgentWidgets.meterColor setTo 85280
 // add variables to cover distraction
 // ----------------------------------------------
 // counter - increment when hungry or distracted
-addProp distractionCounter Number 0
+addProp distractionCounter number 0
 // how long a distraction lasts (0 will skip it)
-addProp distractionLength Number 2
+addProp distractionLength number 2
 // how long the focus lasts, during hunger, before we switch to distraction
-addProp focusLength Number 5
+addProp focusLength number 5
 
 # PROGRAM UPDATE
 
@@ -356,21 +356,21 @@ featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
 
 
 // set bunny energy
-addProp energyLevel Number 25
+addProp energyLevel number 25
 prop Bunny.energyLevel setMax 50
 prop Bunny.energyLevel setMin 0
 
 // to manage when it is full and releases waste
-addProp feeling String 'hungry'
+addProp feeling string 'hungry'
 
 // used internally to delay waste release when full
-addProp wasteCountStart Number 0
+addProp wasteCountStart number 0
 
 // STUDENTS_MAY_CHANGE set this lower for instant dispersal of waste, or higher to stretch it out
 prop Bunny.wasteCountStart setTo 3
-addProp wasteCount Number 0
+addProp wasteCount number 0
 
-addProp matter Number 50
+addProp matter number 50
 
 prop Bunny.matter setMax 50
 prop Bunny.matter setMin 0
@@ -395,11 +395,11 @@ prop Bunny.zIndex setTo 110
 // add variables to cover distraction
 // ----------------------------------------------
 // counter - increment when hungry or distracted
-addProp distractionCounter Number 0
+addProp distractionCounter number 0
 // how long a distraction lasts (0 will skip it)
-addProp distractionLength Number 2
+addProp distractionLength number 2
 // how long the focus lasts, during hunger, before we switch to distraction
-addProp focusLength Number 5
+addProp focusLength number 5
 
 # PROGRAM UPDATE
 
@@ -525,7 +525,7 @@ featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
 // addFeature Global
 addFeature Population
 
-addProp energyLevel Number 50
+addProp energyLevel number 50
 
 // STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random)
 prop Plant.energyLevel setTo 50
@@ -533,21 +533,21 @@ prop Plant.energyLevel setMax 100
 prop Plant.energyLevel setMin 0
 
 // setup so that we can tweak the size more dynamically, and plant by plant
-addProp minimumScale Number 0
+addProp minimumScale number 0
 
 // STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
 prop Plant.minimumScale setMax 1
 prop Plant.minimumScale setMin -0.5
 
-addProp nutrients Number 8
+addProp nutrients number 8
 
 // STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
 prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
-addProp matter Number 50
+addProp matter number 50
 
 // STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
 prop Plant.matter setTo 50
@@ -654,7 +654,7 @@ addFeature Costume
 
 featProp Waste.Costume.costumeName setTo 'organic_matter.png'
 
-addProp matter Number 100
+addProp matter number 100
 prop Waste.matter setMax 100
 prop Waste.matter setMin 0
 
@@ -739,7 +739,7 @@ addFeature AgentWidgets
 addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 
-addProp time Number 0
+addProp time number 0
 
 featProp Timer.AgentWidgets.text setTo 'Time: 0'
 
@@ -763,17 +763,17 @@ addFeature Costume
 featProp CharacterGraph.Costume.costumeName setTo 'onexone.json'
 
 // setting these all up to so they can be changed in the map editor
-addProp characterType String 'Worm'
-addProp countType String 'sum'
-addProp variableToGraph String 'energyLevel'
-addProp labelText String 'Worm Energy'
+addProp characterType string 'Worm'
+addProp countType string 'sum'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Worm Energy'
 
 addFeature AgentWidgets
 addFeature Population
 featProp AgentWidgets isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue Number 0
+addProp graphValue number 0
 prop graphValue setMax 1000
 prop graphValue setMin 0
 

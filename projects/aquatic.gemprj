@@ -31,7 +31,7 @@ addFeature AgentWidgets
 
 featProp Fish.Costume.costumeName setTo 'fish.png'
 
-addProp energyLevel Number 30
+addProp energyLevel number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
@@ -40,21 +40,21 @@ addProp energyType string 'consumer'
 addProp consumerType string 'herbivore'
 
 // have the fish move around if it is not controlled by users
-addProp movementType String 'wander'
+addProp movementType string 'wander'
 
 // STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
 prop Fish.movementType setTo 'wander'
 
-addProp energyUse Number 0
+addProp energyUse number 0
 
 // STUDENTS_MAY_CHANGE - to change how quickly Fish use up energy and get hungry
 prop Fish.energyUse setTo 3
 
 // advanced feature - if this is true, the fish will
 // get bigger an hungrier if it eats enough food
-addProp grows Boolean false
+addProp grows boolean false
 
-addProp startDirection Number 0
+addProp startDirection number 0
 
 addFeature Physics
 featProp Fish.Costume.scale setTo 0.5
@@ -210,7 +210,7 @@ addFeature AgentWidgets
 addProp energyType string 'producer'
 
 // default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
-addProp spawns Boolean false
+addProp spawns boolean false
 
 // STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
 prop Algae.spawns setTo false
@@ -222,7 +222,7 @@ featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 
 
 // setup energyLevel variablee
-addProp energyLevel Number 100
+addProp energyLevel number 100
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 prop Algae.zIndex setTo 1
@@ -238,7 +238,7 @@ ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
   featProp Algae.AgentWidgets.meterColor setTo 16711680
 ]]
 
-addProp energyUse Number 0
+addProp energyUse number 0
 
 // STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
 prop Algae.energyUse setTo 0
@@ -342,15 +342,15 @@ featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 // the sun is a source of energy
 addProp energyType string 'source'
 
-addProp speed Number 20
+addProp speed number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
 prop Sunbeam.speed setTo 20
 
-addProp energyRate Number 5
+addProp energyRate number 5
 // STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
 prop Sunbeam.energyRate setTo 5
 
-addProp direction Number 1
+addProp direction number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
 prop Sunbeam.direction setTo 1
 
@@ -389,7 +389,7 @@ addFeature AgentWidgets
 addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 
-addProp time Number 0
+addProp time number 0
 
 featProp Timer.AgentWidgets.text setTo 'Time: 0'
 
@@ -432,7 +432,7 @@ addFeature Movement
 // temp until we get new art
 featProp Turtle.Costume.costumeName setTo 'turtle_sprites.json'
 
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Turtle.energyLevel setMax 100
 prop Turtle.energyLevel setMin 0
 
@@ -443,9 +443,9 @@ addProp energyType string 'consumer'
 // this setting determines whether we will eat fish or algae
 addProp consumerType string 'omnivore'
 
-addProp energyUse Number 1
+addProp energyUse number 1
 
-addProp health String 'healthy'
+addProp health string 'healthy'
 
 // STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
 prop Turtle.energyUse setTo 1
@@ -621,8 +621,8 @@ addFeature Physics
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 # PROGRAM INIT
-addProp reportSubject String 'Algae'
-addProp energyLevel Number 100
+addProp reportSubject string 'Algae'
+addProp energyLevel number 100
 
 addFeature Population
 addFeature AgentWidgets
@@ -682,8 +682,8 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 # PROGRAM INIT
-addProp reportSubject String 'Fish'
-addProp energyLevel Number 100
+addProp reportSubject string 'Fish'
+addProp energyLevel number 100
 
 addFeature Population
 addFeature AgentWidgets
@@ -747,10 +747,10 @@ onEvent Tick [[
 addFeature Costume
 featProp GraphAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
 
-addProp characterType String 'Algae'
-addProp countType String 'avg'
-addProp variableToGraph String 'energyLevel'
-addProp labelText String 'Algae energyLevel'
+addProp characterType string 'Algae'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Algae energyLevel'
 
 // STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
 // -- Character options: Fish, Algae
@@ -766,7 +766,7 @@ addFeature Population
 featProp GraphAlgaeEnergy.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue Number 0
+addProp graphValue number 0
 prop GraphAlgaeEnergy.graphValue setMax 1000
 prop GraphAlgaeEnergy.graphValue setMin 0
 
@@ -809,10 +809,10 @@ onEvent Tick [[
 addFeature Costume
 featProp GraphFishEnergy.Costume.costumeName setTo 'onexone.json'
 
-addProp characterType String 'Fish'
-addProp countType String 'avg'
-addProp variableToGraph String 'energyLevel'
-addProp labelText String 'Fish energyLevel'
+addProp characterType string 'Fish'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Fish energyLevel'
 
 // STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
 // -- Character options: Fish, Algae
@@ -828,7 +828,7 @@ addFeature Population
 featProp GraphFishEnergy.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue Number 0
+addProp graphValue number 0
 prop GraphFishEnergy.graphValue setMax 1000
 prop GraphFishEnergy.graphValue setMin 0
 

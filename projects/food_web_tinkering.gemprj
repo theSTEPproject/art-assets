@@ -39,7 +39,7 @@ addFeature Touches
 
 featProp Lion.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 // make sure we track interactions with the other creatures
 featCall Lion.Touches monitor 'Goat' b2b
 featCall Lion.Touches monitor 'Jackal' b2b
@@ -104,7 +104,7 @@ addFeature Touches
 
 featProp Goat.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Goat.Touches monitor 'Plant' b2b
@@ -158,7 +158,7 @@ addFeature Touches
 
 featProp Jackal.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Jackal.Touches monitor 'Goat' b2b
@@ -221,7 +221,7 @@ addFeature Touches
 
 featProp Rabbit.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Rabbit.Touches monitor 'Plant' b2b
@@ -275,7 +275,7 @@ addFeature Touches
 
 featProp Plant.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Plant.Touches monitor 'Reincarnator' b2b
@@ -321,7 +321,7 @@ addFeature Touches
 
 featProp Mouse.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Mouse.Touches monitor 'Plant' b2b
@@ -375,7 +375,7 @@ addFeature Touches
 
 featProp WildCat.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall WildCat.Touches monitor 'Mouse' b2b
@@ -438,7 +438,7 @@ addFeature Touches
 
 featProp Owl.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Owl.Touches monitor 'Mouse' b2b
@@ -492,7 +492,7 @@ addFeature Touches
 
 featProp Snake.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Snake.Touches monitor 'Mouse' b2b
@@ -546,7 +546,7 @@ addFeature Touches
 
 featProp Kite.Costume.scale setTo 0.2
 
-addProp alive Boolean true
+addProp alive boolean true
 
 // make sure we track interactions with the other creatures
 featCall Kite.Touches monitor 'Snake' b2b

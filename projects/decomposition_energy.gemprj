@@ -33,12 +33,12 @@ addFeature Physics
 featProp Sun.Costume.scale setTo 0.6
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
-addProp energyType String 'source'
+addProp energyType string 'source'
 
 addFeature Global
 
 ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-  featCall Global addGlobalProp energyReleasedAsHeat Number 0
+  featCall Global addGlobalProp energyReleasedAsHeat number 0
 ]]
 
 
@@ -64,15 +64,15 @@ addFeature Physics
 featProp Bunny.Costume.scale setTo 0.2
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
-addProp energyType String 'consumer'
+addProp energyType string 'consumer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Bunny.energyLevel setMax 100
 prop Bunny.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Bunny lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
@@ -135,15 +135,15 @@ addFeature Physics
 featProp Worm.Costume.scale setTo 0.15
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
-addProp energyType String 'decomposer'
+addProp energyType string 'decomposer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Worm lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
@@ -207,10 +207,10 @@ addFeature Physics
 featProp Waste.Costume.scale setTo 0.5
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
-addProp energyType String 'waste'
+addProp energyType string 'waste'
 
 // setup to track nutrients and begin at 1/2 way
-addProp matterLevel Number 50
+addProp matterLevel number 50
 prop Waste.matterLevel setMax 100
 prop Waste.matterLevel setMin 0
 
@@ -237,32 +237,32 @@ featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
 addFeature Physics
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
-addProp energyType String 'producer'
+addProp energyType string 'producer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop Plant.energyLevel setMax 100
 prop Plant.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Plant lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // setup so that we can tweak the size more dynamically, and plant by plant
-addProp minimumScale Number 0
+addProp minimumScale number 0
 
 // STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
 prop Plant.minimumScale setMax 1
 prop Plant.minimumScale setMin -0.5
 
-addProp nutrients Number 8
+addProp nutrients number 8
 
 // STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
 prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
-addProp matter Number 50
+addProp matter number 50
 
 // STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
 prop Plant.matter setTo 50
@@ -374,13 +374,13 @@ addFeature Global
 
 
 // setup energy properties
-addProp energyLevel Number 0
+addProp energyLevel number 0
 prop EnergyRepresentation.energyLevel setMax 100
 prop EnergyRepresentation.energyLevel setMin 0
 
 // setup energy type so that we know what we can give it to
 // start with none
-addProp energyType String 'none'
+addProp energyType string 'none'
 
 addFeature Touches
 featCall EnergyRepresentation.Touches monitor 'Sun' c2b
@@ -676,7 +676,7 @@ addFeature Physics
       addFeature AgentWidgets
       addFeature Costume
       featProp Timer.Costume.costumeName setTo 'onexone.json'
-      addProp time Number 0
+      addProp time number 0
       prop Timer.zIndex setTo 500
 
       featProp Timer.AgentWidgets.text setTo 'Time: 0'
@@ -703,14 +703,14 @@ addFeature Population
 featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp totalEnergy Number 500
+addProp totalEnergy number 500
 prop EnergyInSystem.totalEnergy setMax 1000
 prop EnergyInSystem.totalEnergy setMin 0
 
 // to store the current values of plant and Bunny separately
 // I could just add them up below, but this way we can see them in the inspector
-addProp totalPlantEnergy Number 0
-addProp totalBunnyEnergy Number 0
+addProp totalPlantEnergy number 0
+addProp totalBunnyEnergy number 0
 
 
 featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
@@ -767,7 +767,7 @@ featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 addFeature Global
 
 // using a generic name so that it is easier to change later
-addProp lostEnergy Number 500
+addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
@@ -822,11 +822,11 @@ prop SoilBG.zIndex setTo -210
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'dirt.json'
 
-addProp nutrients Number 50
+addProp nutrients number 50
 prop Soil.nutrients setMax 100
 prop Soil.nutrients setMin 0
 
-addProp sparkleCount Number 0
+addProp sparkleCount number 0
 
 addFeature Physics
 
