@@ -22,7 +22,7 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'dirt.png'
 
@@ -39,22 +39,22 @@ featProp Soil.Costume.scale setTo 0.85
 prop Soil.zIndex setTo -200
 
 addFeature Touches
-featCall Touches monitor Worm b2b
+featCall Soil.Touches monitor 'Worm' b2b
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp AgentWidgets meterProp setTo nutrients
+featProp Soil.AgentWidgets.meterProp setTo 'nutrients'
 
-featCall AgentWidgets setMeterPosition 'inside-left'
+featCall Soil.AgentWidgets setMeterPosition 'inside-left'
 // violet
-featProp AgentWidgets meterColor setTo 9055202
-featProp AgentWidgets text setTo ''
+featProp Soil.AgentWidgets.meterColor setTo 9055202
+featProp Soil.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
   ifExpr {{ Soil.getProp('sparkleCount').value > 0 }} [[
-    prop sparkleCount sub 1
+    prop Soil.sparkleCount sub 1
     featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
 
   ]]
@@ -63,9 +63,7 @@ every 1 runAtStart [[
 
   ]]
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Sunbeam",
@@ -73,7 +71,7 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 
@@ -96,8 +94,6 @@ featProp Sunbeam.Costume.scale setTo 1
 featProp Sunbeam.Costume.scaleY setTo 2.5
 
 addFeature Touches
-
-# PROGRAM INIT
 // default position for moving across the top
 prop Sunbeam.x setTo -400
 prop Sunbeam.y setTo -180
@@ -119,18 +115,24 @@ onEvent Tick [[
     {
       "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
-# PROGRAM DEFINE
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
 addFeature Costume
 featProp Rock.Costume.costumeName setTo 'boulder.json'
 
 addFeature Physics
 addFeature AgentWidgets
-featProp agent.Costume.scale setTo 0.5`
+featProp Rock.Costume.scale setTo 0.5
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "House",
       "scriptText": `# BLUEPRINT House
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp House.Costume.costumeName setTo 'house.json'
 
@@ -143,15 +145,21 @@ featProp House.Costume.scale setTo 2`
     {
       "name": "SoilBG",
       "scriptText": `# BLUEPRINT SoilBG
-# PROGRAM DEFINE
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
 addFeature Costume
 featProp SoilBG.Costume.costumeName setTo 'square.json'
 
-featCall Costume setColorize 0.56 0.52 0.40
+featCall SoilBG.Costume setColorize 0.56 0.52 0.4
 addFeature Physics
-featProp agent.Costume.width setTo 800
-featProp agent.Costume.height setTo 400
-prop zIndex setTo -210`
+featProp SoilBG.Costume.width setTo 800
+featProp SoilBG.Costume.height setTo 400
+prop SoilBG.zIndex setTo -210
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Worm",
@@ -159,7 +167,7 @@ prop zIndex setTo -210`
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 
 addFeature Movement
 
@@ -351,7 +359,7 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 
 addFeature Population
 // addFeature Global
@@ -524,7 +532,7 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
 
@@ -654,7 +662,7 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Population
 addFeature Costume
 
@@ -728,7 +736,7 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
     {
       "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp ColorChip.Costume.costumeName setTo 'square.json'
 
@@ -740,7 +748,7 @@ addFeature Physics`
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
@@ -764,7 +772,7 @@ every 1 runAtStart [[
     {
       "name": "CharacterGraph",
       "scriptText": `# BLUEPRINT CharacterGraph
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp CharacterGraph.Costume.costumeName setTo 'onexone.json'
 
@@ -875,7 +883,7 @@ prop y setTo 300`
       "label": "SoilBG01",
       "bpid": "SoilBG",
       "initScript": `prop x setTo 0
- prop y setTo 200`
+prop y setTo 200`
     },
     {
       "id": "1801",
