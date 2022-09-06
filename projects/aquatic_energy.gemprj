@@ -29,14 +29,14 @@
 
 
 addFeature Costume
-featProp Sun.Costume.costumeName setTo 'circle.json'
+featProp Sun.Costume.costumeName setTo 'sunbeam.png'
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
-featCall Sun.Costume setColorize 255 215 0
+//featCall Sun.Costume setColorize 255 215 0
 // This makess sure the sunu is behind everything else
 prop Sun.zIndex setTo 0
 
 addFeature Physics
-featProp Sun.Costume.scale setTo 0.6
+featProp Sun.Costume.scale setTo 1.0
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -250,7 +250,7 @@ prop Sky.zIndex setTo -100
 # PROGRAM DEFINE
 
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
+featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 
 addFeature Physics
 
@@ -272,11 +272,13 @@ featCall EnergyRepresentation.Touches monitor 'Sun' c2b
 featCall EnergyRepresentation.Touches monitor 'Algae' c2b
 featCall EnergyRepresentation.Touches monitor 'Fish' c2b
 
+featProp EnergyRepresentation.Costume.scale setTo 0.35
+
 # PROGRAM UPDATE
 when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
-  featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_SunProducing1.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
@@ -285,14 +287,14 @@ when EnergyRepresentation centerLastTouches Sun [[
   prop EnergyRepresentation.energyType setTo 'source'
   prop EnergyRepresentation.energyLevel setTo 100
 
-  featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Sun1.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
 ]]
 
 
 when EnergyRepresentation centerFirstTouches Algae [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_PlantUsing.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
@@ -307,7 +309,7 @@ when EnergyRepresentation centerFirstTouches Algae [[
     featCall Global globalProp energyReleasedAsHeat add 50
 
 
-    featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
+    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
 
     featProp Algae.Costume.glow setTo 1
 
@@ -328,13 +330,13 @@ when EnergyRepresentation centerLastTouches Algae [[
     // we are losing 50 of the hundred, so not that in the global
     featCall Global globalProp energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Plant1.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
 
   ]]
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
   ]]
 
 
@@ -345,7 +347,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_FishUsing1.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
   ]]
 
   // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
@@ -358,7 +360,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
     // we are losing 50 of the hundred, so not that in the global
     featCall Global globalProp energyReleasedAsHeat add 15
 
-    featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
+    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
     featProp Fish.Costume.glow setTo 1
 
 
@@ -371,7 +373,7 @@ when EnergyRepresentation centerLastTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'EnergyAnnotation_Pick1.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_fish.png'
   ]]
 
 ]]
@@ -523,6 +525,25 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM INIT`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background LOAD
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// required directive
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'background_aquatic.png'
+featProp Background.Costume.scale setTo 1.33
+prop Background.zIndex setTo -999
+
+
+// required directive
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
@@ -567,13 +588,6 @@ prop y setTo 111.73`
       "bpid": "Timer",
       "initScript": `prop x setTo 354.35
 prop y setTo -394.62`
-    },
-    {
-      "id": "6",
-      "label": "Sky6",
-      "bpid": "Sky",
-      "initScript": `prop x setTo 0
-prop y setTo -300`
     },
     {
       "id": "7",
@@ -630,6 +644,20 @@ prop y setTo 59.01`
       "bpid": "Fish",
       "initScript": `prop x setTo 315.8
 prop y setTo 210.49`
+    },
+    {
+      "id": "15",
+      "label": "Background15",
+      "bpid": "Background",
+      "initScript": `prop x setTo -1.14
+prop y setTo -2.59`
+    },
+    {
+      "id": "16",
+      "label": "EnergyRepresentation16",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -72.38
+prop y setTo -183.13`
     }
   ]
 }
