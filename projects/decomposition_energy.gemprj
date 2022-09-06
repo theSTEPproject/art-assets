@@ -204,7 +204,7 @@ addFeature Costume
 featProp Waste.Costume.costumeName setTo 'waste.png'
 
 addFeature Physics
-featProp Waste.Costume.scale setTo 0.2
+featProp Waste.Costume.scale setTo 0.5
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType string 'waste'
@@ -252,7 +252,7 @@ addProp minimumScale number 0
 
 // STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
-prop Plant.minimumScale setMax 0.5
+prop Plant.minimumScale setMax 1.0
 prop Plant.minimumScale setMin -0.5
 
 addProp nutrients number 8
@@ -283,7 +283,7 @@ featCall Plant.Touches monitor 'Soil' b2b
 
 # PROGRAM INIT
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-exprPush {{ Plant.getProp('minimumScale').value + agent.getProp('matter').value / 300 }}
+exprPush {{ Plant.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
@@ -309,7 +309,7 @@ every 1 runAtStart [[
     propPop agent.matter
 
     // re-scale the plant based on the energy level
-    exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 300 }}
+    exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
     featPropPop Plant.Costume.scale
 
   ]]
@@ -366,7 +366,7 @@ addFeature Costume
 featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
 
 addFeature Physics
-featProp EnergyRepresentation.Costume.scale setTo 0.1
+featProp EnergyRepresentation.Costume.scale setTo 0.08
 
 
 // using this to record energyReleasedAsHeat
@@ -830,7 +830,7 @@ addProp sparkleCount number 0
 
 addFeature Physics
 
-featProp Soil.Costume.scale setTo 0.22
+featProp Soil.Costume.scale setTo 0.85
 
 prop Soil.zIndex setTo -200
 
@@ -851,7 +851,7 @@ featProp Soil.AgentWidgets.text setTo ''
 every 1 runAtStart [[
   ifExpr {{ agent.getProp('sparkleCount').value > 0 }} [[
     prop Soil.sparkleCount sub 1
-        featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
+    featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
 
   ]]
   ifExpr {{ agent.getProp('sparkleCount').value == 0 }} [[
@@ -867,13 +867,6 @@ every 1 runAtStart [[
       "bpid": "Sun",
       "initScript": `prop x setTo -207.87
 prop y setTo -190.96`
-    },
-    {
-      "id": "1",
-      "label": "Bunny1",
-      "bpid": "Bunny",
-      "initScript": `prop x setTo -88.27
-prop y setTo -36.22`
     },
     {
       "id": "2",
@@ -1081,14 +1074,14 @@ prop y setTo -94.06`
       "id": "1712",
       "label": "Soil1712",
       "bpid": "Soil",
-      "initScript": `prop x setTo 299.60
+      "initScript": `prop x setTo 299.6
 prop y setTo -101.12`
     },
     {
       "id": "1713",
       "label": "Soil1713",
       "bpid": "Soil",
-      "initScript": `prop x setTo 297.20
+      "initScript": `prop x setTo 297.2
 prop y setTo -301.56`
     },
     {
@@ -1125,6 +1118,62 @@ prop y setTo -304.25`
       "bpid": "Soil",
       "initScript": `prop x setTo -96.12
 prop y setTo -94.75`
+    },
+    {
+      "id": "1719",
+      "label": "EnergyRepresentation1719",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 357.18
+prop y setTo -2.44`
+    },
+    {
+      "id": "1720",
+      "label": "EnergyRepresentation1720",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 123.65
+prop y setTo 305.3`
+    },
+    {
+      "id": "1721",
+      "label": "EnergyRepresentation1721",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -51.05
+prop y setTo -114.28`
+    },
+    {
+      "id": "1722",
+      "label": "EnergyRepresentation1722",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 306.79
+prop y setTo 138.47`
+    },
+    {
+      "id": "1723",
+      "label": "EnergyRepresentation1723",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 152.79
+prop y setTo -71.14`
+    },
+    {
+      "id": "1724",
+      "label": "EnergyRepresentation1724",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -166.62
+prop y setTo -256.94`
+    },
+    {
+      "id": "1725",
+      "label": "EnergyRepresentation1725",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 40
+prop y setTo 25`
+    },
+    {
+      "id": "1726",
+      "label": "EnergyRepresentation1726",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 42
+prop y setTo 34`
     }
   ]
 }

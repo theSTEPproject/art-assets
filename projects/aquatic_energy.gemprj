@@ -658,6 +658,34 @@ prop y setTo -2.59`
       "bpid": "EnergyRepresentation",
       "initScript": `prop x setTo -72.38
 prop y setTo -183.13`
+    },
+    {
+      "id": "17",
+      "label": "EnergyRepresentation17",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 31
+prop y setTo 14`
+    },
+    {
+      "id": "18",
+      "label": "EnergyRepresentation18",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 1
+prop y setTo 2`
+    },
+    {
+      "id": "19",
+      "label": "EnergyRepresentation19",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -48
+prop y setTo -21`
+    },
+    {
+      "id": "20",
+      "label": "EnergyRepresentation20",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -14
+prop y setTo -33`
     }
   ]
 }

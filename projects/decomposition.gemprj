@@ -34,7 +34,7 @@ addProp sparkleCount number 0
 
 addFeature Physics
 
-featProp Soil.Costume.scale setTo 0.22
+featProp Soil.Costume.scale setTo 0.85
 
 prop Soil.zIndex setTo -200
 
@@ -55,11 +55,11 @@ featProp AgentWidgets text setTo ''
 every 1 runAtStart [[
   ifExpr {{ Soil.getProp('sparkleCount').value > 0 }} [[
     prop sparkleCount sub 1
-\tfeatProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
+    featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
 
   ]]
   ifExpr {{ Soil.getProp('sparkleCount').value == 0 }} [[
-\tfeatProp Soil.Costume.costumeName setTo 'dirt.png'
+    featProp Soil.Costume.costumeName setTo 'dirt.png'
 
   ]]
 ]]
@@ -384,7 +384,7 @@ prop Bunny.matter setMin 0
 
 addFeature Physics
 
-featProp Bunny.Costume.scale setTo 0.2
+featProp Bunny.Costume.scale setTo 0.8
 
 addFeature Touches
 featCall Bunny.Touches monitor 'Plant' b2b
@@ -584,7 +584,7 @@ prop Plant.y addRnd -10 10
 # PROGRAM INIT
 
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 300 }}
+exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
@@ -613,7 +613,7 @@ when Plant touches Soil [[
 every 1 runAtStart [[
 
   // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 300 }}
+  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
   featPropPop Plant.Costume.scale
 
   // if the plant is basically dead
@@ -662,13 +662,13 @@ addFeature Costume
 featProp Waste.Costume.costumeName setTo 'waste.png'
 
 addProp matter number 100
-prop Waste.matter setMax 20
+prop Waste.matter setMax 100
 prop Waste.matter setMin 0
 
 // scale up because the art is a bit small
 addFeature Physics
 
-featProp Waste.Costume.scale setTo 0.5
+featProp Waste.Costume.scale setTo 0.8
 
 // pick a random rotation to keep things looking interesting
 // prop Waste.orientation setTo 0
@@ -1034,13 +1034,13 @@ prop y setTo -41.99`
       "label": "Soil1812",
       "bpid": "Soil",
       "initScript": `prop x setTo -299.23
-prop y setTo -90.00`
+prop y setTo -90`
     },
     {
       "id": "1813",
       "label": "Soil1813",
       "bpid": "Soil",
-      "initScript": `prop x setTo 94.90
+      "initScript": `prop x setTo 94.9
 prop y setTo -109.23`
     },
     {
