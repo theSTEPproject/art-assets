@@ -289,7 +289,6 @@ when Worm touches Soil [[
 
         prop Worm.feeling setTo 'hungry'
         // revert costume now that we are hungry again
-        // featCall Costume setCostume 'worm.json' 1
         featProp Worm.Costume.costumeName setTo 'worm.png'
 
       ]]
