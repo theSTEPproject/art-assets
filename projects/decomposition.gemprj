@@ -284,7 +284,8 @@ when Worm touches Soil [[
         featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
         featProp Soil.Costume.costumeName setTo 'dirt.png'
-        featProp Soil.Costume.currentFrame setTo 1
+        //featProp Soil.Costume.currentFrame setTo 1
+        dbgOut 'do something here?'
 
         prop Worm.feeling setTo 'hungry'
         // revert costume now that we are hungry again
