@@ -630,9 +630,9 @@ every 1 runAtStart [[
     // create a little bit of inorganic matter
     featCall Plant.Population createAgent Waste [[
       // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
-      prop Plant.x addRndInt -5 5
-      prop Plant.y addRndInt 50 100
-      prop Plant.matter setTo 20
+      prop Waste.x addRndInt -5 5
+      prop Waste.y addRndInt 50 100
+      prop Waste.matter setTo 20
     ]]
 
     // then remove the plant
