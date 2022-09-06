@@ -421,8 +421,8 @@ addFeature Physics
 # PROGRAM UPDATE`
     },
     {
-      "name": "Turtle",
-      "scriptText": `# BLUEPRINT Turtle
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -431,12 +431,14 @@ addFeature Costume
 addFeature AgentWidgets
 addFeature Movement
 
-// temp until we get new art
-featProp Turtle.Costume.costumeName setTo 'turtle_sprites.json'
+addProp species string 'otter'
+prop Predator.species setTo 'otter'
+
+featProp Predator.Costume.costumeName setTo 'otter.png'
 
 addProp energyLevel number 50
-prop Turtle.energyLevel setMax 100
-prop Turtle.energyLevel setMin 0
+prop Predator.energyLevel setMax 100
+prop Predator.energyLevel setMin 0
 
 // The predator is a consumer, that consumes energy
 addProp energyType string 'consumer'
@@ -449,58 +451,68 @@ addProp energyUse number 1
 
 addProp health string 'healthy'
 
-// STUDENTS_MAY_CHANGE - to change how quickly turtle use up energy and get hungry
-prop Turtle.energyUse setTo 1
+// STUDENTS_MAY_CHANGE - to change how quickly Predator use up energy and get hungry
+prop Predator.energyUse setTo 1
 
 addFeature Physics
 
-featProp Turtle.Costume.scale setTo 0.15
+featProp Predator.Costume.scale setTo 0.8
 
 // set Touches
 addFeature Touches
-featCall Turtle.Touches monitor 'Fish' b2b
-featCall Turtle.Touches monitor 'Trash' b2b
-featCall Turtle.Touches monitor 'Algae' b2b
+featCall Predator.Touches monitor 'Fish' b2b
+featCall Predator.Touches monitor 'Trash' b2b
+featCall Predator.Touches monitor 'Algae' b2b
 
 // show meter immediately
-featProp Turtle.AgentWidgets.meterProp setTo 'energyLevel'
+featProp Predator.AgentWidgets.meterProp setTo 'energyLevel'
 
-featProp Turtle.AgentWidgets.text setTo ''
+featProp Predator.AgentWidgets.text setTo ''
+
+
 
 # PROGRAM UPDATE
-
-ifExpr {{ Turtle.prop.Movement.compassDirection.value === 'E' }} [[
-  featProp Turtle.Costume.flipX setTo false
+ifExpr {{ Predator.getProp('species') == 'otter' }} [[
+featProp Predator.Costume.costumeName setTo 'otter.png'
 ]]
-ifExpr {{ Turtle.prop.Movement.compassDirection.value === 'W' }} [[
-  featProp Turtle.Costume.flipX setTo true
+
+
+ifExpr {{ Predator.getProp('species') == 'turtle' }} [[
+featProp Predator.Costume.costumeName setTo 'turtle_sprites.json'
+]]
+
+ifExpr {{ Predator.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Predator.Costume.flipX setTo false
+]]
+ifExpr {{ Predator.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Predator.Costume.flipX setTo true
 ]]
 
 every 1 runAtStart [[
   // foodLevel goes down every n seconds
-  exprPush {{ Turtle.getProp('energyLevel').value - Turtle.getProp('energyUse').value }}
-  propPop Turtle.energyLevel
+  exprPush {{ Predator.getProp('energyLevel').value - Predator.getProp('energyUse').value }}
+  propPop Predator.energyLevel
 
-  ifExpr {{ Turtle.getProp('energyLevel').value == 0 }} [[
-    prop Turtle.isInert setTo true
-    prop Turtle.alpha setTo 0.3
+  ifExpr {{ Predator.getProp('energyLevel').value == 0 }} [[
+    prop Predator.isInert setTo true
+    prop Predator.alpha setTo 0.3
   ]]
 ]]
 
-when Turtle touches Algae [[
+when Predator touches Algae [[
   every 1 runAtStart [[
     // only eat algae if this is an omnivore or herbivore
-    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' || Turtle.getProp('consumerType').value == 'herbivore' }} [[
+    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'herbivore' }} [[
 
       // only eat f you are under 50% full or healthy
-      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
 
         // only glow when we are healthy and can eat
-        featProp Turtle.Costume.glow setTo 1
+        featProp Predator.Costume.glow setTo 1
 
         // only eat if the algae is above 0
         ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
-          prop Turtle.energyLevel add 10
+          prop Predator.energyLevel add 10
           prop Algae.energyLevel sub 10
         ]]
 
@@ -515,19 +527,19 @@ when Turtle touches Algae [[
   ]]
 ]]
 
-when Turtle touches Fish [[
+when Predator touches Fish [[
   every 1 runAtStart [[
     // only eat algae if this is an omnivore or carnivore
-    ifExpr {{ Turtle.getProp('consumerType').value == 'omnivore' || Turtle.getProp('consumerType').value == 'carnivore' }} [[
+    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'carnivore' }} [[
 
       // only eat the fish if you are under 50% full or healthy
-      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
 
         // only glow when we are healthy and can eat
-        featProp Turtle.Costume.glow setTo 1
+        featProp Predator.Costume.glow setTo 1
 
-        // Turtle gains some energy
-        prop Turtle.energyLevel add 20
+        // Predator gains some energy
+        prop Predator.energyLevel add 20
 
         // Fish is dead
         prop Fish.isInert setTo true
@@ -540,25 +552,25 @@ when Turtle touches Fish [[
   ]]
 ]]
 
-when Turtle lastTouches Fish [[
-  featProp Turtle.Costume.glow setTo 0
+when Predator lastTouches Fish [[
+  featProp Predator.Costume.glow setTo 0
 ]]
 
-when Turtle touches Trash [[
+when Predator touches Trash [[
   every 1 runAtStart [[
     // always glow to show the interaction
-    featProp Turtle.Costume.glow setTo 0.5
+    featProp Predator.Costume.glow setTo 0.5
 
-    prop Turtle.health setTo 'hurt'
-    featProp Turtle.Costume setColorizeHSV 0.5 1 0.5
+    prop Predator.health setTo 'hurt'
+    featProp Predator.Costume setColorizeHSV 0.5 1 0.5
     featCall Trash.Population removeAgent
 
     // change art
   ]]
 ]]
 
-when Turtle lastTouches Trash [[
-  featProp Turtle.Costume.glow setTo 0
+when Predator lastTouches Trash [[
+  featProp Predator.Costume.glow setTo 0
 
 ]]`
     },
@@ -1008,7 +1020,15 @@ prop y setTo 349.49`
       "initScript": `prop x setTo 318.43
 prop y setTo 347.53
 featProp Rock.Costume.flipX setTo true
-\n`
+
+`
+    },
+    {
+      "id": "1715",
+      "label": "Predator1715",
+      "bpid": "Predator",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
