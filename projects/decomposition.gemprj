@@ -433,7 +433,7 @@ when Bunny touches Plant [[
       featProp Bunny.Costume.glow setTo 4
 
       // if full, change costume and set timer to emit waste
-      ifExpr {{ Bunny.getProp('energyLevel').value > 45 }} [[
+      ifProp Bunny.energyLevel greaterThan  45  [[
         featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
 
         // set variables to be full and prepare to release waste
@@ -465,7 +465,7 @@ every 1 runAtStart [[
       prop Bunny.distractionCounter setTo 0
 
       // in case we were eating
-      featProp Waste.Costume.glow setTo 0
+      featProp Bunny.Costume.glow setTo 0
 
     ]]
   ]]
@@ -478,7 +478,6 @@ every 1 runAtStart [[
       prop Bunny.feeling setTo 'hungry'
       featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
-      dbgOut 'we are now hungry'
     ]]
   ]]
 
