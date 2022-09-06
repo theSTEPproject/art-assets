@@ -473,12 +473,12 @@ featProp Predator.AgentWidgets.text setTo ''
 
 # PROGRAM UPDATE
 ifExpr {{ Predator.getProp('species') == 'otter' }} [[
-featProp Predator.Costume.costumeName setTo 'otter.png'
+  featProp Predator.Costume.costumeName setTo 'otter.png'
 ]]
 
 
 ifExpr {{ Predator.getProp('species') == 'turtle' }} [[
-featProp Predator.Costume.costumeName setTo 'turtle_sprites.json'
+  featProp Predator.Costume.costumeName setTo 'turtle_sprites.json'
 ]]
 
 ifExpr {{ Predator.prop.Movement.compassDirection.value === 'E' }} [[
@@ -544,7 +544,7 @@ when Predator touches Fish [[
         // Fish is dead
         prop Fish.isInert setTo true
         prop Fish.alpha setTo 0.3
-        featProp Fish.Costume setPose 2
+        // featProp Fish.Costume setPose 2
         prop Fish.energyLevel setTo 0
       ]]
 
@@ -562,7 +562,7 @@ when Predator touches Trash [[
     featProp Predator.Costume.glow setTo 0.5
 
     prop Predator.health setTo 'hurt'
-    featProp Predator.Costume setColorizeHSV 0.5 1 0.5
+    featCall Predator.Costume setColorizeHSV 0.5 1 0.5
     featCall Trash.Population removeAgent
 
     // change art
