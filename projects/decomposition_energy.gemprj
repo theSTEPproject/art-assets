@@ -24,13 +24,13 @@
 # TAG isPTrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Sun.Costume.costumeName setTo 'circle.json'
-featCall Sun.Costume setColorize 255 215 0
+featProp Sun.Costume.costumeName setTo 'sunbeam.png'
+// featCall Sun.Costume setColorize 255 215 0
 prop Sun.zIndex setTo 0
 
 addFeature Physics
 
-featProp Sun.Costume.scale setTo 0.6
+featProp Sun.Costume.scale setTo 2
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType string 'source'
@@ -53,7 +53,7 @@ ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') 
 # TAG isPTrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Bunny.Costume.costumeName setTo 'bunnies.json'
+featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
 featProp Bunny.Costume.currentFrame setTo 0
 
 
@@ -90,25 +90,25 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the Bunny is
   // sated
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featProp Bunny.Costume.currentFrame setTo 0
+    featProp Bunny.Costume.currentFr
     // Green
     featProp Bunny.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
-    featProp Bunny.Costume.currentFrame setTo 1
+featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Orange
     featProp Bunny.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
-    featProp Bunny.Costume.currentFrame setTo 1
+featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Red
     featProp Bunny.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
-    featProp Bunny.Costume.currentFrame setTo 2
+featProp Bunny.Costume.costumeName setTo 'bunny.png'
     // featCall Movement setMovementType 'float'
     prop agent.alpha setTo 0.3
     prop agent.isInert setTo true
@@ -201,10 +201,10 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
 # PROGRAM INIT
 
 addFeature Costume
-featProp Waste.Costume.costumeName setTo 'organic_matter.png'
+featProp Waste.Costume.costumeName setTo 'waste.png'
 
 addFeature Physics
-featProp Waste.Costume.scale setTo 0.5
+featProp Waste.Costume.scale setTo 0.2
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType string 'waste'
@@ -252,7 +252,7 @@ addProp minimumScale number 0
 
 // STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
-prop Plant.minimumScale setMax 1
+prop Plant.minimumScale setMax 0.5
 prop Plant.minimumScale setMin -0.5
 
 addProp nutrients number 8
@@ -265,8 +265,8 @@ prop Plant.nutrients setMin 0
 addProp matter number 50
 
 // STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
-prop Plant.matter setTo 50
-prop Plant.matter setMax 100
+prop Plant.matter setTo 30
+prop Plant.matter setMax 30
 prop Plant.matter setMin 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -283,7 +283,7 @@ featCall Plant.Touches monitor 'Soil' b2b
 
 # PROGRAM INIT
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-exprPush {{ Plant.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
+exprPush {{ Plant.getProp('minimumScale').value + agent.getProp('matter').value / 300 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
@@ -309,7 +309,7 @@ every 1 runAtStart [[
     propPop agent.matter
 
     // re-scale the plant based on the energy level
-    exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
+    exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 300 }}
     featPropPop Plant.Costume.scale
 
   ]]
@@ -319,18 +319,18 @@ every 1 runAtStart [[
   prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
-featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
+    featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
     featProp Plant.Costume.currentFrame setTo 0
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great
-featProp Plant.Costume.costumeName setTo 'plant_mediumhealth.png'
+    featProp Plant.Costume.costumeName setTo 'plant_mediumhealth.png'
     featProp Plant.Costume.currentFrame setTo 1
 
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-featProp Plant.Costume.costumeName setTo 'plant_unhealthy.png'
+    featProp Plant.Costume.costumeName setTo 'plant_unhealthy.png'
     featProp Plant.Costume.currentFrame setTo 2
     prop Plant.matter sub 1
   ]]
@@ -820,7 +820,7 @@ prop SoilBG.zIndex setTo -210
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Soil.Costume.costumeName setTo 'dirt.json'
+featProp Soil.Costume.costumeName setTo 'dirt.png'
 
 addProp nutrients number 50
 prop Soil.nutrients setMax 100
@@ -830,7 +830,7 @@ addProp sparkleCount number 0
 
 addFeature Physics
 
-featProp Soil.Costume.scale setTo 0.38
+featProp Soil.Costume.scale setTo 0.22
 
 prop Soil.zIndex setTo -200
 
@@ -851,9 +851,11 @@ featProp Soil.AgentWidgets.text setTo ''
 every 1 runAtStart [[
   ifExpr {{ agent.getProp('sparkleCount').value > 0 }} [[
     prop Soil.sparkleCount sub 1
+        featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
+
   ]]
   ifExpr {{ agent.getProp('sparkleCount').value == 0 }} [[
-    featProp Soil.Costume.costumeName setTo 'dirt.json'
+    featProp Soil.Costume.costumeName setTo 'dirt.png'
   ]]
 ]]`
     }
@@ -863,8 +865,8 @@ every 1 runAtStart [[
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo 0
-prop y setTo -314.66`
+      "initScript": `prop x setTo -207.87
+prop y setTo -190.96`
     },
     {
       "id": "1",
@@ -957,13 +959,6 @@ prop y setTo 300`
       "bpid": "Soil",
       "initScript": `prop x setTo 300
 prop y setTo 300`
-    },
-    {
-      "id": "1109",
-      "label": "SoilBG01",
-      "bpid": "SoilBG",
-      "initScript": `prop x setTo 0
-prop y setTo 200`
     },
     {
       "id": "1110",
@@ -1074,6 +1069,62 @@ prop y setTo 143.75`
       "bpid": "Worm",
       "initScript": `prop x setTo 131.82
 prop y setTo 293.27`
+    },
+    {
+      "id": "1711",
+      "label": "Soil1711",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 98.31
+prop y setTo -94.06`
+    },
+    {
+      "id": "1712",
+      "label": "Soil1712",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 299.60
+prop y setTo -101.12`
+    },
+    {
+      "id": "1713",
+      "label": "Soil1713",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 297.20
+prop y setTo -301.56`
+    },
+    {
+      "id": "1714",
+      "label": "Soil1714",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 91.28
+prop y setTo -296.63`
+    },
+    {
+      "id": "1715",
+      "label": "Soil1715",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -98.82
+prop y setTo -299.62`
+    },
+    {
+      "id": "1716",
+      "label": "Soil1716",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -300.59
+prop y setTo -95.51`
+    },
+    {
+      "id": "1717",
+      "label": "Soil1717",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -299.02
+prop y setTo -304.25`
+    },
+    {
+      "id": "1718",
+      "label": "Soil1718",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -96.12
+prop y setTo -94.75`
     }
   ]
 }
