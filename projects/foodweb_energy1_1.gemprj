@@ -56,7 +56,7 @@ featProp agent.Costume.scale setTo 1
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 // The sun is one of the characters that produces energy
 // Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
 // simple, and just needs the variables for the EnergyRepresentation to read
@@ -77,7 +77,7 @@ featProp Sun.Costume.scale setTo 0.6
 // cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle, 
 //  snailToRobin, snakeToHawk, mouseToSnake
 // these are referenced by EnergyRepresentation
-addProp energyType String 'sun'
+addProp energyType string 'sun'
 
 addFeature Global
 
@@ -89,9 +89,6 @@ addFeature Global
 ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
   featCall Global addGlobalProp energyReleasedAsHeat Number 0
 ]]
-
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM UPDATE`
@@ -586,7 +583,7 @@ onEvent Tick [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // The VeggieGarden is one of the characters that takes / produces energy
 // Note that it mostly just stores properties that the EnergyRepresentation will check / change
 // The other main functionality (under update) is that it will update its meter color depending on
@@ -606,12 +603,12 @@ featProp VeggieGarden.Costume.scale setTo 0.75
 addProp energyType String 'vaggieGarden'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
+addProp energyLevel number 50
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
@@ -624,6 +621,7 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
+    dbgOut 'right above VG push'
     exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
     propPop VeggieGarden.energyLevel
   ]]
@@ -654,10 +652,7 @@ every 1 runAtStart [[
     featPropPop VeggieGarden.Costume.scale
 
   ]]
-]]
-
-// required directive
-# PROGRAM INIT`
+]]`
     },
     {
       "name": "Clover",
@@ -666,7 +661,7 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 // The Clover is one of the characters that takes / produces energy
 // Note that it mostly just stores properties that the EnergyRepresentation will check / change
 // The other main functionality (under update) is that it will update its meter color depending on
@@ -704,7 +699,8 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Clover.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
+    dbgOut 'befeore clover push'
+    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
     propPop Clover.energyLevel
   ]]
 
@@ -735,9 +731,7 @@ every 1 runAtStart [[
 
   ]]
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     }
   ],
   "instances": [
@@ -770,17 +764,10 @@ prop y setTo -300`
 prop y setTo 360.68`
     },
     {
-      "id": "8",
-      "label": "Energy In System Graph",
-      "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 511.75
-prop y setTo 187`
-    },
-    {
       "id": "9",
       "label": "VeggieGarden9",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -154.50
+      "initScript": `prop x setTo -154.5
 prop y setTo 232.21`
     },
     {
