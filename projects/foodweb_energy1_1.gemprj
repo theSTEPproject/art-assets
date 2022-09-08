@@ -621,7 +621,6 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
-    dbgOut 'right above VG push'
     exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
     propPop VeggieGarden.energyLevel
   ]]
@@ -699,7 +698,6 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
-    dbgOut 'befeore clover push'
     exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
     propPop Clover.energyLevel
   ]]
