@@ -1,0 +1,794 @@
+{
+  "id": "foodweb_energy1_1",
+  "label": "Aquatic Energy",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Explanation",
+      "scriptText": `# BLUEPRINT Explanation
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// ----------------------------------------------------------------------------------------------------------------
+// This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
+// ---------------------------------------------------------------------------------------------------------------- 
+
+// The goal of this model is to let students explore the energy in the aquatic system by being a 
+// representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
+// character using either pozyx or charController 
+
+// The system is intended to mirror the aquatic model in that energy is meant to go from the sun to algae to fish. 
+// To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't 
+// hurry and give it to them
+
+// The main chaaracter is therefore the EnergyRepresentation, which stuents can use to look around. As they touch
+// an energy source, they will pick up / become that kind of energy
+// So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around 
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'onexone.json' 0
+featProp agent.Costume.scale setTo 1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    },
+    {
+      "name": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+// The sun is one of the characters that produces energy
+// Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// simple, and just needs the variables for the EnergyRepresentation to read
+
+
+addFeature Costume
+featProp Sun.Costume.costumeName setTo 'circle.json'
+// Instead of sun art, we are using a generic circle, so the next line tints it yellow
+featCall Sun.Costume setColorize 255 215 0
+// This makess sure the sunu is behind everything else
+prop Sun.zIndex setTo 0
+
+addFeature Physics
+featProp Sun.Costume.scale setTo 0.6
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk, 
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle, 
+//  snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'sun'
+
+addFeature Global
+
+// This is a hack, using the Sun to initaliize this variable since I know it is the first
+// Character added under instances
+// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not,
+// creates one
+// The EnergyRepresentation and graphs then reference this global variable
+ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
+  featCall Global addGlobalProp energyReleasedAsHeat Number 0
+]]
+
+// required directive
+# PROGRAM INIT
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The fish is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
+addFeature Costume
+featProp Fish.Costume.costumeName setTo 'fish.json'
+
+addFeature Physics
+featProp Fish.Costume.scale setTo 1.5
+
+// types to use for energy transfer. The types are source, producer, consumer (we might add more later)
+// these are referenced by EnergyRepresentation
+addProp energyType String 'consumer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Fish.energyLevel setMax 100
+prop Fish.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature AgentWidgets
+featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp Fish.AgentWidgets.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Fish.getProp('energyLevel').value - Fish.getProp('energyUse').value }}
+  propPop Fish.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // sated
+  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+    featProp Fish.Costume.currentFrame setTo 0
+    // Green
+    featProp Fish.AgentWidgets.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+    featProp Fish.Costume.currentFrame setTo 1
+    // Orange
+    featProp Fish.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+    featProp Fish.Costume.currentFrame setTo 1
+    // Red
+    featProp Fish.AgentWidgets.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+    featProp Fish.Costume.currentFrame setTo 2
+    prop Fish.alpha setTo 0.3
+    prop Fish.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
+
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Algae",
+      "scriptText": `# BLUEPRINT Algae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The algae is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp Algae.Costume.costumeName setTo 'algae.json'
+
+addFeature Physics
+featProp Algae.Costume.scale setTo 3
+
+// types to use for energy transfer. The types are source, producer, consumer (we might add more later)
+// these are referenced by EnergyRepresentation
+addProp energyType String 'producer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Algae.energyLevel setMax 100
+prop Algae.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature AgentWidgets
+featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp Algae.AgentWidgets.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Algae.getProp('energyLevel').value - Algae.getProp('energyUse').value }}
+    propPop Algae.energyLevel
+  ]]
+
+  // re-scale the algae based on its energy level
+  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 3 }}
+  featPropPop Algae.Costume.scale
+
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // set algae energy meter color
+  // doing great
+  ifExpr {{ Algae.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Algae.AgentWidgets.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Algae.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Algae.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Algae.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Algae.AgentWidgets.meterColor setTo 16711680
+
+    // avoid getting too
+    exprPush {{ .90 }}
+    featPropPop Algae.Costume scale
+
+  ]]
+
+
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Sky",
+      "scriptText": `# BLUEPRINT Sky
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+//Note: this character doesn't do anyhting - it is just for show since there is no 
+// other easy way to add background art
+addFeature Costume
+featProp Sky.Costume.costumeName setTo 'square.json'
+featCall Sky.Costume setColorize 53 81 92
+
+addFeature Physics
+featProp Sky.Costume.width setTo 800 
+featProp Sky.Costume.height setTo 200 
+
+// make sure this is always way in the back behind all 
+// of the other characters
+prop Sky.zIndex setTo -100
+
+
+`
+    },
+    {
+      "name": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+addFeature Costume
+featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
+
+addFeature Physics
+featProp EnergyRepresentation.Costume.scale setTo 0.1
+
+
+// using this to record energyReleasedAsHeat
+addFeature Global
+
+
+// setup energy properties
+addProp energyLevel Number 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp energyType String 'none'
+
+addFeature Touches
+featCall EnergyRepresentation.Touches monitor 'Sun' c2b
+featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
+featCall EnergyRepresentation.Touches monitor 'Clover' c2b
+
+# PROGRAM UPDATE
+// ---updating sun energy---
+
+when EnergyRepresentation centerFirstTouches Sun [[
+
+  // when touching, show an annotation about how the sun produces energy
+  featProp EnergyRepresentation.Costume.costumeName setTo 'sun_foodweb_energy.png'
+]]
+
+when EnergyRepresentation centerLastTouches Sun [[
+
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
+  prop EnergyRepresentation.energyType setTo 'sun'
+  prop EnergyRepresentation.energyLevel setTo 100
+
+  featProp EnergyRepresentation.Costume.costumeName setTo 'sun_foodweb_energy.png'
+]]
+
+
+// ---updating VeggieGarden energy---
+
+when EnergyRepresentation centerFirstTouches VeggieGarden [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+  ]]
+
+  // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+    prop EnergyRepresentation.energyType setTo 'sunToVaggie'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop VeggieGarden.energyLevel add 50
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 50
+
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'sun to garden.png'
+
+    featProp VeggieGarden.Costume.glow setTo 1
+
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches VeggieGarden [[
+
+  // if you have no energy type, take some energy from the VeggieGarden
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' && VeggieGarden.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop VeggieGarden.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+
+  ]]
+
+  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+  ]]
+]]
+
+// ---updating Clover energy---
+
+when EnergyRepresentation centerFirstTouches Clover [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+  ]]
+
+  // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+    prop EnergyRepresentation.energyType setTo 'sunToClover'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Clover gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Clover.energyLevel add 50
+    // we are losing 50 of the hundred, so note that in the global
+    featCall Global globalProp energyReleasedAsHeat add 50
+
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'sun to clover.png'
+
+    featProp Clover.Costume.glow setTo 1
+
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Clover [[
+
+  // if you have no energy type, take some energy from the Clover
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToClover' && Plant.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Clover gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Clover.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+
+  ]]
+
+  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToClover' }} [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+  ]]
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+// This character isn't interactive and just shows the tine, and decreses it every second
+addFeature AgentWidgets
+
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'onexone.json'
+featProp Timer.Costume.scale setTo 1
+
+addProp time Number 0
+
+// set the initial label and then update it below during update
+featProp Timer.AgentWidgets.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// every second, add one to the time property and display the new time in the format \"Time: #\"\"
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.AgentWidgets.text
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "GraphLostEnergy",
+      "scriptText": `# BLUEPRINT GraphLostEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM DEFINE
+// This is a graph of energy lost to heat from all charaacters
+// since there are lots of characters, rather than sume them up one type
+// at a time, use a global variabe to track that excess heat
+
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
+featProp GraphLostEnergy.Costume.scale setTo 1
+
+addFeature AgentWidgets
+addFeature Population
+featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
+
+addFeature Global
+
+// using a generic name so that it is easier to change later
+addProp lostEnergy Number 500
+prop GraphLostEnergy.lostEnergy setMax 1000
+prop GraphLostEnergy.lostEnergy setMin 0
+
+featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
+
+// make sure something displays with some initial text, on bottom right at first
+prop GraphLostEnergy.x setTo 495
+prop GraphLostEnergy.lostEnergy setTo 350
+prop GraphLostEnergy.zIndex setTo 300
+
+featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPop GraphLostEnergy.lostEnergy
+
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "EnergyInSystem",
+      "scriptText": `# BLUEPRINT EnergyInSystem
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM DEFINE
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
+featProp EnergyInSystem.Costume.scale setTo 1
+
+addFeature AgentWidgets
+addFeature Population
+featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp totalEnergy Number 500
+prop EnergyInSystem.totalEnergy setMax 1000
+prop EnergyInSystem.totalEnergy setMin 0
+
+// to store the current values of algae and fish separately
+// I could just add them up below, but this way we can see them in the inspector
+addProp totalVeggieGardenEnergy Number 0
+addProp totalCloverEnergy Number 0
+
+
+featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+
+// make sure something displays with some initial text, on bottom right at first
+prop EnergyInSystem.x setTo 495
+prop EnergyInSystem.y setTo 187
+prop EnergyInSystem.zIndex setTo 300
+
+featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // count up the algae
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'VeggieGarden'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalVeggieGardenEnergy
+
+  // count up the fish
+  featProp EnergyInSystem.Population.monitoredAgent setTo 'Clover'
+  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countAgentProp
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalCloverEnergy
+
+  //graph the sum
+  exprPush {{ EnergyInSystem.getProp('totalVeggieGardenEnergy').value + agent.getProp('totalCloverEnergy').value }}
+  propPop EnergyInSystem.totalEnergy
+  
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "VeggieGarden",
+      "scriptText": `# BLUEPRINT VeggieGarden
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The VeggieGarden is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp VeggieGarden.Costume.costumeName setTo 'veggiegarden.png'
+
+addFeature Physics
+featProp VeggieGarden.Costume.scale setTo 0.75
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
+// snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'vaggieGarden'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop VeggieGarden.energyLevel setMax 100
+prop VeggieGarden.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature AgentWidgets
+featProp VeggieGarden.AgentWidgets.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp VeggieGarden.AgentWidgets.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
+    propPop VeggieGarden.energyLevel
+  ]]
+
+  // re-scale the VeggieGarden based on its energy level
+  exprPush {{ (VeggieGarden.getProp('energyLevel').value / 100)* 3 }}
+  featPropPop VeggieGarden.Costume.scale
+
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp VeggieGarden.AgentWidgets.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp VeggieGarden.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp VeggieGarden.AgentWidgets.meterColor setTo 16711680
+
+    // avoid getting too
+    exprPush {{ .90 }}
+    featPropPop VeggieGarden.Costume.scale
+
+  ]]
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Clover",
+      "scriptText": `# BLUEPRINT Clover
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The Clover is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp Clover.Costume.costumeName setTo 'clover.png'
+
+addFeature Physics
+featProp Clover.Costume.scale setTo 0.25
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
+// snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'clover'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Clover.energyLevel setMax 100
+prop Clover.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature AgentWidgets
+featProp Clover.AgentWidgets.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp Clover.AgentWidgets.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Clover.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
+    propPop Clover.energyLevel
+  ]]
+
+  // re-scale the VeggieGarden based on its energy level
+  exprPush {{ (Clover.getProp('energyLevel').value / 100)* 3 }}
+  featPropPop Clover.Costume.scale
+
+  // this code sets the color of the energy bar based on how hungry the fish is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Clover.AgentWidgets.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Clover.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Clover.AgentWidgets.meterColor setTo 16711680
+
+    // avoid getting too
+    exprPush {{ .90 }}
+    featPropPop Clover.Costume.scale
+
+  ]]
+]]
+
+// required directive
+# PROGRAM INIT`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Sun",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -315.15
+prop y setTo -313.18`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 354.35
+prop y setTo -394.62`
+    },
+    {
+      "id": "6",
+      "label": "Sky6",
+      "bpid": "Sky",
+      "initScript": `prop x setTo 0
+prop y setTo -300`
+    },
+    {
+      "id": "7",
+      "label": "Lost Energy Graph",
+      "bpid": "GraphLostEnergy",
+      "initScript": `prop x setTo 516.26
+prop y setTo 360.68`
+    },
+    {
+      "id": "8",
+      "label": "Energy In System Graph",
+      "bpid": "EnergyInSystem",
+      "initScript": `prop x setTo 511.75
+prop y setTo 187`
+    },
+    {
+      "id": "9",
+      "label": "VeggieGarden9",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -154.50
+prop y setTo 232.21`
+    },
+    {
+      "id": "10",
+      "label": "Clover10",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 284.55
+prop y setTo 274.17`
+    }
+  ]
+}
