@@ -18,6 +18,22 @@
   "rounds": [],
   "blueprints": [
     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting fish eating alge
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
       "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
 # TAG isCharControllable true
@@ -979,13 +995,6 @@ prop y setTo -0.20
 `
     },
     {
-      "id": "1709",
-      "label": "Algae1709",
-      "bpid": "Algae",
-      "initScript": `prop x setTo -58.02
-prop y setTo 30`
-    },
-    {
       "id": "1710",
       "label": "Algae1710",
       "bpid": "Algae",
@@ -1025,8 +1034,8 @@ featProp Rock.Costume.flipX setTo true
     },
     {
       "id": "1715",
-      "label": "Predator1715",
-      "bpid": "Predator",
+      "label": "Algae1715",
+      "bpid": "Algae",
       "initScript": `prop x setTo 29
 prop y setTo 30`
     }

@@ -17,6 +17,24 @@
   "rounds": [],
   "blueprints": [
     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting the energy flow in the system (need to add more here)
+
+prop global.visible setTo false
+
+addProp energyReleasedAsHeat number 0
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
       "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
@@ -30,6 +48,7 @@
 
 addFeature Costume
 featProp Sun.Costume.costumeName setTo 'sunbeam.png'
+
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
 //featCall Sun.Costume setColorize 255 215 0
 // This makess sure the sunu is behind everything else
@@ -41,17 +60,6 @@ featProp Sun.Costume.scale setTo 1.0
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
 addProp energyType string 'source'
-
-addFeature Global
-
-// This is a hack, using the Sun to initaliize this variable since I know it is the first
-// Character added under instances
-// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not,
-// creates one
-// The EnergyRepresentation and graphs then reference this global variable
-ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-  featCall Global addGlobalProp energyReleasedAsHeat number 0
-]]
 
 // required directive
 # PROGRAM INIT
@@ -254,8 +262,7 @@ featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 
 addFeature Physics
 
-// using this to record energyReleasedAsHeat
-addFeature Global
+
 
 
 // setup energy properties
@@ -306,7 +313,7 @@ when EnergyRepresentation centerFirstTouches Algae [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Algae.energyLevel add 50
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 50
+    prop global.energyReleasedAsHeat add 50
 
 
     // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
@@ -328,7 +335,7 @@ when EnergyRepresentation centerLastTouches Algae [[
     prop Algae.energyLevel sub 25
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
 
@@ -358,7 +365,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Fish.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
     featProp Fish.Costume.glow setTo 1
@@ -433,7 +440,7 @@ addFeature AgentWidgets
 addFeature Population
 featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
-addFeature Global
+
 
 // using a generic name so that it is easier to change later
 addProp lostEnergy number 500
@@ -453,7 +460,7 @@ featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
 
 onEvent Tick [[
 
-  exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
 
 ]]
@@ -586,8 +593,8 @@ prop y setTo 111.73`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 354.35
-prop y setTo -394.62`
+      "initScript": `prop x setTo 438.81
+prop y setTo -398.87`
     },
     {
       "id": "7",
@@ -651,41 +658,6 @@ prop y setTo 210.49`
       "bpid": "Background",
       "initScript": `prop x setTo -1.14
 prop y setTo -2.59`
-    },
-    {
-      "id": "16",
-      "label": "EnergyRepresentation16",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo -72.38
-prop y setTo -183.13`
-    },
-    {
-      "id": "17",
-      "label": "EnergyRepresentation17",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 31
-prop y setTo 14`
-    },
-    {
-      "id": "18",
-      "label": "EnergyRepresentation18",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 1
-prop y setTo 2`
-    },
-    {
-      "id": "19",
-      "label": "EnergyRepresentation19",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo -48
-prop y setTo -21`
-    },
-    {
-      "id": "20",
-      "label": "EnergyRepresentation20",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo -14
-prop y setTo -33`
     }
   ]
 }

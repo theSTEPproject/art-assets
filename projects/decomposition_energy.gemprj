@@ -16,6 +16,23 @@
   },
   "rounds": [],
   "blueprints": [
+        {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model is inteended to help students exploree how energy moves between the characters in the ecosystem
+
+prop global.visible setTo false
+addProp energyReleasedAsHeat number 0
+
+// required directive
+# PROGRAM UPDATE`
+    },
     {
       "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
@@ -853,22 +870,6 @@ every 1 runAtStart [[
     featProp Soil.Costume.costumeName setTo 'dirt.png'
   ]]
 ]]`
-    },
-    {
-      "name": "global",
-      "scriptText": `# BLUEPRINT global
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM INIT
-addFeature Population
-prop global.visible setTo false
-
-addProp energyReleasedAsHeat number 0
-
-
-// required directive
-# PROGRAM UPDATE`
     }
   ],
   "instances": [

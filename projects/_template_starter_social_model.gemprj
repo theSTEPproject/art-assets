@@ -16,6 +16,25 @@
   },
   "rounds": [],
   "blueprints": [
+      {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This starter model is inteded to help users explore how people interacting with each other
+// might impact the other people. The existing code mirrors a basic disease spread scenario for 
+// some sample code to muck with
+// Change this description once you are ready to share the model so others know how it is supposed to work.
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
     {
       "name": "PC",
       "scriptText": `# BLUEPRINT PC
@@ -28,7 +47,8 @@
 addFeature Costume
 
 // set the costume
-featProp PC.Costume.costumeName setTo 'bunny.json'
+featProp PC.Costume.costumeName setTo 'fish.png'
+featProp PC.Costume.scale setTo 0.3
 
 // add other features
 addFeature AgentWidgets
@@ -93,7 +113,8 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
-featProp NPC.Costume.costumeName setTo 'bunny.json'
+featProp NPC.Costume.costumeName setTo 'fish.png'
+featProp NPC.Costume.scale setTo 0.3
 
 // add other features
 addFeature Movement
@@ -144,7 +165,7 @@ every 1 runAtStart [[
 prop y setTo 50.13
 prop virus setTo true
 prop role setTo 'one'
-featCall agent.Costume.costumeName setTo 'bunny.json' 1`
+`
     },
     {
       "id": "1",
@@ -154,7 +175,7 @@ featCall agent.Costume.costumeName setTo 'bunny.json' 1`
 prop y setTo 48.39
 prop virus setTo false
 prop role setTo 'two'
-featCall agent.Costume.costumeName setTo 'bunny.json' 2`
+`
     }
   ]
 }
