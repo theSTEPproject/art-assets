@@ -17,6 +17,12 @@
   "rounds": [],
   "blueprints": [
     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+addFeature Population
+addProp energyReleasedAsHeat number 0`
+    },
+    {
       "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
@@ -35,11 +41,12 @@ featProp Sun.Costume.scale setTo 2
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType string 'source'
 
-addFeature Global
+// GLOBAL FIX -- ORIG LINE: addFeature Global
 
-ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-  featCall Global addGlobalProp energyReleasedAsHeat number 0
-]]
+// GLOBAL FIX -- ORIG LINES:
+//ifExpr {{ Sun.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
+//  featCall Global addGlobalProp energyReleasedAsHeat number 0
+//]]
 
 
 // required directive
@@ -129,7 +136,7 @@ featProp Bunny.Costume.costumeName setTo 'bunny.png'
 # TAG isPTrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Worm.Costume.costumeName setTo 'worm.png' 
+featProp Worm.Costume.costumeName setTo 'worm.json' 
 
 addFeature Physics
 featProp Worm.Costume.scale setTo 0.15
@@ -370,7 +377,7 @@ featProp EnergyRepresentation.Costume.scale setTo 0.08
 
 
 // using this to record energyReleasedAsHeat
-addFeature Global
+// GLOBAL FIX -- ORIG LINE: addFeature Global
 
 
 // setup energy properties
@@ -423,8 +430,8 @@ when EnergyRepresentation centerFirstTouches Plant [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Plant.energyLevel add 50
     // we are losing 50 of the hundred, so note that in the global
-    featCall Global globalProp energyReleasedAsHeat add 50
-
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 50
+    prop global.energyReleasedAsHeat add 50
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'sun-to-plant.png'
 
@@ -444,7 +451,8 @@ when EnergyRepresentation centerLastTouches Plant [[
     prop Plant.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'plant_energy.png'
 
@@ -475,7 +483,9 @@ when EnergyRepresentation centerFirstTouches Bunny [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Bunny.energyLevel add 10
     // we are losing some, so note that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
+
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'plant-to-bunny.png'
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
@@ -496,7 +506,8 @@ when EnergyRepresentation centerLastTouches Bunny [[
     prop Bunny.energyLevel sub 15
     prop EnergyRepresentation.energyLevel add 15
     // we are losing 15 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'bunny_energy.png'
 
@@ -525,7 +536,8 @@ when EnergyRepresentation centerFirstTouches Waste [[
     prop Waste.matterLevel add 20
 
     // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
-    featCall Global globalProp energyReleasedAsHeat add 5
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 5
+    prop global.energyReleasedAsHeat add 5
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'bunny-to-waste.png'
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
@@ -548,7 +560,8 @@ when EnergyRepresentation centerLastTouches Waste [[
     prop EnergyRepresentation.energyLevel add 15
 
     // we are losing 15 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'waste_energy.png'
 
@@ -577,7 +590,9 @@ when EnergyRepresentation centerFirstTouches Worm [[
     prop Worm.energyLevel add 20
 
     // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
-    featCall Global globalProp energyReleasedAsHeat add 5
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 5
+    prop global.energyReleasedAsHeat add 5
+
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'waste-to-worm.png'
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
@@ -602,7 +617,9 @@ when EnergyRepresentation centerLastTouches Worm [[
     prop EnergyRepresentation.energyLevel add 15
 
     // we are losing 15 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
+
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'worm_energy.png'
 
@@ -627,7 +644,9 @@ when EnergyRepresentation centerFirstTouches Soil [[
     prop Soil.nutrients add 10
 
     // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
-    featCall Global globalProp energyReleasedAsHeat add 5
+    // GLOBAL FIX -- ORIG LINE: featCall Global globalProp energyReleasedAsHeat add 5
+    prop global.energyReleasedAsHeat add 5
+
 
     // glow the soil but then we are off to find new things
     featProp EnergyRepresentation.Costume.costumeName setTo 'worm-to-nutrients.png'
@@ -764,7 +783,7 @@ addFeature AgentWidgets
 addFeature Population
 featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
-addFeature Global
+// GLOBAL FIX -- ORIG LINE: addFeature Global
 
 // using a generic name so that it is easier to change later
 addProp lostEnergy number 500
@@ -784,7 +803,8 @@ featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy'
 
 onEvent Tick [[
 
-  exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  // GLOBAL FIX -- ORIG LINE: exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
 
 ]]
