@@ -17,6 +17,25 @@
   "rounds": [],
   "blueprints": [
     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// and one that is not though you can use character controller with the second
+// Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
       "name": "EmbodiedCharacter1",
       "scriptText": `# BLUEPRINT EmbodiedCharacter1
 # TAG isPozyxControllable true
@@ -43,7 +62,7 @@ addFeature Touches
     {
       "name": "InteractingCharacter1",
       "scriptText": `# BLUEPRINT InteractingCharacter1
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 

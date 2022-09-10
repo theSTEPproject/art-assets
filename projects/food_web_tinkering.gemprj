@@ -16,6 +16,23 @@
   },
   "rounds": [],
   "blueprints": [
+     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners exploring a food web 
+
+prop global.visible setTo false
+
+
+// required directive
+# PROGRAM UPDATE`
+    },
     {
       "name": "Lion",
       "scriptText": `# BLUEPRINT Lion
@@ -624,7 +641,8 @@ featProp Background.Costume.costumeName setTo 'background (no filter).png'
 
 # PROGRAM INIT
 addFeature Costume
-featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
+featProp ParkRanger.Costume.costumeName setTo 'circle.json'
+featProp ParkRanger.Costume.scale setTo 0.2
 
 
 # PROGRAM UPDATE

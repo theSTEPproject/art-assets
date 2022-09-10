@@ -16,6 +16,24 @@
   },
   "rounds": [],
   "blueprints": [
+     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This is just a test model for tinkering with help
+
+prop global.visible setTo false
+
+addProp energyReleasedAsHeat number 0
+
+// required directive
+# PROGRAM UPDATE`
+    },
     {
       "name": "TestKeywordAgent",
       "scriptText": `# BLUEPRINT TestKeywordAgent

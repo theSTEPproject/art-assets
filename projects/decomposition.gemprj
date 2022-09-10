@@ -16,7 +16,23 @@
   },
   "rounds": [],
   "blueprints": [
-    {
+     {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting bunnies or worms in an ecosystem (ADD MORE)
+
+prop global.visible setTo false
+
+
+// required directive
+# PROGRAM UPDATE`
+    },{
       "name": "Soil",
       "scriptText": `# BLUEPRINT Soil
 # TAG IsCharControllable false
@@ -362,7 +378,6 @@ every 1 runAtStart [[
 # PROGRAM INIT
 
 addFeature Population
-// addFeature Global
 addFeature Costume
 addFeature Movement
 // addFeature Cursor
@@ -536,7 +551,6 @@ every 1 runAtStart [[
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
 
-// addFeature Global
 addFeature Population
 
 addProp energyLevel number 50
