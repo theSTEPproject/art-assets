@@ -1129,20 +1129,6 @@ prop y setTo -304.25`
       "bpid": "Soil",
       "initScript": `prop x setTo -96.12
 prop y setTo -94.75`
-    },
-    {
-      "id": "1720",
-      "label": "EnergyRepresentation1720",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 123.65
-prop y setTo 305.3`
-    },
-    {
-      "id": "1722",
-      "label": "EnergyRepresentation1722",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 306.79
-prop y setTo 138.47`
     }
   ]
 }
