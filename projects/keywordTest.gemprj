@@ -14,7 +14,26 @@
     "bgcolor": 102,
     "roundsCanLoop": true
   },
-  "rounds": [],
+  "rounds": [
+    {
+      "id": "r1",
+      "label": "Round 1",
+      "time": 10,
+      "intro": "Round 1 intro",
+      "outtro": "Round 1 outro",
+      "initScript": `dbgOut 'roundDef: Round1'`,
+      "endScript": `dbgOut 'END Round!'`
+    },
+    {
+      "id": "r2",
+      "label": "Round 2",
+      "time": 20,
+      "intro": "Round 2 intro",
+      "outtro": "Round 2 outro",
+      "initScript": `dbgOut 'roundDef: Round2'`,
+      "endScript": `dbgOut 'END Round!'`
+    }
+  ],
   "blueprints": [
      {
       "name": "global",
