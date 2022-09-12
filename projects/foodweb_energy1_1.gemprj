@@ -308,6 +308,7 @@ featCall EnergyRepresentation.Touches monitor 'Sun' c2b
 featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
 featCall EnergyRepresentation.Touches monitor 'Clover' c2b
 featCall EnergyRepresentation.Touches monitor 'Gopher' c2b
+featCall EnergyRepresentation.Touches monitor 'Snail' c2b
 
 # PROGRAM UPDATE
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
@@ -377,8 +378,8 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
 
   ]]
 
-  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' }} [[
+  // when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
     featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
   ]]
@@ -437,42 +438,132 @@ when EnergyRepresentation centerLastTouches Clover [[
 
 // ---updating Gopher energy---
 
-
-
-when EnergyRepresentation centerFirstTouches Fish [[
+when EnergyRepresentation centerFirstTouches Gopher [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
-    prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
+    prop EnergyRepresentation.energyType setTo 'gopher'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
   ]]
 
-  // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
+  // when touch gopher, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieToGopher'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+    // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
-    prop Fish.energyLevel add 10
+    prop Gopher.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
     featCall Global globalProp energyReleasedAsHeat add 15
 
-    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
-    featProp Fish.Costume.glow setTo 1
+    featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to gopher.png'
+    featProp Gopher.Costume.glow setTo 1
+  ]]
 
+  // when touch gopher and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+    prop EnergyRepresentation.energyType setTo 'cloverToGopher'
 
+    // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Gopher.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'clover to gopher.png'
+    featProp Gopher.Costume.glow setTo 1
   ]]
 
 ]]
 
-when EnergyRepresentation centerLastTouches Fish [[
+when EnergyRepresentation centerLastTouches Gopher [[
 
+  // if you have no gopher energy type, take some energy from the gopher to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'vaggieToGopher' || EnergyRepresentation.getProp('energyType').value == 'cloverToGopher') && Gopher.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'gopher'
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_fish.png'
+    // STUDENTS_MAY_CHANGE to alter how much energy the Gopher gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Gopher.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
+
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with gopher energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+    prop EnergyRepresentation.energyType setTo 'gopher'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
   ]]
 
 ]]
+
+// ---updating Snail energy---
+
+when EnergyRepresentation centerFirstTouches Snail [[
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'snail'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+  ]]
+
+  // when touch snail, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToSnail
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieToSnail'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the snail gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Snail.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggieGarden to snail.png'
+    featProp Snail.Costume.glow setTo 1
+  ]]
+
+  // when touch snail and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToSnail
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+    prop EnergyRepresentation.energyType setTo 'cloverToSnail'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Snail.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'clover to snail.png'
+    featProp Snail.Costume.glow setTo 1
+  ]]
+
+]]
+
+when EnergyRepresentation centerLastTouches Snail [[
+
+  // if you have no Snail energy type, take some energy from the Snail to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'vaggieToSnail' || EnergyRepresentation.getProp('energyType').value == 'cloverToSnail') && Snail.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'snail'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Snail gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Snail.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with snail energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+    prop EnergyRepresentation.energyType setTo 'snail'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+  ]]
+
+]]
+
 // required directive
 # PROGRAM INIT`
     },
@@ -670,7 +761,7 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  exprPush {{ (VeggieGarden.getProp('energyLevel').value / 100) }}
+  exprPush {{ (VeggieGarden.getProp('energyLevel').value / 100 +0.01) }}
   featPropPop VeggieGarden.Costume.scale
 
   // this code sets the color of the energy bar based on how hungry the VeggieGarden is
@@ -747,7 +838,7 @@ every 1 runAtStart [[
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  exprPush {{ (Clover.getProp('energyLevel').value / 200) }}
+  exprPush {{ 0.01+(Clover.getProp('energyLevel').value / 100) }}
   featPropPop Clover.Costume.scale
 
   // this code sets the color of the energy bar based on how hungry the clover is
@@ -1054,15 +1145,15 @@ prop y setTo 360.68`
       "id": "9",
       "label": "VeggieGarden9",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -154.5
-prop y setTo 232.21`
+      "initScript": `prop x setTo -164.52
+prop y setTo 206.28`
     },
     {
       "id": "10",
       "label": "Clover10",
       "bpid": "Clover",
-      "initScript": `prop x setTo 284.55
-prop y setTo 274.17`
+      "initScript": `prop x setTo 233.41
+prop y setTo 234.83`
     },
     {
       "id": "11",
@@ -1072,18 +1163,18 @@ prop y setTo 274.17`
 prop y setTo -89.69`
     },
     {
-      "id": "12",
-      "label": "Snail12",
-      "bpid": "Snail",
-      "initScript": `prop x setTo -271.72
-prop y setTo -11.99`
-    },
-    {
       "id": "13",
       "label": "Gopher13",
       "bpid": "Gopher",
-      "initScript": `prop x setTo 312.47
-prop y setTo 48.8`
+      "initScript": `prop x setTo 312.77
+prop y setTo -39.69`
+    },
+    {
+      "id": "14",
+      "label": "Snail14",
+      "bpid": "Snail",
+      "initScript": `prop x setTo -294.27
+prop y setTo -116.52`
     }
   ]
 }
