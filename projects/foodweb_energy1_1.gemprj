@@ -309,6 +309,7 @@ featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
 featCall EnergyRepresentation.Touches monitor 'Clover' c2b
 featCall EnergyRepresentation.Touches monitor 'Gopher' c2b
 featCall EnergyRepresentation.Touches monitor 'Snail' c2b
+featCall EnergyRepresentation.Touches monitor 'Caterpillar' c2b
 
 # PROGRAM UPDATE
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
@@ -560,6 +561,56 @@ when EnergyRepresentation centerLastTouches Snail [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
     prop EnergyRepresentation.energyType setTo 'snail'
     featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+  ]]
+
+]]
+
+// ---updating Caterpillar energy---
+
+when EnergyRepresentation centerFirstTouches Caterpillar [[
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
+  ]]
+
+  // when touch Caterpillar, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToCaterpillar
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+    prop EnergyRepresentation.energyType setTo 'vaggieToCaterpillar'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Caterpillar gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Caterpillar.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to caterpillar.png'
+    featProp Caterpillar.Costume.glow setTo 1
+  ]]
+
+]]
+
+when EnergyRepresentation centerLastTouches Caterpillar [[
+
+  // if you have no Caterpillar energy type, take some energy from the Caterpillar to the energy
+  ifExpr {{ ( EnergyRepresentation.getProp('energyType').value == 'vaggieToCaterpillar') && Caterpillar.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Caterpillar gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Caterpillar.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    featCall Global globalProp energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
+
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with Caterpillar energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
   ]]
 
 ]]
