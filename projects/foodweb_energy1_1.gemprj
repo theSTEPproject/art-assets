@@ -1400,7 +1400,7 @@ featProp Mouse.Costume.scale setTo 0.5
 // cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
 // snailToRobin, snakeToHawk, mouseToSnake
 // these are referenced by EnergyRepresentation
-addProp energyType String 'snail'
+addProp energyType String 'mouse'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -1533,6 +1533,88 @@ every 2 runAtStart [[
 
   // set meter to mirror energyLevel
   featProp Robin.AgentWidgets.meterProp setTo 'energyLevel'
+
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Snake",
+      "scriptText": `# BLUEPRINT Snake
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The Snake is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
+addFeature Costume
+featProp Snake.Costume.costumeName setTo 'snake.png'
+
+addFeature Physics
+featProp Snake.Costume.scale setTo 0.5
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
+// snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'snake'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Snake.energyLevel setMax 100
+prop Snake.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature AgentWidgets
+featProp Snake.AgentWidgets.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp Snake.AgentWidgets.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Snake.getProp('energyLevel').value - Snake.getProp('energyUse').value }}
+  propPop Snake.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Snake is
+  // sated
+  ifExpr {{ Snake.getProp('energyLevel').value > 50 }} [[
+    featProp Snake.Costume.currentFrame setTo 0
+    // Green
+    featProp Snake.AgentWidgets.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Snake.getProp('energyLevel').value < 50 }} [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Orange
+    featProp Snake.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Snake.getProp('energyLevel').value < 20 }} [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Red
+    featProp Snake.AgentWidgets.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
+    featProp Snake.Costume.currentFrame setTo 2
+    prop Snake.alpha setTo 0.3
+    prop Snake.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Snake.AgentWidgets.meterProp setTo 'energyLevel'
 
 ]]
 
