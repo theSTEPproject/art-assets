@@ -52,26 +52,38 @@ addFeature Movement
 // setting starting states of molecules
 when Molecule touches OxygenGenerator [[
   // insert code here
+  ifProp OxygenGenerator.setupMode equal true [[
+    // insert code here
   featProp Molecule.Costume.costumeName setTo 'oxygen.png'
   prop Molecule.state setTo 'oxygen'
+]]
 ]]
 
 when Molecule touches CarbonDioxideGenerator [[
   // insert code here
+  ifProp CarbonDioxideGenerator.setupMode equal true [[
+    // insert code here
   featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
   prop Molecule.state setTo 'carbon_dioxide'
+]]
 ]]
 
 when Molecule touches WaterGenerator [[
   // insert code here
+  ifProp WaterGenerator.setupMode equal true [[
+    // insert code here
   featProp Molecule.Costume.costumeName setTo 'water.png'
   prop Molecule.state setTo 'water'
+]]
 ]]
 
 when Molecule touches SugarGenerator [[
   // insert code here
+  ifProp SugarGenerator.setupMode equal true [[
+    // insert code here
   featProp Molecule.Costume.costumeName setTo 'sugar.png'
   prop Molecule.state setTo 'sugar'
+]]
 ]]
 
 // Rabbit changes oxygen to carbon dioxide
@@ -364,6 +376,7 @@ every 10 [[
   // ifExpr {{Sky.getProp('state').value == 'daytime'}} [[
   ifProp Sky.state equal 'daytime' [[
     // insert code here
+    //featProp Sky.Costume.costumeName setTo 'dusk.png'
     featProp Sky.Costume.costumeName setTo 'nighttime.png'
     prop Sky.state setTo 'nighttime'
     prop global.skyState setTo 'nighttime'
@@ -400,10 +413,20 @@ addFeature Touches
 
 featCall WaterGenerator.Touches monitor 'Molecule' b2b
 
+addProp setupMode boolean false
+prop WaterGenerator.setupMode setTo true
+
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish`
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp WaterGenerator.setupMode equal true [[
+    // insert code here
+    prop WaterGenerator.setupMode setTo false
+  ]]
+]]`
     },
     {
       "name": "CarbonDioxideGenerator",
@@ -423,10 +446,20 @@ addFeature Touches
 
 featCall CarbonDioxideGenerator.Touches monitor 'Molecule' b2b
 
+addProp setupMode boolean false
+prop CarbonDioxideGenerator.setupMode setTo true
+
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp CarbonDioxideGenerator.setupMode equal true [[
+    // insert code here
+  prop CarbonDioxideGenerator.setupMode setTo false
+    ]]
+]]
 `
     },
     {
@@ -447,10 +480,21 @@ addFeature Touches
 
 featCall SugarGenerator.Touches monitor 'Molecule' b2b
 
+addProp setupMode boolean false
+prop SugarGenerator.setupMode setTo true
+
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish`
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp SugarGenerator.setupMode equal true [[
+    // insert code here
+  prop SugarGenerator.setupMode setTo false
+    ]]
+]]
+`
     },
     {
       "name": "OxygenGenerator",
@@ -470,11 +514,20 @@ addFeature Touches
 
 featCall OxygenGenerator.Touches monitor 'Molecule' b2b
 
+addProp setupMode boolean false
+prop OxygenGenerator.setupMode setTo true
+
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
-`
+every 15 runAfter [[
+  // insert code here
+  ifProp OxygenGenerator.setupMode equal true [[
+    // insert code here
+  prop OxygenGenerator.setupMode setTo false
+    ]]
+]]`
     },
     {
       "name": "global",
