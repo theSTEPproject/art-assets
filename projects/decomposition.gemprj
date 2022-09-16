@@ -602,8 +602,6 @@ featProp Plant.AgentWidgets.text setTo ''
 prop Plant.y setTo -50
 prop Plant.y addRnd -10 10
 
-# PROGRAM INIT
-
 // set size based on matter (assume matter max of 100) and that we waver between 80-100%
 exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
 featPropPop Plant.Costume.scale
