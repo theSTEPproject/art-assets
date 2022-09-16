@@ -12,11 +12,19 @@
     ],
     "bounce": true,
     "bgcolor": "0x98f5ff",
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
-     {
+    {
       "name": "global",
       "scriptText": `# BLUEPRINT global
 # TAG IsCharControllable false
@@ -32,7 +40,8 @@ prop global.visible setTo false
 
 // required directive
 # PROGRAM UPDATE`
-    },{
+    },
+    {
       "name": "Soil",
       "scriptText": `# BLUEPRINT Soil
 # TAG IsCharControllable false
@@ -411,6 +420,7 @@ featProp Bunny.Costume.scale setTo 0.8
 
 addFeature Touches
 featCall Bunny.Touches monitor 'Plant' b2b
+featCall Bunny.Touches monitor 'tomato' b2b
 
 addFeature AgentWidgets
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
@@ -472,6 +482,41 @@ when Bunny touches Plant [[
 when Bunny lastTouches Plant [[
   featProp Bunny.Costume.glow setTo 0
 ]]
+
+//when Bunny touches tomato eat it
+when Bunny touches tomato [[
+  every 1 runAtStart [[
+
+    // if hungry, eat
+    //ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
+
+      // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
+      // tomato matter goes down as it is eaten, as does Plant energy
+      //prop tomato.matter sub 1
+      prop tomato.energyLevel sub 1
+      // Bunny matter and energy go up from eating
+      prop Bunny.matter add 1
+      prop Bunny.energyLevel add 1
+      featProp Bunny.Costume.glow setTo 4
+
+      // if full, change costume and set timer to emit waste
+      //ifProp Bunny.energyLevel greaterThan  45  [[
+      //  featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
+
+        // set variables to be full and prepare to release waste
+        //prop Bunny.feeling setTo 'full'
+        //exprPush {{ Bunny.getProp('wasteCountStart').value }}
+        //propPop Bunny.wasteCount
+        //featProp Bunny.Costume.glow setTo 0
+      //]]
+   // ]]
+  ]]
+]]
+
+when Bunny lastTouches tomato [[
+  featProp Bunny.Costume.glow setTo 0
+]]
+
 
 every 1 runAtStart [[
 
@@ -832,6 +877,43 @@ onEvent Tick [[
   exprPush {{ CharacterGraph.getFeatProp('Population', CharacterGraph.prop.countType.value).value }}
   propPop graphValue
 ]]`
+    },
+    {
+      "name": "tomato",
+      "scriptText": `# BLUEPRINT tomato
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp tomato.Costume.costumeName setTo 'tomato.png' 0
+featProp tomato.Costume.scale setTo 1
+addFeature Touches
+addFeature Physics
+featCall tomato.Touches monitor 'Bunny' b2b
+// set tomato energy
+addProp energyLevel number 10
+prop tomato.energyLevel setMax 10
+prop tomato.energyLevel setMin 0
+
+// add energy meter
+addFeature AgentWidgets
+featProp tomato.AgentWidgets.meterProp setTo 'energyLevel'
+// when tomato energy goes to 0 it should vanish
+
+// tomato can be eaten by bunny
+
+// when eaten, tomato energy goes down
+
+// over time, tomato 'rots'
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
     }
   ],
   "instances": [
@@ -1112,6 +1194,27 @@ prop y setTo -88.83`
       "bpid": "Worm",
       "initScript": `prop x setTo 41.87
 prop y setTo 228.20`
+    },
+    {
+      "id": "1821",
+      "label": "tomato1821",
+      "bpid": "tomato",
+      "initScript": `prop x setTo -239.47
+prop y setTo 199.38`
+    },
+    {
+      "id": "1822",
+      "label": "tomato1822",
+      "bpid": "tomato",
+      "initScript": `prop x setTo 264.88
+prop y setTo 244.25`
+    },
+    {
+      "id": "1823",
+      "label": "tomato1823",
+      "bpid": "tomato",
+      "initScript": `prop x setTo -25.72
+prop y setTo -128.47`
     }
   ]
 }
