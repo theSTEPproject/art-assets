@@ -1,6 +1,6 @@
 {
-  "id": "keywordTest",
-  "label": "keywords",
+  "id": "KeywordTest",
+  "label": "Keywords",
   "metadata": {
     "top": -200,
     "right": 400,
@@ -64,7 +64,7 @@ addProp energyReleasedAsHeat number 0
     {
       "name": "TestKeywordAgent",
       "scriptText": `# BLUEPRINT TestKeywordAgent
-# TAG IsCharControllable false
+# TAG IsCharControllable true
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -145,6 +145,13 @@ prop y setTo 30`
       "bpid": "TestKeywordAgent",
       "initScript": `prop x setTo -37.91
 prop y setTo 28.14`
+    },
+    {
+      "id": "2",
+      "label": "TestKeywordAgent2",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
