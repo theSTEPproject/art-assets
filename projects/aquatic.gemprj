@@ -13,7 +13,15 @@
     ],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -23,14 +31,25 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+// This is the script that runs when the model is setup
 # PROGRAM INIT
 
-// Explanation:
-// This model involves learners repreesenting fish eating alge
+// Explanation of this model:
+// This model involves learners repreesenting fish eating algae
+// The goal is to explore how the number of fish, number of algae,
+// and different locations can impact the survival of the ecosystem
 
 prop global.visible setTo false
 
-// required directive
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+
+// =============================================================
+
+
+// this is a required keyword in case we want to run script
+// every second. Most likely we will do that in specific characters instead
 # PROGRAM UPDATE`
     },
     {
@@ -221,52 +240,50 @@ addFeature Costume
 addFeature Movement
 addFeature Population
 addFeature AgentWidgets
+addFeature Physics
+addFeature Touches
 
-// algae produce energy via the sun
+// Algae are producers, which means they take in energy from the sun
+// and convert that to food. Producers are eaten by consumers like fish.
 addProp energyType string 'producer'
 
-// default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
-addProp spawns boolean false
-
-// STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
-prop Algae.spawns setTo false
-
+// This sets the art for the algae character
 featProp Algae.Costume.costumeName setTo 'algae.png'
 
-// show meter immediately
+// This shows the energyLevel next to the algae character
 featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 
-
-// setup energyLevel variablee
+// setup energyLevel property to be between 0 and 100
 addProp energyLevel number 100
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
+
+// Make the algae appear farther back so that we can see fish in front of them
 prop Algae.zIndex setTo 1
 
-// set algae energy meter color for start
-ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
+// Set the color of the energy meter depending on the amount of energy that the algae has
+ifProp Algae.energyLevel greaterThanOrEqual 50 [[
+  // set the meter to green
   featProp Algae.AgentWidgets.meterColor setTo 65280
 ]]
-ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
+ifProp Algae.energyLevel lessThan 50 [[
+  // set the meter to orange
   featProp Algae.AgentWidgets.meterColor setTo 16737792
 ]]
-ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
+ifProp Algae.energyLevel lessThan 20 [[
+  // set the meter to red
   featProp Algae.AgentWidgets.meterColor setTo 16711680
 ]]
 
-addProp energyUse number 0
 
-// STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
-prop Algae.energyUse setTo 0
-
-addFeature Physics
-
-addFeature Touches
+// Setup the algae to see if it is touching the sunbeam so that we know if it should be getting more energy.
+// If it is, call the when Algae touches Sun script below
 featCall Algae.Touches monitor 'Sunbeam' b2b
 
+// This tells the algae that we don't need a label underneath it, so make that blank
 featProp Algae.AgentWidgets.text setTo ''
 
-// STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
+// Setup movement to wander
 featProp Algae.Movement.movementType setTo 'wander'
 featProp Algae.Movement.distance setTo 0.2
 
@@ -274,76 +291,62 @@ featProp Algae.Movement.distance setTo 0.2
 exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
 featPropPop Algae.Costume.scale
 
-
+// Move the algae back so that it is behind the fish
 prop Algae.zIndex setTo -110
 
 # PROGRAM UPDATE
+// This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAfter [[
-    featProp Algae.Costume.glow setTo 4
-    exprPush {{ Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value }}
-    propPop Algae.energyLevel
+    // This is the script that says how much energy the algae gains whenever it touches the sun
+    // This much energy is added every second 
+    // STUDENTS_MAY_CHANGE: if you make this number higher, the algae will grow back faster 
+    prop Algae.energyLevel add 5
 
-    // if Spawning is active, create more algae when we hit 100
-    // temporarily removed until boolean fixed
-    ifExpr {{ false }} [[
-   // ifProp Algae.spawns equal true [[
-      // Only spawn more if we are under 200 total ... to avoid crashing the system
-      ifExpr {{ Algae.callFeatMethod('Population', 'getActiveAgentsCount', 'Algae') < 200 }} [[
-        ifExpr {{ Algae.getProp('energyLevel').value == 100 }} [[
-          prop Algae.energyLevel sub 50
-          featCall Algae.Population createAgent Algae [[
-            // STUDENTS_MAY_CHANGE - maybe change the new energy level (currently 40) or the threshold (from 100) or the new position or other things
-            prop Algae.energyLevel setTo 40
-            prop Algae.x add 25
-            prop Algae.y add 25
-          ]]
-        ]]
-      ]]
-    ]]
   ]]
 ]]
 
+// When the algae moves out of the sunbeam, stop glowing
+// It will also stop getting energy since that script 
+// won't get called unless it moves back into the sunbeam.
 when Algae lastTouches Sunbeam [[
   featProp Algae.Costume.glow setTo 0
 ]]
 
 every 1 runAtStart [[
 
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Algae.getProp('energyLevel').value - agent.getProp('energyUse').value }}
-    propPop Algae.energyLevel
+  // The algae uses a little bit of energy every second to stay alive
+  // STUDENTS_MAY_CHANGE: Let's change this number if we want them to 
+  // use more or less energy every second . A higher number will mean they 
+  // lose energy faster.
+  prop Algae.energyLevel sub 1
+
+  // Set the color of the energy meter depending on the amount of energy that the algae has
+  // Reminder that this energy is between 0 and 100, so 50 is 1/2 of the energy still there
+  // That's still pretty good, so we are making it green 
+  ifProp Algae.energyLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp Algae.AgentWidgets.meterColor setTo 65280
+  ]]
+  ifProp Algae.energyLevel lessThan 50 [[
+    // set the meter to orange
+    featProp Algae.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifProp Algae.energyLevel lessThan 20 [[
+    // set the meter to red
+    featProp Algae.AgentWidgets.meterColor setTo 16711680
   ]]
 
-  // re-scale the algae based on its energy level
+  // re-size the algae based on its energy level (make it smaller if it has less energy)
   ifProp Algae.energyLevel greaterThan 0 [[
     exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
     featPropPop Algae.Costume.scale
   ]]
 
+  // Don't let the algae totally disappear 
   ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
     featProp Algae.Costume.scale setTo 0.1
   ]]
-
-
-  // set algae energy meter color
-  // doing great
-  ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
-    // Green
-    featProp Algae.AgentWidgets.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
-    // Orange
-    featProp Algae.AgentWidgets.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
-    // Red
-    featProp Algae.AgentWidgets.meterColor setTo 16711680
-  ]]
-
 
 ]]`
     },
@@ -363,10 +366,6 @@ addProp energyType string 'source'
 addProp speed number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
 prop Sunbeam.speed setTo 20
-
-addProp energyRate number 5
-// STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
-prop Sunbeam.energyRate setTo 5
 
 addProp direction number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
