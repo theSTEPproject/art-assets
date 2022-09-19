@@ -34,7 +34,7 @@
 // This is the script that runs when the model is setup
 # PROGRAM INIT
 
-// Explanation of this model:
+// EXPLANATION of this model:
 // This model involves learners repreesenting fish eating algae
 // The goal is to explore how the number of fish, number of algae,
 // and different locations can impact the survival of the ecosystem
@@ -58,11 +58,18 @@ prop global.visible setTo false
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
+
+// EXPLANATION:
+// This is the Fish character
+// In this ecosystem model, we have producers and consumers that interact
+// The Fish are consumers, eating the Algae, which are producers
+// See the Algae script for details of how it produces energy via the Sunbeams
+
 # PROGRAM INIT
 addFeature Costume
 addFeature Movement
 addFeature AgentWidgets
-// addFeature Cursor
 
 featProp Fish.Costume.costumeName setTo 'fish.png'
 
@@ -234,6 +241,13 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// EXPLANATION:
+// This is the Algae character
+// In this ecosystem model, we have producers and consumers that interact
+// The Algae are a producer, growing when they touch the sunbeam
+// The algae gets eaten by Fish and other creatures (see the Fish script for details)
+
 # PROGRAM INIT
 
 addFeature Costume
@@ -299,15 +313,15 @@ prop Algae.zIndex setTo -110
 when Algae touches Sunbeam [[
   every 1 runAfter [[
     // This is the script that says how much energy the algae gains whenever it touches the sun
-    // This much energy is added every second 
-    // STUDENTS_MAY_CHANGE: if you make this number higher, the algae will grow back faster 
+    // This much energy is added every second
+    // STUDENTS_MAY_CHANGE: if you make this number higher, the algae will grow back faster
     prop Algae.energyLevel add 5
 
   ]]
 ]]
 
 // When the algae moves out of the sunbeam, stop glowing
-// It will also stop getting energy since that script 
+// It will also stop getting energy since that script
 // won't get called unless it moves back into the sunbeam.
 when Algae lastTouches Sunbeam [[
   featProp Algae.Costume.glow setTo 0
@@ -316,14 +330,14 @@ when Algae lastTouches Sunbeam [[
 every 1 runAtStart [[
 
   // The algae uses a little bit of energy every second to stay alive
-  // STUDENTS_MAY_CHANGE: Let's change this number if we want them to 
-  // use more or less energy every second . A higher number will mean they 
+  // STUDENTS_MAY_CHANGE: Let's change this number if we want them to
+  // use more or less energy every second . A higher number will mean they
   // lose energy faster.
   prop Algae.energyLevel sub 1
 
   // Set the color of the energy meter depending on the amount of energy that the algae has
   // Reminder that this energy is between 0 and 100, so 50 is 1/2 of the energy still there
-  // That's still pretty good, so we are making it green 
+  // That's still pretty good, so we are making it green
   ifProp Algae.energyLevel greaterThanOrEqual 50 [[
     // set the meter to green
     featProp Algae.AgentWidgets.meterColor setTo 65280
@@ -343,7 +357,7 @@ every 1 runAtStart [[
     featPropPop Algae.Costume.scale
   ]]
 
-  // Don't let the algae totally disappear 
+  // Don't let the algae totally disappear
   ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
     featProp Algae.Costume.scale setTo 0.1
   ]]
@@ -628,6 +642,11 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is just a color square for use in the KEY. See the instance for where the size and color are set 
+// (e.g., go to map setup)
+
 # PROGRAM INIT
 addFeature Costume
 featProp ColorChip.Costume.costumeName setTo 'square.json'
@@ -637,11 +656,7 @@ addFeature Physics
 // required directive
 # PROGRAM UPDATE
 
-// required directive
- 
-
-// required directive
-# PROGRAM EVENT`
+`
     },
     {
       "name": "MeterAlgaeEnergy",
@@ -903,16 +918,18 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// required directive
+// EXPLANATION:
+// This character is just the background image for this model
+// You should not need to change it
+
 # PROGRAM INIT
 addFeature Costume
 featProp Background.Costume.costumeName setTo 'background_aquatic.png'
 featProp Background.Costume.scale setTo 1.33
+// move this way back so everything else is in front of it
 prop Background.zIndex setTo -999
 
-
-// required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE `
     }
   ],
   "instances": [
@@ -955,22 +972,19 @@ prop agent.zIndex setTo 100`
       "id": "1704",
       "label": "HighChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
+      "initScript": `prop x setTo 455
 prop y setTo -353.04
 featCall agent.Costume setColorize 0 255 0
-prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
-featProp agent.Costume.width setTo 100
-`
+featProp agent.Costume.width setTo 100`
     },
     {
       "id": "1705",
       "label": "MediumChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
+      "initScript": `prop x setTo 455
 prop y setTo -319.93
 featCall Costume setColorize 210 140 0
-prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
     },
@@ -978,10 +992,9 @@ featProp agent.Costume.width setTo 100`
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
+      "initScript": `prop x setTo 455
 prop y setTo -287.28
 featCall Costume setColorize 255 0 0
-prop agent.zIndex setTo 95
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
     },
@@ -989,9 +1002,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1707",
       "label": "Background1707",
       "bpid": "Background",
-      "initScript": `prop x setTo -1.20
-prop y setTo -0.20
-`
+      "initScript": `prop x setTo -1.2
+prop y setTo -0.2`
     },
     {
       "id": "1710",
