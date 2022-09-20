@@ -189,8 +189,6 @@ every 1 runAtStart [[
     prop Fish.isInert setTo true
   ]]
 
-  // set meter to mirror energyLevel
-  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
 ]]`
     },
