@@ -329,34 +329,40 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// EXPLANATION:
+// The Sunbeam character represents a beam of light that moves across the water 
+// as the sun moves in the sky. This is a source of energy that the producers
+// use to convert into their own energy and matter (see the algae script for details)
+
 # PROGRAM INIT
 addFeature Costume
+addFeature Physics
+
 featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 
 // the sun is a source of energy
 addProp energyType string 'source'
 
-addProp speed number 20
 // STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
-prop Sunbeam.speed setTo 20
+addProp speed number 20
 
-addProp direction number 1
 // STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
-prop Sunbeam.direction setTo 1
+addProp direction number 1
 
-addFeature Physics
 // STUDENTS_MAY_CHANGE - how wide the sunbeam is
 featProp Sunbeam.Costume.scale setTo 1
+
 // STUDENTS_MAY_CHANGE - how tall the sunbeam is
 featProp Sunbeam.Costume.scaleY setTo 2.5
-
-
-addFeature Touches
 
 // default position for moving across the top
 prop Sunbeam.x setTo -400
 prop Sunbeam.y setTo -180
 
+// This moves the sunbeam across the screen every second using the direction and speed properties
+// that are setup above in the INIT script and then if the sunbeam goes off the edge of the screen
+// it comes back on from the other side representing the next day though we don't bother showwing night
 # PROGRAM UPDATE
 onEvent Tick [[
   exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
@@ -510,7 +516,7 @@ when Predator touches Algae [[
     // only consider eating algae if this is an omnivore
     ifProp Predator.consumerType equal 'omnivore' [[
 
-      // only eat f you are under 50% full or healthy
+      // only eat the algae if you are healthy or if you are really really hungry (< 50% full)
       ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
 
         // only glow when we are healthy and can eat
@@ -537,10 +543,9 @@ when Predator touches Algae [[
 
 when Predator touches Fish [[
   every 1 runAtStart [[
-    // only eat algae if this is an omnivore or carnivore
-    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'carnivore' }} [[
+    // Both omnivores and carnivores eat fish
 
-      // only eat the fish if you are under 50% full or healthy
+      // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
       ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
 
         // only glow when we are healthy and can eat
@@ -554,7 +559,6 @@ when Predator touches Fish [[
         prop Fish.alpha setTo 0.3
         // featProp Fish.Costume setPose 2
         prop Fish.energyLevel setTo 0
-      ]]
 
     ]]
   ]]
@@ -564,11 +568,15 @@ when Predator lastTouches Fish [[
   featProp Predator.Costume.glow setTo 0
 ]]
 
+// If the predator touches the trash, it eats it and get sick
+// once it is sick it won't eat as much of other foods 
+// see the touches fish and algae to see the difference 
 when Predator touches Trash [[
   every 1 runAtStart [[
     // always glow to show the interaction
     featProp Predator.Costume.glow setTo 0.5
 
+    // this is normally set to healthy 
     prop Predator.health setTo 'hurt'
     featCall Predator.Costume setColorizeHSV 0.5 1 0.5
     featCall Trash.Population removeAgent
@@ -588,6 +596,11 @@ when Predator lastTouches Trash [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This character represents trash that was thrown in the water
+// If a predator eats it, it is hurt and can't eat as much - see the 
+// predator script to see how that works 
 
 # PROGRAM INIT
 addFeature Costume
