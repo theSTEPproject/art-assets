@@ -374,22 +374,32 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is a timer character so that we can see how much time has passed in our model
+// We can use that time to think about how long the ecosystem survives if we want 
+
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
+
+// this is a hidden image since the timer is just text 
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 
+// this is the time we will track
 addProp time number 0
 
+// set the timer to the starting text 
 featProp Timer.AgentWidgets.text setTo 'Time: 0'
 
 # PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
 every 1 runAtStart [[
   prop Timer.time add 1
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.AgentWidgets.text 
 ]]
- `
+`
     },
     {
       "name": "Rock",
@@ -398,12 +408,16 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// EXPLANATION:
+// This character is just a picture of a rock to make it feel a bit more realistic
+// and also so that students can think about what happens if fish hide behind the rock
+
 # PROGRAM INIT
 addFeature Costume
+addFeature Physics
 
 featProp Rock.Costume.costumeName setTo 'boulder.json'
 
-addFeature Physics
 
 // required directive
 # PROGRAM UPDATE`
@@ -414,16 +428,28 @@ addFeature Physics
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+
+// EXPLANATION:
+// This is a predator character
+// The predator is a consumer that either eats other consumers (carnivore)
+// or a mix of consumers and producers such as algae (omnivore)
+// You can change the species and art below
+
 # PROGRAM INIT
 addFeature Costume
 addFeature AgentWidgets
 addFeature Movement
+addFeature Physics
+addFeature Touches
 
+// This label helps us know what kind of creature the predator character is
 addProp species string 'otter'
-prop Predator.species setTo 'otter'
 
+// This sets up the artwork for the predator
 featProp Predator.Costume.costumeName setTo 'otter.png'
 
+// This sets up the energyLevel so that it goes between 0 and 100
 addProp energyLevel number 50
 prop Predator.energyLevel setMax 100
 prop Predator.energyLevel setMin 0
@@ -431,23 +457,19 @@ prop Predator.energyLevel setMin 0
 // The predator is a consumer, that consumes energy
 addProp energyType string 'consumer'
 
+// STUDENTS_MAY_CHANGE
 // set to carnivore, omnivore, or herbivore
 // this setting determines whether we will eat fish or algae
-addProp consumerType string 'omnivore'
-
-addProp energyUse number 1
+addProp consumerType string 'carnivore'
 
 addProp health string 'healthy'
 
-// STUDENTS_MAY_CHANGE - to change how quickly Predator use up energy and get hungry
-prop Predator.energyUse setTo 1
-
-addFeature Physics
-
 featProp Predator.Costume.scale setTo 0.8
 
-// set Touches
-addFeature Touches
+// We want to know if the predator touches other characters
+// if it touches fish, eat them, trash might make it sick, and it will
+// also eat algae if the predator is an omnivore, but not if it is a
+// carnivore
 featCall Predator.Touches monitor 'Fish' b2b
 featCall Predator.Touches monitor 'Trash' b2b
 featCall Predator.Touches monitor 'Algae' b2b
@@ -455,33 +477,29 @@ featCall Predator.Touches monitor 'Algae' b2b
 // show meter immediately
 featProp Predator.AgentWidgets.meterProp setTo 'energyLevel'
 
+// we don't need a text label so set it to be blank
 featProp Predator.AgentWidgets.text setTo ''
 
 
 
 # PROGRAM UPDATE
-ifExpr {{ Predator.getProp('species') == 'otter' }} [[
-  featProp Predator.Costume.costumeName setTo 'otter.png'
-]]
 
-
-ifExpr {{ Predator.getProp('species') == 'turtle' }} [[
-  featProp Predator.Costume.costumeName setTo 'turtle_sprites.json'
-]]
-
-ifExpr {{ Predator.prop.Movement.compassDirection.value === 'E' }} [[
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Predator.Movement.compassDirection equal 'E' [[
   featProp Predator.Costume.flipX setTo false
 ]]
-ifExpr {{ Predator.prop.Movement.compassDirection.value === 'W' }} [[
+ifFeatProp Predator.Movement.compassDirection equal 'W' [[
   featProp Predator.Costume.flipX setTo true
 ]]
 
 every 1 runAtStart [[
-  // foodLevel goes down every n seconds
-  exprPush {{ Predator.getProp('energyLevel').value - Predator.getProp('energyUse').value }}
-  propPop Predator.energyLevel
+  // The predator uses energy to be alive and move around
+  // so move this down each second
+  prop Predator.energyLevel sub 1
 
-  ifExpr {{ Predator.getProp('energyLevel').value == 0 }} [[
+  // If the predator has no energy left, it is dead so change how it looks
+  // and stop it from interacting with other characters
+  ifProp Predator.energyLevel equal 0 [[
     prop Predator.isInert setTo true
     prop Predator.alpha setTo 0.3
   ]]
@@ -489,8 +507,8 @@ every 1 runAtStart [[
 
 when Predator touches Algae [[
   every 1 runAtStart [[
-    // only eat algae if this is an omnivore or herbivore
-    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'herbivore' }} [[
+    // only consider eating algae if this is an omnivore
+    ifProp Predator.consumerType equal 'omnivore' [[
 
       // only eat f you are under 50% full or healthy
       ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
@@ -504,6 +522,8 @@ when Predator touches Algae [[
           prop Algae.energyLevel sub 10
         ]]
 
+        // if the predator ate all the algae make a small version so that we
+        // can still see something
         ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
           prop Algae.alpha setTo 0.5
           prop Algae.isInert setTo true
@@ -998,9 +1018,7 @@ prop y setTo 349.49`
       "bpid": "Rock",
       "initScript": `prop x setTo 318.43
 prop y setTo 347.53
-featProp Rock.Costume.flipX setTo true
-
-`
+featProp Rock.Costume.flipX setTo true`
     },
     {
       "id": "1715",
