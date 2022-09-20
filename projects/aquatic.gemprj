@@ -620,9 +620,15 @@ featProp Trash.Costume.scale setTo 0.05
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is just a text label for use in the key or somewhere else to display information
+
 # PROGRAM INIT
 addFeature AgentWidgets
 addFeature Costume
+
+// invisible since we just want the text to show up
 featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 
 // required directive
@@ -939,8 +945,7 @@ featProp AgentWidgets text setTo 'Energy Key:'`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -370
-featProp AgentWidgets text setTo 'High'
-prop agent.zIndex setTo 100`
+featProp AgentWidgets text setTo 'High'`
     },
     {
       "id": "1702",
@@ -948,8 +953,7 @@ prop agent.zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 456.53
 prop y setTo -339.67
-featProp AgentWidgets text setTo 'Medium'
-prop agent.zIndex setTo 100`
+featProp AgentWidgets text setTo 'Medium'`
     },
     {
       "id": "1703",
@@ -957,8 +961,7 @@ prop agent.zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -308
-featProp AgentWidgets text setTo 'Low'
-prop agent.zIndex setTo 100`
+featProp AgentWidgets text setTo 'Low'`
     },
     {
       "id": "1704",
