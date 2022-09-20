@@ -12,7 +12,15 @@
     ],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [

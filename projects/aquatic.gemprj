@@ -70,37 +70,22 @@ prop global.visible setTo false
 addFeature Costume
 addFeature Movement
 addFeature AgentWidgets
+addFeature Physics
 
+// Set the fish artwork and make it 1/2 size since it is really big
 featProp Fish.Costume.costumeName setTo 'fish.png'
+featProp Fish.Costume.scale setTo 0.5
 
+// Setup the fish energyLevel property to be between 0 and 100, but start at 30
 addProp energyLevel number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
-// this is a producer
+// this ecosystem has producers and consumers
+// the fish are consumers, meaning that they eat other things (e.g., Algae) for energy
+// the fish in this ecosystem also happen to be herbivores meaning it only eats plants and not other creatures
 addProp energyType string 'consumer'
 addProp consumerType string 'herbivore'
-
-// have the fish move around if it is not controlled by users
-addProp movementType string 'wander'
-
-// STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
-prop Fish.movementType setTo 'wander'
-
-addProp energyUse number 0
-
-// STUDENTS_MAY_CHANGE - to change how quickly Fish use up energy and get hungry
-prop Fish.energyUse setTo 3
-
-// advanced feature - if this is true, the fish will
-// get bigger an hungrier if it eats enough food
-addProp grows boolean false
-
-addProp startDirection number 0
-
-addFeature Physics
-featProp Fish.Costume.scale setTo 0.5
-
 
 // set Touches
 addFeature Touches
@@ -117,123 +102,97 @@ featPropPop Fish.AgentWidgets.text
 # PROGRAM UPDATE
 onEvent Start [[
 
-  // start at normal size unless you eat
-  // featProp Fish.Costume.scale setTo 0.5
-
-  // **** OPTIONS TO CHANGE BEHAVIOR ****
-
-  // if the movementType is wander
-  ifExpr {{ Fish.getProp('movementType').value == 'wander' }} [[
-    featProp Fish.Movement.movementType setTo 'wander'
-    featProp Fish.Movement.distance setTo 0.5
-  ]]
-
-  // if it is edgetoedge
-  ifExpr {{ Fish.getProp('movementType').value == 'edgeToEdge' }} [[
-    featProp Fish.Movement.movementType setTo 'edgetoedge'
-    featProp Fish.Movement.bounceAngle setTo 180
-
-    exprPush {{ Fish.getProp('startDirection').value }}
-    featPropPop Fish.Movement.direction
-  ]]
-
+  // This tells any fish that are controlled by the computer instead of by a student
+  // to wander around randomly, and eat any algae that they bump into
+  featProp Fish.Movement.movementType setTo 'wander'
 
   // STUDENTS_MAY_CHANGE to make fish move faster when they are automatic
   featProp Fish.Movement.distance setTo 2
 
-  // set name + energyLevel
-  exprPush {{ Fish.name }}
-  featPropPop Fish.AgentWidgets.text
-
 ]]
 
-ifExpr {{ Fish.prop.Movement.compassDirection.value === 'E' }} [[
+// This script flips the artowkr depending on whether the fish is moving left or right
+ifFeatProp Fish.Movement.compassDirection equal 'E' [[
   featProp Fish.Costume.flipX setTo false
 ]]
-ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
+ifFeatProp Fish.Movement.compassDirection equal 'W' [[
   featProp Fish.Costume.flipX setTo true
 ]]
 
 // whenever the fish is touching an algae
 when Fish touches Algae [[
-  // do the rerst of this once every second (instead of 30 times a second which is too much)
+  // do the rest of this once every second (instead of 30 times a second which is too much)
   every 1 runAtStart [[
 
+    // EXPLANATION:
+    // This is the script that has the fish eat a little algae at a time.
+
+    // STUDENTS_MAY_CHANGE
     // first, take the energy from the algae
     prop Algae.energyLevel sub 10
+    // the fish ate the algae and digests it
     // next have the fish gain some energy
     prop Fish.energyLevel add 10
+
     // finally, make the fish glow so tha we know something is happening
     featProp Fish.Costume.glow setTo 4
-
 
     // if the algae is out of energy, it is dead so make it
     // faded and inert which means it won't interact with other things
     // also set it to be really small so we know it is just the leftover bits
     ifProp Algae.energyLevel lessThanOrEqual 0 [[
       prop Algae.alpha setTo 0.5
-      //featProp Algae.Costume.scale setTo 0.1
+      // featProp Algae.Costume.scale setTo 0.1
       prop Algae.isInert setTo true
     ]]
 
-    // if we have turned the grow feature on
-    // grow if above 90% energy
-    // TO DO: Change to work with the ifProp
-    ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
-    //ifProp Fish.grows equal true [[
-      //ifProp Fish.energyLevel greaterThan 90 [[
-        dbgOut 'growing'
-        // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
-        featProp Fish.Costume.scale setTo 0.7
-        prop Fish.energyUse setTo 2
-      //]]
-    ]]
   ]]
 ]]
 
+// When a fish moves off of algae, it will not glow anymore and will stop eating
 when Fish lastTouches Algae [[
   featProp Fish.Costume.glow setTo 0
 ]]
 
 
 every 1 runAtStart [[
-  // foodLevel goes down every n seconds
-  exprPush {{ Fish.getProp('energyLevel').value - Fish.getProp('energyUse').value }}
-  propPop Fish.energyLevel
+  // STUDENTS_MAY_CHANGE - Every second, the Fish use 3 energy. If this number is higher, they will
+  // lose energy faster
+  prop Fish.energyLevel sub 3
 
   // sated
-  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+  ifProp Fish.energyLevel greaterThanOrEqual 50 [[
     featProp Fish.Costume.costumeName setTo 'fish.png'
     // Green
     featProp Fish.AgentWidgets.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+  ifProp Fish.energyLevel lessThan 50 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Orange
     featProp Fish.AgentWidgets.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+  ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Red
     featProp Fish.AgentWidgets.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+  ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.costumeName setTo 'fish_dead'
+    // Switch to floating if this fish is not controlled by a student
     featProp Fish.Movement.movementType setTo 'float'
-
+    // make the fish faded so that it looks dead
     prop Fish.alpha setTo 0.3
+    // this means that we wont test if this fish is touching anything anymore
     prop Fish.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
   featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
 
-]]
-
-`
+]]`
     },
     {
       "name": "Algae",
@@ -268,7 +227,7 @@ featProp Algae.Costume.costumeName setTo 'algae.png'
 featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
 
 // setup energyLevel property to be between 0 and 100
-addProp energyLevel number 100
+addProp energyLevel number 75
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 
@@ -302,6 +261,8 @@ featProp Algae.Movement.movementType setTo 'wander'
 featProp Algae.Movement.distance setTo 0.2
 
 // scale the algae to it's starting size
+// we divide by 350 instead of 100 because the algae are really big and we want to make
+// them smaller to fit on-screen.
 exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
 featPropPop Algae.Costume.scale
 
@@ -1049,6 +1010,20 @@ featProp Rock.Costume.flipX setTo true
       "bpid": "Algae",
       "initScript": `prop x setTo 29
 prop y setTo 30`
+    },
+    {
+      "id": "1716",
+      "label": "Algae1716",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1717",
+      "label": "Algae1717",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -180.87
+prop y setTo 0.83`
     }
   ]
 }
