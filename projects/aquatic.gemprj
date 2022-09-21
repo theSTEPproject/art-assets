@@ -846,6 +846,7 @@ featProp AgentWidgets text setTo 'Low'`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
 prop y setTo -353.04
+prop zIndex setTo -100  
 featCall agent.Costume setColorize 0 255 0
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
@@ -856,6 +857,7 @@ featProp agent.Costume.width setTo 100`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
 prop y setTo -319.93
+prop zIndex setTo -100
 featCall Costume setColorize 210 140 0
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
@@ -866,6 +868,7 @@ featProp agent.Costume.width setTo 100`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
 prop y setTo -287.28
+prop zIndex setTo -100
 featCall Costume setColorize 255 0 0
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
