@@ -699,8 +699,8 @@ prop GraphAlgaeEnergy.zIndex setTo 300
 exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
 propPop GraphAlgaeEnergy.labelText
 
-exprPush {{ GraphAlgaeEnergy.getProp('labelText').value }}
-featPropPop GraphAlgaeEnergy.AgentWidgets.text text
+propPush GraphAlgaeEnergy.labelText
+featPropPop GraphAlgaeEnergy.AgentWidgets.text
 
 # PROGRAM UPDATE
 
@@ -787,6 +787,122 @@ every 1 runAtStart [[
  `
     },
     {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is a meter to show the health of the entire ecosystem
+// Initialy it only shows fish health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature AgentWidgets
+addFeature Costume
+
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// Set the text under the meter to label it
+featProp HealthMeter.AgentWidgets.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.AgentWidgets.isLargeGraphic setTo true
+featProp HealthMeter.AgentWidgets.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.AgentWidgets.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // Nathan thinks that the fish are the most imporatant thing in the pond
+  // So, heck the average fish energyLevel and make that the system health
+  featCall HealthMeter.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ HealthMeter.getFeatProp('Population', 'avg').value }}
+  propPop HealthMeter.healthLevel
+
+
+  // Set the color of the energy meter depending on the amount of energy that the algae has
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.AgentWidgets.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.AgentWidgets.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "Wand1",
+      "scriptText": `# BLUEPRINT Wand1
+# TAG IsCharControllable true
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is a wand that stuents can setup to give or take energy or other things
+// so that  they can help with the experiment
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+// set up the wand to use this artwork and be a good size
+featProp Wand1.Costume.costumeName setTo 'square.json'
+featProp Wand1.Costume.scale setTo 0.2
+
+// make sure the wand checks to see if it is touching a fish or algae 
+featCall Wand1.Touches monitor 'Fish' b2b
+featCall Wand1.Touches monitor 'Algae' b2b
+
+# PROGRAM UPDATE
+
+// do something the first time a wand touches a specific fish 
+when Wand1 firsttouches Fish [[
+  // make the wand glow so that we know something happened
+  featProp Wand1.Costume.glow setTo 1
+
+  // STUDENTS_MAY_CHANGE
+  // this currently adds 10 energy to the fish
+  // if you change the number it will add more or less energy
+  // you can also change the function to sub to subtract if you want 
+  prop Fish.energyLevel add 10
+]]
+
+// do something the first time a wand touches a specific algae 
+when Wand1 firsttouches Algae [[
+  // make the wand glow so that we know something happened
+  featProp Wand1.Costume.glow setTo 1
+
+  // STUDENTS_MAY_CHANGE
+  // this currently adds 10 energy to the algae
+  // if you change the number it will add more or less energy
+  // you can also change the function to sub to subtract if you want 
+  prop Algae.energyLevel add 10
+]]
+
+`
+    },
+    {
       "name": "Background",
       "scriptText": `# BLUEPRINT Background LOAD
 # TAG IsCharControllable false
@@ -812,8 +928,8 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 460.49
-prop y setTo -405.29
+      "initScript": `prop x setTo 438.53
+prop y setTo -407.17
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
@@ -936,6 +1052,21 @@ prop y setTo 30`
       "bpid": "Algae",
       "initScript": `prop x setTo -180.87
 prop y setTo 0.83`
+    },
+    {
+      "id": "1718",
+      "label": "HealthMeter1718",
+      "bpid": "HealthMeter",
+      "initScript": `prop x setTo 473.14
+prop y setTo 228.3`
+    },
+    {
+      "id": "1719",
+      "label": "Wand1",
+      "bpid": "Wand1",
+      "initScript": `prop x setTo 462.46
+prop y setTo -203.81
+prop zIndex setTo 500`
     }
   ]
 }
