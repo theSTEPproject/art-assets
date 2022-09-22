@@ -520,8 +520,8 @@ prop Predator.energyLevel setMin 0
 addProp energyType string 'consumer'
 
 // STUDENTS_MAY_CHANGE
-// set to carnivore, omnivore, or herbivore
-// this setting determines whether we will eat fish or algae
+// set to carnivore or omnivore
+// this setting determines whether we will eat fish or fish and algae
 addProp consumerType string 'carnivore'
 
 addProp health string 'healthy'
