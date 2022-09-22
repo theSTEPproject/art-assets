@@ -690,18 +690,18 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
     },
     {
       "name": "ColorChip",
-      "scriptText": `# BLUEPRINT ColorChip
+      "scriptText": `# BLUEPRINT ColorChip 
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
 // EXPLANATION:
 // This is just a color square for use in the KEY. See the instance for where the size and color are set 
-// (e.g., go to map setup)
+// (e.g., go to map setup) 
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'square.json'
+featProp ColorChip.Costume.costumeName setTo 'square.json' 
 
 addFeature Physics
 
@@ -743,8 +743,8 @@ addProp graphValue number 0
 prop GraphAlgaeEnergy.graphValue setMax 1000
 prop GraphAlgaeEnergy.graphValue setMin 0
 
-featCall GraphAlgaeEnergy.AgentWidgets bindGraphTo graphValue 30
-
+// featCall GraphAlgaeEnergy.AgentWidgets bindGraphTo graphValue 30
+featProp GraphAlgaeEnergy.AgentWidgets.graphProp setTo 'graphValue'
 // make sure something displays with some initial text, on bottom right at first
 prop GraphAlgaeEnergy.x setTo 505
 prop GraphAlgaeEnergy.y setTo 230
@@ -986,32 +986,32 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 460.40
-prop y setTo -407.22
+      "initScript": `prop x setTo 466.56
+prop y setTo -405.85
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
       "id": "1701",
       "label": "HighLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -370
+      "initScript": `prop x setTo 461.68
+prop y setTo -369.67
 featProp AgentWidgets text setTo 'High'`
     },
     {
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 456.53
-prop y setTo -339.67
+      "initScript": `prop x setTo 471.56
+prop y setTo -338.80
 featProp AgentWidgets text setTo 'Medium'`
     },
     {
       "id": "1703",
       "label": "LowLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -308
+      "initScript": `prop x setTo 458.90
+prop y setTo -306.34
 featProp AgentWidgets text setTo 'Low'`
     },
     {
@@ -1020,7 +1020,7 @@ featProp AgentWidgets text setTo 'Low'`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 455
 prop y setTo -353.04
-prop zIndex setTo -100  
+prop zIndex setTo -100
 featCall agent.Costume setColorize 0 255 0
 featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
@@ -1048,13 +1048,6 @@ featProp agent.Costume.height setTo 30
 featProp agent.Costume.width setTo 100`
     },
     {
-      "id": "1707",
-      "label": "Background1707",
-      "bpid": "Background",
-      "initScript": `prop x setTo -1.2
-prop y setTo -0.2`
-    },
-    {
       "id": "1710",
       "label": "Algae1710",
       "bpid": "Algae",
@@ -1065,8 +1058,8 @@ prop y setTo -95.88`
       "id": "1711",
       "label": "Algae1711",
       "bpid": "Algae",
-      "initScript": `prop x setTo 55.29
-prop y setTo -103.3`
+      "initScript": `prop x setTo -9.08
+prop y setTo -131.48`
     },
     {
       "id": "1712",
@@ -1101,22 +1094,15 @@ prop y setTo 30`
       "id": "1716",
       "label": "Algae1716",
       "bpid": "Algae",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
-    },
-    {
-      "id": "1717",
-      "label": "Algae1717",
-      "bpid": "Algae",
-      "initScript": `prop x setTo -180.87
-prop y setTo 0.83`
+      "initScript": `prop x setTo -135.86
+prop y setTo -35.95`
     },
     {
       "id": "1718",
       "label": "HealthMeter1718",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 485.13
-prop y setTo 228.06`
+      "initScript": `prop x setTo 495.05
+prop y setTo 232.87`
     },
     {
       "id": "1719",
@@ -1125,6 +1111,13 @@ prop y setTo 228.06`
       "initScript": `prop x setTo 462.46
 prop y setTo -203.81
 prop zIndex setTo 500`
+    },
+    {
+      "id": "1720",
+      "label": "Background1720",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
     }
   ]
 }
