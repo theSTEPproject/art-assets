@@ -77,6 +77,8 @@ addProp energyReleasedAsHeat number 0
 // or
 // STUDENTS_MAY_CHANGE some text goes here ... 
 // and then it reverts
+// QUESTION: What is going on here?
+// HYPOTHESIS: I think Joshua implemented more colors
 
 # PROGRAM INIT
 addFeature Costume
