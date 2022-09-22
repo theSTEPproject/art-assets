@@ -1,5 +1,5 @@
 {
-  "id": "KeywordTest",
+  "id": "keywordTest",
   "label": "Keywords",
   "metadata": {
     "top": -200,
@@ -67,10 +67,16 @@ addProp energyReleasedAsHeat number 0
 # TAG IsCharControllable true
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// BUG: 'add line' will result in 'unexpected level underflow'
-// error because of the 'if' 'alt' construction
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// EXPLANATION:
+// note how the line above this is a different color?
+// ** also this one because of **
+// but not this one
+// this next one, though will be different 
+// STUDENTS_MAY_CHANGE
+// or
+// STUDENTS_MAY_CHANGE some text goes here ... 
+// and then it reverts
 
 # PROGRAM INIT
 addFeature Costume
@@ -100,7 +106,7 @@ featProp TestKeywordAgent.Costume.height setTo 10
 # PROGRAM UPDATE
 
 
-every 1 [[
+every 1 runAtStart [[
   ifExpr {{ agent.getProp('myString').value === 'hello' }} [[
     prop TestKeywordAgent.myString setTo 'goodbye'
   ]]
