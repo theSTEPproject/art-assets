@@ -47,8 +47,16 @@ prop global.visible setTo false
 // =============================================================
 // Add any code for global properties here (e,g. addProp)
 
+addProp fishCount number 0
+addProp algaeCount number 0
+addProp predatorCount number 0
+addProp allOrganismsCount number 0
 addProp averageFishEnergy number 0
 addProp averageAlgaeEnergy number 0
+addProp averagePredatorEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
 
 // =============================================================
 
@@ -57,14 +65,45 @@ addProp averageAlgaeEnergy number 0
 // every second. Most likely we will do that in specific characters instead
 # PROGRAM UPDATE
 
-// Update our global variables
-featCall global.Population countAgentProp 'Fish' 'energyLevel'
-exprPush {{ global.getFeatProp('Population', 'avg').value }}
-propPop global.averageFishEnergy
+every 1 runAtStart [[
+  // Update our global variables
 
-featCall global.Population countAgentProp 'Algae' 'energyLevel'
-exprPush {{ global.getFeatProp('Population', 'avg').value }}
-propPop global.averageAlgaeEnergy`
+  // grab the Fish average energy and count
+  featCall global.Population countAgentProp 'Fish' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageFishEnergy
+  featPropPush global.Population.count
+  propPop global.fishCount
+
+  // grab the Algae average eenergy  and count
+  featCall global.Population countAgentProp 'Algae' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageAlgaeEnergy
+  featPropPush global.Population.count
+  propPop global.algaeCount
+
+  // grab the Predator average eenergy  and count
+  featCall global.Population countAgentProp 'Predator' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePredatorEnergy
+  featPropPush global.Population.count
+  propPop global.predatorCount
+
+  // add the producers and divide by the number of producers
+  // ignore divide step since only 1 type (Algae)
+  propPush global.averageAlgaeEnergy
+  propPop global.averageProducerEnergy
+
+  // calculate the big averages ... 
+  exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
+  propPop global.averageConsumerEnergy
+
+  exprPush {{ global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ (((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+]]`
     },
     {
       "name": "Fish",
@@ -848,12 +887,10 @@ onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
   // STUDENTS_MAY_CHANGE
-  // What property do we want to use? We can currenetly use
-  // + averegeFishEnergy
-  // + averageAlgaeEnergy
+  // What property do we want to use?
   // Nathan thinks that the fish are the most imporatant thing in the pond
   // So, set the system health to the averageFishEnergy, but you can change that to match what you uwant
-  propPush global.averageFishEnergy
+  propPush global.averageEnergyAllOrganisms
 
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
