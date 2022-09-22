@@ -805,7 +805,7 @@ addProp graphValue number 0
 prop GraphFishEnergy.graphValue setMax 1000
 prop GraphFishEnergy.graphValue setMin 0
 
-featCall GraphFishEnergy.AgentWidgets bindGraphTo graphValue 30
+featProp GraphFishEnergy.AgentWidgets.graphProp setTo 'graphValue'
 
 // make sure something displays with some initial text, on bottom right at first
 prop GraphFishEnergy.x setTo 505
