@@ -98,11 +98,14 @@ every 1 runAtStart [[
   exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
   propPop global.averageConsumerEnergy
 
-  exprPush {{ global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value }}
+  exprPush {{ (global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value) }}
   propPop global.allOrganismsCount
 
-  exprPush {{ (((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
   propPop global.averageEnergyAllOrganisms
+
+
+
 ]]`
     },
     {
@@ -860,12 +863,7 @@ addProp healthLevel number 100
 prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
-// two temporary variables that we can use to store information and work with it
-// see the Tick script below for where we do this
-addProp temporaryVariable1 number 0
-addProp temporaryVariable2 number 0
-
-// STUDENTS_MAY_CHANGE
+// STUDENTS_MAY_CHANGE the meter label
 // Set the text under the meter to label it
 featProp HealthMeter.AgentWidgets.text setTo 'Ecosystem Health'
 
@@ -886,16 +884,16 @@ featProp HealthMeter.AgentWidgets.meterProp setTo 'healthLevel'
 onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
-  // STUDENTS_MAY_CHANGE
+  // STUDENTS_MAY_CHANGE what the meter displays
   // What property do we want to use?
   // Nathan thinks that the fish are the most imporatant thing in the pond
   // So, set the system health to the averageFishEnergy, but you can change that to match what you uwant
-  propPush global.averageEnergyAllOrganisms
+  propPush global.averageFishEnergy
 
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
 
-  // STUDENTS_MAY_CHANGE
+  // STUDENTS_MAY_CHANGE the meter colors
   // Finally, set the color of the energy meter depending on how high it is (or something else)
   ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
     // set the meter to green
