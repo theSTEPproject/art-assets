@@ -40,7 +40,6 @@
 // and different locations can impact the survival of the ecosystem
 
 addFeature Population
-
 prop global.visible setTo false
 
 
@@ -59,7 +58,6 @@ addProp averageProducerEnergy number 0
 addProp averageEnergyAllOrganisms number 0
 
 // =============================================================
-
 
 // this is a required keyword in case we want to run script
 // every second. Most likely we will do that in specific characters instead
@@ -94,7 +92,7 @@ every 1 runAtStart [[
   propPush global.averageAlgaeEnergy
   propPop global.averageProducerEnergy
 
-  // calculate the big averages ... 
+  // calculate the big averages ...
   exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
   propPop global.averageConsumerEnergy
 
