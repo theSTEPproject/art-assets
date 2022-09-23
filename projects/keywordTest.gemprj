@@ -2,14 +2,11 @@
   "id": "KeywordTest",
   "label": "Keywords",
   "metadata": {
-    "top": -200,
+    "top": -400,
     "right": 400,
-    "bottom": 200,
+    "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -81,6 +78,8 @@ addProp energyReleasedAsHeat number 0
 // HYPOTHESIS: I think Joshua implemented more colors
 
 # PROGRAM INIT
+
+
 addFeature Costume
 featProp TestKeywordAgent.Costume.costumeName setTo 'circle.json'
 featProp TestKeywordAgent.Costume.scale setTo 2
@@ -95,7 +94,14 @@ addProp copiedString string 'empty'
 addProp copiedNumber number 0
 
 addFeature AgentWidgets
-featProp TestKeywordAgent.AgentWidgets.textProp setTo 'myString'
+
+dbgOut 'trrackerID ' TestKeywordAgent.trackerId
+
+ifProp agent.trackerId equal 'CC20_0' [[
+  featProp TestKeywordAgent.AgentWidgets.text setTo 'Joshua'
+]]
+
+// featProp TestKeywordAgent.AgentWidgets.textProp setTo 'myString'
 
 prop TestKeywordAgent.myNumber setTo 1
 prop TestKeywordAgent.myNumber setTo 2
