@@ -987,32 +987,32 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 466.56
-prop y setTo -405.85
+      "initScript": `prop x setTo 453.67
+prop y setTo -405.60
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
       "id": "1701",
       "label": "HighLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 461.68
-prop y setTo -369.67
+      "initScript": `prop x setTo 448.47
+prop y setTo -372.26
 featProp AgentWidgets text setTo 'High'`
     },
     {
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 471.56
-prop y setTo -338.80
+      "initScript": `prop x setTo 451.96
+prop y setTo -338.66
 featProp AgentWidgets text setTo 'Medium'`
     },
     {
       "id": "1703",
       "label": "LowLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 458.90
-prop y setTo -306.34
+      "initScript": `prop x setTo 450.65
+prop y setTo -305.94
 featProp AgentWidgets text setTo 'Low'`
     },
     {
@@ -1102,8 +1102,8 @@ prop y setTo -35.95`
       "id": "1718",
       "label": "HealthMeter1718",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 495.05
-prop y setTo 232.87`
+      "initScript": `prop x setTo 484.32
+prop y setTo 235.63`
     },
     {
       "id": "1719",
