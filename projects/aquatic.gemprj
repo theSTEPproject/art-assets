@@ -882,10 +882,11 @@ featProp HealthMeter.AgentWidgets.meterProp setTo 'healthLevel'
 onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
+  // QUESTION what does it mean to say an ecoyststem is healthy?
+  // Nathan thinks that the fish are the most imporatant thing in the pond
+  // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
   // STUDENTS_MAY_CHANGE what the meter displays
   // What property do we want to use?
-  // Nathan thinks that the fish are the most imporatant thing in the pond
-  // So, set the system health to the averageFishEnergy, but you can change that to match what you uwant
   propPush global.averageFishEnergy
 
   // put our variable into the healthLevel
