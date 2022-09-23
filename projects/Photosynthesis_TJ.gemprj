@@ -37,6 +37,7 @@ addFeature Touches
 featCall Molecule.Touches monitor 'Rabbit' b2b
 featCall Molecule.Touches monitor 'Roots' b2b
 featCall Molecule.Touches monitor 'Chloroplast' b2b
+featCall Molecule.Touches monitor 'Plant_Body' b2b
 featCall Molecule.Touches monitor 'OxygenGenerator' b2b
 featCall Molecule.Touches monitor 'CarbonDioxideGenerator' b2b
 featCall Molecule.Touches monitor 'WaterGenerator' b2b
@@ -97,15 +98,25 @@ when Molecule touches Rabbit [[
   ]]
 ]]
 
-// roots turn sugar into water and cause plant (left leaf) to grow
-when Molecule touches Roots [[
+// plant body turns sugar into an icon that the plant needs more water and causes the plant (left leaf) to grow
+when Molecule touches Plant_Body [[
   // insert code here
   ifProp Molecule.state equal 'sugar' [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'empty_energy.png'
+    prop Molecule.state setTo 'needsWater'
+    prop global.plantGrowth add 1
+  ]]
+]]
+
+// roots allow the plant to get water so the needs water icon turns into water
+when Molecule touches Roots [[
+  // insert code here
+  ifProp Molecule.state equal 'needsWater' [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'water.png'
     prop Molecule.state setTo 'water'
     featProp Molecule.Costume.glow setTo 1
-    prop global.plantGrowth add 1
   ]]
 ]]
 
@@ -603,8 +614,8 @@ prop y setTo -26.38`
       "id": "29",
       "label": "Chloroplast29",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 136.87
-prop y setTo -20.53`
+      "initScript": `prop x setTo 216.74
+prop y setTo -33.58`
     },
     {
       "id": "30",
