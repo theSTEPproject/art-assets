@@ -37,6 +37,7 @@ addFeature Touches
 featCall Molecule.Touches monitor 'Rabbit' b2b
 featCall Molecule.Touches monitor 'Roots' b2b
 featCall Molecule.Touches monitor 'Chloroplast' b2b
+featCall Molecule.Touches monitor 'Plant_Body' b2b
 featCall Molecule.Touches monitor 'OxygenGenerator' b2b
 featCall Molecule.Touches monitor 'CarbonDioxideGenerator' b2b
 featCall Molecule.Touches monitor 'WaterGenerator' b2b
@@ -54,36 +55,36 @@ when Molecule touches OxygenGenerator [[
   // insert code here
   ifProp OxygenGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'oxygen.png'
-  prop Molecule.state setTo 'oxygen'
-]]
+    featProp Molecule.Costume.costumeName setTo 'oxygen.png'
+    prop Molecule.state setTo 'oxygen'
+  ]]
 ]]
 
 when Molecule touches CarbonDioxideGenerator [[
   // insert code here
   ifProp CarbonDioxideGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
-  prop Molecule.state setTo 'carbon_dioxide'
-]]
+    featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
+    prop Molecule.state setTo 'carbon_dioxide'
+  ]]
 ]]
 
 when Molecule touches WaterGenerator [[
   // insert code here
   ifProp WaterGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'water.png'
-  prop Molecule.state setTo 'water'
-]]
+    featProp Molecule.Costume.costumeName setTo 'water.png'
+    prop Molecule.state setTo 'water'
+  ]]
 ]]
 
 when Molecule touches SugarGenerator [[
   // insert code here
   ifProp SugarGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'sugar.png'
-  prop Molecule.state setTo 'sugar'
-]]
+    featProp Molecule.Costume.costumeName setTo 'sugar.png'
+    prop Molecule.state setTo 'sugar'
+  ]]
 ]]
 
 // Rabbit changes oxygen to carbon dioxide
@@ -97,15 +98,24 @@ when Molecule touches Rabbit [[
   ]]
 ]]
 
+when Molecule touches Plant_Body [[
+  // insert code here
+  ifProp Molecule.state equal 'sugar' [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'empty_energy.png'
+    prop Molecule.state setTo 'needsWater'
+    prop global.plantGrowth add 1
+  ]]
+]]
+
 // roots turn sugar into water and cause plant (left leaf) to grow
 when Molecule touches Roots [[
   // insert code here
-  ifProp Molecule.state equal 'sugar' [[
+  ifProp Molecule.state equal 'needsWater' [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'water.png'
     prop Molecule.state setTo 'water'
     featProp Molecule.Costume.glow setTo 1
-    prop global.plantGrowth add 1
   ]]
 ]]
 
@@ -295,7 +305,7 @@ addFeature Physics
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
-//left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
+// left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
 every 1 [[
   exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
   featPropPop Left_Leaf.Costume.scale
@@ -596,15 +606,15 @@ prop y setTo -204.78`
       "id": "28",
       "label": "Right_Leaf28",
       "bpid": "Right_Leaf",
-      "initScript": `prop x setTo 180.33
-prop y setTo -26.38`
+      "initScript": `prop x setTo 192.19
+prop y setTo -38.30`
     },
     {
       "id": "29",
       "label": "Chloroplast29",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 136.87
-prop y setTo -20.53`
+      "initScript": `prop x setTo 226.00
+prop y setTo -46.03`
     },
     {
       "id": "30",
