@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -62,13 +59,14 @@ addProp energyReleasedAsHeat number 0
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
 
 // EXPLANATION:
 // The sun is one of the characters that produces energy
 // Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
 // simple, and just needs the properties for the EnergyRepresentation characters to read
 // so that they can carry the energy to other characters 
+
+# PROGRAM INIT
 
 addFeature Costume
 addFeature Physics
@@ -90,30 +88,32 @@ prop Sun.zIndex setTo 0
 addProp energyType string 'source'
 
 // required directive
-# PROGRAM INIT
-
-// required directive
 # PROGRAM UPDATE`
     },
     {
       "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+// EXPLANATION:
+// The fish are consumers that eat the producers (Algae) and digest them to get energy
+// and to grow / make matter
+
+# PROGRAM INIT
 // The fish is one of the characters that takes / produces energy
 // Note that it mostly just stores properties that the EnergyRepresentation will check / change
 // The other main functionality (under update) is that it will update its meter color depending on
 // how much energy it has
 
-
+// Setup features
 addFeature Costume
-featProp Fish.Costume.costumeName setTo 'fish.png'
-
 addFeature Physics
-featProp Fish.Costume.scale setTo 0.3
+
+// Load the fish image and re-size it
+featProp Fish.Costume.costumeName setTo 'fish.png'
+featProp Fish.Costume.scale setTo 0.4
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -171,26 +171,29 @@ every 2 runAtStart [[
 
 ]]
 
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Algae",
       "scriptText": `# BLUEPRINT Algae
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+// EXPLANATION:
 // The algae is one of the characters that takes / produces energy
 // Note that it mostly just stores properties that the EnergyRepresentation will check / change
 // The other main functionality (under update) is that it will update its meter color depending on
 // how much energy it has
 
-addFeature Costume
-featProp Algae.Costume.costumeName setTo 'algae.png'
+# PROGRAM INIT
 
+// Setup the features 
+addFeature Costume
 addFeature Physics
+
+// Set the artowrk and scale it
+featProp Algae.Costume.costumeName setTo 'algae.png'
 featProp Algae.Costume.scale setTo 0.2
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
@@ -202,9 +205,6 @@ addProp energyLevel number 50
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
-addProp energyUse number 1
-
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature AgentWidgets
 featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
@@ -214,44 +214,40 @@ featProp Algae.AgentWidgets.meterColor setTo 65280
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifProp Algae.energyLevel greaterThan 0 [[
-    exprPush {{ Algae.getProp('energyLevel').value - Algae.getProp('energyUse').value }}
-    propPop Algae.energyLevel
-  ]]
+  // STUDENTS_MAY_CHAANGE
+  // The algae use energy to survive, so decrease energy each second
+  prop Algae.energyLevel sub 1
 
-  // re-scale the algae based on its energy level
+  // re-size the algae based on its energy level so that 
+  // if it has lots of energy it grows nice and big, and low energy
+  // either from being eaten or just using it all up means it is shrinking and 
+  // will die if it hits 0
   exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
   featPropPop Algae.Costume.scale
 
-  // this code sets the color of the energy bar based on how hungry the fish is
-  // set algae energy meter color
-  // doing great
+  // avoid getting too small by going back up to this size
+  exprPush {{ .1 }}
+  featPropPop Algae.Costume.scale
+
+  // this scripts sets the color of the energy bar next to the algae based on how it is doing
+  // in terms of the amount of energy it has
   ifProp Algae.energyLevel greaterThanOrEqual 60 [[
-    // Green
+    // Doing great - Green
     featProp Algae.AgentWidgets.meterColor setTo 65280
   ]]
-  // needs some energy
   ifProp Algae.energyLevel lessThan 60 [[
-    // Orange
+      // needs some energy - Orange
     featProp Algae.AgentWidgets.meterColor setTo 16737792
   ]]
-  // in trouble
   ifProp Algae.energyLevel lessThan 30 [[
-    // Red
+      // in trouble - Red
     featProp Algae.AgentWidgets.meterColor setTo 16711680
-
-    // avoid getting too
-    exprPush {{ .1 }}
-    featPropPop Algae.Costume.scale
 
   ]]
 
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Sky",
@@ -259,9 +255,11 @@ every 1 runAtStart [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
-//Note: this character doesn't do anyhting - it is just for show since there is no 
-// other easy way to add background art
+
+// EXPLANATION: this character doesn't do anyhting - it is just art for the background
+
+# PROGRAM INIT
+
 addFeature Costume
 featProp Sky.Costume.costumeName setTo 'square.json'
 featCall Sky.Costume setColorize 53 81 92
@@ -283,14 +281,17 @@ prop Sky.zIndex setTo -100
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+
+// EXPLANATION:
+// This is the art that the kids control
+
+# PROGRAM INIT
 
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
-
 addFeature Physics
 
-
+// start off looking like a magnifying lense that needs to explore
+featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 
 
 // setup energy properties
@@ -377,7 +378,6 @@ when EnergyRepresentation centerLastTouches Algae [[
 
 ]]
 
-
 when EnergyRepresentation centerFirstTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
@@ -412,9 +412,7 @@ when EnergyRepresentation centerLastTouches Fish [[
   ]]
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Timer",
@@ -422,15 +420,23 @@ when EnergyRepresentation centerLastTouches Fish [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
-// This character isn't interactive and just shows the tine, and decreses it every second
+
+
+// EXPLANATION:
+// This is a timer character so that we can see how much time has passed in our model
+// We can use that time to think about how long the ecosystem survives if we want 
+
+# PROGRAM INIT
+
+// setup features
 addFeature AgentWidgets
+addFeature Costume
 
 // hide the actual art since we just want the text to displaay
-addFeature Costume
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 featProp Timer.Costume.scale setTo 1
 
+// a property to track the time
 addProp time number 0
 
 // set the initial label and then update it below during update
@@ -444,8 +450,7 @@ every 1 runAtStart [[
   featPropPop Timer.AgentWidgets.text
 ]]
 
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "GraphLostEnergy",
@@ -454,20 +459,23 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-# PROGRAM DEFINE
+// EXPLANATION: 
 // This is a graph of energy lost to heat from all charaacters
 // since there are lots of characters, rather than sume them up one type
 // at a time, use a global variabe to track that excess heat
 
-// hide the actual art since we just want the text to displaay
-addFeature Costume
-featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
-featProp GraphLostEnergy.Costume.scale setTo 1
+# PROGRAM INIT
 
+// setup the features
+addFeature Costume
 addFeature AgentWidgets
 addFeature Population
-featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
+// hide the actual art since we just want the text to displaay
+featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
+
+// we want the graph to show up big
+featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
 
 // using a generic name so that it is easier to change later
@@ -475,6 +483,7 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
+// link the graph to this property
 featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
@@ -486,15 +495,16 @@ featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
 
 # PROGRAM UPDATE
 
+// Once every second or so ... 
 onEvent Tick [[
 
+  // update thee lost energy property by checking the global 
+  // energyReleasedAsHeat that we are tracking within the global character
   propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "EnergyInSystem",
@@ -503,14 +513,21 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-# PROGRAM DEFINE
-// hide the actual art since we just want the text to displaay
+// EXPLANATION:
+// This is a graph of the energy from all of the characters in the ecosystem combined
+
+# PROGRAM INIT
+
+// Setup the features
 addFeature Costume
+addFeature AgentWidgets
+addFeature Population
+
+// hide the actual art since we just want the text to displaay
 featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 featProp EnergyInSystem.Costume.scale setTo 1
 
-addFeature AgentWidgets
-addFeature Population
+
 featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
@@ -557,9 +574,7 @@ onEvent Tick [[
 
 
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Background",
@@ -568,13 +583,18 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// required directive
+// EXPLANATION
+// This is just artwork for the background
+
 # PROGRAM INIT
+
+// Setup the features
 addFeature Costume
+
+// Setup the background art, scale it,  and move it all of the way to the back
 featProp Background.Costume.costumeName setTo 'background_aquatic.png'
 featProp Background.Costume.height setTo 600
 featProp Background.Costume.width setTo 800
-
 prop Background.zIndex setTo -999
 
 
@@ -595,8 +615,8 @@ prop y setTo -299.83`
       "id": "1",
       "label": "Fish 1",
       "bpid": "Fish",
-      "initScript": `prop x setTo -253.37
-prop y setTo 68.88`
+      "initScript": `prop x setTo -297.58
+prop y setTo 83.43`
     },
     {
       "id": "2",
