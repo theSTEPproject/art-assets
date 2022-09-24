@@ -564,35 +564,35 @@ prop Background.zIndex setTo -999
   "instances": [
     {
       "id": "0",
-      "label": "Sun",
+      "label": "Sunbeam",
       "bpid": "Sun",
       "initScript": `prop x setTo -315.15
 prop y setTo -313.18`
     },
     {
       "id": "1",
-      "label": "Fish1",
+      "label": "Fish 1",
       "bpid": "Fish",
       "initScript": `prop x setTo -253.37
 prop y setTo 68.88`
     },
     {
       "id": "2",
-      "label": "Algae1",
+      "label": "Algae 1",
       "bpid": "Algae",
       "initScript": `prop x setTo -288.59
 prop y setTo -118.14`
     },
     {
       "id": "3",
-      "label": "Algae2",
+      "label": "Algae 2",
       "bpid": "Algae",
       "initScript": `prop x setTo -124.18
 prop y setTo -123.89`
     },
     {
       "id": "4",
-      "label": "Fish2",
+      "label": "Fish 2",
       "bpid": "Fish",
       "initScript": `prop x setTo -119.56
 prop y setTo 111.73`
@@ -620,49 +620,49 @@ prop y setTo 187`
     },
     {
       "id": "9",
-      "label": "Algae3",
+      "label": "Algae 3",
       "bpid": "Algae",
       "initScript": `prop x setTo 44.81
 prop y setTo -98.89`
     },
     {
       "id": "10",
-      "label": "Algae4",
+      "label": "Algae 4",
       "bpid": "Algae",
       "initScript": `prop x setTo 247.79
 prop y setTo -125.15`
     },
     {
       "id": "11",
-      "label": "Algae5",
+      "label": "Algae 5",
       "bpid": "Algae",
       "initScript": `prop x setTo 340.27
 prop y setTo -121.93`
     },
     {
       "id": "12",
-      "label": "Fish3",
+      "label": "Fish 3",
       "bpid": "Fish",
       "initScript": `prop x setTo 61.65
 prop y setTo 138.41`
     },
     {
       "id": "13",
-      "label": "Fish4",
+      "label": "Fish 4",
       "bpid": "Fish",
       "initScript": `prop x setTo 205.24
 prop y setTo 59.01`
     },
     {
       "id": "14",
-      "label": "Fish5",
+      "label": "Fish 5",
       "bpid": "Fish",
       "initScript": `prop x setTo 315.8
 prop y setTo 210.49`
     },
     {
       "id": "15",
-      "label": "Background15",
+      "label": "Background Image",
       "bpid": "Background",
       "initScript": `prop x setTo -1.14
 prop y setTo -2.59`
