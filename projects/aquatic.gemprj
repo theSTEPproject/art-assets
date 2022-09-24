@@ -1050,35 +1050,35 @@ featProp agent.Costume.width setTo 100`
     },
     {
       "id": "1710",
-      "label": "Algae1710",
+      "label": "Algae 1",
       "bpid": "Algae",
       "initScript": `prop x setTo -248.71
 prop y setTo -95.88`
     },
     {
       "id": "1711",
-      "label": "Algae1711",
+      "label": "Algae 2",
       "bpid": "Algae",
       "initScript": `prop x setTo -9.08
 prop y setTo -131.48`
     },
     {
       "id": "1712",
-      "label": "Sunbeam1712",
+      "label": "Sunbeam",
       "bpid": "Sunbeam",
       "initScript": `prop x setTo -379.33
 prop y setTo -129.71`
     },
     {
       "id": "1713",
-      "label": "Rock1713",
+      "label": "Rock 1",
       "bpid": "Rock",
       "initScript": `prop x setTo -301.41
 prop y setTo 349.49`
     },
     {
       "id": "1714",
-      "label": "Rock1714",
+      "label": "Rock 2",
       "bpid": "Rock",
       "initScript": `prop x setTo 318.43
 prop y setTo 347.53
@@ -1086,21 +1086,21 @@ featProp Rock.Costume.flipX setTo true`
     },
     {
       "id": "1715",
-      "label": "Algae1715",
+      "label": "Algae 3",
       "bpid": "Algae",
       "initScript": `prop x setTo 29
 prop y setTo 30`
     },
     {
       "id": "1716",
-      "label": "Algae1716",
+      "label": "Algae 4",
       "bpid": "Algae",
       "initScript": `prop x setTo -135.86
 prop y setTo -35.95`
     },
     {
       "id": "1718",
-      "label": "HealthMeter1718",
+      "label": "HealthMeter 1",
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 484.32
 prop y setTo 235.63`
@@ -1115,7 +1115,7 @@ prop zIndex setTo 500`
     },
     {
       "id": "1720",
-      "label": "Background1720",
+      "label": "Background Image",
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo 0`
