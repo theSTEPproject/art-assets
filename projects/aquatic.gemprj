@@ -987,8 +987,8 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 453.67
-prop y setTo -405.60
+      "initScript": `prop x setTo 462.33
+prop y setTo -407.04
 featProp AgentWidgets text setTo 'Energy Key:'`
     },
     {
@@ -1102,8 +1102,8 @@ prop y setTo -35.95`
       "id": "1718",
       "label": "HealthMeter 1",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 484.32
-prop y setTo 235.63`
+      "initScript": `prop x setTo 491.63
+prop y setTo 238.15`
     },
     {
       "id": "1719",
