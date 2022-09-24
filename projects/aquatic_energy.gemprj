@@ -55,15 +55,16 @@ addProp energyReleasedAsHeat number 0
 
 
 addFeature Costume
-featProp Sun.Costume.costumeName setTo 'sunbeam.png'
+featProp Sun.Costume.costumeName setTo 'circle.json'
 
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
-//featCall Sun.Costume setColorize 255 215 0
+featCall Sun.Costume setColorize 255 215 0
+
 // This makess sure the sunu is behind everything else
 prop Sun.zIndex setTo 0
 
 addFeature Physics
-featProp Sun.Costume.scale setTo 1.0
+featProp Sun.Costume.scale setTo 0.7
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -552,7 +553,9 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature Costume
 featProp Background.Costume.costumeName setTo 'background_aquatic.png'
-featProp Background.Costume.scale setTo 1.33
+featProp Background.Costume.height setTo 600
+featProp Background.Costume.width setTo 800
+
 prop Background.zIndex setTo -999
 
 
@@ -566,8 +569,8 @@ prop Background.zIndex setTo -999
       "id": "0",
       "label": "Sunbeam",
       "bpid": "Sun",
-      "initScript": `prop x setTo -315.15
-prop y setTo -313.18`
+      "initScript": `prop x setTo -292.21
+prop y setTo -299.83`
     },
     {
       "id": "1",
@@ -664,8 +667,8 @@ prop y setTo 210.49`
       "id": "15",
       "label": "Background Image",
       "bpid": "Background",
-      "initScript": `prop x setTo -1.14
-prop y setTo -2.59`
+      "initScript": `prop x setTo 0
+prop y setTo  100`
     }
   ]
 }
