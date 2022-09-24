@@ -28,21 +28,29 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-// This is the script that runs when the model is setup
-# PROGRAM INIT
 
-// ** EXPLANATION of this model:
+// EXPLANATION of this model:
 // This model involves learners repreesenting fish eating algae
 // The goal is to explore how the number of fish, number of algae,
 // and different locations can impact the survival of the ecosystem
 
-addFeature Population
+// EXPLANATION of this character:
+// This is the script that runs when the model is setup
+
+# PROGRAM INIT
+
+// we don't need to see this character, we just use it to keep track of things
 prop global.visible setTo false
 
+// Add features
+addFeature Population
 
 // =============================================================
 // Add any code for global properties here (e,g. addProp)
 
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it 
+// easier to edit that character
 addProp fishCount number 0
 addProp algaeCount number 0
 addProp predatorCount number 0

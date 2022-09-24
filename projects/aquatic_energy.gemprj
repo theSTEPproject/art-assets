@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -27,16 +30,24 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM INIT
 
-// Explanation:
+// EXPLANATION of this model:
 // This model involves learners repreesenting the energy flow in the aquatic ecosystem
 // Each student controls an EnergyRepresentation character, which is a circle indicating
 // initially that they should look around, and then later what kind of energy they have picked up
 // students should move around to see what kind of energy they get and how it moves between specific character types
 // Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
 
+// EXPLANATION of this character:
+// This is the script that runs when the model is setup
+
+# PROGRAM INIT
+
+// we don't need to see this character, we just use it to keep track of things
 prop global.visible setTo false
+
+// Add features
+addFeature Population
 
 // =============================================================
 // Add any code for global properties here (e,g. addProp)
@@ -44,14 +55,70 @@ prop global.visible setTo false
 // this property lets us track energy that is lost as heat 
 // when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
 // and this property helps us track that so that we can graph it if we want.
-
 addProp energyReleasedAsHeat number 0
+
+
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it 
+// easier to edit that character
+addProp fishCount number 0
+addProp algaeCount number 0
+addProp predatorCount number 0
+addProp allOrganismsCount number 0
+addProp averageFishEnergy number 0
+addProp averageAlgaeEnergy number 0
+addProp averagePredatorEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
 
 // =============================================================
 
 // this is a required keyword in case we want to run script
 // every second. Most likely we will do that in specific characters instead
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // Update our global variables
+
+  // grab the Fish average energy and count
+  featCall global.Population countAgentProp 'Fish' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageFishEnergy
+  featPropPush global.Population.count
+  propPop global.fishCount
+
+  // grab the Algae average eenergy  and count
+  featCall global.Population countAgentProp 'Algae' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageAlgaeEnergy
+  featPropPush global.Population.count
+  propPop global.algaeCount
+
+  // grab the Predator average eenergy  and count
+  featCall global.Population countAgentProp 'Predator' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePredatorEnergy
+  featPropPush global.Population.count
+  propPop global.predatorCount
+
+  // add the producers and divide by the number of producers
+  // ignore divide step since only 1 type (Algae)
+  propPush global.averageAlgaeEnergy
+  propPop global.averageProducerEnergy
+
+  // calculate the big averages ...
+  exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
+  propPop global.averageConsumerEnergy
+
+  exprPush {{ (global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value) }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+
+
+]]`
     },
     {
       "name": "Sun",
@@ -378,6 +445,7 @@ when EnergyRepresentation centerLastTouches Algae [[
 
 ]]
 
+
 when EnergyRepresentation centerFirstTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
@@ -483,7 +551,6 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-// link the graph to this property
 featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
@@ -513,21 +580,14 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a graph of the energy from all of the characters in the ecosystem combined
-
-# PROGRAM INIT
-
-// Setup the features
-addFeature Costume
-addFeature AgentWidgets
-addFeature Population
-
+# PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
+addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 featProp EnergyInSystem.Costume.scale setTo 1
 
-
+addFeature AgentWidgets
+addFeature Population
 featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
@@ -574,7 +634,9 @@ onEvent Tick [[
 
 
 ]]
-`
+
+// required directive
+# PROGRAM INIT`
     },
     {
       "name": "Background",
@@ -583,24 +645,88 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION
-// This is just artwork for the background
-
+// required directive
 # PROGRAM INIT
-
-// Setup the features
 addFeature Costume
-
-// Setup the background art, scale it,  and move it all of the way to the back
 featProp Background.Costume.costumeName setTo 'background_aquatic.png'
 featProp Background.Costume.height setTo 600
 featProp Background.Costume.width setTo 800
+
 prop Background.zIndex setTo -999
 
 
 // required directive
 # PROGRAM UPDATE
 `
+    },
+    {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is a meter to show the health of the entire ecosystem
+// Initialy it only shows fish health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature AgentWidgets
+addFeature Costume
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// STUDENTS_MAY_CHANGE the meter label
+// Set the text under the meter to label it
+featProp HealthMeter.AgentWidgets.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.AgentWidgets.isLargeGraphic setTo true
+featProp HealthMeter.AgentWidgets.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.AgentWidgets.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+  // This script below is where you can decide what the current health meter shows
+
+  // QUESTION what does it mean to say an ecoyststem is healthy?
+  // Nathan thinks that the fish are the most imporatant thing in the pond
+  // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
+  // STUDENTS_MAY_CHANGE what the meter displays
+  // What property do we want to use?
+  propPush global.averageFishEnergy
+
+  // put our variable into the healthLevel
+  propPop HealthMeter.healthLevel
+
+  // STUDENTS_MAY_CHANGE the meter colors
+  // Finally, set the color of the energy meter depending on how high it is (or something else)
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.AgentWidgets.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.AgentWidgets.meterColor setTo 16711680
+  ]]
+
+]]`
     }
   ],
   "instances": [
@@ -650,15 +776,15 @@ prop y setTo -398.87`
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 516.26
-prop y setTo 360.68`
+      "initScript": `prop x setTo 522.41
+prop y setTo 142.01`
     },
     {
       "id": "8",
       "label": "Energy In System Graph",
       "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 511.75
-prop y setTo 187`
+      "initScript": `prop x setTo 517.87
+prop y setTo -33.03`
     },
     {
       "id": "9",
@@ -708,6 +834,13 @@ prop y setTo 210.49`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo  100`
+    },
+    {
+      "id": "16",
+      "label": "HealthMeter16",
+      "bpid": "HealthMeter",
+      "initScript": `prop x setTo 525
+prop y setTo 330.87`
     }
   ]
 }
