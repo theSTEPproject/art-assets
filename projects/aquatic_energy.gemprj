@@ -33,13 +33,27 @@
 # PROGRAM INIT
 
 // Explanation:
-// This model involves learners repreesenting the energy flow in the system (need to add more here)
+// This model involves learners repreesenting the energy flow in the aquatic ecosystem
+// Each student controls an EnergyRepresentation character, which is a circle indicating
+// initially that they should look around, and then later what kind of energy they have picked up
+// students should move around to see what kind of energy they get and how it moves between specific character types
+// Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
 
 prop global.visible setTo false
 
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+// this property lets us track energy that is lost as heat 
+// when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
+// and this property helps us track that so that we can graph it if we want.
+
 addProp energyReleasedAsHeat number 0
 
-// required directive
+// =============================================================
+
+// this is a required keyword in case we want to run script
+// every second. Most likely we will do that in specific characters instead
 # PROGRAM UPDATE`
     },
     {
@@ -49,22 +63,27 @@ addProp energyReleasedAsHeat number 0
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM DEFINE
+
+// EXPLANATION:
 // The sun is one of the characters that produces energy
 // Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
-// simple, and just needs the variables for the EnergyRepresentation to read
-
+// simple, and just needs the properties for the EnergyRepresentation characters to read
+// so that they can carry the energy to other characters 
 
 addFeature Costume
+addFeature Physics
+
+// set the artworrk for the sun 
 featProp Sun.Costume.costumeName setTo 'circle.json'
 
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
 featCall Sun.Costume setColorize 255 215 0
 
-// This makess sure the sunu is behind everything else
-prop Sun.zIndex setTo 0
-
-addFeature Physics
+// set the size of the sun
 featProp Sun.Costume.scale setTo 0.7
+
+// This makess sure the sun is behind everything else
+prop Sun.zIndex setTo 0
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation

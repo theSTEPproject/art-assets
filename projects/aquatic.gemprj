@@ -7,10 +7,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -59,8 +56,7 @@ addProp averageEnergyAllOrganisms number 0
 
 // =============================================================
 
-// this is a required keyword in case we want to run script
-// every second. Most likely we will do that in specific characters instead
+// this is a required keyword in case we want to run script every second. 
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
