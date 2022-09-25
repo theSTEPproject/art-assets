@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 255,
     "roundsCanLoop": true,
@@ -132,17 +135,14 @@ every 1 runAtStart [[
 
 # PROGRAM INIT
 
+// Add features
 addFeature Costume
 addFeature Physics
 
-// set the artworrk for the sun 
+// set the artworrk for the sun, color it, and then set its size
 featProp Sun.Costume.costumeName setTo 'circle.json'
-
-// Instead of sun art, we are using a generic circle, so the next line tints it yellow
 featCall Sun.Costume setColorize 255 215 0
-
-// set the size of the sun
-featProp Sun.Costume.scale setTo 0.7
+featProp Sun.Costume.scale setTo 0.6
 
 // This makess sure the sun is behind everything else
 prop Sun.zIndex setTo 0
@@ -743,8 +743,8 @@ onEvent Tick [[
       "id": "0",
       "label": "Sunbeam",
       "bpid": "Sun",
-      "initScript": `prop x setTo -292.21
-prop y setTo -299.83`
+      "initScript": `prop x setTo -304.57
+prop y setTo -309.30`
     },
     {
       "id": "1",
