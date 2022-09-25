@@ -364,7 +364,7 @@ addFeature Physics
 // move over the sources
 featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 featProp EnergyRepresentation.Costume.scale setTo 0.25
-
+prop EnergyRepresentation.alpha setTo 0.8
 
 // setup energy properties
 addProp energyLevel number 0
@@ -429,33 +429,29 @@ when EnergyRepresentation lastTouches Algae [[
   ifProp EnergyRepresentation.energyType equal 'using' [[
     ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
-    prop Algae.energyLevel sub 25
-    prop EnergyRepresentation.energyLevel add 25
-    // we are losing 50 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 25
+      // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
+      prop Algae.energyLevel sub 25
+      prop EnergyRepresentation.energyLevel add 25
+      // we are losing 50 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
     ]]
   ]]
 
-  //  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
-  
+  // ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+
   ifProp EnergyRepresentation.energyType equal 'using' [[
     prop EnergyRepresentation.energyType setTo 'none'
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
   ]]
-  
-  // OR 
+
+  // OR
 
   ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
     prop EnergyRepresentation.energyType setTo 'none'
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
   ]]
-
-
-  ]]
-
 
 ]]
 
