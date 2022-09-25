@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 255,
     "roundsCanLoop": true,
@@ -308,8 +305,6 @@ every 1 runAtStart [[
     featProp Algae.AgentWidgets.meterColor setTo 16711680
 
   ]]
-
-
 ]]
 `
     },
@@ -335,8 +330,6 @@ featProp Sky.Costume.height setTo 200
 // make sure this is always way in the back behind all 
 // of the other characters
 prop Sky.zIndex setTo -100
-
-
 `
     },
     {
@@ -356,8 +349,10 @@ prop Sky.zIndex setTo -100
 
 # PROGRAM INIT
 
+// Add features
 addFeature Costume
 addFeature Physics
+addFeature Touches
 
 // start off looking like a magnifying lense that needs to explore
 // later this will change to different types of energy as the students
@@ -375,7 +370,9 @@ prop EnergyRepresentation.energyLevel setMin 0
 // start with none
 addProp energyType string 'none'
 
-addFeature Touches
+// Setup the touch moniitoring so that we check when the 
+// EnergyRepresentation characters touch the Sun, Algae, or Fish
+// The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
 featCall EnergyRepresentation.Touches monitor 'Sun' b2b
 featCall EnergyRepresentation.Touches monitor 'Algae' b2b
 featCall EnergyRepresentation.Touches monitor 'Fish' b2b
