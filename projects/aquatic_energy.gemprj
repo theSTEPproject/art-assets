@@ -448,8 +448,10 @@ when EnergyRepresentation lastTouches Algae [[
     prop Algae.energyLevel sub 25
     prop EnergyRepresentation.energyLevel add 25
 
-    // we are now carrying algae energy
+    // we are now carrying algae energy (energy from a producer)
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+    prop EnergyRepresentation.energyType setTo 'producer'
+
   ]]
 ]]
 
@@ -459,35 +461,36 @@ when EnergyRepresentation lastTouches Algae [[
 
 when EnergyRepresentation firstTouches Fish [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
-    prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
-  ]]
+  // change the representation to let us know that the fish is using that it has 
+  // gained by digesting some algae that it ate
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
 
-  // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
+  // If you have energy from algae (from eating it)
+  // then let's add some of that to the fish
+  ifProp EnergyRepresentation.energyType equal 'producer' [[
 
     // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Fish.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+
+    // we are some of the energy to heat while digesting the algae
+    // so note that in the global vriable
     prop global.energyReleasedAsHeat add 15
 
-    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
+    // have the Fish glow so that we know it is getting some energy 
     featProp Fish.Costume.glow setTo 1
 
   ]]
+  prop EnergyRepresentation.energyType setTo 'usingAlgae'
 
 ]]
 
 when EnergyRepresentation lastTouches Fish [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_fish.png'
-  ]]
-
+  // There is nothing to do with Fish energy, so just re-set this to show
+  // that we need to look for energy again 
+  prop EnergyRepresentation.energyType setTo 'none'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 ]]`
     },
     {
