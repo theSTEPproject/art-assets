@@ -764,6 +764,20 @@ propPop GraphAlgaeEnergy.labelText
 propPush GraphAlgaeEnergy.labelText
 featPropPop GraphAlgaeEnergy.AgentWidgets.text
 
+// Create the y-axis bottom
+featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 90
+  prop TextLabel.y sub 110
+  featProp TextLabel.AgentWidgets.text setTo '1000 -'
+]]
+
+// Create the y-axis top
+featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 75
+  prop TextLabel.y sub 25
+  featProp TextLabel.AgentWidgets.text setTo '0 -'
+]]
+
 # PROGRAM UPDATE
 
 onEvent Tick [[
@@ -813,18 +827,29 @@ addProp graphValue number 0
 prop GraphFishEnergy.graphValue setMax 1000
 prop GraphFishEnergy.graphValue setMin 0
 
+// Setup which property we will use to graph, and then change if it changes (use graphValue)
 featProp GraphFishEnergy.AgentWidgets.graphProp setTo 'graphValue'
 
-// make sure something displays with some initial text, on bottom right at first
-prop GraphFishEnergy.x setTo 505
-prop GraphFishEnergy.y setTo 370
-prop GraphFishEnergy.zIndex setTo 300
-
+// Setup the graph label dynaamically 
 exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
 propPop GraphFishEnergy.labelText
 exprPush {{ GraphFishEnergy.getProp('labelText').value }}
 
 featPropPop GraphFishEnergy.AgentWidgets.text
+
+// Create the y-axis bottom
+featCall GraphFishEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 90
+  prop TextLabel.y sub 110
+  featProp TextLabel.AgentWidgets.text setTo '1000 -'
+]]
+
+// Create the y-axis top
+featCall GraphFishEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 75
+  prop TextLabel.y sub 25
+  featProp TextLabel.AgentWidgets.text setTo '0 -'
+]]
 
 # PROGRAM UPDATE
 

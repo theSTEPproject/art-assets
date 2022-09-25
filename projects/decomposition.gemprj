@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x98f5ff",
     "roundsCanLoop": true,
@@ -561,9 +558,9 @@ every 1 runAtStart [[
 
       featCall Bunny.Population createAgent Waste [[
         // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
-        prop Bunny.x addRndInt -20 20
-        prop Bunny.y addRndInt 50 150
-        prop Bunny.matter setTo 40
+        prop Waste.x addRndInt -20 20
+        prop Waste.y addRndInt 50 150
+        prop Waste.matter setTo 40
       ]]
     ]]
 
