@@ -420,7 +420,7 @@ prop Sunbeam.y setTo -180
 
 // This moves the sunbeam across the screen every second using the direction and speed properties
 // that are setup above in the INIT script and then if the sunbeam goes off the edge of the screen
-// it comes back on from the other side representing the next day though we don't bother showwing night
+// it comes back on from the other side representing the next day though we don't bother shwwing night
 # PROGRAM UPDATE
 onEvent Tick [[
   exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
