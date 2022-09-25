@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -350,7 +347,12 @@ prop Sky.zIndex setTo -100
 # TAG isPTrackControllable false
 
 // EXPLANATION:
-// This is the art that the kids control
+// This is the charracter that students control in this model
+// it shows different types of energy to help students show how energy flows between
+// the different characters in this ecosystem. As it touches each possible energy source
+// you will see what that source is doing. If it is already a type of energy that the source
+// can use, it will get transformed. If not, you will need to find what can use it.
+// For example, can fish use energy from the sun?
 
 # PROGRAM INIT
 
@@ -358,7 +360,10 @@ addFeature Costume
 addFeature Physics
 
 // start off looking like a magnifying lense that needs to explore
+// later this will change to different types of energy as the students
+// move over the sources
 featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+featProp EnergyRepresentation.Costume.scale setTo 0.25
 
 
 // setup energy properties
@@ -371,30 +376,25 @@ prop EnergyRepresentation.energyLevel setMin 0
 addProp energyType string 'none'
 
 addFeature Touches
-featCall EnergyRepresentation.Touches monitor 'Sun' c2b
-featCall EnergyRepresentation.Touches monitor 'Algae' c2b
-featCall EnergyRepresentation.Touches monitor 'Fish' c2b
+featCall EnergyRepresentation.Touches monitor 'Sun' b2b
+featCall EnergyRepresentation.Touches monitor 'Algae' b2b
+featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 
-featProp EnergyRepresentation.Costume.scale setTo 0.35
-
+// Run this secript constantly while the model is running
 # PROGRAM UPDATE
-when EnergyRepresentation centerFirstTouches Sun [[
 
-  // when touching, show an annotation about how the sun produces energy
+when EnergyRepresentation firstTouches Sun [[
+  // The sun is a near-infinite source of energy
+  // so change the art to be sun, and set the type to source
   featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
-]]
-
-when EnergyRepresentation centerLastTouches Sun [[
-
-  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
   prop EnergyRepresentation.energyType setTo 'source'
-  prop EnergyRepresentation.energyLevel setTo 100
 
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
+  // set the energy amount to 100 because lots of energy arrives on earth
+  // from the sun even if a lot of it is not used by organisms (except to warm them up)
+  prop EnergyRepresentation.energyLevel setTo 100
 ]]
 
-
-when EnergyRepresentation centerFirstTouches Algae [[
+when EnergyRepresentation firstTouches Algae [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
@@ -421,11 +421,13 @@ when EnergyRepresentation centerFirstTouches Algae [[
 
 
 
-when EnergyRepresentation centerLastTouches Algae [[
+when EnergyRepresentation lastTouches Algae [[
 
   // if you have no energy type, take some energy from the algae
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Algae.getProp('energyLevel').value > 25 }} [[
-    prop EnergyRepresentation.energyType setTo 'producer'
+  // note that you can only take energy from algae if they have more than 25
+  // otherwise they are too small to eat
+  ifProp EnergyRepresentation.energyType equal 'using' [[
+    ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
 
     // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
     prop Algae.energyLevel sub 25
@@ -434,19 +436,31 @@ when EnergyRepresentation centerLastTouches Algae [[
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
-
+    ]]
   ]]
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+  //  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+  
+  ifProp EnergyRepresentation.energyType equal 'using' [[
     prop EnergyRepresentation.energyType setTo 'none'
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+  ]]
+  
+  // OR 
+
+  ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+  ]]
+
+
   ]]
 
 
 ]]
 
 
-when EnergyRepresentation centerFirstTouches Fish [[
+when EnergyRepresentation firstTouches Fish [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
@@ -471,7 +485,7 @@ when EnergyRepresentation centerFirstTouches Fish [[
 
 ]]
 
-when EnergyRepresentation centerLastTouches Fish [[
+when EnergyRepresentation lastTouches Fish [[
 
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
@@ -479,8 +493,7 @@ when EnergyRepresentation centerLastTouches Fish [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_fish.png'
   ]]
 
-]]
-`
+]]`
     },
     {
       "name": "Timer",
@@ -741,8 +754,8 @@ prop y setTo -299.83`
       "id": "1",
       "label": "Fish 1",
       "bpid": "Fish",
-      "initScript": `prop x setTo -297.58
-prop y setTo 83.43`
+      "initScript": `prop x setTo -299.23
+prop y setTo 124.37`
     },
     {
       "id": "2",
@@ -762,8 +775,8 @@ prop y setTo -123.89`
       "id": "4",
       "label": "Fish 2",
       "bpid": "Fish",
-      "initScript": `prop x setTo -119.56
-prop y setTo 111.73`
+      "initScript": `prop x setTo -118.78
+prop y setTo 174.13`
     },
     {
       "id": "5",
@@ -790,8 +803,8 @@ prop y setTo -33.03`
       "id": "9",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo 44.81
-prop y setTo -98.89`
+      "initScript": `prop x setTo 48.03
+prop y setTo -150.87`
     },
     {
       "id": "10",
@@ -819,14 +832,14 @@ prop y setTo 138.41`
       "label": "Fish 4",
       "bpid": "Fish",
       "initScript": `prop x setTo 205.24
-prop y setTo 59.01`
+prop y setTo 80.38`
     },
     {
       "id": "14",
       "label": "Fish 5",
       "bpid": "Fish",
-      "initScript": `prop x setTo 315.8
-prop y setTo 210.49`
+      "initScript": `prop x setTo 305.62
+prop y setTo 264.13`
     },
     {
       "id": "15",

@@ -7,7 +7,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -931,7 +934,7 @@ addFeature Physics
 addFeature Touches
 
 // set up the wand to use this artwork and be a good size
-featProp Wand1.Costume.costumeName setTo 'square.json'
+featProp Wand1.Costume.costumeName setTo 'pc_wand_alive.png'
 featProp Wand1.Costume.scale setTo 0.2
 
 // make sure the wand checks to see if it is touching a fish or algae 
@@ -1109,14 +1112,6 @@ prop y setTo -35.95`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 491.63
 prop y setTo 238.15`
-    },
-    {
-      "id": "1719",
-      "label": "Wand1",
-      "bpid": "Wand1",
-      "initScript": `prop x setTo 462.46
-prop y setTo -203.81
-prop zIndex setTo 500`
     },
     {
       "id": "1720",
