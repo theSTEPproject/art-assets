@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 11393254,
     "roundsCanLoop": true,
@@ -823,15 +820,15 @@ prop y setTo -398.87`
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 513.12
-prop y setTo 171.49`
+      "initScript": `prop x setTo 528
+prop y setTo 172.18`
     },
     {
       "id": "8",
       "label": "Energy In Ecosystem Graph",
       "bpid": "GraphEnergyInEcosystem",
-      "initScript": `prop x setTo 515.75
-prop y setTo -8.89`
+      "initScript": `prop x setTo 528
+prop y setTo -10.21`
     },
     {
       "id": "9",
@@ -886,7 +883,7 @@ prop y setTo  100`
       "id": "16",
       "label": "HealthMeter16",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 500.14
+      "initScript": `prop x setTo 528
 prop y setTo 344.04`
     }
   ]
