@@ -500,7 +500,6 @@ when EnergyRepresentation lastTouches Fish [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-
 // EXPLANATION:
 // This is a timer character so that we can see how much time has passed in our model
 // We can use that time to think about how long the ecosystem survives if we want 
@@ -528,7 +527,6 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + agent.getProp('time').value }}
   featPropPop Timer.AgentWidgets.text
 ]]
-
 `
     },
     {
@@ -580,13 +578,12 @@ onEvent Tick [[
   // energyReleasedAsHeat that we are tracking within the global character
   propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
-
 ]]
 `
     },
     {
-      "name": "EnergyInSystem",
-      "scriptText": `# BLUEPRINT EnergyInSystem
+      "name": "GraphEnergyInEcosystem",
+      "scriptText": `# BLUEPRINT GraphEnergyInEcosystem
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
@@ -594,17 +591,17 @@ onEvent Tick [[
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
-featProp EnergyInSystem.Costume.scale setTo 1
+featProp GraphEnergyInEcosystem.Costume.costumeName setTo 'onexone.json'
+featProp GraphEnergyInEcosystem.Costume.scale setTo 1
 
 addFeature AgentWidgets
 addFeature Population
-featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+featProp GraphEnergyInEcosystem.AgentWidgets.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp totalEnergy number 500
-prop EnergyInSystem.totalEnergy setMax 1000
-prop EnergyInSystem.totalEnergy setMin 0
+prop GraphEnergyInEcosystem.totalEnergy setMax 1000
+prop GraphEnergyInEcosystem.totalEnergy setMin 0
 
 // to store the current values of algae and fish separately
 // I could just add them up below, but this way we can see them in the inspector
@@ -612,38 +609,33 @@ addProp totalAlgaeEnergy number 0
 addProp totalFishEnergy number 0
 
 
-featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+featProp GraphEnergyInEcosystem.AgentWidgets.graphProp setTo 'totalEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
-prop EnergyInSystem.x setTo 495
-prop EnergyInSystem.y setTo 187
-prop EnergyInSystem.zIndex setTo 300
+prop GraphEnergyInEcosystem.x setTo 495
+prop GraphEnergyInEcosystem.y setTo 187
+prop GraphEnergyInEcosystem.zIndex setTo 300
 
-featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+// Set the graph label
+featProp GraphEnergyInEcosystem.AgentWidgets.text setTo 'Energy in Ecosystem'
 
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
-  // count up the algae
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Algae'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalAlgaeEnergy
+  // count up the algae energy
+  featCall GraphEnergyInEcosystem.Population countAgentProp 'Algae' 'energyLevel'
+  exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
+  propPop GraphEnergyInEcosystem.totalAlgaeEnergy
 
-  // count up the fish
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Fish'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalFishEnergy
+  // count up the fish enerrgy
+  featCall GraphEnergyInEcosystem.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
+  propPop GraphEnergyInEcosystem.totalFishEnergy
 
-  // graph the sum
-  exprPush {{ EnergyInSystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
-  propPop EnergyInSystem.totalEnergy
-
-
+  // graph the sum of the fish and algae energy
+  exprPush {{ GraphEnergyInEcosystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
+  propPop GraphEnergyInEcosystem.totalEnergy
 ]]
 
 // required directive
@@ -738,6 +730,26 @@ onEvent Tick [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// EXPLANATION:
+// This is just a text label for use in the key or somewhere else to display information
+
+# PROGRAM INIT
+addFeature AgentWidgets
+addFeature Costume
+
+// invisible since we just want the text to show up
+featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -787,15 +799,15 @@ prop y setTo -398.87`
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 499.16
+      "initScript": `prop x setTo 513.12
 prop y setTo 171.49`
     },
     {
       "id": "8",
-      "label": "Energy In System Graph",
-      "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 494.64
-prop y setTo -31.13`
+      "label": "Energy In Ecosystem Graph",
+      "bpid": "GraphEnergyInEcosystem",
+      "initScript": `prop x setTo 515.75
+prop y setTo -31.47`
     },
     {
       "id": "9",
@@ -852,6 +864,34 @@ prop y setTo  100`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 500.14
 prop y setTo 344.04`
+    },
+    {
+      "id": "17",
+      "label": "0 -",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 434.23
+prop y setTo 145.67`
+    },
+    {
+      "id": "18",
+      "label": "1000 -",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 416.01
+prop y setTo 59.12`
+    },
+    {
+      "id": "19",
+      "label": "0 -",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 435.41
+prop y setTo -57.28`
+    },
+    {
+      "id": "20",
+      "label": "1000 -",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 418.74
+prop y setTo -146.68`
     }
   ]
 }
