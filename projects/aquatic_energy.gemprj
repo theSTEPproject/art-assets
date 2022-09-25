@@ -560,13 +560,10 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
+// Graph the lostEnergy, and update if that property does 
 featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
 
-// make sure something displays with some initial text, on bottom right at first
-prop GraphLostEnergy.x setTo 495
-prop GraphLostEnergy.lostEnergy setTo 350
-prop GraphLostEnergy.zIndex setTo 300
-
+// Set the graph label 
 featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
 
 # PROGRAM UPDATE
@@ -608,13 +605,8 @@ prop GraphEnergyInEcosystem.totalEnergy setMin 0
 addProp totalAlgaeEnergy number 0
 addProp totalFishEnergy number 0
 
-
+// Graph the total energy property and change if it changes
 featProp GraphEnergyInEcosystem.AgentWidgets.graphProp setTo 'totalEnergy'
-
-// make sure something displays with some initial text, on bottom right at first
-prop GraphEnergyInEcosystem.x setTo 495
-prop GraphEnergyInEcosystem.y setTo 187
-prop GraphEnergyInEcosystem.zIndex setTo 300
 
 // Set the graph label
 featProp GraphEnergyInEcosystem.AgentWidgets.text setTo 'Energy in Ecosystem'
