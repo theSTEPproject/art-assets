@@ -343,9 +343,9 @@ prop Sky.zIndex setTo -100
 // This is the charracter that students control in this model
 // it shows different types of energy to help students show how energy flows between
 // the different characters in this ecosystem. As it touches each possible energy source
-// you will see what that source is doing. If it is already a type of energy that the source
-// can use, it will get transformed. If not, you will need to find what can use it.
-// For example, can fish use energy from the sun?
+// you will see what that source is doing to get energy. If you brought in the right kind
+// of enerrgy, the character will glow so that you know it is gaining some energy
+// NOTE: all of the energy amounts are made up numbers to give you an idea how things work
 
 # PROGRAM INIT
 
@@ -370,7 +370,7 @@ prop EnergyRepresentation.energyLevel setMin 0
 // start with none
 addProp energyType string 'none'
 
-// Setup the touch moniitoring so that we check when the 
+// Setup the touch moniitoring so that we check when the
 // EnergyRepresentation characters touch the Sun, Algae, or Fish
 // The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
 featCall EnergyRepresentation.Touches monitor 'Sun' b2b
@@ -380,9 +380,14 @@ featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 // Run this secript constantly while the model is running
 # PROGRAM UPDATE
 
+// ** ====================================================
+// ** INTERACTING WITH THE SUN
+// ** ====================================================
+
 when EnergyRepresentation firstTouches Sun [[
   // The sun is a near-infinite source of energy
   // so change the art to be sun, and set the type to source
+  // also we always re-set energy to be sun when we go there
   featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
   prop EnergyRepresentation.energyType setTo 'source'
 
@@ -391,67 +396,66 @@ when EnergyRepresentation firstTouches Sun [[
   prop EnergyRepresentation.energyLevel setTo 100
 ]]
 
-when EnergyRepresentation firstTouches Algae [[
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
-  ]]
+// ** ====================================================
+// ** INTERACTING WITH THE ALGAE
+// ** ====================================================
 
-  // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
-  // as heat or lost in other ways
+when EnergyRepresentation firstTouches Algae [[
+
+  // change the representation to let us know that the algae is using energy from the sun
+  // to make food that it uses as a source of energy to live and grow, so we show 
+  // sun energy converting to algae energy 
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
+
+  // if you have energy from the sun, then give some energy to the algae, but not all of it because some 
+  // is released into the environment as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'source' [[
-    prop EnergyRepresentation.energyType setTo 'none'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop Algae.energyLevel add 50
-    // we are losing 50 of the hundred, so not that in the global
+
+    // we are losing 50 of the hundred as heat, so put that in the global
+    // note that these are not real numbers - they are just meant to give an idea
+    // of what is happening
     prop global.energyReleasedAsHeat add 50
 
-
-    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
-
+    // have the algae glow so that we know it is getting some energy 
     featProp Algae.Costume.glow setTo 1
-
   ]]
+
+  // note that we are representing the use of energy, 
+  // whether we got new energy from the sun or not
+  // because plants always need some energy to live
+  prop EnergyRepresentation.energyType setTo 'usingSun'
 ]]
-
-
 
 when EnergyRepresentation lastTouches Algae [[
 
-  // if you have no energy type, take some energy from the algae
-  // note that you can only take energy from algae if they have more than 25
-  // otherwise they are too small to eat
-  ifProp EnergyRepresentation.energyType equal 'using' [[
-    ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
-
-      // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
-      prop Algae.energyLevel sub 25
-      prop EnergyRepresentation.energyLevel add 25
-      // we are losing 50 of the hundred, so not that in the global
-      prop global.energyReleasedAsHeat add 25
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
-    ]]
+  // If we didn't have enough energy, then just set to none and show that we are empty
+  // so that we know we need to go find some
+  ifProp Algae.energyLevel lessThan 25 [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
   ]]
 
-  // ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
+  // Otherwise, if the algae has at least 25 energy, then carry 25 away with you
+  // if not, then the algae is too small to eat,  so revert to none and look for more energy
+  ifProp Algae.energyLevel greaterThan 25 [[
 
-  ifProp EnergyRepresentation.energyType equal 'using' [[
-    prop EnergyRepresentation.energyType setTo 'none'
+    // The algae loses some energy because we pretend the fish is eating it
+    // and we carry it out to give to a fish
+    prop Algae.energyLevel sub 25
+    prop EnergyRepresentation.energyLevel add 25
+
+    // we are now carrying algae energy
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
   ]]
-
-  // OR
-
-  ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
-  ]]
-
 ]]
 
+// ** ====================================================
+// ** INTERACTING WITH THE FISH
+// ** ====================================================
 
 when EnergyRepresentation firstTouches Fish [[
 
@@ -473,13 +477,11 @@ when EnergyRepresentation firstTouches Fish [[
     // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
     featProp Fish.Costume.glow setTo 1
 
-
   ]]
 
 ]]
 
 when EnergyRepresentation lastTouches Fish [[
-
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
