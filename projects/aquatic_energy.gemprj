@@ -6,9 +6,12 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
-    "bgcolor": 255,
+    "bgcolor": 11393254,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
