@@ -474,7 +474,7 @@ when EnergyRepresentation firstTouches Fish [[
     prop Fish.energyLevel add 10
 
     // we are some of the energy to heat while digesting the algae
-    // so note that in the global vriable
+    // so note that in the global variable
     prop global.energyReleasedAsHeat add 15
 
     // have the Fish glow so that we know it is getting some energy 
@@ -787,15 +787,15 @@ prop y setTo -398.87`
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 484.20
-prop y setTo 154.83`
+      "initScript": `prop x setTo 499.16
+prop y setTo 171.49`
     },
     {
       "id": "8",
       "label": "Energy In System Graph",
       "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 478.84
-prop y setTo -30.50`
+      "initScript": `prop x setTo 494.64
+prop y setTo -31.13`
     },
     {
       "id": "9",
@@ -850,8 +850,8 @@ prop y setTo  100`
       "id": "16",
       "label": "HealthMeter16",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 470.52
-prop y setTo 338.52`
+      "initScript": `prop x setTo 500.14
+prop y setTo 344.04`
     }
   ]
 }
