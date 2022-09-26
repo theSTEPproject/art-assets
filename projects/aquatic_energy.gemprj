@@ -419,9 +419,12 @@ when EnergyRepresentation firstTouches Algae [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Algae.energyLevel add 50
 
-    // we are losing 50 of the hundred as heat, so put that in the global
-    // note that these are not real numbers - they are just meant to give an idea
-    // of what is happening
+    // EXPLANATION: we are losing 50 of the hundred as heat, so put that in the global
+    // all biological processes for using and converting energy are imperfect and lose
+    // some energy in the process. While we can measure exactlly how much, these numbers
+    // are made up to help illustrate the process.
+    // Add the lost energy to the global chaaracter so that we can keep track of it 
+    // and even graph it if we want to.
     prop global.energyReleasedAsHeat add 50
 
     // have the algae glow so that we know it is getting some energy 
@@ -540,7 +543,7 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION: 
+// EXPLANATION:
 // This is a graph of energy lost to heat from all charaacters
 // since there are lots of characters, rather than sume them up one type
 // at a time, use a global variabe to track that excess heat
@@ -564,11 +567,11 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-// Graph the lostEnergy, and update if that property does 
+// Graph the lostEnergy, and update if that property does
 featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 
-// Set the graph label 
-featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy From Heat'
+// Set the graph label
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy As Heat'
 
 // Create the y-axis bottom
 featCall GraphLostEnergy.Population createAgent TextLabel [[
@@ -587,15 +590,14 @@ featCall GraphLostEnergy.Population createAgent TextLabel [[
 
 # PROGRAM UPDATE
 
-// Once every second or so ... 
+// Once every second or so ...
 onEvent Tick [[
 
-  // update thee lost energy property by checking the global 
+  // update thee lost energy property by checking the global
   // energyReleasedAsHeat that we are tracking within the global character
   propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
-]]
-`
+]]`
     },
     {
       "name": "GraphEnergyInEcosystem",
