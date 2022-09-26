@@ -572,14 +572,14 @@ featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy From Heat'
 
 // Create the y-axis bottom
 featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 90
+  prop TextLabel.x sub 65
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 75
+  prop TextLabel.x sub 35
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -632,14 +632,14 @@ featProp GraphEnergyInEcosystem.Graphing.text setTo 'Energy in Ecosystem'
 
 // Create the y-axis bottom
 featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 90
+  prop TextLabel.x sub 65
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 75
+  prop TextLabel.x sub 35
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -817,8 +817,8 @@ prop y setTo 174.13`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 438.81
-prop y setTo -398.87`
+      "initScript": `prop x setTo 458.01
+prop y setTo -396.15`
     },
     {
       "id": "7",

@@ -766,14 +766,14 @@ featPropPop GraphAlgaeEnergy.Graphing.text
 
 // Create the y-axis bottom
 featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 90
+  prop TextLabel.x sub 65
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 75
+  prop TextLabel.x sub 35
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -839,14 +839,14 @@ featPropPop GraphFishEnergy.Graphing.text
 
 // Create the y-axis bottom
 featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 90
+  prop TextLabel.x sub 65
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 75
+  prop TextLabel.x sub 35
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -1020,23 +1020,23 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 458.30
-prop y setTo -406.11
+      "initScript": `prop x setTo 450.04
+prop y setTo -407.08
 featProp Graphing text setTo 'Energy Key:'`
     },
     {
       "id": "1701",
       "label": "HighLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 454.09
-prop y setTo -367.51
+      "initScript": `prop x setTo 478
+prop y setTo -369.91
 featProp Graphing text setTo 'High'`
     },
     {
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455.46
+      "initScript": `prop x setTo 468
 prop y setTo -337.29
 featProp Graphing text setTo 'Medium'`
     },
@@ -1044,7 +1044,7 @@ featProp Graphing text setTo 'Medium'`
       "id": "1703",
       "label": "LowLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 452.31
+      "initScript": `prop x setTo 478
 prop y setTo -305.94
 featProp Graphing text setTo 'Low'`
     },
