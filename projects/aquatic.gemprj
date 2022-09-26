@@ -268,6 +268,7 @@ every 1 runAtStart [[
 
 # PROGRAM INIT
 
+// Setup some script features the Algae use
 addFeature Costume
 addFeature Movement
 addFeature Population
@@ -275,6 +276,7 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 
+// EXPLANATION Here is where we setup how Algae work
 // Algae are producers, which means they take in energy from the sun
 // and convert that to food. Producers are eaten by consumers like fish.
 addProp energyType string 'producer'
@@ -332,7 +334,7 @@ prop Algae.zIndex setTo -110
 // This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAtStart [[
-    // This is the script that says how much energy the algae gains whenever it touches the sun
+    // EXPLANATION: This is the script that says how much energy the algae gains whenever it touches the sun
     // This much energy is added every second
     // STUDENTS_MAY_CHANGE: if you make this number higher, the algae will grow back faster
     prop Algae.energyLevel add 5
