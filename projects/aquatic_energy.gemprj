@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 11393254,
     "roundsCanLoop": true,
@@ -205,26 +202,27 @@ every 2 runAtStart [[
   propPop Fish.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the fish is
-  // sated
-  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+  
+  // The fish is doing well
+  ifProp Fish.energyLevel greaterThan 50 [[
     featProp Fish.Costume.costumeName setTo 'fish.png'
     // Green
     featProp Fish.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+  // The fish is hungry
+  ifProp Fish.energyLevel lessThan 50 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+  // The fish is starviinig
+  ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Red
     featProp Fish.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+  // The fish is dead 
+  ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.currentFrame setTo 2
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
