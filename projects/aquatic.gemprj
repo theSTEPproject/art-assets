@@ -398,7 +398,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 
 // EXPLANATION:
-// The Sunbeam character represents a beam of light that moves across the water 
+// The Sunbeam character represents a beam of light that moves across the water
 // as the sun moves in the sky. This is a source of energy that the producers
 // use to convert into their own energy and matter (see the algae script for details)
 
@@ -426,16 +426,16 @@ prop Sunbeam.y setTo -180
 // it comes back on from the other side representing the next day though we don't bother shwwing night
 # PROGRAM UPDATE
 
-// move the sun every 1/2 second 
+// move the sun every 1/2 second
 every 0.1 runAtStart [[
 
   // STUDENTS_MAY_CHANGE the sunbeams speed
   // Move the sun a little every 1/2 second ... making this number bigger moves it faster
   prop Sunbeam.x add 3
 
-  // If the sunbeam goes off the right edge then start over on the left 
+  // If the sunbeam goes off the right edge then start over on the left
   ifProp Sunbeam.x greaterThan 400 [[
-    prop Sunbeam.x setTo 0
+    prop Sunbeam.x setTo -400
   ]]
 ]]`
     },
