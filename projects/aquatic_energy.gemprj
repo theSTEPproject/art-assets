@@ -140,9 +140,9 @@ addFeature Costume
 addFeature Physics
 
 // set the artworrk for the sun, color it, and then set its size
-featProp Sun.Costume.costumeName setTo 'circle.json'
-featCall Sun.Costume setColorize 255 215 0
-featProp Sun.Costume.scale setTo 0.6
+featProp Sun.Costume.costumeName setTo 'sun.png'
+//featCall Sun.Costume setColorize 255 215 0
+featProp Sun.Costume.scale setTo 1.3
 
 // This makess sure the sun is behind everything else
 prop Sun.zIndex setTo 0
@@ -785,7 +785,7 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
       "label": "Sunbeam",
       "bpid": "Sun",
       "initScript": `prop x setTo -304.57
-prop y setTo -309.30`
+prop y setTo -309.3`
     },
     {
       "id": "1",

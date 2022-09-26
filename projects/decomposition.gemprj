@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x98f5ff",
     "roundsCanLoop": true,
@@ -874,41 +877,57 @@ onEvent Tick [[
 ]]`
     },
     {
-      "name": "tomato",
-      "scriptText": `# BLUEPRINT tomato
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
 addFeature Costume
-featProp tomato.Costume.costumeName setTo 'tomato.png' 0
-featProp tomato.Costume.scale setTo 1
-addFeature Touches
+featProp agent.Costume.costumeName setTo 'tomato.png'
+
 addFeature Physics
-featCall tomato.Touches monitor 'Bunny' b2b
-// set tomato energy
-addProp energyLevel number 10
-prop tomato.energyLevel setMax 10
-prop tomato.energyLevel setMin 0
+featProp Tomato.Costume.scale setTo 0.2
 
-// add energy meter
+addProp energyType string 'waste'
+
+// setup to track nutrients and begin at 1/2 way
+addProp matterLevel number 50
+prop Tomato.matterLevel setMax 50
+prop Tomato.matterLevel setMin 0
+
+// use a widget to depict the current nutrients
 addFeature Graphing
-featProp tomato.Graphing.meterProp setTo 'energyLevel'
-// when tomato energy goes to 0 it should vanish
+featProp Tomato.Graphing.meterProp setTo 'matterLevel'
 
-// tomato can be eaten by bunny
-
-// when eaten, tomato energy goes down
-
-// over time, tomato 'rots'
-
+// set the waste to be purple because it has nutrients, not energy
+featProp Tomato.Graphing.meterColor setTo 5783616
 
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
+every 1 runAtStart [[
+ \tprop Tomato.matterLevel sub 1
+  \t
+  \tifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato.png'
+  ]]
+ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato_beg_decomp.png'
+  ]]
+  ifExpr {{ Tomato.getProp('matterLevel').value < 25 && Tomato.getProp('matterLevel').value > 10 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato_mid_decomp.png'
+  ]]
+  ifExpr {{ Tomato.getProp('matterLevel').value < 10 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'waste.png'
+  ]]
+
+]]
+
+`
     }
   ],
   "instances": [
@@ -1138,8 +1157,8 @@ prop y setTo -90`
       "id": "1813",
       "label": "Soil1813",
       "bpid": "Soil",
-      "initScript": `prop x setTo 94.9
-prop y setTo -109.23`
+      "initScript": `prop x setTo 99.80
+prop y setTo -102.19`
     },
     {
       "id": "1814",
@@ -1192,24 +1211,17 @@ prop y setTo 228.20`
     },
     {
       "id": "1821",
-      "label": "tomato1821",
-      "bpid": "tomato",
-      "initScript": `prop x setTo -239.47
-prop y setTo 199.38`
+      "label": "Tomato1821",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo -8
+prop y setTo 7`
     },
     {
       "id": "1822",
-      "label": "tomato1822",
-      "bpid": "tomato",
-      "initScript": `prop x setTo 264.88
-prop y setTo 244.25`
-    },
-    {
-      "id": "1823",
-      "label": "tomato1823",
-      "bpid": "tomato",
-      "initScript": `prop x setTo -25.72
-prop y setTo -128.47`
+      "label": "Tomato1822",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo -42
+prop y setTo -29`
     }
   ]
 }
