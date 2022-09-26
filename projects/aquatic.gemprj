@@ -769,14 +769,14 @@ featPropPop GraphAlgaeEnergy.Graphing.text
 
 // Create the y-axis bottom
 featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 65
+  prop TextLabel.x sub 80
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 35
+  prop TextLabel.x sub 70
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -842,14 +842,14 @@ featPropPop GraphFishEnergy.Graphing.text
 
 // Create the y-axis bottom
 featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 65
+  prop TextLabel.x sub 80
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 35
+  prop TextLabel.x sub 70
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -1023,8 +1023,8 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 450.04
-prop y setTo -407.08
+      "initScript": `prop x setTo 456.78
+prop y setTo -404.20
 featProp Graphing text setTo 'Energy Key:'`
     },
     {

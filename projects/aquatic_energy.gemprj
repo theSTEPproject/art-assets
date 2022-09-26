@@ -575,14 +575,14 @@ featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy As Heat'
 
 // Create the y-axis bottom
 featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 65
+  prop TextLabel.x sub 80
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 35
+  prop TextLabel.x sub 70
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
@@ -634,14 +634,14 @@ featProp GraphEnergyInEcosystem.Graphing.text setTo 'Energy in Ecosystem'
 
 // Create the y-axis bottom
 featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 65
+  prop TextLabel.x sub 80
   prop TextLabel.y sub 110
   featProp TextLabel.Graphing.text setTo '1000 -'
 ]]
 
 // Create the y-axis top
 featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 35
+  prop TextLabel.x sub 70
   prop TextLabel.y sub 25
   featProp TextLabel.Graphing.text setTo '0 -'
 ]]
