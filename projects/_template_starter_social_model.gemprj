@@ -51,7 +51,7 @@ featProp PC.Costume.costumeName setTo 'fish.png'
 featProp PC.Costume.scale setTo 0.3
 
 // add other features
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Physics
 addFeature Touches
 
@@ -69,7 +69,7 @@ addProp role string 'one'
 addProp virus boolean false
 
 // display the meter if relevant
-// featCall agent.AgentWidgets bindMeterTo energy
+// featCall agent.Graphing bindMeterTo energy
 
 # PROGRAM EVENT
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
@@ -94,11 +94,11 @@ every 1 [[
 every 1 runAtStart [[
   // insert code here to run all the time
   ifExpr {{ agent.getProp('virus').value == true }} [[
-    featProp agent.AgentWidgets.text setTo '🤢'
+    featProp agent.Graphing.text setTo '🤢'
   ]]
 
   ifExpr {{ agent.getProp('virus').value == false }} [[
-    featProp agent.AgentWidgets.text setTo '🙂'
+    featProp agent.Graphing.text setTo '🙂'
   ]]
 
 ]]`
@@ -118,7 +118,7 @@ featProp NPC.Costume.scale setTo 0.3
 
 // add other features
 addFeature Movement
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Physics
 addFeature Touches
 
@@ -133,7 +133,7 @@ addProp role string 'one'
 addProp virus boolean false
 
 // display the meter if relevant
-// featCall agent.AgentWidgets bindMeterTo energy
+// featCall agent.Graphing bindMeterTo energy
 
 // Set the NPC to move if relevant (wander by default)
 featProp agent.Movement.movementType setTo 'wander'
@@ -146,11 +146,11 @@ featProp agent.Movement.distance setTo 0.2
 every 1 runAtStart [[
   // insert code here to run all the time
   ifExpr {{ agent.getProp('virus').value == true }} [[
-    featProp agent.AgentWidgets.text setTo '🤢'
+    featProp agent.Graphing.text setTo '🤢'
   ]]
 
   ifExpr {{ agent.getProp('virus').value == false }} [[
-    featProp agent.AgentWidgets.text setTo '🙂'
+    featProp agent.Graphing.text setTo '🙂'
   ]]
 
 ]]`

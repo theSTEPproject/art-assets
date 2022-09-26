@@ -86,10 +86,10 @@ prop Bunny.energyLevel setMin 0
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
+addFeature Graphing
+featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 
-featProp Bunny.AgentWidgets.meterColor setTo 65280
+featProp Bunny.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 2 runAtStart [[
@@ -103,19 +103,19 @@ every 2 runAtStart [[
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featProp Bunny.Costume.currentFr
     // Green
-    featProp Bunny.AgentWidgets.meterColor setTo 65280
+    featProp Bunny.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Orange
-    featProp Bunny.AgentWidgets.meterColor setTo 16737792
+    featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Red
-    featProp Bunny.AgentWidgets.meterColor setTo 16711680
+    featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
@@ -126,7 +126,7 @@ featProp Bunny.Costume.costumeName setTo 'bunny.png'
   ]]
 
   // set meter to mirror energyLevel
-  featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 
 
 ]]
@@ -157,10 +157,10 @@ prop Worm.energyLevel setMin 0
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Worm.AgentWidgets.meterProp setTo energyLevel
+addFeature Graphing
+featProp Worm.Graphing.meterProp setTo energyLevel
 
-featProp Worm.AgentWidgets.meterColor setTo 65280
+featProp Worm.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
   every 2 runAtStart [[
@@ -174,19 +174,19 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featProp Worm.Costume.currentFrame setTo 0
     // Green
-    featProp Worm.AgentWidgets.meterColor setTo 65280
+    featProp Worm.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Orange
-    featProp Worm.AgentWidgets.meterColor setTo 16737792
+    featProp Worm.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Red
-    featProp Worm.AgentWidgets.meterColor setTo 16711680
+    featProp Worm.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
@@ -197,7 +197,7 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
   ]]
 
   // set meter to mirror energyLevel
-  featProp Worm.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Worm.Graphing.meterProp setTo 'energyLevel'
 
 ]]
 
@@ -226,11 +226,11 @@ prop Waste.matterLevel setMax 100
 prop Waste.matterLevel setMin 0
 
 // use a widget to depict the current nutrients
-addFeature AgentWidgets
-featProp Waste.AgentWidgets.meterProp setTo 'matterLevel'
+addFeature Graphing
+featProp Waste.Graphing.meterProp setTo 'matterLevel'
 
 // set the waste to be purple because it has nutrients, not energy
-featProp Waste.AgentWidgets.meterColor setTo 5783616
+featProp Waste.Graphing.meterColor setTo 5783616
 
 // required directive
 # PROGRAM UPDATE`
@@ -281,11 +281,11 @@ prop Plant.matter setMax 30
 prop Plant.matter setMin 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Plant.AgentWidgets.meterProp setTo 'energyLevel'
+addFeature Graphing
+featProp Plant.Graphing.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp Plant.AgentWidgets.meterColor setTo 65280
-featCall Plant.AgentWidgets setMeterPosition 'inside-left'
+featProp Plant.Graphing.meterColor setTo 65280
+featCall Plant.Graphing setMeterPosition 'inside-left'
 
 addFeature Touches
 
@@ -350,17 +350,17 @@ every 1 runAtStart [[
   // doing great
   ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
     // Green
-    featProp Plant.AgentWidgets.meterColor setTo 65280
+    featProp Plant.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
   ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
     // Orange
-    featProp Plant.AgentWidgets.meterColor setTo 16737792
+    featProp Plant.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
   ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
     // Red
-    featProp Plant.AgentWidgets.meterColor setTo 16711680
+    featProp Plant.Graphing.meterColor setTo 16711680
 
   ]]
 ]]`
@@ -659,7 +659,7 @@ when EnergyRepresentation centerFirstTouches Soil [[
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
 # PROGRAM DEFINE
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Costume
 featProp TextLabel.Costume.costumeName setTo 'onexone.json'`
     },
@@ -684,19 +684,19 @@ addFeature Physics
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM INIT
-      addFeature AgentWidgets
+      addFeature Graphing
       addFeature Costume
       featProp Timer.Costume.costumeName setTo 'onexone.json'
       addProp time number 0
       prop Timer.zIndex setTo 500
 
-      featProp Timer.AgentWidgets.text setTo 'Time: 0'
+      featProp Timer.Graphing.text setTo 'Time: 0'
 
       # PROGRAM UPDATE
   every 1 runAtStart [[
         prop Timer.time add 1
         exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop Timer.AgentWidgets.text
+        featPropPop Timer.Graphing.text
       ]]`
     },
     {
@@ -709,9 +709,9 @@ addFeature Physics
 addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Population
-featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+featProp EnergyInSystem.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp totalEnergy number 500
@@ -724,7 +724,7 @@ addProp totalPlantEnergy number 0
 addProp totalBunnyEnergy number 0
 
 
-featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
 
 # PROGRAM INIT
 // make sure something displays with some initial text, on bottom right at first
@@ -732,7 +732,7 @@ prop EnergyInSystem.x setTo 495
 prop EnergyInSystem.y setTo 187
 prop EnergyInSystem.zIndex setTo 300
 
-featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 
 # PROGRAM EVENT
 
@@ -771,9 +771,9 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature Costume
 featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Population
-featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
 
 
 
@@ -782,14 +782,14 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
+featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
 prop GraphLostEnergy.x setTo 495
 prop GraphLostEnergy.y setTo 350
 prop GraphLostEnergy.zIndex setTo 300
 
-featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy'
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy'
 
 # PROGRAM UPDATE
 
@@ -849,14 +849,14 @@ prop Soil.zIndex setTo -200
 addFeature Touches
 featCall Soil.Touches monitor 'Worm' b2b
 
-addFeature AgentWidgets
+addFeature Graphing
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp Soil.AgentWidgets.meterProp setTo 'nutrients'
+featProp Soil.Graphing.meterProp setTo 'nutrients'
 
-featCall Soil.AgentWidgets setMeterPosition 'inside-left'
+featCall Soil.Graphing setMeterPosition 'inside-left'
 // violet
-featProp Soil.AgentWidgets.meterColor setTo 9055202
-featProp Soil.AgentWidgets.text setTo ''
+featProp Soil.Graphing.meterColor setTo 9055202
+featProp Soil.Graphing.text setTo ''
 
 # PROGRAM UPDATE
 
@@ -985,7 +985,7 @@ prop y setTo 142.08`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -400
-featProp AgentWidgets text setTo 'Key:'`
+featProp Graphing text setTo 'Key:'`
     },
     {
       "id": "1701",
@@ -993,7 +993,7 @@ featProp AgentWidgets text setTo 'Key:'`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -373
-featProp AgentWidgets text setTo 'Energy'
+featProp Graphing text setTo 'Energy'
 prop zIndex setTo 100`
     },
     {
@@ -1002,7 +1002,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -340
-featProp AgentWidgets text setTo 'Nutrients'
+featProp Graphing text setTo 'Nutrients'
 prop zIndex setTo 100`
     },
     {
@@ -1011,7 +1011,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -308
-featProp AgentWidgets text setTo 'Matter'
+featProp Graphing text setTo 'Matter'
 prop zIndex setTo 100`
     },
     {
