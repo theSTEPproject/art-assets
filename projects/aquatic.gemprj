@@ -123,6 +123,7 @@ every 1 runAtStart [[
 
 // EXPLANATION:
 // This is the Fish character
+// DEFINITION: Consumer 
 // In this ecosystem model, we have producers and consumers that interact
 // The Fish are consumers, eating the Algae, which are producers
 // See the Algae script for details of how it produces energy via the Sunbeams
