@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 11393254,
     "roundsCanLoop": true,
@@ -884,8 +887,8 @@ prop y setTo  100`
       "id": "16",
       "label": "HealthMeter",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 528
-prop y setTo 344.04`
+      "initScript": `prop x setTo 530.69
+prop y setTo 321.50`
     }
   ]
 }
