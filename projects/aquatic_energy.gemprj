@@ -77,7 +77,7 @@ addProp averageEnergyAllOrganisms number 0
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  // 🔎 WHAT DOES THIS DO?
+  // 🔎 WHAT DOES THIS SCRIPT DO?
   // 🔎 This secript sets up all of the different variables we might want to use 
   // 🔎 inside of the health meter including several average energy levels. 
 
@@ -168,7 +168,7 @@ addProp energyType string 'source'
 // 🔎 WHAT DO THESE MEAN?
 // 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
 // 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is conerted to energy through digestion
+// 🔎 The matter that consumers eat is converted to energy through digestion
 
 # PROGRAM INIT
 // 🔎 WHAT DOES THIS SCRIPT DO?
@@ -251,16 +251,16 @@ every 2 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
- // 🔎 WHAT DOES THIS CHARACTER DO?
-// The algae is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The algae is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 // 🔎 WHAT DO THESE MEAN?
 // 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
 // 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is conerted to energy through digestion.
+// 🔎 The matter that consumers eat is converted to energy through digestion.
 
 
 # PROGRAM INIT
@@ -424,16 +424,17 @@ when EnergyRepresentation firstTouches Algae [[
   // is released into the environment as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'source' [[
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
+    // ✏️ LETS CHANGE THIS to alter how much energy the algae gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop Algae.energyLevel add 50
 
-    // EXPLANATION: we are losing 50 of the hundred as heat, so put that in the global
-    // all biological processes for using and converting energy are imperfect and lose
-    // some energy in the process. While we can measure exactlly how much, these numbers
-    // are made up to help illustrate the process.
-    // Add the lost energy to the global chaaracter so that we can keep track of it 
-    // and even graph it if we want to.
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 We are losing 50 of the hundred as heat, so put that in the global
+    // 🔎 all biological processes for using and converting energy are imperfect and lose
+    // 🔎 some energy in the process. While we can measure exactlly how much, these numbers
+    // 🔎 are made up to help illustrate the process.
+    // 🔎 Add the lost energy to the global chaaracter so that we can keep track of it 
+    // 🔎 and even graph it if we want to.
     prop global.energyReleasedAsHeat add 50
 
     // have the algae glow so that we know it is getting some energy 
@@ -485,7 +486,7 @@ when EnergyRepresentation firstTouches Fish [[
   // then let's add some of that to the fish
   ifProp EnergyRepresentation.energyType equal 'producer' [[
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+    // ✏️  THIS to alter how much energy the algae gets from the sun, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Fish.energyLevel add 10
 
@@ -516,21 +517,21 @@ when EnergyRepresentation lastTouches Fish [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a timer character so that we can see how much time has passed in our model
-// We can use that time to think about how long the ecosystem survives if we want 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want 
 
 # PROGRAM INIT
 
-// setup features
+// Setup features
 addFeature Graphing
 addFeature Costume
 
-// hide the actual art since we just want the text to displaay
+// Hide the actual art since we just want the text to displaay
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 featProp Timer.Costume.scale setTo 1
 
-// a property to track the time
+// A property to track the time
 addProp time number 0
 
 // set the initial label and then update it below during update
@@ -552,10 +553,10 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a graph of energy lost to heat from all charaacters
-// since there are lots of characters, rather than sume them up one type
-// at a time, use a global variabe to track that excess heat
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a graph of energy lost to heat from all charaacters
+// 🔎 since there are lots of characters, rather than sume them up one type
+// 🔎 at a time, use a global variabe to track that excess heat
 
 # PROGRAM INIT
 
@@ -705,9 +706,9 @@ prop Background.zIndex setTo -999
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a meter to show the health of the entire ecosystem
-// Initialy it only shows fish health, but we want to explore changing this
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows fish health, but we want to explore changing this
 
 # PROGRAM INIT
 addFeature Population
@@ -719,7 +720,7 @@ addProp healthLevel number 100
 prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
-// STUDENTS_MAY_CHANGE the meter label
+// ✏️ LETS CHANGE THIS the meter label
 // Set the text under the meter to label it
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
@@ -740,18 +741,17 @@ featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
 onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
-  // QUESTION what does it mean to say an ecoyststem is healthy?
-  // Nathan thinks that the fish are the most imporatant thing in the pond
-  // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
-  // STUDENTS_MAY_CHANGE what the meter displays
-  // What property do we want to use?
+  // 🔎 QUESTION what does it mean to say an ecoyststem is healthy?
+  // 🔎 Nathan thinks that the fish are the most imporatant thing in the pond
+  // 🔎 So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE THIS what the meter displays
+  // ✏️ What property do we want to use?
   propPush global.averageFishEnergy
 
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
 
-  // STUDENTS_MAY_CHANGE the meter colors
-  // Finally, set the color of the energy meter depending on how high it is (or something else)
+  // ✏️ LETS CHANGE THIS section to change what color the meter is at different healthLevels
   ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
     // set the meter to green
     featProp HealthMeter.Graphing.meterColor setTo 65280
@@ -774,8 +774,8 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is just a text label for use in the key or somewhere else to display information
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a text label for use in the key or somewhere else to display information
 
 # PROGRAM INIT
 addFeature Graphing

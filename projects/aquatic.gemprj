@@ -121,7 +121,7 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 
 
-// 🔎 WHAT DOES THIS DO?
+// 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the Fish character
 // 🔎 In this ecosystem model, we have producers and consumers that interact
 // 🔎 The Fish are consumers, eating the Algae, which are producers
@@ -130,7 +130,7 @@ every 1 runAtStart [[
 // 🔎 WHAT DO THESE MEAN?
 // 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
 // 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is conerted to energy through digestion
+// 🔎 The matter that consumers eat is converted to energy through digestion
 
 
 # PROGRAM INIT
@@ -167,7 +167,7 @@ onEvent Start [[
   // to wander around randomly, and eat any algae that they bump into
   featProp Fish.Movement.movementType setTo 'wander'
 
-  // STUDENTS_MAY_CHANGE to make fish move faster when they are automatic
+  // ✏️ LETS CHANGE THIS to make fish move faster when they are automatic
   featProp Fish.Movement.distance setTo 2
 
 ]]
@@ -218,8 +218,8 @@ when Fish lastTouches Algae [[
 
 
 every 1 runAtStart [[
-  // STUDENTS_MAY_CHANGE - Every second, the Fish use 3 energy. If this number is higher, they will
-  // lose energy faster
+  // ✏️ LETS CHANGE THIS
+  // ✏️ Every second, the Fish use 3 energy. If this number is higher, they will lose energy faster
   prop Fish.energyLevel sub 3
 
   // sated
@@ -270,7 +270,7 @@ every 1 runAtStart [[
 // 🔎 WHAT DO THESE MEAN?
 // 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
 // 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is conerted to energy through digestion.
+// 🔎 The matter that consumers eat is converted to energy through digestion.
 
 # PROGRAM INIT
 
@@ -339,9 +339,9 @@ prop Algae.zIndex setTo -110
 // This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAtStart [[
-    // EXPLANATION: This is the script that says how much energy the algae gains whenever it touches the sun
-    // This much energy is added every second
-    // STUDENTS_MAY_CHANGE: if you make this number higher, the algae will grow back faster
+    // 🔎 WHAT DOES THIS DO This is the script that says how much energy the algae gains whenever it touches the sun
+    // 🔎 This much energy is added every second
+    // ✏️ LETS CHANGE THIS: if you make this number higher, the algae will grow back faster
     prop Algae.energyLevel add 5
 
     // glow so that we know something is happening
@@ -360,9 +360,9 @@ when Algae lastTouches Sunbeam [[
 every 1 runAtStart [[
 
   // The algae uses a little bit of energy every second to stay alive
-  // STUDENTS_MAY_CHANGE: Let's change this number if we want them to
-  // use more or less energy every second . A higher number will mean they
-  // lose energy faster.
+  // ✏️ LETS CHANGE THIS: Let's change this number if we want them to
+  // ✏️ use more or less energy every second . A higher number will mean they
+  // ✏️ lose energy faster.
   prop Algae.energyLevel sub 1
 
   // Set the color of the energy meter depending on the amount of energy that the algae has
@@ -401,10 +401,10 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// The Sunbeam character represents a beam of light that moves across the water
-// as the sun moves in the sky. This is a source of energy that the producers
-// use to convert into their own energy and matter (see the algae script for details)
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The Sunbeam character represents a beam of light that moves across the water
+// 🔎 as the sun moves in the sky. This is a source of energy that the producers
+// 🔎 use to convert into their own energy and matter (see the algae script for details)
 
 # PROGRAM INIT
 addFeature Costume
@@ -415,10 +415,10 @@ featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 // the sun is a source of energy
 addProp energyType string 'source'
 
-// STUDENTS_MAY_CHANGE - how wide the sunbeam is
+// ✏️ LETS CHANGE THIS - how wide the sunbeam is
 featProp Sunbeam.Costume.scale setTo 1
 
-// STUDENTS_MAY_CHANGE - how tall the sunbeam is
+// ✏️ LETS CHANGE THIS - how tall the sunbeam is
 featProp Sunbeam.Costume.scaleY setTo 2.5
 
 // default position for moving across the top
@@ -433,8 +433,8 @@ prop Sunbeam.y setTo -180
 // move the sun every 1/2 second
 every 0.1 runAtStart [[
 
-  // STUDENTS_MAY_CHANGE the sunbeams speed
-  // Move the sun a little every 1/2 second ... making this number bigger moves it faster
+  // ✏️ LETS CHANGE THIS the sunbeams speed
+  // ✏️ Move the sun a little every 1/2 second ... making this number bigger moves it faster
   prop Sunbeam.x add 3
 
   // If the sunbeam goes off the right edge then start over on the left
@@ -450,9 +450,9 @@ every 0.1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a timer character so that we can see how much time has passed in our model
-// We can use that time to think about how long the ecosystem survives if we want 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want 
 
 # PROGRAM INIT
 addFeature Graphing
@@ -483,9 +483,9 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This character is just a picture of a rock to make it feel a bit more realistic
-// and also so that students can think about what happens if fish hide behind the rock
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character is just a picture of a rock to make it feel a bit more realistic
+// 🔎 and also so that students can think about what happens if fish hide behind the rock
 
 # PROGRAM INIT
 addFeature Costume
@@ -505,7 +505,7 @@ featProp Rock.Costume.costumeName setTo 'boulder.json'
 # TAG isPTrackControllable false
 
 
-// EXPLANATION:
+// 🔎 WHAT DOES THIS CHARACTER DO?
 // This is a predator character
 // The predator is a consumer that either eats other consumers (carnivore)
 // or a mix of consumers and producers such as algae (omnivore)
@@ -532,9 +532,9 @@ prop Predator.energyLevel setMin 0
 // The predator is a consumer, that consumes energy
 addProp energyType string 'consumer'
 
-// STUDENTS_MAY_CHANGE
-// set to carnivore or omnivore
-// this setting determines whether we will eat fish or fish and algae
+// ✏️ LETS CHANGE THIS
+// ✏️ set to carnivore or omnivore
+// ✏️ this setting determines whether we will eat fish or fish and algae
 addProp consumerType string 'carnivore'
 
 addProp health string 'healthy'
@@ -666,10 +666,10 @@ when Predator lastTouches Trash [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This character represents trash that was thrown in the water
-// If a predator eats it, it is hurt and can't eat as much - see the 
-// predator script to see how that works 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character represents trash that was thrown in the water
+// 🔎 If a predator eats it, it is hurt and can't eat as much - see the 
+// 🔎 predator script to see how that works 
 
 # PROGRAM INIT
 addFeature Costume
@@ -690,8 +690,8 @@ featProp Trash.Costume.scale setTo 0.05
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is just a text label for use in the key or somewhere else to display information
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a text label for use in the key or somewhere else to display information
 
 # PROGRAM INIT
 addFeature Graphing
@@ -710,9 +710,9 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is just a color square for use in the KEY. See the instance for where the size and color are set 
-// (e.g., go to map setup) 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set 
+// 🔎 (e.g., go to map setup) 
 
 # PROGRAM INIT
 addFeature Costume
@@ -720,7 +720,7 @@ featProp ColorChip.Costume.costumeName setTo 'square.json'
 
 addFeature Physics
 
-// required directive
+// this is required by GEM-STEP in case we need to udpate this ecery second
 # PROGRAM UPDATE
 
 `
@@ -740,10 +740,10 @@ addProp countType string 'avg'
 addProp variableToGraph string 'energyLevel'
 addProp labelText string 'Algae energyLevel'
 
-// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
-// -- Character options: Fish, Algae
-// -- Variable options: energyLevel
-// -- Population options: sum, avg, min, max
+// ✏️ LETS CHANGE THIS - change the character, variable, and possible countTypeto a different name as needed
+// ✏️ -- Character options: Fish, Algae
+// ✏️ -- Variable options: energyLevel
+// ✏️ -- Population options: sum, avg, min, max
 prop GraphAlgaeEnergy.characterType setTo 'Algae'
 prop GraphAlgaeEnergy.countType setTo 'avg'
 prop GraphAlgaeEnergy.variableToGraph setTo 'energyLevel'
@@ -816,7 +816,7 @@ addProp countType string 'avg'
 addProp variableToGraph string 'energyLevel'
 addProp labelText string 'Fish energyLevel'
 
-// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+// ✏️ LETS CHANGE THIS - change the character, variable, and possible countTypeto a different name as needed
 // -- Character options: Fish, Algae
 // -- Variable options: energyLevel
 // -- Population options: sum, avg, min, max
@@ -887,9 +887,9 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a meter to show the health of the entire ecosystem
-// Initialy it only shows fish health, but we want to explore changing this
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows fish health, but we want to explore changing this
 
 # PROGRAM INIT
 addFeature Population
@@ -901,8 +901,8 @@ addProp healthLevel number 100
 prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
-// STUDENTS_MAY_CHANGE the meter label
-// Set the text under the meter to label it
+// ✏️ LETS CHANGE THIS the meter label
+// ✏️ Set the text under the meter to label it
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
 // Make costume an invisible dot so we only see the meter
@@ -925,15 +925,13 @@ onEvent Tick [[
   // QUESTION what does it mean to say an ecoyststem is healthy?
   // Nathan thinks that the fish are the most imporatant thing in the pond
   // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
-  // STUDENTS_MAY_CHANGE what the meter displays
-  // What property do we want to use?
+  // ✏️ LETS CHANGE what variable the meter displays as health
   propPush global.averageFishEnergy
 
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
 
-  // STUDENTS_MAY_CHANGE the meter colors
-  // Finally, set the color of the energy meter depending on how high it is (or something else)
+  // ✏️ LETS CHANGE the meter colors to help show how well the ecosystem is doing
   ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
     // set the meter to green
     featProp HealthMeter.Graphing.meterColor setTo 65280
@@ -956,9 +954,9 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This is a wand that stuents can setup to give or take energy or other things
-// so that  they can help with the experiment
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a wand that stuents can setup to give or take energy or other things
+// 🔎 so that  they can help with the experiment
 
 # PROGRAM INIT
 addFeature Costume
@@ -980,10 +978,10 @@ when Wand1 firsttouches Fish [[
   // make the wand glow so that we know something happened
   featProp Wand1.Costume.glow setTo 1
 
-  // STUDENTS_MAY_CHANGE
-  // this currently adds 10 energy to the fish
-  // if you change the number it will add more or less energy
-  // you can also change the function to sub to subtract if you want 
+  // ✏️ LETS CHANGE THIS
+  // ✏️ this currently adds 10 energy to the fish
+  // ✏️ if you change the number it will add more or less energy
+  // ✏️ you can also change the function to sub to subtract if you want 
   prop Fish.energyLevel add 10
 ]]
 
@@ -992,10 +990,10 @@ when Wand1 firsttouches Algae [[
   // make the wand glow so that we know something happened
   featProp Wand1.Costume.glow setTo 1
 
-  // STUDENTS_MAY_CHANGE
-  // this currently adds 10 energy to the algae
-  // if you change the number it will add more or less energy
-  // you can also change the function to sub to subtract if you want 
+  // ✏️ LETS CHANGE THIS
+  // ✏️ this currently adds 10 energy to the algae
+  // ✏️ if you change the number it will add more or less energy
+  // ✏️ you can also change the function to sub to subtract if you want 
   prop Algae.energyLevel add 10
 ]]
 
@@ -1008,9 +1006,9 @@ when Wand1 firsttouches Algae [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION:
-// This character is just the background image for this model
-// You should not need to change it
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character is just the background image for this model
+// 🔎 You should not need to change it
 
 # PROGRAM INIT
 addFeature Costume
