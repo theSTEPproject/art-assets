@@ -357,9 +357,6 @@ every 1 runAtStart [[
     ]]
   ]]
 
-
-
-
   // if out of energy ... die
   ifExpr {{ Worm.getProp('energyLevel').value == 0 }} [[
     prop Worm.alpha setTo 0.3
@@ -391,8 +388,7 @@ addFeature Costume
 addFeature Movement
 // addFeature Cursor
 
-featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
-
+featProp Bunny.Costume.costumeName setTo 'bunny.png'
 
 // set bunny energy
 addProp energyLevel number 25
@@ -420,7 +416,7 @@ featProp Bunny.Costume.scale setTo 0.8
 
 addFeature Touches
 featCall Bunny.Touches monitor 'Plant' b2b
-featCall Bunny.Touches monitor 'tomato' b2b
+featCall Bunny.Touches monitor 'Tomato' b2b
 
 addFeature Graphing
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
@@ -450,6 +446,14 @@ ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'W' }} [[
   featProp Bunny.Costume.flipX setTo true
 ]]
 
+ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'S' }} [[
+\tfeatProp Bunny.Costume.costumeName setTo 'bunny_front.png'
+]]
+
+ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'N' }} [[
+\tfeatProp Bunny.Costume.costumeName setTo 'bunny_back.png'
+]]
+
 when Bunny touches Plant [[
   every 1 runAtStart [[
 
@@ -467,7 +471,7 @@ when Bunny touches Plant [[
 
       // if full, change costume and set timer to emit waste
       ifProp Bunny.energyLevel greaterThan  45  [[
-        featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
+     //   featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
 
         // set variables to be full and prepare to release waste
         prop Bunny.feeling setTo 'full'
@@ -483,17 +487,17 @@ when Bunny lastTouches Plant [[
   featProp Bunny.Costume.glow setTo 0
 ]]
 
-//when Bunny touches tomato eat it
-when Bunny touches tomato [[
+//when Bunny touches Tomato eat it
+when Bunny touches Tomato [[
   every 1 runAtStart [[
 
     // if hungry, eat
     //ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
 
       // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
-      // tomato matter goes down as it is eaten, as does Plant energy
-      //prop tomato.matter sub 1
-      prop tomato.energyLevel sub 1
+      // Tomato matter goes down as it is eaten, as does Plant energy
+      //prop Tomato.matter sub 1
+      prop Tomato.energyLevel sub 5
       // Bunny matter and energy go up from eating
       prop Bunny.matter add 1
       prop Bunny.energyLevel add 1
@@ -513,7 +517,7 @@ when Bunny touches tomato [[
   ]]
 ]]
 
-when Bunny lastTouches tomato [[
+when Bunny lastTouches Tomato [[
   featProp Bunny.Costume.glow setTo 0
 ]]
 
@@ -529,7 +533,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Bunny.feeling setTo 'distracted'
-      featProp Bunny.Costume.costumeName setTo 'bunny_distracted.png'
+     // featProp Bunny.Costume.costumeName setTo 'bunny_distracted.png'
       prop Bunny.distractionCounter setTo 0
 
       // in case we were eating
@@ -544,7 +548,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Bunny.feeling setTo 'hungry'
-      featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
+     // featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
     ]]
   ]]
@@ -556,7 +560,7 @@ every 1 runAtStart [[
       prop Bunny.energyLevel sub 20
       prop Bunny.matter sub 20
       prop Bunny.feeling setTo 'hungry'
-      featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
+      // featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
 
       featCall Bunny.Population createAgent Waste [[
@@ -897,22 +901,31 @@ addProp matterLevel number 50
 prop Tomato.matterLevel setMax 50
 prop Tomato.matterLevel setMin 0
 
+addProp energyLevel number 50
+prop Tomato.energyLevel setMax 50
+prop Tomato.energyLevel setMin 0
+
 // use a widget to depict the current nutrients
 addFeature Graphing
 featProp Tomato.Graphing.meterProp setTo 'matterLevel'
+featProp Tomato.Graphing.text setTo ' '
+
+
+addFeature Touches
+featCall Tomato.Touches monitor 'Bunny' b2b
 
 // set the waste to be purple because it has nutrients, not energy
 featProp Tomato.Graphing.meterColor setTo 5783616
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
- \tprop Tomato.matterLevel sub 1
-  \t
-  \tifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
+  prop Tomato.matterLevel sub 1
+
+  ifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
     // healthy
     featProp Tomato.Costume.costumeName setTo 'tomato.png'
   ]]
-ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
+  ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
     // healthy
     featProp Tomato.Costume.costumeName setTo 'tomato_beg_decomp.png'
   ]]
@@ -925,9 +938,7 @@ ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLeve
     featProp Tomato.Costume.costumeName setTo 'waste.png'
   ]]
 
-]]
-
-`
+]]`
     }
   ],
   "instances": [
@@ -1115,8 +1126,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1804",
       "label": "Sunbeam1804",
       "bpid": "Sunbeam",
-      "initScript": `prop x setTo -407.34
-prop y setTo -192.67`
+      "initScript": `prop x setTo -358.12
+prop y setTo -136.56`
     },
     {
       "id": "1808",
@@ -1150,8 +1161,8 @@ prop y setTo -41.99`
       "id": "1812",
       "label": "Soil1812",
       "bpid": "Soil",
-      "initScript": `prop x setTo -299.23
-prop y setTo -90`
+      "initScript": `prop x setTo -304.63
+prop y setTo -101.72`
     },
     {
       "id": "1813",
@@ -1185,22 +1196,22 @@ prop y setTo -298.28`
       "id": "1817",
       "label": "Soil1817",
       "bpid": "Soil",
-      "initScript": `prop x setTo -103.51
-prop y setTo -295.78`
+      "initScript": `prop x setTo -102.44
+prop y setTo -302.58`
     },
     {
       "id": "1818",
       "label": "Soil1818",
       "bpid": "Soil",
       "initScript": `prop x setTo -306.26
-prop y setTo -294.48`
+prop y setTo -301.64`
     },
     {
       "id": "1819",
       "label": "Soil1819",
       "bpid": "Soil",
-      "initScript": `prop x setTo -100.05
-prop y setTo -88.83`
+      "initScript": `prop x setTo -99.50
+prop y setTo -101.62`
     },
     {
       "id": "1820",
@@ -1213,15 +1224,8 @@ prop y setTo 228.20`
       "id": "1821",
       "label": "Tomato1821",
       "bpid": "Tomato",
-      "initScript": `prop x setTo -8
-prop y setTo 7`
-    },
-    {
-      "id": "1822",
-      "label": "Tomato1822",
-      "bpid": "Tomato",
-      "initScript": `prop x setTo -42
-prop y setTo -29`
+      "initScript": `prop x setTo 77.35
+prop y setTo -260.32`
     }
   ]
 }

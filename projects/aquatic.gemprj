@@ -121,11 +121,11 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 
 
-// EXPLANATION:
-// This is the Fish character
-// In this ecosystem model, we have producers and consumers that interact
-// The Fish are consumers, eating the Algae, which are producers
-// See the Algae script for details of how it produces energy via the Sunbeams
+// 🔎 WHAT DOES THIS DO?
+//  🔎 This is the Fish character
+//  🔎 In this ecosystem model, we have producers and consumers that interact
+//  🔎 The Fish are consumers, eating the Algae, which are producers
+//  🔎 See the Algae script for details of how it produces energy via the Sunbeams
 
 # PROGRAM INIT
 addFeature Costume
@@ -185,14 +185,15 @@ when Fish touches Algae [[
   // do the rest of this once every second (instead of 30 times a second which is too much)
   every 1 runAtStart [[
 
-    // EXPLANATION:
-    // This is the script that has the fish eat a little algae at a time.
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 This is the script that has the fish eat a little algae at a time.
 
-    // STUDENTS_MAY_CHANGE
-    // first, take the energy from the algae
+    // ✏️ LETS CHANGE THIS!
+    // ✏️ first, take the energy from the algae
     prop Algae.energyLevel sub 10
-    // the fish ate the algae and digests it
-    // next have the fish gain some energy
+    // 🔎 the fish ate the algae and digests it
+    
+    // ✏️ next have the fish gain some energy
     prop Fish.energyLevel add 10
 
     // finally, make the fish glow so tha we know something is happening
@@ -432,7 +433,7 @@ every 0.1 runAtStart [[
 
   // If the sunbeam goes off the right edge then start over on the left 
   ifProp Sunbeam.x greaterThan 400 [[
-    prop Sunbeam.x setTo 0
+    prop Sunbeam.x setTo -400
   ]]
 ]]`
     },
@@ -1099,8 +1100,8 @@ prop y setTo -131.48`
       "id": "1712",
       "label": "Sunbeam",
       "bpid": "Sunbeam",
-      "initScript": `prop x setTo -379.33
-prop y setTo -129.71`
+      "initScript": `prop x setTo -24.13
+prop y setTo -132.67`
     },
     {
       "id": "1713",
