@@ -121,20 +121,11 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 
 
-<<<<<<< HEAD
 // 🔎 WHAT DOES THIS DO?
 //  🔎 This is the Fish character
 //  🔎 In this ecosystem model, we have producers and consumers that interact
 //  🔎 The Fish are consumers, eating the Algae, which are producers
 //  🔎 See the Algae script for details of how it produces energy via the Sunbeams
-=======
-// EXPLANATION:
-// This is the Fish character
-// DEFINITION: Consumer 
-// In this ecosystem model, we have producers and consumers that interact
-// The Fish are consumers, eating the Algae, which are producers
-// See the Algae script for details of how it produces energy via the Sunbeams
->>>>>>> 3ac5d61b25889c34a3a4cb7bb81b0675f26f7b2f
 
 # PROGRAM INIT
 addFeature Costume

@@ -279,7 +279,7 @@ featProp Algae.Graphing.meterColor setTo 65280
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
-  // STUDENTS_MAY_CHAANGE
+  // STUDENTS_MAY_CHAAGE
   // The algae use energy to survive, so decrease energy each second
   prop Algae.energyLevel sub 1
 
