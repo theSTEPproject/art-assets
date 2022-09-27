@@ -55,36 +55,36 @@ when Molecule touches OxygenGenerator [[
   // insert code here
   ifProp OxygenGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'oxygen.png'
-  prop Molecule.state setTo 'oxygen'
-]]
+    featProp Molecule.Costume.costumeName setTo 'oxygen.png'
+    prop Molecule.state setTo 'oxygen'
+  ]]
 ]]
 
 when Molecule touches CarbonDioxideGenerator [[
   // insert code here
   ifProp CarbonDioxideGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
-  prop Molecule.state setTo 'carbon_dioxide'
-]]
+    featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
+    prop Molecule.state setTo 'carbon_dioxide'
+  ]]
 ]]
 
 when Molecule touches WaterGenerator [[
   // insert code here
   ifProp WaterGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'water.png'
-  prop Molecule.state setTo 'water'
-]]
+    featProp Molecule.Costume.costumeName setTo 'water.png'
+    prop Molecule.state setTo 'water'
+  ]]
 ]]
 
 when Molecule touches SugarGenerator [[
   // insert code here
   ifProp SugarGenerator.setupMode equal true [[
     // insert code here
-  featProp Molecule.Costume.costumeName setTo 'sugar.png'
-  prop Molecule.state setTo 'sugar'
-]]
+    featProp Molecule.Costume.costumeName setTo 'sugar.png'
+    prop Molecule.state setTo 'sugar'
+  ]]
 ]]
 
 // Rabbit changes oxygen to carbon dioxide
@@ -103,7 +103,7 @@ when Molecule touches Plant_Body [[
   // insert code here
   ifProp Molecule.state equal 'sugar' [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'empty_energy.png'
+    featProp Molecule.Costume.costumeName setTo 'waterthinking.png'
     prop Molecule.state setTo 'needsWater'
     prop global.plantGrowth add 1
   ]]
@@ -558,6 +558,28 @@ addProp skyState string 'daytime'
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Water_Droplet",
+      "scriptText": `# BLUEPRINT Water_Droplet
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Water_Droplet.Costume.costumeName setTo 'waterdroplet.png'
+featProp Water_Droplet.Costume.scale setTo 0.03
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
     }
   ],
   "instances": [
@@ -565,71 +587,57 @@ addProp skyState string 'daytime'
       "id": "22",
       "label": "Sky22",
       "bpid": "Sky",
-      "initScript": `prop x setTo -41.96
-prop y setTo -68.16`
+      "initScript": `prop x setTo 1.03
+prop y setTo -56.22`
     },
     {
       "id": "23",
       "label": "Ground23",
       "bpid": "Ground",
-      "initScript": `prop x setTo -43.19
-prop y setTo -46.15`
+      "initScript": `prop x setTo 2.26
+prop y setTo -40.60`
     },
     {
       "id": "24",
       "label": "Plant_Body24",
       "bpid": "Plant_Body",
-      "initScript": `prop x setTo -55.95
-prop y setTo -100.78`
+      "initScript": `prop x setTo -36.23
+prop y setTo -92.37`
     },
     {
       "id": "25",
       "label": "Roots25",
       "bpid": "Roots",
-      "initScript": `prop x setTo -51.98
-prop y setTo 265.79`
+      "initScript": `prop x setTo -37.30
+prop y setTo 273.94`
     },
     {
       "id": "26",
       "label": "Rabbit26",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo -307.39
-prop y setTo 93.94`
+      "initScript": `prop x setTo -290.62
+prop y setTo 104.16`
     },
     {
       "id": "27",
       "label": "Left_Leaf27",
       "bpid": "Left_Leaf",
-      "initScript": `prop x setTo -183.48
-prop y setTo -204.78`
+      "initScript": `prop x setTo -168.30
+prop y setTo -163.74`
     },
     {
       "id": "28",
       "label": "Right_Leaf28",
       "bpid": "Right_Leaf",
-      "initScript": `prop x setTo 180.33
-prop y setTo -26.38`
+      "initScript": `prop x setTo 194.27
+prop y setTo -108.43`
     },
     {
       "id": "29",
       "label": "Chloroplast29",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 216.74
-prop y setTo -33.58`
-    },
-    {
-      "id": "30",
-      "label": "Molecule30",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo 200.6
-prop y setTo -216.39`
-    },
-    {
-      "id": "31",
-      "label": "Molecule31",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo -302.79
-prop y setTo -303.95`
+      "initScript": `prop x setTo 250.95
+prop y setTo -123.80`
     },
     {
       "id": "32",
@@ -658,6 +666,76 @@ prop y setTo -385.06`
       "bpid": "OxygenGenerator",
       "initScript": `prop x setTo 107.35
 prop y setTo -386.25`
+    },
+    {
+      "id": "36",
+      "label": "Water_Droplet36",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo 86.81
+prop y setTo 284.30`
+    },
+    {
+      "id": "38",
+      "label": "Water_Droplet38",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo -172.50
+prop y setTo 262.26`
+    },
+    {
+      "id": "39",
+      "label": "Water_Droplet39",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo -104.82
+prop y setTo 373.06`
+    },
+    {
+      "id": "40",
+      "label": "Water_Droplet40",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo -241.35
+prop y setTo 375.22`
+    },
+    {
+      "id": "41",
+      "label": "Water_Droplet41",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo -70.36
+prop y setTo 290.79`
+    },
+    {
+      "id": "42",
+      "label": "Water_Droplet42",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo 143.90
+prop y setTo 376.14`
+    },
+    {
+      "id": "43",
+      "label": "Water_Droplet43",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo 26.17
+prop y setTo 265.14`
+    },
+    {
+      "id": "44",
+      "label": "Water_Droplet44",
+      "bpid": "Water_Droplet",
+      "initScript": `prop x setTo 8.54
+prop y setTo 377.08`
+    },
+    {
+      "id": "45",
+      "label": "Molecule45",
+      "bpid": "Molecule",
+      "initScript": `prop x setTo -31
+prop y setTo 0`
+    },
+    {
+      "id": "46",
+      "label": "Molecule46",
+      "bpid": "Molecule",
+      "initScript": `prop x setTo 0
+prop y setTo 24`
     }
   ]
 }
