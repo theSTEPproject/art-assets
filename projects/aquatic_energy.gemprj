@@ -31,14 +31,14 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// EXPLANATION of this model:
-// This model involves learners repreesenting the energy flow in the aquatic ecosystem
-// Each student controls an EnergyRepresentation character, which is a circle indicating
-// initially that they should look around, and then later what kind of energy they have picked up
-// students should move around to see what kind of energy they get and how it moves between specific character types
-// Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
+// 🔎 WHAT DOES THIS MODEL DO?
+// 🔎 This model involves learners repreesenting the energy flow in the aquatic ecosystem
+// 🔎 Each student controls an EnergyRepresentation character, which is a circle indicating
+// 🔎 initially that they should look around, and then later what kind of energy they have picked up
+// 🔎 students should move around to see what kind of energy they get and how it moves between specific character types
+// 🔎 Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
 
-// EXPLANATION of this character:
+// 🔎 WHAT DOES CHARACTER  DO?
 // This is the script that runs when the model is setup
 
 # PROGRAM INIT
@@ -52,9 +52,9 @@ addFeature Population
 // =============================================================
 // Add any code for global properties here (e,g. addProp)
 
-// this property lets us track energy that is lost as heat 
-// when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
-// and this property helps us track that so that we can graph it if we want.
+// 🔎 this property lets us track energy that is lost as heat 
+// 🔎 when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
+// 🔎 and this property helps us track that so that we can graph it if we want.
 addProp energyReleasedAsHeat number 0
 
 
@@ -74,12 +74,12 @@ addProp averageEnergyAllOrganisms number 0
 
 // =============================================================
 
-// this is a required keyword in case we want to run script
-// every second. Most likely we will do that in specific characters instead
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  // Update our global variables
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 This secript sets up all of the different variables we might want to use 
+  // 🔎 inside of the health meter including several average energy levels. 
 
   // grab the Fish average energy and count
   featCall global.Population countAgentProp 'Fish' 'energyLevel'
@@ -127,11 +127,11 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// EXPLANATION:
-// The sun is one of the characters that produces energy
-// Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
-// simple, and just needs the properties for the EnergyRepresentation characters to read
-// so that they can carry the energy to other characters 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The sun is one of the characters that produces energy
+// 🔎 Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// 🔎 simple, and just needs the properties for the EnergyRepresentation characters to read
+// 🔎 so that they can carry the energy to other characters 
 
 # PROGRAM INIT
 
@@ -161,15 +161,21 @@ addProp energyType string 'source'
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// EXPLANATION:
-// The fish are consumers that eat the producers (Algae) and digest them to get energy
-// and to grow / make matter
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The fish are consumers that eat the producers (Algae) and digest them to get energy
+// 🔎 and to grow / make matter
+
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is conerted to energy through digestion
 
 # PROGRAM INIT
-// The fish is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 WHAT DOES THIS SCRIPT DO?
+// 🔎 The fish is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 // Setup features
 addFeature Costume
@@ -188,13 +194,13 @@ addProp energyLevel number 50
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS!
+// ✏️ to make Fish lose energy faster (or slower)
 addProp energyUse number 1
 
-// use a widget to depict the current energy, and color it green (maybe change later)
+// use a meter to depict the current energy, and color it green
 addFeature Graphing
 featProp Fish.Graphing.meterProp setTo 'energyLevel'
-// Green = 0x00FF00
 featProp Fish.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
@@ -245,11 +251,17 @@ every 2 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// EXPLANATION:
+ // 🔎 WHAT DOES THIS CHARACTER DO?
 // The algae is one of the characters that takes / produces energy
 // Note that it mostly just stores properties that the EnergyRepresentation will check / change
 // The other main functionality (under update) is that it will update its meter color depending on
 // how much energy it has
+
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is conerted to energy through digestion.
+
 
 # PROGRAM INIT
 
@@ -279,8 +291,8 @@ featProp Algae.Graphing.meterColor setTo 65280
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
-  // STUDENTS_MAY_CHAAGE
-  // The algae use energy to survive, so decrease energy each second
+  // ✏️ LETS CHANGE THIS!
+  // ✏️ The algae use energy to survive, so decrease energy each second
   prop Algae.energyLevel sub 1
 
   // re-size the algae based on its energy level so that 
@@ -288,10 +300,6 @@ every 1 runAtStart [[
   // either from being eaten or just using it all up means it is shrinking and 
   // will die if it hits 0
   exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
-  featPropPop Algae.Costume.scale
-
-  // avoid getting too small by going back up to this size
-  exprPush {{ .1 }}
   featPropPop Algae.Costume.scale
 
   // this scripts sets the color of the energy bar next to the algae based on how it is doing
@@ -319,7 +327,8 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// EXPLANATION: this character doesn't do anyhting - it is just art for the background
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 this character doesn't do anyhting - it is just art for the background
 
 # PROGRAM INIT
 
@@ -343,13 +352,13 @@ prop Sky.zIndex setTo -100
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
-// EXPLANATION:
-// This is the charracter that students control in this model
-// it shows different types of energy to help students show how energy flows between
-// the different characters in this ecosystem. As it touches each possible energy source
-// you will see what that source is doing to get energy. If you brought in the right kind
-// of enerrgy, the character will glow so that you know it is gaining some energy
-// NOTE: all of the energy amounts are made up numbers to give you an idea how things work
+// 🔎 WHAAT DOES THIS CHARACTER DO?
+// 🔎 This is the charracter that students control in this model
+// 🔎 it shows different types of energy to help students show how energy flows between
+// 🔎 the different characters in this ecosystem. As it touches each possible energy source
+// 🔎 you will see what that source is doing to get energy. If you brought in the right kind
+// 🔎 of enerrgy, the character will glow so that you know it is gaining some energy
+// 🔎 NOTE: all of the energy amounts are made up numbers to give you an idea how things work
 
 # PROGRAM INIT
 

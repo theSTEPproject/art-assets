@@ -122,16 +122,23 @@ every 1 runAtStart [[
 
 
 // 🔎 WHAT DOES THIS DO?
-//  🔎 This is the Fish character
-//  🔎 In this ecosystem model, we have producers and consumers that interact
-//  🔎 The Fish are consumers, eating the Algae, which are producers
-//  🔎 See the Algae script for details of how it produces energy via the Sunbeams
+// 🔎 This is the Fish character
+// 🔎 In this ecosystem model, we have producers and consumers that interact
+// 🔎 The Fish are consumers, eating the Algae, which are producers
+// 🔎 See the Algae script for details of how it produces energy via the Sunbeams
+
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is conerted to energy through digestion
+
 
 # PROGRAM INIT
 addFeature Costume
 addFeature Movement
 addFeature Graphing
 addFeature Physics
+addFeature Touches
 
 // Set the fish artwork and make it 1/2 size since it is really big
 featProp Fish.Costume.costumeName setTo 'fish.png'
@@ -142,22 +149,15 @@ addProp energyLevel number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
-// this ecosystem has producers and consumers
-// the fish are consumers, meaning that they eat other things (e.g., Algae) for energy
-// the fish in this ecosystem also happen to be herbivores meaning it only eats plants and not other creatures
+// The fish is a consumer because it eats other organisms (the algae, which are producers)
 addProp energyType string 'consumer'
 addProp consumerType string 'herbivore'
 
-// set Touches
-addFeature Touches
+// Check when the fish touches an algae so it can eat it
 featCall Fish.Touches monitor 'Algae' b2b
 
-// show meter immediately
+// Set the meter to show the energyLevel and update whenever the energyLevel does
 featProp Fish.Graphing.meterProp setTo 'energyLevel'
-
-// set name
-exprPush {{ Fish.name }}
-featPropPop Fish.Graphing.text
 
 
 # PROGRAM UPDATE
@@ -192,7 +192,7 @@ when Fish touches Algae [[
     // ✏️ first, take the energy from the algae
     prop Algae.energyLevel sub 10
     // 🔎 the fish ate the algae and digests it
-    
+
     // ✏️ next have the fish gain some energy
     prop Fish.energyLevel add 10
 
@@ -261,11 +261,16 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// EXPLANATION:
-// ** This is the Algae character
-// STUDENTS_MAY_CHANGE In this ecosystem model, we have producers and consumers that interact
-// The Algae are a producer, growing when they touch the sunbeam
-// The algae gets eaten by Fish and other creatures (see the Fish script for details)
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is the Algae character
+// 🔎 In this ecosystem model, we have producers and consumers that interact
+// 🔎 The Algae are a producer, growing when they touch the sunbeam
+// 🔎 The algae gets eaten by Fish and other creatures (see the Fish script for details)
+
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is conerted to energy through digestion.
 
 # PROGRAM INIT
 
@@ -277,7 +282,6 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 
-// EXPLANATION Here is where we setup how Algae work
 // Algae are producers, which means they take in energy from the sun
 // and convert that to food. Producers are eaten by consumers like fish.
 addProp energyType string 'producer'
@@ -1147,6 +1151,13 @@ prop y setTo 237.20`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo 0`
+    },
+    {
+      "id": "1721",
+      "label": "Fish1721",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
