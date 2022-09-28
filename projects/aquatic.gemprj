@@ -7,10 +7,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -754,16 +751,11 @@ addFeature Population
 featProp GraphAlgaeEnergy.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue number 0
-prop GraphAlgaeEnergy.graphValue setMax 1000
+addProp graphValue number 100
+prop GraphAlgaeEnergy.graphValue setMax 100
 prop GraphAlgaeEnergy.graphValue setMin 0
 
-// featCall GraphAlgaeEnergy.Graphing bindGraphTo graphValue 30
 featProp GraphAlgaeEnergy.Graphing.graphProp setTo 'graphValue'
-// make sure something displays with some initial text, on bottom right at first
-prop GraphAlgaeEnergy.x setTo 505
-prop GraphAlgaeEnergy.y setTo 230
-prop GraphAlgaeEnergy.zIndex setTo 300
 
 exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
 propPop GraphAlgaeEnergy.labelText
@@ -775,7 +767,7 @@ featPropPop GraphAlgaeEnergy.Graphing.text
 featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
   prop TextLabel.x sub 80
   prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '1000 -'
+  featProp TextLabel.Graphing.text setTo '100 -'
 ]]
 
 // Create the y-axis top
@@ -795,7 +787,7 @@ onEvent Tick [[
   exprPush {{ GraphAlgaeEnergy.getProp('variableToGraph').value }}
   featPropPop GraphAlgaeEnergy.Population.monitoredAgentProp
 
-  featCall GraphAlgaeEnergy.Population countAgentProp
+  featCall GraphAlgaeEnergy.Population countAgentProp 'Algae' 'energyLevel'
 
   exprPush {{ GraphAlgaeEnergy.getFeatProp('Population', GraphAlgaeEnergy.prop.countType.value).value }}
   propPop GraphAlgaeEnergy.graphValue
@@ -830,14 +822,16 @@ addFeature Population
 featProp GraphFishEnergy.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue number 0
-prop GraphFishEnergy.graphValue setMax 1000
+addProp graphValue number 100
+prop GraphFishEnergy.graphValue setMax 100
 prop GraphFishEnergy.graphValue setMin 0
 
 // Setup which property we will use to graph, and then change if it changes (use graphValue)
 featProp GraphFishEnergy.Graphing.graphProp setTo 'graphValue'
 
-// Setup the graph label dynaamically 
+dbgOut 'graph Value' GraphFishEnergy.graphValue
+
+// Setup the graph label dynaamically
 exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
 propPop GraphFishEnergy.labelText
 exprPush {{ GraphFishEnergy.getProp('labelText').value }}
@@ -848,7 +842,7 @@ featPropPop GraphFishEnergy.Graphing.text
 featCall GraphFishEnergy.Population createAgent TextLabel [[
   prop TextLabel.x sub 80
   prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '1000 -'
+  featProp TextLabel.Graphing.text setTo '100 -'
 ]]
 
 // Create the y-axis top
@@ -860,25 +854,24 @@ featCall GraphFishEnergy.Population createAgent TextLabel [[
 
 # PROGRAM UPDATE
 
-every 1 runAtStart [[
+onEvent Tick [[
 
 
   exprPush {{ GraphFishEnergy.getProp('characterType').value }}
-  featPropPop Population monitoredAgent
+  featPropPop GraphFishEnergy.Population.monitoredAgent
 
   exprPush {{ GraphFishEnergy.getProp('variableToGraph').value }}
-  featPropPop Population monitoredAgentProp
+  featPropPop GraphFishEnergy.Population.monitoredAgentProp
 
-  featCall Population countAgentProp
+  featCall GraphFishEnergy.Population countAgentProp
 
   exprPush {{ GraphFishEnergy.getFeatProp('Population', GraphFishEnergy.prop.countType.value).value }}
-  propPop graphValue
-  
+  propPop GraphFishEnergy.graphValue
+
 ]]
 
 
-// required directive
- `
+// required directive`
     },
     {
       "name": "HealthMeter",
@@ -1033,15 +1026,15 @@ featProp Graphing text setTo 'Energy Key:'`
       "id": "1701",
       "label": "HighLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 478
-prop y setTo -369.91
+      "initScript": `prop x setTo 457
+prop y setTo -371.72
 featProp Graphing text setTo 'High'`
     },
     {
       "id": "1702",
       "label": "MediumLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 468
+      "initScript": `prop x setTo 457
 prop y setTo -337.29
 featProp Graphing text setTo 'Medium'`
     },
@@ -1049,7 +1042,7 @@ featProp Graphing text setTo 'Medium'`
       "id": "1703",
       "label": "LowLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 478
+      "initScript": `prop x setTo 457
 prop y setTo -305.94
 featProp Graphing text setTo 'Low'`
     },
@@ -1140,8 +1133,8 @@ prop y setTo -35.95`
       "id": "1718",
       "label": "HealthMeter 1",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 463.94
-prop y setTo 237.20`
+      "initScript": `prop x setTo 496.47
+prop y setTo 279.85`
     },
     {
       "id": "1720",
@@ -1156,6 +1149,20 @@ prop y setTo 0`
       "bpid": "Fish",
       "initScript": `prop x setTo 29
 prop y setTo 30`
+    },
+    {
+      "id": "1722",
+      "label": "GraphAlgaeEnergy1722",
+      "bpid": "GraphAlgaeEnergy",
+      "initScript": `prop x setTo 505.39
+prop y setTo 108.43`
+    },
+    {
+      "id": "1723",
+      "label": "GraphFishEnergy1723",
+      "bpid": "GraphFishEnergy",
+      "initScript": `prop x setTo 507.54
+prop y setTo -82.10`
     }
   ]
 }
