@@ -1,16 +1,13 @@
 {
-  "id": "aquatic",
-  "label": "Aquatic Ecosystem",
+  "id": "aquatic_interactions",
+  "label": "Ecosystems 1: Aquatic Interactions",
   "description": "Tweaks for later runs",
   "metadata": {
     "top": -400,
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -167,7 +164,7 @@ onEvent Start [[
   // to wander around randomly, and eat any algae that they bump into
   featProp Fish.Movement.movementType setTo 'wander'
 
-  // ✏️ LETS CHANGE THIS to make fish move faster when they are automatic
+  // This is the speed the fish moves at when it is not character controlled 
   featProp Fish.Movement.distance setTo 2
 
 ]]

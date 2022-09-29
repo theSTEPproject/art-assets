@@ -1,6 +1,6 @@
 {
   "id": "aquatic_energy",
-  "label": "Aquatic Energy",
+  "label": "Ecosystems 2: Aquatic Energy",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -832,20 +832,6 @@ prop y setTo 174.13`
 prop y setTo -396.15`
     },
     {
-      "id": "7",
-      "label": "Lost Energy Graph",
-      "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 528
-prop y setTo 172.18`
-    },
-    {
-      "id": "8",
-      "label": "Energy In Ecosystem Graph",
-      "bpid": "GraphEnergyInEcosystem",
-      "initScript": `prop x setTo 528
-prop y setTo -10.21`
-    },
-    {
       "id": "9",
       "label": "Algae 3",
       "bpid": "Algae",
@@ -893,13 +879,6 @@ prop y setTo 264.13`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo  100`
-    },
-    {
-      "id": "16",
-      "label": "HealthMeter",
-      "bpid": "HealthMeter",
-      "initScript": `prop x setTo 530.69
-prop y setTo 321.50`
     }
   ]
 }
