@@ -15,8 +15,8 @@
     "bgcolor": 102,
     "roundsCanLoop": true,
     "showWebCam": false,
-    "scaleX": 1,
-    "scaleY": 1,
+    "scaleX": "1.3",
+    "scaleY": "0.5",
     "translateX": 0,
     "translateY": 0,
     "rotate": 0,
@@ -1100,8 +1100,8 @@ prop y setTo -131.48`
       "id": "1712",
       "label": "Sunbeam",
       "bpid": "Sunbeam",
-      "initScript": `prop x setTo -24.13
-prop y setTo -132.67`
+      "initScript": `prop x setTo -380.51
+prop y setTo -139.48`
     },
     {
       "id": "1713",
@@ -1133,25 +1133,11 @@ prop y setTo 30`
 prop y setTo -35.95`
     },
     {
-      "id": "1718",
-      "label": "HealthMeter 1",
-      "bpid": "HealthMeter",
-      "initScript": `prop x setTo 461.23
-prop y setTo 233.57`
-    },
-    {
       "id": "1720",
       "label": "Background Image",
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo 0`
-    },
-    {
-      "id": "1721",
-      "label": "Fish1721",
-      "bpid": "Fish",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
     }
   ]
 }
