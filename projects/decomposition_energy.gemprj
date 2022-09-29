@@ -12,11 +12,19 @@
     ],
     "bounce": true,
     "bgcolor": "0x00bfff",
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
-        {
+    {
       "name": "global",
       "scriptText": `# BLUEPRINT global
 # TAG IsCharControllable false
@@ -41,13 +49,13 @@ addProp energyReleasedAsHeat number 0
 # TAG isPTrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Sun.Costume.costumeName setTo 'sunbeam.png'
+featProp Sun.Costume.costumeName setTo 'sun.png'
 // featCall Sun.Costume setColorize 255 215 0
 prop Sun.zIndex setTo 0
 
 addFeature Physics
 
-featProp Sun.Costume.scale setTo 2
+featProp Sun.Costume.scale setTo 1.3
 
 // types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
 addProp energyType string 'source'
@@ -86,10 +94,10 @@ prop Bunny.energyLevel setMin 0
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
+addFeature Graphing
+featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 
-featProp Bunny.AgentWidgets.meterColor setTo 65280
+featProp Bunny.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 2 runAtStart [[
@@ -103,19 +111,19 @@ every 2 runAtStart [[
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featProp Bunny.Costume.currentFr
     // Green
-    featProp Bunny.AgentWidgets.meterColor setTo 65280
+    featProp Bunny.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Orange
-    featProp Bunny.AgentWidgets.meterColor setTo 16737792
+    featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Red
-    featProp Bunny.AgentWidgets.meterColor setTo 16711680
+    featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
@@ -126,7 +134,7 @@ featProp Bunny.Costume.costumeName setTo 'bunny.png'
   ]]
 
   // set meter to mirror energyLevel
-  featProp Bunny.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 
 
 ]]
@@ -157,10 +165,10 @@ prop Worm.energyLevel setMin 0
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Worm.AgentWidgets.meterProp setTo energyLevel
+addFeature Graphing
+featProp Worm.Graphing.meterProp setTo energyLevel
 
-featProp Worm.AgentWidgets.meterColor setTo 65280
+featProp Worm.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
   every 2 runAtStart [[
@@ -174,19 +182,19 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
     featProp Worm.Costume.currentFrame setTo 0
     // Green
-    featProp Worm.AgentWidgets.meterColor setTo 65280
+    featProp Worm.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Orange
-    featProp Worm.AgentWidgets.meterColor setTo 16737792
+    featProp Worm.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Red
-    featProp Worm.AgentWidgets.meterColor setTo 16711680
+    featProp Worm.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
@@ -197,7 +205,7 @@ featProp Worm.AgentWidgets.meterColor setTo 65280
   ]]
 
   // set meter to mirror energyLevel
-  featProp Worm.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Worm.Graphing.meterProp setTo 'energyLevel'
 
 ]]
 
@@ -226,11 +234,11 @@ prop Waste.matterLevel setMax 100
 prop Waste.matterLevel setMin 0
 
 // use a widget to depict the current nutrients
-addFeature AgentWidgets
-featProp Waste.AgentWidgets.meterProp setTo 'matterLevel'
+addFeature Graphing
+featProp Waste.Graphing.meterProp setTo 'matterLevel'
 
 // set the waste to be purple because it has nutrients, not energy
-featProp Waste.AgentWidgets.meterColor setTo 5783616
+featProp Waste.Graphing.meterColor setTo 5783616
 
 // required directive
 # PROGRAM UPDATE`
@@ -281,11 +289,11 @@ prop Plant.matter setMax 30
 prop Plant.matter setMin 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Plant.AgentWidgets.meterProp setTo 'energyLevel'
+addFeature Graphing
+featProp Plant.Graphing.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp Plant.AgentWidgets.meterColor setTo 65280
-featCall Plant.AgentWidgets setMeterPosition 'inside-left'
+featProp Plant.Graphing.meterColor setTo 65280
+featCall Plant.Graphing setMeterPosition 'inside-left'
 
 addFeature Touches
 
@@ -350,17 +358,17 @@ every 1 runAtStart [[
   // doing great
   ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
     // Green
-    featProp Plant.AgentWidgets.meterColor setTo 65280
+    featProp Plant.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
   ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
     // Orange
-    featProp Plant.AgentWidgets.meterColor setTo 16737792
+    featProp Plant.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
   ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
     // Red
-    featProp Plant.AgentWidgets.meterColor setTo 16711680
+    featProp Plant.Graphing.meterColor setTo 16711680
 
   ]]
 ]]`
@@ -659,7 +667,7 @@ when EnergyRepresentation centerFirstTouches Soil [[
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
 # PROGRAM DEFINE
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Costume
 featProp TextLabel.Costume.costumeName setTo 'onexone.json'`
     },
@@ -684,19 +692,19 @@ addFeature Physics
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
       # PROGRAM INIT
-      addFeature AgentWidgets
+      addFeature Graphing
       addFeature Costume
       featProp Timer.Costume.costumeName setTo 'onexone.json'
       addProp time number 0
       prop Timer.zIndex setTo 500
 
-      featProp Timer.AgentWidgets.text setTo 'Time: 0'
+      featProp Timer.Graphing.text setTo 'Time: 0'
 
       # PROGRAM UPDATE
   every 1 runAtStart [[
         prop Timer.time add 1
         exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop Timer.AgentWidgets.text
+        featPropPop Timer.Graphing.text
       ]]`
     },
     {
@@ -709,9 +717,9 @@ addFeature Physics
 addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
 
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Population
-featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+featProp EnergyInSystem.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp totalEnergy number 500
@@ -724,7 +732,7 @@ addProp totalPlantEnergy number 0
 addProp totalBunnyEnergy number 0
 
 
-featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
 
 # PROGRAM INIT
 // make sure something displays with some initial text, on bottom right at first
@@ -732,7 +740,7 @@ prop EnergyInSystem.x setTo 495
 prop EnergyInSystem.y setTo 187
 prop EnergyInSystem.zIndex setTo 300
 
-featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 
 # PROGRAM EVENT
 
@@ -771,9 +779,9 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature Costume
 featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Population
-featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
 
 
 
@@ -782,14 +790,14 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
+featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 
 // make sure something displays with some initial text, on bottom right at first
 prop GraphLostEnergy.x setTo 495
 prop GraphLostEnergy.y setTo 350
 prop GraphLostEnergy.zIndex setTo 300
 
-featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy'
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy'
 
 # PROGRAM UPDATE
 
@@ -849,14 +857,14 @@ prop Soil.zIndex setTo -200
 addFeature Touches
 featCall Soil.Touches monitor 'Worm' b2b
 
-addFeature AgentWidgets
+addFeature Graphing
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
-featProp Soil.AgentWidgets.meterProp setTo 'nutrients'
+featProp Soil.Graphing.meterProp setTo 'nutrients'
 
-featCall Soil.AgentWidgets setMeterPosition 'inside-left'
+featCall Soil.Graphing setMeterPosition 'inside-left'
 // violet
-featProp Soil.AgentWidgets.meterColor setTo 9055202
-featProp Soil.AgentWidgets.text setTo ''
+featProp Soil.Graphing.meterColor setTo 9055202
+featProp Soil.Graphing.text setTo ''
 
 # PROGRAM UPDATE
 
@@ -870,22 +878,68 @@ every 1 runAtStart [[
     featProp Soil.Costume.costumeName setTo 'dirt.png'
   ]]
 ]]`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'tomato.png'
+
+addFeature Physics
+featProp Tomato.Costume.scale setTo 0.2
+
+addProp energyType string 'waste'
+
+// setup to track nutrients and begin at 1/2 way
+addProp matterLevel number 50
+prop Tomato.matterLevel setMax 50
+prop Tomato.matterLevel setMin 0
+
+// use a widget to depict the current nutrients
+addFeature Graphing
+featProp Tomato.Graphing.meterProp setTo 'matterLevel'
+
+// set the waste to be purple because it has nutrients, not energy
+featProp Tomato.Graphing.meterColor setTo 5783616
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+ \tprop Tomato.matterLevel sub 1
+  \t
+  \tifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato.png'
+  ]]
+ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato_beg_decomp.png'
+  ]]
+  ifExpr {{ Tomato.getProp('matterLevel').value < 25 && Tomato.getProp('matterLevel').value > 10 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'tomato_mid_decomp.png'
+  ]]
+  ifExpr {{ Tomato.getProp('matterLevel').value < 10 }} [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'waste.png'
+  ]]
+
+]]
+
+`
     }
   ],
   "instances": [
     {
-      "id": "0",
-      "label": "Sun",
-      "bpid": "Sun",
-      "initScript": `prop x setTo -207.87
-prop y setTo -190.96`
-    },
-    {
       "id": "2",
       "label": "Plant1",
       "bpid": "Plant",
-      "initScript": `prop x setTo -288.71
-prop y setTo -47.63`
+      "initScript": `prop x setTo -94.89
+prop y setTo -64.16`
     },
     {
       "id": "5",
@@ -912,65 +966,65 @@ prop y setTo 187`
       "id": "1101",
       "label": "Soil01",
       "bpid": "Soil",
-      "initScript": `prop x setTo -300
-prop y setTo 100
+      "initScript": `prop x setTo -297.37
+prop y setTo 167.29
 prop nutrients setTo 10`
     },
     {
       "id": "1102",
       "label": "Soil02",
       "bpid": "Soil",
-      "initScript": `prop x setTo -100
-prop y setTo 100`
+      "initScript": `prop x setTo -97.99
+prop y setTo 165.26`
     },
     {
       "id": "1103",
       "label": "Soil03",
       "bpid": "Soil",
-      "initScript": `prop x setTo 100
-prop y setTo 100`
+      "initScript": `prop x setTo 103.45
+prop y setTo 169.69`
     },
     {
       "id": "1104",
       "label": "Soil04",
       "bpid": "Soil",
-      "initScript": `prop x setTo 300
-prop y setTo 100`
+      "initScript": `prop x setTo 304.74
+prop y setTo 177.49`
     },
     {
       "id": "1105",
       "label": "Soil05",
       "bpid": "Soil",
-      "initScript": `prop x setTo -300
-prop y setTo 300`
+      "initScript": `prop x setTo -297.38
+prop y setTo 365.70`
     },
     {
       "id": "1106",
       "label": "Soil06",
       "bpid": "Soil",
-      "initScript": `prop x setTo -100
-prop y setTo 300`
+      "initScript": `prop x setTo -96.87
+prop y setTo 367.88`
     },
     {
       "id": "1107",
       "label": "Soil07",
       "bpid": "Soil",
-      "initScript": `prop x setTo 100
-prop y setTo 300`
+      "initScript": `prop x setTo 103.37
+prop y setTo 372.81`
     },
     {
       "id": "1108",
       "label": "Soil08",
       "bpid": "Soil",
-      "initScript": `prop x setTo 300
-prop y setTo 300`
+      "initScript": `prop x setTo 306.56
+prop y setTo 374.49`
     },
     {
       "id": "1110",
       "label": "Worm1",
       "bpid": "Worm",
-      "initScript": `prop x setTo -272.54
-prop y setTo 288.83`
+      "initScript": `prop x setTo -235.39
+prop y setTo 99.71`
     },
     {
       "id": "1111",
@@ -985,7 +1039,7 @@ prop y setTo 142.08`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -400
-featProp AgentWidgets text setTo 'Key:'`
+featProp Graphing text setTo 'Key:'`
     },
     {
       "id": "1701",
@@ -993,7 +1047,7 @@ featProp AgentWidgets text setTo 'Key:'`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -373
-featProp AgentWidgets text setTo 'Energy'
+featProp Graphing text setTo 'Energy'
 prop zIndex setTo 100`
     },
     {
@@ -1002,7 +1056,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -340
-featProp AgentWidgets text setTo 'Nutrients'
+featProp Graphing text setTo 'Nutrients'
 prop zIndex setTo 100`
     },
     {
@@ -1011,7 +1065,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 455
 prop y setTo -308
-featProp AgentWidgets text setTo 'Matter'
+featProp Graphing text setTo 'Matter'
 prop zIndex setTo 100`
     },
     {
@@ -1051,8 +1105,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1707",
       "label": "Plant2",
       "bpid": "Plant",
-      "initScript": `prop x setTo 132.79
-prop y setTo -46.5`
+      "initScript": `prop x setTo 263.25
+prop y setTo -59.2`
     },
     {
       "id": "1708",
@@ -1065,71 +1119,57 @@ prop y setTo -34.98`
       "id": "1709",
       "label": "Waste2",
       "bpid": "Waste",
-      "initScript": `prop x setTo 339.85
-prop y setTo 143.75`
+      "initScript": `prop x setTo 117.7
+prop y setTo -64.45`
     },
     {
       "id": "1710",
       "label": "Worm2",
       "bpid": "Worm",
-      "initScript": `prop x setTo 131.82
-prop y setTo 293.27`
+      "initScript": `prop x setTo 169.58
+prop y setTo 160.96`
     },
     {
       "id": "1711",
       "label": "Soil1711",
       "bpid": "Soil",
-      "initScript": `prop x setTo 98.31
-prop y setTo -94.06`
+      "initScript": `prop x setTo 100.64
+prop y setTo -24.26`
     },
     {
       "id": "1712",
       "label": "Soil1712",
       "bpid": "Soil",
-      "initScript": `prop x setTo 299.6
-prop y setTo -101.12`
-    },
-    {
-      "id": "1713",
-      "label": "Soil1713",
-      "bpid": "Soil",
-      "initScript": `prop x setTo 297.2
-prop y setTo -301.56`
-    },
-    {
-      "id": "1714",
-      "label": "Soil1714",
-      "bpid": "Soil",
-      "initScript": `prop x setTo 91.28
-prop y setTo -296.63`
-    },
-    {
-      "id": "1715",
-      "label": "Soil1715",
-      "bpid": "Soil",
-      "initScript": `prop x setTo -98.82
-prop y setTo -299.62`
+      "initScript": `prop x setTo 303.18
+prop y setTo -23.29`
     },
     {
       "id": "1716",
       "label": "Soil1716",
       "bpid": "Soil",
       "initScript": `prop x setTo -300.59
-prop y setTo -95.51`
-    },
-    {
-      "id": "1717",
-      "label": "Soil1717",
-      "bpid": "Soil",
-      "initScript": `prop x setTo -299.02
-prop y setTo -304.25`
+prop y setTo -33.85`
     },
     {
       "id": "1718",
       "label": "Soil1718",
       "bpid": "Soil",
-      "initScript": `prop x setTo -96.12
-prop y setTo -94.75`
+      "initScript": `prop x setTo -95.23
+prop y setTo -32.47`
+    },
+    {
+      "id": "1719",
+      "label": "Sun1719",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -255.20
+prop y setTo -306.42`
+    },
+    {
+      "id": "1720",
+      "label": "Tomato1720",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }

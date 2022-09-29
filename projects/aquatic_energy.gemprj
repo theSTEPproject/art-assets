@@ -11,8 +11,16 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
-    "roundsCanLoop": true
+    "bgcolor": 11393254,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -22,17 +30,95 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS MODEL DO?
+// 🔎 This model involves learners repreesenting the energy flow in the aquatic ecosystem
+// 🔎 Each student controls an EnergyRepresentation character, which is a circle indicating
+// 🔎 initially that they should look around, and then later what kind of energy they have picked up
+// 🔎 students should move around to see what kind of energy they get and how it moves between specific character types
+// 🔎 Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
+
+// 🔎 WHAT DOES CHARACTER  DO?
+// This is the script that runs when the model is setup
+
 # PROGRAM INIT
 
-// Explanation:
-// This model involves learners repreesenting the energy flow in the system (need to add more here)
-
+// we don't need to see this character, we just use it to keep track of things
 prop global.visible setTo false
 
+// Add features
+addFeature Population
+
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+// 🔎 this property lets us track energy that is lost as heat 
+// 🔎 when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
+// 🔎 and this property helps us track that so that we can graph it if we want.
 addProp energyReleasedAsHeat number 0
 
-// required directive
-# PROGRAM UPDATE`
+
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it 
+// easier to edit that character
+addProp fishCount number 0
+addProp algaeCount number 0
+addProp predatorCount number 0
+addProp allOrganismsCount number 0
+addProp averageFishEnergy number 0
+addProp averageAlgaeEnergy number 0
+addProp averagePredatorEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
+
+// =============================================================
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // 🔎 WHAT DOES THIS SCRIPT DO?
+  // 🔎 This secript sets up all of the different variables we might want to use 
+  // 🔎 inside of the health meter including several average energy levels. 
+
+  // grab the Fish average energy and count
+  featCall global.Population countAgentProp 'Fish' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageFishEnergy
+  featPropPush global.Population.count
+  propPop global.fishCount
+
+  // grab the Algae average eenergy  and count
+  featCall global.Population countAgentProp 'Algae' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageAlgaeEnergy
+  featPropPush global.Population.count
+  propPop global.algaeCount
+
+  // grab the Predator average eenergy  and count
+  featCall global.Population countAgentProp 'Predator' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePredatorEnergy
+  featPropPush global.Population.count
+  propPop global.predatorCount
+
+  // add the producers and divide by the number of producers
+  // ignore divide step since only 1 type (Algae)
+  propPush global.averageAlgaeEnergy
+  propPop global.averageProducerEnergy
+
+  // calculate the big averages ...
+  exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
+  propPop global.averageConsumerEnergy
+
+  exprPush {{ (global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value) }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+
+
+]]`
     },
     {
       "name": "Sun",
@@ -40,29 +126,30 @@ addProp energyReleasedAsHeat number 0
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
-// The sun is one of the characters that produces energy
-// Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
-// simple, and just needs the variables for the EnergyRepresentation to read
 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The sun is one of the characters that produces energy
+// 🔎 Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// 🔎 simple, and just needs the properties for the EnergyRepresentation characters to read
+// 🔎 so that they can carry the energy to other characters 
 
+# PROGRAM INIT
+
+// Add features
 addFeature Costume
-featProp Sun.Costume.costumeName setTo 'sunbeam.png'
-
-// Instead of sun art, we are using a generic circle, so the next line tints it yellow
-//featCall Sun.Costume setColorize 255 215 0
-// This makess sure the sunu is behind everything else
-prop Sun.zIndex setTo 0
-
 addFeature Physics
-featProp Sun.Costume.scale setTo 1.0
+
+// set the artworrk for the sun, color it, and then set its size
+featProp Sun.Costume.costumeName setTo 'sun.png'
+//featCall Sun.Costume setColorize 255 215 0
+featProp Sun.Costume.scale setTo 1.3
+
+// This makess sure the sun is behind everything else
+prop Sun.zIndex setTo 0
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
 addProp energyType string 'source'
-
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM UPDATE`
@@ -70,22 +157,33 @@ addProp energyType string 'source'
     {
       "name": "Fish",
       "scriptText": `# BLUEPRINT Fish
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
-// The fish is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The fish are consumers that eat the producers (Algae) and digest them to get energy
+// 🔎 and to grow / make matter
 
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is converted to energy through digestion
 
+# PROGRAM INIT
+// 🔎 WHAT DOES THIS SCRIPT DO?
+// 🔎 The fish is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+// Setup features
 addFeature Costume
-featProp Fish.Costume.costumeName setTo 'fish.png'
-
 addFeature Physics
-featProp Fish.Costume.scale setTo 0.3
+
+// Load the fish image and re-size it
+featProp Fish.Costume.costumeName setTo 'fish.png'
+featProp Fish.Costume.scale setTo 0.4
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
 // these are referenced by EnergyRepresentation
@@ -96,14 +194,14 @@ addProp energyLevel number 50
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Fish lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS!
+// ✏️ to make Fish lose energy faster (or slower)
 addProp energyUse number 1
 
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
-// Green = 0x00FF00
-featProp Fish.AgentWidgets.meterColor setTo 65280
+// use a meter to depict the current energy, and color it green
+addFeature Graphing
+featProp Fish.Graphing.meterProp setTo 'energyLevel'
+featProp Fish.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 2 runAtStart [[
@@ -113,56 +211,66 @@ every 2 runAtStart [[
   propPop Fish.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the fish is
-  // sated
-  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+  
+  // The fish is doing well
+  ifProp Fish.energyLevel greaterThan 50 [[
     featProp Fish.Costume.costumeName setTo 'fish.png'
     // Green
-    featProp Fish.AgentWidgets.meterColor setTo 65280
+    featProp Fish.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+  // The fish is hungry
+  ifProp Fish.energyLevel lessThan 50 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Orange
-    featProp Fish.AgentWidgets.meterColor setTo 16737792
+    featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+  // The fish is starviinig
+  ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
     // Red
-    featProp Fish.AgentWidgets.meterColor setTo 16711680
+    featProp Fish.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+  // The fish is dead 
+  ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.currentFrame setTo 2
     prop Fish.alpha setTo 0.3
     prop Fish.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
-  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
+  featProp Fish.Graphing.meterProp setTo 'energyLevel'
 
 ]]
 
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Algae",
       "scriptText": `# BLUEPRINT Algae
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
-// The algae is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The algae is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
+// 🔎 WHAT DO THESE MEAN?
+// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
+// 🔎 consumer: an organism that eats producers or consuumers.
+// 🔎 The matter that consumers eat is converted to energy through digestion.
+
+
+# PROGRAM INIT
+
+// Setup the features 
 addFeature Costume
-featProp Algae.Costume.costumeName setTo 'algae.png'
-
 addFeature Physics
+
+// Set the artowrk and scale it
+featProp Algae.Costume.costumeName setTo 'algae.png'
 featProp Algae.Costume.scale setTo 0.2
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
@@ -174,56 +282,43 @@ addProp energyLevel number 50
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Algae lose energy faster (or slower)
-addProp energyUse number 1
-
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature AgentWidgets
-featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
+addFeature Graphing
+featProp Algae.Graphing.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
-featProp Algae.AgentWidgets.meterColor setTo 65280
+featProp Algae.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifProp Algae.energyLevel greaterThan 0 [[
-    exprPush {{ Algae.getProp('energyLevel').value - Algae.getProp('energyUse').value }}
-    propPop Algae.energyLevel
-  ]]
+  // ✏️ LETS CHANGE THIS!
+  // ✏️ The algae use energy to survive, so decrease energy each second
+  prop Algae.energyLevel sub 1
 
-  // re-scale the algae based on its energy level
+  // re-size the algae based on its energy level so that 
+  // if it has lots of energy it grows nice and big, and low energy
+  // either from being eaten or just using it all up means it is shrinking and 
+  // will die if it hits 0
   exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
   featPropPop Algae.Costume.scale
 
-  // this code sets the color of the energy bar based on how hungry the fish is
-  // set algae energy meter color
-  // doing great
+  // this scripts sets the color of the energy bar next to the algae based on how it is doing
+  // in terms of the amount of energy it has
   ifProp Algae.energyLevel greaterThanOrEqual 60 [[
-    // Green
-    featProp Algae.AgentWidgets.meterColor setTo 65280
+    // Doing great - Green
+    featProp Algae.Graphing.meterColor setTo 65280
   ]]
-  // needs some energy
   ifProp Algae.energyLevel lessThan 60 [[
-    // Orange
-    featProp Algae.AgentWidgets.meterColor setTo 16737792
+      // needs some energy - Orange
+    featProp Algae.Graphing.meterColor setTo 16737792
   ]]
-  // in trouble
   ifProp Algae.energyLevel lessThan 30 [[
-    // Red
-    featProp Algae.AgentWidgets.meterColor setTo 16711680
-
-    // avoid getting too
-    exprPush {{ .1 }}
-    featPropPop Algae.Costume.scale
+      // in trouble - Red
+    featProp Algae.Graphing.meterColor setTo 16711680
 
   ]]
-
-
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Sky",
@@ -231,9 +326,12 @@ every 1 runAtStart [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
-//Note: this character doesn't do anyhting - it is just for show since there is no 
-// other easy way to add background art
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 this character doesn't do anyhting - it is just art for the background
+
+# PROGRAM INIT
+
 addFeature Costume
 featProp Sky.Costume.costumeName setTo 'square.json'
 featCall Sky.Costume setColorize 53 81 92
@@ -245,8 +343,6 @@ featProp Sky.Costume.height setTo 200
 // make sure this is always way in the back behind all 
 // of the other characters
 prop Sky.zIndex setTo -100
-
-
 `
     },
     {
@@ -255,15 +351,28 @@ prop Sky.zIndex setTo -100
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
 
+// 🔎 WHAAT DOES THIS CHARACTER DO?
+// 🔎 This is the charracter that students control in this model
+// 🔎 it shows different types of energy to help students show how energy flows between
+// 🔎 the different characters in this ecosystem. As it touches each possible energy source
+// 🔎 you will see what that source is doing to get energy. If you brought in the right kind
+// 🔎 of enerrgy, the character will glow so that you know it is gaining some energy
+// 🔎 NOTE: all of the energy amounts are made up numbers to give you an idea how things work
+
+# PROGRAM INIT
+
+// Add features
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
-
 addFeature Physics
+addFeature Touches
 
-
-
+// start off looking like a magnifying lense that needs to explore
+// later this will change to different types of energy as the students
+// move over the sources
+featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+featProp EnergyRepresentation.Costume.scale setTo 0.25
+prop EnergyRepresentation.alpha setTo 0.8
 
 // setup energy properties
 addProp energyLevel number 0
@@ -274,119 +383,132 @@ prop EnergyRepresentation.energyLevel setMin 0
 // start with none
 addProp energyType string 'none'
 
-addFeature Touches
-featCall EnergyRepresentation.Touches monitor 'Sun' c2b
-featCall EnergyRepresentation.Touches monitor 'Algae' c2b
-featCall EnergyRepresentation.Touches monitor 'Fish' c2b
+// Setup the touch moniitoring so that we check when the
+// EnergyRepresentation characters touch the Sun, Algae, or Fish
+// The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
+featCall EnergyRepresentation.Touches monitor 'Sun' b2b
+featCall EnergyRepresentation.Touches monitor 'Algae' b2b
+featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 
-featProp EnergyRepresentation.Costume.scale setTo 0.35
-
+// Run this secript constantly while the model is running
 # PROGRAM UPDATE
-when EnergyRepresentation centerFirstTouches Sun [[
 
-  // when touching, show an annotation about how the sun produces energy
+// ** ====================================================
+// ** INTERACTING WITH THE SUN
+// ** ====================================================
+
+when EnergyRepresentation firstTouches Sun [[
+  // The sun is a near-infinite source of energy
+  // so change the art to be sun, and set the type to source
+  // also we always re-set energy to be sun when we go there
   featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
-]]
-
-when EnergyRepresentation centerLastTouches Sun [[
-
-  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus is on light since the plants use it)
   prop EnergyRepresentation.energyType setTo 'source'
-  prop EnergyRepresentation.energyLevel setTo 100
 
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
+  // set the energy amount to 100 because lots of energy arrives on earth
+  // from the sun even if a lot of it is not used by organisms (except to warm them up)
+  prop EnergyRepresentation.energyLevel setTo 100
 ]]
 
+// ** ====================================================
+// ** INTERACTING WITH THE ALGAE
+// ** ====================================================
 
-when EnergyRepresentation centerFirstTouches Algae [[
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
-  ]]
+when EnergyRepresentation firstTouches Algae [[
 
-  // if you have energy from the sun, then give some energy to the algae, but not all of it because some is released into the environment
-  // as heat or lost in other ways
+  // change the representation to let us know that the algae is using energy from the sun
+  // to make food that it uses as a source of energy to live and grow, so we show 
+  // sun energy converting to algae energy 
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
+
+  // if you have energy from the sun, then give some energy to the algae, but not all of it because some 
+  // is released into the environment as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'source' [[
-    prop EnergyRepresentation.energyType setTo 'none'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun
+    // ✏️ LETS CHANGE THIS to alter how much energy the algae gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop Algae.energyLevel add 50
-    // we are losing 50 of the hundred, so not that in the global
+
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 We are losing 50 of the hundred as heat, so put that in the global
+    // 🔎 all biological processes for using and converting energy are imperfect and lose
+    // 🔎 some energy in the process. While we can measure exactlly how much, these numbers
+    // 🔎 are made up to help illustrate the process.
+    // 🔎 Add the lost energy to the global chaaracter so that we can keep track of it 
+    // 🔎 and even graph it if we want to.
     prop global.energyReleasedAsHeat add 50
 
-
-    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_SunConv1.png' 1
-
+    // have the algae glow so that we know it is getting some energy 
     featProp Algae.Costume.glow setTo 1
-
   ]]
+
+  // note that we are representing the use of energy, 
+  // whether we got new energy from the sun or not
+  // because plants always need some energy to live
+  prop EnergyRepresentation.energyType setTo 'usingSun'
 ]]
 
+when EnergyRepresentation lastTouches Algae [[
 
+  // If we didn't have enough energy, then just set to none and show that we are empty
+  // so that we know we need to go find some
+  ifProp Algae.energyLevel lessThan 25 [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+  ]]
 
-when EnergyRepresentation centerLastTouches Algae [[
+  // Otherwise, if the algae has at least 25 energy, then carry 25 away with you
+  // if not, then the algae is too small to eat,  so revert to none and look for more energy
+  ifProp Algae.energyLevel greaterThan 25 [[
 
-  // if you have no energy type, take some energy from the algae
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Algae.getProp('energyLevel').value > 25 }} [[
-    prop EnergyRepresentation.energyType setTo 'producer'
-
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gives to a fish
+    // The algae loses some energy because we pretend the fish is eating it
+    // and we carry it out to give to a fish
     prop Algae.energyLevel sub 25
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 50 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 25
 
+    // we are now carrying algae energy (energy from a producer)
     featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+    prop EnergyRepresentation.energyType setTo 'producer'
 
   ]]
-
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
-  ]]
-
-
 ]]
 
+// ** ====================================================
+// ** INTERACTING WITH THE FISH
+// ** ====================================================
 
-when EnergyRepresentation centerFirstTouches Fish [[
+when EnergyRepresentation firstTouches Fish [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
-    prop EnergyRepresentation.energyType setTo 'using'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
-  ]]
+  // change the representation to let us know that the fish is using that it has 
+  // gained by digesting some algae that it ate
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
 
-  // when touch Algae and type sunlight and energy isn't 0, get energy, change meter color to orange, change type to producer
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
+  // If you have energy from algae (from eating it)
+  // then let's add some of that to the fish
+  ifProp EnergyRepresentation.energyType equal 'producer' [[
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the algae gets from the sun, and what it does to the energy character
+    // ✏️  THIS to alter how much energy the algae gets from the sun, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Fish.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+
+    // we are some of the energy to heat while digesting the algae
+    // so note that in the global variable
     prop global.energyReleasedAsHeat add 15
 
-    // featCall EnergyRepresentation.Costume setAnimatedCostume 'EnergyAnnotation_PlantConv1.png' 1
+    // have the Fish glow so that we know it is getting some energy 
     featProp Fish.Costume.glow setTo 1
 
-
   ]]
+  prop EnergyRepresentation.energyType setTo 'usingAlgae'
 
 ]]
 
-when EnergyRepresentation centerLastTouches Fish [[
+when EnergyRepresentation lastTouches Fish [[
 
-
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_fish.png'
-  ]]
-
-]]
-
-// required directive
-# PROGRAM INIT`
+  // There is nothing to do with Fish energy, so just re-set this to show
+  // that we need to look for energy again 
+  prop EnergyRepresentation.energyType setTo 'none'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+]]`
     },
     {
       "name": "Timer",
@@ -394,30 +516,35 @@ when EnergyRepresentation centerLastTouches Fish [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-# PROGRAM DEFINE
-// This character isn't interactive and just shows the tine, and decreses it every second
-addFeature AgentWidgets
 
-// hide the actual art since we just want the text to displaay
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want 
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Graphing
 addFeature Costume
+
+// Hide the actual art since we just want the text to displaay
 featProp Timer.Costume.costumeName setTo 'onexone.json'
 featProp Timer.Costume.scale setTo 1
 
+// A property to track the time
 addProp time number 0
 
 // set the initial label and then update it below during update
-featProp Timer.AgentWidgets.text setTo 'Time: 0'
+featProp Timer.Graphing.text setTo 'Time: 0'
 
 # PROGRAM UPDATE
 // every second, add one to the time property and display the new time in the format \"Time: #\"\"
 every 1 runAtStart [[
   prop Timer.time add 1
   exprPush {{ 'Time: ' + agent.getProp('time').value }}
-  featPropPop Timer.AgentWidgets.text
+  featPropPop Timer.Graphing.text
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "GraphLostEnergy",
@@ -426,20 +553,23 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-# PROGRAM DEFINE
-// This is a graph of energy lost to heat from all charaacters
-// since there are lots of characters, rather than sume them up one type
-// at a time, use a global variabe to track that excess heat
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a graph of energy lost to heat from all charaacters
+// 🔎 since there are lots of characters, rather than sume them up one type
+// 🔎 at a time, use a global variabe to track that excess heat
+
+# PROGRAM INIT
+
+// setup the features
+addFeature Costume
+addFeature Graphing
+addFeature Population
 
 // hide the actual art since we just want the text to displaay
-addFeature Costume
 featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
-featProp GraphLostEnergy.Costume.scale setTo 1
 
-addFeature AgentWidgets
-addFeature Population
-featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
-
+// we want the graph to show up big
+featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
 
 
 // using a generic name so that it is easier to change later
@@ -447,30 +577,41 @@ addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
-featProp GraphLostEnergy.AgentWidgets.graphProp setTo 'lostEnergy'
+// Graph the lostEnergy, and update if that property does
+featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 
-// make sure something displays with some initial text, on bottom right at first
-prop GraphLostEnergy.x setTo 495
-prop GraphLostEnergy.lostEnergy setTo 350
-prop GraphLostEnergy.zIndex setTo 300
+// Set the graph label
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy As Heat'
 
-featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
+// Create the y-axis bottom
+featCall GraphLostEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 80
+  prop TextLabel.y sub 110
+  featProp TextLabel.Graphing.text setTo '1000 -'
+]]
+
+// Create the y-axis top
+featCall GraphLostEnergy.Population createAgent TextLabel [[
+  prop TextLabel.x sub 70
+  prop TextLabel.y sub 25
+  featProp TextLabel.Graphing.text setTo '0 -'
+]]
+
 
 # PROGRAM UPDATE
 
+// Once every second or so ...
 onEvent Tick [[
 
+  // update thee lost energy property by checking the global
+  // energyReleasedAsHeat that we are tracking within the global character
   propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
-
-]]
-
-// required directive
-# PROGRAM INIT`
+]]`
     },
     {
-      "name": "EnergyInSystem",
-      "scriptText": `# BLUEPRINT EnergyInSystem
+      "name": "GraphEnergyInEcosystem",
+      "scriptText": `# BLUEPRINT GraphEnergyInEcosystem
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
@@ -478,56 +619,60 @@ onEvent Tick [[
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
-featProp EnergyInSystem.Costume.scale setTo 1
+featProp GraphEnergyInEcosystem.Costume.costumeName setTo 'onexone.json'
+featProp GraphEnergyInEcosystem.Costume.scale setTo 1
 
-addFeature AgentWidgets
+addFeature Graphing
 addFeature Population
-featProp EnergyInSystem.AgentWidgets.isLargeGraphic setTo true
+featProp GraphEnergyInEcosystem.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
 addProp totalEnergy number 500
-prop EnergyInSystem.totalEnergy setMax 1000
-prop EnergyInSystem.totalEnergy setMin 0
+prop GraphEnergyInEcosystem.totalEnergy setMax 1000
+prop GraphEnergyInEcosystem.totalEnergy setMin 0
 
 // to store the current values of algae and fish separately
 // I could just add them up below, but this way we can see them in the inspector
 addProp totalAlgaeEnergy number 0
 addProp totalFishEnergy number 0
 
+// Graph the total energy property and change if it changes
+featProp GraphEnergyInEcosystem.Graphing.graphProp setTo 'totalEnergy'
 
-featProp EnergyInSystem.AgentWidgets.graphProp setTo 'totalEnergy'
+// Set the graph label
+featProp GraphEnergyInEcosystem.Graphing.text setTo 'Energy in Ecosystem'
 
-// make sure something displays with some initial text, on bottom right at first
-prop EnergyInSystem.x setTo 495
-prop EnergyInSystem.y setTo 187
-prop EnergyInSystem.zIndex setTo 300
+// Create the y-axis bottom
+featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
+  prop TextLabel.x sub 80
+  prop TextLabel.y sub 110
+  featProp TextLabel.Graphing.text setTo '1000 -'
+]]
 
-featProp EnergyInSystem.AgentWidgets.text setTo 'Energy in System'
+// Create the y-axis top
+featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
+  prop TextLabel.x sub 70
+  prop TextLabel.y sub 25
+  featProp TextLabel.Graphing.text setTo '0 -'
+]]
 
 # PROGRAM UPDATE
 
 onEvent Tick [[
 
-  // count up the algae
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Algae'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalAlgaeEnergy
+  // count up the algae energy
+  featCall GraphEnergyInEcosystem.Population countAgentProp 'Algae' 'energyLevel'
+  exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
+  propPop GraphEnergyInEcosystem.totalAlgaeEnergy
 
-  // count up the fish
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Fish'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalFishEnergy
+  // count up the fish enerrgy
+  featCall GraphEnergyInEcosystem.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
+  propPop GraphEnergyInEcosystem.totalFishEnergy
 
-  // graph the sum
-  exprPush {{ EnergyInSystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
-  propPop EnergyInSystem.totalEnergy
-
-
+  // graph the sum of the fish and algae energy
+  exprPush {{ GraphEnergyInEcosystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
+  propPop GraphEnergyInEcosystem.totalEnergy
 ]]
 
 // required directive
@@ -544,120 +689,217 @@ onEvent Tick [[
 # PROGRAM INIT
 addFeature Costume
 featProp Background.Costume.costumeName setTo 'background_aquatic.png'
-featProp Background.Costume.scale setTo 1.33
+featProp Background.Costume.height setTo 600
+featProp Background.Costume.width setTo 800
+
 prop Background.zIndex setTo -999
 
 
 // required directive
 # PROGRAM UPDATE
 `
+    },
+    {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows fish health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// ✏️ LETS CHANGE THIS the meter label
+// Set the text under the meter to label it
+featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.Graphing.isLargeGraphic setTo true
+featProp HealthMeter.Graphing.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+  // This script below is where you can decide what the current health meter shows
+
+  // 🔎 QUESTION what does it mean to say an ecoyststem is healthy?
+  // 🔎 Nathan thinks that the fish are the most imporatant thing in the pond
+  // 🔎 So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE THIS what the meter displays
+  // ✏️ What property do we want to use?
+  propPush global.averageFishEnergy
+
+  // put our variable into the healthLevel
+  propPop HealthMeter.healthLevel
+
+  // ✏️ LETS CHANGE THIS section to change what color the meter is at different healthLevels
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.Graphing.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.Graphing.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a text label for use in the key or somewhere else to display information
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// invisible since we just want the text to show up
+featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "Sun",
+      "label": "Sunbeam",
       "bpid": "Sun",
-      "initScript": `prop x setTo -315.15
-prop y setTo -313.18`
+      "initScript": `prop x setTo -304.57
+prop y setTo -309.3`
     },
     {
       "id": "1",
-      "label": "Fish1",
+      "label": "Fish 1",
       "bpid": "Fish",
-      "initScript": `prop x setTo -253.37
-prop y setTo 68.88`
+      "initScript": `prop x setTo -299.23
+prop y setTo 124.37`
     },
     {
       "id": "2",
-      "label": "Algae1",
+      "label": "Algae 1",
       "bpid": "Algae",
       "initScript": `prop x setTo -288.59
 prop y setTo -118.14`
     },
     {
       "id": "3",
-      "label": "Algae2",
+      "label": "Algae 2",
       "bpid": "Algae",
       "initScript": `prop x setTo -124.18
 prop y setTo -123.89`
     },
     {
       "id": "4",
-      "label": "Fish2",
+      "label": "Fish 2",
       "bpid": "Fish",
-      "initScript": `prop x setTo -119.56
-prop y setTo 111.73`
+      "initScript": `prop x setTo -118.78
+prop y setTo 174.13`
     },
     {
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 438.81
-prop y setTo -398.87`
+      "initScript": `prop x setTo 458.01
+prop y setTo -396.15`
     },
     {
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 516.26
-prop y setTo 360.68`
+      "initScript": `prop x setTo 528
+prop y setTo 172.18`
     },
     {
       "id": "8",
-      "label": "Energy In System Graph",
-      "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 511.75
-prop y setTo 187`
+      "label": "Energy In Ecosystem Graph",
+      "bpid": "GraphEnergyInEcosystem",
+      "initScript": `prop x setTo 528
+prop y setTo -10.21`
     },
     {
       "id": "9",
-      "label": "Algae3",
+      "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo 44.81
-prop y setTo -98.89`
+      "initScript": `prop x setTo 48.03
+prop y setTo -150.87`
     },
     {
       "id": "10",
-      "label": "Algae4",
+      "label": "Algae 4",
       "bpid": "Algae",
       "initScript": `prop x setTo 247.79
 prop y setTo -125.15`
     },
     {
       "id": "11",
-      "label": "Algae5",
+      "label": "Algae 5",
       "bpid": "Algae",
       "initScript": `prop x setTo 340.27
 prop y setTo -121.93`
     },
     {
       "id": "12",
-      "label": "Fish3",
+      "label": "Fish 3",
       "bpid": "Fish",
       "initScript": `prop x setTo 61.65
 prop y setTo 138.41`
     },
     {
       "id": "13",
-      "label": "Fish4",
+      "label": "Fish 4",
       "bpid": "Fish",
       "initScript": `prop x setTo 205.24
-prop y setTo 59.01`
+prop y setTo 80.38`
     },
     {
       "id": "14",
-      "label": "Fish5",
+      "label": "Fish 5",
       "bpid": "Fish",
-      "initScript": `prop x setTo 315.8
-prop y setTo 210.49`
+      "initScript": `prop x setTo 305.62
+prop y setTo 264.13`
     },
     {
       "id": "15",
-      "label": "Background15",
+      "label": "Background Image",
       "bpid": "Background",
-      "initScript": `prop x setTo -1.14
-prop y setTo -2.59`
+      "initScript": `prop x setTo 0
+prop y setTo  100`
+    },
+    {
+      "id": "16",
+      "label": "HealthMeter",
+      "bpid": "HealthMeter",
+      "initScript": `prop x setTo 530.69
+prop y setTo 321.50`
     }
   ]
 }

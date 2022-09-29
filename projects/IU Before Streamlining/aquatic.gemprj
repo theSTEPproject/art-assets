@@ -1,0 +1,1043 @@
+{
+  "id": "aquatic",
+  "label": "Aquatic Ecosystem",
+  "description": "Tweaks for later runs",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting fish eating alge
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM INIT
+addFeature Costume
+addFeature Movement
+addFeature AgentWidgets
+// addFeature Cursor
+
+featProp Fish.Costume.costumeName setTo 'fish.png'
+
+addProp energyLevel number 30
+prop Fish.energyLevel setMax 100
+prop Fish.energyLevel setMin 0
+
+// this is a producer
+addProp energyType string 'consumer'
+addProp consumerType string 'herbivore'
+
+// have the fish move around if it is not controlled by users
+addProp movementType string 'wander'
+
+// STUDENTS_MAY_CHANGE - set to edgeToEdge or wander - note other options below for speed and direction
+prop Fish.movementType setTo 'wander'
+
+addProp energyUse number 0
+
+// STUDENTS_MAY_CHANGE - to change how quickly Fish use up energy and get hungry
+prop Fish.energyUse setTo 3
+
+// advanced feature - if this is true, the fish will
+// get bigger an hungrier if it eats enough food
+addProp grows boolean false
+
+addProp startDirection number 0
+
+addFeature Physics
+featProp Fish.Costume.scale setTo 0.5
+
+
+// set Touches
+addFeature Touches
+featCall Fish.Touches monitor 'Algae' b2b
+
+// show meter immediately
+featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
+
+// set name
+exprPush {{ Fish.name }}
+featPropPop Fish.AgentWidgets.text
+
+
+# PROGRAM UPDATE
+onEvent Start [[
+
+  // start at normal size unless you eat
+  // featProp Fish.Costume.scale setTo 0.5
+
+  // **** OPTIONS TO CHANGE BEHAVIOR ****
+
+  // if the movementType is wander
+  ifExpr {{ Fish.getProp('movementType').value == 'wander' }} [[
+    featProp Fish.Movement.movementType setTo 'wander'
+    featProp Fish.Movement.distance setTo 0.5
+  ]]
+
+  // if it is edgetoedge
+  ifExpr {{ Fish.getProp('movementType').value == 'edgeToEdge' }} [[
+    featProp Fish.Movement.movementType setTo 'edgetoedge'
+    featProp Fish.Movement.bounceAngle setTo 180
+
+    exprPush {{ Fish.getProp('startDirection').value }}
+    featPropPop Fish.Movement.direction
+  ]]
+
+
+  // STUDENTS_MAY_CHANGE to make fish move faster when they are automatic
+  featProp Fish.Movement.distance setTo 2
+
+  // set name + energyLevel
+  exprPush {{ Fish.name }}
+  featPropPop Fish.AgentWidgets.text
+
+]]
+
+ifExpr {{ Fish.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Fish.Costume.flipX setTo false
+]]
+ifExpr {{ Fish.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Fish.Costume.flipX setTo true
+]]
+
+// whenever the fish is touching an algae
+when Fish touches Algae [[
+  // do the rerst of this once every second (instead of 30 times a second which is too much)
+  every 1 runAtStart [[
+
+    // first, take the energy from the algae
+    prop Algae.energyLevel sub 10
+    // next have the fish gain some energy
+    prop Fish.energyLevel add 10
+    // finally, make the fish glow so tha we know something is happening
+    featProp Fish.Costume.glow setTo 4
+
+
+    // if the algae is out of energy, it is dead so make it
+    // faded and inert which means it won't interact with other things
+    // also set it to be really small so we know it is just the leftover bits
+    ifProp Algae.energyLevel lessThanOrEqual 0 [[
+      prop Algae.alpha setTo 0.5
+      //featProp Algae.Costume.scale setTo 0.1
+      prop Algae.isInert setTo true
+    ]]
+
+    // if we have turned the grow feature on
+    // grow if above 90% energy
+    // TO DO: Change to work with the ifProp
+    ifExpr {{ (Fish.getProp('grows').value) && (Fish.getProp('energyLevel').value > 90) }} [[
+    //ifProp Fish.grows equal true [[
+      //ifProp Fish.energyLevel greaterThan 90 [[
+        dbgOut 'growing'
+        // STUDENTS_MAY_CHANGE - this is the logic that makes large fish use more energy, so changing the energyUse in here is something we might want to do
+        featProp Fish.Costume.scale setTo 0.7
+        prop Fish.energyUse setTo 2
+      //]]
+    ]]
+  ]]
+]]
+
+when Fish lastTouches Algae [[
+  featProp Fish.Costume.glow setTo 0
+]]
+
+
+every 1 runAtStart [[
+  // foodLevel goes down every n seconds
+  exprPush {{ Fish.getProp('energyLevel').value - Fish.getProp('energyUse').value }}
+  propPop Fish.energyLevel
+
+  // sated
+  ifExpr {{ Fish.getProp('energyLevel').value > 50 }} [[
+    featProp Fish.Costume.costumeName setTo 'fish.png'
+    // Green
+    featProp Fish.AgentWidgets.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Fish.getProp('energyLevel').value < 50 }} [[
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    // Orange
+    featProp Fish.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Fish.getProp('energyLevel').value < 20 }} [[
+    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    // Red
+    featProp Fish.AgentWidgets.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Fish.getProp('energyLevel').value < 1 }} [[
+    featProp Fish.Costume.costumeName setTo 'fish_dead'
+    featProp Fish.Movement.movementType setTo 'float'
+
+    prop Fish.alpha setTo 0.3
+    prop Fish.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Fish.AgentWidgets.meterProp setTo 'energyLevel'
+
+]]
+
+`
+    },
+    {
+      "name": "Algae",
+      "scriptText": `# BLUEPRINT Algae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Movement
+addFeature Population
+addFeature AgentWidgets
+
+// algae produce energy via the sun
+addProp energyType string 'producer'
+
+// default to false but once turned on (true) algae will reproduce if they get to full energy from the sun (so any that start at full won't spawn)
+addProp spawns boolean false
+
+// STUDENTS_MAY_CHANGE - if we want to see what happens when algae reproduce
+prop Algae.spawns setTo false
+
+featProp Algae.Costume.costumeName setTo 'algae.png'
+
+// show meter immediately
+featProp Algae.AgentWidgets.meterProp setTo 'energyLevel'
+
+
+// setup energyLevel variablee
+addProp energyLevel number 100
+prop Algae.energyLevel setMax 100
+prop Algae.energyLevel setMin 0
+prop Algae.zIndex setTo 1
+
+// set algae energy meter color for start
+ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 65280
+]]
+ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 16737792
+]]
+ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
+  featProp Algae.AgentWidgets.meterColor setTo 16711680
+]]
+
+addProp energyUse number 0
+
+// STUDENTS_MAY_CHANGE - this makes the algae lose energy over time (by default they do not)
+prop Algae.energyUse setTo 0
+
+addFeature Physics
+
+addFeature Touches
+featCall Algae.Touches monitor 'Sunbeam' b2b
+
+featProp Algae.AgentWidgets.text setTo ''
+
+// STUDENTS_MAY_CHANGE - to set the type of movement and / or the amount it will wander
+featProp Algae.Movement.movementType setTo 'wander'
+featProp Algae.Movement.distance setTo 0.2
+
+// scale the algae to it's starting size
+exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
+featPropPop Algae.Costume.scale
+
+
+prop Algae.zIndex setTo -110
+
+# PROGRAM UPDATE
+when Algae touches Sunbeam [[
+  every 1 runAfter [[
+    featProp Algae.Costume.glow setTo 4
+    exprPush {{ Algae.getProp('energyLevel').value + Sunbeam.getProp('energyRate').value }}
+    propPop Algae.energyLevel
+
+    // if Spawning is active, create more algae when we hit 100
+    // temporarily removed until boolean fixed
+    ifExpr {{ false }} [[
+   // ifProp Algae.spawns equal true [[
+      // Only spawn more if we are under 200 total ... to avoid crashing the system
+      ifExpr {{ Algae.callFeatMethod('Population', 'getActiveAgentsCount', 'Algae') < 200 }} [[
+        ifExpr {{ Algae.getProp('energyLevel').value == 100 }} [[
+          prop Algae.energyLevel sub 50
+          featCall Algae.Population createAgent Algae [[
+            // STUDENTS_MAY_CHANGE - maybe change the new energy level (currently 40) or the threshold (from 100) or the new position or other things
+            prop Algae.energyLevel setTo 40
+            prop Algae.x add 25
+            prop Algae.y add 25
+          ]]
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+when Algae lastTouches Sunbeam [[
+  featProp Algae.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Algae.getProp('energyLevel').value - agent.getProp('energyUse').value }}
+    propPop Algae.energyLevel
+  ]]
+
+  // re-scale the algae based on its energy level
+  ifProp Algae.energyLevel greaterThan 0 [[
+    exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
+    featPropPop Algae.Costume.scale
+  ]]
+
+  ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
+    featProp Algae.Costume.scale setTo 0.1
+  ]]
+
+
+  // set algae energy meter color
+  // doing great
+  ifExpr {{ Algae.getProp('energyLevel').value > 50 }} [[
+    // Green
+    featProp Algae.AgentWidgets.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Algae.getProp('energyLevel').value < 50 }} [[
+    // Orange
+    featProp Algae.AgentWidgets.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Algae.getProp('energyLevel').value < 20 }} [[
+    // Red
+    featProp Algae.AgentWidgets.meterColor setTo 16711680
+  ]]
+
+
+]]`
+    },
+    {
+      "name": "Sunbeam",
+      "scriptText": `# BLUEPRINT Sunbeam
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
+
+// the sun is a source of energy
+addProp energyType string 'source'
+
+addProp speed number 20
+// STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
+prop Sunbeam.speed setTo 20
+
+addProp energyRate number 5
+// STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
+prop Sunbeam.energyRate setTo 5
+
+addProp direction number 1
+// STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
+prop Sunbeam.direction setTo 1
+
+addFeature Physics
+// STUDENTS_MAY_CHANGE - how wide the sunbeam is
+featProp Sunbeam.Costume.scale setTo 1
+// STUDENTS_MAY_CHANGE - how tall the sunbeam is
+featProp Sunbeam.Costume.scaleY setTo 2.5
+
+
+addFeature Touches
+
+// default position for moving across the top
+prop Sunbeam.x setTo -400
+prop Sunbeam.y setTo -180
+
+# PROGRAM UPDATE
+onEvent Tick [[
+  exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
+  propPop Sunbeam.x
+
+  ifExpr {{ ((Sunbeam.getProp('direction').value == 1) && (Sunbeam.x > 400)) || ((Sunbeam.getProp('direction').value == -1) && (agent.x < -400)) }} [[
+    exprPush {{ 400 * Sunbeam.getProp('direction').value * -1 }}
+    propPop Sunbeam.x
+  ]]
+]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature AgentWidgets
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'onexone.json'
+
+addProp time number 0
+
+featProp Timer.AgentWidgets.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.AgentWidgets.text 
+]]
+ `
+    },
+    {
+      "name": "Rock",
+      "scriptText": `# BLUEPRINT Rock
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+featProp Rock.Costume.costumeName setTo 'boulder.json'
+
+addFeature Physics
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM INIT
+addFeature Costume
+addFeature AgentWidgets
+addFeature Movement
+
+addProp species string 'otter'
+prop Predator.species setTo 'otter'
+
+featProp Predator.Costume.costumeName setTo 'otter.png'
+
+addProp energyLevel number 50
+prop Predator.energyLevel setMax 100
+prop Predator.energyLevel setMin 0
+
+// The predator is a consumer, that consumes energy
+addProp energyType string 'consumer'
+
+// set to carnivore, omnivore, or herbivore
+// this setting determines whether we will eat fish or algae
+addProp consumerType string 'omnivore'
+
+addProp energyUse number 1
+
+addProp health string 'healthy'
+
+// STUDENTS_MAY_CHANGE - to change how quickly Predator use up energy and get hungry
+prop Predator.energyUse setTo 1
+
+addFeature Physics
+
+featProp Predator.Costume.scale setTo 0.8
+
+// set Touches
+addFeature Touches
+featCall Predator.Touches monitor 'Fish' b2b
+featCall Predator.Touches monitor 'Trash' b2b
+featCall Predator.Touches monitor 'Algae' b2b
+
+// show meter immediately
+featProp Predator.AgentWidgets.meterProp setTo 'energyLevel'
+
+featProp Predator.AgentWidgets.text setTo ''
+
+
+
+# PROGRAM UPDATE
+ifExpr {{ Predator.getProp('species') == 'otter' }} [[
+  featProp Predator.Costume.costumeName setTo 'otter.png'
+]]
+
+
+ifExpr {{ Predator.getProp('species') == 'turtle' }} [[
+  featProp Predator.Costume.costumeName setTo 'turtle_sprites.json'
+]]
+
+ifExpr {{ Predator.prop.Movement.compassDirection.value === 'E' }} [[
+  featProp Predator.Costume.flipX setTo false
+]]
+ifExpr {{ Predator.prop.Movement.compassDirection.value === 'W' }} [[
+  featProp Predator.Costume.flipX setTo true
+]]
+
+every 1 runAtStart [[
+  // foodLevel goes down every n seconds
+  exprPush {{ Predator.getProp('energyLevel').value - Predator.getProp('energyUse').value }}
+  propPop Predator.energyLevel
+
+  ifExpr {{ Predator.getProp('energyLevel').value == 0 }} [[
+    prop Predator.isInert setTo true
+    prop Predator.alpha setTo 0.3
+  ]]
+]]
+
+when Predator touches Algae [[
+  every 1 runAtStart [[
+    // only eat algae if this is an omnivore or herbivore
+    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'herbivore' }} [[
+
+      // only eat f you are under 50% full or healthy
+      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
+
+        // only glow when we are healthy and can eat
+        featProp Predator.Costume.glow setTo 1
+
+        // only eat if the algae is above 0
+        ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+          prop Predator.energyLevel add 10
+          prop Algae.energyLevel sub 10
+        ]]
+
+        ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
+          prop Algae.alpha setTo 0.5
+          prop Algae.isInert setTo true
+        ]]
+
+      ]]
+
+    ]]
+  ]]
+]]
+
+when Predator touches Fish [[
+  every 1 runAtStart [[
+    // only eat algae if this is an omnivore or carnivore
+    ifExpr {{ Predator.getProp('consumerType').value == 'omnivore' || Predator.getProp('consumerType').value == 'carnivore' }} [[
+
+      // only eat the fish if you are under 50% full or healthy
+      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
+
+        // only glow when we are healthy and can eat
+        featProp Predator.Costume.glow setTo 1
+
+        // Predator gains some energy
+        prop Predator.energyLevel add 20
+
+        // Fish is dead
+        prop Fish.isInert setTo true
+        prop Fish.alpha setTo 0.3
+        // featProp Fish.Costume setPose 2
+        prop Fish.energyLevel setTo 0
+      ]]
+
+    ]]
+  ]]
+]]
+
+when Predator lastTouches Fish [[
+  featProp Predator.Costume.glow setTo 0
+]]
+
+when Predator touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featProp Predator.Costume.glow setTo 0.5
+
+    prop Predator.health setTo 'hurt'
+    featCall Predator.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeAgent
+
+    // change art
+  ]]
+]]
+
+when Predator lastTouches Trash [[
+  featProp Predator.Costume.glow setTo 0
+
+]]`
+    },
+    {
+      "name": "Trash",
+      "scriptText": `# BLUEPRINT Trash
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Population
+featProp Trash.Costume.costumeName setTo 'trash.json'
+
+addFeature Physics
+
+featProp Trash.Costume.scale setTo 0.05
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature AgentWidgets
+addFeature Costume
+featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'square.json'
+
+addFeature Physics
+
+// required directive
+# PROGRAM UPDATE
+
+// required directive
+ 
+
+// required directive
+# PROGRAM EVENT`
+    },
+    {
+      "name": "MeterAlgaeEnergy",
+      "scriptText": `# BLUEPRINT MeterAlgaeEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addProp reportSubject string 'Algae'
+addProp energyLevel number 100
+
+addFeature Population
+addFeature AgentWidgets
+
+// setup the meter title
+exprPush {{ 'Algae avg energy' }}
+featPropPop MeterAlgaeEnergy.AgentWidgets.text
+
+// Make costume an invisible dot
+addFeature Costume
+featProp MeterAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
+
+// Show meter on start.
+featProp MeterAlgaeEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 65280
+// set to 1 so we can see something at start
+// I tried binding and it wasn't working so sticking with this hack for now
+featProp MeterAlgaeEnergy.AgentWidgets.meterProp setTo 1
+
+// default placement for the algae meter
+prop MeterAlgaeEnergy.x setTo 505
+prop MeterAlgaeEnergy.y setTo 320
+prop MeterAlgaeEnergy.alpha setTo 0.3
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // Algae meter display
+  featCall MeterAlgaeEnergy.Population countAgentProp 'Algae' 'energyLevel'
+  exprPush {{ MeterAlgaeEnergy.getFeatProp('Population', 'avg').value }}
+  propPop MeterAlgaeEnergy.energyLevel
+
+  exprPush {{ MeterAlgaeEnergy.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop MeterAlgaeEnergy.AgentWidgets.meter
+
+  exprPush {{ MeterAlgaeEnergy.getProp('reportSubject').value + ' avg: ' + MeterAlgaeEnergy.getProp('energyLevel').value }}
+  featPropPop MeterAlgaeEnergy.AgentWidgets.text
+
+  // set meter color for average energy
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value > 50 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 62580
+  ]]
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value < 50 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifExpr {{ MeterAlgaeEnergy.getProp('energyLevel').value < 20 }} [[
+    featProp MeterAlgaeEnergy.AgentWidgets.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "MeterFishEnergy",
+      "scriptText": `# BLUEPRINT MeterFishEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addProp reportSubject string 'Fish'
+addProp energyLevel number 100
+
+addFeature Population
+addFeature AgentWidgets
+
+// setup the meter title
+exprPush {{ 'Fish avg energy' }}
+featPropPop MeterFishEnergy.AgentWidgets.text
+
+// Make costume an invisible dot
+addFeature Costume
+featProp MeterFishEnergy.Costume.costumeName setTo 'onexone.json'
+
+// Show meter on start.
+featProp MeterFishEnergy.AgentWidgets.isLargeGraphic setTo true
+featProp MeterFishEnergy.AgentWidgets.meterColor setTo 65280
+// set to 1 so we can see something at start
+// I tried binding and it wasn't working so sticking with this hack for now
+featProp MeterFishEnergy.AgentWidgets.meterProp setTo 1
+
+
+// default placement for the fish meter
+prop MeterFishEnergy.x setTo 505
+prop MeterFishEnergy.y setTo 320
+prop MeterFishEnergy.alpha setTo 0.3
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // Fish meter display
+  featCall MeterFishEnergy.Population countAgentProp 'Fish' 'energyLevel'
+  exprPush {{ MeterFishEnergy.getFeatProp('Population', 'avg').value }}
+  propPop MeterFishEnergy.energyLevel
+
+  exprPush {{ MeterFishEnergy.getFeatProp('Population', 'avg').value / 100 }}
+  featPropPop MeterFishEnergy.AgentWidgets.meter
+
+  exprPush {{ MeterFishEnergy.getProp('reportSubject').value + ' avg: ' + MeterFishEnergy.getProp('energyLevel').value }}
+  featPropPop MeterFishEnergy.AgentWidgets.text
+
+  // set meter color for average energy
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value > 50 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 65280
+  ]]
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value < 50 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 16737792
+  ]]
+  ifExpr {{ MeterFishEnergy.getProp('energyLevel').value < 20 }} [[
+    featProp MeterFishEnergy.AgentWidgets.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "GraphAlgaeEnergy",
+      "scriptText": `# BLUEPRINT GraphAlgaeEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featProp GraphAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
+
+addProp characterType string 'Algae'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Algae energyLevel'
+
+// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+// -- Character options: Fish, Algae
+// -- Variable options: energyLevel
+// -- Population options: sum, avg, min, max
+prop GraphAlgaeEnergy.characterType setTo 'Algae'
+prop GraphAlgaeEnergy.countType setTo 'avg'
+prop GraphAlgaeEnergy.variableToGraph setTo 'energyLevel'
+prop GraphAlgaeEnergy.labelText setTo 'Algae energyLevel'
+
+addFeature AgentWidgets
+addFeature Population
+featProp GraphAlgaeEnergy.AgentWidgets.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp graphValue number 0
+prop GraphAlgaeEnergy.graphValue setMax 1000
+prop GraphAlgaeEnergy.graphValue setMin 0
+
+featCall GraphAlgaeEnergy.AgentWidgets bindGraphTo graphValue 30
+
+// make sure something displays with some initial text, on bottom right at first
+prop GraphAlgaeEnergy.x setTo 505
+prop GraphAlgaeEnergy.y setTo 230
+prop GraphAlgaeEnergy.zIndex setTo 300
+
+exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
+propPop GraphAlgaeEnergy.labelText
+
+exprPush {{ GraphAlgaeEnergy.getProp('labelText').value }}
+featPropPop GraphAlgaeEnergy.AgentWidgets.text text
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  exprPush {{ GraphAlgaeEnergy.getProp('characterType').value }}
+  featPropPop GraphAlgaeEnergy.Population.monitoredAgent
+
+  exprPush {{ GraphAlgaeEnergy.getProp('variableToGraph').value }}
+  featPropPop GraphAlgaeEnergy.Population.monitoredAgentProp
+
+  featCall GraphAlgaeEnergy.Population countAgentProp
+
+  exprPush {{ GraphAlgaeEnergy.getFeatProp('Population', GraphAlgaeEnergy.prop.countType.value).value }}
+  propPop GraphAlgaeEnergy.graphValue
+]]`
+    },
+    {
+      "name": "GraphFishEnergy",
+      "scriptText": `# BLUEPRINT GraphFishEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Costume
+featProp GraphFishEnergy.Costume.costumeName setTo 'onexone.json'
+
+addProp characterType string 'Fish'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Fish energyLevel'
+
+// STUDENTS_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+// -- Character options: Fish, Algae
+// -- Variable options: energyLevel
+// -- Population options: sum, avg, min, max
+prop GraphFishEnergy.characterType setTo 'Fish'
+prop GraphFishEnergy.countType setTo 'avg'
+prop GraphFishEnergy.variableToGraph setTo 'energyLevel'
+prop GraphFishEnergy.labelText setTo 'Fish energyLevel'
+
+addFeature AgentWidgets
+addFeature Population
+featProp GraphFishEnergy.AgentWidgets.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp graphValue number 0
+prop GraphFishEnergy.graphValue setMax 1000
+prop GraphFishEnergy.graphValue setMin 0
+
+featCall GraphFishEnergy.AgentWidgets bindGraphTo graphValue 30
+
+// make sure something displays with some initial text, on bottom right at first
+prop GraphFishEnergy.x setTo 505
+prop GraphFishEnergy.y setTo 370
+prop GraphFishEnergy.zIndex setTo 300
+
+exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
+propPop GraphFishEnergy.labelText
+exprPush {{ GraphFishEnergy.getProp('labelText').value }}
+
+featPropPop GraphFishEnergy.AgentWidgets.text
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+
+
+  exprPush {{ GraphFishEnergy.getProp('characterType').value }}
+  featPropPop Population monitoredAgent
+
+  exprPush {{ GraphFishEnergy.getProp('variableToGraph').value }}
+  featPropPop Population monitoredAgentProp
+
+  featCall Population countAgentProp
+
+  exprPush {{ GraphFishEnergy.getFeatProp('Population', GraphFishEnergy.prop.countType.value).value }}
+  propPop graphValue
+  
+]]
+
+
+// required directive
+ `
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background LOAD
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// required directive
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'background_aquatic.png'
+featProp Background.Costume.scale setTo 1.33
+prop Background.zIndex setTo -999
+
+
+// required directive
+# PROGRAM UPDATE`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 460.49
+prop y setTo -405.29
+featProp AgentWidgets text setTo 'Energy Key:'`
+    },
+    {
+      "id": "1701",
+      "label": "HighLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+prop y setTo -370
+featProp AgentWidgets text setTo 'High'
+prop agent.zIndex setTo 100`
+    },
+    {
+      "id": "1702",
+      "label": "MediumLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 456.53
+prop y setTo -339.67
+featProp AgentWidgets text setTo 'Medium'
+prop agent.zIndex setTo 100`
+    },
+    {
+      "id": "1703",
+      "label": "LowLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455
+prop y setTo -308
+featProp AgentWidgets text setTo 'Low'
+prop agent.zIndex setTo 100`
+    },
+    {
+      "id": "1704",
+      "label": "HighChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455.00
+prop y setTo -353.04
+featCall agent.Costume setColorize 0 255 0
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100
+`
+    },
+    {
+      "id": "1705",
+      "label": "MediumChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455.00
+prop y setTo -319.93
+featCall Costume setColorize 210 140 0
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
+    },
+    {
+      "id": "1706",
+      "label": "LowChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 455.00
+prop y setTo -287.28
+featCall Costume setColorize 255 0 0
+prop agent.zIndex setTo 95
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
+    },
+    {
+      "id": "1707",
+      "label": "Background1707",
+      "bpid": "Background",
+      "initScript": `prop x setTo -1.20
+prop y setTo -0.20
+`
+    },
+    {
+      "id": "1710",
+      "label": "Algae1710",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -248.71
+prop y setTo -95.88`
+    },
+    {
+      "id": "1711",
+      "label": "Algae1711",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 55.29
+prop y setTo -103.3`
+    },
+    {
+      "id": "1712",
+      "label": "Sunbeam1712",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -379.33
+prop y setTo -129.71`
+    },
+    {
+      "id": "1713",
+      "label": "Rock1713",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -301.41
+prop y setTo 349.49`
+    },
+    {
+      "id": "1714",
+      "label": "Rock1714",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 318.43
+prop y setTo 347.53
+featProp Rock.Costume.flipX setTo true
+
+`
+    },
+    {
+      "id": "1715",
+      "label": "Algae1715",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    }
+  ]
+}

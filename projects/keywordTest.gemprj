@@ -1,18 +1,23 @@
 {
-  "id": "keywordTest",
-  "label": "keywords",
+  "id": "KeywordTest",
+  "label": "Keywords",
   "metadata": {
-    "top": -200,
+    "top": -400,
     "right": 400,
-    "bottom": 200,
+    "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "translateX": "-8",
+    "translateY": "-88",
+    "rotate": "0",
+    "mirrorX": false,
+    "mirrorY": false,
+    "scaleY": "1.0",
+    "scaleX": "1.0"
   },
   "rounds": [
     {
@@ -35,7 +40,7 @@
     }
   ],
   "blueprints": [
-     {
+    {
       "name": "global",
       "scriptText": `# BLUEPRINT global
 # TAG IsCharControllable false
@@ -56,15 +61,25 @@ addProp energyReleasedAsHeat number 0
     {
       "name": "TestKeywordAgent",
       "scriptText": `# BLUEPRINT TestKeywordAgent
-# TAG IsCharControllable false
+# TAG IsCharControllable true
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// BUG: 'add line' will result in 'unexpected level underflow'
-// error because of the 'if' 'alt' construction
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// EXPLANATION:
+// note how the line above this is a different color?
+// ** also this one because of **
+// but not this one
+// this next one, though will be different 
+// STUDENTS_MAY_CHANGE
+// or
+// STUDENTS_MAY_CHANGE some text goes here ... 
+// and then it reverts
+// QUESTION: What is going on here?
+// HYPOTHESIS: I think Joshua implemented more colors
 
 # PROGRAM INIT
+
+
 addFeature Costume
 featProp TestKeywordAgent.Costume.costumeName setTo 'circle.json'
 featProp TestKeywordAgent.Costume.scale setTo 2
@@ -78,8 +93,15 @@ addProp myString string 'hello'
 addProp copiedString string 'empty'
 addProp copiedNumber number 0
 
-addFeature AgentWidgets
-featProp TestKeywordAgent.AgentWidgets.textProp setTo 'myString'
+addFeature Graphing
+
+dbgOut 'trrackerID ' TestKeywordAgent.trackerId
+
+ifProp agent.trackerId equal 'CC20_0' [[
+  featProp TestKeywordAgent.Graphing.text setTo 'Joshua'
+]]
+
+// featProp TestKeywordAgent.Graphing.textProp setTo 'myString'
 
 prop TestKeywordAgent.myNumber setTo 1
 prop TestKeywordAgent.myNumber setTo 2
@@ -92,7 +114,7 @@ featProp TestKeywordAgent.Costume.height setTo 10
 # PROGRAM UPDATE
 
 
-every 1 [[
+every 1 runAtStart [[
   ifExpr {{ agent.getProp('myString').value === 'hello' }} [[
     prop TestKeywordAgent.myString setTo 'goodbye'
   ]]
@@ -137,6 +159,13 @@ prop y setTo 30`
       "bpid": "TestKeywordAgent",
       "initScript": `prop x setTo -37.91
 prop y setTo 28.14`
+    },
+    {
+      "id": "2",
+      "label": "TestKeywordAgent2",
+      "bpid": "TestKeywordAgent",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }
