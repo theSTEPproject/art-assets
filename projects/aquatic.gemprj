@@ -416,10 +416,10 @@ featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
 addProp energyType string 'source'
 
 // ✏️ LETS CHANGE THIS - how wide the sunbeam is
-featProp Sunbeam.Costume.scale setTo 1
+featProp Sunbeam.Costume.width setTo 100
 
 // ✏️ LETS CHANGE THIS - how tall the sunbeam is
-featProp Sunbeam.Costume.scaleY setTo 2.5
+featProp Sunbeam.Costume.height setTo 500
 
 // default position for moving across the top
 prop Sunbeam.x setTo -400
@@ -1100,8 +1100,8 @@ prop y setTo -131.48`
       "id": "1712",
       "label": "Sunbeam",
       "bpid": "Sunbeam",
-      "initScript": `prop x setTo -380.51
-prop y setTo -139.48`
+      "initScript": `prop x setTo -394.03
+prop y setTo -210.21`
     },
     {
       "id": "1713",
