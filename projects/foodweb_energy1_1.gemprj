@@ -12,10 +12,36 @@
     ],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting the energy flow in the system (need to add more here)
+
+prop global.visible setTo false
+
+addProp energyReleasedAsHeat number 0
+
+// required directive
+# PROGRAM UPDATE`
+    },
     {
       "name": "Explanation",
       "scriptText": `# BLUEPRINT Explanation
@@ -27,11 +53,11 @@
 // This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
 // ---------------------------------------------------------------------------------------------------------------- 
 
-// The goal of this model is to let students explore the energy in the aquatic system by being a 
+// The goal of this model is to let students explore the energy in the foodweb system by being a 
 // representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
 // character using either pozyx or charController 
 
-// The system is intended to mirror the aquatic model in that energy is meant to go from the sun to algae to fish. 
+// The system is intended to mirror the foodweb model in that energy is meant to go from the sun to (add description). 
 // To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't 
 // hurry and give it to them
 
@@ -78,17 +104,6 @@ featProp Sun.Costume.scale setTo 0.6
 //  snailToRobin, snakeToHawk, mouseToSnake
 // these are referenced by EnergyRepresentation
 addProp energyType string 'sun'
-
-addFeature Global
-
-// This is a hack, using the Sun to initaliize this variable since I know it is the first
-// Character added under instances
-// These next two lines check if there is a Global property called energyReleasedAsHeat, and if not,
-// creates one
-// The EnergyRepresentation and graphs then reference this global variable
-ifExpr {{ agent.callFeatMethod('Global', 'getGlobalProp', 'energyReleasedAsHeat') == undefined }} [[
-  featCall Global addGlobalProp energyReleasedAsHeat Number 0
-]]
 
 // required directive
 # PROGRAM UPDATE`
@@ -210,11 +225,6 @@ featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
 addFeature Physics
 featProp EnergyRepresentation.Costume.scale setTo 0.1
 
-
-// using this to record energyReleasedAsHeat
-addFeature Global
-
-
 // setup energy properties
 addProp energyLevel Number 0
 prop EnergyRepresentation.energyLevel setMax 100
@@ -277,7 +287,7 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop VeggieGarden.energyLevel add 50
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 50
+    prop global.energyReleasedAsHeat add 50
 
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'sun to veggieGarden.png'
@@ -298,7 +308,7 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
     prop VeggieGarden.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
 
@@ -328,7 +338,7 @@ when EnergyRepresentation centerFirstTouches Clover [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Clover.energyLevel add 50
     // we are losing 50 of the hundred, so note that in the global
-    featCall Global globalProp energyReleasedAsHeat add 50
+    prop global.energyReleasedAsHeat add 50
 
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'sun to clover.png'
@@ -349,7 +359,7 @@ when EnergyRepresentation centerLastTouches Clover [[
     prop Clover.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
 
@@ -379,7 +389,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Gopher.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to gopher.png'
     featProp Gopher.Costume.glow setTo 1
@@ -393,7 +403,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Gopher.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'clover to gopher.png'
     featProp Gopher.Costume.glow setTo 1
@@ -412,7 +422,7 @@ when EnergyRepresentation centerLastTouches Gopher [[
     prop Gopher.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
 
@@ -443,7 +453,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snail.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'vaggieGarden to snail.png'
     featProp Snail.Costume.glow setTo 1
@@ -457,7 +467,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snail.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'clover to snail.png'
     featProp Snail.Costume.glow setTo 1
@@ -476,7 +486,7 @@ when EnergyRepresentation centerLastTouches Snail [[
     prop Snail.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
 
@@ -507,7 +517,7 @@ when EnergyRepresentation centerFirstTouches Caterpillar [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Caterpillar.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to caterpillar.png'
     featProp Caterpillar.Costume.glow setTo 1
@@ -526,7 +536,7 @@ when EnergyRepresentation centerLastTouches Caterpillar [[
     prop Caterpillar.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
 
@@ -557,7 +567,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Beetle.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'caterpillar to beetle.png'
     featProp Beetle.Costume.glow setTo 1
@@ -571,7 +581,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Beetle.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'snail to beetle.png'
     featProp Beetle.Costume.glow setTo 1
@@ -590,7 +600,7 @@ when EnergyRepresentation centerLastTouches Beetle [[
     prop Beetle.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'beetle_energy.png'
 
@@ -621,7 +631,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Mouse.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to mouse.png'
     featProp Mouse.Costume.glow setTo 1
@@ -635,7 +645,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Mouse.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'beetle to mouse.png'
     featProp Mouse.Costume.glow setTo 1
@@ -654,7 +664,7 @@ when EnergyRepresentation centerLastTouches Mouse [[
     prop Mouse.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'mouse_energy.png'
 
@@ -685,7 +695,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'caterpillar to robin.png'
     featProp Robin.Costume.glow setTo 1
@@ -699,7 +709,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'beetle to robin.png'
     featProp Robin.Costume.glow setTo 1
@@ -713,7 +723,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'snail to robin.png'
     featProp Robin.Costume.glow setTo 1
@@ -732,7 +742,7 @@ when EnergyRepresentation centerLastTouches Robin [[
     prop Robin.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
-    featCall Global globalProp energyReleasedAsHeat add 25
+    prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'robin_energy.png'
 
@@ -801,10 +811,10 @@ addFeature AgentWidgets
 addFeature Population
 featProp GraphLostEnergy.AgentWidgets.isLargeGraphic setTo true
 
-addFeature Global
+
 
 // using a generic name so that it is easier to change later
-addProp lostEnergy Number 500
+addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
@@ -820,10 +830,8 @@ featProp GraphLostEnergy.AgentWidgets.text setTo 'Lost Energy From Heat'
 # PROGRAM UPDATE
 
 onEvent Tick [[
-
-  exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPush global.energyReleasedAsHeat
   propPop GraphLostEnergy.lostEnergy
-
 ]]
 
 // required directive
@@ -851,7 +859,7 @@ addProp totalEnergy Number 500
 prop EnergyInSystem.totalEnergy setMax 1000
 prop EnergyInSystem.totalEnergy setMin 0
 
-// to store the current values of algae and fish separately
+// to store the current values of all animals and vaggies separately
 // I could just add them up below, but this way we can see them in the inspector
 addProp totalVeggieGardenEnergy Number 0
 addProp totalCloverEnergy Number 0
@@ -877,7 +885,7 @@ onEvent Tick [[
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
   propPop EnergyInSystem.totalVeggieGardenEnergy
 
-  // count up the fish
+  // count up the Clover
   featProp EnergyInSystem.Population.monitoredAgent setTo 'Clover'
   featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
   featCall EnergyInSystem.Population countAgentProp
@@ -1706,7 +1714,13 @@ prop y setTo 314.66`
       "bpid": "Robin",
       "initScript": `prop x setTo 13.18
 prop y setTo -266.98`
+    },
+    {
+      "id": "18",
+      "label": "Snake18",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
     }
   ]
 }
- No newline at end of file
