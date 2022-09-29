@@ -7,7 +7,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -1133,8 +1136,8 @@ prop y setTo -35.95`
       "id": "1718",
       "label": "HealthMeter 1",
       "bpid": "HealthMeter",
-      "initScript": `prop x setTo 496.47
-prop y setTo 279.85`
+      "initScript": `prop x setTo 461.23
+prop y setTo 233.57`
     },
     {
       "id": "1720",
@@ -1149,20 +1152,6 @@ prop y setTo 0`
       "bpid": "Fish",
       "initScript": `prop x setTo 29
 prop y setTo 30`
-    },
-    {
-      "id": "1722",
-      "label": "GraphAlgaeEnergy1722",
-      "bpid": "GraphAlgaeEnergy",
-      "initScript": `prop x setTo 505.39
-prop y setTo 108.43`
-    },
-    {
-      "id": "1723",
-      "label": "GraphFishEnergy1723",
-      "bpid": "GraphFishEnergy",
-      "initScript": `prop x setTo 507.54
-prop y setTo -82.10`
     }
   ]
 }
