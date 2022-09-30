@@ -144,7 +144,7 @@ prop Sky.zIndex setTo -100
 # PROGRAM DEFINE
 
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
+featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
 
 addFeature Physics
 featProp EnergyRepresentation.Costume.scale setTo 0.1
@@ -308,7 +308,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
   ]]
 
   // when touch gopher, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Gopher.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToGopher'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
@@ -322,7 +322,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
   ]]
 
   // when touch gopher and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Gopher.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'cloverToGopher'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
@@ -372,7 +372,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
   ]]
 
   // when touch snail, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToSnail
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Snail.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToSnail'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the snail gets from the VeggieGarden, and what it does to the energy character
@@ -386,7 +386,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
   ]]
 
   // when touch snail and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToSnail
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Snail.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'cloverToSnail'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
@@ -436,7 +436,7 @@ when EnergyRepresentation centerFirstTouches Caterpillar [[
   ]]
 
   // when touch Caterpillar, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToCaterpillar
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Caterpillar.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToCaterpillar'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Caterpillar gets from the VeggieGarden, and what it does to the energy character
@@ -486,7 +486,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
   ]]
 
   // when touch Beetle, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToBeetle
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Beetle.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillarToBeetle'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Beetle gets from the VeggieGarden, and what it does to the energy character
@@ -500,7 +500,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
   ]]
 
   // when touch Beetle and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToBeetle
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' && Beetle.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snailToBeetle'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
@@ -550,7 +550,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
   ]]
 
   // when touch Mouse, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToMouse
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Mouse.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToMouse'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
@@ -564,7 +564,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
   ]]
 
   // when touch mouse and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToMouse
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Mouse.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToMouse'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
@@ -614,7 +614,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
   ]]
 
   // when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillarToRobin'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Robin gets from the VeggieGarden, and what it does to the energy character
@@ -628,7 +628,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
   ]]
 
   // when touch Robin and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToRobin
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToRobin'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the beetle, and what it does to the energy character
@@ -642,7 +642,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
   ]]
 
   // when touch Robin and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToRobin
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snailToRobin'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the snail, and what it does to the energy character
@@ -692,7 +692,7 @@ when EnergyRepresentation centerFirstTouches Snake [[
   ]]
 
   // when touch Snake, and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToSnake
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Snake.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToSnake'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Snake gets from the VeggieGarden, and what it does to the energy character
@@ -706,7 +706,7 @@ when EnergyRepresentation centerFirstTouches Snake [[
   ]]
 
   // when touch snake and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToSnake
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Snake.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'mouseToSnake'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the snake gets from the VeggieGarden, and what it does to the energy character
@@ -756,7 +756,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
   ]]
 
   // when touch Hawk, and energy type is from gopher and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'gopher' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'gopher' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'gopherToHawk'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
@@ -770,7 +770,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
   ]]
 
   // when touch Hawk and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToHawk
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'mouseToHawk'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
@@ -784,7 +784,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
   ]]
 
   // when touch Hawk and energy type is from robin and energy isn't 0, get energy, change meter color to orange, change type to robinToHawk
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'robin' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'robin' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'robinToHawk'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
@@ -798,7 +798,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
   ]]
 
   // when touch Hawk and energy type is from snake and energy isn't 0, get energy, change meter color to orange, change type to snakeToHawk
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snake' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snake' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snakeToHawk'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
@@ -825,15 +825,19 @@ when EnergyRepresentation centerLastTouches Hawk [[
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
-    featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Hawk energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'hawk' || EnergyRepresentation.getProp('energyType').value == 'gopher' || EnergyRepresentation.getProp('energyType').value == 'mouse' || EnergyRepresentation.getProp('energyType').value == 'robin' || EnergyRepresentation.getProp('energyType').value == 'snake' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
   ]]
+
+  // avoid getting too small
+  // exprPush {{ 0.1 }}
+  // featPropPop EnergyRepresentation.Costume.scale
 
 ]]
 
