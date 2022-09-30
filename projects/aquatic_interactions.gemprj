@@ -167,7 +167,7 @@ onEvent Start [[
   // to wander around randomly, and eat any algae that they bump into
   featProp Fish.Movement.movementType setTo 'wander'
 
-  // This is the speed the fish moves at when it is not character controlled 
+  // This is the speed the fish moves at when it is not character controlled
   featProp Fish.Movement.distance setTo 2
 
 ]]
@@ -188,13 +188,14 @@ when Fish touches Algae [[
     // 🔎 WHAT DOES THIS DO?
     // 🔎 This is the script that has the fish eat a little algae at a time.
 
-    // ✏️ LETS CHANGE THIS!
-    // ✏️ first, take the energy from the algae
+    // ✏️ LETS CHANGE THIS: to make the Algae lose more or less energy, and the fish gain more or less.
     prop Algae.energyLevel sub 10
-    // 🔎 the fish ate the algae and digests it
+    // 🔎 the fish ate the algae which took matter and energy away from the algae
 
-    // ✏️ next have the fish gain some energy
+    // ✏️ We might also want to change how much energy the fish gets after eating some algae
     prop Fish.energyLevel add 10
+    // 🔎 because the fish digested the algae it gained energy
+
 
     // finally, make the fish glow so tha we know something is happening
     featProp Fish.Costume.glow setTo 4
@@ -218,8 +219,8 @@ when Fish lastTouches Algae [[
 
 
 every 1 runAtStart [[
-  // ✏️ LETS CHANGE THIS
-  // ✏️ Every second, the Fish use 3 energy. If this number is higher, they will lose energy faster
+  // ✏️ LETS CHANGE THIS! Every second, the Fish use some energy to stay alive.
+  // ✏️ If this number is higher, they will lose energy faster
   prop Fish.energyLevel sub 3
 
   // sated
@@ -339,7 +340,7 @@ prop Algae.zIndex setTo -110
 // This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAtStart [[
-    // 🔎 WHAT DOES THIS DO This is the script that says how much energy the algae gains whenever it touches the sun
+    // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae gains whenever it touches the sun
     // 🔎 This much energy is added every second
     // ✏️ LETS CHANGE THIS: if you make this number higher, the algae will grow back faster
     prop Algae.energyLevel add 5
@@ -359,10 +360,9 @@ when Algae lastTouches Sunbeam [[
 
 every 1 runAtStart [[
 
-  // The algae uses a little bit of energy every second to stay alive
+  // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae uses every second to stay alive 
   // ✏️ LETS CHANGE THIS: Let's change this number if we want them to
-  // ✏️ use more or less energy every second . A higher number will mean they
-  // ✏️ lose energy faster.
+  // ✏️ use more or less energy every second. A higher number will mean they lose energy faster.
   prop Algae.energyLevel sub 1
 
   // Set the color of the energy meter depending on the amount of energy that the algae has
@@ -532,7 +532,7 @@ prop Predator.energyLevel setMin 0
 // The predator is a consumer, that consumes energy
 addProp energyType string 'consumer'
 
-// ✏️ LETS CHANGE THIS
+// ✏️ LETS CHANGE THIS!
 // ✏️ set to carnivore or omnivore
 // ✏️ this setting determines whether we will eat fish or fish and algae
 addProp consumerType string 'carnivore'
@@ -897,8 +897,7 @@ addProp healthLevel number 100
 prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
-// ✏️ LETS CHANGE THIS the meter label
-// ✏️ Set the text under the meter to label it
+// ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
 // Make costume an invisible dot so we only see the meter
@@ -927,7 +926,7 @@ onEvent Tick [[
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
 
-  // ✏️ LETS CHANGE the meter colors to help show how well the ecosystem is doing
+  // 🔎 This changes the meter colors to help show how well the ecosystem is doing
   ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
     // set the meter to green
     featProp HealthMeter.Graphing.meterColor setTo 65280
