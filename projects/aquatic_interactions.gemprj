@@ -760,8 +760,8 @@ prop GraphAlgaeEnergy.graphValue setMin 0
 
 featProp GraphAlgaeEnergy.Graphing.graphProp setTo 'graphValue'
 
-featProp Graphing graphMinY setTo 0
-featProp Graphing graphMaxY setTo 100
+featProp GraphAlgaeEnergy.Graphing.graphMinY setTo 0
+featProp GraphAlgaeEnergy.Graphing.graphMaxY setTo 100
 
 exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
 propPop GraphAlgaeEnergy.labelText
@@ -823,8 +823,8 @@ featProp GraphFishEnergy.Graphing.graphProp setTo 'graphValue'
 
 dbgOut 'graph Value' GraphFishEnergy.graphValue
 
-featProp Graphing graphMinY setTo 0
-featProp Graphing graphMaxY setTo 100
+featProp GraphFishEnergy.Graphing.graphMinY setTo 0
+featProp GraphFishEnergy.Graphing.graphMaxY setTo 100
 
 // Setup the graph label dynaamically
 exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}

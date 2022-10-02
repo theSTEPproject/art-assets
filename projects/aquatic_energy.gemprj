@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 11393254,
     "roundsCanLoop": true,
@@ -585,8 +582,8 @@ featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy As Heat'
 
 // Set the graph to have a range of 0-1000
-featProp Graphing graphMinY setTo 0
-featProp Graphing graphMaxY setTo 1000
+featProp GraphLostEnergy.Graphing.graphMinY setTo 0
+featProp GraphLostEnergy.Graphing.graphMaxY setTo 1000
 
 
 # PROGRAM UPDATE
@@ -634,8 +631,8 @@ featProp GraphEnergyInEcosystem.Graphing.graphProp setTo 'totalEnergy'
 featProp GraphEnergyInEcosystem.Graphing.text setTo 'Energy in Ecosystem'
 
 // Set the graph to have a range of 0-1000
-featProp Graphing graphMinY setTo 0
-featProp Graphing graphMaxY setTo 1000
+featProp GraphEnergyInEcosystem.Graphing.graphMinY setTo 0
+featProp GraphEnergyInEcosystem.Graphing.graphMaxY setTo 1000
 
 # PROGRAM UPDATE
 
