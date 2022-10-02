@@ -754,31 +754,20 @@ addFeature Population
 featProp GraphAlgaeEnergy.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue number 100
+addProp graphValue number 0
 prop GraphAlgaeEnergy.graphValue setMax 100
 prop GraphAlgaeEnergy.graphValue setMin 0
 
 featProp GraphAlgaeEnergy.Graphing.graphProp setTo 'graphValue'
+
+featProp Graphing graphMinY setTo 0
+featProp Graphing graphMaxY setTo 100
 
 exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
 propPop GraphAlgaeEnergy.labelText
 
 propPush GraphAlgaeEnergy.labelText
 featPropPop GraphAlgaeEnergy.Graphing.text
-
-// Create the y-axis bottom
-featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 80
-  prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '100 -'
-]]
-
-// Create the y-axis top
-featCall GraphAlgaeEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 70
-  prop TextLabel.y sub 25
-  featProp TextLabel.Graphing.text setTo '0 -'
-]]
 
 # PROGRAM UPDATE
 
@@ -825,7 +814,7 @@ addFeature Population
 featProp GraphFishEnergy.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp graphValue number 100
+addProp graphValue number 0
 prop GraphFishEnergy.graphValue setMax 100
 prop GraphFishEnergy.graphValue setMin 0
 
@@ -834,6 +823,9 @@ featProp GraphFishEnergy.Graphing.graphProp setTo 'graphValue'
 
 dbgOut 'graph Value' GraphFishEnergy.graphValue
 
+featProp Graphing graphMinY setTo 0
+featProp Graphing graphMaxY setTo 100
+
 // Setup the graph label dynaamically
 exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
 propPop GraphFishEnergy.labelText
@@ -841,19 +833,6 @@ exprPush {{ GraphFishEnergy.getProp('labelText').value }}
 
 featPropPop GraphFishEnergy.Graphing.text
 
-// Create the y-axis bottom
-featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 80
-  prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '100 -'
-]]
-
-// Create the y-axis top
-featCall GraphFishEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 70
-  prop TextLabel.y sub 25
-  featProp TextLabel.Graphing.text setTo '0 -'
-]]
 
 # PROGRAM UPDATE
 

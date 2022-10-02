@@ -265,7 +265,7 @@ every 2 runAtStart [[
 
 # PROGRAM INIT
 
-// Setup the features 
+// Setup the features
 addFeature Costume
 addFeature Physics
 
@@ -295,12 +295,14 @@ every 1 runAtStart [[
   // ✏️ The algae use energy to survive, so decrease energy each second
   prop Algae.energyLevel sub 1
 
-  // re-size the algae based on its energy level so that 
+  // re-size the algae based on its energy level so that
   // if it has lots of energy it grows nice and big, and low energy
-  // either from being eaten or just using it all up means it is shrinking and 
+  // either from being eaten or just using it all up means it is shrinking and
   // will die if it hits 0
-  exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
-  featPropPop Algae.Costume.scale
+  ifProp Algae.energyLevel notEqual 0 [[
+    exprPush {{ (Algae.getProp('energyLevel').value / 100)* 0.2 }}
+    featPropPop Algae.Costume.scale
+  ]]
 
   // this scripts sets the color of the energy bar next to the algae based on how it is doing
   // in terms of the amount of energy it has
@@ -309,16 +311,15 @@ every 1 runAtStart [[
     featProp Algae.Graphing.meterColor setTo 65280
   ]]
   ifProp Algae.energyLevel lessThan 60 [[
-      // needs some energy - Orange
+    // needs some energy - Orange
     featProp Algae.Graphing.meterColor setTo 16737792
   ]]
   ifProp Algae.energyLevel lessThan 30 [[
-      // in trouble - Red
+    // in trouble - Red
     featProp Algae.Graphing.meterColor setTo 16711680
 
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Sky",
@@ -573,7 +574,7 @@ featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
 
 
 // using a generic name so that it is easier to change later
-addProp lostEnergy number 500
+addProp lostEnergy number 0
 prop GraphLostEnergy.lostEnergy setMax 1000
 prop GraphLostEnergy.lostEnergy setMin 0
 
@@ -583,19 +584,9 @@ featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
 // Set the graph label
 featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy As Heat'
 
-// Create the y-axis bottom
-featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 80
-  prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '1000 -'
-]]
-
-// Create the y-axis top
-featCall GraphLostEnergy.Population createAgent TextLabel [[
-  prop TextLabel.x sub 70
-  prop TextLabel.y sub 25
-  featProp TextLabel.Graphing.text setTo '0 -'
-]]
+// Set the graph to have a range of 0-1000
+featProp Graphing graphMinY setTo 0
+featProp Graphing graphMaxY setTo 1000
 
 
 # PROGRAM UPDATE
@@ -627,7 +618,7 @@ addFeature Population
 featProp GraphEnergyInEcosystem.Graphing.isLargeGraphic setTo true
 
 // using a generic name so that it is easier to change later
-addProp totalEnergy number 500
+addProp totalEnergy number 0
 prop GraphEnergyInEcosystem.totalEnergy setMax 1000
 prop GraphEnergyInEcosystem.totalEnergy setMin 0
 
@@ -642,19 +633,9 @@ featProp GraphEnergyInEcosystem.Graphing.graphProp setTo 'totalEnergy'
 // Set the graph label
 featProp GraphEnergyInEcosystem.Graphing.text setTo 'Energy in Ecosystem'
 
-// Create the y-axis bottom
-featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 80
-  prop TextLabel.y sub 110
-  featProp TextLabel.Graphing.text setTo '1000 -'
-]]
-
-// Create the y-axis top
-featCall GraphEnergyInEcosystem.Population createAgent TextLabel [[
-  prop TextLabel.x sub 70
-  prop TextLabel.y sub 25
-  featProp TextLabel.Graphing.text setTo '0 -'
-]]
+// Set the graph to have a range of 0-1000
+featProp Graphing graphMinY setTo 0
+featProp Graphing graphMaxY setTo 1000
 
 # PROGRAM UPDATE
 
