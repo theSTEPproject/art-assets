@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 11393254,
     "roundsCanLoop": true,
@@ -771,8 +774,8 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
       "id": "0",
       "label": "Sunbeam",
       "bpid": "Sun",
-      "initScript": `prop x setTo -304.57
-prop y setTo -309.3`
+      "initScript": `prop x setTo -259.64
+prop y setTo -317.83`
     },
     {
       "id": "1",
@@ -785,8 +788,8 @@ prop y setTo 124.37`
       "id": "2",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo -288.59
-prop y setTo -118.14`
+      "initScript": `prop x setTo -286.44
+prop y setTo -81.45`
     },
     {
       "id": "3",
