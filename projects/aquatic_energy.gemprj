@@ -79,21 +79,21 @@ every 1 runAtStart [[
   // 🔎 inside of the health meter including several average energy levels. 
 
   // grab the Fish average energy and count
-  featCall global.Population countAgentProp 'Fish' 'energyLevel'
+  featCall global.Population countCharacterProp 'Fish' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averageFishEnergy
   featPropPush global.Population.count
   propPop global.fishCount
 
   // grab the Algae average eenergy  and count
-  featCall global.Population countAgentProp 'Algae' 'energyLevel'
+  featCall global.Population countCharacterProp 'Algae' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averageAlgaeEnergy
   featPropPush global.Population.count
   propPop global.algaeCount
 
   // grab the Predator average eenergy  and count
-  featCall global.Population countAgentProp 'Predator' 'energyLevel'
+  featCall global.Population countCharacterProp 'Predator' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averagePredatorEnergy
   featPropPush global.Population.count
@@ -539,7 +539,7 @@ featProp Timer.Graphing.text setTo 'Time: 0'
 // every second, add one to the time property and display the new time in the format \"Time: #\"\"
 every 1 runAtStart [[
   prop Timer.time add 1
-  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.Graphing.text
 ]]
 `
@@ -639,17 +639,17 @@ featProp GraphEnergyInEcosystem.Graphing.graphMaxY setTo 1000
 onEvent Tick [[
 
   // count up the algae energy
-  featCall GraphEnergyInEcosystem.Population countAgentProp 'Algae' 'energyLevel'
+  featCall GraphEnergyInEcosystem.Population countCharacterProp 'Algae' 'energyLevel'
   exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
   propPop GraphEnergyInEcosystem.totalAlgaeEnergy
 
   // count up the fish enerrgy
-  featCall GraphEnergyInEcosystem.Population countAgentProp 'Fish' 'energyLevel'
+  featCall GraphEnergyInEcosystem.Population countCharacterProp 'Fish' 'energyLevel'
   exprPush {{ GraphEnergyInEcosystem.getFeatProp('Population', 'sum').value }}
   propPop GraphEnergyInEcosystem.totalFishEnergy
 
   // graph the sum of the fish and algae energy
-  exprPush {{ GraphEnergyInEcosystem.getProp('totalAlgaeEnergy').value + agent.getProp('totalFishEnergy').value }}
+  exprPush {{ GraphEnergyInEcosystem.getProp('totalAlgaeEnergy').value + GraphEnergyInEcosystem.getProp('totalFishEnergy').value }}
   propPop GraphEnergyInEcosystem.totalEnergy
 ]]
 

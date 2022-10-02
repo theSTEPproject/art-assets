@@ -74,21 +74,21 @@ every 1 runAtStart [[
   // Update our global variables
 
   // grab the Fish average energy and count
-  featCall global.Population countAgentProp 'Fish' 'energyLevel'
+  featCall global.Population countCharacterProp 'Fish' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averageFishEnergy
   featPropPush global.Population.count
   propPop global.fishCount
 
   // grab the Algae average eenergy  and count
-  featCall global.Population countAgentProp 'Algae' 'energyLevel'
+  featCall global.Population countCharacterProp 'Algae' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averageAlgaeEnergy
   featPropPush global.Population.count
   propPop global.algaeCount
 
   // grab the Predator average eenergy  and count
-  featCall global.Population countAgentProp 'Predator' 'energyLevel'
+  featCall global.Population countCharacterProp 'Predator' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averagePredatorEnergy
   featPropPush global.Population.count
@@ -648,7 +648,7 @@ when Predator touches Trash [[
     // this is normally set to healthy 
     prop Predator.health setTo 'hurt'
     featCall Predator.Costume setColorizeHSV 0.5 1 0.5
-    featCall Trash.Population removeAgent
+    featCall Trash.Population removeCharacter
 
     // change art
   ]]
@@ -774,12 +774,12 @@ featPropPop GraphAlgaeEnergy.Graphing.text
 onEvent Tick [[
 
   exprPush {{ GraphAlgaeEnergy.getProp('characterType').value }}
-  featPropPop GraphAlgaeEnergy.Population.monitoredAgent
+  featPropPop GraphAlgaeEnergy.Population.monitoredCharacter
 
   exprPush {{ GraphAlgaeEnergy.getProp('variableToGraph').value }}
-  featPropPop GraphAlgaeEnergy.Population.monitoredAgentProp
+  featPropPop GraphAlgaeEnergy.Population.monitoredCharacterProp
 
-  featCall GraphAlgaeEnergy.Population countAgentProp 'Algae' 'energyLevel'
+  featCall GraphAlgaeEnergy.Population countCharacterProp 'Algae' 'energyLevel'
 
   exprPush {{ GraphAlgaeEnergy.getFeatProp('Population', GraphAlgaeEnergy.prop.countType.value).value }}
   propPop GraphAlgaeEnergy.graphValue
@@ -840,12 +840,12 @@ onEvent Tick [[
 
 
   exprPush {{ GraphFishEnergy.getProp('characterType').value }}
-  featPropPop GraphFishEnergy.Population.monitoredAgent
+  featPropPop GraphFishEnergy.Population.monitoredCharacter
 
   exprPush {{ GraphFishEnergy.getProp('variableToGraph').value }}
-  featPropPop GraphFishEnergy.Population.monitoredAgentProp
+  featPropPop GraphFishEnergy.Population.monitoredCharacterProp
 
-  featCall GraphFishEnergy.Population countAgentProp
+  featCall GraphFishEnergy.Population countCharacterProp
 
   exprPush {{ GraphFishEnergy.getFeatProp('Population', GraphFishEnergy.prop.countType.value).value }}
   propPop GraphFishEnergy.graphValue

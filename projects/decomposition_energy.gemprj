@@ -747,16 +747,16 @@ featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 onEvent Tick [[
 
   // count up the plant
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Plant'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Plant'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp
   exprPush {{ agent.getFeatProp('Population', 'sum').value }}
   propPop EnergyInSystem.totalPlantEnergy
 
   // count up the Bunny
-  featProp EnergyInSystem.Population.monitoredAgent setTo 'Bunny'
-  featProp EnergyInSystem.Population.monitoredAgentProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countAgentProp
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Bunny'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp
   exprPush {{ agent.getFeatProp('Population', 'sum').value }}
   propPop EnergyInSystem.totalBunnyEnergy
 

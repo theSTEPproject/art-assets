@@ -59,8 +59,8 @@ addProp energyReleasedAsHeat number 0
 # PROGRAM UPDATE`
     },
     {
-      "name": "TestKeywordAgent",
-      "scriptText": `# BLUEPRINT TestKeywordAgent
+      "name": "TestKeywordCharacter",
+      "scriptText": `# BLUEPRINT TestKeywordCharacter
 # TAG IsCharControllable true
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
@@ -81,13 +81,13 @@ addProp energyReleasedAsHeat number 0
 
 
 addFeature Costume
-featProp TestKeywordAgent.Costume.costumeName setTo 'circle.json'
-featProp TestKeywordAgent.Costume.scale setTo 2
+featProp TestKeywordCharacter.Costume.costumeName setTo 'circle.json'
+featProp TestKeywordCharacter.Costume.scale setTo 2
 
 addFeature Physics
 addFeature Touches
 
-featCall TestKeywordAgent.Touches monitor 'TestKeywordAgent' b2b
+featCall TestKeywordCharacter.Touches monitor 'TestKeywordCharacter' b2b
 addProp myNumber number 0
 addProp myString string 'hello'
 addProp copiedString string 'empty'
@@ -95,75 +95,75 @@ addProp copiedNumber number 0
 
 addFeature Graphing
 
-dbgOut 'trrackerID ' TestKeywordAgent.trackerId
+dbgOut 'trrackerID ' TestKeywordCharacter.trackerId
 
-ifProp agent.trackerId equal 'CC20_0' [[
-  featProp TestKeywordAgent.Graphing.text setTo 'Joshua'
+ifProp TestKeywordCharacter.trackerId equal 'CC20_0' [[
+  featProp TestKeywordCharacter.Graphing.text setTo 'Joshua'
 ]]
 
-// featProp TestKeywordAgent.Graphing.textProp setTo 'myString'
+// featProp TestKeywordCharacter.Graphing.textProp setTo 'myString'
 
-prop TestKeywordAgent.myNumber setTo 1
-prop TestKeywordAgent.myNumber setTo 2
+prop TestKeywordCharacter.myNumber setTo 1
+prop TestKeywordCharacter.myNumber setTo 2
 // radius is not used
-featProp TestKeywordAgent.Physics.bodyRadius setTo 10
+featProp TestKeywordCharacter.Physics.bodyRadius setTo 10
 
-featProp TestKeywordAgent.Costume.width setTo 10
-featProp TestKeywordAgent.Costume.height setTo 10
+featProp TestKeywordCharacter.Costume.width setTo 10
+featProp TestKeywordCharacter.Costume.height setTo 10
 
 # PROGRAM UPDATE
 
 
 every 1 runAtStart [[
-  ifExpr {{ agent.getProp('myString').value === 'hello' }} [[
-    prop TestKeywordAgent.myString setTo 'goodbye'
+  ifExpr {{ TestKeywordCharacter.getProp('myString').value === 'hello' }} [[
+    prop TestKeywordCharacter.myString setTo 'goodbye'
   ]]
 
-  ifExpr {{ agent.getProp('myString').value != 'hello' }} [[
+  ifExpr {{ TestKeywordCharacter.getProp('myString').value != 'hello' }} [[
 
-    prop TestKeywordAgent.myString setTo 'hello'
+    prop TestKeywordCharacter.myString setTo 'hello'
   ]]
 
   // increase width every second
-  featPropPush TestKeywordAgent.Physics.bodyWidth
-  propPop TestKeywordAgent.myNumber
-  prop TestKeywordAgent.myNumber add 10
-  propPush TestKeywordAgent.myNumber
+  featPropPush TestKeywordCharacter.Physics.bodyWidth
+  propPop TestKeywordCharacter.myNumber
+  prop TestKeywordCharacter.myNumber add 10
+  propPush TestKeywordCharacter.myNumber
 
   // console log the result
-  propPush TestKeywordAgent.myNumber
-  exprPush {{ agent.getProp('myNumber').value + 1 }}
-  propPop TestKeywordAgent.copiedNumber
-  propPush TestKeywordAgent.copiedNumber
+  propPush TestKeywordCharacter.myNumber
+  exprPush {{ TestKeywordCharacter.getProp('myNumber').value + 1 }}
+  propPop TestKeywordCharacter.copiedNumber
+  propPush TestKeywordCharacter.copiedNumber
   // should show [n, n+1]
   dbgStack
 ]]
 
-when TestKeywordAgent touches TestKeywordAgent [[
+when TestKeywordCharacter touches TestKeywordCharacter [[
   // when they touch each other, shrink back down
-  prop TestKeywordAgent.myString setTo 'touched'
+  prop TestKeywordCharacter.myString setTo 'touched'
 ]]`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "TestKeywordAgent0",
-      "bpid": "TestKeywordAgent",
+      "label": "TestKeywordCharacter0",
+      "bpid": "TestKeywordCharacter",
       "initScript": `prop x setTo 29
 prop y setTo 30`
     },
     {
       "id": "1",
-      "label": "TestKeywordAgent1",
-      "bpid": "TestKeywordAgent",
+      "label": "TestKeywordCharacter1",
+      "bpid": "TestKeywordCharacter",
       "initScript": `prop x setTo -37.91
 prop y setTo 28.14`
     },
     {
       "id": "2",
-      "label": "TestKeywordAgent2",
-      "bpid": "TestKeywordAgent",
+      "label": "TestKeywordCharacter2",
+      "bpid": "TestKeywordCharacter",
       "initScript": `prop x setTo 29
 prop y setTo 30`
     }
