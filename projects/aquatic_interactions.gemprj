@@ -506,10 +506,10 @@ featProp Rock.Costume.costumeName setTo 'boulder.json'
 
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
-// This is a predator character
-// The predator is a consumer that either eats other consumers (carnivore)
-// or a mix of consumers and producers such as algae (omnivore)
-// You can change the species and art below
+// 🔎 This is a predator character
+// 🔎 The predator is a consumer that either eats other consumers (carnivore)
+// 🔎 or a mix of consumers and producers such as algae (omnivore)
+// 🔎 You can change the species and art below
 
 # PROGRAM INIT
 addFeature Costume
