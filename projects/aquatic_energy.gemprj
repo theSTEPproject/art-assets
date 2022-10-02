@@ -32,13 +32,13 @@
 # TAG IsPtrackControllable false
 
 // 🔎 WHAT DOES THIS MODEL DO?
-// 🔎 This model involves learners repreesenting the energy flow in the aquatic ecosystem
+// 🔎 This model involves learners repreesenting the energy flow in an aquatic ecosystem
 // 🔎 Each student controls an EnergyRepresentation character, which is a circle indicating
-// 🔎 initially that they should look around, and then later what kind of energy they have picked up
-// 🔎 students should move around to see what kind of energy they get and how it moves between specific character types
-// 🔎 Note: fish and algae use energy over time, so you'll need to move quickly to keep them alive! 
+// 🔎 initially that they should look around, and then later what kind of energy they have picked up.
+// 🔎 Students should move around to see what kind of energy they get and how it moves between specific character types.
+// 🔎 Note: Fish and Algae use energy over time, so you'll need to move quickly to keep them alive! 
 
-// 🔎 WHAT DOES CHARACTER  DO?
+// 🔎 WHAT does this script do?
 // This is the script that runs when the model is setup
 
 # PROGRAM INIT
@@ -52,8 +52,8 @@ addFeature Population
 // =============================================================
 // Add any code for global properties here (e,g. addProp)
 
-// 🔎 this property lets us track energy that is lost as heat 
-// 🔎 when characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
+// 🔎 This property lets us track energy that is lost as heat.
+// 🔎 When characters convert energy to matter, or consume energy by digesting food, some of it is lost as heat
 // 🔎 and this property helps us track that so that we can graph it if we want.
 addProp energyReleasedAsHeat number 0
 
@@ -354,13 +354,16 @@ prop Sky.zIndex setTo -100
 # TAG isPTrackControllable false
 
 // 🔎 WHAAT DOES THIS CHARACTER DO?
-// 🔎 This is the charracter that students control in this model
+// 🔎 This is the charracter that students control in this model. 
 // 🔎 it shows different types of energy to help students show how energy flows between
-// 🔎 the different characters in this ecosystem. As it touches each possible energy source
-// 🔎 you will see what that source is doing to get energy. If you brought in the right kind
-// 🔎 of enerrgy, the character will glow so that you know it is gaining some energy
+// 🔎 the different characters in this ecosystem.
+
+// 🔎 When this representation  touches each possible energy source you will see what that source is doing to get energy. 
+// 🔎 If you brought in the right kind of enerrgy for the character you are touching, the character will glow 
+// 🔎 so that you know it is gaining some energy
 // 🔎 NOTE: all of the energy amounts are made up numbers to give you an idea how things work
 
+// Run this to setup the character  
 # PROGRAM INIT
 
 // Add features
@@ -368,20 +371,19 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-// start off looking like a magnifying lense that needs to explore
-// later this will change to different types of energy as the students
-// move over the sources
+// Start off looking like a magnifying lense so we know that you need to go look at the other characters.
+// Later this will change to different types of energy as the students move over the other characters.
 featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 featProp EnergyRepresentation.Costume.scale setTo 0.25
 prop EnergyRepresentation.alpha setTo 0.8
 
-// setup energy properties
+// Setup energy properties
 addProp energyLevel number 0
 prop EnergyRepresentation.energyLevel setMax 100
 prop EnergyRepresentation.energyLevel setMin 0
 
-// setup energy type so that we know what we can give it to
-// start with none
+// Setup energy type so that we know what we can give it to
+// start with none beause we have not picked up energy yet.
 addProp energyType string 'none'
 
 // Setup the touch moniitoring so that we check when the
@@ -416,60 +418,70 @@ when EnergyRepresentation firstTouches Sun [[
 
 when EnergyRepresentation firstTouches Algae [[
 
+  // if we aren't already carrying producer energy
   // change the representation to let us know that the algae is using energy from the sun
   // to make food that it uses as a source of energy to live and grow, so we show 
   // sun energy converting to algae energy 
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
+  ifProp EnergyRepresentation.energyType notEqual 'producer' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
+  ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some 
   // is released into the environment as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'source' [[
 
     // ✏️ LETS CHANGE THIS to alter how much energy the algae gets from the sun
+    // 🔎 Remove the energy from the representation since we are giving it to the Algae
     prop EnergyRepresentation.energyLevel setTo 0
+    // 🔎 Set how much the algae now has (note that the meter started with 100, so 50 means that some is lost to heat)
     prop Algae.energyLevel add 50
 
     // 🔎 WHAT DOES THIS DO?
     // 🔎 We are losing 50 of the hundred as heat, so put that in the global
-    // 🔎 all biological processes for using and converting energy are imperfect and lose
-    // 🔎 some energy in the process. While we can measure exactlly how much, these numbers
-    // 🔎 are made up to help illustrate the process.
-    // 🔎 Add the lost energy to the global chaaracter so that we can keep track of it 
-    // 🔎 and even graph it if we want to.
+    // 🔎 All biological processes for using and converting energy are imperfect and lose some energy in the process. 
+    // 🔎 Add the lost energy to the global chaaracter so that we can keep track of it and even graph it if we want to.
     prop global.energyReleasedAsHeat add 50
 
     // have the algae glow so that we know it is getting some energy 
     featProp Algae.Costume.glow setTo 1
   ]]
 
+  // if we aren't already carrying producer energy
   // note that we are representing the use of energy, 
   // whether we got new energy from the sun or not
   // because plants always need some energy to live
-  prop EnergyRepresentation.energyType setTo 'usingSun'
+  ifProp EnergyRepresentation.energyType notEqual 'producer' [[
+   prop EnergyRepresentation.energyType setTo 'usingSun'
+  ]]
 ]]
 
 when EnergyRepresentation lastTouches Algae [[
 
-  // If we didn't have enough energy, then just set to none and show that we are empty
-  // so that we know we need to go find some
-  ifProp Algae.energyLevel lessThan 25 [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
-  ]]
+  // Only do things if you are not already carrying producer energy otherwise
+  // assume you should just take it somewhere else
+  ifProp EnergyRepresentation.energyType notEqual 'producer' [[
 
-  // Otherwise, if the algae has at least 25 energy, then carry 25 away with you
-  // if not, then the algae is too small to eat,  so revert to none and look for more energy
-  ifProp Algae.energyLevel greaterThan 25 [[
+    // If we didn't have enough energy, then just set to none and show that we are empty
+    // so that we know we need to go find some
+    ifProp Algae.energyLevel lessThan 25 [[
+      prop EnergyRepresentation.energyType setTo 'none'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+    ]]
 
-    // The algae loses some energy because we pretend the fish is eating it
-    // and we carry it out to give to a fish
-    prop Algae.energyLevel sub 25
-    prop EnergyRepresentation.energyLevel add 25
+    // Otherwise, if the algae has at least 25 energy, then carry 25 away with you
+    // if not, then the algae is too small to eat,  so revert to none and look for more energy
+    ifProp Algae.energyLevel greaterThan 25 [[
 
-    // we are now carrying algae energy (energy from a producer)
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
-    prop EnergyRepresentation.energyType setTo 'producer'
+      // The algae loses some energy because we pretend the fish is eating it
+      // and we carry it out to give to a fish
+      prop Algae.energyLevel sub 25
+      prop EnergyRepresentation.energyLevel add 25
 
+      // we are now carrying algae energy (energy from a producer)
+      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+      prop EnergyRepresentation.energyType setTo 'producer'
+
+    ]]
   ]]
 ]]
 
@@ -479,20 +491,21 @@ when EnergyRepresentation lastTouches Algae [[
 
 when EnergyRepresentation firstTouches Fish [[
 
-  // change the representation to let us know that the fish is using that it has 
-  // gained by digesting some algae that it ate
+  // change the representation to let us know that the fish is using energy that it has 
+  // gained by digesting the algae that it ate
   featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
 
-  // If you have energy from algae (from eating it)
-  // then let's add some of that to the fish
+  // If you are carrying energy from algae (from eating it) then let's add some of that to the fish
   ifProp EnergyRepresentation.energyType equal 'producer' [[
 
-    // ✏️  THIS to alter how much energy the algae gets from the sun, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS to alter how much energy the fish gets from the algae it ate
+    // 🔎 Remove the energy from the representation since we are giving it to the Algae
     prop EnergyRepresentation.energyLevel setTo 0
+    // 🔎 Set how much the fish now has
     prop Fish.energyLevel add 10
 
-    // we are some of the energy to heat while digesting the algae
-    // so note that in the global variable
+    // ✏️ We can also change how much of the energy is lost to heat while digesting the algae.
+    // ✏️ That number can be changed here. 
     prop global.energyReleasedAsHeat add 15
 
     // have the Fish glow so that we know it is getting some energy 
