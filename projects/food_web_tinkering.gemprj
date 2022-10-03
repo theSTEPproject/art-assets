@@ -12,11 +12,19 @@
     ],
     "bounce": true,
     "bgcolor": 931,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
-     {
+    {
       "name": "global",
       "scriptText": `# BLUEPRINT global
 # TAG IsCharControllable false
@@ -618,8 +626,8 @@ featProp Reincarnator.Costume.scale setTo 0.5
     {
       "name": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -742,11 +750,8 @@ prop y setTo -283`
       "id": "13",
       "label": "Background13",
       "bpid": "Background",
-      "initScript": ` 
-      prop x setTo 29
-prop y setTo 30
-prop agent.zIndex setTo -500
-`
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     },
     {
       "id": "14",

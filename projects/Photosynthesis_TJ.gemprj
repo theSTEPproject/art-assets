@@ -12,7 +12,15 @@
     ],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -636,22 +644,22 @@ prop y setTo -108.43`
       "id": "29",
       "label": "Chloroplast29",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 250.95
-prop y setTo -123.80`
+      "initScript": `prop x setTo 251.42
+prop y setTo 13.98`
     },
     {
       "id": "32",
       "label": "WaterGenerator32",
       "bpid": "WaterGenerator",
-      "initScript": `prop x setTo 291.24
-prop y setTo -385.54`
+      "initScript": `prop x setTo 150.04
+prop y setTo -385.67`
     },
     {
       "id": "33",
       "label": "CarbonDioxideGenerator33",
       "bpid": "CarbonDioxideGenerator",
-      "initScript": `prop x setTo 199.36
-prop y setTo -387.14`
+      "initScript": `prop x setTo -135.68
+prop y setTo -383.68`
     },
     {
       "id": "34",
@@ -664,8 +672,8 @@ prop y setTo -385.06`
       "id": "35",
       "label": "OxygenGenerator35",
       "bpid": "OxygenGenerator",
-      "initScript": `prop x setTo 107.35
-prop y setTo -386.25`
+      "initScript": `prop x setTo -370.20
+prop y setTo -381.89`
     },
     {
       "id": "36",
@@ -724,18 +732,11 @@ prop y setTo 265.14`
 prop y setTo 377.08`
     },
     {
-      "id": "45",
-      "label": "Molecule45",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo -31
-prop y setTo 0`
-    },
-    {
-      "id": "46",
-      "label": "Molecule46",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo 0
-prop y setTo 24`
+      "id": "47",
+      "label": "Chloroplast47",
+      "bpid": "Chloroplast",
+      "initScript": `prop x setTo 262.60
+prop y setTo -233.37`
     }
   ]
 }
