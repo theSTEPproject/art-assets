@@ -109,7 +109,7 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the Bunny is
   // sated
   ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
-    featProp Bunny.Costume.currentFr
+featProp Bunny.Costume.costumeName setTo 'bunny.png'
     // Green
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
