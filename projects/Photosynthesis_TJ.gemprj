@@ -35,7 +35,7 @@
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featProp Molecule.Costume.costumeName setTo 'oxygen.png'
+featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
 featProp Molecule.Costume.scale setTo 0.1
 
 addProp state string 'oxygen'
@@ -63,7 +63,7 @@ when Molecule touches OxygenGenerator [[
   // insert code here
   ifProp OxygenGenerator.setupMode equal true [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'oxygen.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
     prop Molecule.state setTo 'oxygen'
   ]]
 ]]
@@ -72,7 +72,7 @@ when Molecule touches CarbonDioxideGenerator [[
   // insert code here
   ifProp CarbonDioxideGenerator.setupMode equal true [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
     prop Molecule.state setTo 'carbon_dioxide'
   ]]
 ]]
@@ -81,7 +81,7 @@ when Molecule touches WaterGenerator [[
   // insert code here
   ifProp WaterGenerator.setupMode equal true [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'water.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_water.png'
     prop Molecule.state setTo 'water'
   ]]
 ]]
@@ -90,7 +90,7 @@ when Molecule touches SugarGenerator [[
   // insert code here
   ifProp SugarGenerator.setupMode equal true [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'sugar.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_sugar.png'
     prop Molecule.state setTo 'sugar'
   ]]
 ]]
@@ -100,7 +100,7 @@ when Molecule touches Rabbit [[
   // insert code here
   ifProp Molecule.state equal 'oxygen' [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'carbon_dioxide.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
     prop Molecule.state setTo 'carbon_dioxide'
     featProp Molecule.Costume.glow setTo 1
   ]]
@@ -111,7 +111,7 @@ when Molecule touches Plant_Body [[
   // insert code here
   ifProp Molecule.state equal 'sugar' [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'waterthinking.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_waterthinking.png'
     prop Molecule.state setTo 'needsWater'
     prop global.plantGrowth add 1
   ]]
@@ -122,7 +122,7 @@ when Molecule touches Roots [[
   // insert code here
   ifProp Molecule.state equal 'needsWater' [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'water.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_water.png'
     prop Molecule.state setTo 'water'
     featProp Molecule.Costume.glow setTo 1
   ]]
@@ -150,7 +150,7 @@ when Molecule touches Chloroplast [[
       // ifExpr {{ Chloroplast.getProp('hasCarbonDioxide').value == true }} [[
       ifProp Chloroplast.hasCarbonDioxide greaterThanOrEqual 1 [[
         // insert code here
-        featProp Molecule.Costume.costumeName setTo 'oxygen.png'
+        featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
         prop Molecule.state setTo 'oxygen'
         featProp Molecule.Costume.glow setTo 1
         ifProp Chloroplast.hasCarbonDioxide greaterThan 0 [[
@@ -163,7 +163,7 @@ when Molecule touches Chloroplast [[
     ifProp Molecule.state equal 'carbon_dioxide' [[
       ifProp Chloroplast.hasWater greaterThanOrEqual 1 [[
         // insert code here
-        featProp Molecule.Costume.costumeName setTo 'sugar.png'
+        featProp Molecule.Costume.costumeName setTo 'PS_sugar.png'
         prop Molecule.state setTo 'sugar'
         featProp Molecule.Costume.glow setTo 1
         ifProp Chloroplast.hasWater greaterThan 0 [[
@@ -203,7 +203,7 @@ when Molecule lasttouches Chloroplast [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Rabbit.Costume.costumeName setTo 'web_rabbit.png'
+featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
 
 addFeature Physics
 featProp Rabbit.Costume.scale setTo 0.5
@@ -226,7 +226,7 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Roots.Costume.costumeName setTo 'root_system.png'
+featProp Roots.Costume.costumeName setTo 'PS_root_system.png'
 featProp Roots.Costume.scale setTo 0.25
 addFeature Physics
 
@@ -248,7 +248,7 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Chloroplast.Costume.costumeName setTo 'chloroplast.png'
+featProp Chloroplast.Costume.costumeName setTo 'PS_chloroplast.png'
 featProp Chloroplast.Costume.scale setTo 0.25
 
 addFeature Physics
@@ -280,7 +280,7 @@ prop Chloroplast.hasCarbonDioxide setMin 0
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Plant_Body.Costume.costumeName setTo 'plant_body.png'
+featProp Plant_Body.Costume.costumeName setTo 'PS_plant_body.png'
 featProp Plant_Body.Costume.scale setTo 0.3
 
 addFeature Physics
@@ -302,7 +302,7 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Left_Leaf.Costume.costumeName setTo 'left_leaf.png'
+featProp Left_Leaf.Costume.costumeName setTo 'PS_left_leaf.png'
 // featProp Left_Leaf.Costume.scale setTo 0.1
 exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
 featPropPop Left_Leaf.Costume.scale
@@ -314,7 +314,7 @@ addFeature Physics
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
-//left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
+// left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
 every 1 [[
   exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
   featPropPop Left_Leaf.Costume.scale
@@ -330,7 +330,7 @@ every 1 [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Right_Leaf.Costume.costumeName setTo 'right_leaf.png'
+featProp Right_Leaf.Costume.costumeName setTo 'PS_right_leaf.png'
 featProp Right_Leaf.Costume.scale setTo 0.25
 
 addFeature Physics
@@ -352,7 +352,7 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Ground.Costume.costumeName setTo 'dirt_ground.png'
+featProp Ground.Costume.costumeName setTo 'PS_dirt_ground.png'
 
 addFeature Physics
 addFeature Touches
@@ -374,7 +374,7 @@ featProp Ground.Costume.scale setTo 0.3
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Sky.Costume.costumeName setTo 'daytime.png'
+featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
 
 addFeature Physics
 featProp Sky.Costume.scale setTo 0.3
@@ -395,8 +395,8 @@ every 10 [[
   // ifExpr {{Sky.getProp('state').value == 'daytime'}} [[
   ifProp Sky.state equal 'daytime' [[
     // insert code here
-    //featProp Sky.Costume.costumeName setTo 'dusk.png'
-    featProp Sky.Costume.costumeName setTo 'nighttime.png'
+    // featProp Sky.Costume.costumeName setTo 'dusk.png'
+    featProp Sky.Costume.costumeName setTo 'PS_nighttime.png'
     prop Sky.state setTo 'nighttime'
     prop global.skyState setTo 'nighttime'
     prop Sky.changed setTo true
@@ -406,7 +406,7 @@ every 10 [[
     // insert code here
     ifProp Sky.state equal 'nighttime' [[
       // insert code here
-      featProp Sky.Costume.costumeName setTo 'daytime.png'
+      featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
       prop Sky.state setTo 'daytime'
       prop global.skyState setTo 'daytime'
     ]]
@@ -424,7 +424,7 @@ every 10 [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp WaterGenerator.Costume.costumeName setTo 'water.png'
+featProp WaterGenerator.Costume.costumeName setTo 'PS_water.png'
 featProp WaterGenerator.Costume.scale setTo 0.03
 
 addFeature Physics
@@ -457,7 +457,7 @@ every 15 runAfter [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp CarbonDioxideGenerator.Costume.costumeName setTo 'carbon_dioxide.png'
+featProp CarbonDioxideGenerator.Costume.costumeName setTo 'PS_carbon_dioxide.png'
 featProp CarbonDioxideGenerator.Costume.scale setTo 0.03
 
 addFeature Physics
@@ -476,10 +476,9 @@ every 15 runAfter [[
   // insert code here
   ifProp CarbonDioxideGenerator.setupMode equal true [[
     // insert code here
-  prop CarbonDioxideGenerator.setupMode setTo false
-    ]]
-]]
-`
+    prop CarbonDioxideGenerator.setupMode setTo false
+  ]]
+]]`
     },
     {
       "name": "SugarGenerator",
@@ -491,7 +490,7 @@ every 15 runAfter [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp SugarGenerator.Costume.costumeName setTo 'sugar.png'
+featProp SugarGenerator.Costume.costumeName setTo 'PS_sugar.png'
 featProp SugarGenerator.Costume.scale setTo 0.02
 
 addFeature Physics
@@ -510,10 +509,9 @@ every 15 runAfter [[
   // insert code here
   ifProp SugarGenerator.setupMode equal true [[
     // insert code here
-  prop SugarGenerator.setupMode setTo false
-    ]]
-]]
-`
+    prop SugarGenerator.setupMode setTo false
+  ]]
+]]`
     },
     {
       "name": "OxygenGenerator",
@@ -525,7 +523,7 @@ every 15 runAfter [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp OxygenGenerator.Costume.costumeName setTo 'oxygen.png'
+featProp OxygenGenerator.Costume.costumeName setTo 'PS_oxygen.png'
 featProp OxygenGenerator.Costume.scale setTo 0.03
 
 addFeature Physics
@@ -544,8 +542,8 @@ every 15 runAfter [[
   // insert code here
   ifProp OxygenGenerator.setupMode equal true [[
     // insert code here
-  prop OxygenGenerator.setupMode setTo false
-    ]]
+    prop OxygenGenerator.setupMode setTo false
+  ]]
 ]]`
     },
     {
@@ -577,7 +575,7 @@ addProp skyState string 'daytime'
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Water_Droplet.Costume.costumeName setTo 'waterdroplet.png'
+featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdroplet.png'
 featProp Water_Droplet.Costume.scale setTo 0.03
 
 addFeature Physics
@@ -595,7 +593,7 @@ addFeature Touches
       "id": "22",
       "label": "Sky22",
       "bpid": "Sky",
-      "initScript": `prop x setTo -8.80
+      "initScript": `prop x setTo -8.8
 prop y setTo 19.97`
     },
     {
@@ -700,7 +698,7 @@ prop y setTo 270.93`
       "id": "42",
       "label": "Water_Droplet42",
       "bpid": "Water_Droplet",
-      "initScript": `prop x setTo 70.10
+      "initScript": `prop x setTo 70.1
 prop y setTo 350.08`
     },
     {
@@ -728,7 +726,7 @@ prop y setTo 13.35`
       "id": "46",
       "label": "Chloroplast46",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 229.30
+      "initScript": `prop x setTo 229.3
 prop y setTo -239.93`
     },
     {
@@ -736,7 +734,7 @@ prop y setTo -239.93`
       "label": "Chloroplast47",
       "bpid": "Chloroplast",
       "initScript": `prop x setTo 307.14
-prop y setTo 210.30`
+prop y setTo 210.3`
     },
     {
       "id": "48",
