@@ -49,7 +49,7 @@ prop global.visible setTo false
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Soil.Costume.costumeName setTo 'dirt.png'
+featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
 
 addProp nutrients number 50
 prop Soil.nutrients setMax 100
@@ -80,11 +80,11 @@ featProp Soil.Graphing.text setTo ''
 every 1 runAtStart [[
   ifExpr {{ Soil.getProp('sparkleCount').value > 0 }} [[
     prop Soil.sparkleCount sub 1
-    featProp Soil.Costume.costumeName setTo 'dirt_sparkly.png'
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
 
   ]]
   ifExpr {{ Soil.getProp('sparkleCount').value == 0 }} [[
-    featProp Soil.Costume.costumeName setTo 'dirt.png'
+    featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
 
   ]]
 ]]
@@ -98,7 +98,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
+featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
 
 featCall Sunbeam.Costume setColorize 1 1 0
 prop Sunbeam.alpha setTo 0.3
@@ -198,7 +198,7 @@ addFeature Movement
 
 // addFeature Cursor
 addFeature Costume
-featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
+featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
 
 // put above everything
 prop Worm.zIndex setTo 100
@@ -282,7 +282,7 @@ when Worm touches Waste [[
         featProp Worm.Costume.glow setTo 0
 
         // change costume so we know we are full
-        featProp Worm.Costume.costumeName setTo 'worm_full.png'
+        featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
 
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
@@ -308,13 +308,13 @@ when Worm touches Soil [[
         prop Soil.nutrients add 50
         featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
-        featProp Soil.Costume.costumeName setTo 'dirt.png'
+        featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
         //featProp Soil.Costume.currentFrame setTo 1
         dbgOut 'do something here?'
 
         prop Worm.feeling setTo 'hungry'
         // revert costume now that we are hungry again
-        featProp Worm.Costume.costumeName setTo 'worm.png'
+        featProp Worm.Costume.costumeName setTo 'DC_worm.png'
 
       ]]
       ifExpr {{ Worm.getProp('nutrientCount').value > 0 }} [[
@@ -336,7 +336,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Worm.feeling setTo 'distracted'
-      featProp Worm.Costume.costumeName setTo 'worm_distracted.png'
+      featProp Worm.Costume.costumeName setTo 'DC_worm_distracted.png'
 
       // in case we were eating
       featProp Worm.Costume.glow setTo 0
@@ -351,7 +351,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Worm.feeling setTo 'hungry'
-      featProp Worm.Costume.costumeName setTo 'worm_hungry.png'
+      featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
 
       prop Worm.distractionCounter setTo 0
     ]]
@@ -388,7 +388,7 @@ addFeature Costume
 addFeature Movement
 // addFeature Cursor
 
-featProp Bunny.Costume.costumeName setTo 'bunny.png'
+featProp Bunny.Costume.costumeName setTo 'DC_bunny.png'
 
 // set bunny energy
 addProp energyLevel number 25
@@ -447,11 +447,11 @@ ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'W' }} [[
 ]]
 
 ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'S' }} [[
-\tfeatProp Bunny.Costume.costumeName setTo 'bunny_front.png'
+\tfeatProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
 ]]
 
 ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'N' }} [[
-\tfeatProp Bunny.Costume.costumeName setTo 'bunny_back.png'
+\tfeatProp Bunny.Costume.costumeName setTo 'DC_bunny_back.png'
 ]]
 
 when Bunny touches Plant [[
@@ -471,7 +471,7 @@ when Bunny touches Plant [[
 
       // if full, change costume and set timer to emit waste
       ifProp Bunny.energyLevel greaterThan  45  [[
-     //   featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
+     //   featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
 
         // set variables to be full and prepare to release waste
         prop Bunny.feeling setTo 'full'
@@ -505,7 +505,7 @@ when Bunny touches Tomato [[
 
       // if full, change costume and set timer to emit waste
       //ifProp Bunny.energyLevel greaterThan  45  [[
-      //  featProp Bunny.Costume.costumeName setTo 'bunny_full.png'
+      //  featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
 
         // set variables to be full and prepare to release waste
         //prop Bunny.feeling setTo 'full'
@@ -533,7 +533,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Bunny.feeling setTo 'distracted'
-     // featProp Bunny.Costume.costumeName setTo 'bunny_distracted.png'
+     // featProp Bunny.Costume.costumeName setTo 'DC_bunny_distracted.png'
       prop Bunny.distractionCounter setTo 0
 
       // in case we were eating
@@ -548,7 +548,7 @@ every 1 runAtStart [[
 
       // we are now distracted so don't bother eating
       prop Bunny.feeling setTo 'hungry'
-     // featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
+     // featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
     ]]
   ]]
@@ -560,7 +560,7 @@ every 1 runAtStart [[
       prop Bunny.energyLevel sub 20
       prop Bunny.matter sub 20
       prop Bunny.feeling setTo 'hungry'
-      // featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
+      // featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
 
       featCall Bunny.Population createCharacter Waste [[
@@ -598,7 +598,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
+featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
 
 addFeature Population
 
@@ -704,15 +704,15 @@ every 1 runAtStart [[
   prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
-    featProp Plant.Costume.costumeName setTo 'plant_healthy.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great
-    featProp Plant.Costume.costumeName setTo 'plant_mediumhealth.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'plant_dead.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
     prop Plant.matter sub 1
   ]]
 ]]`
@@ -727,7 +727,7 @@ every 1 runAtStart [[
 addFeature Population
 addFeature Costume
 
-featProp Waste.Costume.costumeName setTo 'waste.png'
+featProp Waste.Costume.costumeName setTo 'DC_waste.png'
 
 addProp matter number 100
 prop Waste.matter setMax 100
@@ -889,7 +889,7 @@ onEvent Tick [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'tomato.png'
+featProp agent.Costume.costumeName setTo 'DC_tomato.png'
 
 addFeature Physics
 featProp Tomato.Costume.scale setTo 0.2
@@ -923,19 +923,19 @@ every 1 runAtStart [[
 
   ifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
     // healthy
-    featProp Tomato.Costume.costumeName setTo 'tomato.png'
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
   ]]
   ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
     // healthy
-    featProp Tomato.Costume.costumeName setTo 'tomato_beg_decomp.png'
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_beg_decomp.png'
   ]]
   ifExpr {{ Tomato.getProp('matterLevel').value < 25 && Tomato.getProp('matterLevel').value > 10 }} [[
     // healthy
-    featProp Tomato.Costume.costumeName setTo 'tomato_mid_decomp.png'
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_mid_decomp.png'
   ]]
   ifExpr {{ Tomato.getProp('matterLevel').value < 10 }} [[
     // healthy
-    featProp Tomato.Costume.costumeName setTo 'waste.png'
+    featProp Tomato.Costume.costumeName setTo 'DC_waste.png'
   ]]
 
 ]]`

@@ -141,7 +141,7 @@ addFeature Physics
 addFeature Touches
 
 // Set the fish artwork and make it 1/2 size since it is really big
-featProp Fish.Costume.costumeName setTo 'fish.png'
+featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.5
 
 // Setup the fish energyLevel property to be between 0 and 100, but start at 30
@@ -225,25 +225,25 @@ every 1 runAtStart [[
 
   // sated
   ifProp Fish.energyLevel greaterThanOrEqual 50 [[
-    featProp Fish.Costume.costumeName setTo 'fish.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
     // Green
     featProp Fish.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifProp Fish.energyLevel lessThan 50 [[
-    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifProp Fish.energyLevel lessThan 20 [[
-    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Red
     featProp Fish.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifProp Fish.energyLevel equal 0 [[
-    featProp Fish.Costume.costumeName setTo 'fish_dead.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_dead.png'
     // Switch to floating if this fish is not controlled by a student
     featProp Fish.Movement.movementType setTo 'float'
     // make the fish faded so that it looks dead
@@ -288,7 +288,7 @@ addFeature Touches
 addProp energyType string 'producer'
 
 // This sets the art for the algae character
-featProp Algae.Costume.costumeName setTo 'algae.png'
+featProp Algae.Costume.costumeName setTo 'AQ_algae.png'
 
 // This shows the energyLevel next to the algae character
 featProp Algae.Graphing.meterProp setTo 'energyLevel'
@@ -410,7 +410,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 
-featProp Sunbeam.Costume.costumeName setTo 'sunbeam.png'
+featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
 
 // the sun is a source of energy
 addProp energyType string 'source'
@@ -459,7 +459,7 @@ addFeature Graphing
 addFeature Costume
 
 // this is a hidden image since the timer is just text 
-featProp Timer.Costume.costumeName setTo 'onexone.json'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 
 // this is the time we will track
 addProp time number 0
@@ -491,7 +491,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 
-featProp Rock.Costume.costumeName setTo 'boulder.json'
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 
 
 // required directive
@@ -522,7 +522,7 @@ addFeature Touches
 addProp species string 'otter'
 
 // This sets up the artwork for the predator
-featProp Predator.Costume.costumeName setTo 'otter.png'
+featProp Predator.Costume.costumeName setTo 'AQ_otter.png'
 
 // This sets up the energyLevel so that it goes between 0 and 100
 addProp energyLevel number 50
@@ -674,7 +674,7 @@ when Predator lastTouches Trash [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Population
-featProp Trash.Costume.costumeName setTo 'trash.json'
+featProp Trash.Costume.costumeName setTo 'AQ_trash.json'
 
 addFeature Physics
 
@@ -698,7 +698,7 @@ addFeature Graphing
 addFeature Costume
 
 // invisible since we just want the text to show up
-featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
@@ -716,7 +716,7 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'square.json' 
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json' 
 
 addFeature Physics
 
@@ -733,7 +733,7 @@ addFeature Physics
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp GraphAlgaeEnergy.Costume.costumeName setTo 'onexone.json'
+featProp GraphAlgaeEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 
 addProp characterType string 'Algae'
 addProp countType string 'avg'
@@ -793,7 +793,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp GraphFishEnergy.Costume.costumeName setTo 'onexone.json'
+featProp GraphFishEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 
 addProp characterType string 'Fish'
 addProp countType string 'avg'
@@ -879,7 +879,7 @@ prop HealthMeter.healthLevel setMax 100
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
 // Make costume an invisible dot so we only see the meter
-featProp HealthMeter.Costume.costumeName setTo 'onexone.json'
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
 
 // Show meter on start, and make it big
 featProp HealthMeter.Graphing.isLargeGraphic setTo true
@@ -937,7 +937,7 @@ addFeature Physics
 addFeature Touches
 
 // set up the wand to use this artwork and be a good size
-featProp Wand1.Costume.costumeName setTo 'pc_wand_alive.png'
+featProp Wand1.Costume.costumeName setTo 'AQ_wand_alive.png'
 featProp Wand1.Costume.scale setTo 0.2
 
 // make sure the wand checks to see if it is touching a fish or algae 
@@ -985,7 +985,7 @@ when Wand1 firsttouches Algae [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp Background.Costume.costumeName setTo 'background_aquatic.png'
+featProp Background.Costume.costumeName setTo 'AQ_background_aquatic.png'
 featProp Background.Costume.scale setTo 1.33
 // move this way back so everything else is in front of it
 prop Background.zIndex setTo -999

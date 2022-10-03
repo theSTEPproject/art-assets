@@ -140,7 +140,7 @@ addFeature Costume
 addFeature Physics
 
 // set the artworrk for the sun, color it, and then set its size
-featProp Sun.Costume.costumeName setTo 'sun.png'
+featProp Sun.Costume.costumeName setTo 'GEN_sun-corner.png'
 //featCall Sun.Costume setColorize 255 215 0
 featProp Sun.Costume.scale setTo 1.3
 
@@ -182,7 +182,7 @@ addFeature Costume
 addFeature Physics
 
 // Load the fish image and re-size it
-featProp Fish.Costume.costumeName setTo 'fish.png'
+featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.4
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
@@ -214,19 +214,19 @@ every 2 runAtStart [[
   
   // The fish is doing well
   ifProp Fish.energyLevel greaterThan 50 [[
-    featProp Fish.Costume.costumeName setTo 'fish.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
     // Green
     featProp Fish.Graphing.meterColor setTo 65280
   ]]
   // The fish is hungry
   ifProp Fish.energyLevel lessThan 50 [[
-    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
   // The fish is starviinig
   ifProp Fish.energyLevel lessThan 20 [[
-    featProp Fish.Costume.costumeName setTo 'fish_hungry.png'
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Red
     featProp Fish.Graphing.meterColor setTo 16711680
   ]]
@@ -270,7 +270,7 @@ addFeature Costume
 addFeature Physics
 
 // Set the artowrk and scale it
-featProp Algae.Costume.costumeName setTo 'algae.png'
+featProp Algae.Costume.costumeName setTo 'AQ_algae.png'
 featProp Algae.Costume.scale setTo 0.2
 
 // types to use for energy transfer. The types are source, producer, consumer (we might add more later)
@@ -334,7 +334,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 
 addFeature Costume
-featProp Sky.Costume.costumeName setTo 'square.json'
+featProp Sky.Costume.costumeName setTo 'GEN_square.json'
 featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
@@ -373,7 +373,7 @@ addFeature Touches
 
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
-featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
 featProp EnergyRepresentation.Costume.scale setTo 0.25
 prop EnergyRepresentation.alpha setTo 0.8
 
@@ -404,7 +404,7 @@ when EnergyRepresentation firstTouches Sun [[
   // The sun is a near-infinite source of energy
   // so change the art to be sun, and set the type to source
   // also we always re-set energy to be sun when we go there
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'GEN_energy_sun.png'
   prop EnergyRepresentation.energyType setTo 'source'
 
   // set the energy amount to 100 because lots of energy arrives on earth
@@ -423,7 +423,7 @@ when EnergyRepresentation firstTouches Algae [[
   // to make food that it uses as a source of energy to live and grow, so we show 
   // sun energy converting to algae energy 
   ifProp EnergyRepresentation.energyType notEqual 'producer' [[
-    featProp EnergyRepresentation.Costume.costumeName setTo 'energy_sun_algae.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_sun_algae.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the algae, but not all of it because some 
@@ -465,7 +465,7 @@ when EnergyRepresentation lastTouches Algae [[
     // so that we know we need to go find some
     ifProp Algae.energyLevel lessThan 25 [[
       prop EnergyRepresentation.energyType setTo 'none'
-      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
     ]]
 
     // Otherwise, if the algae has at least 25 energy, then carry 25 away with you
@@ -478,7 +478,7 @@ when EnergyRepresentation lastTouches Algae [[
       prop EnergyRepresentation.energyLevel add 25
 
       // we are now carrying algae energy (energy from a producer)
-      featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_algae.png'
       prop EnergyRepresentation.energyType setTo 'producer'
 
     ]]
@@ -493,7 +493,7 @@ when EnergyRepresentation firstTouches Fish [[
 
   // change the representation to let us know that the fish is using energy that it has 
   // gained by digesting the algae that it ate
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_algae_fish.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_algae_fish.png'
 
   // If you are carrying energy from algae (from eating it) then let's add some of that to the fish
   ifProp EnergyRepresentation.energyType equal 'producer' [[
@@ -521,7 +521,7 @@ when EnergyRepresentation lastTouches Fish [[
   // There is nothing to do with Fish energy, so just re-set this to show
   // that we need to look for energy again 
   prop EnergyRepresentation.energyType setTo 'none'
-  featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
 ]]`
     },
     {
@@ -542,7 +542,7 @@ addFeature Graphing
 addFeature Costume
 
 // Hide the actual art since we just want the text to displaay
-featProp Timer.Costume.costumeName setTo 'onexone.json'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 featProp Timer.Costume.scale setTo 1
 
 // A property to track the time
@@ -580,7 +580,7 @@ addFeature Graphing
 addFeature Population
 
 // hide the actual art since we just want the text to displaay
-featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
+featProp GraphLostEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 
 // we want the graph to show up big
 featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
@@ -623,7 +623,7 @@ onEvent Tick [[
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featProp GraphEnergyInEcosystem.Costume.costumeName setTo 'onexone.json'
+featProp GraphEnergyInEcosystem.Costume.costumeName setTo 'GEN_onexone.json'
 featProp GraphEnergyInEcosystem.Costume.scale setTo 1
 
 addFeature Graphing
@@ -682,7 +682,7 @@ onEvent Tick [[
 // required directive
 # PROGRAM INIT
 addFeature Costume
-featProp Background.Costume.costumeName setTo 'background_aquatic.png'
+featProp Background.Costume.costumeName setTo 'AQ_background_aquatic.png'
 featProp Background.Costume.height setTo 600
 featProp Background.Costume.width setTo 800
 
@@ -719,7 +719,7 @@ prop HealthMeter.healthLevel setMax 100
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
 // Make costume an invisible dot so we only see the meter
-featProp HealthMeter.Costume.costumeName setTo 'onexone.json'
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
 
 // Show meter on start, and make it big
 featProp HealthMeter.Graphing.isLargeGraphic setTo true
@@ -776,7 +776,7 @@ addFeature Graphing
 addFeature Costume
 
 // invisible since we just want the text to show up
-featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
