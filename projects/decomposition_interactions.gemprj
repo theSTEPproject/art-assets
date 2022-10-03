@@ -1,6 +1,6 @@
 {
-  "id": "decomposition",
-  "label": "Decomposition",
+  "id": "decomposition_interactions",
+  "label": "Ecosystems 3: Decomposition",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -563,7 +563,7 @@ every 1 runAtStart [[
       // featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
       prop Bunny.distractionCounter setTo 0
 
-      featCall Bunny.Population createAgent Waste [[
+      featCall Bunny.Population createCharacter Waste [[
         // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
         prop Waste.x addRndInt -20 20
         prop Waste.y addRndInt 50 150
@@ -688,7 +688,7 @@ every 1 runAtStart [[
   ifExpr {{ Plant.getProp('matter').value < 10 }} [[
 
     // create a little bit of inorganic matter
-    featCall Plant.Population createAgent Waste [[
+    featCall Plant.Population createCharacter Waste [[
       // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
       prop Waste.x addRndInt -5 5
       prop Waste.y addRndInt 50 100
@@ -696,7 +696,7 @@ every 1 runAtStart [[
     ]]
 
     // then remove the plant
-    featCall Plant.Population removeAgent
+    featCall Plant.Population removeCharacter
   ]]
 
 
@@ -774,7 +774,7 @@ when Waste touches Soil [[
 every 1 runAtStart [[
   // remove if there is nothing left
   ifExpr {{ Waste.getProp('matter').value < 1 }} [[
-    featCall Waste.Population removeAgent
+    featCall Waste.Population removeCharacter
   ]]
 
   // scale based on amount of matter
@@ -869,12 +869,12 @@ onEvent Tick [[
   // -- Population options: sum, avg, min, max
 
   exprPush {{CharacterGraph.getProp('characterType').value}}
-  featPropPop Population monitoredAgent
+  featPropPop Population monitoredCharacter
 
   exprPush {{CharacterGraph.getProp('variableToGraph').value}}
-  featPropPop Population monitoredAgentProp
+  featPropPop Population monitoredCharacterProp
 
-  featCall Population countAgentProp
+  featCall Population countCharacterProp
 
   exprPush {{ CharacterGraph.getFeatProp('Population', CharacterGraph.prop.countType.value).value }}
   propPop graphValue
@@ -1010,8 +1010,8 @@ prop y setTo 200`
       "id": "1801",
       "label": "Plant Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 360
+      "initScript": `prop x setTo 504.77
+prop y setTo 337.19
 prop characterType setTo 'Plant'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -1021,8 +1021,8 @@ prop labelText setTo 'Plant Energy'`
       "id": "1802",
       "label": "Bunny Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 210
+      "initScript": `prop x setTo 507.83
+prop y setTo 181.78
 prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -1032,8 +1032,8 @@ prop labelText setTo 'Bunny Energy'`
       "id": "1803",
       "label": "Worm Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 50
+      "initScript": `prop x setTo 507.34
+prop y setTo 33.69
 prop characterType setTo 'Worm'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
