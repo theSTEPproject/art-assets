@@ -374,7 +374,7 @@ addFeature Touches
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
 featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
-featProp EnergyRepresentation.Costume.scale setTo 0.25
+featProp EnergyRepresentation.Costume.scale setTo 0.5
 prop EnergyRepresentation.alpha setTo 0.8
 
 // Setup energy properties
@@ -404,7 +404,7 @@ when EnergyRepresentation firstTouches Sun [[
   // The sun is a near-infinite source of energy
   // so change the art to be sun, and set the type to source
   // also we always re-set energy to be sun when we go there
-  featProp EnergyRepresentation.Costume.costumeName setTo 'GEN_energy_sun.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_sun.png'
   prop EnergyRepresentation.energyType setTo 'source'
 
   // set the energy amount to 100 because lots of energy arrives on earth
@@ -873,6 +873,13 @@ prop y setTo 264.13`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo  100`
+    },
+    {
+      "id": "16",
+      "label": "EnergyRepresentation16",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo 6.05
+prop y setTo -284.85`
     }
   ]
 }
