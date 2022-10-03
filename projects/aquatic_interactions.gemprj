@@ -773,10 +773,10 @@ featPropPop GraphAlgaeEnergy.Graphing.text
 
 onEvent Tick [[
 
-  exprPush {{ GraphAlgaeEnergy.getProp('characterType').value }}
+  propPush GraphAlgaeEnergy.characterType
   featPropPop GraphAlgaeEnergy.Population.monitoredCharacter
 
-  exprPush {{ GraphAlgaeEnergy.getProp('variableToGraph').value }}
+  propPush GraphAlgaeEnergy.variableToGraph
   featPropPop GraphAlgaeEnergy.Population.monitoredCharacterProp
 
   featCall GraphAlgaeEnergy.Population countCharacterProp 'Algae' 'energyLevel'
@@ -838,11 +838,10 @@ featPropPop GraphFishEnergy.Graphing.text
 
 onEvent Tick [[
 
-
-  exprPush {{ GraphFishEnergy.getProp('characterType').value }}
+  propPush GraphFishEnergy.characterType
   featPropPop GraphFishEnergy.Population.monitoredCharacter
 
-  exprPush {{ GraphFishEnergy.getProp('variableToGraph').value }}
+  propPush GraphFishEnergy.variableToGraph
   featPropPop GraphFishEnergy.Population.monitoredCharacterProp
 
   featCall GraphFishEnergy.Population countCharacterProp
