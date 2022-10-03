@@ -145,7 +145,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp Rock.Costume.costumeName setTo 'boulder.json'
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 
 addFeature Physics
 addFeature Graphing
@@ -159,7 +159,7 @@ featProp Rock.Costume.scale setTo 0.5
       "scriptText": `# BLUEPRINT House
 # PROGRAM INIT
 addFeature Costume
-featProp House.Costume.costumeName setTo 'house.json'
+featProp House.Costume.costumeName setTo 'GEN_house.json'
 
 
 addFeature Physics
@@ -175,7 +175,7 @@ featProp House.Costume.scale setTo 2`
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Costume
-featProp SoilBG.Costume.costumeName setTo 'square.json'
+featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
 
 featCall SoilBG.Costume setColorize 0.56 0.52 0.4
 addFeature Physics
@@ -791,7 +791,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
-featProp TextLabel.Costume.costumeName setTo 'onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 `
     },
     {
@@ -799,7 +799,7 @@ featProp TextLabel.Costume.costumeName setTo 'onexone.json'
       "scriptText": `# BLUEPRINT ColorChip
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'square.json'
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
 
 addFeature Physics`
     },
@@ -812,7 +812,7 @@ addFeature Physics`
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
-featProp Timer.Costume.costumeName setTo 'onexone.json'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 
 addProp time number 0
 
@@ -835,7 +835,7 @@ every 1 runAtStart [[
       "scriptText": `# BLUEPRINT CharacterGraph
 # PROGRAM INIT
 addFeature Costume
-featProp CharacterGraph.Costume.costumeName setTo 'onexone.json'
+featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.json'
 
 // setting these all up to so they can be changed in the map editor
 addProp characterType string 'Worm'
