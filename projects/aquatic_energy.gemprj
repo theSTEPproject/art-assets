@@ -822,8 +822,8 @@ prop y setTo 174.13`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 458.01
-prop y setTo -396.15`
+      "initScript": `prop x setTo 446.56
+prop y setTo -399.56`
     },
     {
       "id": "9",

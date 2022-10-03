@@ -80,7 +80,7 @@ featProp Bunny.Costume.flipX setTo true
 
 
 addFeature Physics
-featProp Bunny.Costume.scale setTo 0.2
+featProp Bunny.Costume.scale setTo 0.8
 
 // types to use for energy transfer: source, producer, consumer (we might add more later)
 addProp energyType string 'consumer'
@@ -103,34 +103,34 @@ featProp Bunny.Graphing.meterColor setTo 65280
 every 2 runAtStart [[
 
   // energyLevel goes down every 2 seconds
-  exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
-  propPop agent.energyLevel
+  exprPush {{ Bunny.getProp('energyLevel').value - Bunny.getProp('energyUse').value }}
+  propPop Bunny.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the Bunny is
   // sated
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+  ifExpr {{ Bunny.getProp('energyLevel').value > 50 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny.png'
     // Green
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+  ifExpr {{ Bunny.getProp('energyLevel').value < 50 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Orange
     featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+  ifExpr {{ Bunny.getProp('energyLevel').value < 20 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny_hungry.png'
     // Red
     featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+  ifExpr {{ Bunny.getProp('energyLevel').value < 1 }} [[
 featProp Bunny.Costume.costumeName setTo 'bunny.png'
     // featCall Movement setMovementType 'float'
-    prop agent.alpha setTo 0.3
-    prop agent.isInert setTo true
+    prop Bunny.alpha setTo 0.3
+    prop Bunny.isInert setTo true
   ]]
 
   // set meter to mirror energyLevel
@@ -174,30 +174,30 @@ featProp Worm.Graphing.meterColor setTo 65280
   every 2 runAtStart [[
 
   // foodLevel goes down every n seconds
-  exprPush {{ Worm.getProp('energyLevel').value - agent.getProp('energyUse').value}}
+  exprPush {{ Worm.getProp('energyLevel').value - Worm.getProp('energyUse').value}}
   propPop Worm.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the Worm  is
   // sated
-  ifExpr {{ agent.getProp('energyLevel').value > 50 }} [[
+  ifExpr {{ Worm.getProp('energyLevel').value > 50 }} [[
     featProp Worm.Costume.currentFrame setTo 0
     // Green
     featProp Worm.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ agent.getProp('energyLevel').value < 50 }} [[
+  ifExpr {{ Worm.getProp('energyLevel').value < 50 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Orange
     featProp Worm.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ agent.getProp('energyLevel').value < 20 }} [[
+  ifExpr {{ Worm.getProp('energyLevel').value < 20 }} [[
     featProp Worm.Costume.currentFrame setTo 1
     // Red
     featProp Worm.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ agent.getProp('energyLevel').value < 1 }} [[
+  ifExpr {{ Worm.getProp('energyLevel').value < 1 }} [[
     featProp Worm.Costume.currentFrame setTo 2
     // featCall Movement setMovementType 'float'
     prop Worm.alpha setTo 0.3
@@ -382,10 +382,10 @@ every 1 runAtStart [[
 # PROGRAM DEFINE
 
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'empty_energy.png'
+featProp EnergyRepresentation.Costume.costumeName setTo 'energy_empty.png'
 
 addFeature Physics
-featProp EnergyRepresentation.Costume.scale setTo 0.08
+featProp EnergyRepresentation.Costume.scale setTo 0.25
 
 
 // using this to record energyReleasedAsHeat
@@ -945,8 +945,8 @@ prop y setTo -64.16`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 354.35
-prop y setTo -394.62`
+      "initScript": `prop x setTo 349.79
+prop y setTo -397.29`
     },
     {
       "id": "7",
@@ -1112,8 +1112,8 @@ prop y setTo -59.2`
       "id": "1708",
       "label": "Bunny2",
       "bpid": "Bunny",
-      "initScript": `prop x setTo 314.5
-prop y setTo -34.98`
+      "initScript": `prop x setTo -301.53
+prop y setTo -125.39`
     },
     {
       "id": "1709",

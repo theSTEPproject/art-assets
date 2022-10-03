@@ -745,7 +745,7 @@ prop y setTo -283`
       "initScript": ` 
       prop x setTo 29
 prop y setTo 30
-prop agent.zIndex setTo -500
+prop zIndex setTo -500
 `
     },
     {

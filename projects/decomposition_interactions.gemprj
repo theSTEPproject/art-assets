@@ -1010,8 +1010,8 @@ prop y setTo 200`
       "id": "1801",
       "label": "Plant Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 360
+      "initScript": `prop x setTo 504.77
+prop y setTo 337.19
 prop characterType setTo 'Plant'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -1021,8 +1021,8 @@ prop labelText setTo 'Plant Energy'`
       "id": "1802",
       "label": "Bunny Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 210
+      "initScript": `prop x setTo 507.83
+prop y setTo 181.78
 prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -1032,8 +1032,8 @@ prop labelText setTo 'Bunny Energy'`
       "id": "1803",
       "label": "Worm Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 470
-prop y setTo 50
+      "initScript": `prop x setTo 507.34
+prop y setTo 33.69
 prop characterType setTo 'Worm'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'

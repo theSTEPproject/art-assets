@@ -999,8 +999,8 @@ prop Background.zIndex setTo -999
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 456.78
-prop y setTo -404.20
+      "initScript": `prop x setTo 457
+prop y setTo -380.20
 featProp Graphing text setTo 'Energy Key:'`
     },
     {
@@ -1008,7 +1008,7 @@ featProp Graphing text setTo 'Energy Key:'`
       "label": "HighLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -371.72
+prop y setTo -348
 featProp Graphing text setTo 'High'`
     },
     {
@@ -1016,7 +1016,7 @@ featProp Graphing text setTo 'High'`
       "label": "MediumLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -337.29
+prop y setTo -312.29
 featProp Graphing text setTo 'Medium'`
     },
     {
@@ -1024,15 +1024,15 @@ featProp Graphing text setTo 'Medium'`
       "label": "LowLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -305.94
+prop y setTo -280.94
 featProp Graphing text setTo 'Low'`
     },
     {
       "id": "1704",
       "label": "HighChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -353.04
+      "initScript": `prop x setTo 457
+prop y setTo -328.04
 prop zIndex setTo -100
 featCall agent.Costume setColorize 0 255 0
 featProp agent.Costume.height setTo 30
@@ -1042,8 +1042,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1705",
       "label": "MediumChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -319.93
+      "initScript": `prop x setTo 457
+prop y setTo -296.93
 prop zIndex setTo -100
 featCall Costume setColorize 210 140 0
 featProp agent.Costume.height setTo 30
@@ -1053,8 +1053,8 @@ featProp agent.Costume.width setTo 100`
       "id": "1706",
       "label": "LowChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455
-prop y setTo -287.28
+      "initScript": `prop x setTo 457
+prop y setTo -265.28
 prop zIndex setTo -100
 featCall Costume setColorize 255 0 0
 featProp agent.Costume.height setTo 30
@@ -1116,6 +1116,13 @@ prop y setTo -35.95`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo 0`
+    },
+    {
+      "id": "1721",
+      "label": "Timer1721",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 456.93
+prop y setTo -403.87`
     }
   ]
 }
