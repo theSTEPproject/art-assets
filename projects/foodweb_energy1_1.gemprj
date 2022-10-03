@@ -118,8 +118,8 @@ addProp energyType string 'sun'
 // Note: this character doesn't do anyhting - it is just for show since there is no
 // other easy way to add background art
 addFeature Costume
-featProp Sky.Costume.costumeName setTo 'background (no filter).png'
-//featCall Sky.Costume setColorize 53 81 92
+featProp Sky.Costume.costumeName setTo 'background (Yellow filter).png'
+// featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
 featProp Sky.Costume.width setTo 800
