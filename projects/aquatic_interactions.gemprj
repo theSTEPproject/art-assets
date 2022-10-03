@@ -486,19 +486,19 @@ every 0.1 runAtStart [[
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is a timer character so that we can see how much time has passed in our model
-// 🔎 We can use that time to think about how long the ecosystem survives if we want 
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
 
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
 
-// this is a hidden image since the timer is just text 
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.png'
 
 // this is the time we will track
 addProp time number 0
 
-// set the timer to the starting text 
+// set the timer to the starting text
 featProp Timer.Graphing.text setTo 'Time: 0'
 
 # PROGRAM UPDATE
@@ -506,9 +506,8 @@ featProp Timer.Graphing.text setTo 'Time: 0'
 every 1 runAtStart [[
   prop Timer.time add 1
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
-  featPropPop Timer.Graphing.text 
-]]
-`
+  featPropPop Timer.Graphing.text
+]]`
     },
     {
       "name": "Rock",
@@ -532,7 +531,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 
-featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.png'
 
 
 // required directive
@@ -759,14 +758,14 @@ addFeature Graphing
 addFeature Costume
 
 // invisible since we just want the text to show up
-featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
 
 // required directive
 # PROGRAM UPDATE`
     },
     {
       "name": "ColorChip",
-      "scriptText": `# BLUEPRINT ColorChip 
+      "scriptText": `# BLUEPRINT ColorChip
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
@@ -779,19 +778,17 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
-// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set 
-// 🔎 (e.g., go to map setup) 
+// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set
+// 🔎 (e.g., go to map setup)
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'GEN_square.json' 
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.png'
 
 addFeature Physics
 
 // this is required by GEM-STEP in case we need to udpate this ecery second
-# PROGRAM UPDATE
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "GraphAlgaeEnergy",
@@ -1105,7 +1102,7 @@ prop Background.zIndex setTo -999
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -380.20
+prop y setTo -380.2
 featProp Graphing text setTo 'Energy Key:'`
     },
     {
