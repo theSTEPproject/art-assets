@@ -32,6 +32,13 @@
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // Explanation:
 // This model is inteended to help students exploree how energy moves between the characters in the ecosystem
 
@@ -47,6 +54,13 @@ addProp energyReleasedAsHeat number 0
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 addFeature Costume
 featProp Sun.Costume.costumeName setTo 'GEN_sun-corner.png'
@@ -70,6 +84,14 @@ addProp energyType string 'source'
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
@@ -146,6 +168,14 @@ featProp Bunny.Costume.costumeName setTo 'DC_bunny.png'
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'  
@@ -217,6 +247,14 @@ featProp Worm.Graphing.meterColor setTo 65280
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 
 addFeature Costume
@@ -249,6 +287,14 @@ featProp Waste.Graphing.meterColor setTo 5783616
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM DEFINE
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
@@ -379,6 +425,14 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM DEFINE
 
 addFeature Costume
@@ -714,6 +768,14 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'`
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM DEFINE
 addFeature Costume
 featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
@@ -750,6 +812,14 @@ addFeature Physics
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM DEFINE
 addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'GEN_onexone.json'
@@ -813,6 +883,14 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp GraphLostEnergy.Costume.costumeName setTo 'GEN_onexone.json'
@@ -854,6 +932,14 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM DEFINE
 addFeature Costume
 featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
@@ -875,6 +961,14 @@ prop SoilBG.zIndex setTo -210
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
@@ -922,6 +1016,13 @@ every 1 runAtStart [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 
 # PROGRAM INIT
 addFeature Costume

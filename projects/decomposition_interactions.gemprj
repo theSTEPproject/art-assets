@@ -30,6 +30,13 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 
 // Explanation:
@@ -47,6 +54,13 @@ prop global.visible setTo false
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 addFeature Costume
 featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
@@ -96,6 +110,14 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
@@ -143,6 +165,15 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
@@ -157,6 +188,14 @@ featProp Rock.Costume.scale setTo 0.5
     {
       "name": "House",
       "scriptText": `# BLUEPRINT House
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp House.Costume.costumeName setTo 'GEN_house.json'
@@ -173,6 +212,13 @@ featProp House.Costume.scale setTo 2`
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 addFeature Costume
 featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
@@ -192,7 +238,21 @@ prop SoilBG.zIndex setTo -210
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
 
 addFeature Movement
 
@@ -381,6 +441,14 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 
 addFeature Population
@@ -596,6 +664,15 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
@@ -723,6 +800,15 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Population
 addFeature Costume
@@ -788,6 +874,13 @@ every 1 runAtStart [[
     {
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
+
+      // COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
@@ -797,6 +890,14 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
     {
       "name": "ColorChip",
       "scriptText": `# BLUEPRINT ColorChip
+
+      // COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
@@ -809,6 +910,14 @@ addFeature Physics`
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
@@ -833,6 +942,14 @@ every 1 runAtStart [[
     {
       "name": "CharacterGraph",
       "scriptText": `# BLUEPRINT CharacterGraph
+
+      // COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.json'
@@ -886,6 +1003,13 @@ onEvent Tick [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 
 # PROGRAM INIT
 addFeature Costume
@@ -1218,7 +1342,7 @@ prop y setTo -101.62`
       "label": "Worm1820",
       "bpid": "Worm",
       "initScript": `prop x setTo 41.87
-prop y setTo 228.20`
+prop y setTo 228.2`
     },
     {
       "id": "1821",

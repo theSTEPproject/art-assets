@@ -32,6 +32,13 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // EXPLANATION of this model:
 // This model involves learners repreesenting fish eating algae
 // The goal is to explore how the number of fish, number of algae,
@@ -119,6 +126,12 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
 
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
@@ -262,6 +275,13 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the Algae character
 // 🔎 In this ecosystem model, we have producers and consumers that interact
@@ -401,6 +421,13 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 The Sunbeam character represents a beam of light that moves across the water
 // 🔎 as the sun moves in the sky. This is a source of energy that the producers
@@ -450,6 +477,13 @@ every 0.1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is a timer character so that we can see how much time has passed in our model
 // 🔎 We can use that time to think about how long the ecosystem survives if we want 
@@ -483,6 +517,13 @@ every 1 runAtStart [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This character is just a picture of a rock to make it feel a bit more realistic
 // 🔎 and also so that students can think about what happens if fish hide behind the rock
@@ -503,6 +544,12 @@ featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
 
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
@@ -666,6 +713,13 @@ when Predator lastTouches Trash [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This character represents trash that was thrown in the water
 // 🔎 If a predator eats it, it is hurt and can't eat as much - see the 
@@ -690,6 +744,13 @@ featProp Trash.Costume.scale setTo 0.05
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is just a text label for use in the key or somewhere else to display information
 
@@ -709,6 +770,13 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set 
@@ -731,6 +799,14 @@ addFeature Physics
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp GraphAlgaeEnergy.Costume.costumeName setTo 'GEN_onexone.json'
@@ -791,6 +867,15 @@ onEvent Tick [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 # PROGRAM INIT
 addFeature Costume
 featProp GraphFishEnergy.Costume.costumeName setTo 'GEN_onexone.json'
@@ -861,6 +946,13 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is a meter to show the health of the entire ecosystem
 // 🔎 Initialy it only shows fish health, but we want to explore changing this
@@ -927,6 +1019,13 @@ onEvent Tick [[
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is a wand that stuents can setup to give or take energy or other things
 // 🔎 so that  they can help with the experiment
@@ -978,6 +1077,13 @@ when Wand1 firsttouches Algae [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This character is just the background image for this model
