@@ -149,8 +149,8 @@ addFeature Movement
 addFeature Graphing
 addFeature Physics
 addFeature Touches
+
 // add any properties specific to the PC / NPC
-addFeature Cursor
 // role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
 // it's helpful to list roles here for other users to see
 // roles for this template are one, and two (they don't mean anything)
