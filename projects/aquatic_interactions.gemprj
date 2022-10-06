@@ -157,7 +157,7 @@ addFeature Touches
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.5
 
-// Setup the fish energyLevel property to be between 0 and 100, but start at 30
+// ✏️ LETS CHANGE how much energy the fish start with
 addProp energyLevel number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
