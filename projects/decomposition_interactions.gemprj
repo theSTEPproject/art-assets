@@ -221,7 +221,7 @@ featProp House.Costume.scale setTo 2`
 
 # PROGRAM INIT
 addFeature Costume
-featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
+featProp SoilBG.Costume.costumeName setTo 'GEN_square.png'
 
 featCall SoilBG.Costume setColorize 0.56 0.52 0.4
 addFeature Physics
@@ -248,16 +248,13 @@ prop SoilBG.zIndex setTo -210
 
 # PROGRAM INIT
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-addFeature Movement
-
-// addFeature Cursor
+// Add features 
 addFeature Costume
+addFeature Movement
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
 
 // put above everything
@@ -273,7 +270,6 @@ addProp nutrientCountStart number 0
 prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount number 0
 
-// featProp Movement useAutoOrientation setTo true
 
 addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
@@ -283,14 +279,11 @@ addProp matter number 50
 prop Worm.matter setMax 100
 prop Worm.matter setMin 0
 
-addFeature Physics
 featProp Worm.Costume.scale setTo 0.2
 
-addFeature Touches
 featCall Worm.Touches monitor 'Waste' b2b
 featCall Worm.Touches monitor 'Soil' b2b
 
-addFeature Graphing
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
 featProp Worm.Graphing.meterProp setTo 'energyLevel'
 
@@ -309,10 +302,10 @@ addProp focusLength number 5
 
 # PROGRAM UPDATE
 
-ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
+ifFeatProp Worm.Movement.compassDirection equal 'E' [[
   featProp Worm.Costume.flipX setTo false
 ]]
-ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
+ifFeatProp Worm.Movement.compassDirection equal 'W' [[
   featProp Worm.Costume.flipX setTo true
 ]]
 
@@ -422,14 +415,6 @@ every 1 runAtStart [[
     prop Worm.alpha setTo 0.3
     prop Worm.isInert setTo true
   ]]
-
-
-  //ifExpr {{ Worm.prop.Movement.compassDirection.value === 'E' }} [[
-  //  featProp Worm.Costume.flipY setTo false
-  //]]
-  //ifExpr {{ Worm.prop.Movement.compassDirection.value === 'W' }} [[
-  //  featProp Worm.Costume.flipY setTo true
-  //]]
 ]]
 
 // required directive
@@ -454,9 +439,9 @@ every 1 runAtStart [[
 addFeature Population
 addFeature Costume
 addFeature Movement
-// addFeature Cursor
+addFeature Physics
 
-featProp Bunny.Costume.costumeName setTo 'DC_bunny.png'
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
 
 // set bunny energy
 addProp energyLevel number 25
@@ -477,8 +462,6 @@ addProp matter number 50
 
 prop Bunny.matter setMax 50
 prop Bunny.matter setMin 0
-
-addFeature Physics
 
 featProp Bunny.Costume.scale setTo 0.8
 
@@ -507,19 +490,12 @@ addProp focusLength number 5
 
 # PROGRAM UPDATE
 
-ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'E' }} [[
-  featProp Bunny.Costume.flipX setTo false
-]]
-ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'W' }} [[
-  featProp Bunny.Costume.flipX setTo true
+ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
+  featProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
 ]]
 
-ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'S' }} [[
-\tfeatProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
-]]
-
-ifExpr {{ Bunny.prop.Movement.compassDirection.value === 'N' }} [[
-\tfeatProp Bunny.Costume.costumeName setTo 'DC_bunny_back.png'
+ifFeatProp Bunny.Movement.compassDirection equal 'S' [[
+ featProp Bunny.Costume.costumeName setTo 'DC_bunny_back.png'
 ]]
 
 when Bunny touches Plant [[
@@ -884,7 +860,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
-featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
 `
     },
     {
@@ -900,7 +876,7 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.png'
 
 addFeature Physics`
     },
@@ -921,7 +897,7 @@ addFeature Physics`
 # PROGRAM INIT
 addFeature Graphing
 addFeature Costume
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.png'
 
 addProp time number 0
 
@@ -952,7 +928,7 @@ every 1 runAtStart [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.json'
+featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.png'
 
 // setting these all up to so they can be changed in the map editor
 addProp characterType string 'Worm'
