@@ -864,6 +864,33 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set
+// 🔎 (e.g., go to map setup)
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+
+// this is required by GEM-STEP in case we need to udpate this ecery second
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -908,6 +935,18 @@ prop y setTo 174.13`
       "bpid": "Timer",
       "initScript": `prop x setTo 446.56
 prop y setTo -399.56`
+    },
+    {
+      "id": "6",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -384
+featCall Costume setColorize 30 30 250
+prop zIndex setTo -100
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
     },
     {
       "id": "9",

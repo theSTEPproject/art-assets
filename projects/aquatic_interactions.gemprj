@@ -1102,7 +1102,7 @@ prop Background.zIndex setTo -999
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -380.2
+prop y setTo -378.2
 featProp Graphing text setTo 'Energy Key:'`
     },
     {
@@ -1225,6 +1225,18 @@ prop y setTo 0`
       "bpid": "Timer",
       "initScript": `prop x setTo 456.93
 prop y setTo -403.87`
+    },
+    {
+      "id": "1900",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 30 30 250
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
     }
   ]
 }

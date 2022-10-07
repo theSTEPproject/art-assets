@@ -1044,7 +1044,7 @@ every 1 runAtStart [[
   "instances": [
     {
       "id": "1101",
-      "label": "Soil01",
+      "label": "Soil 1",
       "bpid": "Soil",
       "initScript": `prop x setTo -300
 prop y setTo 100
@@ -1052,49 +1052,49 @@ prop nutrients setTo 10`
     },
     {
       "id": "1102",
-      "label": "Soil02",
+      "label": "Soil 2",
       "bpid": "Soil",
       "initScript": `prop x setTo -100
 prop y setTo 100`
     },
     {
       "id": "1103",
-      "label": "Soil03",
+      "label": "Soil 3",
       "bpid": "Soil",
       "initScript": `prop x setTo 100
 prop y setTo 100`
     },
     {
       "id": "1104",
-      "label": "Soil04",
+      "label": "Soil 4",
       "bpid": "Soil",
       "initScript": `prop x setTo 300
 prop y setTo 100`
     },
     {
       "id": "1105",
-      "label": "Soil05",
+      "label": "Soil 5",
       "bpid": "Soil",
       "initScript": `prop x setTo -300
 prop y setTo 300`
     },
     {
       "id": "1106",
-      "label": "Soil06",
+      "label": "Soil 6",
       "bpid": "Soil",
       "initScript": `prop x setTo -100
 prop y setTo 300`
     },
     {
       "id": "1107",
-      "label": "Soil07",
+      "label": "Soil 7",
       "bpid": "Soil",
       "initScript": `prop x setTo 100
 prop y setTo 300`
     },
     {
       "id": "1108",
-      "label": "Soil08",
+      "label": "Soil 8",
       "bpid": "Soil",
       "initScript": `prop x setTo 300
 prop y setTo 300`
@@ -1142,13 +1142,13 @@ prop labelText setTo 'Worm Energy'
     },
     {
       "id": "1201",
-      "label": "Plant01",
+      "label": "Plant 1",
       "bpid": "Plant",
       "initScript": `prop x setTo -300`
     },
     {
       "id": "1602",
-      "label": "Waste02",
+      "label": "Waste 1",
       "bpid": "Waste",
       "initScript": `prop x setTo 317.07
 prop y setTo 113.34`
@@ -1158,7 +1158,7 @@ prop y setTo 113.34`
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -380.2
+prop y setTo -378.2
 featProp Graphing text setTo 'Key:'`
     },
     {
@@ -1224,14 +1224,14 @@ featProp agent.Costume.height setTo 30`
     },
     {
       "id": "1804",
-      "label": "Sunbeam1804",
+      "label": "Sunbeam",
       "bpid": "Sunbeam",
       "initScript": `prop x setTo -358.12
 prop y setTo -136.56`
     },
     {
       "id": "1808",
-      "label": "Waste1808",
+      "label": "Waste 2",
       "bpid": "Waste",
       "initScript": `prop x setTo -288.34
 prop y setTo 113.79`
@@ -1241,81 +1241,94 @@ prop y setTo 113.79`
       "label": "Timer",
       "bpid": "Timer",
       "initScript": `prop x setTo 456.93
-prop y setTo -403.87`
+prop y setTo -403.87
+`
+    },
+    {
+      "id": "1900",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 30 30 250
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
     },
     {
       "id": "1810",
-      "label": "Plant1810",
+      "label": "Plant 2",
       "bpid": "Plant",
       "initScript": `prop x setTo 88.12
 prop y setTo -43.58`
     },
     {
       "id": "1811",
-      "label": "Bunny1811",
+      "label": "Bunny 1",
       "bpid": "Bunny",
       "initScript": `prop x setTo -83.99
 prop y setTo -41.99`
     },
     {
       "id": "1812",
-      "label": "Soil1812",
+      "label": "Soil 9",
       "bpid": "Soil",
       "initScript": `prop x setTo -304.63
 prop y setTo -101.72`
     },
     {
       "id": "1813",
-      "label": "Soil1813",
+      "label": "Soil 10",
       "bpid": "Soil",
       "initScript": `prop x setTo 99.80
 prop y setTo -102.19`
     },
     {
       "id": "1814",
-      "label": "Soil1814",
+      "label": "Soil 11",
       "bpid": "Soil",
       "initScript": `prop x setTo 304.81
 prop y setTo -100.92`
     },
     {
       "id": "1815",
-      "label": "Soil1815",
+      "label": "Soil 12",
       "bpid": "Soil",
       "initScript": `prop x setTo 303.58
 prop y setTo -299.16`
     },
     {
       "id": "1816",
-      "label": "Soil1816",
+      "label": "Soil 13",
       "bpid": "Soil",
       "initScript": `prop x setTo 104.06
 prop y setTo -298.28`
     },
     {
       "id": "1817",
-      "label": "Soil1817",
+      "label": "Soil 14",
       "bpid": "Soil",
       "initScript": `prop x setTo -102.44
 prop y setTo -302.58`
     },
     {
       "id": "1818",
-      "label": "Soil1818",
+      "label": "Soil 15",
       "bpid": "Soil",
       "initScript": `prop x setTo -306.26
 prop y setTo -301.64`
     },
     {
       "id": "1819",
-      "label": "Soil1819",
+      "label": "Soil 16",
       "bpid": "Soil",
       "initScript": `prop x setTo -99.50
 prop y setTo -101.62`
     },
     {
       "id": "1820",
-      "label": "Worm1820",
+      "label": "Worm 1",
       "bpid": "Worm",
       "initScript": `prop x setTo 41.87
 prop y setTo 228.2`

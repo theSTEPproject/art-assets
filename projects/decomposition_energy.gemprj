@@ -1087,6 +1087,18 @@ prop y setTo -64.16`
 prop y setTo -403.87`
     },
     {
+      "id": "6",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 30 30 250
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
@@ -1176,7 +1188,7 @@ prop y setTo 142.08`
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -380.2
+prop y setTo -378.2
 featProp Graphing text setTo 'Key:'`
     },
     {
