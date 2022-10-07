@@ -169,18 +169,18 @@ featProp NPC.Movement.distance setTo 0.2
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
 every 1 runAtStart [[
-  dbgOut 'START NPC virus for '  NPC.role ' : ' NPC.virus
+  dbgOut 'START NPC virus for ' NPC.role ' : ' NPC.virus
 
   // insert code here to run all the time
   ifProp NPC.virus equal true [[
     featProp agent.Graphing.text setTo '🤢'
   ]]
 
-  ifProp NPC.virus equal false [[
+  ifProp NPC.virus notEqual true [[
     featProp agent.Graphing.text setTo '🙂'
   ]]
 
-  dbgOut 'END NPC virus for '  NPC.role ' : ' NPC.virus
+  dbgOut 'END NPC virus for ' NPC.role ' : ' NPC.virus
 
 ]]`
     }
