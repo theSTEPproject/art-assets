@@ -436,46 +436,45 @@ every 1 runAtStart [[
 
 # PROGRAM INIT
 
+// Add features
 addFeature Population
 addFeature Costume
 addFeature Movement
 addFeature Physics
+addFeature Touches
+addFeature Graphing
 
+// Seet the costume
 featProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
+featProp Bunny.Costume.scale setTo 0.8
 
-// set bunny energy
+// ✏️ LETS CHANGE the starting energy for the bunny
 addProp energyLevel number 25
 prop Bunny.energyLevel setMax 50
 prop Bunny.energyLevel setMin 0
 
-// to manage when it is full and releases waste
+// This prop lets us track whether the bunny is hungry or full
 addProp feeling string 'hungry'
 
-// used internally to delay waste release when full
-addProp wasteCountStart number 0
-
-// STUDENTS_MAY_CHANGE set this lower for instant dispersal of waste, or higher to stretch it out
-prop Bunny.wasteCountStart setTo 3
+// Use these counters to check when the bunny will go to the bathroom once it is full
+addProp wasteCountStart number 3
 addProp wasteCount number 0
 
+// how much matter does the bunny have?
 addProp matter number 50
-
 prop Bunny.matter setMax 50
 prop Bunny.matter setMin 0
 
-featProp Bunny.Costume.scale setTo 0.8
-
-addFeature Touches
+// Track when the bunny touches plants or tomators
 featCall Bunny.Touches monitor 'Plant' b2b
 featCall Bunny.Touches monitor 'Tomato' b2b
 
-addFeature Graphing
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// This is what the meter will display (see script below during update for color)
 featProp Bunny.Graphing.meterProp setTo 'energyLevel'
-// Green = 0x00FF00
 featProp Bunny.Graphing.meterColor setTo 65280
 featCall Bunny.Graphing setMeterPosition 'inside-left'
 
+// Move the bunny forward in front of the soil
 prop Bunny.zIndex setTo 110
 
 // ----------------------------------------------
@@ -1264,13 +1263,6 @@ featProp agent.Costume.height setTo 30
 prop y setTo -43.58`
     },
     {
-      "id": "1811",
-      "label": "Bunny 1",
-      "bpid": "Bunny",
-      "initScript": `prop x setTo -83.99
-prop y setTo -41.99`
-    },
-    {
       "id": "1812",
       "label": "Soil 9",
       "bpid": "Soil",
@@ -1339,6 +1331,13 @@ prop y setTo 228.2`
       "bpid": "Tomato",
       "initScript": `prop x setTo 77.35
 prop y setTo -260.32`
+    },
+    {
+      "id": "1901",
+      "label": "Bunny 1",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -102.13
+prop y setTo 57.67`
     }
   ]
 }
