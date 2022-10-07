@@ -1079,12 +1079,12 @@ ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLeve
       "initScript": `prop x setTo -94.89
 prop y setTo -64.16`
     },
-    {
+{
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 349.79
-prop y setTo -397.29`
+      "initScript": `prop x setTo 456.93
+prop y setTo -403.87`
     },
     {
       "id": "7",
@@ -1175,16 +1175,16 @@ prop y setTo 142.08`
       "id": "1700",
       "label": "LegendLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -400
+      "initScript": `prop x setTo 457
+prop y setTo -380.2
 featProp Graphing text setTo 'Key:'`
     },
     {
       "id": "1701",
       "label": "EnergyLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -373
+      "initScript": `prop x setTo 457
+prop y setTo -348
 featProp Graphing text setTo 'Energy'
 prop zIndex setTo 100`
     },
@@ -1192,8 +1192,8 @@ prop zIndex setTo 100`
       "id": "1702",
       "label": "NutrientsLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -340
+      "initScript": `prop x setTo 457
+prop y setTo -312
 featProp Graphing text setTo 'Nutrients'
 prop zIndex setTo 100`
     },
@@ -1201,8 +1201,8 @@ prop zIndex setTo 100`
       "id": "1703",
       "label": "MatterLabel",
       "bpid": "TextLabel",
-      "initScript": `prop x setTo 455
-prop y setTo -308
+      "initScript": `prop x setTo 457
+prop y setTo -280
 featProp Graphing text setTo 'Matter'
 prop zIndex setTo 100`
     },
@@ -1210,19 +1210,20 @@ prop zIndex setTo 100`
       "id": "1704",
       "label": "EnergyChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
-prop y setTo -353.03
+      "initScript": `prop x setTo 457.00
+prop y setTo -328.46
 featCall Costume setColorize 0 255 0
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
-featProp agent.Costume.height setTo 30`
+featProp agent.Costume.height setTo 30
+`
     },
     {
       "id": "1705",
       "label": "NutrientsChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
-prop y setTo -321.93
+      "initScript": `prop x setTo 457.00
+prop y setTo -296
 featCall Costume setColorize 138 43 226
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
@@ -1232,9 +1233,9 @@ featProp agent.Costume.height setTo 30`
       "id": "1706",
       "label": "MatterChip",
       "bpid": "ColorChip",
-      "initScript": `prop x setTo 455.00
-prop y setTo -292.43
-featCall Costume setColorize 0.56 0.52 0.4
+      "initScript": `prop x setTo 457.00
+prop y setTo -265
+featCall Costume setColorize 0.56 0.52 0.40
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30`
