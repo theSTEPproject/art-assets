@@ -493,7 +493,7 @@ addFeature Graphing
 addFeature Costume
 
 // this is a hidden image since the timer is just text
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.png'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 
 // this is the time we will track
 addProp time number 0
@@ -531,7 +531,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 
-featProp Rock.Costume.costumeName setTo 'AQ_boulder.png'
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 
 
 // required directive
@@ -758,7 +758,7 @@ addFeature Graphing
 addFeature Costume
 
 // invisible since we just want the text to show up
-featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
@@ -783,7 +783,7 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'GEN_square.png'
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
 
 addFeature Physics
 

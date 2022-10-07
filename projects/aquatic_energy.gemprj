@@ -592,7 +592,7 @@ addFeature Graphing
 addFeature Costume
 
 // Hide the actual art since we just want the text to displaay
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.png'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 featProp Timer.Costume.scale setTo 1
 
 // A property to track the time

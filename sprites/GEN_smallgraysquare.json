@@ -1,20 +1,20 @@
-{"frames": {
-
-"smallgraysquare.png":
 {
-	"frame": {"x":0,"y":0,"w":128,"h":128},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
-	"sourceSize": {"w":128,"h":128}
-}},
-"meta": {
-	"app": "https://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "smallgraysquare.png",
-	"format": "RGBA8888",
-	"size": {"w":128,"h":128},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9e22c7286c8189ee7c49e034fe08eff1:d37b53baaadcd6c3a71f4307d5178db4:19e814d852ab657a2cd63b3e1493e8b5$"
-}
+  "frames": {
+    "smallgraysquare.png": {
+      "frame": { "x": 0, "y": 0, "w": 128, "h": 128 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 128, "h": 128 },
+      "sourceSize": { "w": 128, "h": 128 }
+    }
+  },
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "GEN_smallgraysquare.png",
+    "format": "RGBA8888",
+    "size": { "w": 128, "h": 128 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:9e22c7286c8189ee7c49e034fe08eff1:d37b53baaadcd6c3a71f4307d5178db4:19e814d852ab657a2cd63b3e1493e8b5$"
+  }
 }

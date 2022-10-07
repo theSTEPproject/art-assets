@@ -1308,13 +1308,6 @@ prop y setTo -306.42`
       "bpid": "Tomato",
       "initScript": `prop x setTo 29
 prop y setTo 30`
-    },
-    {
-      "id": "1721",
-      "label": "EnergyRepresentation1721",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 19.9
-prop y setTo -231.01`
     }
   ]
 }
