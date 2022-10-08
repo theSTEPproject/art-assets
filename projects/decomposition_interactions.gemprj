@@ -1001,7 +1001,8 @@ prop labelText setTo 'Worm Energy'
       "id": "1201",
       "label": "Plant 1",
       "bpid": "Plant",
-      "initScript": `prop x setTo -300`
+      "initScript": `prop x setTo -296.99
+prop y setTo -95.77`
     },
     {
       "id": "1602",
@@ -1117,8 +1118,8 @@ featProp agent.Costume.height setTo 30
       "id": "1810",
       "label": "Plant 2",
       "bpid": "Plant",
-      "initScript": `prop x setTo 88.12
-prop y setTo -43.58`
+      "initScript": `prop x setTo 99.77
+prop y setTo -97.13`
     },
     {
       "id": "1812",
@@ -1177,25 +1178,32 @@ prop y setTo -301.64`
 prop y setTo -101.62`
     },
     {
-      "id": "1820",
-      "label": "Worm 1",
-      "bpid": "Worm",
-      "initScript": `prop x setTo 41.87
-prop y setTo 228.2`
-    },
-    {
       "id": "1821",
-      "label": "Tomato1821",
+      "label": "Tomato 1",
       "bpid": "Tomato",
-      "initScript": `prop x setTo 77.35
-prop y setTo -260.32`
+      "initScript": `prop x setTo 111.77
+prop y setTo -291.84`
     },
     {
       "id": "1901",
-      "label": "Bunny 1",
-      "bpid": "Bunny",
-      "initScript": `prop x setTo -102.13
-prop y setTo 57.67`
+      "label": "Plant 3",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -98.46
+prop y setTo -299.23`
+    },
+    {
+      "id": "1902",
+      "label": "Plant 4",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 93.12
+prop y setTo 285.13`
+    },
+    {
+      "id": "1903",
+      "label": "Tomato 2",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo 309.78
+prop y setTo -89.15`
     }
   ]
 }
