@@ -389,7 +389,7 @@ prop Bunny.zIndex setTo 110
 
 # PROGRAM UPDATE
 
-// have the bunny face forward going down and back going up
+// have the bunny art point up or down
 ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
   featProp Bunny.Costume.flipY setTo false
 ]]
