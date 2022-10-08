@@ -520,10 +520,16 @@ every 1 runAtStart [[
 
 
 # PROGRAM INIT
-addFeature Costume
-featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
 
+// Setup features 
+addFeature Costume
 addFeature Population
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume 
+featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
 
 addProp energyLevel number 50
 
@@ -531,14 +537,6 @@ addProp energyLevel number 50
 prop Plant.energyLevel setTo 40
 prop Plant.energyLevel setMax 50
 prop Plant.energyLevel setMin 0
-
-// setup so that we can tweak the size more dynamically, and plant by plant
-addProp minimumScale number 0
-
-// ✏️ LETS CHANGE THIS - set a different minimum size for the plants  (used to be 0.25)
-prop Plant.minimumScale setTo 0
-prop Plant.minimumScale setMax 0.5
-prop Plant.minimumScale setMin -0.5
 
 addProp nutrients number 8
 
@@ -556,13 +554,10 @@ prop Plant.matterLevel setMin 0
 
 prop Plant.zIndex setTo -110
 
-addFeature Physics
-addFeature Touches
+// Track if the plant touches the sun or soil
 featCall Plant.Touches monitor 'Sunbeam' b2b
 featCall Plant.Touches monitor 'Soil' b2b
-featCall Plant.Touches monitor 'Bunny' b2b
 
-addFeature Graphing
 // ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Plant.Graphing.meterProp setTo 'energyLevel'
 // Green
@@ -575,7 +570,7 @@ prop Plant.y setTo -50
 prop Plant.y addRnd -10 10
 
 // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
-exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matterLevel').value / 100 }}
+exprPush {{  Plant.getProp('matterLevel').value / 100 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
@@ -604,7 +599,7 @@ when Plant touches Soil [[
 every 1 runAtStart [[
 
   // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
-  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matterLevel').value / 100 }}
+  exprPush {{ Plant.getProp('matterLevel').value / 100 }}
   featPropPop Plant.Costume.scale
 
   // if the plant is basically dead
