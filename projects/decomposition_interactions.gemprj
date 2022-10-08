@@ -220,7 +220,6 @@ prop SoilBG.zIndex setTo -210
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
-
 # PROGRAM INIT
 
 // Add features 
@@ -318,23 +317,25 @@ when Worm touches Soil [[
 
     // if you are full, check if enough time has passed to release nutrients... do so and then switch to being hungry again
     // if not, just update counter
-    ifExpr {{ Worm.getProp('feeling').value == 'full' }} [[
-      ifExpr {{ Worm.getProp('nutrientCount').value == 0 }} [[
+    ifProp Worm.feeling equal 'full' [[
+      ifProp Worm.nutrientCount equal 0 [[
+        // reduce energy and matter level in the worm
         prop Worm.energyLevel sub 50
         prop Worm.matterLevel sub 50
+        // put nutrients into the soil 
         prop Soil.nutrients add 50
+
+        // glow and sparkle so that we know something happened
         featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
         featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
-        //featProp Soil.Costume.currentFrame setTo 1
-        dbgOut 'do something here?'
 
+        // set worm feeling and costume to be hungry
         prop Worm.feeling setTo 'hungry'
-        // revert costume now that we are hungry again
-        featProp Worm.Costume.costumeName setTo 'DC_worm.png'
-
+        featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
       ]]
-      ifExpr {{ Worm.getProp('nutrientCount').value > 0 }} [[
+
+      ifProp Worm.nutrientCount greaterThan 0 [[
         prop Worm.nutrientCount sub 1
       ]]
     ]]
@@ -345,14 +346,12 @@ every 1 runAtStart [[
   prop Worm.energyLevel sub 2
 
   // if out of energy ... die
-  ifExpr {{ Worm.getProp('energyLevel').value == 0 }} [[
+  ifProp Worm.energyLevel equal 0 [[
     prop Worm.alpha setTo 0.3
     prop Worm.isInert setTo true
   ]]
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Bunny",
@@ -637,7 +636,6 @@ every 1 runAtStart [[
 
     // create a little bit of inorganic matter
     featCall Plant.Population createCharacter Waste [[
-      // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matterLevel it starts with
       prop Waste.x addRndInt -5 5
       prop Waste.y addRndInt 50 100
       prop Waste.matterLevel setTo 20
