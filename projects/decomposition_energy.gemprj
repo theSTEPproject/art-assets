@@ -131,7 +131,7 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the Bunny is
   // sated
   ifExpr {{ Bunny.getProp('energyLevel').value > 50 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny.png'
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
     // Green
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
@@ -149,7 +149,7 @@ featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
   ]]
   // dead
   ifExpr {{ Bunny.getProp('energyLevel').value < 1 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny.png'
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
     // featCall Movement setMovementType 'float'
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
