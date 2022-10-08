@@ -62,26 +62,27 @@ prop global.visible setTo false
 // ✏️ body
 
 # PROGRAM INIT
-addFeature Costume
-featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
 
+// Add Features 
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume and size it
+featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+featProp Soil.Costume.scale setTo 0.85
+prop Soil.zIndex setTo -200
+
+// Nutrients 
 addProp nutrients number 50
 prop Soil.nutrients setMax 100
 prop Soil.nutrients setMin 0
 
+// Property to time sparkles thata show when nutrients are released into the soil
 addProp sparkleCount number 0
 
-addFeature Physics
-
-featProp Soil.Costume.scale setTo 0.85
-
-prop Soil.zIndex setTo -200
-
-addFeature Touches
-featCall Soil.Touches monitor 'Worm' b2b
-
-addFeature Graphing
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// ✏️ LETS CHANGE THIS -  pick a different thing to display on the meter (note, color won't change below)
 featProp Soil.Graphing.meterProp setTo 'nutrients'
 
 featCall Soil.Graphing setMeterPosition 'inside-left'
@@ -92,14 +93,15 @@ featProp Soil.Graphing.text setTo ''
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  ifExpr {{ Soil.getProp('sparkleCount').value > 0 }} [[
+  // Displaay the sparkle, and then count down 
+  ifProp Soil.sparkleCount greaterThan 0 [[
     prop Soil.sparkleCount sub 1
     featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
 
   ]]
-  ifExpr {{ Soil.getProp('sparkleCount').value == 0 }} [[
+  // stop sparkling 
+  ifProp Soil.sparkleCount equal 0 [[
     featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
-
   ]]
 ]]
 `
@@ -233,7 +235,7 @@ prop Worm.matterLevel setMin 0
 featCall Worm.Touches monitor 'Waste' b2b
 featCall Worm.Touches monitor 'Soil' b2b
 
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Worm.Graphing.meterProp setTo 'energyLevel'
 
 // Green = 0x00FF00
@@ -525,7 +527,7 @@ addFeature Population
 
 addProp energyLevel number 50
 
-// STUDENTS_MAY_CHANGE - set a different starting eneregy level, max or min (or make it random)
+// ✏️ LETS CHANGE THIS - set a different starting eneregy level, max or min (or make it random)
 prop Plant.energyLevel setTo 40
 prop Plant.energyLevel setMax 50
 prop Plant.energyLevel setMin 0
@@ -533,21 +535,21 @@ prop Plant.energyLevel setMin 0
 // setup so that we can tweak the size more dynamically, and plant by plant
 addProp minimumScale number 0
 
-// STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
+// ✏️ LETS CHANGE THIS - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
 prop Plant.minimumScale setMax 0.5
 prop Plant.minimumScale setMin -0.5
 
 addProp nutrients number 8
 
-// STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
+// ✏️ LETS CHANGE THIS - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
 prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
 addProp matterLevel number 50
 
-// STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
+// ✏️ LETS CHANGE THIS - sete a different range or starting point of matter
 prop Plant.matterLevel setTo 35
 prop Plant.matterLevel setMax 50
 prop Plant.matterLevel setMin 0
@@ -561,7 +563,7 @@ featCall Plant.Touches monitor 'Soil' b2b
 featCall Plant.Touches monitor 'Bunny' b2b
 
 addFeature Graphing
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Plant.Graphing.meterProp setTo 'energyLevel'
 // Green
 featProp Plant.Graphing.meterColor setTo 65280
@@ -680,7 +682,7 @@ featCall Waste.Touches monitor 'Soil' b2b
 prop Waste.zIndex setTo -150
 
 addFeature Graphing
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter
 featProp Waste.Graphing.meterProp setTo 'matterLevel'
 
 // scale based on amount of matter
@@ -692,7 +694,7 @@ featProp Waste.Graphing.text setTo ''
 
 # PROGRAM UPDATE
 when Waste touches Soil [[
-  // STUDENTS_MAY_CHANGE - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria)
+  // ✏️ LETS CHANGE THIS - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria)
   every 1 runAtStart [[
     // Bacteria decomposes waste
    // prop Waste.matterLevel sub 1

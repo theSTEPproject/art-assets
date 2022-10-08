@@ -112,7 +112,7 @@ addProp energyLevel number 50
 prop Bunny.energyLevel setMax 100
 prop Bunny.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Bunny lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS to make Bunny lose energy faster (or slower)
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -191,7 +191,7 @@ addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Worm lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS to make Worm lose energy faster (or slower)
 addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -309,27 +309,27 @@ addProp energyLevel number 50
 prop Plant.energyLevel setMax 100
 prop Plant.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Plant lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS to make Plant lose energy faster (or slower)
 addProp energyUse number 1
 
 // setup so that we can tweak the size more dynamically, and plant by plant
 addProp minimumScale number 0
 
-// STUDENTS_MAY_CHANGE - set a different minimum size for the plants  (used to be 0.25)
+// ✏️ LETS CHANGE THIS - set a different minimum size for the plants  (used to be 0.25)
 prop Plant.minimumScale setTo 0
 prop Plant.minimumScale setMax 1.0
 prop Plant.minimumScale setMin -0.5
 
 addProp nutrients number 8
 
-// STUDENTS_MAY_CHANGE - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
+// ✏️ LETS CHANGE THIS - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
 prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
 addProp matter number 50
 
-// STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
+// ✏️ LETS CHANGE THIS - sete a different range or starting point of matter
 prop Plant.matter setTo 30
 prop Plant.matter setMax 30
 prop Plant.matter setMin 0
@@ -498,7 +498,7 @@ when EnergyRepresentation centerFirstTouches Plant [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'source' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop Plant.energyLevel add 50
     // we are losing 50 of the hundred, so note that in the global
@@ -520,7 +520,7 @@ when EnergyRepresentation centerLastTouches Plant [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Plant.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'producer'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the plant gives to a Bunny
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
     // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Plant.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
@@ -558,7 +558,7 @@ when EnergyRepresentation centerFirstTouches Bunny [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
     prop EnergyRepresentation.energyType setTo 'using'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the plant gets from the sun, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Bunny.energyLevel add 10
     // we are losing some, so note that in the global
@@ -581,7 +581,7 @@ when EnergyRepresentation centerLastTouches Bunny [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Bunny.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'consumer'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Bunny gives off
+    // ✏️ LETS CHANGE THIS to alter how much energy the Bunny gives off
     prop Bunny.energyLevel sub 15
     prop EnergyRepresentation.energyLevel add 15
     // we are losing 15 of the hundred, so not that in the global
@@ -640,7 +640,7 @@ when EnergyRepresentation centerLastTouches Waste [[
 
     prop EnergyRepresentation.energyType setTo 'waste'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the waste gives to the worm
+    // ✏️ LETS CHANGE THIS to alter how much energy the waste gives to the worm
     prop Waste.matterLevel sub 15
     prop EnergyRepresentation.energyLevel add 15
 
@@ -702,7 +702,7 @@ when EnergyRepresentation centerLastTouches Worm [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Worm.getProp('energyLevel').value > 15 }} [[
     prop EnergyRepresentation.energyType setTo 'decomposer'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the plant gives to a Bunny
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
     prop Worm.energyLevel sub 15
     prop EnergyRepresentation.energyLevel add 15
 
@@ -989,7 +989,7 @@ addFeature Touches
 featCall Soil.Touches monitor 'Worm' b2b
 
 addFeature Graphing
-// STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter (note, color won't change below)
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Soil.Graphing.meterProp setTo 'nutrients'
 
 featCall Soil.Graphing setMeterPosition 'inside-left'
