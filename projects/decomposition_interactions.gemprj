@@ -1008,8 +1008,8 @@ prop y setTo -95.77`
       "id": "1602",
       "label": "Waste 1",
       "bpid": "Waste",
-      "initScript": `prop x setTo 317.07
-prop y setTo 113.34`
+      "initScript": `prop x setTo 311.12
+prop y setTo 97.85`
     },
     {
       "id": "1700",
@@ -1091,8 +1091,8 @@ prop y setTo -136.56`
       "id": "1808",
       "label": "Waste 2",
       "bpid": "Waste",
-      "initScript": `prop x setTo -288.34
-prop y setTo 113.79`
+      "initScript": `prop x setTo -294.32
+prop y setTo 94.21`
     },
     {
       "id": "1809",
