@@ -267,16 +267,6 @@ featProp Worm.Graphing.meterProp setTo 'energyLevel'
 // Green = 0x00FF00
 featProp Worm.Graphing.meterColor setTo 85280
 
-// ----------------------------------------------
-// add variables to cover distraction
-// ----------------------------------------------
-// counter - increment when hungry or distracted
-addProp distractionCounter number 0
-// how long a distraction lasts (0 will skip it)
-addProp distractionLength number 2
-// how long the focus lasts, during hunger, before we switch to distraction
-addProp focusLength number 5
-
 # PROGRAM UPDATE
 
 ifFeatProp Worm.Movement.compassDirection equal 'E' [[
@@ -353,36 +343,6 @@ when Worm touches Soil [[
 every 1 runAtStart [[
   // energy goes down
   prop Worm.energyLevel sub 2
-
-  // increment distraction counter
-  prop Worm.distractionCounter add 1
-
-  // if you are hungry, and hit focus length, switch to distracted.
-  ifExpr {{ Worm.getProp('feeling').value == 'hungry' }} [[
-    ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('focusLength').value }} [[
-
-      // we are now distracted so don't bother eating
-      prop Worm.feeling setTo 'distracted'
-      featProp Worm.Costume.costumeName setTo 'DC_worm_distracted.png'
-
-      // in case we were eating
-      featProp Worm.Costume.glow setTo 0
-
-      prop Worm.distractionCounter setTo 0
-    ]]
-  ]]
-
-  // if you are distracted, and hit distracted length length, switch to hungry.
-  ifExpr {{ Worm.getProp('feeling').value == 'distracted' }} [[
-    ifExpr {{ Worm.getProp('distractionCounter').value >= Worm.getProp('distractionLength').value }} [[
-
-      // we are now distracted so don't bother eating
-      prop Worm.feeling setTo 'hungry'
-      featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
-
-      prop Worm.distractionCounter setTo 0
-    ]]
-  ]]
 
   // if out of energy ... die
   ifExpr {{ Worm.getProp('energyLevel').value == 0 }} [[
