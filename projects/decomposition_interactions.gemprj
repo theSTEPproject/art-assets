@@ -155,33 +155,6 @@ onEvent Tick [[
 `
     },
     {
-      "name": "Rock",
-      "scriptText": `# BLUEPRINT Rock
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
-# PROGRAM INIT
-
-// Add features
-addFeature Costume
-addFeature Physics
-
-// Setup costume
-featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
-featProp Rock.Costume.scale setTo 0.5
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "SoilBG",
       "scriptText": `# BLUEPRINT SoilBG
 # TAG IsCharControllable false
