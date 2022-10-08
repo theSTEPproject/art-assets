@@ -277,6 +277,7 @@ when Worm touches Waste [[
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
       ]]
+      
 
     ]]
   ]]
@@ -411,17 +412,6 @@ when Bunny touches Plant [[
       prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
       featProp Bunny.Costume.glow setTo 4
-
-      // if full, change costume and set timer to emit waste
-      ifProp Bunny.energyLevel greaterThan 45 [[
-        // featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
-
-        // set variables to be full and prepare to release waste
-        prop Bunny.feeling setTo 'full'
-        exprPush {{ Bunny.getProp('wasteCountStart').value }}
-        propPop Bunny.wasteCount
-        featProp Bunny.Costume.glow setTo 0
-      ]]
     ]]
   ]]
 ]]
@@ -447,17 +437,6 @@ when Bunny touches Tomato [[
 
       // make the bunny glow for a second so that we know it is eating
       featProp Bunny.Costume.glow setTo 4
-
-      // if the bunny is full, change its costume and set timer to emit waste
-      ifProp Bunny.energyLevel greaterThan 45 [[
-        featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
-
-        // set variables to be full and prepare to release waste and turn off the glow
-        prop Bunny.feeling setTo 'full'
-        exprPush {{ Bunny.getProp('wasteCountStart').value }}
-        propPop Bunny.wasteCount
-        featProp Bunny.Costume.glow setTo 0
-      ]]
     ]]
   ]]
 ]]
@@ -467,10 +446,11 @@ when Bunny lastTouches Tomato [[
   featProp Bunny.Costume.glow setTo 0
 ]]
 
-
 every 1 runAtStart [[
 
+  // if the bunny is already full, handle the timer and then go to the bathroom
   ifProp Bunny.feeling equal 'full' [[
+    // if the wasteCount is 0, create some waste 
     ifProp Bunny.wasteCount equal 0 [[
 
       prop Bunny.energyLevel sub 20
@@ -486,9 +466,20 @@ every 1 runAtStart [[
       ]]
     ]]
 
+    // if the wasteCount is not 0, decrement it
     ifProp Bunny.wasteCount greaterThan 0 [[
       prop Bunny.wasteCount sub 1
     ]]
+  ]]
+
+  // check if the bunny is full, and if so maake sure we know it, and change the costume 
+  ifProp Bunny.energyLevel greaterThan 45 [[
+    // set variables to be full and prepare to release waste
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    prop Bunny.feeling setTo 'full'
+    exprPush {{ Bunny.getProp('wasteCountStart').value }}
+    propPop Bunny.wasteCount
+    featProp Bunny.Costume.glow setTo 0
   ]]
 
   // use some energy from just living / running around
@@ -500,9 +491,7 @@ every 1 runAtStart [[
     prop Bunny.isInert setTo true
   ]]
 ]]
-
-// required directive
-# PROGRAM INIT`
+`
     },
     {
       "name": "Plant",
