@@ -404,13 +404,14 @@ when Bunny touches Plant [[
     ifProp Bunny.feeling equal 'hungry' [[
 
       // ✏️ LETS CHANGE THIS- switching these numbers models different speeds of how bunnies eat the plants
-      // Plant matterLevel goes down as it is eaten, as does Plant energy
+      // 🔎 Plant matterLevel and energyLevel goes down from being eaten
       prop Plant.matterLevel sub 10
       prop Plant.energyLevel sub 10
-
-      // Bunny matterLevel and energy go up from eating
+      // 🔎 Bunny matterLevel and energyLevel go up from eating and digesting the plant
       prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
+
+      // make the bunny glow siince it is eating 
       featProp Bunny.Costume.glow setTo 4
     ]]
   ]]
