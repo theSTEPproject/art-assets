@@ -255,7 +255,9 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 
+// Setup the worm costume 
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
+featProp Worm.Costume.scale setTo 0.15
 
 // put above everything
 prop Worm.zIndex setTo 100
@@ -266,21 +268,21 @@ addProp feeling string 'hungry'
 // used internally to delay nutrient release when full
 addProp nutrientCountStart number 0
 
-// STUDENTS_MAY_CHANGE set this lower for instant dispersal of nutrients, or higher to stretch it out
+// how quickly does the worm releasae nutrients after being full
 prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount number 0
 
-
+// setup the energyLevel property
 addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
+// setup the maatter property
 addProp matter number 50
 prop Worm.matter setMax 100
 prop Worm.matter setMin 0
 
-featProp Worm.Costume.scale setTo 0.2
-
+// Check for when the worm is touching the waste or the soil
 featCall Worm.Touches monitor 'Waste' b2b
 featCall Worm.Touches monitor 'Soil' b2b
 
@@ -445,8 +447,8 @@ addFeature Touches
 addFeature Graphing
 
 // Seet the costume
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
-featProp Bunny.Costume.scale setTo 0.8
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+featProp Bunny.Costume.scale setTo 0.6
 
 // ✏️ LETS CHANGE the starting energy for the bunny
 addProp energyLevel number 25
@@ -477,24 +479,15 @@ featCall Bunny.Graphing setMeterPosition 'inside-left'
 // Move the bunny forward in front of the soil
 prop Bunny.zIndex setTo 110
 
-// ----------------------------------------------
-// add variables to cover distraction
-// ----------------------------------------------
-// counter - increment when hungry or distracted
-addProp distractionCounter number 0
-// how long a distraction lasts (0 will skip it)
-addProp distractionLength number 2
-// how long the focus lasts, during hunger, before we switch to distraction
-addProp focusLength number 5
 
 # PROGRAM UPDATE
 
+// have the bunny face forward going down and back going up
 ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
-  featProp Bunny.Costume.costumeName setTo 'DC_bunny_front.png'
+  featProp Bunny.Costume.flipY setTo false
 ]]
-
 ifFeatProp Bunny.Movement.compassDirection equal 'S' [[
- featProp Bunny.Costume.costumeName setTo 'DC_bunny_back.png'
+  featProp Bunny.Costume.flipY setTo true
 ]]
 
 when Bunny touches Plant [[
@@ -513,8 +506,8 @@ when Bunny touches Plant [[
       featProp Bunny.Costume.glow setTo 4
 
       // if full, change costume and set timer to emit waste
-      ifProp Bunny.energyLevel greaterThan  45  [[
-     //   featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
+      ifProp Bunny.energyLevel greaterThan 45 [[
+        // featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
 
         // set variables to be full and prepare to release waste
         prop Bunny.feeling setTo 'full'
@@ -530,104 +523,75 @@ when Bunny lastTouches Plant [[
   featProp Bunny.Costume.glow setTo 0
 ]]
 
-//when Bunny touches Tomato eat it
+// when Bunny touches Tomato eat it
 when Bunny touches Tomato [[
   every 1 runAtStart [[
 
     // if hungry, eat
-    //ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
+    ifProp Bunny.feeling equal 'hungry' [[
 
-      // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
-      // Tomato matter goes down as it is eaten, as does Plant energy
-      //prop Tomato.matter sub 1
+      // ✏️ LETS CHANGE THIS to set how quickly the bunnies eat the tomatoes
+      // 🔎 Tomato matter goes down as it is eaten
+      prop Tomato.matterLevel sub 1
       prop Tomato.energyLevel sub 5
-      // Bunny matter and energy go up from eating
+      // 🔎 Bunny matter and energy go up from eating
       prop Bunny.matter add 1
       prop Bunny.energyLevel add 1
+
+      // make the bunny glow for a second so that we know it is eating
       featProp Bunny.Costume.glow setTo 4
 
-      // if full, change costume and set timer to emit waste
-      //ifProp Bunny.energyLevel greaterThan  45  [[
-      //  featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
+      // if the bunny is full, change its costume and set timer to emit waste
+      ifProp Bunny.energyLevel greaterThan 45 [[
+        featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
 
-        // set variables to be full and prepare to release waste
-        //prop Bunny.feeling setTo 'full'
-        //exprPush {{ Bunny.getProp('wasteCountStart').value }}
-        //propPop Bunny.wasteCount
-        //featProp Bunny.Costume.glow setTo 0
-      //]]
-   // ]]
+        // set variables to be full and prepare to release waste and turn off the glow
+        prop Bunny.feeling setTo 'full'
+        exprPush {{ Bunny.getProp('wasteCountStart').value }}
+        propPop Bunny.wasteCount
+        featProp Bunny.Costume.glow setTo 0
+      ]]
+    ]]
   ]]
 ]]
 
 when Bunny lastTouches Tomato [[
+  // stop glowing because we are done eating
   featProp Bunny.Costume.glow setTo 0
 ]]
 
 
 every 1 runAtStart [[
 
-  // increment distraction counter
-  prop Bunny.distractionCounter add 1
+  ifProp Bunny.feeling equal 'full' [[
+    ifProp Bunny.wasteCount equal 0 [[
 
-  // if you are hungry, and hit focus length, switch to distracted.
-  ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
-    ifExpr {{ Bunny.getProp('distractionCounter').value >= Bunny.getProp('focusLength').value }} [[
-
-      // we are now distracted so don't bother eating
-      prop Bunny.feeling setTo 'distracted'
-     // featProp Bunny.Costume.costumeName setTo 'DC_bunny_distracted.png'
-      prop Bunny.distractionCounter setTo 0
-
-      // in case we were eating
-      featProp Bunny.Costume.glow setTo 0
-
-    ]]
-  ]]
-
-  // if you are distracted, and hit distracted length length, switch to hungry.
-  ifExpr {{ Bunny.getProp('feeling').value == 'distracted' }} [[
-    ifExpr {{ Bunny.getProp('distractionCounter').value >= Bunny.getProp('distractionLength').value }} [[
-
-      // we are now distracted so don't bother eating
-      prop Bunny.feeling setTo 'hungry'
-     // featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
-      prop Bunny.distractionCounter setTo 0
-    ]]
-  ]]
-
-  ifExpr {{ Bunny.getProp('feeling').value == 'full' }} [[
-    ifExpr {{ Bunny.getProp('wasteCount').value == 0 }} [[
-
-      // STUDENTS_MAY_CHANGE - switching these numbers will change how bunnies produce waste
       prop Bunny.energyLevel sub 20
       prop Bunny.matter sub 20
       prop Bunny.feeling setTo 'hungry'
-      // featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
-      prop Bunny.distractionCounter setTo 0
+      featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
 
+      // create the waste
       featCall Bunny.Population createCharacter Waste [[
-        // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
         prop Waste.x addRndInt -20 20
         prop Waste.y addRndInt 50 150
         prop Waste.matter setTo 40
       ]]
     ]]
 
-    ifExpr {{ Bunny.getProp('wasteCount').value > 0 }} [[
+    ifProp Bunny.wasteCount greaterThan 0 [[
       prop Bunny.wasteCount sub 1
     ]]
   ]]
 
-  // use some energy from just livin / running around
+  // use some energy from just living / running around
   prop Bunny.energyLevel sub 1
 
   // if out of energy ... die
-  ifExpr {{ Bunny.getProp('energyLevel').value == 0 }} [[
+  ifProp Bunny.energyLevel equal 0 [[
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
   ]]
-
 ]]
 
 // required directive
