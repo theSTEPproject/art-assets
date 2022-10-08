@@ -119,33 +119,30 @@ every 1 runAtStart [[
 
 
 # PROGRAM INIT
+
+// Add features
 addFeature Costume
+addFeature Physics
+addFeature Touches
+
 featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
 
 featCall Sunbeam.Costume setColorize 1 1 0
 prop Sunbeam.alpha setTo 0.3
 // prop zIndex setTo 100
 
-// STUDENTS_MAY_CHANGE - to set the speed of the sunbeam
+// ✏️ LETS CHANGE THIS - how wide and tall the sunbeam is
+featProp Sunbeam.Costume.scale setTo 1
+featProp Sunbeam.Costume.scaleY setTo 3
+
+// ✏️ LETS CHANGE THIS - to set the speed of the sunbeam, or the amount of energy it gives to the algae
 addProp speed number 20
-// STUDENTS_MAY_CHANGE - to set the amount of energy the sunbeam gives to algae
 addProp energyRate number 5
-// STUDENTS_MAY_CHANGE - to set which direction the sunbeam moves (right: 1, left: -1)
+
+// set which direction the sunbeam moves (right: 1, left: -1)
 addProp direction number 1
 
-addFeature Physics
-
-// STUDENTS_MAY_CHANGE - how wide the sunbeam is
-featProp Sunbeam.Costume.scale setTo 1
-// STUDENTS_MAY_CHANGE - how tall the sunbeam is
-featProp Sunbeam.Costume.scaleY setTo 2.5
-
-addFeature Touches
-// default position for moving across the top
-prop Sunbeam.x setTo -400
-prop Sunbeam.y setTo -180
-
-# PROGRAM EVENT
+# PROGRAM UPDATE
 onEvent Tick [[
   exprPush {{ Sunbeam.x + Sunbeam.getProp('direction').value * (Sunbeam.getProp('speed').value); }}
   propPop Sunbeam.x
@@ -155,9 +152,7 @@ onEvent Tick [[
     propPop Sunbeam.x
   ]]
 ]]
-
-// required directive
-# PROGRAM UPDATE`
+`
     },
     {
       "name": "Rock",
@@ -173,38 +168,18 @@ onEvent Tick [[
 // ✏️ body
 
 
-
 # PROGRAM INIT
-addFeature Costume
-featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 
+// Add features
+addFeature Costume
 addFeature Physics
-addFeature Graphing
+
+// Setup costume
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 featProp Rock.Costume.scale setTo 0.5
 
 // required directive
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "House",
-      "scriptText": `# BLUEPRINT House
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
-# PROGRAM INIT
-addFeature Costume
-featProp House.Costume.costumeName setTo 'GEN_house.json'
-
-
-addFeature Physics
-addFeature Graphing
-
-featProp House.Costume.scale setTo 2`
     },
     {
       "name": "SoilBG",
@@ -278,9 +253,9 @@ prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
 // setup the maatter property
-addProp matter number 50
-prop Worm.matter setMax 100
-prop Worm.matter setMin 0
+addProp matterLevel number 50
+prop Worm.matterLevel setMax 100
+prop Worm.matterLevel setMin 0
 
 // Check for when the worm is touching the waste or the soil
 featCall Worm.Touches monitor 'Waste' b2b
@@ -315,30 +290,26 @@ when Worm touches Waste [[
   every 1 runAtStart [[
 
     // if hungry, eat
-    ifExpr {{ Worm.getProp('feeling').value == 'hungry' }} [[
+    ifProp Worm.feeling equal 'hungry' [[
 
-      // not distracted so keep going
-
-      // move energy and matter from the waste to the worm and glow so we notice
-      // STUDENTS_MAY_CHANGE - if you want the worms to eat more or less each second change these numbers
-      // waste loses matter
-      prop Waste.matter sub 10
+      // 🔎 move energy and matter from the waste to the worm and glow so we notice
+      // ✏️ LETS CHANGE how much the worm eats, or how much energy they get from eating it
+      prop Waste.matterLevel sub 10
       // worms gain energy and matter
       prop Worm.energyLevel add 10
-      prop Worm.matter add 10
+      prop Worm.matterLevel add 10
       // worm glowss so we know it is eating
       featProp Worm.Costume.glow setTo 4
 
       // if you are nice and full of energy, note you are full and start poop count-down
-      ifExpr {{ Worm.getProp('energyLevel').value > 90 }} [[
+      ifProp Worm.energyLevel greaterThan 90 [[
         prop Worm.feeling setTo 'full'
 
-        // set the glow to 0 to reflect not eating while full
+        // change costume so we know we are full and stop glowing
+        featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
         featProp Worm.Costume.glow setTo 0
 
-        // change costume so we know we are full
-        featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
-
+        // update the nutrient count 
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
       ]]
@@ -348,6 +319,7 @@ when Worm touches Waste [[
 ]]
 
 when Worm lastTouches Waste [[
+  // stop glowing 
   featProp Worm.Costume.glow setTo 0
 ]]
 
@@ -359,7 +331,7 @@ when Worm touches Soil [[
     ifExpr {{ Worm.getProp('feeling').value == 'full' }} [[
       ifExpr {{ Worm.getProp('nutrientCount').value == 0 }} [[
         prop Worm.energyLevel sub 50
-        prop Worm.matter sub 50
+        prop Worm.matterLevel sub 50
         prop Soil.nutrients add 50
         featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
@@ -462,10 +434,10 @@ addProp feeling string 'hungry'
 addProp wasteCountStart number 3
 addProp wasteCount number 0
 
-// how much matter does the bunny have?
-addProp matter number 50
-prop Bunny.matter setMax 50
-prop Bunny.matter setMin 0
+// how much matterLevel does the bunny have?
+addProp matterLevel number 50
+prop Bunny.matterLevel setMax 50
+prop Bunny.matterLevel setMin 0
 
 // Track when the bunny touches plants or tomators
 featCall Bunny.Touches monitor 'Plant' b2b
@@ -497,11 +469,11 @@ when Bunny touches Plant [[
     ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
 
       // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
-      // Plant matter goes down as it is eaten, as does Plant energy
-      prop Plant.matter sub 10
+      // Plant matterLevel goes down as it is eaten, as does Plant energy
+      prop Plant.matterLevel sub 10
       prop Plant.energyLevel sub 10
-      // Bunny matter and energy go up from eating
-      prop Bunny.matter add 20
+      // Bunny matterLevel and energy go up from eating
+      prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
       featProp Bunny.Costume.glow setTo 4
 
@@ -531,11 +503,11 @@ when Bunny touches Tomato [[
     ifProp Bunny.feeling equal 'hungry' [[
 
       // ✏️ LETS CHANGE THIS to set how quickly the bunnies eat the tomatoes
-      // 🔎 Tomato matter goes down as it is eaten
+      // 🔎 Tomato matterLevel goes down as it is eaten
       prop Tomato.matterLevel sub 1
       prop Tomato.energyLevel sub 5
-      // 🔎 Bunny matter and energy go up from eating
-      prop Bunny.matter add 1
+      // 🔎 Bunny matterLevel and energy go up from eating
+      prop Bunny.matterLevel add 1
       prop Bunny.energyLevel add 1
 
       // make the bunny glow for a second so that we know it is eating
@@ -567,7 +539,7 @@ every 1 runAtStart [[
     ifProp Bunny.wasteCount equal 0 [[
 
       prop Bunny.energyLevel sub 20
-      prop Bunny.matter sub 20
+      prop Bunny.matterLevel sub 20
       prop Bunny.feeling setTo 'hungry'
       featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
 
@@ -575,7 +547,7 @@ every 1 runAtStart [[
       featCall Bunny.Population createCharacter Waste [[
         prop Waste.x addRndInt -20 20
         prop Waste.y addRndInt 50 150
-        prop Waste.matter setTo 40
+        prop Waste.matterLevel setTo 40
       ]]
     ]]
 
@@ -640,12 +612,12 @@ prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
-addProp matter number 50
+addProp matterLevel number 50
 
 // STUDENTS_MAY_CHANGE - sete a different range or starting point of matter
-prop Plant.matter setTo 35
-prop Plant.matter setMax 50
-prop Plant.matter setMin 0
+prop Plant.matterLevel setTo 35
+prop Plant.matterLevel setMax 50
+prop Plant.matterLevel setMin 0
 
 prop Plant.zIndex setTo -110
 
@@ -667,8 +639,8 @@ featProp Plant.Graphing.text setTo ''
 prop Plant.y setTo -50
 prop Plant.y addRnd -10 10
 
-// set size based on matter (assume matter max of 100) and that we waver between 80-100%
-exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
+// set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
+exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matterLevel').value / 100 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
@@ -676,7 +648,7 @@ featPropPop Plant.Costume.scale
 when Plant touches Sunbeam [[
   every 1 runAtStart [[
     prop Plant.energyLevel add 1
-    prop Plant.matter add 1
+    prop Plant.matterLevel add 1
     featProp Plant.Costume.glow setTo 4
   ]]
 ]]
@@ -696,19 +668,19 @@ when Plant touches Soil [[
 
 every 1 runAtStart [[
 
-  // set size based on matter (assume matter max of 100) and that we waver between 80-100%
-  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matter').value / 100 }}
+  // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
+  exprPush {{ Plant.getProp('minimumScale').value + Plant.getProp('matterLevel').value / 100 }}
   featPropPop Plant.Costume.scale
 
   // if the plant is basically dead
-  ifExpr {{ Plant.getProp('matter').value < 10 }} [[
+  ifExpr {{ Plant.getProp('matterLevel').value < 10 }} [[
 
     // create a little bit of inorganic matter
     featCall Plant.Population createCharacter Waste [[
-      // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matter it starts with
+      // STUDENTS_MAY_CHANGE - switching these numbers changes where the waste appears and how much matterLevel it starts with
       prop Waste.x addRndInt -5 5
       prop Waste.y addRndInt 50 100
-      prop Waste.matter setTo 20
+      prop Waste.matterLevel setTo 20
     ]]
 
     // then remove the plant
@@ -729,7 +701,7 @@ every 1 runAtStart [[
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
     featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
-    prop Plant.matter sub 1
+    prop Plant.matterLevel sub 1
   ]]
 ]]`
     },
@@ -754,9 +726,9 @@ addFeature Costume
 
 featProp Waste.Costume.costumeName setTo 'DC_waste.png'
 
-addProp matter number 100
-prop Waste.matter setMax 100
-prop Waste.matter setMin 0
+addProp matterLevel number 100
+prop Waste.matterLevel setMax 100
+prop Waste.matterLevel setMin 0
 
 // scale up because the art is a bit small
 addFeature Physics
@@ -777,10 +749,10 @@ prop Waste.zIndex setTo -150
 
 addFeature Graphing
 // STUDENTS_MAY_CHANGE - to pick a different thing to display on the meter
-featProp Waste.Graphing.meterProp setTo 'matter'
+featProp Waste.Graphing.meterProp setTo 'matterLevel'
 
 // scale based on amount of matter
-exprPush {{ (Waste.getProp('matter').value / 150) }}
+exprPush {{ (Waste.getProp('matterLevel').value / 150) }}
 featPropPop Waste.Costume.scale
 
 featProp Waste.Graphing.meterColor setTo 5783616
@@ -791,19 +763,19 @@ when Waste touches Soil [[
   // STUDENTS_MAY_CHANGE - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria)
   every 1 runAtStart [[
     // Bacteria decomposes waste
-   // prop Waste.matter sub 1
+   // prop Waste.matterLevel sub 1
    // prop Soil.nutrients add 1
   ]]
 ]]
 
 every 1 runAtStart [[
   // remove if there is nothing left
-  ifExpr {{ Waste.getProp('matter').value < 1 }} [[
+  ifExpr {{ Waste.getProp('matterLevel').value < 1 }} [[
     featCall Waste.Population removeCharacter
   ]]
 
   // scale based on amount of matter
-  exprPush {{ (Waste.getProp('matter').value / 150) }}
+  exprPush {{ (Waste.getProp('matterLevel').value / 150) }}
   featPropPop Waste.Costume.scale
 ]]
 
@@ -1148,7 +1120,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
 prop y setTo -280
-featProp Graphing text setTo 'Matter'
+featProp Graphing text setTo 'matterLevel'
 prop zIndex setTo 100`
     },
     {
