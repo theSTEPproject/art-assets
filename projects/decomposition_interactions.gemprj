@@ -425,12 +425,13 @@ when Bunny touches Plant [[
   every 1 runAtStart [[
 
     // if hungry, eat
-    ifExpr {{ Bunny.getProp('feeling').value == 'hungry' }} [[
+    ifProp Buunny.feeling equal 'hungry' [[
 
-      // STUDENTS_MAY_CHANGE - switching these numbers models different speeds of how bunnies eat the plants
+      // ✏️ LETS CHANGE THIS- switching these numbers models different speeds of how bunnies eat the plants
       // Plant matterLevel goes down as it is eaten, as does Plant energy
       prop Plant.matterLevel sub 10
       prop Plant.energyLevel sub 10
+
       // Bunny matterLevel and energy go up from eating
       prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
@@ -618,7 +619,7 @@ when Plant lastTouches Sunbeam [[
 
 when Plant touches Soil [[
   every 1 runAtStart [[
-    ifExpr {{ Soil.getProp('nutrients').value > 0 }} [[
+    ifProp Soil.nutrients greaterThan 0 [[
       prop Soil.nutrients sub 1
       prop Plant.nutrients add 1
     ]]
@@ -632,7 +633,7 @@ every 1 runAtStart [[
   featPropPop Plant.Costume.scale
 
   // if the plant is basically dead
-  ifExpr {{ Plant.getProp('matterLevel').value < 10 }} [[
+  ifProp Plant.matterLevel lessThan 10 [[
 
     // create a little bit of inorganic matter
     featCall Plant.Population createCharacter Waste [[
@@ -648,15 +649,15 @@ every 1 runAtStart [[
 
   // is it healthy?  Use some nutrients and then set color
   prop Plant.nutrients sub 1
-  ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
+  ifProp Plant.nutrients greaterThan 6 [[
     // healthy
     featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
   ]]
-  ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
+  ifProp Plant.nutrients lessThanOrEqual 6 [[
     // ok, but not great
     featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
   ]]
-  ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
+  ifProp Plant.nutrients lessThan 2 [[
     // not doing well at all, so lets also lose some matter
     featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
     prop Plant.matterLevel sub 1
@@ -728,7 +729,7 @@ when Waste touches Soil [[
 
 every 1 runAtStart [[
   // remove if there is nothing left
-  ifExpr {{ Waste.getProp('matterLevel').value < 1 }} [[
+  ifProp Waste.matterLevel lessThan 1 [[
     featCall Waste.Population removeCharacter
   ]]
 
@@ -881,10 +882,16 @@ onEvent Tick [[
 
 
 # PROGRAM INIT
-addFeature Costume
-featProp agent.Costume.costumeName setTo 'DC_tomato.png'
 
+// Add features
+addFeature Population
+addFeature Costume
 addFeature Physics
+addFeature Graphing
+addFeature Touches
+
+// Setup costume
+featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
 featProp Tomato.Costume.scale setTo 0.2
 
 addProp energyType string 'waste'
@@ -899,12 +906,9 @@ prop Tomato.energyLevel setMax 50
 prop Tomato.energyLevel setMin 0
 
 // use a widget to depict the current nutrients
-addFeature Graphing
 featProp Tomato.Graphing.meterProp setTo 'matterLevel'
 featProp Tomato.Graphing.text setTo ' '
 
-
-addFeature Touches
 featCall Tomato.Touches monitor 'Bunny' b2b
 
 // set the waste to be purple because it has nutrients, not energy
@@ -912,25 +916,26 @@ featProp Tomato.Graphing.meterColor setTo 5783616
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  prop Tomato.matterLevel sub 1
+  prop Tomato.matterLevel sub 5
 
-  ifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
-    // healthy
+  ifProp Tomato.matterLevel greaterThan 40 [[
     featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
   ]]
-  ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
-    // healthy
+  ifProp Tomato.matterLevel lessThanOrEqual 40 [[
     featProp Tomato.Costume.costumeName setTo 'DC_tomato_beg_decomp.png'
   ]]
-  ifExpr {{ Tomato.getProp('matterLevel').value < 25 && Tomato.getProp('matterLevel').value > 10 }} [[
-    // healthy
+  ifProp Tomato.matterLevel lessThanOrEqual 25 [[
     featProp Tomato.Costume.costumeName setTo 'DC_tomato_mid_decomp.png'
   ]]
-  ifExpr {{ Tomato.getProp('matterLevel').value < 10 }} [[
-    // healthy
-    featProp Tomato.Costume.costumeName setTo 'DC_waste.png'
-  ]]
+  ifProp Tomato.matterLevel lessThan 10 [[
+    // convert to waste
+    featCall Tomato.Population createCharacter Waste [[
+      prop Waste.matterLevel setTo 40
+    ]]
+    // remove the tomato 
+    featCall Tomato.Population removeCharacter
 
+  ]]
 ]]`
     }
   ],
