@@ -93,12 +93,15 @@ every 1 runAtStart [[
   featCall global.Population countCharacterProp 'Plant' 'energyLevel'
   featPropPush global.Population.avg
   propPop global.averagePlantEnergy
+  // temporary hack since bunnies are on a scale of max 50
+  prop global.averagePlantEnergy mul 2
   featPropPush global.Population.count
   propPop global.plantCount
 
   // grab the Worm average eenergy  and count
   featCall global.Population countCharacterProp 'Worm' 'energyLevel'
   featPropPush global.Population.avg
+  // out of 100 already so no need to multiply
   propPop global.averageWormEnergy
   featPropPush global.Population.count
   propPop global.wormCount
