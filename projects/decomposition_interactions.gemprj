@@ -37,16 +37,91 @@
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
+
+// EXPLANATION of this model:
+// This model involves learners repreesenting bunny eating plant
+// The goal is to explore how the number of bunny, number of plant,
+// and different locations can impact the survival of the ecosystem
+
+// EXPLANATION of this character:
+// This is the script that runs when the model is setup
+
 # PROGRAM INIT
 
-// Explanation:
-// This model involves learners repreesenting bunnies or worms in an ecosystem (ADD MORE)
-
+// we don't need to see this character, we just use it to keep track of things
 prop global.visible setTo false
 
+// Add features
+addFeature Population
 
-// required directive
-# PROGRAM UPDATE`
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it
+// easier to edit that character
+addProp bunnyCount number 0
+addProp plantCount number 0
+addProp wormCount number 0
+addProp allOrganismsCount number 0
+addProp averageBunnyEnergy number 0
+addProp averagePlantEnergy number 0
+addProp averageWormEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageDecomposerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
+
+// =============================================================
+
+// this is a required keyword in case we want to run script every second.
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // Update our global variables
+
+  // grab the Bunny average energy and count
+  featCall global.Population countCharacterProp 'Bunny' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageBunnyEnergy
+  // temporary hack since bunnies are on a scale of max 50
+  prop global.averageBunnyEnergy mul 2
+  featPropPush global.Population.count
+  propPop global.bunnyCount
+
+  // grab the Plant average eenergy  and count
+  featCall global.Population countCharacterProp 'Plant' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePlantEnergy
+  featPropPush global.Population.count
+  propPop global.plantCount
+
+  // grab the Worm average eenergy  and count
+  featCall global.Population countCharacterProp 'Worm' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageWormEnergy
+  featPropPush global.Population.count
+  propPop global.wormCount
+
+  // copy the specific organisms into the category averages
+  // since right now we have only 1 of each
+  propPush global.averagePlantEnergy
+  propPop global.averageProducerEnergy
+
+  propPush global.averageBunnyEnergy
+  propPop global.averageConsumerEnergy
+
+  propPush global.averageWormEnergy
+  propPop global.averageDecomposerEnergy
+
+  exprPush {{ (global.getProp('bunnyCount').value + global.getProp('wormCount').value + global.getProp('plantCount').value) }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('bunnyCount').value + global.getProp('wormCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('plantCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+
+
+]]`
     },
     {
       "name": "Soil",
@@ -137,7 +212,7 @@ prop Sunbeam.alpha setTo 0.3
 featProp Sunbeam.Costume.scale setTo 1
 featProp Sunbeam.Costume.scaleY setTo 3
 
-// ✏️ LETS CHANGE THIS - to set the speed of the sunbeam, or the amount of energy it gives to the algae
+// ✏️ LETS CHANGE THIS - to set the speed of the sunbeam, or the amount of energy it gives to the plant
 addProp speed number 20
 addProp energyRate number 5
 
@@ -238,8 +313,8 @@ featCall Worm.Touches monitor 'Soil' b2b
 // ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Worm.Graphing.meterProp setTo 'energyLevel'
 
-// Green = 0x00FF00
-featProp Worm.Graphing.meterColor setTo 85280
+// Set meter to be green
+featProp Worm.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 
@@ -548,11 +623,9 @@ prop Plant.zIndex setTo -110
 featCall Plant.Touches monitor 'Sunbeam' b2b
 featCall Plant.Touches monitor 'Soil' b2b
 
-// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
+// Set meter to display energy level and start green
 featProp Plant.Graphing.meterProp setTo 'energyLevel'
-// Green
 featProp Plant.Graphing.meterColor setTo 65280
-
 featProp Plant.Graphing.text setTo ''
 
 // always keep it right near the edge of the dirt, but give some variability
@@ -772,16 +845,32 @@ every 1 runAtStart [[
     {
       "name": "CharacterGraph",
       "scriptText": `# BLUEPRINT CharacterGraph
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 
-      // COMMENT KEY
+// COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a graph character that can be set up different ways in the map setup
+// 🔎 so that it shows lots of different variables that might be important to us.
+// 🔎 To change the variables use the map setup. The options are:
+// 🔎 -- Character options: Plant, Tomato, Worm, Waste, Bunny
+// 🔎 -- Variable options: matterLevel, energyLevel, nutrients
+// 🔎 -- Population options: sum, avg, min, max
 
 # PROGRAM INIT
+
+// Setup features
 addFeature Costume
+addFeature Graphing
+addFeature Population
+
+// Set costume to be blank
 featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.json'
 
 // setting these all up to so they can be changed in the map editor
@@ -790,41 +879,35 @@ addProp countType string 'sum'
 addProp variableToGraph string 'energyLevel'
 addProp labelText string 'Worm Energy'
 
-addFeature Graphing
-addFeature Population
-featProp Graphing isLargeGraphic setTo true
-
 // using a generic name so that it is easier to change later
 addProp graphValue number 0
-prop graphValue setMax 1000
-prop graphValue setMin 0
-
+prop CharacterGraph.graphValue setMax 1000
+prop CharacterGraph.graphValue setMin 0
 featProp CharacterGraph.Graphing.graphProp setTo 'graphValue'
 
+featProp CharacterGraph.Graphing.graphMinY setTo 0
+featProp CharacterGraph.Graphing.graphMaxY setTo 1000
 
-# PROGRAM EVENT
+featProp CharacterGraph.Graphing.isLargeGraphic setTo true
 
-onEvent Start [[
-  exprPush {{CharacterGraph.getProp('labelText').value}}
-  featPropPop Graphing text
-]]
+# PROGRAM UPDATE
 
 onEvent Tick [[
-  // TEAM_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
-  // -- Character options: Plant, Worm, Waste, Bunny
-  // -- Variable options: matter, energyLevel, nutrients
+  // ✏️ TEAM_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+  // -- Character options: Plant, Tomato, Worm, Waste, Bunny
+  // -- Variable options: matterLevel, energyLevel, nutrients
   // -- Population options: sum, avg, min, max
 
-  exprPush {{CharacterGraph.getProp('characterType').value}}
-  featPropPop Population monitoredCharacter
+  exprPush {{ CharacterGraph.getProp('characterType').value }}
+  featPropPop CharacterGraph.Population.monitoredCharacter
 
-  exprPush {{CharacterGraph.getProp('variableToGraph').value}}
-  featPropPop Population monitoredCharacterProp
+  exprPush {{ CharacterGraph.getProp('variableToGraph').value }}
+  featPropPop CharacterGraph.Population.monitoredCharacterProp
 
-  featCall Population countCharacterProp
+  featCall CharacterGraph.Population countCharacterProp
 
   exprPush {{ CharacterGraph.getFeatProp('Population', CharacterGraph.prop.countType.value).value }}
-  propPop graphValue
+  propPop CharacterGraph.graphValue
 ]]`
     },
     {
@@ -897,6 +980,79 @@ every 1 runAtStart [[
 
   ]]
 ]]`
+    },
+    {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows bunny health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
+featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.Graphing.isLargeGraphic setTo true
+featProp HealthMeter.Graphing.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+  // This script below is where you can decide what the current health meter shows
+
+  // QUESTION what does it mean to say an ecoyststem is healthy?
+  // Nathan thinks that the bunnies are the most important organism in the ecosystem
+  // So, we set the system health to the averageBunnyEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE what variable the meter displays as health
+  propPush global.averageBunnyEnergy
+
+  // put our variable into the healthLevel
+  propPop HealthMeter.healthLevel
+
+  // 🔎 This changes the meter colors to help show how well the ecosystem is doing
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.Graphing.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.Graphing.meterColor setTo 16711680
+  ]]
+
+]]`
     }
   ],
   "instances": [
@@ -959,7 +1115,7 @@ prop y setTo 300`
     },
     {
       "id": "1109",
-      "label": "SoilBG01",
+      "label": "SoilBG",
       "bpid": "SoilBG",
       "initScript": `prop x setTo 0
 prop y setTo 200`
@@ -968,8 +1124,8 @@ prop y setTo 200`
       "id": "1801",
       "label": "Plant Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 504.77
-prop y setTo 337.19
+      "initScript": `prop x setTo 518.37
+prop y setTo 183.44
 prop characterType setTo 'Plant'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -979,8 +1135,8 @@ prop labelText setTo 'Plant Energy'`
       "id": "1802",
       "label": "Bunny Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 507.83
-prop y setTo 181.78
+      "initScript": `prop x setTo 519.79
+prop y setTo 30.35
 prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
@@ -990,13 +1146,12 @@ prop labelText setTo 'Bunny Energy'`
       "id": "1803",
       "label": "Worm Energy",
       "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 507.34
-prop y setTo 33.69
+      "initScript": `prop x setTo 517.37
+prop y setTo -121.49
 prop characterType setTo 'Worm'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
-prop labelText setTo 'Worm Energy'
-`
+prop labelText setTo 'Worm Energy'`
     },
     {
       "id": "1201",
@@ -1205,6 +1360,13 @@ prop y setTo 285.13`
       "bpid": "Tomato",
       "initScript": `prop x setTo 309.78
 prop y setTo -89.15`
+    },
+    {
+      "id": "1904",
+      "label": "HealthMeter1904",
+      "bpid": "HealthMeter",
+      "initScript": `prop x setTo 517.48
+prop y setTo 312.89`
     }
   ]
 }

@@ -985,7 +985,7 @@ onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
   // QUESTION what does it mean to say an ecoyststem is healthy?
-  // Nathan thinks that the fish are the most imporatant thing in the pond
+  // Nathan thinks that the fish are the most important thing in the pond
   // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
   // ✏️ LETS CHANGE what variable the meter displays as health
   propPush global.averageFishEnergy
