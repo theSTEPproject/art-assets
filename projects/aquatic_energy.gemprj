@@ -245,7 +245,7 @@ every 2 runAtStart [[
     // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-  // The fish is starviinig
+  // The fish is starvinig
   ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Red
