@@ -396,7 +396,7 @@ prop Sky.zIndex setTo -100
 // ✏️ body
 
 
-// 🔎 WHAAT DOES THIS CHARACTER DO?
+// 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the charracter that students control in this model. 
 // 🔎 it shows different types of energy to help students show how energy flows between
 // 🔎 the different characters in this ecosystem.
@@ -439,9 +439,9 @@ featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 // Run this secript constantly while the model is running
 # PROGRAM UPDATE
 
-// ** ====================================================
-// ** INTERACTING WITH THE SUN
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE SUN
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Sun [[
   // The sun is a near-infinite source of energy
@@ -455,9 +455,9 @@ when EnergyRepresentation firstTouches Sun [[
   prop EnergyRepresentation.energyLevel setTo 100
 ]]
 
-// ** ====================================================
-// ** INTERACTING WITH THE ALGAE
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE ALGAE
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Algae [[
 
@@ -528,9 +528,9 @@ when EnergyRepresentation lastTouches Algae [[
   ]]
 ]]
 
-// ** ====================================================
-// ** INTERACTING WITH THE FISH
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE FISH
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Fish [[
 
