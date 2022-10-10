@@ -1298,7 +1298,7 @@ prop y setTo -403.87
       "bpid": "ColorChip",
       "initScript": `prop x setTo 457.00
 prop y setTo -388
-featCall Costume setColorize 30 30 250
+featCall Costume setColorize 0 0 0
 prop zIndex setTo 0
 featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30
