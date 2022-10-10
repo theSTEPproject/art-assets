@@ -1109,7 +1109,7 @@ prop y setTo 360.68`
       "label": "Energy In System Graph",
       "bpid": "EnergyInSystem",
       "initScript": `prop x setTo 511.75
-prop y setTo 187`
+prop y setTo 134.52`
     },
     {
       "id": "1101",
