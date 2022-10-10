@@ -394,8 +394,7 @@ every 1 runAtStart [[
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'DC_plant_unhealthy_side.png'
-    featProp Plant.Costume.currentFrame setTo 2
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth_side.png'
     prop Plant.matter sub 1
   ]]
 
