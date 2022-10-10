@@ -469,7 +469,6 @@ featCall Bunny.Touches monitor 'Tomato' b2b
 // This is what the meter will display (see script below during update for color)
 featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 featProp Bunny.Graphing.meterColor setTo 65280
-featCall Bunny.Graphing setMeterPosition 'inside-left'
 
 // Move the bunny forward in front of the soil
 prop Bunny.zIndex setTo 110
