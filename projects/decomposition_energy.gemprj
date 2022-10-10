@@ -94,11 +94,11 @@ addProp energyType string 'source'
 
 # PROGRAM INIT
 addFeature Costume
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
 featProp Bunny.Costume.currentFrame setTo 0
 
 
-featProp Bunny.Costume.flipX setTo true
+featProp Bunny.Costume.flipX setTo false
 
 
 addFeature Physics
@@ -131,25 +131,25 @@ every 2 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the Bunny is
   // sated
   ifExpr {{ Bunny.getProp('energyLevel').value > 50 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
     // Green
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
   // could eat
   ifExpr {{ Bunny.getProp('energyLevel').value < 50 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
     // Orange
     featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
   // hungry
   ifExpr {{ Bunny.getProp('energyLevel').value < 20 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
     // Red
     featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
   // dead
   ifExpr {{ Bunny.getProp('energyLevel').value < 1 }} [[
-featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
     // featCall Movement setMovementType 'float'
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
@@ -297,7 +297,7 @@ featProp Waste.Graphing.meterColor setTo 5783616
 
 # PROGRAM DEFINE
 addFeature Costume
-featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
+featProp Plant.Costume.costumeName setTo 'DC_plant_healthy_side.png'
 
 addFeature Physics
 
@@ -316,9 +316,9 @@ addProp energyUse number 1
 addProp minimumScale number 0
 
 // ✏️ LETS CHANGE THIS - set a different minimum size for the plants  (used to be 0.25)
-prop Plant.minimumScale setTo 0
-prop Plant.minimumScale setMax 1.0
-prop Plant.minimumScale setMin -0.5
+prop Plant.minimumScale setTo 0.7
+prop Plant.minimumScale setMax 1.5
+prop Plant.minimumScale setMin 0
 
 addProp nutrients number 8
 
@@ -384,18 +384,18 @@ every 1 runAtStart [[
   prop Plant.nutrients sub 1
   ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
     // healthy
-    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy_side.png'
     featProp Plant.Costume.currentFrame setTo 0
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
     // ok, but not great
-    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth_side.png'
     featProp Plant.Costume.currentFrame setTo 1
 
   ]]
   ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
     // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'DC_plant_unhealthy.png'
+    featProp Plant.Costume.costumeName setTo 'DC_plant_unhealthy_side.png'
     featProp Plant.Costume.currentFrame setTo 2
     prop Plant.matter sub 1
   ]]
@@ -1079,7 +1079,7 @@ ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLeve
       "initScript": `prop x setTo -94.89
 prop y setTo -64.16`
     },
-{
+    {
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
