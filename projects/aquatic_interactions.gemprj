@@ -444,7 +444,7 @@ featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
 addProp energyType string 'source'
 
 // ✏️ LETS CHANGE THIS - how wide the sunbeam is
-featProp Sunbeam.Costume.width setTo 225
+featProp Sunbeam.Costume.width setTo 100
 
 // ✏️ LETS CHANGE THIS - how tall the sunbeam is
 featProp Sunbeam.Costume.height setTo 500
@@ -728,7 +728,7 @@ when Predator lastTouches Trash [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Population
-featProp Trash.Costume.costumeName setTo 'AQ_trash.png'
+featProp Trash.Costume.costumeName setTo 'AQ_trash.json'
 
 addFeature Physics
 
@@ -807,7 +807,7 @@ addFeature Physics
 
 # PROGRAM INIT
 addFeature Costume
-featProp GraphAlgaeEnergy.Costume.costumeName setTo 'GEN_onexone.png'
+featProp GraphAlgaeEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 
 addProp characterType string 'Algae'
 addProp countType string 'avg'
@@ -876,7 +876,7 @@ onEvent Tick [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp GraphFishEnergy.Costume.costumeName setTo 'GEN_onexone.png'
+featProp GraphFishEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 
 addProp characterType string 'Fish'
 addProp countType string 'avg'
@@ -969,7 +969,7 @@ prop HealthMeter.healthLevel setMax 100
 featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
 
 // Make costume an invisible dot so we only see the meter
-featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.png'
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
 
 // Show meter on start, and make it big
 featProp HealthMeter.Graphing.isLargeGraphic setTo true
@@ -1167,15 +1167,15 @@ featProp agent.Costume.width setTo 100`
       "id": "1710",
       "label": "Algae 1",
       "bpid": "Algae",
-      "initScript": `prop x setTo -186.48
-prop y setTo -333.25`
+      "initScript": `prop x setTo -248.71
+prop y setTo -95.88`
     },
     {
       "id": "1711",
       "label": "Algae 2",
       "bpid": "Algae",
-      "initScript": `prop x setTo 243.12
-prop y setTo 139.56`
+      "initScript": `prop x setTo -9.08
+prop y setTo -131.48`
     },
     {
       "id": "1712",
@@ -1203,15 +1203,15 @@ featProp Rock.Costume.flipX setTo true`
       "id": "1715",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo 278.26
-prop y setTo -321.97`
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     },
     {
       "id": "1716",
       "label": "Algae 4",
       "bpid": "Algae",
-      "initScript": `prop x setTo -258.58
-prop y setTo 148.00`
+      "initScript": `prop x setTo -135.86
+prop y setTo -35.95`
     },
     {
       "id": "1720",
@@ -1226,22 +1226,7 @@ prop y setTo 0`
       "bpid": "Timer",
       "initScript": `prop x setTo 456.93
 prop y setTo -403.87`
-    },
-    {
-<<<<<<< HEAD
-      "id": "1722",
-      "label": "Algae1722",
-      "bpid": "Algae",
-      "initScript": `prop x setTo 54.24
-prop y setTo -326.27`
-    },
-    {
-      "id": "1723",
-      "label": "Algae1723",
-      "bpid": "Algae",
-      "initScript": `prop x setTo -0.31
-prop y setTo 132.92`
-=======
+    },{
       "id": "1900",
       "label": "TimerChip",
       "bpid": "ColorChip",
@@ -1251,7 +1236,6 @@ featCall Costume setColorize 30 30 250
 prop zIndex setTo 0
 featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30\n`
->>>>>>> 66d311b673640f7104c1ee0cc88c826acd28ab17
     }
   ]
 }
