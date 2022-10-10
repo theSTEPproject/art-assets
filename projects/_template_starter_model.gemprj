@@ -22,12 +22,19 @@
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
 
-// Explanation:
-// This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
-// and one that is not though you can use character controller with the second
-// Change this description once you are ready to share the model so others know how it is supposed to work.
+// 🔎 WHAT DOES MODEL DO?
+// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// 🔎 and one that is not though you can use character controller with the second
+// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
 
 
 prop global.visible setTo false
@@ -41,6 +48,12 @@ prop global.visible setTo false
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
 
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
@@ -65,6 +78,12 @@ addFeature Touches
 # TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
 
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved

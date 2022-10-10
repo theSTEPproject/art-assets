@@ -1,5 +1,5 @@
 {
-  "id": "_template_starter_social_model",
+  "id": "PnP",
   "label": "Starter Social Model",
   "metadata": {
     "top": -400,
@@ -69,7 +69,7 @@ prop global.visible setTo false
 addFeature Costume
 
 // set the costume
-featProp PC.Costume.costumeName setTo 'AQ_fish.png'
+featProp PC.Costume.costumeName setTo 'DC_bunny_front.png'
 featProp PC.Costume.scale setTo 0.3
 
 // add other features
@@ -141,7 +141,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
-featProp NPC.Costume.costumeName setTo 'AQ_fish.png'
+featProp NPC.Costume.costumeName setTo 'DC_bunny_front.png'
 featProp NPC.Costume.scale setTo 0.3
 
 // add other features
@@ -149,7 +149,6 @@ addFeature Movement
 addFeature Graphing
 addFeature Physics
 addFeature Touches
-
 // add any properties specific to the PC / NPC
 // role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
 // it's helpful to list roles here for other users to see
@@ -170,14 +169,18 @@ featProp NPC.Movement.distance setTo 0.2
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
 every 1 runAtStart [[
+  dbgOut 'START NPC virus for ' NPC.role ' : ' NPC.virus
+
   // insert code here to run all the time
   ifProp NPC.virus equal true [[
     featProp agent.Graphing.text setTo '🤢'
   ]]
 
-  ifProp NPC.virus equal false [[
+  ifProp NPC.virus notEqual true [[
     featProp agent.Graphing.text setTo '🙂'
   ]]
+
+  dbgOut 'END NPC virus for ' NPC.role ' : ' NPC.virus
 
 ]]`
     }
@@ -185,21 +188,12 @@ every 1 runAtStart [[
   "instances": [
     {
       "id": "0",
-      "label": "NPC One True",
+      "label": "NPC One  True",
       "bpid": "NPC",
       "initScript": `prop x setTo 136.88
 prop y setTo 50.13
 prop virus setTo true
 prop role setTo 'one'`
-    },
-    {
-      "id": "1",
-      "label": "NPC Two False",
-      "bpid": "NPC",
-      "initScript": `prop x setTo -205.03
-prop y setTo 48.39
-prop virus setTo false
-prop role setTo 'two'`
     }
   ]
 }

@@ -1,20 +1,21 @@
-{"frames": [
-
 {
-	"filename": "boulder.png",
-	"frame": {"x":0,"y":0,"w":249,"h":262},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":262},
-	"sourceSize": {"w":249,"h":262}
-}],
-"meta": {
-	"app": "https://www.codeandweb.com/texturepacker",
-	"version": "1.0",
-	"image": "boulder.png",
-	"format": "RGBA8888",
-	"size": {"w":249,"h":262},
-	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:edf408ce83454d2b9cecfaa4ea941091:a19e56cff6e5655f65e8ed2f5aad6b91:de4eebfcd982cc59004fc33cb1bf7623$"
-}
+  "frames": [
+    {
+      "filename": "boulder.png",
+      "frame": { "x": 0, "y": 0, "w": 249, "h": 262 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 249, "h": 262 },
+      "sourceSize": { "w": 249, "h": 262 }
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.0",
+    "image": "AQ_boulder.png",
+    "format": "RGBA8888",
+    "size": { "w": 249, "h": 262 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:edf408ce83454d2b9cecfaa4ea941091:a19e56cff6e5655f65e8ed2f5aad6b91:de4eebfcd982cc59004fc33cb1bf7623$"
+  }
 }

@@ -133,7 +133,6 @@ every 1 runAtStart [[
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
-
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the Fish character
 // 🔎 In this ecosystem model, we have producers and consumers that interact
@@ -157,7 +156,7 @@ addFeature Touches
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.5
 
-// Setup the fish energyLevel property to be between 0 and 100, but start at 30
+// ✏️ LETS CHANGE how much energy the fish start with
 addProp energyLevel number 30
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
@@ -184,7 +183,6 @@ onEvent Start [[
   featProp Fish.Movement.distance setTo 2
 
 ]]
-
 // This script flips the artowkr depending on whether the fish is moving left or right
 ifFeatProp Fish.Movement.compassDirection equal 'E' [[
   featProp Fish.Costume.flipX setTo false
@@ -205,7 +203,7 @@ when Fish touches Algae [[
     prop Algae.energyLevel sub 10
     // 🔎 the fish ate the algae which took matter and energy away from the algae
 
-    // ✏️ We might also want to change how much energy the fish gets after eating some algae
+    // ✏️ LETS CHANGE THIS: We might also want to change how much energy the fish gets after eating some algae
     prop Fish.energyLevel add 10
     // 🔎 because the fish digested the algae it gained energy
 
@@ -236,25 +234,29 @@ every 1 runAtStart [[
   // ✏️ If this number is higher, they will lose energy faster
   prop Fish.energyLevel sub 3
 
-  // sated
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 This script changes the color of the Fish's meter depending on how much energy it has
+  // ✏️ We can change the numbers if we want the colors to appear at different levels
+
+  // 🔎 The fish is feeling good, so make the meter grreen if the fish has over 50 energy (out of 100)
   ifProp Fish.energyLevel greaterThanOrEqual 50 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
-    // Green
     featProp Fish.Graphing.meterColor setTo 65280
   ]]
-  // could eat
+
+  // 🔎 The fish is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
   ifProp Fish.energyLevel lessThan 50 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
-    // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
+
+  // 🔎 The fish is really hungry, so make the meter red if we are under 20
   ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
-    // Red
     featProp Fish.Graphing.meterColor setTo 16711680
   ]]
-  // dead
+
+  // The fish is dead if it has 0 energy
   ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_dead.png'
     // Switch to floating if this fish is not controlled by a student
@@ -280,7 +282,6 @@ every 1 runAtStart [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
-
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the Algae character
@@ -380,7 +381,7 @@ when Algae lastTouches Sunbeam [[
 
 every 1 runAtStart [[
 
-  // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae uses every second to stay alive 
+  // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae uses every second to stay alive
   // ✏️ LETS CHANGE THIS: Let's change this number if we want them to
   // ✏️ use more or less energy every second. A higher number will mean they lose energy faster.
   prop Algae.energyLevel sub 1
@@ -493,7 +494,7 @@ addFeature Graphing
 addFeature Costume
 
 // this is a hidden image since the timer is just text
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.png'
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
 
 // this is the time we will track
 addProp time number 0
@@ -531,7 +532,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 
-featProp Rock.Costume.costumeName setTo 'AQ_boulder.png'
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 
 
 // required directive
@@ -758,7 +759,7 @@ addFeature Graphing
 addFeature Costume
 
 // invisible since we just want the text to show up
-featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
@@ -783,7 +784,7 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.png'
 
 # PROGRAM INIT
 addFeature Costume
-featProp ColorChip.Costume.costumeName setTo 'GEN_square.png'
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
 
 addFeature Physics
 
@@ -984,9 +985,9 @@ featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
 onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
-  // QUESTION what does it mean to say an ecoyststem is healthy?
-  // Nathan thinks that the fish are the most imporatant thing in the pond
-  // So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
+  // 🔎 WHAT does it mean to say an ecoyststem is healthy?
+  // 🔎 Nathan thinks that the fish are the most important thing in the pond
+  // 🔎 So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
   // ✏️ LETS CHANGE what variable the meter displays as health
   propPush global.averageFishEnergy
 
@@ -1102,7 +1103,7 @@ prop Background.zIndex setTo -999
       "label": "LegendLabel",
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
-prop y setTo -380.2
+prop y setTo -378.2
 featProp Graphing text setTo 'Energy Key:'`
     },
     {
@@ -1227,6 +1228,7 @@ prop y setTo 0`
 prop y setTo -403.87`
     },
     {
+<<<<<<< HEAD
       "id": "1722",
       "label": "Algae1722",
       "bpid": "Algae",
@@ -1239,6 +1241,17 @@ prop y setTo -326.27`
       "bpid": "Algae",
       "initScript": `prop x setTo -0.31
 prop y setTo 132.92`
+=======
+      "id": "1900",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 30 30 250
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30\n`
+>>>>>>> 66d311b673640f7104c1ee0cc88c826acd28ab17
     }
   ]
 }

@@ -245,7 +245,7 @@ every 2 runAtStart [[
     // Orange
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-  // The fish is starviinig
+  // The fish is starvinig
   ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     // Red
@@ -396,7 +396,7 @@ prop Sky.zIndex setTo -100
 // ✏️ body
 
 
-// 🔎 WHAAT DOES THIS CHARACTER DO?
+// 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is the charracter that students control in this model. 
 // 🔎 it shows different types of energy to help students show how energy flows between
 // 🔎 the different characters in this ecosystem.
@@ -439,9 +439,9 @@ featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 // Run this secript constantly while the model is running
 # PROGRAM UPDATE
 
-// ** ====================================================
-// ** INTERACTING WITH THE SUN
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE SUN
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Sun [[
   // The sun is a near-infinite source of energy
@@ -455,9 +455,9 @@ when EnergyRepresentation firstTouches Sun [[
   prop EnergyRepresentation.energyLevel setTo 100
 ]]
 
-// ** ====================================================
-// ** INTERACTING WITH THE ALGAE
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE ALGAE
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Algae [[
 
@@ -528,9 +528,9 @@ when EnergyRepresentation lastTouches Algae [[
   ]]
 ]]
 
-// ** ====================================================
-// ** INTERACTING WITH THE FISH
-// ** ====================================================
+// 🔎 ================================================================
+// 🔎 WHAT DOES THE REPRESENTATION DO WHEN INTERACTING WITH THE FISH
+// 🔎 ================================================================
 
 when EnergyRepresentation firstTouches Fish [[
 
@@ -583,7 +583,7 @@ when EnergyRepresentation lastTouches Fish [[
 
 // 🔎 WHAT DOES THIS CHARACTER DO?
 // 🔎 This is a timer character so that we can see how much time has passed in our model
-// 🔎 We can use that time to think about how long the ecosystem survives if we want 
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
 
 # PROGRAM INIT
 
@@ -607,8 +607,7 @@ every 1 runAtStart [[
   prop Timer.time add 1
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.Graphing.text
-]]
-`
+]]`
     },
     {
       "name": "GraphLostEnergy",
@@ -865,6 +864,33 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set
+// 🔎 (e.g., go to map setup)
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+
+// this is required by GEM-STEP in case we need to udpate this ecery second
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -909,6 +935,18 @@ prop y setTo 174.13`
       "bpid": "Timer",
       "initScript": `prop x setTo 446.56
 prop y setTo -399.56`
+    },
+    {
+      "id": "6",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -384
+featCall Costume setColorize 30 30 250
+prop zIndex setTo -100
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
     },
     {
       "id": "9",
@@ -958,13 +996,6 @@ prop y setTo 264.13`
       "bpid": "Background",
       "initScript": `prop x setTo 0
 prop y setTo  100`
-    },
-    {
-      "id": "16",
-      "label": "EnergyRepresentation16",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo 6.05
-prop y setTo -284.85`
     }
   ]
 }
