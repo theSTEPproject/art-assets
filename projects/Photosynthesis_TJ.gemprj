@@ -13,7 +13,7 @@
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
-    "showWebCam": true,
+    "showWebCam": false,
     "scaleX": 1,
     "scaleY": 1,
     "translateX": 0,
@@ -205,6 +205,8 @@ when Molecule lasttouches Chloroplast [[
 addFeature Costume
 featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
 
+prop Rabbit.alpha setTo 0.5
+
 addFeature Physics
 featProp Rabbit.Costume.scale setTo 0.5
 
@@ -228,6 +230,9 @@ addFeature Touches
 addFeature Costume
 featProp Roots.Costume.costumeName setTo 'PS_root_system.png'
 featProp Roots.Costume.scale setTo 0.25
+
+prop Roots.alpha setTo 0.5
+
 addFeature Physics
 
 addFeature Touches
@@ -250,6 +255,8 @@ addFeature Touches
 addFeature Costume
 featProp Chloroplast.Costume.costumeName setTo 'PS_chloroplast.png'
 featProp Chloroplast.Costume.scale setTo 0.25
+
+prop Chloroplast.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -283,6 +290,8 @@ addFeature Costume
 featProp Plant_Body.Costume.costumeName setTo 'PS_plant_body.png'
 featProp Plant_Body.Costume.scale setTo 0.3
 
+prop Plant_Body.alpha setTo 0.5
+
 addFeature Physics
 addFeature Touches
 
@@ -303,6 +312,9 @@ addFeature Touches
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp Left_Leaf.Costume.costumeName setTo 'PS_left_leaf.png'
+
+prop Left_Leaf.alpha setTo 0.5
+
 // featProp Left_Leaf.Costume.scale setTo 0.1
 exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
 featPropPop Left_Leaf.Costume.scale
@@ -332,6 +344,8 @@ every 1 [[
 addFeature Costume
 featProp Right_Leaf.Costume.costumeName setTo 'PS_right_leaf.png'
 featProp Right_Leaf.Costume.scale setTo 0.25
+
+prop Right_Leaf.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -581,6 +595,8 @@ addFeature Costume
 featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdroplet.png'
 featProp Water_Droplet.Costume.scale setTo 0.03
 
+prop Water_Droplet.alpha setTo 0.5
+
 addFeature Physics
 addFeature Touches
 
@@ -723,7 +739,7 @@ prop y setTo 339.35`
       "label": "Right_Leaf45",
       "bpid": "Right_Leaf",
       "initScript": `prop x setTo 102.94
-prop y setTo 13.35`
+prop y setTo 14.29`
     },
     {
       "id": "46",
