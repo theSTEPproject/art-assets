@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 4539717,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -619,8 +619,8 @@ prop y setTo 19.97`
       "id": "23",
       "label": "Ground23",
       "bpid": "Ground",
-      "initScript": `prop x setTo -11.74
-prop y setTo 46.44`
+      "initScript": `prop x setTo 76.10
+prop y setTo 47.96`
     },
     {
       "id": "24",
@@ -754,6 +754,20 @@ prop y setTo -239.93`
       "bpid": "Chloroplast",
       "initScript": `prop x setTo 307.14
 prop y setTo 210.3`
+    },
+    {
+      "id": "48",
+      "label": "Molecule48",
+      "bpid": "Molecule",
+      "initScript": `prop x setTo 55.02
+prop y setTo -104.84`
+    },
+    {
+      "id": "49",
+      "label": "Molecule49",
+      "bpid": "Molecule",
+      "initScript": `prop x setTo -107.03
+prop y setTo -113.51`
     }
   ]
 }
