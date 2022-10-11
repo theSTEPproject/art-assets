@@ -13,7 +13,7 @@
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
-    "showWebCam": false,
+    "showWebCam": true,
     "scaleX": 1,
     "scaleY": 1,
     "translateX": 0,
@@ -353,6 +353,7 @@ addFeature Touches
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp Ground.Costume.costumeName setTo 'PS_dirt_ground.png'
+prop Ground.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -375,6 +376,8 @@ featProp Ground.Costume.scale setTo 0.3
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
+
+prop Sky.alpha setTo 0.5
 
 addFeature Physics
 featProp Sky.Costume.scale setTo 0.3
@@ -735,20 +738,6 @@ prop y setTo -239.93`
       "bpid": "Chloroplast",
       "initScript": `prop x setTo 307.14
 prop y setTo 210.3`
-    },
-    {
-      "id": "48",
-      "label": "Molecule48",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo -257.34
-prop y setTo -210.92`
-    },
-    {
-      "id": "49",
-      "label": "Molecule49",
-      "bpid": "Molecule",
-      "initScript": `prop x setTo -5
-prop y setTo 33`
     }
   ]
 }
