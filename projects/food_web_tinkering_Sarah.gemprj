@@ -408,6 +408,7 @@ every 1 runAtStart [[
     ifExpr {{ Clover.getProp('energyLevel').value < 1 }} [[
       featProp Clover.Costume.currentFrame setTo 2
       prop Clover.alpha setTo 0.3
+      prop Clover.alive setTo false
     ]]
 
 
@@ -435,6 +436,7 @@ every 10 [[
     featProp Clover.Costume.glow setTo 1
     prop Clover.alpha setTo 1
     prop Clover.energyLevel setTo 55
+    prop Clover.alive setTo true
   ]]
 ]]
 # PROGRAM UPDATE
