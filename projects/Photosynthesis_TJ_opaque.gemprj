@@ -1,5 +1,5 @@
 {
-  "id": "Photosynthesis_TJ",
+  "id": "Photosynthesis_TJ_opaque",
   "label": "Starter Model",
   "metadata": {
     "top": -400,
@@ -14,11 +14,11 @@
     "bgcolor": 4539717,
     "roundsCanLoop": true,
     "showWebCam": false,
-    "scaleX": "0.95",
-    "scaleY": "1.4",
+    "scaleX": 1,
+    "scaleY": 1,
     "translateX": 0,
     "translateY": 0,
-    "rotate": "0",
+    "rotate": 0,
     "mirrorX": false,
     "mirrorY": false
   },
@@ -205,7 +205,7 @@ when Molecule lasttouches Chloroplast [[
 addFeature Costume
 featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
 
-prop Rabbit.alpha setTo 0.5
+//prop Rabbit.alpha setTo 0.5
 
 addFeature Physics
 featProp Rabbit.Costume.scale setTo 0.5
@@ -231,7 +231,7 @@ addFeature Costume
 featProp Roots.Costume.costumeName setTo 'PS_root_system.png'
 featProp Roots.Costume.scale setTo 0.25
 
-prop Roots.alpha setTo 0.5
+//prop Roots.alpha setTo 0.5
 
 addFeature Physics
 
@@ -256,7 +256,7 @@ addFeature Costume
 featProp Chloroplast.Costume.costumeName setTo 'PS_chloroplast.png'
 featProp Chloroplast.Costume.scale setTo 0.25
 
-prop Chloroplast.alpha setTo 0.5
+//prop Chloroplast.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -290,7 +290,7 @@ addFeature Costume
 featProp Plant_Body.Costume.costumeName setTo 'PS_plant_body.png'
 featProp Plant_Body.Costume.scale setTo 0.3
 
-prop Plant_Body.alpha setTo 0.5
+//prop Plant_Body.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -313,7 +313,7 @@ addFeature Touches
 addFeature Costume
 featProp Left_Leaf.Costume.costumeName setTo 'PS_left_leaf.png'
 
-prop Left_Leaf.alpha setTo 0.5
+//prop Left_Leaf.alpha setTo 0.5
 
 // featProp Left_Leaf.Costume.scale setTo 0.1
 exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
@@ -345,7 +345,7 @@ addFeature Costume
 featProp Right_Leaf.Costume.costumeName setTo 'PS_right_leaf.png'
 featProp Right_Leaf.Costume.scale setTo 0.25
 
-prop Right_Leaf.alpha setTo 0.5
+//prop Right_Leaf.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -367,7 +367,7 @@ addFeature Touches
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp Ground.Costume.costumeName setTo 'PS_dirt_ground.png'
-prop Ground.alpha setTo 0.5
+//prop Ground.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -391,7 +391,7 @@ featProp Ground.Costume.scale setTo 0.3
 addFeature Costume
 featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
 
-prop Sky.alpha setTo 0.5
+//prop Sky.alpha setTo 0.5
 
 addFeature Physics
 featProp Sky.Costume.scale setTo 0.3
@@ -595,7 +595,7 @@ addFeature Costume
 featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdroplet.png'
 featProp Water_Droplet.Costume.scale setTo 0.03
 
-prop Water_Droplet.alpha setTo 0.5
+//prop Water_Droplet.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -619,8 +619,8 @@ prop y setTo 19.97`
       "id": "23",
       "label": "Ground23",
       "bpid": "Ground",
-      "initScript": `prop x setTo 76.10
-prop y setTo 47.96`
+      "initScript": `prop x setTo -8.04
+prop y setTo 46.33`
     },
     {
       "id": "24",
