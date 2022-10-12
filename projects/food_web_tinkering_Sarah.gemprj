@@ -161,15 +161,29 @@ addProp alive Boolean true
 featCall Snake.Touches monitor 'Mouse' b2b
 featCall Snake.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Snake.energyLevel setMax 100
+prop Snake.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Snake.Graphing.meterProp setTo 'energyLevel'
+
+featProp Snake.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-
-every 1 [[
-  when Snake touches Mouse [[
+when Snake touches Mouse [[
+  every 1 [[
     ifExpr {{ Snake.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
       featProp Snake.Costume.glow setTo 1
       prop Mouse.alive setTo false
       prop Mouse.alpha setTo 0.3
+      prop Snake.energyLevel add 10
+      prop Mouse.energyLevel setTo 0
     ]]
   ]]
 
@@ -185,7 +199,44 @@ every 1 [[
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Snake.getProp('energyLevel').value - Snake.getProp('energyUse').value }}
+  propPop Snake.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Snake is
+  // sated
+  ifExpr {{ Snake.getProp('energyLevel').value > 50 }} [[
+    featProp Snake.Costume.currentFrame setTo 0
+    // Green
+    featProp Snake.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Snake.getProp('energyLevel').value < 50 }} [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Orange
+    featProp Snake.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Snake.getProp('energyLevel').value < 20 }} [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Red
+    featProp Snake.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
+    featProp Snake.Costume.currentFrame setTo 2
+    prop Snake.alpha setTo 0.3
+    prop Snake.isInert setTo true
+    prop Snake.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Snake.Graphing.meterProp setTo 'energyLevel'
+
+]]`
     },
     {
       "name": "Reincarnator",
