@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 255255204,
+    "bgcolor": 102,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -95,7 +95,6 @@ featCall Sun.Costume setColorize 255 215 0
 // This makess sure the sunu is behind everything else
 prop Sun.zIndex setTo 0
 
-
 addFeature Physics
 featProp Sun.Costume.scale setTo 1
 
@@ -129,8 +128,6 @@ featProp Sky.Costume.height setTo 800
 // make sure this is always way in the back behind all
 // of the other characters
 prop Sky.zIndex setTo -100
-prop Sky.alpha setTo 0.5
-
 
 // required directive
 # PROGRAM INIT
