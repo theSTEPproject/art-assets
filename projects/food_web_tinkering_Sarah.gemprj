@@ -47,7 +47,7 @@ addFeature Touches
 
 featProp agent.Costume.scale setTo 0.2
 
-featProp Mouse.Movement.compassDirection setTo 'west'
+featProp Mouse.Movement.compassDirection setTo 'W'
 featProp Mouse.Movement.movementType setTo 'wander'
 featProp Mouse.Movement.distance setTo 3
 featProp Mouse.Movement.targetY setMax 0.7
@@ -392,7 +392,7 @@ every 10 [[
     {
       "name": "Snail",
       "scriptText": `# BLUEPRINT Snail
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -418,26 +418,74 @@ featCall Snail.Touches monitor 'VeggieGarden' b2b
 featCall Snail.Touches monitor 'Clover' b2b
 featCall Snail.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Snail.energyLevel setMax 100
+prop Snail.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Snail lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Snail.Graphing.meterProp setTo 'energyLevel'
+
+featProp Snail.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+every 1 runAtStart [[
 
-every 1 [[
-  when Snail touches VeggieGarden [[
+  // foodLevel goes down every n seconds
+  exprPush {{ Snail.getProp('energyLevel').value - Snail.getProp('energyUse').value }}
+  propPop Snail.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Snail is
+  // sated
+  ifExpr {{ Snail.getProp('energyLevel').value > 50 }} [[
+    featProp Snail.Costume.currentFrame setTo 0
+    // Green
+    featProp Snail.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Snail.getProp('energyLevel').value < 50 }} [[
+    featProp Snail.Costume.currentFrame setTo 1
+    // Orange
+    featProp Snail.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Snail.getProp('energyLevel').value < 20 }} [[
+    featProp Snail.Costume.currentFrame setTo 1
+    // Red
+    featProp Snail.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Snail.getProp('energyLevel').value < 1 }} [[
+    featProp Snail.Costume.currentFrame setTo 2
+    prop Snail.alpha setTo 0.3
+    prop Snail.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Snail.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Snail touches VeggieGarden [[
+  every 1 [[
     ifExpr {{ Snail.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
       featProp Snail.Costume.glow setTo 1
-      prop VeggieGarden.alive setTo false
-      prop VeggieGarden.alpha setTo 0.3
+      prop Snail.energyLevel add 10
+      prop VeggieGarden.energyLevel sub 10
     ]]
   ]]
 
-every 1 [[
   when Snail touches Clover [[
-    ifExpr {{ Snail.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
-      featProp Snail.Costume.glow setTo 1
-      prop Clover.alive setTo false
-      prop Clover.alpha setTo 0.3
+    every 1 [[
+      ifExpr {{ Snail.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
+        featProp Snail.Costume.glow setTo 1
+        prop Snail.energyLevel add 10
+        prop Clover.energyLevel sub 10
+      ]]
     ]]
-  ]]
   ]]
 
   when Snail touches Reincarnator [[
@@ -1069,7 +1117,7 @@ prop y setTo 52.46`
       "id": "52",
       "label": "Mouse52",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 313.80
+      "initScript": `prop x setTo 313.8
 prop y setTo -46.62`
     },
     {
@@ -1085,6 +1133,13 @@ prop y setTo -10.65`
       "bpid": "Gopher",
       "initScript": `prop x setTo 48
 prop y setTo -29`
+    },
+    {
+      "id": "55",
+      "label": "Snail55",
+      "bpid": "Snail",
+      "initScript": `prop x setTo -331.6
+prop y setTo 62.97`
     }
   ]
 }
