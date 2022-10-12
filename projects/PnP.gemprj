@@ -161,6 +161,20 @@ prop y setTo 48.13`
       "bpid": "Space",
       "initScript": `prop x setTo -271.37
 prop y setTo -272.55`
+    },
+    {
+      "id": "3",
+      "label": "Space 2",
+      "bpid": "Space",
+      "initScript": `prop x setTo 268.93
+prop y setTo -273.32`
+    },
+    {
+      "id": "4",
+      "label": "Space 3",
+      "bpid": "Space",
+      "initScript": `prop x setTo -269.55
+prop y setTo 256.66`
     }
   ]
 }
