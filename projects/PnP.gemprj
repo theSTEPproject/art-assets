@@ -95,14 +95,31 @@ addProp mood Number 0
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
   
+// TO DO
+// Update color to match color
+// report perceivedKnowledge
+// report perceivedValue
+
   when Person firstTouches Person [[
     // glow to show we are interacting
     featProp Person.Costume.glow setTo 1
-    
+
+    // TO DO
+    // If it is someone else
+    // If they are same rank or higher
+    // give them some perceivedKnowledge
+    // If they are beneath you, look unhappy
+    // If they are same, neutral
+
   ]]
 
   when Person firstTouches Space [[
       featProp Person.Costume.glow setTo 1
+
+    // TO DO
+    // If the space is the same rank or lower
+    // gain knowledge
+    // if it is too high, bad things happen
 
   ]]
 `
@@ -136,6 +153,11 @@ addProp perceivedKnowledge Number 0
 addProp perceivedValue Number 0
 
 # PROGRAM UPDATE
+
+// TO DO
+// Update color to match color
+// report perceivedKnowledge
+// report perceivedValue
 
 `
     }
