@@ -136,7 +136,7 @@ when Mouse touches VeggieGarden [[
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -499,7 +499,7 @@ every 10 [[
       "scriptText": `# BLUEPRINT Snail
 # TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -615,9 +615,9 @@ when Snail touches VeggieGarden [[
     {
       "name": "Gopher",
       "scriptText": `# BLUEPRINT Gopher
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -734,7 +734,7 @@ when Gopher touches VeggieGarden [[
       "scriptText": `# BLUEPRINT Caterpillar
 # TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -1260,9 +1260,9 @@ every 1 runAtStart [[
     {
       "name": "Rabbit",
       "scriptText": `# BLUEPRINT Rabbit
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -1374,9 +1374,7 @@ when Rabbit touches VeggieGarden [[
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-
-`
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
       "name": "global",
