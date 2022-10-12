@@ -930,6 +930,11 @@ addFeature Touches
 
 featProp Robin.Costume.scale setTo 0.2
 
+featProp Robin.Movement.movementType setTo 'wander'
+featProp Robin.Movement.compassDirection setTo 'W'
+featProp Robin.Movement.distance setTo 3
+featProp Robin.Movement.targetY setMax 0.7
+
 addProp alive Boolean true
 
 // make sure we track interactions with the other creatures
@@ -938,34 +943,52 @@ featCall Robin.Touches monitor 'Snail' b2b
 featCall Robin.Touches monitor 'Beetle' b2b
 featCall Robin.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Robin.energyLevel setMax 100
+prop Robin.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Robin lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Robin.Graphing.meterProp setTo 'energyLevel'
+
+featProp Robin.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-
-every 1 [[
-  when Robin touches Caterpillar [[
+when Robin touches Caterpillar [[
+  every 1 [[
     ifExpr {{ Robin.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
       featProp Robin.Costume.glow setTo 1
       prop Caterpillar.alive setTo false
       prop Caterpillar.alpha setTo 0.3
+      prop Robin.energyLevel add 10
+      prop Caterpillar.energyLevel setTo 0
     ]]
   ]]
 
-  every 1 [[
-    when Robin touches Snail [[
+  when Robin touches Snail [[
+    every 1 [[
       ifExpr {{ Robin.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
         featProp Robin.Costume.glow setTo 1
         prop Snail.alive setTo false
         prop Snail.alpha setTo 0.3
+        prop Robin.energyLevel add 10
+        prop Snail.energyLevel setTo 0
       ]]
     ]]
   ]]
 
-  every 1 [[
-    when Robin touches Beetle [[
+  when Robin touches Beetle [[
+    every 1 [[
       ifExpr {{ Robin.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
         featProp Robin.Costume.glow setTo 1
         prop Beetle.alive setTo false
         prop Beetle.alpha setTo 0.3
+        prop Robin.energyLevel add 10
+        prop Beetle.energyLevel setTo 0
       ]]
     ]]
   ]]
@@ -982,7 +1005,44 @@ every 1 [[
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Robin.getProp('energyLevel').value - Robin.getProp('energyUse').value }}
+  propPop Robin.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Robin is
+  // sated
+  ifExpr {{ Robin.getProp('energyLevel').value > 50 }} [[
+    featProp Robin.Costume.currentFrame setTo 0
+    // Green
+    featProp Robin.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Robin.getProp('energyLevel').value < 50 }} [[
+    featProp Robin.Costume.currentFrame setTo 1
+    // Orange
+    featProp Robin.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Robin.getProp('energyLevel').value < 20 }} [[
+    featProp Robin.Costume.currentFrame setTo 1
+    // Red
+    featProp Robin.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Robin.getProp('energyLevel').value < 1 }} [[
+    featProp Robin.Costume.currentFrame setTo 2
+    prop Robin.alpha setTo 0.3
+    prop Robin.isInert setTo true
+    prop Robin.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Robin.Graphing.meterProp setTo 'energyLevel'
+
+]]`
     },
     {
       "name": "Hawk",
@@ -1328,6 +1388,13 @@ prop y setTo 214.73`
       "bpid": "Rabbit",
       "initScript": `prop x setTo 206.44
 prop y setTo -59.92`
+    },
+    {
+      "id": "62",
+      "label": "Robin62",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -30
+prop y setTo -48`
     }
   ]
 }
