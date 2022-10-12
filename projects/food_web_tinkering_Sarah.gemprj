@@ -12,7 +12,15 @@
     ],
     "bounce": true,
     "bgcolor": 931,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -212,16 +220,65 @@ addProp alive Boolean true
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop VeggieGarden.energyLevel setMax 100
+prop VeggieGarden.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
+
+featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-  
 
-every 7 [[
-  ifExpr {{ VeggieGarden.getProp('alive').value == false }} [[
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
+    propPop VeggieGarden.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp VeggieGarden.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp VeggieGarden.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp VeggieGarden.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ VeggieGarden.getProp('energyLevel').value < 1 }} [[
+      featProp VeggieGarden.Costume.currentFrame setTo 2
+      prop VeggieGarden.alpha setTo 0.3
+    ]]
+
+    // avoid getting too small
+    exprPush {{ 0.3 }}
+    featPropPop VeggieGarden.Costume.scale
+
+  ]]
+]]
+every 10 [[
+  ifProp VeggieGarden.energyLevel lessThan 1 [[
     featProp VeggieGarden.Costume.glow setTo 1
-    prop VeggieGarden.alive setTo true
     prop VeggieGarden.alpha setTo 1
- ]]
+    prop VeggieGarden.energyLevel setTo 25
+  ]]
 ]]
 
 
@@ -776,6 +833,13 @@ every 1 [[
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 
 `
+    },
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# PROGRAM INIT
+addFeature Population
+prop global.visible setTo false`
     }
   ],
   "instances": [
@@ -790,22 +854,22 @@ prop y setTo 100.3`
       "id": "17",
       "label": "VeggieGarden17",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -411.7
-prop y setTo 288.05`
+      "initScript": `prop x setTo -378.16
+prop y setTo 288.66`
     },
     {
       "id": "18",
       "label": "VeggieGarden18",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -243.46
-prop y setTo 295.34`
+      "initScript": `prop x setTo -227.76
+prop y setTo 207.27`
     },
     {
       "id": "19",
       "label": "VeggieGarden19",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 435.23
-prop y setTo 297.79`
+      "initScript": `prop x setTo 414.74
+prop y setTo 297.1`
     },
     {
       "id": "20",
@@ -818,8 +882,8 @@ prop y setTo 270.88`
       "id": "21",
       "label": "VeggieGarden21",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 38.88
-prop y setTo 343.02`
+      "initScript": `prop x setTo 17.72
+prop y setTo 171.38`
     },
     {
       "id": "22",
@@ -832,57 +896,36 @@ prop y setTo 288.93`
       "id": "23",
       "label": "VeggieGarden23",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 266.82
-prop y setTo 304.84`
+      "initScript": `prop x setTo 306.6
+prop y setTo 186.02`
     },
     {
       "id": "24",
       "label": "Clover24",
       "bpid": "Clover",
-      "initScript": `prop x setTo 448.21
-prop y setTo 176.78`
+      "initScript": `prop x setTo 98.86
+prop y setTo -166.88`
     },
     {
       "id": "25",
       "label": "Clover25",
       "bpid": "Clover",
-      "initScript": `prop x setTo 376.00
-prop y setTo -162.64`
+      "initScript": `prop x setTo 429.59
+prop y setTo -241.46`
     },
     {
       "id": "26",
       "label": "Clover26",
       "bpid": "Clover",
-      "initScript": `prop x setTo -110.45
-prop y setTo -241.58`
+      "initScript": `prop x setTo -262.92
+prop y setTo -61.39`
     },
     {
       "id": "27",
       "label": "Clover27",
       "bpid": "Clover",
-      "initScript": `prop x setTo -389.76
-prop y setTo -194.68`
-    },
-    {
-      "id": "28",
-      "label": "Clover28",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -410.41
-prop y setTo 115.40`
-    },
-    {
-      "id": "29",
-      "label": "Clover29",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -227.69
-prop y setTo 95.17`
-    },
-    {
-      "id": "30",
-      "label": "Clover30",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 138.13
-prop y setTo 53.22`
+      "initScript": `prop x setTo -399.69
+prop y setTo -286.30`
     },
     {
       "id": "41",
