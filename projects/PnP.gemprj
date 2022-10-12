@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 13882323,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -69,8 +69,8 @@ prop global.visible setTo false
 addFeature Costume
 
 // set the costume
-featProp PC.Costume.costumeName setTo 'DC_bunny_front.png'
-featProp PC.Costume.scale setTo 0.3
+featProp PC.Costume.costumeName setTo 'PP_person_neutral.png'
+featProp PC.Costume.scale setTo 0.5
 
 // add other features
 addFeature Graphing
@@ -141,8 +141,8 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
-featProp NPC.Costume.costumeName setTo 'DC_bunny_front.png'
-featProp NPC.Costume.scale setTo 0.3
+featProp NPC.Costume.costumeName setTo 'PP_person_neutral.png'
+featProp NPC.Costume.scale setTo 0.5
 
 // add other features
 addFeature Movement
