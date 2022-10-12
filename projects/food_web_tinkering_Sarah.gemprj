@@ -313,8 +313,58 @@ addProp alive Boolean true
 // make sure we track interactions with the other creatures
 featCall Clover.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Clover.energyLevel setMax 100
+prop Clover.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Clover.Graphing.meterProp setTo 'energyLevel'
+
+featProp Clover.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
+    propPop Clover.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the clover is
+  // set clover energy meter color
+  // doing great
+  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Clover.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Clover.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Clover.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ Clover.getProp('energyLevel').value < 1 }} [[
+      featProp Clover.Costume.currentFrame setTo 2
+      prop Clover.alpha setTo 0.3
+    ]]
+
+
+    // avoid getting too
+    exprPush {{ .15 }}
+    featPropPop Clover.Costume.scale
+
+  ]]
+]]
 
 every 1 [[
 
@@ -328,10 +378,16 @@ every 1 [[
 
 ]]
 
+every 10 [[
+  ifProp Clover.energyLevel lessThan 1 [[
+    featProp Clover.Costume.glow setTo 1
+    prop Clover.alpha setTo 1
+    prop Clover.energyLevel setTo 25
+  ]]
+]]
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-`
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
       "name": "Snail",
@@ -925,7 +981,7 @@ prop y setTo -61.39`
       "label": "Clover27",
       "bpid": "Clover",
       "initScript": `prop x setTo -399.69
-prop y setTo -286.30`
+prop y setTo -286.3`
     },
     {
       "id": "41",
