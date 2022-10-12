@@ -58,15 +58,64 @@ addProp alive Boolean true
 featCall Mouse.Touches monitor 'VeggieGarden' b2b
 featCall Mouse.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Mouse.energyLevel setMax 100
+prop Mouse.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Mouse lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+
+featProp Mouse.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+every 1 runAtStart [[
 
-every 1 [[
-  when Mouse touches VeggieGarden [[
+  // foodLevel goes down every n seconds
+  exprPush {{ Mouse.getProp('energyLevel').value - Mouse.getProp('energyUse').value }}
+  propPop Mouse.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Mouse is
+  // sated
+  ifExpr {{ Mouse.getProp('energyLevel').value > 50 }} [[
+    featProp Mouse.Costume.currentFrame setTo 0
+    // Green
+    featProp Mouse.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Mouse.getProp('energyLevel').value < 50 }} [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    // Orange
+    featProp Mouse.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Mouse.getProp('energyLevel').value < 20 }} [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    // Red
+    featProp Mouse.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Mouse.getProp('energyLevel').value < 1 }} [[
+    featProp Mouse.Costume.currentFrame setTo 2
+    prop Mouse.alpha setTo 0.3
+    prop Mouse.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+
+]]
+
+when Mouse touches VeggieGarden [[
+  every 1 [[
     ifExpr {{ Mouse.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
       featProp Mouse.Costume.glow setTo 1
-      prop VeggieGarden.alive setTo false
-      prop VeggieGarden.alpha setTo 0.3
+      prop Mouse.energyLevel add 10
+      prop VeggieGarden.energyLevel sub 10
     ]]
   ]]
 
@@ -266,6 +315,7 @@ every 1 runAtStart [[
     ifExpr {{ VeggieGarden.getProp('energyLevel').value < 1 }} [[
       featProp VeggieGarden.Costume.currentFrame setTo 2
       prop VeggieGarden.alpha setTo 0.3
+      prop VeggieGarden.alive setTo false
     ]]
 
     // avoid getting too small
@@ -279,6 +329,7 @@ every 10 [[
     featProp VeggieGarden.Costume.glow setTo 1
     prop VeggieGarden.alpha setTo 1
     prop VeggieGarden.energyLevel setTo 55
+    prop VeggieGarden.alive setTo true
   ]]
 ]]
 
@@ -1176,14 +1227,14 @@ prop y setTo -3.57`
       "label": "VeggieGarden17",
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo -302.86
-prop y setTo 287.80`
+prop y setTo 287.8`
     },
     {
       "id": "18",
       "label": "VeggieGarden18",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -210.44
-prop y setTo 166.24`
+      "initScript": `prop x setTo -96.09
+prop y setTo 284.1`
     },
     {
       "id": "19",
@@ -1200,27 +1251,6 @@ prop y setTo 278.08`
 prop y setTo 270.88`
     },
     {
-      "id": "21",
-      "label": "VeggieGarden21",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 9.16
-prop y setTo 159.93`
-    },
-    {
-      "id": "22",
-      "label": "VeggieGarden22",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -88.43
-prop y setTo 293.54`
-    },
-    {
-      "id": "23",
-      "label": "VeggieGarden23",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 252.28
-prop y setTo 150.70`
-    },
-    {
       "id": "24",
       "label": "Clover24",
       "bpid": "Clover",
@@ -1233,20 +1263,6 @@ prop y setTo -158.59`
       "bpid": "Clover",
       "initScript": `prop x setTo 311.55
 prop y setTo -277.21`
-    },
-    {
-      "id": "26",
-      "label": "Clover26",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -318.20
-prop y setTo -119.97`
-    },
-    {
-      "id": "27",
-      "label": "Clover27",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -113.57
-prop y setTo -290.25`
     },
     {
       "id": "41",
@@ -1270,13 +1286,6 @@ prop y setTo 98.95`
 prop y setTo -321.48`
     },
     {
-      "id": "50",
-      "label": "Beetle50",
-      "bpid": "Beetle",
-      "initScript": `prop x setTo -348.98
-prop y setTo 182.61`
-    },
-    {
       "id": "51",
       "label": "Mouse51",
       "bpid": "Mouse",
@@ -1291,13 +1300,6 @@ prop y setTo -65.97`
 prop y setTo 68.91`
     },
     {
-      "id": "53",
-      "label": "Mouse53",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo -332.46
-prop y setTo 78.91`
-    },
-    {
       "id": "54",
       "label": "Gopher54",
       "bpid": "Gopher",
@@ -1308,43 +1310,15 @@ prop y setTo -224.26`
       "id": "55",
       "label": "Snail55",
       "bpid": "Snail",
-      "initScript": `prop x setTo -267.04
-prop y setTo -357.07`
-    },
-    {
-      "id": "56",
-      "label": "Caterpillar56",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -334.58
-prop y setTo -289.19`
-    },
-    {
-      "id": "57",
-      "label": "Snail57",
-      "bpid": "Snail",
-      "initScript": `prop x setTo 48
-prop y setTo -28`
-    },
-    {
-      "id": "58",
-      "label": "Snail58",
-      "bpid": "Snail",
-      "initScript": `prop x setTo -104.33
-prop y setTo 109.03`
-    },
-    {
-      "id": "59",
-      "label": "Caterpillar59",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -248.42
-prop y setTo 82.66`
+      "initScript": `prop x setTo 7.39
+prop y setTo 213.02`
     },
     {
       "id": "60",
       "label": "Caterpillar60",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo 113.06
-prop y setTo 170.55`
+      "initScript": `prop x setTo -224.45
+prop y setTo 214.73`
     },
     {
       "id": "61",
