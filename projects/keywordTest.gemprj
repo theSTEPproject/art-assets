@@ -53,7 +53,7 @@
 
 prop global.visible setTo false
 
-addProp energyReleasedAsHeat number 0
+addProp alphaSettingForAll number 0.5
 
 // required directive
 # PROGRAM UPDATE`
@@ -110,6 +110,9 @@ featProp TestKeywordCharacter.Physics.bodyRadius setTo 10
 
 featProp TestKeywordCharacter.Costume.width setTo 10
 featProp TestKeywordCharacter.Costume.height setTo 10
+
+propPush global.alphaSettingForAll
+propPop TestKeywordCharacter.alpha
 
 # PROGRAM UPDATE
 
