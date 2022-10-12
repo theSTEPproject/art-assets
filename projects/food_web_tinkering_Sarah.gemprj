@@ -1132,58 +1132,81 @@ featCall Hawk.Touches monitor 'Gopher' b2b
 featCall Hawk.Touches monitor 'Rabbit' b2b
 featCall Hawk.Touches monitor 'Reincarnator' b2b
 
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Hawk.energyLevel setMax 100
+prop Hawk.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
+addProp energyUse Number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+
+featProp Hawk.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
 
-every 1 [[
-  when Hawk touches Snake [[
+when Hawk touches Snake [[
+  every 1 [[
     ifExpr {{ Hawk.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
       featProp Hawk.Costume.glow setTo 1
       prop Snake.alive setTo false
       prop Snake.alpha setTo 0.3
+      prop Hawk.energyLevel add 10
+      prop Snake.energyLevel setTo 0
     ]]
   ]]
 
-  every 1 [[
-    when Hawk touches Robin [[
+  when Hawk touches Robin [[
+    every 1 [[
       ifExpr {{ Hawk.getProp('alive').value == true &&  Robin.getProp('alive').value == true }} [[
         featProp Hawk.Costume.glow setTo 1
         prop Robin.alive setTo false
         prop Robin.alpha setTo 0.3
+        prop Hawk.energyLevel add 10
+        prop Robin.energyLevel setTo 0
       ]]
     ]]
   ]]
 
-  every 1 [[
-    when Hawk touches Mouse [[
+  when Hawk touches Mouse [[
+    every 1 [[
       ifExpr {{ Hawk.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
         featProp Hawk.Costume.glow setTo 1
         prop Mouse.alive setTo false
         prop Mouse.alpha setTo 0.3
+        prop Hawk.energyLevel add 10
+        prop Mouse.energyLevel setTo 0
       ]]
     ]]
   ]]
 
-  every 1 [[
-    when Hawk touches Gopher [[
+  when Hawk touches Gopher [[
+    every 1 [[
       ifExpr {{ Hawk.getProp('alive').value == true &&  Gopher.getProp('alive').value == true }} [[
         featProp Hawk.Costume.glow setTo 1
         prop Gopher.alive setTo false
         prop Gopher.alpha setTo 0.3
+        prop Hawk.energyLevel add 10
+        prop Gopher.energyLevel setTo 0
       ]]
     ]]
   ]]
 
- every 1 [[
-    when Hawk touches Rabbit [[
+  when Hawk touches Rabbit [[
+    every 1 [[
       ifExpr {{ Hawk.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
         featProp Hawk.Costume.glow setTo 1
         prop Rabbit.alive setTo false
         prop Rabbit.alpha setTo 0.3
+        prop Hawk.energyLevel add 10
+        prop Rabbit.energyLevel setTo 0
       ]]
     ]]
   ]]
-  
+
   when Hawk touches Reincarnator [[
     ifExpr {{ Hawk.getProp('alive').value == false }} [[
       featProp Hawk.Costume.glow setTo 1
@@ -1196,7 +1219,43 @@ every 1 [[
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Hawk.getProp('energyLevel').value - Hawk.getProp('energyUse').value }}
+  propPop Hawk.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Hawk is
+  // sated
+  ifExpr {{ Hawk.getProp('energyLevel').value > 50 }} [[
+    featProp Hawk.Costume.currentFrame setTo 0
+    // Green
+    featProp Hawk.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Hawk.getProp('energyLevel').value < 50 }} [[
+    featProp Hawk.Costume.currentFrame setTo 1
+    // Orange
+    featProp Hawk.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Hawk.getProp('energyLevel').value < 20 }} [[
+    featProp Hawk.Costume.currentFrame setTo 1
+    // Red
+    featProp Hawk.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Hawk.getProp('energyLevel').value < 1 }} [[
+    featProp Hawk.Costume.currentFrame setTo 2
+    prop Hawk.alpha setTo 0.3
+    prop Hawk.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+
+]]`
     },
     {
       "name": "Rabbit",
@@ -1367,15 +1426,15 @@ prop y setTo 270.88`
       "id": "24",
       "label": "Clover24",
       "bpid": "Clover",
-      "initScript": `prop x setTo 57.99
-prop y setTo -158.59`
+      "initScript": `prop x setTo -138.32
+prop y setTo -290.77`
     },
     {
       "id": "25",
       "label": "Clover25",
       "bpid": "Clover",
-      "initScript": `prop x setTo 311.55
-prop y setTo -277.21`
+      "initScript": `prop x setTo 90.29
+prop y setTo -138.03`
     },
     {
       "id": "41",
