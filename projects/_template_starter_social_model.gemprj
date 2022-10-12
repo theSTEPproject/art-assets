@@ -93,23 +93,20 @@ addProp virus boolean false
 // display the meter if relevant
 // featCall agent.Graphing bindMeterTo energy
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
-every 1 [[
-  when PC firstTouches NPC [[
-    // glow to show we are interacting
-    featProp PC.Costume.glow setTo 1
+when PC firstTouches NPC [[
+  // glow to show we are interacting
+  featProp PC.Costume.glow setTo 1
 
-    // check if the NPC has the virus (or whatever else)
-    ifExpr {{ NPC.getProp('virus').value == true }} [[
-      // we are in contact with the virus, so we have it now too
-      prop PC.virus setTo true
-    ]]
+  // check if the NPC has the virus (or whatever else)
+  ifExpr {{ NPC.getProp('virus').value == true }} [[
+    // we are in contact with the virus, so we have it now too
+    prop PC.virus setTo true
   ]]
 ]]
 
-# PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 
