@@ -1,6 +1,6 @@
 {
   "id": "PnP",
-  "label": "Starter Social Model",
+  "label": "PnP Model",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -76,15 +76,16 @@ featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
 featProp Person.Costume.scale setTo 0.5
 
 // make sure we track interactions with other people
-featCall agent.Touches monitor 'Person' b2b
-featCall agent.Touches monitor 'Space' b2b
+featCall Person.Touches monitor 'Person' b2b
+featCall Person.Touches monitor 'Space' b2b
 
-
-// add any properties specific to people
-addProp personColor Number 0
-addProp personType Number 0
-addProp knowledge Number 0
-addProp money Number 0
+// 🔎 WHAT are the properties of people? 
+// 🔎 Note that many people perceive these as being ranked, rather than 
+// 🔎 simply different, and therefore that is how they are represented in the script
+addProp perceivedColor Number 0
+addProp perceivedType Number 0
+addProp perceivedKnowledge Number 0
+addProp perceivedValue Number 0
 addProp mood Number 0
 
 // display the meter if relevant
@@ -93,6 +94,7 @@ addProp mood Number 0
 # PROGRAM UPDATE
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
+  
   when Person firstTouches Person [[
     // glow to show we are interacting
     featProp Person.Costume.glow setTo 1
@@ -103,18 +105,7 @@ addProp mood Number 0
       featProp Person.Costume.glow setTo 1
 
   ]]
-
-every 1 runAtStart [[
-  // insert code here to run all the time
-  ifExpr {{ agent.getProp('virus').value == true }} [[
-    featProp agent.Graphing.text setTo '🤢'
-  ]]
-
-  ifExpr {{ agent.getProp('virus').value == false }} [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
-
-]]`
+`
     },
     {
       "name": "Space",
@@ -123,34 +114,30 @@ every 1 runAtStart [[
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
 # PROGRAM INIT
+addFeature Costume
 addFeature Physics
-addFeature Costume
 
+// Setup costume
 featProp Space.Costume.costumeName setTo 'GEN_square.json'
+prop Space.zIndex setTo -200
+
+// 🔎 WHAT are the properties of spaces? 
+// 🔎 Note that many people perceive these as being ranked, rather than 
+// 🔎 simply different, and therefore that is how they are represented in the scriptaddProp perceivedColor Number 0
+addProp perceivedType Number 0
+addProp perceivedKnowledge Number 0
+addProp perceivedValue Number 0
 
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
-    },
-    {
-      "name": "Testing",
-      "scriptText": `# BLUEPRINT Testing
-# TAG isCharControllable true
-# TAG isPozyxControllable true
-# TAG isPTrackControllable false
 
-# PROGRAM INIT
-addFeature Costume
-featProp agent.Costume.costumeName setTo 'circle.json'
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
+`
     }
   ],
   "instances": [
