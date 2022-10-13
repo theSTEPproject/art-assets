@@ -211,7 +211,7 @@ featProp Fish.Costume.scale setTo 0.4
 addProp energyType string 'consumer'
 
 // setup to track energy and begin at 1/2 way
-addProp energyLevel number 100
+addProp energyLevel number 50
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
 
@@ -468,7 +468,7 @@ when EnergyRepresentation firstTouches Algae [[
     // 🔎 Remove the energy from the representation since we are giving it to the Algae
     prop EnergyRepresentation.energyLevel setTo 0
     // 🔎 Set how much the algae now has (note that the meter started with 100, so 50 means that some is lost to heat)
-    prop Algae.energyLevel add 100
+    prop Algae.energyLevel add 50
 
     // 🔎 WHAT DOES THIS DO?
     // 🔎 We are losing 50 of the hundred as heat, so put that in the global
