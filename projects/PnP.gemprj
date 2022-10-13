@@ -1,6 +1,6 @@
 {
   "id": "PnP",
-  "label": "Starter Social Model",
+  "label": "PnP Model",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 13882323,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -51,8 +51,8 @@ prop global.visible setTo false
 # PROGRAM UPDATE`
     },
     {
-      "name": "PC",
-      "scriptText": `# BLUEPRINT PC
+      "name": "Person",
+      "scriptText": `# BLUEPRINT Person
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
@@ -65,71 +65,70 @@ prop global.visible setTo false
 
 
 # PROGRAM INIT
-// add the features we are likely to use
+// add features
 addFeature Costume
-
-// set the costume
-featProp PC.Costume.costumeName setTo 'DC_bunny_front.png'
-featProp PC.Costume.scale setTo 0.3
-
-// add other features
 addFeature Graphing
 addFeature Physics
 addFeature Touches
 
-// make sure we track interactions with the NPC
-featCall agent.Touches monitor 'NPC' b2b
+// setup the costume
+featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
+featProp Person.Costume.scale setTo 0.5
 
-// add any properties specific to the PC
+// make sure we track interactions with other people
+featCall Person.Touches monitor 'Person' b2b
+featCall Person.Touches monitor 'Space' b2b
 
-// role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
-// it's helpful to list roles here for other users to see
-// roles for this template are one, and two (they don't mean anything)
-addProp role string 'one'
-
-// virus is intended to capture the idea that people might have something (true or false) that they pass to each other ... it could be a virus, information, or something else ... to model something like money you'd want to change to a number or String
-addProp virus boolean false
+// 🔎 WHAT are the properties of people? 
+// 🔎 Note that many people perceive these as being ranked, rather than 
+// 🔎 simply different, and therefore that is how they are represented in the script
+addProp perceivedColor Number 0
+addProp perceivedType Number 0
+addProp perceivedKnowledge Number 0
+addProp perceivedValue Number 0
+addProp mood Number 0
 
 // display the meter if relevant
 // featCall agent.Graphing bindMeterTo energy
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
-every 1 [[
-  when PC firstTouches NPC [[
+  
+// TO DO
+// Update color to match color
+// report perceivedKnowledge
+// report perceivedValue
+
+  when Person firstTouches Person [[
     // glow to show we are interacting
-    featProp PC.Costume.glow setTo 1
+    featProp Person.Costume.glow setTo 1
 
-    // check if the NPC has the virus (or whatever else)
-    ifExpr {{ NPC.getProp('virus').value == true }} [[
-      // we are in contact with the virus, so we have it now too
-      prop PC.virus setTo true
-    ]]
-  ]]
-]]
+    // TO DO
+    // If it is someone else
+    // If they are same rank or higher
+    // give them some perceivedKnowledge
+    // If they are beneath you, look unhappy
+    // If they are same, neutral
 
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-
-every 1 runAtStart [[
-  // insert code here to run all the time
-  ifExpr {{ agent.getProp('virus').value == true }} [[
-    featProp agent.Graphing.text setTo '🤢'
   ]]
 
-  ifExpr {{ agent.getProp('virus').value == false }} [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
+  when Person firstTouches Space [[
+      featProp Person.Costume.glow setTo 1
 
-]]`
+    // TO DO
+    // If the space is the same rank or lower
+    // gain knowledge
+    // if it is too high, bad things happen
+
+  ]]
+`
     },
     {
-      "name": "NPC",
-      "scriptText": `# BLUEPRINT NPC
-# TAG isPozyxControllable false
+      "name": "Space",
+      "scriptText": `# BLUEPRINT Space
 # TAG isCharControllable true
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -139,61 +138,65 @@ every 1 runAtStart [[
 // ✏️ body
 
 # PROGRAM INIT
-// setup the NPC costume
 addFeature Costume
-featProp NPC.Costume.costumeName setTo 'DC_bunny_front.png'
-featProp NPC.Costume.scale setTo 0.3
-
-// add other features
-addFeature Movement
-addFeature Graphing
 addFeature Physics
-addFeature Touches
-// add any properties specific to the PC / NPC
-// role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
-// it's helpful to list roles here for other users to see
-// roles for this template are one, and two (they don't mean anything)
-addProp role string 'one'
 
-// virus is intended to capture the idea that people might have something (true or false) that they pass to each other ... it could be a virus, information, or something else ... to model something like money you'd want to change to a number or String
-addProp virus boolean false
-// display the meter if relevant
-// featCall agent.Graphing bindMeterTo energy
+// Setup costume
+featProp Space.Costume.costumeName setTo 'GEN_square.json'
+prop Space.zIndex setTo -200
 
-// Set the NPC to move if relevant (wander by default)
-featProp NPC.Movement.movementType setTo 'wander'
-featProp NPC.Movement.distance setTo 0.2
+// 🔎 WHAT are the properties of spaces? 
+// 🔎 Note that many people perceive these as being ranked, rather than 
+// 🔎 simply different, and therefore that is how they are represented in the scriptaddProp perceivedColor Number 0
+addProp perceivedType Number 0
+addProp perceivedKnowledge Number 0
+addProp perceivedValue Number 0
 
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-every 1 runAtStart [[
-  dbgOut 'START NPC virus for ' NPC.role ' : ' NPC.virus
 
-  // insert code here to run all the time
-  ifProp NPC.virus equal true [[
-    featProp agent.Graphing.text setTo '🤢'
-  ]]
+// TO DO
+// Update color to match color
+// report perceivedKnowledge
+// report perceivedValue
 
-  ifProp NPC.virus notEqual true [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
-
-  dbgOut 'END NPC virus for ' NPC.role ' : ' NPC.virus
-
-]]`
+`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "NPC One  True",
-      "bpid": "NPC",
-      "initScript": `prop x setTo 136.88
-prop y setTo 50.13
-prop virus setTo true
-prop role setTo 'one'`
+      "label": "Person 1",
+      "bpid": "Person",
+      "initScript": `prop x setTo -242.33
+prop y setTo -24.97`
+    },
+    {
+      "id": "1",
+      "label": "Person 2",
+      "bpid": "Person",
+      "initScript": `prop x setTo 187.66
+prop y setTo 48.13`
+    },
+    {
+      "id": "2",
+      "label": "Space 1",
+      "bpid": "Space",
+      "initScript": `prop x setTo -271.37
+prop y setTo -272.55`
+    },
+    {
+      "id": "3",
+      "label": "Space 2",
+      "bpid": "Space",
+      "initScript": `prop x setTo 268.93
+prop y setTo -273.32`
+    },
+    {
+      "id": "4",
+      "label": "Space 3",
+      "bpid": "Space",
+      "initScript": `prop x setTo -269.55
+prop y setTo 256.66`
     }
   ]
 }
