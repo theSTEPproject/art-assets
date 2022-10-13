@@ -1226,7 +1226,8 @@ prop y setTo 0`
       "bpid": "Timer",
       "initScript": `prop x setTo 456.93
 prop y setTo -403.87`
-    },{
+    },
+    {
       "id": "1900",
       "label": "TimerChip",
       "bpid": "ColorChip",
@@ -1235,7 +1236,22 @@ prop y setTo -388
 featCall Costume setColorize 0 0 0
 prop zIndex setTo 0
 featProp agent.Costume.width setTo 100
-featProp agent.Costume.height setTo 30\n`
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "1901",
+      "label": "GraphAlgaeEnergy1901",
+      "bpid": "GraphAlgaeEnergy",
+      "initScript": `prop x setTo 499.92
+prop y setTo 261.99`
+    },
+    {
+      "id": "1902",
+      "label": "GraphFishEnergy1902",
+      "bpid": "GraphFishEnergy",
+      "initScript": `prop x setTo 498.13
+prop y setTo 75.57`
     }
   ]
 }
