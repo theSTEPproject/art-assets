@@ -1508,11 +1508,17 @@ featCall Pesticide.Movement setRandomDirection
 addProp alive Boolean true
 
 // make sure we track interactions with the other creatures
+featCall Pesticide.Touches monitor 'Hawk' b2b
 featCall Pesticide.Touches monitor 'Snake' b2b
 featCall Pesticide.Touches monitor 'Robin' b2b
 featCall Pesticide.Touches monitor 'Mouse' b2b
 featCall Pesticide.Touches monitor 'Gopher' b2b
 featCall Pesticide.Touches monitor 'Rabbit' b2b
+featCall Pesticide.Touches monitor 'Snail' b2b
+featCall Pesticide.Touches monitor 'Caterpillar' b2b
+featCall Pesticide.Touches monitor 'Beetle' b2b
+featCall Pesticide.Touches monitor 'Snake' b2b
+featCall Pesticide.Touches monitor 'Weeds' b2b
 featCall Pesticide.Touches monitor 'Reincarnator' b2b
 
 // setup to track energy and begin at 1/2 way
@@ -1577,6 +1583,56 @@ when Pesticide touches Snake [[
         featProp Pesticide.Costume.glow setTo 1
         prop Pesticide.energyLevel sub 10
         prop Rabbit.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+  
+  when Pesticide touches Hawk [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Hawk.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Hawk.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+  
+  when Pesticide touches Snail [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Snail.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+  
+  when Pesticide touches Caterpillar [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Caterpillar.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+  
+  when Pesticide touches Beetle [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Beetle.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+  
+  when Pesticide touches Weeds [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Weeds.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Weeds.energyUse setTo 20
       ]]
     ]]
   ]]
