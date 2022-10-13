@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
+    "bgcolor": 255255204,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -95,6 +95,7 @@ featCall Sun.Costume setColorize 255 215 0
 // This makess sure the sunu is behind everything else
 prop Sun.zIndex setTo 0
 
+
 addFeature Physics
 featProp Sun.Costume.scale setTo 1
 
@@ -118,7 +119,7 @@ addProp energyType string 'sun'
 // Note: this character doesn't do anyhting - it is just for show since there is no
 // other easy way to add background art
 addFeature Costume
-featProp Sky.Costume.costumeName setTo 'background (Yellow filter).png'
+featProp Sky.Costume.costumeName setTo 'FWE_background (Yellow filter).png'
 // featCall Sky.Costume setColorize 53 81 92
 
 addFeature Physics
@@ -128,6 +129,7 @@ featProp Sky.Costume.height setTo 800
 // make sure this is always way in the back behind all
 // of the other characters
 prop Sky.zIndex setTo -100
+
 
 // required directive
 # PROGRAM INIT
@@ -144,10 +146,10 @@ prop Sky.zIndex setTo -100
 # PROGRAM DEFINE
 
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
+featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
 
 addFeature Physics
-featProp EnergyRepresentation.Costume.scale setTo 0.1
+featProp EnergyRepresentation.Costume.scale setTo 0.06
 
 // setup energy properties
 addProp energyLevel Number 0
@@ -183,7 +185,7 @@ featCall EnergyRepresentation.Touches monitor 'Hawk' c2b
 when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
-  featProp EnergyRepresentation.Costume.costumeName setTo 'sun_foodweb_energy.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
@@ -192,7 +194,7 @@ when EnergyRepresentation centerLastTouches Sun [[
   prop EnergyRepresentation.energyType setTo 'sun'
   prop EnergyRepresentation.energyLevel setTo 100
 
-  featProp EnergyRepresentation.Costume.costumeName setTo 'sun_foodweb_energy.png'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
 ]]
 
 
@@ -201,7 +203,7 @@ when EnergyRepresentation centerLastTouches Sun [[
 when EnergyRepresentation centerFirstTouches VeggieGarden [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
@@ -216,7 +218,7 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
     prop global.energyReleasedAsHeat add 50
 
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'sun to veggieGarden.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun_to_veggieGarden.png'
 
     featProp VeggieGarden.Costume.glow setTo 1
 
@@ -236,14 +238,14 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggiegarden_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
 ]]
 
@@ -252,7 +254,7 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
 when EnergyRepresentation centerFirstTouches Clover [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'clover'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
   ]]
 
   // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
@@ -267,7 +269,7 @@ when EnergyRepresentation centerFirstTouches Clover [[
     prop global.energyReleasedAsHeat add 50
 
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'sun to clover.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun to clover.png'
 
     featProp Clover.Costume.glow setTo 1
 
@@ -287,14 +289,14 @@ when EnergyRepresentation centerLastTouches Clover [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
 
   ]]
 
   // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToClover' }} [[
     prop EnergyRepresentation.energyType setTo 'clover'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'clover_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
   ]]
 ]]
 
@@ -304,7 +306,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'gopher'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_energy.png'
   ]]
 
   // when touch gopher, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
@@ -317,7 +319,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to gopher.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_gopher.png'
     featProp Gopher.Costume.glow setTo 1
   ]]
 
@@ -331,7 +333,7 @@ when EnergyRepresentation centerFirstTouches Gopher [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'clover to gopher.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_cclover_to_gopher.png'
     featProp Gopher.Costume.glow setTo 1
   ]]
 
@@ -350,14 +352,14 @@ when EnergyRepresentation centerLastTouches Gopher [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with gopher energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToGopher' || EnergyRepresentation.getProp('energyType').value == 'cloverToGopher' }} [[
     prop EnergyRepresentation.energyType setTo 'gopher'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_energy.png'
   ]]
 
 ]]
@@ -368,7 +370,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'snail'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_energy.png'
   ]]
 
   // when touch snail, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToSnail
@@ -381,7 +383,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'vaggieGarden to snail.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggieGarden_to_snail.png'
     featProp Snail.Costume.glow setTo 1
   ]]
 
@@ -395,7 +397,7 @@ when EnergyRepresentation centerFirstTouches Snail [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'clover to snail.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_to_snail.png'
     featProp Snail.Costume.glow setTo 1
   ]]
 
@@ -414,14 +416,14 @@ when EnergyRepresentation centerLastTouches Snail [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with snail energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'clover' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToSnail' || EnergyRepresentation.getProp('energyType').value == 'cloverToSnail' }} [[
     prop EnergyRepresentation.energyType setTo 'snail'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snail_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_energy.png'
   ]]
 
 ]]
@@ -432,7 +434,7 @@ when EnergyRepresentation centerFirstTouches Caterpillar [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillar'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
   ]]
 
   // when touch Caterpillar, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToCaterpillar
@@ -445,7 +447,7 @@ when EnergyRepresentation centerFirstTouches Caterpillar [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to caterpillar.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_caterpillar.png'
     featProp Caterpillar.Costume.glow setTo 1
   ]]
 
@@ -464,14 +466,14 @@ when EnergyRepresentation centerLastTouches Caterpillar [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Caterpillar energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToCaterpillar' }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillar'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'Caterpillar_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
   ]]
 
 ]]
@@ -482,7 +484,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'beetle'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
   ]]
 
   // when touch Beetle, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToBeetle
@@ -495,7 +497,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'caterpillar to beetle.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_caterpillar_to_beetle.png'
     featProp Beetle.Costume.glow setTo 1
   ]]
 
@@ -509,7 +511,7 @@ when EnergyRepresentation centerFirstTouches Beetle [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snail to beetle.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_to_beetle.png'
     featProp Beetle.Costume.glow setTo 1
   ]]
 
@@ -528,14 +530,14 @@ when EnergyRepresentation centerLastTouches Beetle [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Beetle energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillar' || EnergyRepresentation.getProp('energyType').value == 'snail' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToBeetle' || EnergyRepresentation.getProp('energyType').value == 'snailToBeetle' }} [[
     prop EnergyRepresentation.energyType setTo 'beetle'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
   ]]
 
 ]]
@@ -546,7 +548,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'mouse_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
   ]]
 
   // when touch Mouse, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToMouse
@@ -559,7 +561,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'veggieGarden to mouse.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
     featProp Mouse.Costume.glow setTo 1
   ]]
 
@@ -573,7 +575,7 @@ when EnergyRepresentation centerFirstTouches Mouse [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle to mouse.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_to_mouse.png'
     featProp Mouse.Costume.glow setTo 1
   ]]
 
@@ -592,14 +594,14 @@ when EnergyRepresentation centerLastTouches Mouse [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'mouse_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Mouse energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' || EnergyRepresentation.getProp('energyType').value == 'beetle' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'beetleToMouse' }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'mouse_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
   ]]
 
 ]]
@@ -610,7 +612,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'robin_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
   ]]
 
   // when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
@@ -623,7 +625,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'caterpillar to robin.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_caterpillar_to_robin.png'
     featProp Robin.Costume.glow setTo 1
   ]]
 
@@ -637,7 +639,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle to robin.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_to_robin.png'
     featProp Robin.Costume.glow setTo 1
   ]]
 
@@ -651,7 +653,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snail to robin.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_to_robin.png'
     featProp Robin.Costume.glow setTo 1
   ]]
 
@@ -670,14 +672,14 @@ when EnergyRepresentation centerLastTouches Robin [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'robin_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Robin energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillar' || EnergyRepresentation.getProp('energyType').value == 'beetle' || EnergyRepresentation.getProp('energyType').value == 'snail' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'beetleToRobin' || EnergyRepresentation.getProp('energyType').value == 'snailToRobin' }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'robin_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
   ]]
 
 ]]
@@ -688,7 +690,7 @@ when EnergyRepresentation centerFirstTouches Snake [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'snake'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snake_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
   ]]
 
   // when touch Snake, and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToSnake
@@ -701,7 +703,7 @@ when EnergyRepresentation centerFirstTouches Snake [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'beetle to snake.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_to_snake.png'
     featProp Snake.Costume.glow setTo 1
   ]]
 
@@ -715,7 +717,7 @@ when EnergyRepresentation centerFirstTouches Snake [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'mouse to snake.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_snake.png'
     featProp Snake.Costume.glow setTo 1
   ]]
 
@@ -734,14 +736,14 @@ when EnergyRepresentation centerLastTouches Snake [[
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snake_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Snake energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'beetle' || EnergyRepresentation.getProp('energyType').value == 'mouse' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'beetleToSnake' || EnergyRepresentation.getProp('energyType').value == 'mouseToSnake' }} [[
     prop EnergyRepresentation.energyType setTo 'snake'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snake_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
   ]]
 
 ]]
@@ -752,7 +754,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
     prop EnergyRepresentation.energyType setTo 'hawk'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'Hawk_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Hawk_energy.png'
   ]]
 
   // when touch Hawk, and energy type is from gopher and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
@@ -765,7 +767,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'gopher to hawk.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
@@ -779,7 +781,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'mouse to hawk.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
@@ -793,7 +795,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'robin to hawk.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
@@ -807,7 +809,7 @@ when EnergyRepresentation centerFirstTouches Hawk [[
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'snake to hawk.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
@@ -825,14 +827,14 @@ when EnergyRepresentation centerLastTouches Hawk [[
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
-    featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
 
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with Hawk energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'hawk' || EnergyRepresentation.getProp('energyType').value == 'gopher' || EnergyRepresentation.getProp('energyType').value == 'mouse' || EnergyRepresentation.getProp('energyType').value == 'robin' || EnergyRepresentation.getProp('energyType').value == 'snake' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'hawk' || EnergyRepresentation.getProp('energyType').value == 'gopherToHawk' || EnergyRepresentation.getProp('energyType').value == 'mouseToHawk' || EnergyRepresentation.getProp('energyType').value == 'robinToHawk' || EnergyRepresentation.getProp('energyType').value == 'snakeToHawk' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'foodweb_empty_energy.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
   ]]
 
   // avoid getting too small
@@ -1056,10 +1058,10 @@ featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 // how much energy it has
 
 addFeature Costume
-featProp VeggieGarden.Costume.costumeName setTo 'veggiegarden.png'
+featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
 
 addFeature Physics
-featProp VeggieGarden.Costume.scale setTo 0.5
+featProp VeggieGarden.Costume.scale setTo 0.4
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1136,10 +1138,10 @@ every 1 runAtStart [[
 // how much energy it has
 
 addFeature Costume
-featProp Clover.Costume.costumeName setTo 'clover.png'
+featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
 
 addFeature Physics
-featProp Clover.Costume.scale setTo 0.2
+featProp Clover.Costume.scale setTo 0.15
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1217,10 +1219,10 @@ every 1 runAtStart [[
 
 
 addFeature Costume
-featProp Gopher.Costume.costumeName setTo 'gopher.png'
+featProp Gopher.Costume.costumeName setTo 'FWE_gopher.png'
 
 addFeature Physics
-featProp Gopher.Costume.scale setTo 0.25
+featProp Gopher.Costume.scale setTo 0.15
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1299,10 +1301,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Snail.Costume.costumeName setTo 'snail.png'
+featProp Snail.Costume.costumeName setTo 'FWE_snail.png'
 
 addFeature Physics
-featProp Snail.Costume.scale setTo 0.5
+featProp Snail.Costume.scale setTo 0.35
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1382,10 +1384,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Caterpillar.Costume.costumeName setTo 'caterpillar.png'
+featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 
 addFeature Physics
-featProp Caterpillar.Costume.scale setTo 0.25
+featProp Caterpillar.Costume.scale setTo 0.15
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1465,10 +1467,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Beetle.Costume.costumeName setTo 'beetle.png'
+featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
 
 addFeature Physics
-featProp Beetle.Costume.scale setTo 0.5
+featProp Beetle.Costume.scale setTo 0.35
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1547,10 +1549,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Mouse.Costume.costumeName setTo 'mouse.png'
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 
 addFeature Physics
-featProp Mouse.Costume.scale setTo 0.5
+featProp Mouse.Costume.scale setTo 0.35
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1629,10 +1631,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Robin.Costume.costumeName setTo 'food-web_robin.png'
+featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 
 addFeature Physics
-featProp Robin.Costume.scale setTo 0.25
+featProp Robin.Costume.scale setTo 0.15
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1711,10 +1713,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Snake.Costume.costumeName setTo 'snake.png'
+featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
 
 addFeature Physics
-featProp Snake.Costume.scale setTo 0.4
+featProp Snake.Costume.scale setTo 0.25
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1793,10 +1795,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Hawk.Costume.costumeName setTo 'Hawk_foodweb.png'
+featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 
 addFeature Physics
-featProp Hawk.Costume.scale setTo 0.15
+featProp Hawk.Costume.scale setTo 0.07
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1894,57 +1896,57 @@ prop y setTo 360.68`
       "id": "9",
       "label": "VeggieGarden9",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -227.2
-prop y setTo 80.33`
+      "initScript": `prop x setTo -234.94
+prop y setTo 259.67`
     },
     {
       "id": "10",
       "label": "Clover10",
       "bpid": "Clover",
-      "initScript": `prop x setTo 304.83
-prop y setTo 130.57`
+      "initScript": `prop x setTo 340.1
+prop y setTo 126.81`
     },
     {
       "id": "11",
       "label": "Caterpillar11",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo 184.97
-prop y setTo -33.96`
+      "initScript": `prop x setTo 191
+prop y setTo -40.51`
     },
     {
       "id": "13",
       "label": "Gopher13",
       "bpid": "Gopher",
-      "initScript": `prop x setTo 345.24
-prop y setTo -228.67`
+      "initScript": `prop x setTo 352.28
+prop y setTo -203.4`
     },
     {
       "id": "14",
       "label": "Snail14",
       "bpid": "Snail",
-      "initScript": `prop x setTo -249.26
-prop y setTo -117.15`
+      "initScript": `prop x setTo -318.32
+prop y setTo -161.05`
     },
     {
       "id": "15",
       "label": "Beetle15",
       "bpid": "Beetle",
-      "initScript": `prop x setTo 147.99
-prop y setTo 269.12`
+      "initScript": `prop x setTo -5.25
+prop y setTo -178.21`
     },
     {
       "id": "16",
       "label": "Mouse16",
       "bpid": "Mouse",
-      "initScript": `prop x setTo -227.61
-prop y setTo 286.64`
+      "initScript": `prop x setTo -281.62
+prop y setTo 72.55`
     },
     {
       "id": "17",
       "label": "Robin17",
       "bpid": "Robin",
-      "initScript": `prop x setTo -13.96
-prop y setTo -196.54`
+      "initScript": `prop x setTo 181.25
+prop y setTo 307.22`
     },
     {
       "id": "18",
@@ -1957,8 +1959,8 @@ prop y setTo 96.28`
       "id": "19",
       "label": "Hawk19",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 146.09
-prop y setTo -303.51`
+      "initScript": `prop x setTo 175.65
+prop y setTo -342.68`
     }
   ]
 }
