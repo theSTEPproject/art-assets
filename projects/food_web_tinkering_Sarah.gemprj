@@ -138,7 +138,7 @@ when Mouse touches VeggieGarden [[
       "scriptText": `# BLUEPRINT Snake
 # TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -261,8 +261,8 @@ featProp agent.Costume.scale setTo 0.5
     {
       "name": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -298,7 +298,7 @@ featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
       "name": "VeggieGarden",
       "scriptText": `# BLUEPRINT VeggieGarden
 # TAG isPozyxControllable false
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -393,7 +393,7 @@ every 10 [[
       "name": "Clover",
       "scriptText": `# BLUEPRINT Clover
 # TAG isPozyxControllable false
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -497,9 +497,9 @@ every 10 [[
     {
       "name": "Snail",
       "scriptText": `# BLUEPRINT Snail
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPTrackControllable false
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -732,9 +732,9 @@ when Gopher touches VeggieGarden [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPTrackControllable false
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -845,13 +845,14 @@ when Caterpillar touches VeggieGarden [[
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-// add the Caterpillar we are likely to use
+
 addFeature Movement
 addFeature Costume
 addFeature Cursor
 
 // set the costume
 featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
+
 
 // add other features
 addFeature Physics
@@ -962,9 +963,9 @@ when Beetle touches Caterpillar [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
-# TAG isPTrackControllable false
+# TAG isPTrackControllable true
 
 # PROGRAM INIT
 // add the Caterpillar we are likely to use
@@ -1381,13 +1382,15 @@ when Rabbit touches VeggieGarden [[
       "scriptText": `# BLUEPRINT global
 # PROGRAM INIT
 addFeature Population
-prop global.visible setTo false`
+prop global.visible setTo false
+addProp alphaSettingForAll number 0.5
+`
     },
     {
       "name": "Weeds",
       "scriptText": `# BLUEPRINT Weeds
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
