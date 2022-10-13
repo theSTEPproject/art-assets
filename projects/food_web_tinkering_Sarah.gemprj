@@ -39,7 +39,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Mouse.Costume.costumeName setTo 'mouse.png'
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 
 // add other features
 addFeature Physics
@@ -147,7 +147,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Snake.Costume.costumeName setTo 'snake.png'
+featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
 
 // add other features
 addFeature Physics
@@ -308,7 +308,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp VeggieGarden.Costume.costumeName setTo 'veggiegarden.png'
+featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
 
 // add other features
 addFeature Physics
@@ -403,7 +403,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Clover.Costume.costumeName setTo 'clover.png'
+featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
 
 // add other features
 addFeature Physics
@@ -508,7 +508,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Snail.Costume.costumeName setTo 'snail.png'
+featProp Snail.Costume.costumeName setTo 'FWE_snail.png'
 
 // add other features
 addFeature Physics
@@ -626,7 +626,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Gopher.Costume.costumeName setTo 'gopher.png'
+featProp Gopher.Costume.costumeName setTo 'FWE_gopher.png'
 
 // add other features
 addFeature Physics
@@ -743,7 +743,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Caterpillar.Costume.costumeName setTo 'caterpillar.png'
+featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 
 // add other features
 addFeature Physics
@@ -851,7 +851,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Beetle.Costume.costumeName setTo 'beetle.png'
+featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
 
 // add other features
 addFeature Physics
@@ -973,7 +973,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Robin.Costume.costumeName setTo 'food-web_robin.png'
+featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 
 // add other features
 addFeature Physics
@@ -1109,7 +1109,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Hawk.Costume.costumeName setTo 'Hawk_foodweb.png'
+featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 
 // add other features
 addFeature Physics
@@ -1382,6 +1382,254 @@ when Rabbit touches VeggieGarden [[
 # PROGRAM INIT
 addFeature Population
 prop global.visible setTo false`
+    },
+    {
+      "name": "Weeds",
+      "scriptText": `# BLUEPRINT Weeds
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Weeds.Costume.costumeName setTo 'weeds.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Weeds.Costume.scale setTo 0.1
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Weeds.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel number 75
+prop Weeds.energyLevel setMax 100
+prop Weeds.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Weeds lose energy faster (or slower)
+addProp energyUse number 5
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Weeds.Graphing.meterProp setTo 'energyLevel'
+
+featProp Weeds.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Weeds.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Weeds.getProp('energyLevel').value - Weeds.getProp('energyUse').value }}
+    propPop Weeds.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the Weeds is
+  // set Weeds energy meter color
+  // doing great
+  ifExpr {{ Weeds.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Weeds.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Weeds.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Weeds.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Weeds.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Weeds.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ Weeds.getProp('energyLevel').value < 1 }} [[
+      featProp Weeds.Costume.currentFrame setTo 2
+      prop Weeds.alpha setTo 0.3
+      prop Weeds.alive setTo false
+    ]]
+
+    // avoid getting too small
+    exprPush {{ 0.1 }}
+    featPropPop Weeds.Costume.scale
+
+  ]]
+]]
+every 10 [[
+  ifProp Weeds.energyLevel lessThan 1 [[
+    featProp Weeds.Costume.glow setTo 1
+    prop Weeds.alpha setTo 1
+    prop Weeds.energyLevel setTo 55
+    prop Weeds.alive setTo true
+  ]]
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Pesticide",
+      "scriptText": `# BLUEPRINT Pesticide
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Pesticide.Costume.costumeName setTo 'pesticide.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Pesticide.Costume.scale setTo 0.15
+
+featProp Pesticide.Movement.compassDirection setTo 'west'
+featProp Pesticide.Movement.movementType setTo 'wander'
+featProp Pesticide.Movement.distance setTo 5
+featCall Pesticide.Movement setRandomDirection
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Pesticide.Touches monitor 'Snake' b2b
+featCall Pesticide.Touches monitor 'Robin' b2b
+featCall Pesticide.Touches monitor 'Mouse' b2b
+featCall Pesticide.Touches monitor 'Gopher' b2b
+featCall Pesticide.Touches monitor 'Rabbit' b2b
+featCall Pesticide.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 100
+prop Pesticide.energyLevel setMax 100
+prop Pesticide.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Pesticide lose energy faster (or slower)
+addProp energyUse Number 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Pesticide.Graphing.meterProp setTo 'energyLevel'
+
+featProp Pesticide.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+when Pesticide touches Snake [[
+  every 1 [[
+    ifExpr {{ Pesticide.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
+      featProp Pesticide.Costume.glow setTo 1
+      prop Snake.energyUse setTo 20
+      prop Pesticide.energyLevel sub 10
+
+    ]]
+  ]]
+
+  when Pesticide touches Robin [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Robin.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Robin.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+
+  when Pesticide touches Mouse [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Mouse.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+
+  when Pesticide touches Gopher [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Gopher.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Gopher.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+
+  when Pesticide touches Rabbit [[
+    every 1 [[
+      ifExpr {{ Pesticide.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
+        featProp Pesticide.Costume.glow setTo 1
+        prop Pesticide.energyLevel sub 10
+        prop Rabbit.energyUse setTo 20
+      ]]
+    ]]
+  ]]
+
+  when Pesticide touches Reincarnator [[
+    ifExpr {{ Pesticide.getProp('alive').value == false }} [[
+      featProp Pesticide.Costume.glow setTo 1
+      prop Pesticide.alive setTo true
+      prop Pesticide.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Pesticide.getProp('energyLevel').value - Pesticide.getProp('energyUse').value }}
+  propPop Pesticide.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Pesticide is
+  // sated
+  ifExpr {{ Pesticide.getProp('energyLevel').value > 50 }} [[
+    featProp Pesticide.Costume.currentFrame setTo 0
+    // Green
+    featProp Pesticide.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Pesticide.getProp('energyLevel').value < 50 }} [[
+    featProp Pesticide.Costume.currentFrame setTo 1
+    // Orange
+    featProp Pesticide.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Pesticide.getProp('energyLevel').value < 20 }} [[
+    featProp Pesticide.Costume.currentFrame setTo 1
+    // Red
+    featProp Pesticide.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Pesticide.getProp('energyLevel').value < 1 }} [[
+    featProp Pesticide.Costume.currentFrame setTo 2
+    prop Pesticide.alpha setTo 0.3
+    prop Pesticide.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Pesticide.Graphing.meterProp setTo 'energyLevel'
+
+]]`
     }
   ],
   "instances": [
@@ -1503,6 +1751,27 @@ prop y setTo -59.92`
       "bpid": "Robin",
       "initScript": `prop x setTo -30
 prop y setTo -48`
+    },
+    {
+      "id": "63",
+      "label": "Snake63",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -303.24
+prop y setTo 41.62`
+    },
+    {
+      "id": "64",
+      "label": "Weeds64",
+      "bpid": "Weeds",
+      "initScript": `prop x setTo -129
+prop y setTo 169.53`
+    },
+    {
+      "id": "65",
+      "label": "Weeds65",
+      "bpid": "Weeds",
+      "initScript": `prop x setTo 227.95
+prop y setTo 182.49`
     }
   ]
 }
