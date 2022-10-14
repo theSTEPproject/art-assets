@@ -251,7 +251,7 @@ addFeature Physics
 
 featProp Reincarnator.Costume.costumeName setTo 'square.json'
 
-featProp agent.Costume.scale setTo 0.5
+featProp agent.Costume.scale setTo 0.4
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
@@ -853,7 +853,6 @@ addFeature Cursor
 // set the costume
 featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
 
-
 // add other features
 addFeature Physics
 addFeature Touches
@@ -888,6 +887,47 @@ featProp Beetle.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
 every 1 runAtStart [[
+  when Beetle touches Reincarnator [[
+    ifExpr {{ Beetle.getProp('alive').value == 1 }} [[
+      featProp Beetle.Costume.glow setTo 1
+      prop Beetle.alive setTo true
+      prop Beetle.alpha setTo 1
+      prop Beetle.energyLevel setTo 50
+    ]]
+  ]]
+]]
+
+when Beetle touches Caterpillar [[
+  every 1 [[
+    ifExpr {{ Beetle.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
+      featProp Beetle.Costume.glow setTo 1
+      prop Beetle.energyLevel add 10
+      prop Caterpillar.alive setTo false
+      prop Caterpillar.alpha setTo 0.3
+      prop Caterpillar.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Beetle touches Snail [[
+  every 1 [[
+    ifExpr {{ Beetle.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
+      featProp Beetle.Costume.glow setTo 1
+      prop Snail.alive setTo false
+      prop Snail.alpha setTo 0.3
+      prop Beetle.energyLevel add 10
+      prop Snail.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
 
   // foodLevel goes down every n seconds
   exprPush {{ Beetle.getProp('energyLevel').value - Beetle.getProp('energyUse').value }}
@@ -917,48 +957,13 @@ every 1 runAtStart [[
     featProp Beetle.Costume.currentFrame setTo 2
     prop Beetle.alpha setTo 0.3
     prop Beetle.isInert setTo true
+    prop Beetle.alive setTo false
   ]]
 
   // set meter to mirror energyLevel
   featProp Beetle.Graphing.meterProp setTo 'energyLevel'
 
-]]
-when Beetle touches Caterpillar [[
-  every 1 [[
-    ifExpr {{ Beetle.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
-      featProp Beetle.Costume.glow setTo 1
-      prop Beetle.energyLevel add 10
-      prop Caterpillar.alive setTo false
-      prop Caterpillar.alpha setTo 0.3
-      prop Caterpillar.energyLevel setTo 0
-    ]]
-  ]]
-
-  when Beetle touches Snail [[
-    every 1 [[
-      ifExpr {{ Beetle.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
-        featProp Beetle.Costume.glow setTo 1
-        prop Snail.alive setTo false
-        prop Snail.alpha setTo 0.3
-        prop Beetle.energyLevel add 10
-        prop Snail.energyLevel setTo 0
-      ]]
-    ]]
-  ]]
-
-  when Beetle touches Reincarnator [[
-    ifExpr {{ Beetle.getProp('alive').value == false }} [[
-      featProp Beetle.Costume.glow setTo 1
-      prop Beetle.alive setTo true
-      prop Beetle.alpha setTo 1
-    ]]
-  ]]
-
-]]
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+]]`
     },
     {
       "name": "Robin",
@@ -1836,11 +1841,11 @@ prop y setTo 169.53`
 prop y setTo 182.49`
     },
     {
-      "id": "66",
-      "label": "Reincarnator66",
+      "id": "68",
+      "label": "Reincarnator68",
       "bpid": "Reincarnator",
-      "initScript": `prop x setTo 358.68
-prop y setTo -342.51`
+      "initScript": `prop x setTo 341.48
+prop y setTo -325.63`
     }
   ]
 }

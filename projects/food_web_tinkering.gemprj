@@ -774,8 +774,36 @@ prop y setTo 216.34`
       "label": "ParkRanger1",
       "bpid": "ParkRanger",
       "initScript": ` 
-prop x setTo 154.48
-prop y setTo -281.29`
+prop x setTo 200.73
+prop y setTo -267.58`
+    },
+    {
+      "id": "17",
+      "label": "Reincarnator17",
+      "bpid": "Reincarnator",
+      "initScript": `prop x setTo 436.41
+prop y setTo -195.71`
+    },
+    {
+      "id": "18",
+      "label": "Goat18",
+      "bpid": "Goat",
+      "initScript": `prop x setTo 194.34
+prop y setTo 57.27`
+    },
+    {
+      "id": "19",
+      "label": "Jackal19",
+      "bpid": "Jackal",
+      "initScript": `prop x setTo -144.97
+prop y setTo -152.79`
+    },
+    {
+      "id": "20",
+      "label": "Kite20",
+      "bpid": "Kite",
+      "initScript": `prop x setTo -192.90
+prop y setTo 47.05`
     }
   ]
 }
