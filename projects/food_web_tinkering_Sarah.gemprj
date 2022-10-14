@@ -64,7 +64,7 @@ prop Mouse.energyLevel setMax 100
 prop Mouse.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Mouse lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -167,7 +167,7 @@ prop Snake.energyLevel setMax 100
 prop Snake.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -327,7 +327,7 @@ prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 5
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -422,7 +422,7 @@ prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -534,7 +534,7 @@ prop Snail.energyLevel setMax 100
 prop Snail.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Snail lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -652,7 +652,7 @@ prop Gopher.energyLevel setMax 100
 prop Gopher.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Gopher lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -768,7 +768,7 @@ prop Caterpillar.energyLevel setMax 100
 prop Caterpillar.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Caterpillar lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -878,7 +878,7 @@ prop Beetle.energyLevel setMax 100
 prop Beetle.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Beetle lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1001,7 +1001,7 @@ prop Robin.energyLevel setMax 100
 prop Robin.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Robin lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1046,11 +1046,14 @@ when Robin touches Caterpillar [[
   ]]
 
   when Robin touches Reincarnator [[
+    every 1 [[
     ifExpr {{ Robin.getProp('alive').value == false }} [[
       featProp Robin.Costume.glow setTo 1
       prop Robin.alive setTo true
       prop Robin.alpha setTo 1
+      prop Robin.energyLevel setTo 50
     ]]
+  ]]
   ]]
 
 ]]
@@ -1139,7 +1142,7 @@ prop Hawk.energyLevel setMax 100
 prop Hawk.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1298,7 +1301,7 @@ prop Rabbit.energyLevel setMax 100
 prop Rabbit.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Rabbit lose energy faster (or slower)
-addProp energyUse Number 5
+addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1419,7 +1422,7 @@ prop Weeds.energyLevel setMax 100
 prop Weeds.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Weeds lose energy faster (or slower)
-addProp energyUse number 5
+addProp energyUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1831,6 +1834,13 @@ prop y setTo 169.53`
       "bpid": "Weeds",
       "initScript": `prop x setTo 227.95
 prop y setTo 182.49`
+    },
+    {
+      "id": "66",
+      "label": "Reincarnator66",
+      "bpid": "Reincarnator",
+      "initScript": `prop x setTo 358.68
+prop y setTo -342.51`
     }
   ]
 }
