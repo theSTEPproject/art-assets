@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 931,
+    "bgcolor": 6604847,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -269,7 +269,8 @@ featProp agent.Costume.scale setTo 0.4
 addFeature Costume
 featProp Background.Costume.costumeName setTo 'food-web_background1.png'
 featProp Background.Costume.size setTo 800
-
+propPush global.alphaSettingForAll
+propPop Background.alpha
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
@@ -866,6 +867,7 @@ featProp Beetle.Movement.targetY setMax 0.7
 
 addProp alive Boolean true
 
+
 // make sure we track interactions with the other creatures
 featCall Beetle.Touches monitor 'Caterpillar' b2b
 featCall Beetle.Touches monitor 'Snail' b2b
@@ -956,8 +958,8 @@ every 1 runAtStart [[
   ifExpr {{ Beetle.getProp('energyLevel').value < 1 }} [[
     featProp Beetle.Costume.currentFrame setTo 2
     prop Beetle.alpha setTo 0.3
-    prop Beetle.isInert setTo true
     prop Beetle.alive setTo false
+    featProp Beetle.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
