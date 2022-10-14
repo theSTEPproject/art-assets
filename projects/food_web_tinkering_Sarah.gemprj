@@ -155,6 +155,11 @@ addFeature Touches
 
 featProp Snake.Costume.scale setTo 0.2
 
+featProp Snake.Movement.movementType setTo 'wander'
+featProp Snake.Movement.compassDirection setTo 'S'
+featProp Snake.Movement.distance setTo 3
+featProp Snake.Movement.targetY setMax 0.7
+
 addProp alive Boolean true
 
 // make sure we track interactions with the other creatures
@@ -192,6 +197,7 @@ when Snake touches Mouse [[
       featProp Snake.Costume.glow setTo 1
       prop Snake.alive setTo true
       prop Snake.alpha setTo 1
+      prop Snake.energyLevel setTo 55
     ]]
   ]]
 
@@ -229,8 +235,8 @@ every 1 runAtStart [[
   ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
     featProp Snake.Costume.currentFrame setTo 2
     prop Snake.alpha setTo 0.3
-    prop Snake.isInert setTo true
     prop Snake.alive setTo false
+    featProp Snake.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
@@ -690,7 +696,7 @@ every 1 runAtStart [[
   ifExpr {{ Gopher.getProp('energyLevel').value < 1 }} [[
     featProp Gopher.Costume.currentFrame setTo 2
     prop Gopher.alpha setTo 0.3
-    prop Gopher.isInert setTo true
+    featProp Gopher.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
@@ -721,6 +727,7 @@ when Gopher touches VeggieGarden [[
       featProp Gopher.Costume.glow setTo 1
       prop Gopher.alive setTo true
       prop Gopher.alpha setTo 1
+      prop Gopher.energyLevel setTo 50
     ]]
   ]]
 
@@ -807,7 +814,7 @@ every 1 runAtStart [[
   ifExpr {{ Caterpillar.getProp('energyLevel').value < 1 }} [[
     featProp Caterpillar.Costume.currentFrame setTo 2
     prop Caterpillar.alpha setTo 0.3
-    prop Caterpillar.isInert setTo true
+    featProp Caterpillar.Movement.movementType setTo 'string'
   ]]
 
   // set meter to mirror energyLevel
@@ -829,6 +836,7 @@ when Caterpillar touches VeggieGarden [[
       featProp Caterpillar.Costume.glow setTo 1
       prop Caterpillar.alive setTo true
       prop Caterpillar.alpha setTo 1
+      prop Caterpillar.energyLevel setTo 50
     ]]
   ]]
 
@@ -1054,13 +1062,13 @@ when Robin touches Caterpillar [[
 
   when Robin touches Reincarnator [[
     every 1 [[
-    ifExpr {{ Robin.getProp('alive').value == false }} [[
-      featProp Robin.Costume.glow setTo 1
-      prop Robin.alive setTo true
-      prop Robin.alpha setTo 1
-      prop Robin.energyLevel setTo 50
+      ifExpr {{ Robin.getProp('alive').value == false }} [[
+        featProp Robin.Costume.glow setTo 1
+        prop Robin.alive setTo true
+        prop Robin.alpha setTo 1
+        prop Robin.energyLevel setTo 50
+      ]]
     ]]
-  ]]
   ]]
 
 ]]
@@ -1097,8 +1105,8 @@ every 1 runAtStart [[
   ifExpr {{ Robin.getProp('energyLevel').value < 1 }} [[
     featProp Robin.Costume.currentFrame setTo 2
     prop Robin.alpha setTo 0.3
-    prop Robin.isInert setTo true
     prop Robin.alive setTo false
+    featProp Robin.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
@@ -1149,7 +1157,7 @@ prop Hawk.energyLevel setMax 100
 prop Hawk.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse Number 2
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1346,7 +1354,7 @@ every 1 runAtStart [[
   ifExpr {{ Rabbit.getProp('energyLevel').value < 1 }} [[
     featProp Rabbit.Costume.currentFrame setTo 2
     prop Rabbit.alpha setTo 0.3
-    prop Rabbit.isInert setTo true
+    featProp Rabbit.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
@@ -1377,6 +1385,7 @@ when Rabbit touches VeggieGarden [[
       featProp Rabbit.Costume.glow setTo 1
       prop Rabbit.alive setTo true
       prop Rabbit.alpha setTo 1
+      prop Rabbit.energyLevel setTo 50
     ]]
   ]]
 
@@ -1848,6 +1857,20 @@ prop y setTo 182.49`
       "bpid": "Reincarnator",
       "initScript": `prop x setTo 341.48
 prop y setTo -325.63`
+    },
+    {
+      "id": "69",
+      "label": "Caterpillar69",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo 130.37
+prop y setTo 209.94`
+    },
+    {
+      "id": "70",
+      "label": "Snail70",
+      "bpid": "Snail",
+      "initScript": `prop x setTo -341.15
+prop y setTo 202.97`
     }
   ]
 }
