@@ -888,7 +888,7 @@ featProp Beetle.Graphing.meterColor setTo 65280
 # PROGRAM EVENT
 every 1 runAtStart [[
   when Beetle touches Reincarnator [[
-    ifExpr {{ Beetle.getProp('alive').value == 1 }} [[
+    ifExpr {{ Beetle.getProp('alive').value == false }} [[
       featProp Beetle.Costume.glow setTo 1
       prop Beetle.alive setTo true
       prop Beetle.alpha setTo 1
