@@ -1852,13 +1852,6 @@ prop y setTo 169.53`
 prop y setTo 182.49`
     },
     {
-      "id": "68",
-      "label": "Reincarnator68",
-      "bpid": "Reincarnator",
-      "initScript": `prop x setTo 341.48
-prop y setTo -325.63`
-    },
-    {
       "id": "69",
       "label": "Caterpillar69",
       "bpid": "Caterpillar",
