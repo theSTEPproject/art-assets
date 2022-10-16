@@ -1504,7 +1504,7 @@ every 10 [[
       "name": "Pesticide",
       "scriptText": `# BLUEPRINT Pesticide
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1608,7 +1608,7 @@ when Pesticide touches Snake [[
       ]]
     ]]
   ]]
-  
+
   when Pesticide touches Hawk [[
     every 1 [[
       ifExpr {{ Pesticide.getProp('alive').value == true &&  Hawk.getProp('alive').value == true }} [[
@@ -1618,7 +1618,7 @@ when Pesticide touches Snake [[
       ]]
     ]]
   ]]
-  
+
   when Pesticide touches Snail [[
     every 1 [[
       ifExpr {{ Pesticide.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
@@ -1628,7 +1628,7 @@ when Pesticide touches Snake [[
       ]]
     ]]
   ]]
-  
+
   when Pesticide touches Caterpillar [[
     every 1 [[
       ifExpr {{ Pesticide.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
@@ -1638,7 +1638,7 @@ when Pesticide touches Snake [[
       ]]
     ]]
   ]]
-  
+
   when Pesticide touches Beetle [[
     every 1 [[
       ifExpr {{ Pesticide.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
@@ -1648,7 +1648,7 @@ when Pesticide touches Snake [[
       ]]
     ]]
   ]]
-  
+
   when Pesticide touches Weeds [[
     every 1 [[
       ifExpr {{ Pesticide.getProp('alive').value == true &&  Weeds.getProp('alive').value == true }} [[
