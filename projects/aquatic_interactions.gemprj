@@ -458,7 +458,7 @@ prop Sunbeam.y setTo -180
 // it comes back on from the other side representing the next day though we don't bother shwwing night
 # PROGRAM UPDATE
 
-// move the sun every 1/2 second
+// move the sun every 1/10 second
 every 0.1 runAtStart [[
 
   // ✏️ LETS CHANGE THIS the sunbeams speed
