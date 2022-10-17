@@ -127,22 +127,15 @@ every 1 runAtStart [[
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
 
-// 🔎 WHAT DOES THIS CHARACTER DO?
-// 🔎 This is the Fish character
-// 🔎 In this ecosystem model, we have producers and consumers that interact
-// 🔎 The Fish are consumers, eating the Algae, which are producers
-// 🔎 See the Algae script for details of how it produces energy via the Sunbeams
+// 🔎 WHAT IS A FISH?
+// 🔎 FISH are CONSUMERS who EAT ALGAE to make FISH ENERGY through DIGESTION
 
-// 🔎 WHAT DO THESE MEAN?
-// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
-// 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is converted to energy through digestion
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
 
 
 # PROGRAM INIT
@@ -152,36 +145,42 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 
+
 // Set the fish artwork and make it 1/2 size since it is really big
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
+
+
+// 🔎 WHAT SIZE IS THE FISH?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER FISH
 featProp Fish.Costume.scale setTo 0.5
 
-// ✏️ LETS CHANGE how much energy the fish start with
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do FISH START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of energy an algae can have?
 prop Fish.energyLevel setMax 100
 prop Fish.energyLevel setMin 0
+
 
 // The fish is a consumer because it eats other organisms (the algae, which are producers)
 addProp energyType string 'consumer'
 addProp consumerType string 'herbivore'
-
 // Check when the fish touches an algae so it can eat it
 featCall Fish.Touches monitor 'Algae' b2b
-
 // Set the meter to show the energyLevel and update whenever the energyLevel does
 featProp Fish.Graphing.meterProp setTo 'energyLevel'
-
-
 # PROGRAM UPDATE
 onEvent Start [[
-
   // This tells any fish that are controlled by the computer instead of by a student
   // to wander around randomly, and eat any algae that they bump into
   featProp Fish.Movement.movementType setTo 'wander'
-
   // This is the speed the fish moves at when it is not character controlled
   featProp Fish.Movement.distance setTo 2
-
 ]]
 // This script flips the artowkr depending on whether the fish is moving left or right
 ifFeatProp Fish.Movement.compassDirection equal 'E' [[
@@ -190,27 +189,28 @@ ifFeatProp Fish.Movement.compassDirection equal 'E' [[
 ifFeatProp Fish.Movement.compassDirection equal 'W' [[
   featProp Fish.Costume.flipX setTo true
 ]]
-
 // whenever the fish is touching an algae
 when Fish touches Algae [[
   // do the rest of this once every second (instead of 30 times a second which is too much)
   every 1 runAtStart [[
 
-    // 🔎 WHAT DOES THIS DO?
-    // 🔎 This is the script that has the fish eat a little algae at a time.
 
-    // ✏️ LETS CHANGE THIS: to make the Algae lose more or less energy, and the fish gain more or less.
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do ALAGE LOSE when eaten?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => LOSE MORE ENERGY
     prop Algae.energyLevel sub 10
-    // 🔎 the fish ate the algae which took matter and energy away from the algae
 
-    // ✏️ LETS CHANGE THIS: We might also want to change how much energy the fish gets after eating some algae
-    prop Fish.energyLevel add 10
-    // 🔎 because the fish digested the algae it gained energy
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do FISH GAIN when eating?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => GAIN MORE ENERGY  
+\tprop Fish.energyLevel add 10
 
 
     // finally, make the fish glow so tha we know something is happening
     featProp Fish.Costume.glow setTo 4
-
     // if the algae is out of energy, it is dead so make it
     // faded and inert which means it won't interact with other things
     // also set it to be really small so we know it is just the leftover bits
@@ -219,43 +219,40 @@ when Fish touches Algae [[
       // featProp Algae.Costume.scale setTo 0.1
       prop Algae.isInert setTo true
     ]]
-
   ]]
 ]]
-
 // When a fish moves off of algae, it will not glow anymore and will stop eating
 when Fish lastTouches Algae [[
   featProp Fish.Costume.glow setTo 0
 ]]
-
-
 every 1 runAtStart [[
-  // ✏️ LETS CHANGE THIS! Every second, the Fish use some energy to stay alive.
-  // ✏️ If this number is higher, they will lose energy faster
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do FISH LOSE when swimming?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => LOSE MORE ENERGY
   prop Fish.energyLevel sub 3
 
-  // 🔎 WHAT DOES THIS DO?
-  // 🔎 This script changes the color of the Fish's meter depending on how much energy it has
-  // ✏️ We can change the numbers if we want the colors to appear at different levels
 
-  // 🔎 The fish is feeling good, so make the meter grreen if the fish has over 50 energy (out of 100)
+  // WHAT DOES THIS DO?
+  // This script changes the color of the Fish's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  // The fish is feeling good, so make the meter grreen if the fish has over 50 energy (out of 100)
   ifProp Fish.energyLevel greaterThanOrEqual 50 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
     featProp Fish.Graphing.meterColor setTo 65280
   ]]
-
-  // 🔎 The fish is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  // The fish is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
   ifProp Fish.energyLevel lessThan 50 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     featProp Fish.Graphing.meterColor setTo 16737792
   ]]
-
-  // 🔎 The fish is really hungry, so make the meter red if we are under 20
+  // The fish is really hungry, so make the meter red if we are under 20
   ifProp Fish.energyLevel lessThan 20 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
     featProp Fish.Graphing.meterColor setTo 16711680
   ]]
-
   // The fish is dead if it has 0 energy
   ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_dead.png'
@@ -266,9 +263,14 @@ every 1 runAtStart [[
     // this means that we wont test if this fish is touching anything anymore
     prop Fish.isInert setTo true
   ]]
+]]
 
-
-]]`
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+`
     },
     {
       "name": "Algae",
@@ -289,7 +291,6 @@ every 1 runAtStart [[
 
 
 # PROGRAM INIT
-
 // Setup some script features the Algae use
 addFeature Costume
 addFeature Movement
@@ -297,21 +298,20 @@ addFeature Population
 addFeature Graphing
 addFeature Physics
 addFeature Touches
-
 // Algae are producers, which means they take in energy from the sun
 // and convert that to food. Producers are eaten by consumers like fish.
 addProp energyType string 'producer'
-
 // This sets the art for the algae character
 featProp Algae.Costume.costumeName setTo 'AQ_algae.png'
-
 // This shows the energyLevel next to the algae character
 featProp Algae.Graphing.meterProp setTo 'energyLevel'
 
+
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each algae START with?
-// ✏️ LETS CHANGE THIS
+// ✏️ LETS CHANGE THIS:
 addProp energyLevel number 75
+
 
 // 🔎 what is the MOST/LEAST amount of energy an algae can have?
 prop Algae.energyLevel setMax 100
@@ -357,18 +357,15 @@ when Algae touches Sunbeam [[
     
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much energy does algae get in the sunlight?
-// ✏️ LETS CHANGE THIS
+// ✏️ LETS CHANGE THIS:
 // ✏️ Lower numbers => gain energy faster
-
     prop Algae.energyLevel add 5
 
-    
     
     // glow so that we know something is happening
     featProp Algae.Costume.glow setTo 1
   ]]
 ]]
-
 // When the algae moves out of the sunbeam, stop glowing
 // It will also stop getting energy since that script
 // won't get called unless it moves back into the sunbeam.
@@ -382,7 +379,6 @@ every 1 runAtStart [[
 // 🔎 how much energy does algae lose each second?
 // ✏️ LETS CHANGE THIS:
 // ✏️ Higher numbers => lose energy faster
-
   prop Algae.energyLevel sub 1
 
 
@@ -401,13 +397,11 @@ every 1 runAtStart [[
     // set the meter to red
     featProp Algae.Graphing.meterColor setTo 16711680
   ]]
-
   // re-size the algae based on its energy level (make it smaller if it has less energy)
   ifProp Algae.energyLevel greaterThan 0 [[
     exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
     featPropPop Algae.Costume.scale
   ]]
-
   // Don't let the algae totally disappear
   ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
     featProp Algae.Costume.scale setTo 0.1
