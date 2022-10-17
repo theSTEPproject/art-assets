@@ -539,174 +539,6 @@ featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
 # PROGRAM UPDATE`
     },
     {
-      "name": "Predator",
-      "scriptText": `# BLUEPRINT Predator
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
-// 🔎 WHAT DOES THIS CHARACTER DO?
-// 🔎 This is a predator character
-// 🔎 The predator is a consumer that either eats other consumers (carnivore)
-// 🔎 or a mix of consumers and producers such as algae (omnivore)
-// 🔎 You can change the species and art below
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-addFeature Movement
-addFeature Physics
-addFeature Touches
-
-// This label helps us know what kind of creature the predator character is
-addProp species string 'otter'
-
-// This sets up the artwork for the predator
-featProp Predator.Costume.costumeName setTo 'AQ_otter.png'
-
-// This sets up the energyLevel so that it goes between 0 and 100
-addProp energyLevel number 50
-prop Predator.energyLevel setMax 100
-prop Predator.energyLevel setMin 0
-
-// The predator is a consumer, that consumes energy
-addProp energyType string 'consumer'
-
-// ✏️ LETS CHANGE THIS!
-// ✏️ set to carnivore or omnivore
-// ✏️ this setting determines whether we will eat fish or fish and algae
-addProp consumerType string 'carnivore'
-
-addProp health string 'healthy'
-
-featProp Predator.Costume.scale setTo 0.8
-
-// We want to know if the predator touches other characters
-// if it touches fish, eat them, trash might make it sick, and it will
-// also eat algae if the predator is an omnivore, but not if it is a
-// carnivore
-featCall Predator.Touches monitor 'Fish' b2b
-featCall Predator.Touches monitor 'Trash' b2b
-featCall Predator.Touches monitor 'Algae' b2b
-
-// show meter immediately
-featProp Predator.Graphing.meterProp setTo 'energyLevel'
-
-// we don't need a text label so set it to be blank
-featProp Predator.Graphing.text setTo ''
-
-
-
-# PROGRAM UPDATE
-
-// Flip the artwork to point left or right depending on the direction the character is moving
-ifFeatProp Predator.Movement.compassDirection equal 'E' [[
-  featProp Predator.Costume.flipX setTo false
-]]
-ifFeatProp Predator.Movement.compassDirection equal 'W' [[
-  featProp Predator.Costume.flipX setTo true
-]]
-
-every 1 runAtStart [[
-  // The predator uses energy to be alive and move around
-  // so move this down each second
-  prop Predator.energyLevel sub 1
-
-  // If the predator has no energy left, it is dead so change how it looks
-  // and stop it from interacting with other characters
-  ifProp Predator.energyLevel equal 0 [[
-    prop Predator.isInert setTo true
-    prop Predator.alpha setTo 0.3
-  ]]
-]]
-
-when Predator touches Algae [[
-  every 1 runAtStart [[
-    // only consider eating algae if this is an omnivore
-    ifProp Predator.consumerType equal 'omnivore' [[
-
-      // only eat the algae if you are healthy or if you are really really hungry (< 50% full)
-      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
-
-        // only glow when we are healthy and can eat
-        featProp Predator.Costume.glow setTo 1
-
-        // only eat if the algae is above 0
-        ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
-          prop Predator.energyLevel add 10
-          prop Algae.energyLevel sub 10
-        ]]
-
-        // if the predator ate all the algae make a small version so that we
-        // can still see something
-        ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
-          prop Algae.alpha setTo 0.5
-          prop Algae.isInert setTo true
-        ]]
-
-      ]]
-
-    ]]
-  ]]
-]]
-
-when Predator touches Fish [[
-  every 1 runAtStart [[
-    // Both omnivores and carnivores eat fish
-
-      // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
-      ifExpr {{ (Predator.getProp('energyLevel').value < 50) || (Predator.getProp('health').value == 'healthy') }} [[
-
-        // only glow when we are healthy and can eat
-        featProp Predator.Costume.glow setTo 1
-
-        // Predator gains some energy
-        prop Predator.energyLevel add 20
-
-        // Fish is dead
-        prop Fish.isInert setTo true
-        prop Fish.alpha setTo 0.3
-        // featProp Fish.Costume setPose 2
-        prop Fish.energyLevel setTo 0
-
-    ]]
-  ]]
-]]
-
-when Predator lastTouches Fish [[
-  featProp Predator.Costume.glow setTo 0
-]]
-
-// If the predator touches the trash, it eats it and get sick
-// once it is sick it won't eat as much of other foods 
-// see the touches fish and algae to see the difference 
-when Predator touches Trash [[
-  every 1 runAtStart [[
-    // always glow to show the interaction
-    featProp Predator.Costume.glow setTo 0.5
-
-    // this is normally set to healthy 
-    prop Predator.health setTo 'hurt'
-    featCall Predator.Costume setColorizeHSV 0.5 1 0.5
-    featCall Trash.Population removeCharacter
-
-    // change art
-  ]]
-]]
-
-when Predator lastTouches Trash [[
-  featProp Predator.Costume.glow setTo 0
-
-]]`
-    },
-    {
       "name": "Trash",
       "scriptText": `# BLUEPRINT Trash
 # TAG IsCharControllable false
@@ -1095,6 +927,326 @@ featProp Background.Costume.scale setTo 1.33
 prop Background.zIndex setTo -999
 
 # PROGRAM UPDATE `
+    },
+    {
+      "name": "Turtle",
+      "scriptText": `# BLUEPRINT Turtle
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A TURTLE?
+// 🔎 TURTLES are CONSUMERS who are OMNIVORES
+
+// 🔎 WHAT IS AN OMNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT PRODUCERS OR other CONSUMERS
+// 🔎 WHAT IS A CARNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT other CONSUMERS
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Movement
+addFeature Physics
+addFeature Touches
+// This sets up the artwork for the omnivore
+featProp Turtle.Costume.costumeName setTo 'AQ_turtle_alive.png'
+
+// This sets up the energyLevel so that it goes between 0 and 100
+addProp energyLevel number 50
+prop Turtle.energyLevel setMax 100
+prop Turtle.energyLevel setMin 0
+
+// The omnivore is a consumer, that consumes energy
+addProp energyType string 'consumer'
+
+addProp consumerType string 'omnivore'
+
+addProp health string 'healthy'
+
+
+// 🔎 WHAT SIZE IS THE TURTLE?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER TURTLE
+featProp Turtle.Costume.scale setTo 0.15
+
+
+// We want to know if the omnivore touches other characters
+// if it touches fish, eat them, trash might make it sick, and it will
+// also eat algae if the omnivore is an omnivore, but not if it is a
+// carnivore
+featCall Turtle.Touches monitor 'Fish' b2b
+// featCall Turtle.Touches monitor 'Trash' b2b
+featCall Turtle.Touches monitor 'Algae' b2b
+// show meter immediately
+featProp Turtle.Graphing.meterProp setTo 'energyLevel'
+// we don't need a text label so set it to be blank
+featProp Turtle.Graphing.text setTo ''
+# PROGRAM UPDATE
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Turtle.Movement.compassDirection equal 'E' [[
+  featProp Turtle.Costume.flipX setTo false
+]]
+ifFeatProp Turtle.Movement.compassDirection equal 'W' [[
+  featProp Turtle.Costume.flipX setTo true
+]]
+every 1 runAtStart [[
+  // The omnivore uses energy to be alive and move around
+  // so move this down each second
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER number => GAIN MORE ENERGY
+  prop Turtle.energyLevel sub 1
+
+
+  // If the omnivore has no energy left, it is dead so change how it looks
+  // and stop it from interacting with other characters
+  ifProp Turtle.energyLevel equal 0 [[
+    prop Turtle.isInert setTo true
+    prop Turtle.alpha setTo 0.3
+  ]]
+]]
+when Turtle touches Algae [[
+  every 1 runAtStart [[
+    // only consider eating algae if this is an omnivore
+    ifProp Turtle.consumerType equal 'omnivore' [[
+      // only eat the algae if you are healthy or if you are really really hungry (< 50% full)
+      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+        // only glow when we are healthy and can eat
+        featProp Turtle.Costume.glow setTo 1
+        // only eat if the algae is above 0
+        ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+
+
+          // 🔎 WHAT DOES THIS DO?
+          // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+          // ✏️ LETS CHANGE THIS:
+          // ✏️ HIGHER number => GAIN MORE ENERGY
+          prop Turtle.energyLevel add 10
+
+
+          // 🔎 WHAT DOES THIS DO?
+          // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+          // ✏️ LETS CHANGE THIS:
+          // ✏️ HIGHER number => GAIN MORE ENERGY
+          prop Algae.energyLevel sub 10
+        ]]
+
+
+        // if the omnivore ate all the algae make a small version so that we
+        // can still see something
+        ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
+          prop Algae.alpha setTo 0.5
+          prop Algae.isInert setTo true
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+when Turtle touches Fish [[
+  every 1 runAtStart [[
+    // Both omnivores and carnivores eat fish
+    // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
+    ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+      // only glow when we are healthy and can eat
+      featProp Turtle.Costume.glow setTo 1
+
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ HIGHER number => GAIN MORE ENERGY
+      prop Turtle.energyLevel add 20
+
+
+      // Fish is dead
+      prop Fish.isInert setTo true
+      prop Fish.alpha setTo 0.3
+      // featProp Fish.Costume setPose 2
+      prop Fish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+when Turtle lastTouches Fish [[
+  featProp Turtle.Costume.glow setTo 0
+]]
+// If the omnivore touches the trash, it eats it and get sick
+// once it is sick it won't eat as much of other foods
+// see the touches fish and algae to see the difference
+when Turtle touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featProp Turtle.Costume.glow setTo 0.5
+    // this is normally set to healthy
+    prop Turtle.health setTo 'hurt'
+    featCall Turtle.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeCharacter
+    // change art
+  ]]
+]]
+when Turtle lastTouches Trash [[
+  featProp Turtle.Costume.glow setTo 0
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Otter",
+      "scriptText": `# BLUEPRINT Otter
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A OTTER?
+// 🔎 OTTERS are CONSUMERS who are CARNIVORES
+
+// 🔎 WHAT IS AN OMNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT PRODUCERS OR other CONSUMERS
+// 🔎 WHAT IS A CARNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT other CONSUMERS
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Movement
+addFeature Physics
+addFeature Touches
+// This sets up the artwork for the omnivore
+featProp Otter.Costume.costumeName setTo 'AQ_otter.png'
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do OTTERS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of ENERGY an OTTER can have?
+prop Otter.energyLevel setMax 100
+prop Otter.energyLevel setMin 0
+
+
+// The omnivore is a consumer, that consumes energy
+addProp energyType string 'consumer'
+addProp consumerType string 'carnivore'
+addProp health string 'healthy'
+
+
+// 🔎 WHAT SIZE IS THE OTTER?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER OTTER
+featProp Otter.Costume.scale setTo 0.8
+
+
+// We want to know if the omnivore touches other characters
+// if it touches fish, eat them, trash might make it sick, and it will
+// also eat algae if the omnivore is an omnivore, but not if it is a
+// carnivore
+featCall Otter.Touches monitor 'Fish' b2b
+// featCall Otter.Touches monitor 'Trash' b2b
+featCall Otter.Touches monitor 'Algae' b2b
+// show meter immediately
+featProp Otter.Graphing.meterProp setTo 'energyLevel'
+// we don't need a text label so set it to be blank
+featProp Otter.Graphing.text setTo ''
+# PROGRAM UPDATE
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Otter.Movement.compassDirection equal 'E' [[
+  featProp Otter.Costume.flipX setTo false
+]]
+ifFeatProp Otter.Movement.compassDirection equal 'W' [[
+  featProp Otter.Costume.flipX setTo true
+]]
+every 1 runAtStart [[
+  // The omnivore uses energy to be alive and move around
+  // so move this down each second
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY does an OTTER GAIN when eating a FISH?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER number => GAIN MORE ENERGY
+  prop Otter.energyLevel sub 1
+
+
+  // If the omnivore has no energy left, it is dead so change how it looks
+  // and stop it from interacting with other characters
+  ifProp Otter.energyLevel equal 0 [[
+    prop Otter.isInert setTo true
+    prop Otter.alpha setTo 0.3
+  ]]
+]]
+when Otter touches Fish [[
+  every 1 runAtStart [[
+    // Both omnivores and carnivores eat fish
+    // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
+    ifExpr {{ (Otter.getProp('energyLevel').value < 50) || (Otter.getProp('health').value == 'healthy') }} [[
+      // only glow when we are healthy and can eat
+      featProp Otter.Costume.glow setTo 1
+
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How much ENERGY does an OTTER GAIN when eating a FISH?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ HIGHER number => GAIN MORE ENERGY
+      prop Otter.energyLevel add 25
+
+
+      // Fish is dead
+      prop Fish.isInert setTo true
+      prop Fish.alpha setTo 0.3
+      // featProp Fish.Costume setPose 2
+      prop Fish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+when Otter lastTouches Fish [[
+  featProp Otter.Costume.glow setTo 0
+]]
+// If the omnivore touches the trash, it eats it and get sick
+// once it is sick it won't eat as much of other foods
+// see the touches fish and algae to see the difference
+when Otter touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featProp Otter.Costume.glow setTo 0.5
+    // this is normally set to healthy
+    prop Otter.health setTo 'hurt'
+    featCall Otter.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeCharacter
+    // change art
+  ]]
+]]
+when Otter lastTouches Trash [[
+  featProp Otter.Costume.glow setTo 0
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1252,6 +1404,27 @@ prop y setTo 261.99`
       "bpid": "GraphFishEnergy",
       "initScript": `prop x setTo 498.13
 prop y setTo 75.57`
+    },
+    {
+      "id": "1903",
+      "label": "Turtle1903",
+      "bpid": "Turtle",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1904",
+      "label": "Otter1904",
+      "bpid": "Otter",
+      "initScript": `prop x setTo -138.59
+prop y setTo -241.45`
+    },
+    {
+      "id": "1905",
+      "label": "Fish1905",
+      "bpid": "Fish",
+      "initScript": `prop x setTo 287.86
+prop y setTo -173.70`
     }
   ]
 }
