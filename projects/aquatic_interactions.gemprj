@@ -1404,27 +1404,6 @@ prop y setTo 261.99`
       "bpid": "GraphFishEnergy",
       "initScript": `prop x setTo 498.13
 prop y setTo 75.57`
-    },
-    {
-      "id": "1903",
-      "label": "Turtle1903",
-      "bpid": "Turtle",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
-    },
-    {
-      "id": "1904",
-      "label": "Otter1904",
-      "bpid": "Otter",
-      "initScript": `prop x setTo -138.59
-prop y setTo -241.45`
-    },
-    {
-      "id": "1905",
-      "label": "Fish1905",
-      "bpid": "Fish",
-      "initScript": `prop x setTo 287.86
-prop y setTo -173.70`
     }
   ]
 }
