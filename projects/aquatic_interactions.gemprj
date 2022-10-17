@@ -277,22 +277,16 @@ every 1 runAtStart [[
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
 
-// 🔎 WHAT DOES THIS CHARACTER DO?
-// 🔎 This is the Algae character
-// 🔎 In this ecosystem model, we have producers and consumers that interact
-// 🔎 The Algae are a producer, growing when they touch the sunbeam
-// 🔎 The algae gets eaten by Fish and other creatures (see the Fish script for details)
+// 🔎 WHAT IS AN ALGAE?
+// 🔎 ALGAES are PRODUCERS who USE SUN ENERGY and get EATEN by FISH
 
-// 🔎 WHAT DO THESE MEAN?
-// 🔎 producer: an organism that converts energy from the sun into matter (e.g.. plants)
-// 🔎 consumer: an organism that eats producers or consuumers.
-// 🔎 The matter that consumers eat is converted to energy through digestion.
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 
 # PROGRAM INIT
 
@@ -314,14 +308,18 @@ featProp Algae.Costume.costumeName setTo 'AQ_algae.png'
 // This shows the energyLevel next to the algae character
 featProp Algae.Graphing.meterProp setTo 'energyLevel'
 
-// setup energyLevel property to be between 0 and 100
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each algae START with?
+// ✏️ LETS CHANGE THIS
 addProp energyLevel number 75
+
+// 🔎 what is the MOST/LEAST amount of energy an algae can have?
 prop Algae.energyLevel setMax 100
 prop Algae.energyLevel setMin 0
 
+
 // Make the algae appear farther back so that we can see fish in front of them
 prop Algae.zIndex setTo 1
-
 // Set the color of the energy meter depending on the amount of energy that the algae has
 ifProp Algae.energyLevel greaterThanOrEqual 50 [[
   // set the meter to green
@@ -335,25 +333,19 @@ ifProp Algae.energyLevel lessThan 20 [[
   // set the meter to red
   featProp Algae.Graphing.meterColor setTo 16711680
 ]]
-
-
 // Setup the algae to see if it is touching the sunbeam so that we know if it should be getting more energy.
 // If it is, call the when Algae touches Sun script below
 featCall Algae.Touches monitor 'Sunbeam' b2b
-
 // This tells the algae that we don't need a label underneath it, so make that blank
 featProp Algae.Graphing.text setTo ''
-
 // Setup movement to wander
 featProp Algae.Movement.movementType setTo 'wander'
 featProp Algae.Movement.distance setTo 0.2
-
 // scale the algae to it's starting size
 // we divide by 350 instead of 100 because the algae are really big and we want to make
 // them smaller to fit on-screen.
 exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
 featPropPop Algae.Costume.scale
-
 // Move the algae back so that it is behind the fish
 prop Algae.zIndex setTo -110
 
@@ -361,14 +353,19 @@ prop Algae.zIndex setTo -110
 // This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAtStart [[
-    // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae gains whenever it touches the sun
-    // 🔎 This much energy is added every second
-    // ✏️ LETS CHANGE THIS: if you make this number higher, the algae will grow back faster
+    
+    
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much energy does algae get in the sunlight?
+// ✏️ LETS CHANGE THIS
+// ✏️ Lower numbers => gain energy faster
+
     prop Algae.energyLevel add 5
 
+    
+    
     // glow so that we know something is happening
     featProp Algae.Costume.glow setTo 1
-
   ]]
 ]]
 
@@ -378,13 +375,16 @@ when Algae touches Sunbeam [[
 when Algae lastTouches Sunbeam [[
   featProp Algae.Costume.glow setTo 0
 ]]
-
 every 1 runAtStart [[
 
-  // 🔎 WHAT DOES THIS DO? This is the script that says how much energy the algae uses every second to stay alive
-  // ✏️ LETS CHANGE THIS: Let's change this number if we want them to
-  // ✏️ use more or less energy every second. A higher number will mean they lose energy faster.
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much energy does algae lose each second?
+// ✏️ LETS CHANGE THIS:
+// ✏️ Higher numbers => lose energy faster
+
   prop Algae.energyLevel sub 1
+
 
   // Set the color of the energy meter depending on the amount of energy that the algae has
   // Reminder that this energy is between 0 and 100, so 50 is 1/2 of the energy still there
@@ -412,8 +412,14 @@ every 1 runAtStart [[
   ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
     featProp Algae.Costume.scale setTo 0.1
   ]]
+]]
 
-]]`
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+`
     },
     {
       "name": "Sunbeam",
