@@ -280,7 +280,7 @@ featProp Background.Costume.size setTo 800
       "name": "ParkRanger",
       "scriptText": `# BLUEPRINT ParkRanger
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
