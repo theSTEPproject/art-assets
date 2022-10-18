@@ -164,6 +164,7 @@ addProp alive Boolean true
 
 // make sure we track interactions with the other creatures
 featCall Snake.Touches monitor 'Mouse' b2b
+featCall Snake.Touches monitor 'Beetle' b2b
 featCall Snake.Touches monitor 'Reincarnator' b2b
 
 // setup to track energy and begin at 1/2 way
@@ -192,12 +193,24 @@ when Snake touches Mouse [[
     ]]
   ]]
 
+when Snake touches Beetle [[
+  every 1 [[
+    ifExpr {{ Snake.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
+      featProp Snake.Costume.glow setTo 1
+      prop Beetle.alive setTo false
+      prop Beetle.alpha setTo 0.3
+      prop Snake.energyLevel add 10
+      prop Beetle.energyLevel setTo 0
+    ]]
+  ]]
+]]
+  
   when Snake touches Reincarnator [[
     ifExpr {{ Snake.getProp('alive').value == false }} [[
       featProp Snake.Costume.glow setTo 1
       prop Snake.alive setTo true
       prop Snake.alpha setTo 1
-      prop Snake.energyLevel setTo 55
+      prop Snake.energyLevel setTo 50
     ]]
   ]]
 
