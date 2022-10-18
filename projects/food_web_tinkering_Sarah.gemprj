@@ -1721,6 +1721,61 @@ every 1 runAtStart [[
   featProp Pesticide.Graphing.meterProp setTo 'energyLevel'
 
 ]]`
+    },
+    {
+      "name": "Controller",
+      "scriptText": `# BLUEPRINT Controller
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Controller.Costume.costumeName setTo 'FWE_snake.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Controller.Costume.scale setTo 0.2
+
+featProp Snake.Movement.movementType setTo 'wander'
+featProp Snake.Movement.compassDirection setTo 'S'
+featProp Snake.Movement.distance setTo 3
+featProp Snake.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+addProp character string 'Snake'
+
+// make sure we track interactions with the other creatures
+featCall Controller.Touches monitor 'Mouse' b2b
+featCall Controller.Touches monitor 'Beetle' b2b
+featCall Controller.Touches monitor 'Reincarnator' b2b
+
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Controller.energyLevel setMax 100
+prop Controller.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Character lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Controller.Graphing.meterProp setTo 'energyLevel'
+
+featProp Controller.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
     }
   ],
   "instances": [
