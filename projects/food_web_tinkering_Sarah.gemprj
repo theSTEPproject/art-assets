@@ -2021,6 +2021,56 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "SnailPopulation",
+      "scriptText": `# BLUEPRINT SnailPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp SnailPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp SnailPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Snails
+addProp totalSnailPop number 2
+
+
+featProp SnailPopulation.Graphing.graphProp setTo 'totalSnailPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop SnailPopulation.x setTo 495
+prop SnailPopulation.y setTo 187
+prop SnailPopulation.zIndex setTo 300
+
+featProp SnailPopulation.Graphing.text setTo 'Snail Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Snail
+  featProp SnailPopulation.Population.monitoredCharacter setTo 'Snail'
+  featProp SnailPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall SnailPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop SnailPopulation.totalSnailPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalSnailPop').value }}
+  propPop SnailPopulation.totalSnailPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2254,6 +2304,13 @@ prop y setTo -289.43`
       "bpid": "BeetlePopulation",
       "initScript": `prop x setTo 488.50
 prop y setTo -126.06`
+    },
+    {
+      "id": "86",
+      "label": "SnailPopulation86",
+      "bpid": "SnailPopulation",
+      "initScript": `prop x setTo 32
+prop y setTo -11`
     }
   ]
 }
