@@ -1871,6 +1871,156 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "SnakePopulation",
+      "scriptText": `# BLUEPRINT SnakePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp SnakePopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp SnakePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Snakes
+addProp totalSnakePop number 2
+
+
+featProp SnakePopulation.Graphing.graphProp setTo 'totalSnakePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop SnakePopulation.x setTo 495
+prop SnakePopulation.y setTo 187
+prop SnakePopulation.zIndex setTo 300
+
+featProp SnakePopulation.Graphing.text setTo 'Snake Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the snake
+  featProp SnakePopulation.Population.monitoredCharacter setTo 'Snake'
+  featProp SnakePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall SnakePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop SnakePopulation.totalSnakePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalSnakePop').value }}
+  propPop SnakePopulation.totalSnakePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "MousePopulation",
+      "scriptText": `# BLUEPRINT MousePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp MousePopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp MousePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Mouses
+addProp totalMousePop number 2
+
+
+featProp MousePopulation.Graphing.graphProp setTo 'totalMousePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop MousePopulation.x setTo 495
+prop MousePopulation.y setTo 187
+prop MousePopulation.zIndex setTo 300
+
+featProp MousePopulation.Graphing.text setTo 'Mouse Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Mouse
+  featProp MousePopulation.Population.monitoredCharacter setTo 'Mouse'
+  featProp MousePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall MousePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop MousePopulation.totalMousePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalMousePop').value }}
+  propPop MousePopulation.totalMousePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "BeetlePopulation",
+      "scriptText": `# BLUEPRINT BeetlePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp BeetlePopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp BeetlePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Beetles
+addProp totalBeetlePop number 2
+
+
+featProp BeetlePopulation.Graphing.graphProp setTo 'totalBeetlePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop BeetlePopulation.x setTo 495
+prop BeetlePopulation.y setTo 187
+prop BeetlePopulation.zIndex setTo 300
+
+featProp BeetlePopulation.Graphing.text setTo 'Beetle Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Beetle
+  featProp BeetlePopulation.Population.monitoredCharacter setTo 'Beetle'
+  featProp BeetlePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall BeetlePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop BeetlePopulation.totalBeetlePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalBeetlePop').value }}
+  propPop BeetlePopulation.totalBeetlePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -1962,8 +2112,8 @@ prop y setTo 68.91`
       "id": "54",
       "label": "Gopher54",
       "bpid": "Gopher",
-      "initScript": `prop x setTo 321.83
-prop y setTo -337.29`
+      "initScript": `prop x setTo 61.17
+prop y setTo -331.20`
     },
     {
       "id": "55",
@@ -1983,15 +2133,15 @@ prop y setTo 214.73`
       "id": "61",
       "label": "Rabbit61",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo -93.74
-prop y setTo -329.52`
+      "initScript": `prop x setTo -321.12
+prop y setTo -320.86`
     },
     {
       "id": "62",
       "label": "Robin62",
       "bpid": "Robin",
-      "initScript": `prop x setTo -211.91
-prop y setTo -339.71`
+      "initScript": `prop x setTo 217.12
+prop y setTo -326.51`
     },
     {
       "id": "63",
@@ -2018,22 +2168,22 @@ prop y setTo 202.97`
       "id": "71",
       "label": "Gopher71",
       "bpid": "Gopher",
-      "initScript": `prop x setTo 40.2
-prop y setTo -338.72`
+      "initScript": `prop x setTo -31.12
+prop y setTo -327.53`
     },
     {
       "id": "73",
       "label": "Rabbit73",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo 181.87
-prop y setTo -336.38`
+      "initScript": `prop x setTo -191.53
+prop y setTo -323.27`
     },
     {
       "id": "74",
       "label": "Snake74",
       "bpid": "Snake",
-      "initScript": `prop x setTo -316.82
-prop y setTo -341.66`
+      "initScript": `prop x setTo 353.18
+prop y setTo -329.19`
     },
     {
       "id": "75",
@@ -2067,22 +2217,43 @@ prop y setTo -398.91`
       "id": "80",
       "label": "RabbitPopulation80",
       "bpid": "RabbitPopulation",
-      "initScript": `prop x setTo 499.88
-prop y setTo 321.18`
+      "initScript": `prop x setTo -510.94
+prop y setTo -271.47`
     },
     {
       "id": "81",
       "label": "GopherPopulation81",
       "bpid": "GopherPopulation",
-      "initScript": `prop x setTo 499.54
-prop y setTo 144.08`
+      "initScript": `prop x setTo -512.53
+prop y setTo -101.90`
     },
     {
       "id": "82",
       "label": "RobinPopulation82",
       "bpid": "RobinPopulation",
-      "initScript": `prop x setTo 499.36
-prop y setTo -39.91`
+      "initScript": `prop x setTo -512.14
+prop y setTo 75.03`
+    },
+    {
+      "id": "83",
+      "label": "SnakePopulation83",
+      "bpid": "SnakePopulation",
+      "initScript": `prop x setTo -509.27
+prop y setTo 250.8`
+    },
+    {
+      "id": "84",
+      "label": "MousePopulation84",
+      "bpid": "MousePopulation",
+      "initScript": `prop x setTo 488.67
+prop y setTo -289.43`
+    },
+    {
+      "id": "85",
+      "label": "BeetlePopulation85",
+      "bpid": "BeetlePopulation",
+      "initScript": `prop x setTo 488.50
+prop y setTo -126.06`
     }
   ]
 }
