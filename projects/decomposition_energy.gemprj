@@ -129,35 +129,27 @@ every 2 runAtStart [[
   propPop Bunny.energyLevel
 
   // this code sets the color of the energy bar based on how hungry the Bunny is
-  // sated
-  ifExpr {{ Bunny.getProp('energyLevel').value > 50 }} [[
+  // Feeling good / not that hungry
+  ifProp Bunny.energyLevel greaterThan 50 [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
-    // Green
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Bunny.getProp('energyLevel').value < 50 }} [[
+  // hungry
+  ifProp Bunny.energyLevel lessThan 50 [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
-    // Orange
     featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Bunny.getProp('energyLevel').value < 20 }} [[
+  // really hungry
+  ifProp Bunny.energyLevel lessThan 20 [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
-    // Red
     featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Bunny.getProp('energyLevel').value < 1 }} [[
+  ifProp Bunny.energyLevel equal 0 [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
-    // featCall Movement setMovementType 'float'
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
   ]]
-
-  // set meter to mirror energyLevel
-  featProp Bunny.Graphing.meterProp setTo 'energyLevel'
-
 
 ]]`
     },
@@ -433,12 +425,14 @@ every 1 runAtStart [[
 
 # PROGRAM DEFINE
 
+// add Features
 addFeature Costume
-featProp EnergyRepresentation.Costume.costumeName setTo 'DC_energy_empty.png'
-
 addFeature Physics
-featProp EnergyRepresentation.Costume.scale setTo 0.25
 
+// setup costume
+featProp EnergyRepresentation.Costume.costumeName setTo 'DC_energy_empty.png'
+featProp EnergyRepresentation.Costume.scale setTo 0.25
+prop EnergyRepresentation.zIndex setTo 0
 
 // setup energy properties
 addProp energyLevel number 0
@@ -1039,22 +1033,21 @@ featProp Tomato.Graphing.meterColor setTo 5783616
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
- \tprop Tomato.matterLevel sub 1
-  \t
-  \tifExpr {{ Tomato.getProp('matterLevel').value > 40 }} [[
-    // healthy
+prop Tomato.matterLevel sub 1
+
+// healthy
+ifProp Tomato.matterLevel greaterThan 40 [[
     featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
   ]]
-ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLevel').value > 25 }} [[
+ifProp Tomato.matterLevel lessThan 40 [[
     // healthy
     featProp Tomato.Costume.costumeName setTo 'DC_tomato_beg_decomp.png'
   ]]
-  ifExpr {{ Tomato.getProp('matterLevel').value < 25 && Tomato.getProp('matterLevel').value > 10 }} [[
+ifProp Tomato.matterLevel lessThan 25 [[
     // healthy
     featProp Tomato.Costume.costumeName setTo 'DC_tomato_mid_decomp.png'
   ]]
-  ifExpr {{ Tomato.getProp('matterLevel').value < 10 }} [[
-    // healthy
+ifProp Tomato.matterLevel lessThan 10 [[
     featProp Tomato.Costume.costumeName setTo 'DC_waste.png'
   ]]
 
@@ -1068,8 +1061,8 @@ ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLeve
       "id": "2",
       "label": "Plant 1",
       "bpid": "Plant",
-      "initScript": `prop x setTo 176.35
-prop y setTo -208.83`
+      "initScript": `prop x setTo 167.27
+prop y setTo -175.62`
     },
     {
       "id": "5",
@@ -1251,8 +1244,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1707",
       "label": "Plant 2",
       "bpid": "Plant",
-      "initScript": `prop x setTo 333.65
-prop y setTo -208.60`
+      "initScript": `prop x setTo 350.76
+prop y setTo -176.79`
     },
     {
       "id": "1708",
