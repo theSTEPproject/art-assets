@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 6604847,
+    "bgcolor": 3289600,
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -36,7 +36,6 @@
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
@@ -136,9 +135,9 @@ when Mouse touches VeggieGarden [[
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPTrackControllable false
 
 # PROGRAM INIT
 // add the features we are likely to use
@@ -193,18 +192,18 @@ when Snake touches Mouse [[
     ]]
   ]]
 
-when Snake touches Beetle [[
-  every 1 [[
-    ifExpr {{ Snake.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
-      featProp Snake.Costume.glow setTo 1
-      prop Beetle.alive setTo false
-      prop Beetle.alpha setTo 0.3
-      prop Snake.energyLevel add 10
-      prop Beetle.energyLevel setTo 0
+  when Snake touches Beetle [[
+    every 1 [[
+      ifExpr {{ Snake.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
+        featProp Snake.Costume.glow setTo 1
+        prop Beetle.alive setTo false
+        prop Beetle.alpha setTo 0.3
+        prop Snake.energyLevel add 10
+        prop Beetle.energyLevel setTo 0
+      ]]
     ]]
   ]]
-]]
-  
+
   when Snake touches Reincarnator [[
     ifExpr {{ Snake.getProp('alive').value == false }} [[
       featProp Snake.Costume.glow setTo 1
@@ -297,24 +296,6 @@ propPop Background.alpha
 // onEvent Tick [[ ]]`
     },
     {
-      "name": "ParkRanger",
-      "scriptText": `# BLUEPRINT ParkRanger
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
-
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
-    },
-    {
       "name": "VeggieGarden",
       "scriptText": `# BLUEPRINT VeggieGarden
 # TAG isPozyxControllable false
@@ -325,7 +306,6 @@ featProp ParkRanger.Costume.costumeName setTo 'bunny.json'
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
@@ -420,10 +400,9 @@ every 10 [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
-featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
+featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
 
 // add other features
 addFeature Physics
@@ -525,7 +504,6 @@ every 10 [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Snail.Costume.costumeName setTo 'FWE_snail.png'
@@ -635,7 +613,7 @@ when Snail touches VeggieGarden [[
     {
       "name": "Gopher",
       "scriptText": `# BLUEPRINT Gopher
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
@@ -646,7 +624,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Gopher.Costume.costumeName setTo 'FWE_gopher.png'
+featProp Gopher.Costume.costumeName setTo 'FW1_gopher.png'
 
 // add other features
 addFeature Physics
@@ -761,7 +739,6 @@ when Gopher touches VeggieGarden [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
@@ -870,7 +847,6 @@ when Caterpillar touches VeggieGarden [[
 
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
@@ -991,9 +967,9 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPTrackControllable false
 
 # PROGRAM INIT
 // add the Caterpillar we are likely to use
@@ -1138,7 +1114,6 @@ every 1 runAtStart [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
@@ -1292,7 +1267,7 @@ every 1 runAtStart [[
     {
       "name": "Rabbit",
       "scriptText": `# BLUEPRINT Rabbit
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
@@ -1412,11 +1387,16 @@ when Rabbit touches VeggieGarden [[
     {
       "name": "global",
       "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
 # PROGRAM INIT
 addFeature Population
 prop global.visible setTo false
 addProp alphaSettingForAll number 0.5
-`
+
+// required directive
+# PROGRAM UPDATE`
     },
     {
       "name": "Weeds",
@@ -1429,7 +1409,6 @@ addProp alphaSettingForAll number 0.5
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-addFeature Cursor
 
 // set the costume
 featProp Weeds.Costume.costumeName setTo 'weeds.png'
@@ -1721,61 +1700,6 @@ every 1 runAtStart [[
   featProp Pesticide.Graphing.meterProp setTo 'energyLevel'
 
 ]]`
-    },
-    {
-      "name": "Controller",
-      "scriptText": `# BLUEPRINT Controller
-# TAG isCharControllable true
-# TAG isPozyxControllable true
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Movement
-addFeature Costume
-addFeature Cursor
-
-// set the costume
-featProp Controller.Costume.costumeName setTo 'FWE_snake.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp Controller.Costume.scale setTo 0.2
-
-featProp Snake.Movement.movementType setTo 'wander'
-featProp Snake.Movement.compassDirection setTo 'S'
-featProp Snake.Movement.distance setTo 3
-featProp Snake.Movement.targetY setMax 0.7
-
-addProp alive Boolean true
-addProp character string 'Snake'
-
-// make sure we track interactions with the other creatures
-featCall Controller.Touches monitor 'Mouse' b2b
-featCall Controller.Touches monitor 'Beetle' b2b
-featCall Controller.Touches monitor 'Reincarnator' b2b
-
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Controller.energyLevel setMax 100
-prop Controller.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Character lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Controller.Graphing.meterProp setTo 'energyLevel'
-
-featProp Controller.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
     }
   ],
   "instances": [
@@ -1818,15 +1742,15 @@ prop y setTo 270.88`
       "id": "24",
       "label": "Clover24",
       "bpid": "Clover",
-      "initScript": `prop x setTo -138.32
-prop y setTo -290.77`
+      "initScript": `prop x setTo -311.18
+prop y setTo -149.03`
     },
     {
       "id": "25",
       "label": "Clover25",
       "bpid": "Clover",
-      "initScript": `prop x setTo 90.29
-prop y setTo -138.03`
+      "initScript": `prop x setTo -58.76
+prop y setTo -78.75`
     },
     {
       "id": "41",
@@ -1846,8 +1770,8 @@ prop y setTo 98.95`
       "id": "45",
       "label": "Hawk45",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 191.32
-prop y setTo -321.48`
+      "initScript": `prop x setTo 332.40
+prop y setTo -157.90`
     },
     {
       "id": "51",
@@ -1867,8 +1791,8 @@ prop y setTo 68.91`
       "id": "54",
       "label": "Gopher54",
       "bpid": "Gopher",
-      "initScript": `prop x setTo -208.52
-prop y setTo -224.26`
+      "initScript": `prop x setTo 321.83
+prop y setTo -337.29`
     },
     {
       "id": "55",
@@ -1888,36 +1812,22 @@ prop y setTo 214.73`
       "id": "61",
       "label": "Rabbit61",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo 206.44
-prop y setTo -59.92`
+      "initScript": `prop x setTo -93.74
+prop y setTo -329.52`
     },
     {
       "id": "62",
       "label": "Robin62",
       "bpid": "Robin",
-      "initScript": `prop x setTo -30
-prop y setTo -48`
+      "initScript": `prop x setTo -211.91
+prop y setTo -339.71`
     },
     {
       "id": "63",
       "label": "Snake63",
       "bpid": "Snake",
-      "initScript": `prop x setTo -303.24
-prop y setTo 41.62`
-    },
-    {
-      "id": "64",
-      "label": "Weeds64",
-      "bpid": "Weeds",
-      "initScript": `prop x setTo -129
-prop y setTo 169.53`
-    },
-    {
-      "id": "65",
-      "label": "Weeds65",
-      "bpid": "Weeds",
-      "initScript": `prop x setTo 227.95
-prop y setTo 182.49`
+      "initScript": `prop x setTo -277.82
+prop y setTo 80.62`
     },
     {
       "id": "69",
@@ -1932,6 +1842,48 @@ prop y setTo 209.94`
       "bpid": "Snail",
       "initScript": `prop x setTo -341.15
 prop y setTo 202.97`
+    },
+    {
+      "id": "71",
+      "label": "Gopher71",
+      "bpid": "Gopher",
+      "initScript": `prop x setTo 40.2
+prop y setTo -338.72`
+    },
+    {
+      "id": "73",
+      "label": "Rabbit73",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 181.87
+prop y setTo -336.38`
+    },
+    {
+      "id": "74",
+      "label": "Snake74",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -316.82
+prop y setTo -341.66`
+    },
+    {
+      "id": "75",
+      "label": "Robin75",
+      "bpid": "Robin",
+      "initScript": `prop x setTo 232.97
+prop y setTo 8.01`
+    },
+    {
+      "id": "76",
+      "label": "Gopher76",
+      "bpid": "Gopher",
+      "initScript": `prop x setTo -105.57
+prop y setTo 134.9`
+    },
+    {
+      "id": "77",
+      "label": "Rabbit77",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 245.63
+prop y setTo 198.19`
     }
   ]
 }
