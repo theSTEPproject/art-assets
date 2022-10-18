@@ -836,7 +836,11 @@ prop EnergyInSystem.zIndex setTo 300
 
 featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 
-# PROGRAM EVENT
+// Set the graph to have a range of 0-1000
+featProp EnergyInSystem.Graphing.graphMinY setTo 0
+featProp EnergyInSystem.Graphing.graphMaxY setTo 1000
+
+# PROGRAM UPDATE
 
 onEvent Tick [[
 
@@ -861,8 +865,7 @@ onEvent Tick [[
 
 ]]
 
-// required directive
-# PROGRAM UPDATE`
+`
     },
     {
       "name": "GraphLostEnergy",
@@ -885,8 +888,6 @@ addFeature Graphing
 addFeature Population
 featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
 
-
-
 // using a generic name so that it is easier to change later
 addProp lostEnergy number 500
 prop GraphLostEnergy.lostEnergy setMax 1000
@@ -900,6 +901,10 @@ prop GraphLostEnergy.y setTo 350
 prop GraphLostEnergy.zIndex setTo 300
 
 featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy'
+
+// Set the graph to have a range of 0-1000
+featProp GraphLostEnergy.Graphing.graphMinY setTo 0
+featProp GraphLostEnergy.Graphing.graphMaxY setTo 1000
 
 # PROGRAM UPDATE
 
@@ -1061,10 +1066,10 @@ ifExpr {{ Tomato.getProp('matterLevel').value < 40 && Tomato.getProp('matterLeve
   "instances": [
     {
       "id": "2",
-      "label": "Plant1",
+      "label": "Plant 1",
       "bpid": "Plant",
-      "initScript": `prop x setTo -95.53
-prop y setTo -190.64`
+      "initScript": `prop x setTo 176.35
+prop y setTo -208.83`
     },
     {
       "id": "5",
@@ -1089,8 +1094,8 @@ featProp agent.Costume.height setTo 30
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 516.26
-prop y setTo 360.68`
+      "initScript": `prop x setTo 511.13
+prop y setTo 328.81`
     },
     {
       "id": "8",
@@ -1158,17 +1163,17 @@ prop y setTo 151.48`
     },
     {
       "id": "1110",
-      "label": "Worm1",
+      "label": "Worm 1",
       "bpid": "Worm",
-      "initScript": `prop x setTo -235.39
-prop y setTo 99.71`
+      "initScript": `prop x setTo 113.30
+prop y setTo 152.09`
     },
     {
       "id": "1111",
-      "label": "Waste1",
+      "label": "Waste 1",
       "bpid": "Waste",
-      "initScript": `prop x setTo -102.60
-prop y setTo 142.08`
+      "initScript": `prop x setTo -292.53
+prop y setTo 179.57`
     },
     {
       "id": "1700",
@@ -1244,31 +1249,31 @@ featProp agent.Costume.height setTo 30`
     },
     {
       "id": "1707",
-      "label": "Plant2",
+      "label": "Plant 2",
       "bpid": "Plant",
-      "initScript": `prop x setTo 317.29
-prop y setTo 16.33`
+      "initScript": `prop x setTo 333.65
+prop y setTo -208.60`
     },
     {
       "id": "1708",
-      "label": "Bunny2",
+      "label": "Bunny 2",
       "bpid": "Bunny",
-      "initScript": `prop x setTo -264.28
-prop y setTo -82.38`
+      "initScript": `prop x setTo -294.03
+prop y setTo -88.59`
     },
     {
       "id": "1709",
-      "label": "Waste2",
+      "label": "Waste 2",
       "bpid": "Waste",
-      "initScript": `prop x setTo 137.15
-prop y setTo -45.28`
+      "initScript": `prop x setTo -70.47
+prop y setTo 182.93`
     },
     {
       "id": "1710",
-      "label": "Worm2",
+      "label": "Worm 2",
       "bpid": "Worm",
-      "initScript": `prop x setTo 169.58
-prop y setTo 160.96`
+      "initScript": `prop x setTo 318.27
+prop y setTo 157.07`
     },
     {
       "id": "1711",
@@ -1307,10 +1312,24 @@ prop y setTo -308.23`
     },
     {
       "id": "1720",
-      "label": "Tomato1720",
+      "label": "Tomato 1",
       "bpid": "Tomato",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "initScript": `prop x setTo -301.03
+prop y setTo 88.96`
+    },
+    {
+      "id": "1721",
+      "label": "Bunny 1",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -144.96
+prop y setTo -93.07`
+    },
+    {
+      "id": "1722",
+      "label": "Tomato 2",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo -232.58
+prop y setTo 105.64`
     }
   ]
 }
