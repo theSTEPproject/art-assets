@@ -1821,6 +1821,56 @@ onEvent Tick [[
 // required directive
 # PROGRAM UPDATE
 `
+    },
+    {
+      "name": "RobinPopulation",
+      "scriptText": `# BLUEPRINT RobinPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp RobinPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp RobinPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Robins
+addProp totalRobinPop number 2
+
+
+featProp RobinPopulation.Graphing.graphProp setTo 'totalRobinPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop RobinPopulation.x setTo 495
+prop RobinPopulation.y setTo 187
+prop RobinPopulation.zIndex setTo 300
+
+featProp RobinPopulation.Graphing.text setTo 'Robin Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the RobinRobinPopulation
+  featProp RobinPopulation.Population.monitoredCharacter setTo 'Robin'
+  featProp RobinPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall RobinPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop RobinPopulation.totalRobinPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalRobinPop').value }}
+  propPop RobinPopulation.totalRobinPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2026,6 +2076,13 @@ prop y setTo 321.18`
       "bpid": "GopherPopulation",
       "initScript": `prop x setTo 499.54
 prop y setTo 144.08`
+    },
+    {
+      "id": "82",
+      "label": "RobinPopulation82",
+      "bpid": "RobinPopulation",
+      "initScript": `prop x setTo 499.36
+prop y setTo -39.91`
     }
   ]
 }
