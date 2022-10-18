@@ -1398,7 +1398,7 @@ prop y setTo -89.15`
     },
     {
       "id": "1904",
-      "label": "HealthMeter1904",
+      "label": "HealthMeter",
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 517.48
 prop y setTo 312.89`
