@@ -375,7 +375,7 @@ every 1 runAtStart [[
 
   ]]
 ]]
-every 10 [[
+every 25 [[
   ifProp VeggieGarden.energyLevel lessThan 1 [[
     featProp VeggieGarden.Costume.glow setTo 1
     prop VeggieGarden.alpha setTo 1
@@ -2121,6 +2121,157 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "VeggieGardenPopulation",
+      "scriptText": `# BLUEPRINT VeggieGardenPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp VeggieGardenPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp VeggieGardenPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of VeggieGardens
+addProp totalVeggieGardenPop number 4
+
+
+featProp VeggieGardenPopulation.Graphing.graphProp setTo 'totalVeggieGardenPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop VeggieGardenPopulation.x setTo 495
+prop VeggieGardenPopulation.y setTo 187
+prop VeggieGardenPopulation.zIndex setTo 300
+
+featProp VeggieGardenPopulation.Graphing.text setTo 'VeggieGarden Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the VeggieGarden
+  featProp VeggieGardenPopulation.Population.monitoredCharacter setTo 'VeggieGarden'
+  featProp VeggieGardenPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall VeggieGardenPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop VeggieGardenPopulation.totalVeggieGardenPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalVeggieGardenPop').value }}
+  propPop VeggieGardenPopulation.totalVeggieGardenPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "CloverPopulation",
+      "scriptText": `# BLUEPRINT CloverPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp CloverPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp CloverPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Clovers
+addProp totalCloverPop number 2
+
+
+featProp CloverPopulation.Graphing.graphProp setTo 'totalCloverPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop CloverPopulation.x setTo 495
+prop CloverPopulation.y setTo 187
+prop CloverPopulation.zIndex setTo 300
+
+featProp CloverPopulation.Graphing.text setTo 'Clover Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Clover
+  featProp CloverPopulation.Population.monitoredCharacter setTo 'Clover'
+  featProp CloverPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall CloverPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop CloverPopulation.totalCloverPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalCloverPop').value }}
+  propPop CloverPopulation.totalCloverPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "WeedsPopulation",
+      "scriptText": `# BLUEPRINT WeedsPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp WeedsPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp WeedsPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Weeds
+addProp totalWeedsPop number 3
+
+
+featProp WeedsPopulation.Graphing.graphProp setTo 'totalWeedsPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop WeedsPopulation.x setTo 495
+prop WeedsPopulation.y setTo 187
+prop WeedsPopulation.zIndex setTo 300
+
+featProp WeedsPopulation.Graphing.text setTo 'Weeds Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Weeds
+  featProp WeedsPopulation.Population.monitoredCharacter setTo 'Weeds'
+  featProp WeedsPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall WeedsPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop WeedsPopulation.totalWeedsPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalWeedsPop').value }}
+  propPop WeedsPopulation.totalWeedsPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
@@ -2345,29 +2496,43 @@ prop y setTo 250.8`
       "id": "84",
       "label": "MousePopulation84",
       "bpid": "MousePopulation",
-      "initScript": `prop x setTo 485.51
-prop y setTo -292.14`
+      "initScript": `prop x setTo 486.86
+prop y setTo -285.37`
     },
     {
       "id": "85",
       "label": "BeetlePopulation85",
       "bpid": "BeetlePopulation",
-      "initScript": `prop x setTo 488.50
-prop y setTo -126.06`
+      "initScript": `prop x setTo 482.22
+prop y setTo -114.13`
     },
     {
       "id": "86",
       "label": "SnailPopulation86",
       "bpid": "SnailPopulation",
-      "initScript": `prop x setTo 487.83
-prop y setTo 36.43`
+      "initScript": `prop x setTo 487.58
+prop y setTo 69.22`
     },
     {
       "id": "87",
       "label": "CaterpillarPopulation87",
       "bpid": "CaterpillarPopulation",
-      "initScript": `prop x setTo 487.64
-prop y setTo 195.12`
+      "initScript": `prop x setTo 490.54
+prop y setTo 243.24`
+    },
+    {
+      "id": "88",
+      "label": "VeggieGardenPopulation88",
+      "bpid": "VeggieGardenPopulation",
+      "initScript": `prop x setTo 630.38
+prop y setTo -43.06`
+    },
+    {
+      "id": "89",
+      "label": "CloverPopulation89",
+      "bpid": "CloverPopulation",
+      "initScript": `prop x setTo 632.31
+prop y setTo 128.49`
     }
   ]
 }
