@@ -2071,6 +2071,56 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "CaterpillarPopulation",
+      "scriptText": `# BLUEPRINT CaterpillarPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp CaterpillarPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp CaterpillarPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Caterpillars
+addProp totalCaterpillarPop number 2
+
+
+featProp CaterpillarPopulation.Graphing.graphProp setTo 'totalCaterpillarPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop CaterpillarPopulation.x setTo 495
+prop CaterpillarPopulation.y setTo 187
+prop CaterpillarPopulation.zIndex setTo 300
+
+featProp CaterpillarPopulation.Graphing.text setTo 'Caterpillar Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Caterpillar
+  featProp CaterpillarPopulation.Population.monitoredCharacter setTo 'Caterpillar'
+  featProp CaterpillarPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall CaterpillarPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop CaterpillarPopulation.totalCaterpillarPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalCaterpillarPop').value }}
+  propPop CaterpillarPopulation.totalCaterpillarPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2295,8 +2345,8 @@ prop y setTo 250.8`
       "id": "84",
       "label": "MousePopulation84",
       "bpid": "MousePopulation",
-      "initScript": `prop x setTo 488.67
-prop y setTo -289.43`
+      "initScript": `prop x setTo 485.51
+prop y setTo -292.14`
     },
     {
       "id": "85",
@@ -2309,8 +2359,15 @@ prop y setTo -126.06`
       "id": "86",
       "label": "SnailPopulation86",
       "bpid": "SnailPopulation",
-      "initScript": `prop x setTo 32
-prop y setTo -11`
+      "initScript": `prop x setTo 487.83
+prop y setTo 36.43`
+    },
+    {
+      "id": "87",
+      "label": "CaterpillarPopulation87",
+      "bpid": "CaterpillarPopulation",
+      "initScript": `prop x setTo 487.64
+prop y setTo 195.12`
     }
   ]
 }
