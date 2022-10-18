@@ -300,7 +300,7 @@ propPop Background.alpha
       "name": "ParkRanger",
       "scriptText": `# BLUEPRINT ParkRanger
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
