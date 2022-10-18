@@ -1054,7 +1054,7 @@ ifProp Tomato.matterLevel lessThan 10 [[
 ]]
 
 `
-    },
+    },  
       {
       "id": "PopupEffect",
       "label": "PopupEffect",
@@ -1069,7 +1069,7 @@ addFeature Costume
 addFeature Physics
 addFeaturePopulation
 
-featProp PopupEffect.Costume setTo 'circle.json'
+featProp PopupEffect.Costume.costumeName setTo 'circle.json'
 
 addProp countDown Number 2
 
