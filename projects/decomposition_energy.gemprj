@@ -1054,6 +1054,34 @@ ifProp Tomato.matterLevel lessThan 10 [[
 ]]
 
 `
+    },
+      {
+      "id": "PopupEffect",
+      "label": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM INIT
+
+// use a circle temorarily ...
+addFeature Costume
+addFeature Physics
+addFeaturePopulation
+
+featProp PopupEffect.Costume setTo 'circle.json'
+
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeAgent
+  ]]
+]]
+`
     }
   ],
   "instances": [
