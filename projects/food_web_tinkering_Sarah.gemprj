@@ -1700,6 +1700,127 @@ every 1 runAtStart [[
   featProp Pesticide.Graphing.meterProp setTo 'energyLevel'
 
 ]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+      # PROGRAM INIT
+      addFeature Graphing
+      addFeature Costume
+      featProp Timer.Costume.costumeName setTo 'onexone.json'
+      addProp time number 0
+      prop Timer.zIndex setTo 500
+
+      featProp Timer.Graphing.text setTo 'Time: 0'
+
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
+        prop Timer.time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop Timer.Graphing.text
+      ]]
+`
+    },
+    {
+      "name": "RabbitPopulation",
+      "scriptText": `# BLUEPRINT RabbitPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp RabbitPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp RabbitPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Rabbits
+addProp totalRabbitPop number 3
+
+
+featProp RabbitPopulation.Graphing.graphProp setTo 'totalRabbitPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop RabbitPopulation.x setTo 495
+prop RabbitPopulation.y setTo 187
+prop RabbitPopulation.zIndex setTo 300
+
+featProp RabbitPopulation.Graphing.text setTo 'Rabbit Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Bunny
+  featProp RabbitPopulation.Population.monitoredCharacter setTo 'Rabbit'
+  featProp RabbitPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall RabbitPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop RabbitPopulation.totalRabbitPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalRabbitPop').value }}
+  propPop RabbitPopulation.totalRabbitPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "GopherPopulation",
+      "scriptText": `# BLUEPRINT GopherPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp GopherPopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp GopherPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Gophers
+addProp totalGopherPop number 3
+
+
+featProp GopherPopulation.Graphing.graphProp setTo 'totalGopherPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop GopherPopulation.x setTo 495
+prop GopherPopulation.y setTo 187
+prop GopherPopulation.zIndex setTo 300
+
+featProp GopherPopulation.Graphing.text setTo 'Gopher Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the GopherGopherPopulation
+  featProp GopherPopulation.Population.monitoredCharacter setTo 'Gopher'
+  featProp GopherPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall GopherPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop GopherPopulation.totalGopherPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalGopherPop').value }}
+  propPop GopherPopulation.totalGopherPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
@@ -1884,6 +2005,27 @@ prop y setTo 134.9`
       "bpid": "Rabbit",
       "initScript": `prop x setTo 245.63
 prop y setTo 198.19`
+    },
+    {
+      "id": "79",
+      "label": "Timer79",
+      "bpid": "Timer",
+      "initScript": `prop x setTo -360.57
+prop y setTo -398.91`
+    },
+    {
+      "id": "80",
+      "label": "RabbitPopulation80",
+      "bpid": "RabbitPopulation",
+      "initScript": `prop x setTo 499.88
+prop y setTo 321.18`
+    },
+    {
+      "id": "81",
+      "label": "GopherPopulation81",
+      "bpid": "GopherPopulation",
+      "initScript": `prop x setTo 499.54
+prop y setTo 144.08`
     }
   ]
 }
