@@ -265,7 +265,7 @@ prop SoilBG.zIndex setTo -210
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -276,14 +276,14 @@ prop SoilBG.zIndex setTo -210
 
 # PROGRAM INIT
 
-// Add features 
+// Add features
 addFeature Costume
 addFeature Movement
 addFeature Graphing
 addFeature Physics
 addFeature Touches
 
-// Setup the worm costume 
+// Setup the worm costume
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
 featProp Worm.Costume.scale setTo 0.15
 
@@ -352,18 +352,18 @@ when Worm touches Waste [[
         featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
         featProp Worm.Costume.glow setTo 0
 
-        // update the nutrient count 
+        // update the nutrient count
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
       ]]
-      
+
 
     ]]
   ]]
 ]]
 
 when Worm lastTouches Waste [[
-  // stop glowing 
+  // stop glowing
   featProp Worm.Costume.glow setTo 0
 ]]
 
@@ -377,7 +377,7 @@ when Worm touches Soil [[
         // reduce energy and matter level in the worm
         prop Worm.energyLevel sub 50
         prop Worm.matterLevel sub 50
-        // put nutrients into the soil 
+        // put nutrients into the soil
         prop Soil.nutrients add 50
 
         // glow and sparkle so that we know something happened
@@ -416,14 +416,13 @@ every 1 runAtStart [[
     prop Worm.alpha setTo 0.3
     prop Worm.isInert setTo true
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Bunny",
       "scriptText": `# BLUEPRINT Bunny
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -499,7 +498,7 @@ when Bunny touches Plant [[
       prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
 
-      // make the bunny glow siince it is eating 
+      // make the bunny glow siince it is eating
       featProp Bunny.Costume.glow setTo 4
     ]]
   ]]
@@ -539,7 +538,7 @@ every 1 runAtStart [[
 
   // if the bunny is already full, handle the timer and then go to the bathroom
   ifProp Bunny.feeling equal 'full' [[
-    // if the wasteCount is 0, create some waste 
+    // if the wasteCount is 0, create some waste
     ifProp Bunny.wasteCount equal 0 [[
 
       prop Bunny.energyLevel sub 20
@@ -561,7 +560,7 @@ every 1 runAtStart [[
     ]]
   ]]
 
-  // check if the bunny is full, and if so maake sure we know it, and change the costume 
+  // check if the bunny is full, and if so maake sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 45 [[
     // set variables to be full and prepare to release waste
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
@@ -590,8 +589,7 @@ every 1 runAtStart [[
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Plant",
@@ -1178,17 +1176,6 @@ prop variableToGraph setTo 'energyLevel'
 prop labelText setTo 'Bunny Energy'`
     },
     {
-      "id": "1803",
-      "label": "Worm Energy",
-      "bpid": "CharacterGraph",
-      "initScript": `prop x setTo 517.37
-prop y setTo -121.49
-prop characterType setTo 'Worm'
-prop countType setTo 'sum'
-prop variableToGraph setTo 'energyLevel'
-prop labelText setTo 'Worm Energy'`
-    },
-    {
       "id": "1201",
       "label": "Plant 1",
       "bpid": "Plant",
@@ -1234,7 +1221,7 @@ prop zIndex setTo 100`
       "bpid": "TextLabel",
       "initScript": `prop x setTo 457
 prop y setTo -280
-featProp Graphing text setTo 'matterLevel'
+featProp Graphing text setTo 'Matter'
 prop zIndex setTo 100`
     },
     {
