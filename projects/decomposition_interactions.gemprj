@@ -356,8 +356,6 @@ when Worm touches Waste [[
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
       ]]
-
-
     ]]
   ]]
 ]]
@@ -608,14 +606,14 @@ every 1 runAtStart [[
 
 # PROGRAM INIT
 
-// Setup features 
+// Setup features
 addFeature Costume
 addFeature Population
 addFeature Physics
 addFeature Touches
 addFeature Graphing
 
-// Setup costume 
+// Setup costume
 featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
 
 addProp energyLevel number 50
@@ -655,25 +653,34 @@ prop Plant.y setTo -50
 prop Plant.y addRnd -10 10
 
 // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
-exprPush {{  Plant.getProp('matterLevel').value / 100 }}
+exprPush {{ Plant.getProp('matterLevel').value / 100 }}
 featPropPop Plant.Costume.scale
 
 # PROGRAM UPDATE
 
 when Plant touches Sunbeam [[
   every 1 runAtStart [[
-    prop Plant.energyLevel add 1
+    // 🔎 WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
+    // 🔎 The plant converts the sunlight into sugar during photosynthesis.
+    // 🔎 The plant can use the sugar as energy to grow.
     prop Plant.matterLevel add 1
+    prop Plant.energyLevel add 1
+
+    // Make the plant glow so that we know photosynthesis is happening
     featProp Plant.Costume.glow setTo 4
   ]]
 ]]
 
+// Turn the glow off when the sunbeam moves away
 when Plant lastTouches Sunbeam [[
   featProp Plant.Costume.glow setTo 0
 ]]
 
 when Plant touches Soil [[
   every 1 runAtStart [[
+    // 🔎 WHAT HAPPENS WHILE THE PLANT IS JUST SITTING THERE IN SOIL?
+    // 🔎 If there are any nutrients in the soil, the plant takes a little in.
+    // 🔎 Below you will see how the plant needs nutrients to survive.
     ifProp Soil.nutrients greaterThan 0 [[
       prop Soil.nutrients sub 1
       prop Plant.nutrients add 1
@@ -682,6 +689,24 @@ when Plant touches Soil [[
 ]]
 
 every 1 runAtStart [[
+  // 🔎 WHAT HAPPENS TO THE PLANT THE REST OF THE TIME?
+  // 🔎 The plant uses some of its nutrients to stay alive.
+  // 🔎 Remember that it also needs sugar that it made from the sunlight during photosynthesis.
+  prop Plant.nutrients sub 1
+
+  // 🔎 Show the plant being healthy if it has more than 6 nutrients
+  // 🔎 And not so heallthy if it is less. If it is 0 it dies.
+  ifProp Plant.nutrients greaterThan 6 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
+  ]]
+  ifProp Plant.nutrients lessThanOrEqual 6 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
+  ]]
+  ifProp Plant.nutrients lessThan 2 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
+    // if the plant is doing really badly, lost some matter and shrink
+    prop Plant.matterLevel sub 1
+  ]]
 
   // set the Plant meter color based on energy level
   ifProp Plant.energyLevel greaterThanOrEqual 25 [[
@@ -713,21 +738,6 @@ every 1 runAtStart [[
   ]]
 
 
-  // is it healthy?  Use some nutrients and then set color
-  prop Plant.nutrients sub 1
-  ifProp Plant.nutrients greaterThan 6 [[
-    // healthy
-    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
-  ]]
-  ifProp Plant.nutrients lessThanOrEqual 6 [[
-    // ok, but not great
-    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
-  ]]
-  ifProp Plant.nutrients lessThan 2 [[
-    // not doing well at all, so lets also lose some matter
-    featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
-    prop Plant.matterLevel sub 1
-  ]]
 ]]`
     },
     {
