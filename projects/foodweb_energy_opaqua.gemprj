@@ -1889,8 +1889,8 @@ prop y setTo -22.06`
       "id": "7",
       "label": "Lost Energy Graph",
       "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 516.26
-prop y setTo 360.68`
+      "initScript": `prop x setTo 505.35
+prop y setTo 317.49`
     },
     {
       "id": "9",
