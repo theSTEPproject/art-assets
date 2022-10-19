@@ -264,7 +264,7 @@ prop SoilBG.zIndex setTo -210
     {
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -282,6 +282,8 @@ addFeature Movement
 addFeature Graphing
 addFeature Physics
 addFeature Touches
+addFeature Population
+
 
 // Setup the worm costume
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
@@ -320,6 +322,9 @@ featProp Worm.Graphing.meterProp setTo 'energyLevel'
 // Set meter to be green
 featProp Worm.Graphing.meterColor setTo 65280
 
+// used for the popup effect below
+addProp reportedFull boolean false
+
 # PROGRAM UPDATE
 
 ifFeatProp Worm.Movement.compassDirection equal 'E' [[
@@ -355,6 +360,7 @@ when Worm touches Waste [[
         // update the nutrient count
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
+
       ]]
     ]]
   ]]
@@ -386,14 +392,29 @@ when Worm touches Soil [[
         // set worm feeling and costume to be hungry
         prop Worm.feeling setTo 'hungry'
         featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
+
+      ]]
+
+      // use a popupEffect to say the worm is full
+      ifProp Worm.reportedFull equal false [[
+        prop Worm.reportedFull setTo true
+        featCall Worm.Population createCharacter PopupEffect [[
+          prop agent.textToUse setTo 'I am full!'
+        ]]
       ]]
 
       ifProp Worm.nutrientCount greaterThan 0 [[
         prop Worm.nutrientCount sub 1
       ]]
     ]]
+
+    ifProp Worm.feeling notEqual 'full' [[
+      prop Worm.reportedFull setTo false
+    ]]
   ]]
+
 ]]
+
 every 1 runAtStart [[
   // energy goes down
   prop Worm.energyLevel sub 2
@@ -471,6 +492,8 @@ featProp Bunny.Graphing.meterColor setTo 65280
 // Move the bunny forward in front of the soil
 prop Bunny.zIndex setTo 110
 
+// used for the popup effect below
+addProp reportedFull boolean false
 
 # PROGRAM UPDATE
 
@@ -559,23 +582,36 @@ every 1 runAtStart [[
   ]]
 
   // check if the bunny is full, and if so maake sure we know it, and change the costume
-  ifProp Bunny.energyLevel greaterThan 45 [[
+  ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
     prop Bunny.feeling setTo 'full'
     exprPush {{ Bunny.getProp('wasteCountStart').value }}
     propPop Bunny.wasteCount
     featProp Bunny.Costume.glow setTo 0
+
+    // use a popupEffect to say the bunny is full
+    ifProp Bunny.reportedFull equal false [[
+      prop Bunny.reportedFull setTo true
+      featCall Bunny.Population createCharacter PopupEffect [[
+        prop agent.textToUse setTo 'I am full!'
+      ]]
+     ]]
+  ]]
+
+  ifProp Bunny.energyLevel lessThan 35 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+    prop Bunny.reportedFull setTo false
   ]]
 
   // use some energy from just living / running around
   prop Bunny.energyLevel sub 1
 
   // set the bunny meter color based on energy level
-  ifProp Bunny.energyLevel greaterThanOrEqual 25 [[
+  ifProp Bunny.energyLevel greaterThanOrEqual 35 [[
     featProp Bunny.Graphing.meterColor setTo 65280
   ]]
-  ifProp Bunny.energyLevel lessThan 25 [[
+  ifProp Bunny.energyLevel lessThan 35 [[
     featProp Bunny.Graphing.meterColor setTo 16737792
   ]]
   ifProp Bunny.energyLevel lessThan 10 [[
@@ -995,8 +1031,6 @@ prop Tomato.energyLevel setMin 0
 featProp Tomato.Graphing.meterProp setTo 'matterLevel'
 featProp Tomato.Graphing.text setTo ' '
 
-featCall Tomato.Touches monitor 'Bunny' b2b
-
 // set the waste to be purple because it has nutrients, not energy
 featProp Tomato.Graphing.meterColor setTo 5783616
 
@@ -1069,6 +1103,7 @@ featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
 
 # PROGRAM UPDATE
 
+
 onEvent Tick [[
   // This script below is where you can decide what the current health meter shows
 
@@ -1096,6 +1131,53 @@ onEvent Tick [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// use a circle temorarily ...
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Population
+
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
+
+addProp costumeToUse string ''
+addProp textToUse string 'TEST'
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
+  ]]
+]]
+every 1 runAtStart [[
+
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]
+`
     }
   ],
   "instances": [
