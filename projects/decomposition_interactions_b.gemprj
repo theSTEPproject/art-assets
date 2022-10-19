@@ -1,0 +1,1497 @@
+{
+  "id": "decomposition_interactions_b",
+  "label": "Ecosystems 3b: Decomposition with Worms",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x98f5ff",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// EXPLANATION of this model:
+// This model involves learners repreesenting bunny eating plant
+// The goal is to explore how the number of bunny, number of plant,
+// and different locations can impact the survival of the ecosystem
+
+// EXPLANATION of this character:
+// This is the script that runs when the model is setup
+
+# PROGRAM INIT
+
+// we don't need to see this character, we just use it to keep track of things
+prop global.visible setTo false
+
+// Add features
+addFeature Population
+
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it
+// easier to edit that character
+addProp bunnyCount number 0
+addProp plantCount number 0
+addProp wormCount number 0
+addProp allOrganismsCount number 0
+addProp averageBunnyEnergy number 0
+addProp averagePlantEnergy number 0
+addProp averageWormEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageDecomposerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
+
+// =============================================================
+
+// this is a required keyword in case we want to run script every second.
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // Update our global variables
+
+  // grab the Bunny average energy and count
+  featCall global.Population countCharacterProp 'Bunny' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageBunnyEnergy
+  // temporary hack since bunnies are on a scale of max 50
+  prop global.averageBunnyEnergy mul 2
+  featPropPush global.Population.count
+  propPop global.bunnyCount
+
+  // grab the Plant average eenergy  and count
+  featCall global.Population countCharacterProp 'Plant' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePlantEnergy
+  // temporary hack since bunnies are on a scale of max 50
+  prop global.averagePlantEnergy mul 2
+  featPropPush global.Population.count
+  propPop global.plantCount
+
+  // grab the Worm average eenergy  and count
+  featCall global.Population countCharacterProp 'Worm' 'energyLevel'
+  featPropPush global.Population.avg
+  // out of 100 already so no need to multiply
+  propPop global.averageWormEnergy
+  featPropPush global.Population.count
+  propPop global.wormCount
+
+  // copy the specific organisms into the category averages
+  // since right now we have only 1 of each
+  propPush global.averagePlantEnergy
+  propPop global.averageProducerEnergy
+
+  propPush global.averageBunnyEnergy
+  propPop global.averageConsumerEnergy
+
+  propPush global.averageWormEnergy
+  propPop global.averageDecomposerEnergy
+
+  exprPush {{ (global.getProp('bunnyCount').value + global.getProp('wormCount').value + global.getProp('plantCount').value) }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('bunnyCount').value + global.getProp('wormCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('plantCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+
+
+]]`
+    },
+    {
+      "name": "Soil",
+      "scriptText": `# BLUEPRINT Soil
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add Features 
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume and size it
+featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+featProp Soil.Costume.scale setTo 0.85
+prop Soil.zIndex setTo -200
+
+// Nutrients 
+addProp nutrients number 50
+prop Soil.nutrients setMax 100
+prop Soil.nutrients setMin 0
+
+// Property to time sparkles thata show when nutrients are released into the soil
+addProp sparkleCount number 0
+
+// ✏️ LETS CHANGE THIS -  pick a different thing to display on the meter (note, color won't change below)
+featProp Soil.Graphing.meterProp setTo 'nutrients'
+
+featCall Soil.Graphing setMeterPosition 'inside-left'
+// violet
+featProp Soil.Graphing.meterColor setTo 9055202
+featProp Soil.Graphing.text setTo ''
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // Displaay the sparkle, and then count down 
+  ifProp Soil.sparkleCount greaterThan 0 [[
+    prop Soil.sparkleCount sub 1
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
+
+  ]]
+  // stop sparkling 
+  ifProp Soil.sparkleCount equal 0 [[
+    featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+  ]]
+]]
+`
+    },
+    {
+      "name": "Sunbeam",
+      "scriptText": `# BLUEPRINT Sunbeam
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+
+// Add features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
+
+featCall Sunbeam.Costume setColorize 1 1 0
+prop Sunbeam.alpha setTo 0.3
+// prop zIndex setTo 100
+
+// ✏️ LETS CHANGE THIS - how wide and tall the sunbeam is
+featProp Sunbeam.Costume.scale setTo 1
+featProp Sunbeam.Costume.scaleY setTo 3
+
+// ✏️ LETS CHANGE THIS - to set the speed of the sunbeam, or the amount of energy it gives to the plant
+addProp speed number 20
+addProp energyRate number 5
+
+# PROGRAM UPDATE
+// move the sun every 1/10 second
+every 0.1 runAtStart [[
+
+  // ✏️ LETS CHANGE THIS the sunbeams speed
+  // ✏️ Move the sun a little every 1/2 second ... making this number bigger moves it faster
+  prop Sunbeam.x add 3
+
+  // If the sunbeam goes off the right edge then start over on the left
+  ifProp Sunbeam.x greaterThan 400 [[
+    prop Sunbeam.x setTo -400
+  ]]
+
+]]
+`
+    },
+    {
+      "name": "SoilBG",
+      "scriptText": `# BLUEPRINT SoilBG
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+addFeature Costume
+featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
+
+featCall SoilBG.Costume setColorize 0.56 0.52 0.4
+addFeature Physics
+featProp SoilBG.Costume.width setTo 800
+featProp SoilBG.Costume.height setTo 400
+prop SoilBG.zIndex setTo -210
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add features
+addFeature Costume
+addFeature Movement
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+
+// Setup the worm costume
+featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
+featProp Worm.Costume.scale setTo 0.15
+
+// put above everything
+prop Worm.zIndex setTo 100
+
+// move between hungry and full where hungry will eat and full will release nutrients
+addProp feeling string 'hungry'
+
+// used internally to delay nutrient release when full
+addProp nutrientCountStart number 0
+
+// how quickly does the worm releasae nutrients after being full
+prop Worm.nutrientCountStart setTo 5
+addProp nutrientCount number 0
+
+// setup the energyLevel property
+addProp energyLevel number 50
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
+
+// setup the maatter property
+addProp matterLevel number 50
+prop Worm.matterLevel setMax 100
+prop Worm.matterLevel setMin 0
+
+// Check for when the worm is touching the waste or the soil
+featCall Worm.Touches monitor 'Waste' b2b
+featCall Worm.Touches monitor 'Soil' b2b
+
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
+featProp Worm.Graphing.meterProp setTo 'energyLevel'
+
+// Set meter to be green
+featProp Worm.Graphing.meterColor setTo 65280
+
+// used for the popup effect below
+addProp reportedFull boolean false
+
+# PROGRAM UPDATE
+
+ifFeatProp Worm.Movement.compassDirection equal 'E' [[
+  featProp Worm.Costume.flipX setTo false
+]]
+ifFeatProp Worm.Movement.compassDirection equal 'W' [[
+  featProp Worm.Costume.flipX setTo true
+]]
+
+when Worm touches Waste [[
+  every 1 runAtStart [[
+
+    // if hungry, eat
+    ifProp Worm.feeling equal 'hungry' [[
+
+      // 🔎 move energy and matter from the waste to the worm and glow so we notice
+      // ✏️ LETS CHANGE how much the worm eats, or how much energy they get from eating it
+      prop Waste.matterLevel sub 10
+      // worms gain energy and matter
+      prop Worm.energyLevel add 10
+      prop Worm.matterLevel add 10
+      // worm glowss so we know it is eating
+      featProp Worm.Costume.glow setTo 4
+
+      // if you are nice and full of energy, note you are full and start poop count-down
+      ifProp Worm.energyLevel greaterThan 90 [[
+        prop Worm.feeling setTo 'full'
+
+        // change costume so we know we are full and stop glowing
+        featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
+        featProp Worm.Costume.glow setTo 0
+
+        // update the nutrient count
+        exprPush {{ Worm.getProp('nutrientCountStart').value }}
+        propPop Worm.nutrientCount
+
+      ]]
+    ]]
+  ]]
+]]
+
+when Worm lastTouches Waste [[
+  // stop glowing
+  featProp Worm.Costume.glow setTo 0
+]]
+
+when Worm touches Soil [[
+  every 1 runAtStart [[
+
+    // if you are full, check if enough time has passed to release nutrients... do so and then switch to being hungry again
+    // if not, just update counter
+    ifProp Worm.feeling equal 'full' [[
+      ifProp Worm.nutrientCount equal 0 [[
+        // reduce energy and matter level in the worm
+        prop Worm.energyLevel sub 50
+        prop Worm.matterLevel sub 50
+        // put nutrients into the soil
+        prop Soil.nutrients add 50
+
+        // glow and sparkle so that we know something happened
+        featProp Soil.Costume.glow setTo 1
+        prop Soil.sparkleCount setTo 3
+        featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+
+        // set worm feeling and costume to be hungry
+        prop Worm.feeling setTo 'hungry'
+        featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
+
+      ]]
+
+      // use a popupEffect to say the worm is full
+      ifProp Worm.reportedFull equal false [[
+        prop Worm.reportedFull setTo true
+        featCall Worm.Population createCharacter PopupEffect [[
+          prop agent.textToUse setTo 'I am full!'
+        ]]
+      ]]
+
+      ifProp Worm.nutrientCount greaterThan 0 [[
+        prop Worm.nutrientCount sub 1
+      ]]
+    ]]
+
+    ifProp Worm.feeling notEqual 'full' [[
+      prop Worm.reportedFull setTo false
+    ]]
+  ]]
+
+]]
+
+every 1 runAtStart [[
+  // energy goes down
+  prop Worm.energyLevel sub 2
+
+  // set the Worm meter color based on energy level
+  ifProp Worm.energyLevel greaterThanOrEqual 50 [[
+    featProp Worm.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Worm.energyLevel lessThan 50 [[
+    featProp Worm.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Worm.energyLevel lessThan 20 [[
+    featProp Worm.Graphing.meterColor setTo 16711680
+  ]]
+
+  // if out of energy ... die
+  ifProp Worm.energyLevel equal 0 [[
+    prop Worm.alpha setTo 0.3
+    prop Worm.isInert setTo true
+  ]]
+]]`
+    },
+    {
+      "name": "Bunny",
+      "scriptText": `# BLUEPRINT Bunny
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add features
+addFeature Population
+addFeature Costume
+addFeature Movement
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Seet the costume
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+featProp Bunny.Costume.scale setTo 0.6
+
+// ✏️ LETS CHANGE the starting energy for the bunny
+addProp energyLevel number 25
+prop Bunny.energyLevel setMax 50
+prop Bunny.energyLevel setMin 0
+
+// This prop lets us track whether the bunny is hungry or full
+addProp feeling string 'hungry'
+
+// Use these counters to check when the bunny will go to the bathroom once it is full
+addProp wasteCountStart number 3
+addProp wasteCount number 0
+
+// how much matterLevel does the bunny have?
+addProp matterLevel number 50
+prop Bunny.matterLevel setMax 50
+prop Bunny.matterLevel setMin 0
+
+// Track when the bunny touches plants or tomators
+featCall Bunny.Touches monitor 'Plant' b2b
+featCall Bunny.Touches monitor 'Tomato' b2b
+
+// This is what the meter will display (see script below during update for color)
+featProp Bunny.Graphing.meterProp setTo 'energyLevel'
+featProp Bunny.Graphing.meterColor setTo 65280
+
+// Move the bunny forward in front of the soil
+prop Bunny.zIndex setTo 110
+
+// used for the popup effect below
+addProp reportedFull boolean false
+
+# PROGRAM UPDATE
+
+// have the bunny art point up or down
+ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
+  featProp Bunny.Costume.flipY setTo false
+]]
+ifFeatProp Bunny.Movement.compassDirection equal 'S' [[
+  featProp Bunny.Costume.flipY setTo true
+]]
+
+when Bunny touches Plant [[
+  every 1 runAtStart [[
+
+    // if hungry, eat
+    ifProp Bunny.feeling equal 'hungry' [[
+
+      // ✏️ LETS CHANGE THIS- switching these numbers models different speeds of how bunnies eat the plants
+      // 🔎 Plant matterLevel and energyLevel goes down from being eaten
+      prop Plant.matterLevel sub 10
+      prop Plant.energyLevel sub 10
+      // 🔎 Bunny matterLevel and energyLevel go up from eating and digesting the plant
+      prop Bunny.matterLevel add 20
+      prop Bunny.energyLevel add 20
+
+      // make the bunny glow siince it is eating
+      featProp Bunny.Costume.glow setTo 4
+    ]]
+  ]]
+]]
+
+when Bunny lastTouches Plant [[
+  featProp Bunny.Costume.glow setTo 0
+]]
+
+// when Bunny touches Tomato eat it
+when Bunny touches Tomato [[
+  every 1 runAtStart [[
+
+    // if hungry, eat
+    ifProp Bunny.feeling equal 'hungry' [[
+
+      // ✏️ LETS CHANGE THIS to set how quickly the bunnies eat the tomatoes
+      // 🔎 Tomato matterLevel goes down as it is eaten
+      prop Tomato.matterLevel sub 1
+      prop Tomato.energyLevel sub 5
+      // 🔎 Bunny matterLevel and energy go up from eating
+      prop Bunny.matterLevel add 1
+      prop Bunny.energyLevel add 1
+
+      // make the bunny glow for a second so that we know it is eating
+      featProp Bunny.Costume.glow setTo 4
+    ]]
+  ]]
+]]
+
+when Bunny lastTouches Tomato [[
+  // stop glowing because we are done eating
+  featProp Bunny.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // if the bunny is already full, handle the timer and then go to the bathroom
+  ifProp Bunny.feeling equal 'full' [[
+    // if the wasteCount is 0, create some waste
+    ifProp Bunny.wasteCount equal 0 [[
+
+      prop Bunny.energyLevel sub 20
+      prop Bunny.matterLevel sub 20
+      prop Bunny.feeling setTo 'hungry'
+      featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+
+      // create the waste
+      featCall Bunny.Population createCharacter Waste [[
+        prop Waste.x addRndInt -20 20
+        prop Waste.y addRndInt 50 150
+        prop Waste.matterLevel setTo 40
+      ]]
+    ]]
+
+    // if the wasteCount is not 0, decrement it
+    ifProp Bunny.wasteCount greaterThan 0 [[
+      prop Bunny.wasteCount sub 1
+    ]]
+  ]]
+
+  // check if the bunny is full, and if so maake sure we know it, and change the costume
+  ifProp Bunny.energyLevel greaterThan 35 [[
+    // set variables to be full and prepare to release waste
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    prop Bunny.feeling setTo 'full'
+    exprPush {{ Bunny.getProp('wasteCountStart').value }}
+    propPop Bunny.wasteCount
+    featProp Bunny.Costume.glow setTo 0
+
+    // use a popupEffect to say the bunny is full
+    ifProp Bunny.reportedFull equal false [[
+      prop Bunny.reportedFull setTo true
+      featCall Bunny.Population createCharacter PopupEffect [[
+        prop agent.textToUse setTo 'I am full!'
+      ]]
+     ]]
+  ]]
+
+  ifProp Bunny.energyLevel lessThan 35 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+    prop Bunny.reportedFull setTo false
+  ]]
+
+  // use some energy from just living / running around
+  prop Bunny.energyLevel sub 1
+
+  // set the bunny meter color based on energy level
+  ifProp Bunny.energyLevel greaterThanOrEqual 35 [[
+    featProp Bunny.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Bunny.energyLevel lessThan 35 [[
+    featProp Bunny.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Bunny.energyLevel lessThan 10 [[
+    featProp Bunny.Graphing.meterColor setTo 16711680
+  ]]
+
+  // if out of energy ... die
+  ifProp Bunny.energyLevel equal 0 [[
+    prop Bunny.alpha setTo 0.3
+    prop Bunny.isInert setTo true
+  ]]
+]]`
+    },
+    {
+      "name": "Plant",
+      "scriptText": `# BLUEPRINT Plant
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Costume
+addFeature Population
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume
+featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
+
+addProp energyLevel number 50
+
+// ✏️ LETS CHANGE THIS - set a different starting eneregy level, max or min (or make it random)
+prop Plant.energyLevel setTo 40
+prop Plant.energyLevel setMax 50
+prop Plant.energyLevel setMin 0
+
+addProp nutrients number 8
+
+// ✏️ LETS CHANGE THIS - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
+prop Plant.nutrients setTo 8
+prop Plant.nutrients setMax 10
+prop Plant.nutrients setMin 0
+
+addProp matterLevel number 50
+
+// ✏️ LETS CHANGE THIS - sete a different range or starting point of matter
+prop Plant.matterLevel setTo 35
+prop Plant.matterLevel setMax 50
+prop Plant.matterLevel setMin 0
+
+prop Plant.zIndex setTo -110
+
+// Track if the plant touches the sun or soil
+featCall Plant.Touches monitor 'Sunbeam' b2b
+featCall Plant.Touches monitor 'Soil' b2b
+
+// Set meter to display energy level and start green
+featProp Plant.Graphing.meterProp setTo 'energyLevel'
+featProp Plant.Graphing.meterColor setTo 65280
+featProp Plant.Graphing.text setTo ''
+
+// always keep it right near the edge of the dirt, but give some variability
+prop Plant.y setTo -50
+prop Plant.y addRnd -10 10
+
+// set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
+exprPush {{ Plant.getProp('matterLevel').value / 100 }}
+featPropPop Plant.Costume.scale
+
+# PROGRAM UPDATE
+
+when Plant touches Sunbeam [[
+  every 1 runAtStart [[
+    // 🔎 WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
+    // 🔎 The plant converts the sunlight into sugar during photosynthesis.
+    // 🔎 The plant can use the sugar as energy to grow.
+    prop Plant.matterLevel add 1
+    prop Plant.energyLevel add 1
+
+    // Make the plant glow so that we know photosynthesis is happening
+    featProp Plant.Costume.glow setTo 4
+  ]]
+]]
+
+// Turn the glow off when the sunbeam moves away
+when Plant lastTouches Sunbeam [[
+  featProp Plant.Costume.glow setTo 0
+]]
+
+when Plant touches Soil [[
+  every 1 runAtStart [[
+    // 🔎 WHAT HAPPENS WHILE THE PLANT IS JUST SITTING THERE IN SOIL?
+    // 🔎 If there are any nutrients in the soil, the plant takes a little in.
+    // 🔎 Below you will see how the plant needs nutrients to survive.
+    ifProp Soil.nutrients greaterThan 0 [[
+      prop Soil.nutrients sub 1
+      prop Plant.nutrients add 1
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+  // 🔎 WHAT HAPPENS TO THE PLANT THE REST OF THE TIME?
+  // 🔎 The plant uses some of its nutrients to stay alive.
+  // 🔎 Remember that it also needs sugar that it made from the sunlight during photosynthesis.
+  prop Plant.nutrients sub 1
+
+  // 🔎 Show the plant being healthy if it has more than 6 nutrients
+  // 🔎 And not so heallthy if it is less. If it is 0 it dies.
+  ifProp Plant.nutrients greaterThan 6 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
+  ]]
+  ifProp Plant.nutrients lessThanOrEqual 6 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth.png'
+  ]]
+  ifProp Plant.nutrients lessThan 2 [[
+    featProp Plant.Costume.costumeName setTo 'DC_plant_dead.png'
+    // if the plant is doing really badly, lost some matter and shrink
+    prop Plant.matterLevel sub 1
+  ]]
+
+  // set the Plant meter color based on energy level
+  ifProp Plant.energyLevel greaterThanOrEqual 25 [[
+    featProp Plant.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Plant.energyLevel lessThan 25 [[
+    featProp Plant.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Plant.energyLevel lessThan 10 [[
+    featProp Plant.Graphing.meterColor setTo 16711680
+  ]]
+
+  // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
+  exprPush {{ Plant.getProp('matterLevel').value / 100 }}
+  featPropPop Plant.Costume.scale
+
+  // if the plant is basically dead
+  ifProp Plant.matterLevel lessThan 10 [[
+
+    // create a little bit of inorganic matter
+    featCall Plant.Population createCharacter Waste [[
+      prop Waste.x addRndInt -5 5
+      prop Waste.y addRndInt 50 100
+      prop Waste.matterLevel setTo 20
+    ]]
+
+    // then remove the plant
+    featCall Plant.Population removeCharacter
+  ]]
+
+
+]]`
+    },
+    {
+      "name": "Waste",
+      "scriptText": `# BLUEPRINT Waste
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Population
+addFeature Costume
+
+featProp Waste.Costume.costumeName setTo 'DC_waste.png'
+
+addProp matterLevel number 100
+prop Waste.matterLevel setMax 100
+prop Waste.matterLevel setMin 0
+
+// scale up because the art is a bit small
+addFeature Physics
+
+featProp Waste.Costume.scale setTo 0.8
+
+// pick a random rotation to keep things looking interesting
+// prop Waste.orientation setTo 0
+// prop Waste.orientation addRnd 0 6
+
+// we need to be able to see when the waste is on soil and / or being eaten by a worm
+addFeature Touches
+featCall Waste.Touches monitor 'Worm' b2b
+featCall Waste.Touches monitor 'Soil' b2b
+
+// make sure it is in front of the soil but behind the worms
+prop Waste.zIndex setTo -150
+
+addFeature Graphing
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter
+featProp Waste.Graphing.meterProp setTo 'matterLevel'
+
+// scale based on amount of matter
+exprPush {{ (Waste.getProp('matterLevel').value / 150) }}
+featPropPop Waste.Costume.scale
+
+featProp Waste.Graphing.meterColor setTo 5783616
+featProp Waste.Graphing.text setTo ''
+
+# PROGRAM UPDATE
+when Waste touches Soil [[
+  // ✏️ LETS CHANGE THIS - change the numbers to seee the impact of bacteria, including making the numberes 0 if you want (no bacteria)
+  every 1 runAtStart [[
+    // Bacteria decomposes waste
+   // prop Waste.matterLevel sub 1
+   // prop Soil.nutrients add 1
+  ]]
+]]
+
+every 1 runAtStart [[
+  // remove if there is nothing left
+  ifProp Waste.matterLevel lessThan 1 [[
+    featCall Waste.Population removeCharacter
+  ]]
+
+  // scale based on amount of matter
+  exprPush {{ (Waste.getProp('matterLevel').value / 150) }}
+  featPropPop Waste.Costume.scale
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+
+      // COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
+`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+
+      // COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+
+addProp time number 0
+
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM INIT
+
+prop Timer.x setTo 445
+prop Timer.y setTo -256
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "CharacterGraph",
+      "scriptText": `# BLUEPRINT CharacterGraph
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a graph character that can be set up different ways in the map setup
+// 🔎 so that it shows lots of different variables that might be important to us.
+// 🔎 To change the variables use the map setup. The options are:
+// 🔎 -- Character options: Plant, Tomato, Worm, Waste, Bunny
+// 🔎 -- Variable options: matterLevel, energyLevel, nutrients
+// 🔎 -- Population options: sum, avg, min, max
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Costume
+addFeature Graphing
+addFeature Population
+
+// Set costume to be blank
+featProp CharacterGraph.Costume.costumeName setTo 'GEN_onexone.json'
+
+// setting these all up to so they can be changed in the map editor
+addProp characterType string 'Worm'
+addProp countType string 'sum'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Worm Energy'
+
+// using a generic name so that it is easier to change later
+addProp graphValue number 0
+prop CharacterGraph.graphValue setMax 1000
+prop CharacterGraph.graphValue setMin 0
+featProp CharacterGraph.Graphing.graphProp setTo 'graphValue'
+
+featProp CharacterGraph.Graphing.graphMinY setTo 0
+featProp CharacterGraph.Graphing.graphMaxY setTo 1000
+
+featProp CharacterGraph.Graphing.isLargeGraphic setTo true
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+  // ✏️ TEAM_MAY_CHANGE - change the character, variable, and possible countTypeto a different name as needed
+  // -- Character options: Plant, Tomato, Worm, Waste, Bunny
+  // -- Variable options: matterLevel, energyLevel, nutrients
+  // -- Population options: sum, avg, min, max
+
+  exprPush {{ CharacterGraph.getProp('characterType').value }}
+  featPropPop CharacterGraph.Population.monitoredCharacter
+
+  exprPush {{ CharacterGraph.getProp('variableToGraph').value }}
+  featPropPop CharacterGraph.Population.monitoredCharacterProp
+
+  featCall CharacterGraph.Population countCharacterProp
+
+  exprPush {{ CharacterGraph.getFeatProp('Population', CharacterGraph.prop.countType.value).value }}
+  propPop CharacterGraph.graphValue
+]]`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+
+// Add features
+addFeature Population
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Touches
+
+// Setup costume
+featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
+featProp Tomato.Costume.scale setTo 0.2
+
+addProp energyType string 'waste'
+
+// setup to track nutrients and begin at 1/2 way
+addProp matterLevel number 50
+prop Tomato.matterLevel setMax 50
+prop Tomato.matterLevel setMin 0
+
+addProp energyLevel number 50
+prop Tomato.energyLevel setMax 50
+prop Tomato.energyLevel setMin 0
+
+// use a widget to depict the current nutrients
+featProp Tomato.Graphing.meterProp setTo 'matterLevel'
+featProp Tomato.Graphing.text setTo ' '
+
+// set the waste to be purple because it has nutrients, not energy
+featProp Tomato.Graphing.meterColor setTo 5783616
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Tomato.matterLevel sub 5
+
+  ifProp Tomato.matterLevel greaterThan 40 [[
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
+  ]]
+  ifProp Tomato.matterLevel lessThanOrEqual 40 [[
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_beg_decomp.png'
+  ]]
+  ifProp Tomato.matterLevel lessThanOrEqual 25 [[
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_mid_decomp.png'
+  ]]
+  ifProp Tomato.matterLevel lessThan 10 [[
+    // convert to waste
+    featCall Tomato.Population createCharacter Waste [[
+      prop Waste.matterLevel setTo 40
+    ]]
+    // remove the tomato 
+    featCall Tomato.Population removeCharacter
+
+  ]]
+]]`
+    },
+    {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows bunny health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
+featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.Graphing.isLargeGraphic setTo true
+featProp HealthMeter.Graphing.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+
+onEvent Tick [[
+  // This script below is where you can decide what the current health meter shows
+
+  // QUESTION what does it mean to say an ecoyststem is healthy?
+  // Nathan thinks that the bunnies are the most important organism in the ecosystem
+  // So, we set the system health to the averageBunnyEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE what variable the meter displays as health
+  propPush global.averageBunnyEnergy
+
+  // put our variable into the healthLevel
+  propPop HealthMeter.healthLevel
+
+  // 🔎 This changes the meter colors to help show how well the ecosystem is doing
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.Graphing.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.Graphing.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// use a circle temorarily ...
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Population
+
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
+
+addProp costumeToUse string ''
+addProp textToUse string 'TEST'
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
+  ]]
+]]
+every 1 runAtStart [[
+
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1101",
+      "label": "Soil 1",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -300
+prop y setTo 100
+prop nutrients setTo 10`
+    },
+    {
+      "id": "1102",
+      "label": "Soil 2",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -100
+prop y setTo 100`
+    },
+    {
+      "id": "1103",
+      "label": "Soil 3",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 100
+prop y setTo 100`
+    },
+    {
+      "id": "1104",
+      "label": "Soil 4",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 300
+prop y setTo 100`
+    },
+    {
+      "id": "1105",
+      "label": "Soil 5",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -300
+prop y setTo 300`
+    },
+    {
+      "id": "1106",
+      "label": "Soil 6",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -100
+prop y setTo 300`
+    },
+    {
+      "id": "1107",
+      "label": "Soil 7",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 100
+prop y setTo 300`
+    },
+    {
+      "id": "1108",
+      "label": "Soil 8",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 300
+prop y setTo 300`
+    },
+    {
+      "id": "1109",
+      "label": "SoilBG",
+      "bpid": "SoilBG",
+      "initScript": `prop x setTo 0
+prop y setTo 200`
+    },
+    {
+      "id": "1801",
+      "label": "Plant Energy",
+      "bpid": "CharacterGraph",
+      "initScript": `prop x setTo 518.37
+prop y setTo 183.44
+prop characterType setTo 'Plant'
+prop countType setTo 'sum'
+prop variableToGraph setTo 'energyLevel'
+prop labelText setTo 'Plant Energy'`
+    },
+    {
+      "id": "1802",
+      "label": "Bunny Energy",
+      "bpid": "CharacterGraph",
+      "initScript": `prop x setTo 519.79
+prop y setTo 30.35
+prop characterType setTo 'Bunny'
+prop countType setTo 'sum'
+prop variableToGraph setTo 'energyLevel'
+prop labelText setTo 'Bunny Energy'`
+    },    
+    {
+      "id": "1803",
+      "label": "Worm Energy",
+      "bpid": "CharacterGraph",
+      "initScript": `prop x setTo 519.79
+prop y setTo -110
+prop characterType setTo 'Worm'
+prop countType setTo 'sum'
+prop variableToGraph setTo 'energyLevel'
+prop labelText setTo 'Worm Energy'`
+    },
+    {
+      "id": "1201",
+      "label": "Plant 1",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -296.99
+prop y setTo -95.77`
+    },
+    {
+      "id": "1602",
+      "label": "Waste 1",
+      "bpid": "Waste",
+      "initScript": `prop x setTo 311.12
+prop y setTo 97.85`
+    },
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -378.2
+featProp Graphing text setTo 'Key:'`
+    },
+    {
+      "id": "1701",
+      "label": "EnergyLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -348
+featProp Graphing text setTo 'Energy'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1702",
+      "label": "NutrientsLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -312
+featProp Graphing text setTo 'Nutrients'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1703",
+      "label": "MatterLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -280
+featProp Graphing text setTo 'Matter'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1704",
+      "label": "EnergyChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -328.46
+featCall Costume setColorize 0 255 0
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "1705",
+      "label": "NutrientsChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -296
+featCall Costume setColorize 138 43 226
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
+    },
+    {
+      "id": "1706",
+      "label": "MatterChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -265
+featCall Costume setColorize 0.56 0.52 0.40
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
+    },
+    {
+      "id": "1804",
+      "label": "Sunbeam",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -358.12
+prop y setTo -136.56`
+    },
+    {
+      "id": "1808",
+      "label": "Waste 2",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -294.32
+prop y setTo 94.21`
+    },
+    {
+      "id": "1809",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 456.93
+prop y setTo -403.87
+`
+    },
+    {
+      "id": "1900",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 0 0 0
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "1810",
+      "label": "Plant 2",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 99.77
+prop y setTo -97.13`
+    },
+    {
+      "id": "1812",
+      "label": "Soil 9",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -304.63
+prop y setTo -101.72`
+    },
+    {
+      "id": "1813",
+      "label": "Soil 10",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 99.80
+prop y setTo -102.19`
+    },
+    {
+      "id": "1814",
+      "label": "Soil 11",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 304.81
+prop y setTo -100.92`
+    },
+    {
+      "id": "1815",
+      "label": "Soil 12",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 303.58
+prop y setTo -299.16`
+    },
+    {
+      "id": "1816",
+      "label": "Soil 13",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 104.06
+prop y setTo -298.28`
+    },
+    {
+      "id": "1817",
+      "label": "Soil 14",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -102.44
+prop y setTo -302.58`
+    },
+    {
+      "id": "1818",
+      "label": "Soil 15",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -306.26
+prop y setTo -301.64`
+    },
+    {
+      "id": "1819",
+      "label": "Soil 16",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -99.50
+prop y setTo -101.62`
+    },
+    {
+      "id": "1821",
+      "label": "Tomato 1",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo 111.77
+prop y setTo -291.84`
+    },
+    {
+      "id": "1901",
+      "label": "Plant 3",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -98.46
+prop y setTo -299.23`
+    },
+    {
+      "id": "1902",
+      "label": "Plant 4",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 93.12
+prop y setTo 285.13`
+    },
+    {
+      "id": "1903",
+      "label": "Tomato 2",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo 309.78
+prop y setTo -89.15`
+    },
+    {
+      "id": "1904",
+      "label": "HealthMeter",
+      "bpid": "HealthMeter",
+      "initScript": `prop x setTo 517.48
+prop y setTo 312.89`
+    }
+  ]
+}
