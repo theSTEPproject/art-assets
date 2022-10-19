@@ -1,6 +1,6 @@
 {
-  "id": "PnP",
-  "label": "PnP Model",
+  "id": "BlackDeath1",
+  "label": "Black Death Model",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -159,6 +159,34 @@ addProp perceivedValue Number 0
 // report perceivedKnowledge
 // report perceivedValue
 
+`
+    },  
+      {
+      "id": "PopupEffect",
+      "label": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+# PROGRAM INIT
+
+// use a circle temorarily ...
+addFeature Costume
+addFeature Physics
+addFeaturePopulation
+
+featProp PopupEffect.Costume.costumeName setTo 'circle.json'
+
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeAgent
+  ]]
+]]
 `
     }
   ],
