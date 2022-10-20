@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x98f5ff",
     "roundsCanLoop": true,
@@ -1480,6 +1483,13 @@ prop y setTo -89.15`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 517.48
 prop y setTo 312.89`
+    },
+    {
+      "id": "1905",
+      "label": "Bunny1905",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -2
+prop y setTo -8`
     }
   ]
 }
