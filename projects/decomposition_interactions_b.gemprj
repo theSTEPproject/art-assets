@@ -132,6 +132,47 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+# PROGRAM INIT
+// Add Features 
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+// Setup costume and size it
+featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+featProp Soil.Costume.scale setTo 0.85
+prop Soil.zIndex setTo -200
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How many NUTRIENTS does the SOIL START with?
+// ✏️ LETS CHANGE THIS:
+addProp nutrients number 50
+prop Soil.nutrients setMax 100
+prop Soil.nutrients setMin 0
+
+
+// Property to time sparkles thata show when nutrients are released into the soil
+addProp sparkleCount number 0
+// LETS CHANGE THIS -  pick a different thing to display on the meter (note, color won't change below)
+featProp Soil.Graphing.meterProp setTo 'nutrients'
+featCall Soil.Graphing setMeterPosition 'middle'
+// violet
+featProp Soil.Graphing.meterColor setTo 13002239
+featProp Soil.Graphing.text setTo ''
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  // Displaay the sparkle, and then count down 
+  ifProp Soil.sparkleCount greaterThan 0 [[
+    prop Soil.sparkleCount sub 1
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
+  ]]
+  // stop sparkling 
+  ifProp Soil.sparkleCount equal 0 [[
+    featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+  ]]
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -139,49 +180,6 @@ every 1 runAtStart [[
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
-# PROGRAM INIT
-
-// Add Features 
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Graphing
-
-// Setup costume and size it
-featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
-featProp Soil.Costume.scale setTo 0.85
-prop Soil.zIndex setTo -200
-
-// Nutrients 
-addProp nutrients number 50
-prop Soil.nutrients setMax 100
-prop Soil.nutrients setMin 0
-
-// Property to time sparkles thata show when nutrients are released into the soil
-addProp sparkleCount number 0
-
-// ✏️ LETS CHANGE THIS -  pick a different thing to display on the meter (note, color won't change below)
-featProp Soil.Graphing.meterProp setTo 'nutrients'
-
-featCall Soil.Graphing setMeterPosition 'middle'
-// violet
-featProp Soil.Graphing.meterColor setTo 13002239
-featProp Soil.Graphing.text setTo ''
-
-# PROGRAM UPDATE
-
-every 1 runAtStart [[
-  // Displaay the sparkle, and then count down 
-  ifProp Soil.sparkleCount greaterThan 0 [[
-    prop Soil.sparkleCount sub 1
-    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
-
-  ]]
-  // stop sparkling 
-  ifProp Soil.sparkleCount equal 0 [[
-    featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
-  ]]
-]]
 `
     },
     {
@@ -190,49 +188,51 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+# PROGRAM INIT
+// Add features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
+featCall Sunbeam.Costume setColorize 1 1 0
+prop Sunbeam.alpha setTo 0.3
+// prop zIndex setTo 100
+
+
+// ✏️ LETS CHANGE THIS
+// ✏️ How WIDE is the SUNBEAM?
+featProp Sunbeam.Costume.scale setTo 1
+// ✏️ How TALL is the SUNBEAM?
+featProp Sunbeam.Costume.scaleY setTo 3
+
+
+//@ JD -- do these work? doesn't this happen elsewhere?
+addProp speed number 20 
+addProp energyRate number 5
+# PROGRAM UPDATE
+// move the sun every 1/10 second
+every 0.1 runAtStart [[
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How FAST does the SUNBEAM MOVE?
+// ✏️ LETS CHANGE THIS
+// ✏️ HIGHER number --> FASTER
+  prop Sunbeam.x add 3
+
+
+  // If the sunbeam goes off the right edge then start over on the left
+  ifProp Sunbeam.x greaterThan 400 [[
+    prop Sunbeam.x setTo -400
+  ]]
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
-
-
-# PROGRAM INIT
-
-// Add features
-addFeature Costume
-addFeature Physics
-addFeature Touches
-
-featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
-
-featCall Sunbeam.Costume setColorize 1 1 0
-prop Sunbeam.alpha setTo 0.3
-// prop zIndex setTo 100
-
-// ✏️ LETS CHANGE THIS - how wide and tall the sunbeam is
-featProp Sunbeam.Costume.scale setTo 1
-featProp Sunbeam.Costume.scaleY setTo 3
-
-// ✏️ LETS CHANGE THIS - to set the speed of the sunbeam, or the amount of energy it gives to the plant
-addProp speed number 20
-addProp energyRate number 5
-
-# PROGRAM UPDATE
-// move the sun every 1/10 second
-every 0.1 runAtStart [[
-
-  // ✏️ LETS CHANGE THIS the sunbeams speed
-  // ✏️ Move the sun a little every 1/2 second ... making this number bigger moves it faster
-  prop Sunbeam.x add 3
-
-  // If the sunbeam goes off the right edge then start over on the left
-  ifProp Sunbeam.x greaterThan 400 [[
-    prop Sunbeam.x setTo -400
-  ]]
-
-]]
 `
     },
     {
@@ -267,15 +267,7 @@ prop SoilBG.zIndex setTo -210
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
 # PROGRAM INIT
-
 // Add features
 addFeature Costume
 addFeature Movement
@@ -283,97 +275,95 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 addFeature Population
-
-
 // Setup the worm costume
 featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 What SIZE is the WORM?
+// ✏️ LETS CHANGE THIS:
 featProp Worm.Costume.scale setTo 0.15
+
 
 // put above everything
 prop Worm.zIndex setTo 100
-
 // move between hungry and full where hungry will eat and full will release nutrients
 addProp feeling string 'hungry'
-
 // used internally to delay nutrient release when full
 addProp nutrientCountStart number 0
-
 // how quickly does the worm releasae nutrients after being full
 prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount number 0
 
-// setup the energyLevel property
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY does the WORM START with?
+// ✏️ LETS CHANGE THIS:
 addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
-// setup the maatter property
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY does the WORM START with?
+// ✏️ LETS CHANGE THIS:
 addProp matterLevel number 50
 prop Worm.matterLevel setMax 100
 prop Worm.matterLevel setMin 0
 
+
 // Check for when the worm is touching the waste or the soil
 featCall Worm.Touches monitor 'Waste' b2b
 featCall Worm.Touches monitor 'Soil' b2b
-
-// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
+// LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
 featProp Worm.Graphing.meterProp setTo 'energyLevel'
-
 // Set meter to be green
 featProp Worm.Graphing.meterColor setTo 65280
-
 // used for the popup effect below
 addProp reportedFull boolean false
-
 # PROGRAM UPDATE
-
 ifFeatProp Worm.Movement.compassDirection equal 'E' [[
   featProp Worm.Costume.flipX setTo false
 ]]
 ifFeatProp Worm.Movement.compassDirection equal 'W' [[
   featProp Worm.Costume.flipX setTo true
 ]]
-
 when Worm touches Waste [[
   every 1 runAtStart [[
-
     // if hungry, eat
     ifProp Worm.feeling equal 'hungry' [[
 
-      // 🔎 move energy and matter from the waste to the worm and glow so we notice
-      // ✏️ LETS CHANGE how much the worm eats, or how much energy they get from eating it
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How much MATTER does the WASTE GIVE to the WORM??
+      // ✏️ LETS CHANGE THIS:
       prop Waste.matterLevel sub 10
-      // worms gain energy and matter
       prop Worm.energyLevel add 10
       prop Worm.matterLevel add 10
+
+
       // worm glowss so we know it is eating
       featProp Worm.Costume.glow setTo 4
-
       // if you are nice and full of energy, note you are full and start poop count-down
       ifProp Worm.energyLevel greaterThan 90 [[
         prop Worm.feeling setTo 'full'
-
         // change costume so we know we are full and stop glowing
         featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
         featProp Worm.Costume.glow setTo 0
-
         // update the nutrient count
         exprPush {{ Worm.getProp('nutrientCountStart').value }}
         propPop Worm.nutrientCount
-
       ]]
     ]]
   ]]
 ]]
-
 when Worm lastTouches Waste [[
   // stop glowing
   featProp Worm.Costume.glow setTo 0
 ]]
-
 when Worm touches Soil [[
   every 1 runAtStart [[
-
     // if you are full, check if enough time has passed to release nutrients... do so and then switch to being hungry again
     // if not, just update counter
     ifProp Worm.feeling equal 'full' [[
@@ -383,18 +373,14 @@ when Worm touches Soil [[
         prop Worm.matterLevel sub 50
         // put nutrients into the soil
         prop Soil.nutrients add 50
-
         // glow and sparkle so that we know something happened
         featProp Soil.Costume.glow setTo 1
         prop Soil.sparkleCount setTo 3
         featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
-
         // set worm feeling and costume to be hungry
         prop Worm.feeling setTo 'hungry'
         featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'
-
       ]]
-
       // use a popupEffect to say the worm is full
       ifProp Worm.reportedFull equal false [[
         prop Worm.reportedFull setTo true
@@ -402,23 +388,18 @@ when Worm touches Soil [[
           prop agent.textToUse setTo 'I am full!'
         ]]
       ]]
-
       ifProp Worm.nutrientCount greaterThan 0 [[
         prop Worm.nutrientCount sub 1
       ]]
     ]]
-
     ifProp Worm.feeling notEqual 'full' [[
       prop Worm.reportedFull setTo false
     ]]
   ]]
-
 ]]
-
 every 1 runAtStart [[
   // energy goes down
   prop Worm.energyLevel sub 2
-
   // set the Worm meter color based on energy level
   ifProp Worm.energyLevel greaterThanOrEqual 50 [[
     featProp Worm.Graphing.meterColor setTo 65280
@@ -429,13 +410,19 @@ every 1 runAtStart [[
   ifProp Worm.energyLevel lessThan 20 [[
     featProp Worm.Graphing.meterColor setTo 16711680
   ]]
-
   // if out of energy ... die
   ifProp Worm.energyLevel equal 0 [[
     prop Worm.alpha setTo 0.3
     prop Worm.isInert setTo true
   ]]
-]]`
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     },
     {
       "name": "Bunny",
@@ -443,15 +430,7 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
 # PROGRAM INIT
-
 // Add features
 addFeature Population
 addFeature Costume
@@ -459,44 +438,46 @@ addFeature Movement
 addFeature Physics
 addFeature Touches
 addFeature Graphing
-
 // Seet the costume
 featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+
+
+// 🔎 WHAT SIZE IS THE BUNNY?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER BUNNY
 featProp Bunny.Costume.scale setTo 0.6
 
-// ✏️ LETS CHANGE the starting energy for the bunny
-addProp energyLevel number 25
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do BUNNIES START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of energy a BUNNY can have?
 prop Bunny.energyLevel setMax 50
 prop Bunny.energyLevel setMin 0
 
+
 // This prop lets us track whether the bunny is hungry or full
 addProp feeling string 'hungry'
-
 // Use these counters to check when the bunny will go to the bathroom once it is full
 addProp wasteCountStart number 3
 addProp wasteCount number 0
-
 // how much matterLevel does the bunny have?
 addProp matterLevel number 50
 prop Bunny.matterLevel setMax 50
 prop Bunny.matterLevel setMin 0
-
 // Track when the bunny touches plants or tomators
 featCall Bunny.Touches monitor 'Plant' b2b
 featCall Bunny.Touches monitor 'Tomato' b2b
-
 // This is what the meter will display (see script below during update for color)
 featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 featProp Bunny.Graphing.meterColor setTo 65280
-
 // Move the bunny forward in front of the soil
 prop Bunny.zIndex setTo 110
-
 // used for the popup effect below
 addProp reportedFull boolean false
-
 # PROGRAM UPDATE
-
 // have the bunny art point up or down
 ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
   featProp Bunny.Costume.flipY setTo false
@@ -504,69 +485,69 @@ ifFeatProp Bunny.Movement.compassDirection equal 'N' [[
 ifFeatProp Bunny.Movement.compassDirection equal 'S' [[
   featProp Bunny.Costume.flipY setTo true
 ]]
-
 when Bunny touches Plant [[
   every 1 runAtStart [[
-
     // if hungry, eat
     ifProp Bunny.feeling equal 'hungry' [[
 
-      // ✏️ LETS CHANGE THIS- switching these numbers models different speeds of how bunnies eat the plants
-      // 🔎 Plant matterLevel and energyLevel goes down from being eaten
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How QUICKLY do BUNNIES EAT PLANTS?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ How much MATTER & ENERGY do PLANTS LOSE?
       prop Plant.matterLevel sub 10
       prop Plant.energyLevel sub 10
-      // 🔎 Bunny matterLevel and energyLevel go up from eating and digesting the plant
+
+      // ✏️ How much MATTER & ENERGY do BUNNIES GAIN?
       prop Bunny.matterLevel add 20
       prop Bunny.energyLevel add 20
+
 
       // make the bunny glow siince it is eating
       featProp Bunny.Costume.glow setTo 4
     ]]
   ]]
 ]]
-
 when Bunny lastTouches Plant [[
   featProp Bunny.Costume.glow setTo 0
 ]]
-
 // when Bunny touches Tomato eat it
 when Bunny touches Tomato [[
   every 1 runAtStart [[
-
     // if hungry, eat
     ifProp Bunny.feeling equal 'hungry' [[
 
-      // ✏️ LETS CHANGE THIS to set how quickly the bunnies eat the tomatoes
-      // 🔎 Tomato matterLevel goes down as it is eaten
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How QUICKLY do BUNNIES EAT TOMATOES?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ How much MATTER & ENERGY do TOMATOES LOSE?
       prop Tomato.matterLevel sub 1
       prop Tomato.energyLevel sub 5
-      // 🔎 Bunny matterLevel and energy go up from eating
+
+      // ✏️ How much MATTER & ENERGY do BUNNIES GAIN?
       prop Bunny.matterLevel add 1
       prop Bunny.energyLevel add 1
+
 
       // make the bunny glow for a second so that we know it is eating
       featProp Bunny.Costume.glow setTo 4
     ]]
   ]]
 ]]
-
 when Bunny lastTouches Tomato [[
   // stop glowing because we are done eating
   featProp Bunny.Costume.glow setTo 0
 ]]
-
 every 1 runAtStart [[
-
   // if the bunny is already full, handle the timer and then go to the bathroom
   ifProp Bunny.feeling equal 'full' [[
     // if the wasteCount is 0, create some waste
     ifProp Bunny.wasteCount equal 0 [[
-
       prop Bunny.energyLevel sub 20
       prop Bunny.matterLevel sub 20
       prop Bunny.feeling setTo 'hungry'
       featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
-
       // create the waste
       featCall Bunny.Population createCharacter Waste [[
         prop Waste.x addRndInt -20 20
@@ -574,39 +555,33 @@ every 1 runAtStart [[
         prop Waste.matterLevel setTo 40
       ]]
     ]]
-
     // if the wasteCount is not 0, decrement it
     ifProp Bunny.wasteCount greaterThan 0 [[
       prop Bunny.wasteCount sub 1
     ]]
   ]]
-
   // check if the bunny is full, and if so maake sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
-    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
     prop Bunny.feeling setTo 'full'
     exprPush {{ Bunny.getProp('wasteCountStart').value }}
     propPop Bunny.wasteCount
     featProp Bunny.Costume.glow setTo 0
-
     // use a popupEffect to say the bunny is full
     ifProp Bunny.reportedFull equal false [[
       prop Bunny.reportedFull setTo true
       featCall Bunny.Population createCharacter PopupEffect [[
         prop agent.textToUse setTo 'I am full!'
       ]]
-     ]]
+    ]]
   ]]
-
   ifProp Bunny.energyLevel lessThan 35 [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
     prop Bunny.reportedFull setTo false
   ]]
-
   // use some energy from just living / running around
   prop Bunny.energyLevel sub 1
-
   // set the bunny meter color based on energy level
   ifProp Bunny.energyLevel greaterThanOrEqual 35 [[
     featProp Bunny.Graphing.meterColor setTo 65280
@@ -617,13 +592,18 @@ every 1 runAtStart [[
   ifProp Bunny.energyLevel lessThan 10 [[
     featProp Bunny.Graphing.meterColor setTo 16711680
   ]]
-
   // if out of energy ... die
   ifProp Bunny.energyLevel equal 0 [[
     prop Bunny.alpha setTo 0.3
     prop Bunny.isInert setTo true
   ]]
-]]`
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     },
     {
       "name": "Plant",
@@ -631,74 +611,66 @@ every 1 runAtStart [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
-
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
 # PROGRAM INIT
-
 // Setup features
 addFeature Costume
 addFeature Population
 addFeature Physics
 addFeature Touches
 addFeature Graphing
-
 // Setup costume
 featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
-
 addProp energyLevel number 50
 
-// ✏️ LETS CHANGE THIS - set a different starting eneregy level, max or min (or make it random)
+
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+// 🔎 How much ENERGY do PLANTS START with?
 prop Plant.energyLevel setTo 40
 prop Plant.energyLevel setMax 50
 prop Plant.energyLevel setMin 0
-
 addProp nutrients number 8
+addProp matterLevel number 50
 
-// ✏️ LETS CHANGE THIS - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How many NUTRIENTS do PLANTS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE NUTRIENTS (1-10)
 prop Plant.nutrients setTo 8
 prop Plant.nutrients setMax 10
 prop Plant.nutrients setMin 0
 
-addProp matterLevel number 50
 
-// ✏️ LETS CHANGE THIS - sete a different range or starting point of matter
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much MATTER do PLANTS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE MATTER (1-50)
 prop Plant.matterLevel setTo 35
 prop Plant.matterLevel setMax 50
 prop Plant.matterLevel setMin 0
 
-prop Plant.zIndex setTo -110
 
+prop Plant.zIndex setTo -110
 // Track if the plant touches the sun or soil
 featCall Plant.Touches monitor 'Sunbeam' b2b
 featCall Plant.Touches monitor 'Soil' b2b
-
 // Set meter to display energy level and start green
 featProp Plant.Graphing.meterProp setTo 'energyLevel'
 featProp Plant.Graphing.meterColor setTo 65280
 featProp Plant.Graphing.text setTo ''
-
 // always keep it right near the edge of the dirt, but give some variability
 prop Plant.y setTo -50
 prop Plant.y addRnd -10 10
-
 // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
 exprPush {{ Plant.getProp('matterLevel').value / 100 }}
 featPropPop Plant.Costume.scale
-
 # PROGRAM UPDATE
-
 when Plant touches Sunbeam [[
   every 1 runAtStart [[
-    // 🔎 WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
-    // 🔎 The plant converts the sunlight into sugar during photosynthesis.
-    // 🔎 The plant can use the sugar as energy to grow.
+    // WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
+    // The plant converts the sunlight into sugar during photosynthesis.
+    // The plant can use the sugar as energy to grow.
     prop Plant.matterLevel add 1
     prop Plant.energyLevel add 1
 
@@ -706,7 +678,6 @@ when Plant touches Sunbeam [[
     featProp Plant.Costume.glow setTo 4
   ]]
 ]]
-
 // Turn the glow off when the sunbeam moves away
 when Plant lastTouches Sunbeam [[
   featProp Plant.Costume.glow setTo 0
@@ -714,24 +685,34 @@ when Plant lastTouches Sunbeam [[
 
 when Plant touches Soil [[
   every 1 runAtStart [[
-    // 🔎 WHAT HAPPENS WHILE THE PLANT IS JUST SITTING THERE IN SOIL?
-    // 🔎 If there are any nutrients in the soil, the plant takes a little in.
-    // 🔎 Below you will see how the plant needs nutrients to survive.
+  
+  
+    // 🔎 WHAT DOES THIS DO?
+// 🔎 WHEN do PLANTS get NUTRIENTS?
     ifProp Soil.nutrients greaterThan 0 [[
+    
+// 🔎 How many NUTIRENTS do PLANT GAIN from SOIL?
+// ✏️ LETS CHANGE THIS:
       prop Soil.nutrients sub 2
       prop Plant.nutrients add 2
     ]]
   ]]
 ]]
 
-every 1 runAtStart [[
-  // 🔎 WHAT HAPPENS TO THE PLANT THE REST OF THE TIME?
-  // 🔎 The plant uses some of its nutrients to stay alive.
-  // 🔎 Remember that it also needs sugar that it made from the sunlight during photosynthesis.
-  prop Plant.nutrients sub 1
 
-  // 🔎 Show the plant being healthy if it has more than 6 nutrients
-  // 🔎 And not so heallthy if it is less. If it is 0 it dies.
+every 1 runAtStart [[
+  // WHAT HAPPENS TO THE PLANT THE REST OF THE TIME?
+  // The plant uses some of its nutrients to stay alive.
+  // Remember that it also needs sugar that it made from the sunlight during photosynthesis.
+  
+  
+      // 🔎 WHAT DOES THIS DO?
+// 🔎 HOW QUICKLY do PLANTS LOSE NUTRIENTS?
+  prop Plant.nutrients sub 1
+  
+
+  // Show the plant being healthy if it has more than 6 nutrients
+  // And not so heallthy if it is less. If it is 0 it dies.
   ifProp Plant.nutrients greaterThan 6 [[
     featProp Plant.Costume.costumeName setTo 'DC_plant_healthy.png'
   ]]
@@ -743,7 +724,6 @@ every 1 runAtStart [[
     // if the plant is doing really badly, lost some matter and shrink
     prop Plant.matterLevel sub 1
   ]]
-
   // set the Plant meter color based on energy level
   ifProp Plant.energyLevel greaterThanOrEqual 25 [[
     featProp Plant.Graphing.meterColor setTo 65280
@@ -754,27 +734,29 @@ every 1 runAtStart [[
   ifProp Plant.energyLevel lessThan 10 [[
     featProp Plant.Graphing.meterColor setTo 16711680
   ]]
-
   // set size based on matterLevel (assume matterLevel max of 100) and that we waver between 80-100%
   exprPush {{ Plant.getProp('matterLevel').value / 100 }}
   featPropPop Plant.Costume.scale
-
   // if the plant is basically dead
   ifProp Plant.matterLevel lessThan 10 [[
-
     // create a little bit of inorganic matter
     featCall Plant.Population createCharacter Waste [[
       prop Waste.x addRndInt -5 5
       prop Waste.y addRndInt 50 100
       prop Waste.matterLevel setTo 20
     ]]
-
     // then remove the plant
     featCall Plant.Population removeCharacter
   ]]
+]]
 
 
-]]`
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+`
     },
     {
       "name": "Waste",
@@ -995,49 +977,60 @@ onEvent Tick [[
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
 # PROGRAM INIT
-
 // Add features
 addFeature Population
 addFeature Costume
 addFeature Physics
 addFeature Graphing
 addFeature Touches
-
 // Setup costume
 featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
+
+
+// 🔎 What SIZE is the TOMATO?
 featProp Tomato.Costume.scale setTo 0.2
 
-addProp energyType string 'waste'
 
+addProp energyType string 'waste'
 // setup to track nutrients and begin at 1/2 way
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much MATTER do TOMATOES START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE MATTER
 addProp matterLevel number 50
 prop Tomato.matterLevel setMax 50
 prop Tomato.matterLevel setMin 0
 
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do TOMATOES START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel number 50
 prop Tomato.energyLevel setMax 50
 prop Tomato.energyLevel setMin 0
 
+
 // use a widget to depict the current nutrients
 featProp Tomato.Graphing.meterProp setTo 'matterLevel'
 featProp Tomato.Graphing.text setTo ' '
-
 // set the waste to be purple because it has nutrients, not energy
 featProp Tomato.Graphing.meterColor setTo 5783616
-
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  prop Tomato.matterLevel sub 5
 
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How QUICKLY do TOMATOES decompose (LOSE MATTER)?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => LOSE MORE MATTER
+  prop Tomato.matterLevel sub 5
+  
+  
+  
   ifProp Tomato.matterLevel greaterThan 40 [[
     featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
   ]]
@@ -1054,9 +1047,17 @@ every 1 runAtStart [[
     ]]
     // remove the tomato 
     featCall Tomato.Population removeCharacter
-
   ]]
-]]`
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO?
+// 🔎 body
+// ✏️ LETS CHANGE THIS:
+// ✏️ body
+
+`
     },
     {
       "name": "HealthMeter",
@@ -1186,8 +1187,7 @@ every 1 runAtStart [[
       "label": "Soil 1",
       "bpid": "Soil",
       "initScript": `prop x setTo -300
-prop y setTo 100
-prop nutrients setTo 10`
+prop y setTo 100`
     },
     {
       "id": "1102",
@@ -1266,7 +1266,7 @@ prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
 prop labelText setTo 'Bunny Energy'`
-    },    
+    },
     {
       "id": "1803",
       "label": "Worm Energy",
@@ -1407,14 +1407,13 @@ prop y setTo -97.13`
       "label": "Soil 9",
       "bpid": "Soil",
       "initScript": `prop x setTo -304.63
-prop y setTo -101.72
-prop nutrients setTo 10`
+prop y setTo -101.72`
     },
     {
       "id": "1813",
       "label": "Soil 10",
       "bpid": "Soil",
-      "initScript": `prop x setTo 99.80
+      "initScript": `prop x setTo 99.8
 prop y setTo -102.19`
     },
     {
@@ -1456,7 +1455,7 @@ prop y setTo -301.64`
       "id": "1819",
       "label": "Soil 16",
       "bpid": "Soil",
-      "initScript": `prop x setTo -99.50
+      "initScript": `prop x setTo -99.5
 prop y setTo -101.62`
     },
     {

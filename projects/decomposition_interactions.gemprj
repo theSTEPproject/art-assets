@@ -564,7 +564,7 @@ every 1 runAtStart [[
   // check if the bunny is full, and if so maake sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
-    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default.png'
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
     prop Bunny.feeling setTo 'full'
     exprPush {{ Bunny.getProp('wasteCountStart').value }}
     propPop Bunny.wasteCount
@@ -1483,13 +1483,6 @@ prop y setTo -89.15`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 517.48
 prop y setTo 312.89`
-    },
-    {
-      "id": "1905",
-      "label": "Bunny1905",
-      "bpid": "Bunny",
-      "initScript": `prop x setTo -2
-prop y setTo -8`
     }
   ]
 }
