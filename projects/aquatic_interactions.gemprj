@@ -353,15 +353,15 @@ prop Algae.zIndex setTo -110
 // This script happens once every second whenever the algae is touching the sunbeam
 when Algae touches Sunbeam [[
   every 1 runAtStart [[
-    
-    
-// 🔎 WHAT DOES THIS DO?
-// 🔎 how much energy does algae get in the sunlight?
-// ✏️ LETS CHANGE THIS:
-// ✏️ Lower numbers => gain energy faster
+
+
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how much energy does algae get in the sunlight?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ Lower numbers => gain energy faster
     prop Algae.energyLevel add 5
 
-    
+
     // glow so that we know something is happening
     featProp Algae.Costume.glow setTo 1
   ]]
@@ -375,10 +375,10 @@ when Algae lastTouches Sunbeam [[
 every 1 runAtStart [[
 
 
-// 🔎 WHAT DOES THIS DO?
-// 🔎 how much energy does algae lose each second?
-// ✏️ LETS CHANGE THIS:
-// ✏️ Higher numbers => lose energy faster
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 how much energy does algae lose each second?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ Higher numbers => lose energy faster
   prop Algae.energyLevel sub 1
 
 
@@ -412,8 +412,7 @@ every 1 runAtStart [[
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-`
+// ✏️ body`
     },
     {
       "name": "Sunbeam",
