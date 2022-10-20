@@ -666,11 +666,12 @@ prop Plant.y addRnd -10 10
 exprPush {{ Plant.getProp('matterLevel').value / 100 }}
 featPropPop Plant.Costume.scale
 # PROGRAM UPDATE
+
 when Plant touches Sunbeam [[
   every 1 runAtStart [[
-    // WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
-    // The plant converts the sunlight into sugar during photosynthesis.
-    // The plant can use the sugar as energy to grow.
+    // 🔎 WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
+    // 🔎 The plant converts the sunlight into sugar during photosynthesis.
+    // 🔎 The plant can use the sugar as energy to grow.
     prop Plant.matterLevel add 1
     prop Plant.energyLevel add 1
 
@@ -685,31 +686,22 @@ when Plant lastTouches Sunbeam [[
 
 when Plant touches Soil [[
   every 1 runAtStart [[
-  
-  
     // 🔎 WHAT DOES THIS DO?
-// 🔎 WHEN do PLANTS get NUTRIENTS?
+    // 🔎 WHEN do PLANTS get NUTRIENTS?
     ifProp Soil.nutrients greaterThan 0 [[
-    
-// 🔎 How many NUTIRENTS do PLANT GAIN from SOIL?
-// ✏️ LETS CHANGE THIS:
+
+      // 🔎 How many NUTIRENTS do PLANT GAIN from SOIL?
       prop Soil.nutrients sub 2
       prop Plant.nutrients add 2
     ]]
   ]]
 ]]
 
-
 every 1 runAtStart [[
-  // WHAT HAPPENS TO THE PLANT THE REST OF THE TIME?
-  // The plant uses some of its nutrients to stay alive.
-  // Remember that it also needs sugar that it made from the sunlight during photosynthesis.
-  
-  
-      // 🔎 WHAT DOES THIS DO?
-// 🔎 HOW QUICKLY do PLANTS LOSE NUTRIENTS?
+  // 🔎 WHAT DOES THE PLANT USE THE NUTRIENTS FOR?
+  // 🔎 The plant uses some of its nutrients to stay alive.
+  // 🔎 Remember that it also needs sugar that it made from the sunlight during photosynthesis.
   prop Plant.nutrients sub 1
-  
 
   // Show the plant being healthy if it has more than 6 nutrients
   // And not so heallthy if it is less. If it is 0 it dies.
@@ -755,8 +747,7 @@ every 1 runAtStart [[
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-`
+// ✏️ body`
     },
     {
       "name": "Waste",
@@ -1261,7 +1252,7 @@ prop labelText setTo 'Plant Energy'`
       "label": "Bunny Energy",
       "bpid": "CharacterGraph",
       "initScript": `prop x setTo 519.79
-prop y setTo 30.35
+prop y setTo 35.35
 prop characterType setTo 'Bunny'
 prop countType setTo 'sum'
 prop variableToGraph setTo 'energyLevel'
