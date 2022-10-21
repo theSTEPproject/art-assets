@@ -1133,7 +1133,6 @@ onEvent Tick [[
 
 # PROGRAM INIT
 
-// use a circle temorarily ...
 addFeature Costume
 addFeature Physics
 addFeature Graphing

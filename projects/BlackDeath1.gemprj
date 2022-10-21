@@ -12,7 +12,7 @@
     ],
     "bounce": true,
     "bgcolor": 13882323,
-    "roundsCanLoop": true,
+    "roundsCanLoop": false,
     "showWebCam": false,
     "scaleX": 1,
     "scaleY": 1,
@@ -22,7 +22,26 @@
     "mirrorX": false,
     "mirrorY": false
   },
-  "rounds": [],
+  "rounds": [
+    {
+      "id": "r1",
+      "label": "Before Times",
+      "time": 10,
+      "intro": "Before Times Intro",
+      "outtro": "",
+      "initScript": `dbgOut 'roundDef: Round1'`,
+      "endScript": `dbgOut 'END Round!'`
+    },
+    {
+      "id": "r2",
+      "label": "Plague Strikes",
+      "time": 20,
+      "intro": "Thee Plague Strikes Town",
+      "outtro": "",
+      "initScript": `dbgOut 'roundDef: Round2'`,
+      "endScript": `dbgOut 'END Round!'`
+    }
+  ],
   "blueprints": [
     {
       "name": "global",
@@ -39,15 +58,11 @@
 
 # PROGRAM INIT
 
-// 🔎 WHAT DOES THIS MODEL DO?
-// 🔎 This starter model is inteded to help users explore how people interacting with each other
-// 🔎 might impact the other people. The existing code mirrors a basic disease spread scenario for 
-// 🔎 some sample code to muck with
-// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
-
 prop global.visible setTo false
 
-// required directive
+// bd props
+// add food
+
 # PROGRAM UPDATE`
     },
     {
@@ -57,71 +72,60 @@ prop global.visible setTo false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
 # PROGRAM INIT
 // add features
 addFeature Costume
 addFeature Graphing
 addFeature Physics
 addFeature Touches
+addFeature Population
 
 // setup the costume
 featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
-featProp Person.Costume.scale setTo 0.5
+featProp Person.Costume.scale setTo 0.7
 
 // make sure we track interactions with other people
 featCall Person.Touches monitor 'Person' b2b
 featCall Person.Touches monitor 'Space' b2b
+featCall Person.Touches monitor 'Food' b2b
 
-// 🔎 WHAT are the properties of people? 
-// 🔎 Note that many people perceive these as being ranked, rather than 
-// 🔎 simply different, and therefore that is how they are represented in the script
-addProp perceivedColor Number 0
-addProp perceivedType Number 0
-addProp perceivedKnowledge Number 0
-addProp perceivedValue Number 0
-addProp mood Number 0
+// 🔎 WHAT are the properties of people?
+// Do they currently have the plague?
+addProp hasPlague boolean false
 
-// display the meter if relevant
-// featCall agent.Graphing bindMeterTo energy
+// How wealthy are they?  This will impact access to food.
+addProp wealth number 5
+prop Person.wealth setMin 0
+prop Person.wealth setMax 10
+
+// How healthy are they generally in terms of nutrition?
+// for simplicity of modeling, start at 5 (middle of the road) and go up for eating good food
+addProp nutritionLevel number 5
+prop Person.nutritionLevel setMin 0
+prop Person.nutritionLevel setMax 10
 
 # PROGRAM UPDATE
-// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
-// This is also where you can handle touches between characters such as When Algae touches Fish
-  
-// TO DO
-// Update color to match color
-// report perceivedKnowledge
-// report perceivedValue
 
-  when Person firstTouches Person [[
-    // glow to show we are interacting
-    featProp Person.Costume.glow setTo 1
+when Person firstTouches Person [[
+  // glow to show we are interacting
+  featProp Person.Costume.glow setTo 1
 
-    // TO DO
-    // If it is someone else
-    // If they are same rank or higher
-    // give them some perceivedKnowledge
-    // If they are beneath you, look unhappy
-    // If they are same, neutral
+]]
 
+when Person firstTouches Space [[
+  featProp Person.Costume.glow setTo 1
+
+  ifExpr {{Space.getProp('wealth').value > Person.getProp('wealth').value}} [[
+      featCall Person.Population createCharacter PopupEffect [[
+        prop agent.textToUse setTo 'You are not welcome!'
+      ]]
   ]]
+]]
 
-  when Person firstTouches Space [[
-      featProp Person.Costume.glow setTo 1
+when Person firstTouches Food [[
+  featProp Person.Costume.glow setTo 1
 
-    // TO DO
-    // If the space is the same rank or lower
-    // gain knowledge
-    // if it is too high, bad things happen
-
-  ]]
+]]
 `
     },
     {
@@ -130,12 +134,6 @@ addProp mood Number 0
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
 
 # PROGRAM INIT
 addFeature Costume
@@ -148,46 +146,85 @@ prop Space.zIndex setTo -200
 // 🔎 WHAT are the properties of spaces? 
 // 🔎 Note that many people perceive these as being ranked, rather than 
 // 🔎 simply different, and therefore that is how they are represented in the scriptaddProp perceivedColor Number 0
-addProp perceivedType Number 0
-addProp perceivedKnowledge Number 0
-addProp perceivedValue Number 0
+
+// How wealthy is the space?  This will impact who is welcome.
+addProp wealth number 6
+prop Space.wealth setMin 0
+prop Space.wealth setMax 10
 
 # PROGRAM UPDATE
 
-// TO DO
-// Update color to match color
-// report perceivedKnowledge
-// report perceivedValue
 
 `
-    },  
-      {
-      "id": "PopupEffect",
-      "label": "PopupEffect",
+    },
+    {
+      "name": "PopupEffect",
       "scriptText": `# BLUEPRINT PopupEffect
 # TAG isPozyxControllable false
 # TAG isCharControllable false
 # TAG isPTrackControllable false
+
 # PROGRAM INIT
 
-// use a circle temorarily ...
 addFeature Costume
 addFeature Physics
-addFeaturePopulation
+addFeature Graphing
+addFeature Population
 
-featProp PopupEffect.Costume.costumeName setTo 'circle.json'
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
 
+addProp costumeToUse string ''
+addProp textToUse string 'TEST'
 addProp countDown Number 2
 
 # PROGRAM UPDATE
 
-every 1 runAtStart [[
-  prop PopupEffect.countDown sub 1
-  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
-    featCall PopupEffect.Population removeAgent
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
   ]]
 ]]
-`
+every 1 runAtStart [[
+
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]`
+    },
+    {
+      "name": "Food",
+      "scriptText": `# BLUEPRINT Food
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// Add features we need for this character
+addFeature Costume
+addFeature Physics
+
+// Setup the costume
+featProp Food.Costume.costumeName setTo 'DC_tomato.png'
+featProp Food.Costume.scale setTo 0.2
+
+// how nutritional is the food
+addProp nutritionLevel number 5
+prop Food.nutritionLevel setMin 0
+prop Food.nutritionLevel setMax 10
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -210,7 +247,9 @@ prop y setTo 48.13`
       "label": "Space 1",
       "bpid": "Space",
       "initScript": `prop x setTo -271.37
-prop y setTo -272.55`
+prop y setTo -272.55
+
+`
     },
     {
       "id": "3",
@@ -225,6 +264,13 @@ prop y setTo -273.32`
       "bpid": "Space",
       "initScript": `prop x setTo -269.55
 prop y setTo 256.66`
+    },
+    {
+      "id": "5",
+      "label": "Food5",
+      "bpid": "Food",
+      "initScript": `prop x setTo -342.15
+prop y setTo -338.28`
     }
   ]
 }
