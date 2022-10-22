@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 13882323,
     "roundsCanLoop": false,
@@ -60,9 +57,6 @@
 
 prop global.visible setTo false
 
-// bd props
-// add food
-
 # PROGRAM UPDATE`
     },
     {
@@ -75,10 +69,10 @@ prop global.visible setTo false
 # PROGRAM INIT
 // add features
 addFeature Costume
-addFeature Graphing
 addFeature Physics
 addFeature Touches
 addFeature Population
+addFeature Graphing
 
 // setup the costume
 featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
@@ -98,35 +92,71 @@ addProp wealth number 5
 prop Person.wealth setMin 0
 prop Person.wealth setMax 10
 
+// How much energylevel do they have?  Need food for energylevel
+addProp energylevel number 5
+prop Person.energylevel setMin 0
+prop Person.energylevel setMax 10
+
 // How healthy are they generally in terms of nutrition?
 // for simplicity of modeling, start at 5 (middle of the road) and go up for eating good food
 addProp nutritionLevel number 5
 prop Person.nutritionLevel setMin 0
 prop Person.nutritionLevel setMax 10
 
+featProp Person.Graphing.meterProp setTo 'energylevel'
+
+// Set name
+exprPush {{'$:' + Person.getProp('wealth').value + '; ' + 'Nutrition:' + Person.getProp('nutritionLevel').value }}
+featPropPop Person.Graphing.text 
+
 # PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // People use energylevel over time
+  // prop Person.energylevel sub 1
+  exprPush {{'$:' + Person.getProp('wealth').value + '; ' + 'Nutrition:' + Person.getProp('nutritionLevel').value }}
+  featPropPop Person.Graphing.text 
+]]
 
 when Person firstTouches Person [[
   // glow to show we are interacting
   featProp Person.Costume.glow setTo 1
 
+  // TODO Check for plague
+
 ]]
 
 when Person firstTouches Space [[
-  featProp Person.Costume.glow setTo 1
-
-  ifExpr {{Space.getProp('wealth').value > Person.getProp('wealth').value}} [[
-      featCall Person.Population createCharacter PopupEffect [[
-        prop agent.textToUse setTo 'You are not welcome!'
-      ]]
+  // if the space has a higher wealth than the person, make them feel unwelcome
+  ifExpr {{ Space.getProp('wealth').value > Person.getProp('wealth').value }} [[
+    featCall Person.Population createCharacter PopupEffect [[
+      prop agent.textToUse setTo 'You are not welcome!'
+    ]]
   ]]
 ]]
 
 when Person firstTouches Food [[
+  // glow to show we are interacting
   featProp Person.Costume.glow setTo 1
 
-]]
-`
+  // If you cant afford the food, you are notified, if you can, get some nutrition and energylevel
+  ifExpr {{ Food.getProp('wealth').value > Person.getProp('wealth').value }} [[
+    featCall Person.Population createCharacter PopupEffect [[
+      prop agent.textToUse setTo 'You cannot afford this!'
+    ]]
+  ]]
+  ifExpr {{ Person.getProp('wealth').value > Food.getProp('wealth').value }} [[
+    prop Person.energylevel add 1
+    // If the food nutrition is higher than person, increase it for the person
+    // otherwise lower it
+    ifExpr {{ Food.getProp('nutritionLevel').value > Person.getProp('nutritionLevel').value }} [[
+      prop Person.nutritionLevel add 1
+    ]]
+    ifExpr {{ Food.getProp('nutritionLevel').value < Person.getProp('nutritionLevel').value }} [[
+      prop Person.nutritionLevel sub 1
+    ]]
+  ]]
+]]`
     },
     {
       "name": "Space",
@@ -143,19 +173,16 @@ addFeature Physics
 featProp Space.Costume.costumeName setTo 'GEN_square.json'
 prop Space.zIndex setTo -200
 
-// 🔎 WHAT are the properties of spaces? 
-// 🔎 Note that many people perceive these as being ranked, rather than 
+// 🔎 WHAT are the properties of spaces?
+// 🔎 Note that many people perceive these as being ranked, rather than
 // 🔎 simply different, and therefore that is how they are represented in the scriptaddProp perceivedColor Number 0
 
 // How wealthy is the space?  This will impact who is welcome.
-addProp wealth number 6
+addProp wealth number 5
 prop Space.wealth setMin 0
 prop Space.wealth setMax 10
 
-# PROGRAM UPDATE
-
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "PopupEffect",
@@ -219,6 +246,11 @@ addFeature Physics
 featProp Food.Costume.costumeName setTo 'DC_tomato.png'
 featProp Food.Costume.scale setTo 0.2
 
+// how expensive is the food
+addProp wealth number 5
+prop Food.wealth setMin 0
+prop Food.wealth setMax 10
+
 // how nutritional is the food
 addProp nutritionLevel number 5
 prop Food.nutritionLevel setMin 0
@@ -229,48 +261,55 @@ prop Food.nutritionLevel setMax 10
   ],
   "instances": [
     {
-      "id": "0",
-      "label": "Person 1",
-      "bpid": "Person",
-      "initScript": `prop x setTo -242.33
-prop y setTo -24.97`
-    },
-    {
-      "id": "1",
-      "label": "Person 2",
-      "bpid": "Person",
-      "initScript": `prop x setTo 187.66
-prop y setTo 48.13`
-    },
-    {
       "id": "2",
-      "label": "Space 1",
+      "label": "Wealthy Space",
       "bpid": "Space",
       "initScript": `prop x setTo -271.37
 prop y setTo -272.55
-
+prop wealth setTo 10
 `
     },
     {
       "id": "3",
-      "label": "Space 2",
+      "label": "Average Space",
       "bpid": "Space",
       "initScript": `prop x setTo 268.93
-prop y setTo -273.32`
+prop y setTo -273.32
+prop wealth setTo 5
+`
     },
     {
       "id": "4",
-      "label": "Space 3",
+      "label": "Poor Space",
       "bpid": "Space",
       "initScript": `prop x setTo -269.55
-prop y setTo 256.66`
+prop y setTo 256.66
+prop wealth setTo 2
+`
     },
     {
       "id": "5",
-      "label": "Food5",
+      "label": "Great food",
       "bpid": "Food",
       "initScript": `prop x setTo -342.15
-prop y setTo -338.28`
+prop y setTo -338.28
+prop nutritionLevel setTo 9`
+    },
+    {
+      "id": "6",
+      "label": "Average food",
+      "bpid": "Food",
+      "initScript": `prop x setTo 303.96
+prop y setTo -306.74
+prop nutritionLevel setTo 5`
+    },
+    {
+      "id": "7",
+      "label": "Poor food",
+      "bpid": "Food",
+      "initScript": `prop x setTo -328.40
+prop y setTo 304.29
+prop nutritionLevel setTo 2`
     }
   ]
 }
