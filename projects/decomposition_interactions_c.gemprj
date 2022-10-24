@@ -577,7 +577,7 @@ every 1 runAtStart [[
     ]]
   ]]
 
-  // check if the bunny is full, and if so maake sure we know it, and change the costume
+  // check if the bunny is full, and if so  make sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
