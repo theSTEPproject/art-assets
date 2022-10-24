@@ -697,6 +697,7 @@ when Plant touches Sunbeam [[
     featProp Plant.Costume.glow setTo 4
   ]]
 ]]
+
 // Turn the glow off when the sunbeam moves away
 when Plant lastTouches Sunbeam [[
   featProp Plant.Costume.glow setTo 0
@@ -734,6 +735,7 @@ every 1 runAtStart [[
     // if the plant is doing really badly, lost some matter and shrink
     prop Plant.matterLevel sub 1
   ]]
+
   // set the Plant meter color based on energy level
   ifProp Plant.energyLevel greaterThanOrEqual 25 [[
     featProp Plant.Graphing.meterColor setTo 65280
