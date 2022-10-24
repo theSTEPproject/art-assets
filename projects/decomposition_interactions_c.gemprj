@@ -267,6 +267,7 @@ prop SoilBG.zIndex setTo -210
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
+
 # PROGRAM INIT
 // Add features
 addFeature Costume
@@ -385,7 +386,7 @@ when Worm touches Soil [[
       ifProp Worm.reportedFull equal false [[
         prop Worm.reportedFull setTo true
         featCall Worm.Population createCharacter PopupEffect [[
-          prop agent.textToUse setTo 'I am full!'
+          prop PopupEffect.textToUse setTo 'I am full!'
         ]]
       ]]
       ifProp Worm.nutrientCount greaterThan 0 [[
@@ -460,8 +461,8 @@ prop Bunny.energyLevel setMin 0
 addProp feeling string 'hungry'
 
 // Use these counters to check when the bunny will go to the bathroom once it is full
-addProp wasteCountStart number 3
-addProp wasteCount number 0
+addProp wasteTimerStart number 3
+addProp wasteTimer number 0
 
 // how much matterLevel does the bunny have?
 addProp matterLevel number 50
@@ -489,6 +490,9 @@ ifFeatProp Bunny.Movement.compassDirection equal 'S' [[
 ]]
 
 when Bunny touches Plant [[
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 This is where the BUNNY eats the PLANT, and converts it to MATTER and ENERGY.
+
   every 1 runAtStart [[
     // if hungry, eat
     ifProp Bunny.feeling equal 'hungry' [[
@@ -513,12 +517,12 @@ when Bunny touches Plant [[
 when Bunny lastTouches Plant [[
   featProp Bunny.Costume.glow setTo 0
 ]]
+
 // when Bunny touches Tomato eat it
 when Bunny touches Tomato [[
   every 1 runAtStart [[
     // if hungry, eat
     ifProp Bunny.feeling equal 'hungry' [[
-
 
       // 🔎 WHAT DOES THIS DO?
       // 🔎 How QUICKLY do BUNNIES EAT TOMATOES?
@@ -531,7 +535,6 @@ when Bunny touches Tomato [[
       prop Bunny.matterLevel add 1
       prop Bunny.energyLevel add 1
 
-
       // make the bunny glow for a second so that we know it is eating
       featProp Bunny.Costume.glow setTo 4
     ]]
@@ -541,40 +544,53 @@ when Bunny lastTouches Tomato [[
   // stop glowing because we are done eating
   featProp Bunny.Costume.glow setTo 0
 ]]
+
 every 1 runAtStart [[
-  // if the bunny is already full, handle the timer and then go to the bathroom
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 When the bunny becomes full, we set a timer for 3 seconds because it waits a bit before going to the bathroom.
+  // 🔎 This script checks if the timer is up, and then makes waste.
   ifProp Bunny.feeling equal 'full' [[
-    // if the wasteCount is 0, create some waste
-    ifProp Bunny.wasteCount equal 0 [[
+
+    // if the wasteTimer is 0, create some waste
+    ifProp Bunny.wasteTimer equal 0 [[
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ This is how much energy and matter the bunny loses when it makes waste.
       prop Bunny.energyLevel sub 20
       prop Bunny.matterLevel sub 20
       prop Bunny.feeling setTo 'hungry'
       featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
+
       // create the waste
       featCall Bunny.Population createCharacter Waste [[
+        // put it near the bunny and set the matter to 40
         prop Waste.x addRndInt -20 20
         prop Waste.y addRndInt 50 150
+        // we make the waste bigger than what was lost from the bunny to show that it had some food in its stomach
         prop Waste.matterLevel setTo 40
       ]]
     ]]
-    // if the wasteCount is not 0, decrement it
-    ifProp Bunny.wasteCount greaterThan 0 [[
-      prop Bunny.wasteCount sub 1
+
+    // if the wasteTimer is not 0, lower it by 1
+    ifProp Bunny.wasteTimer greaterThan 0 [[
+      prop Bunny.wasteTimer sub 1
     ]]
   ]]
+
   // check if the bunny is full, and if so maake sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
     prop Bunny.feeling setTo 'full'
-    exprPush {{ Bunny.getProp('wasteCountStart').value }}
-    propPop Bunny.wasteCount
+    exprPush {{ Bunny.getProp('wasteTimerStart').value }}
+    propPop Bunny.wasteTimer
     featProp Bunny.Costume.glow setTo 0
+
     // use a popupEffect to say the bunny is full
     ifProp Bunny.reportedFull equal false [[
       prop Bunny.reportedFull setTo true
       featCall Bunny.Population createCharacter PopupEffect [[
-        prop agent.textToUse setTo 'I am full!'
+        prop PopupEffect.textToUse setTo 'I am full!'
       ]]
     ]]
   ]]
@@ -582,6 +598,7 @@ every 1 runAtStart [[
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
     prop Bunny.reportedFull setTo false
   ]]
+
   // use some energy from just living / running around
   prop Bunny.energyLevel sub 1
   // set the bunny meter color based on energy level
@@ -1172,7 +1189,7 @@ every 0.1 runAtStart [[
 every 1 runAtStart [[
 
   prop PopupEffect.countDown sub 1
-  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
     featCall PopupEffect.Population removeCharacter
   ]]
 ]]
