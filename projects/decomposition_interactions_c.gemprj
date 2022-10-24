@@ -1117,7 +1117,7 @@ every 1 runAtStart [[
   // 🔎 So, we set the system health to the averageBunnyEnergy, but you can change that to match what you uwant
   // ✏️ LETS CHANGE what variable the meter displays as health
   // ✏️ The options you can use are:
-  // - bunnyCount, pantCount, wormCount, allOrganismsCount
+  // - bunnyCount, plantCount, wormCount, allOrganismsCount
   // - averageBunnyEnergy, averagePlantEnergy, averageWormEnergy
   // - averageConsumerEnergy, averageProducerEnergy, averageDecomposerEnergy, averageEnergyAllOrganisms
   // ✏️ Or you can suggest something else and we'll try and make it work.
