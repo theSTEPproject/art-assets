@@ -296,15 +296,12 @@ addProp nutrientCountStart number 0
 prop Worm.nutrientCountStart setTo 5
 addProp nutrientCount number 0
 
-
-
 // 🔎 WHAT DOES THIS DO?
 // 🔎 How much ENERGY does the WORM START with?
 // ✏️ LETS CHANGE THIS:
 addProp energyLevel number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
-
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 How much ENERGY does the WORM START with?
@@ -330,23 +327,24 @@ ifFeatProp Worm.Movement.compassDirection equal 'E' [[
 ifFeatProp Worm.Movement.compassDirection equal 'W' [[
   featProp Worm.Costume.flipX setTo true
 ]]
+
 when Worm touches Waste [[
+  // check this once every second
   every 1 runAtStart [[
-    // if hungry, eat
+
     ifProp Worm.feeling equal 'hungry' [[
-
-
       // 🔎 WHAT DOES THIS DO?
-      // 🔎 How much MATTER does the WASTE GIVE to the WORM??
+      // 🔎 How much MATTER and ENERGY does the WORM get from the WASTE?
       // ✏️ LETS CHANGE THIS:
       prop Waste.matterLevel sub 10
       prop Worm.energyLevel add 10
       prop Worm.matterLevel add 10
 
-
       // worm glowss so we know it is eating
       featProp Worm.Costume.glow setTo 4
-      // if you are nice and full of energy, note you are full and start poop count-down
+
+      // 🔎 if you are nice and full of energy, note you are full and start count-down until you 
+      // 🔎 go to the bathroom and release nuutrients
       ifProp Worm.energyLevel greaterThan 90 [[
         prop Worm.feeling setTo 'full'
         // change costume so we know we are full and stop glowing
@@ -359,6 +357,7 @@ when Worm touches Waste [[
     ]]
   ]]
 ]]
+
 when Worm lastTouches Waste [[
   // stop glowing
   featProp Worm.Costume.glow setTo 0
@@ -577,7 +576,7 @@ every 1 runAtStart [[
     ]]
   ]]
 
-  // check if the bunny is full, and if so  make sure we know it, and change the costume
+  // check if the bunny is full, and if so  maake sure we know it, and change the costume
   ifProp Bunny.energyLevel greaterThan 35 [[
     // set variables to be full and prepare to release waste
     featProp Bunny.Costume.costumeName setTo 'DC_bunny_full.png'
