@@ -343,8 +343,7 @@ when Worm touches Waste [[
       // worm glowss so we know it is eating
       featProp Worm.Costume.glow setTo 4
 
-      // 🔎 if you are nice and full of energy, note you are full and start count-down until you 
-      // 🔎 go to the bathroom and release nuutrients
+      // 🔎 When the worm is full, start a count down and then excrete, which releases nutrients.
       ifProp Worm.energyLevel greaterThan 90 [[
         prop Worm.feeling setTo 'full'
         // change costume so we know we are full and stop glowing
@@ -688,8 +687,8 @@ featPropPop Plant.Costume.scale
 when Plant touches Sunbeam [[
   every 1 runAtStart [[
     // 🔎 WHAT HAPPENS WHEN THE SUNBEAM TOUCHES THE PLANT?
-    // 🔎 The plant converts the sunlight into sugar during photosynthesis.
-    // 🔎 The plant can use the sugar as energy to grow.
+    // 🔎 PLANT converts SUNLIGHT into SUGAR through PHOTOSYNTHESIS to GROW
+    // 🔎 PHOTOSYNTHESIS involves WATER and AIR transforming into SUGAR though those are not in our model
     prop Plant.matterLevel add 1
     prop Plant.energyLevel add 1
 
@@ -718,8 +717,7 @@ when Plant touches Soil [[
 
 every 1 runAtStart [[
   // 🔎 WHAT DOES THE PLANT USE THE NUTRIENTS FOR?
-  // 🔎 The plant uses some of its nutrients to stay alive.
-  // 🔎 Remember that it also needs sugar that it made from the sunlight during photosynthesis.
+  // 🔎 The PLANT uses NUTRIENTS and SUGAR to GROW.
   prop Plant.nutrients sub 1
 
   // Show the plant being healthy if it has more than 6 nutrients
