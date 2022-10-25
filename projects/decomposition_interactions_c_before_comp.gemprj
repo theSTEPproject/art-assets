@@ -1149,6 +1149,68 @@ every 1 runAtStart [[
 // ✏️ body`
     },
     {
+      "name": "HealthGraph",
+      "scriptText": `# BLUEPRINT HealthGraph
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a graph to show the health of the entire ecosystem
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// setup a healthLevel property. The meter will be connected to this property.
+addProp healthLevel number 100
+prop HealthGraph.healthLevel setMin 0
+prop HealthGraph.healthLevel setMax 100
+
+// ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
+featProp HealthGraph.Graphing.text setTo 'Avgerage Energy of all Organisms'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthGraph.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthGraph.Graphing.isLargeGraphic setTo true
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthGraph.Graphing.graphProp setTo 'healthLevel'
+
+# PROGRAM UPDATE
+
+// This script will run once every second. If you want it to run more often, then change the 1 to a decimal.
+// For example, 0.5 will be every 1/2 second so this will update more often.
+every 1 runAtStart [[
+  // 🔎 WHAT does it mean to say an ECOSYSTEM is HEALTHY?
+  // 🔎 Nathan thinks that the bunnies are the most important organism in the ecosystem
+  // 🔎 So, we set the system health to the averageBunnyEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE what variable the meter displays as health
+  // ✏️ The options you can use are:
+  // - bunnyCount, plantCount, wormCount, allOrganismsCount
+  // - averageBunnyEnergy, averagePlantEnergy, averageWormEnergy
+  // - averageConsumerEnergy, averageProducerEnergy, averageDecomposerEnergy, averageEnergyAllOrganisms
+  // ✏️ Or you can suggest something else and we'll try and make it work.
+  propPush global.averageEnergyAllOrganisms
+
+  // put our variable into the healthLevel
+  propPop HealthGraph.healthLevel
+
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
       "name": "PopupEffect",
       "scriptText": `# BLUEPRINT PopupEffect
 # TAG isPozyxControllable false
@@ -1473,6 +1535,13 @@ prop y setTo -89.15`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 519.66
 prop y setTo 286.61`
+    },
+    {
+      "id": "1905",
+      "label": "HealthGraph1905",
+      "bpid": "HealthGraph",
+      "initScript": `prop x setTo 516.79
+prop y setTo 91.43`
     }
   ]
 }
