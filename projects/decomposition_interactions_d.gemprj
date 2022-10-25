@@ -1092,7 +1092,7 @@ prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
 // ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
-featProp HealthMeter.Graphing.text setTo 'Avg. Energy of all organisms'
+featProp HealthMeter.Graphing.text setTo 'Average Energy of all organisms'
 
 // Make costume an invisible dot so we only see the meter
 featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
