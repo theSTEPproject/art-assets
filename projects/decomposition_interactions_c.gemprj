@@ -336,7 +336,7 @@ when Worm touches Waste [[
       // 🔎 WHAT DOES THIS DO?
       // 🔎 How much MATTER and ENERGY does the WORM get from the WASTE?
       // ✏️ LETS CHANGE THIS:
-      prop Waste.matterLevel sub 10
+      prop Waste.matterLevel sub 5
       prop Worm.energyLevel add 10
       prop Worm.matterLevel add 10
 
@@ -344,7 +344,7 @@ when Worm touches Waste [[
       featProp Worm.Costume.glow setTo 4
 
       // 🔎 When the worm is full, start a count down and then excrete, which releases nutrients.
-      ifProp Worm.energyLevel greaterThan 90 [[
+      ifProp Worm.energyLevel greaterThan 70 [[
         prop Worm.feeling setTo 'full'
         // change costume so we know we are full and stop glowing
         featProp Worm.Costume.costumeName setTo 'DC_worm_full.png'
@@ -368,8 +368,8 @@ when Worm touches Soil [[
     ifProp Worm.feeling equal 'full' [[
       ifProp Worm.nutrientCount equal 0 [[
         // reduce energy and matter level in the worm
-        prop Worm.energyLevel sub 50
-        prop Worm.matterLevel sub 50
+        prop Worm.energyLevel sub 35
+        prop Worm.matterLevel sub 35
         // put nutrients into the soil
         prop Soil.nutrients add 50
         // glow and sparkle so that we know something happened
@@ -503,8 +503,8 @@ when Bunny touches Plant [[
       prop Plant.energyLevel sub 10
 
       // ✏️ How much MATTER & ENERGY do BUNNIES GAIN from DIGESTING the PLANT?
-      prop Bunny.matterLevel add 20
-      prop Bunny.energyLevel add 20
+      prop Bunny.matterLevel add 30
+      prop Bunny.energyLevel add 30
 
       // make the bunny glow so we know that it is eating
       featProp Bunny.Costume.glow setTo 4
@@ -554,8 +554,8 @@ every 1 runAtStart [[
     ifProp Bunny.wasteTimer equal 0 [[
       // ✏️ LETS CHANGE THIS:
       // ✏️ This is how much energy and matter the bunny loses when it makes waste.
-      prop Bunny.energyLevel sub 20
-      prop Bunny.matterLevel sub 20
+      prop Bunny.energyLevel sub 10
+      prop Bunny.matterLevel sub 10
       prop Bunny.feeling setTo 'hungry'
       featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry.png'
 
@@ -1092,7 +1092,7 @@ prop HealthMeter.healthLevel setMin 0
 prop HealthMeter.healthLevel setMax 100
 
 // ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
-featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
+featProp HealthMeter.Graphing.text setTo 'Avg. Energy of all organisms'
 
 // Make costume an invisible dot so we only see the meter
 featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
@@ -1119,7 +1119,7 @@ every 1 runAtStart [[
   // - averageBunnyEnergy, averagePlantEnergy, averageWormEnergy
   // - averageConsumerEnergy, averageProducerEnergy, averageDecomposerEnergy, averageEnergyAllOrganisms
   // ✏️ Or you can suggest something else and we'll try and make it work.
-  propPush global.averageBunnyEnergy
+  propPush global.averageEnergyAllOrganisms
 
   // put our variable into the healthLevel
   propPop HealthMeter.healthLevel
