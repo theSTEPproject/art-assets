@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x00bfff",
     "roundsCanLoop": true,
@@ -286,7 +283,7 @@ featProp Waste.Graphing.meterColor setTo 5783616
 // ✏️ body
 
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp Plant.Costume.costumeName setTo 'DC_plant_healthy_side.png'
 
@@ -416,14 +413,7 @@ every 1 runAtStart [[
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
-# PROGRAM DEFINE
+# PROGRAM INIT
 
 // add Features
 addFeature Costume
@@ -451,38 +441,36 @@ featCall EnergyRepresentation.Touches monitor 'Worm' c2b
 featCall EnergyRepresentation.Touches monitor 'Waste' c2b
 featCall EnergyRepresentation.Touches monitor 'Soil' c2b
 
-
 # PROGRAM UPDATE
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches the SUN
 when EnergyRepresentation centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
   featProp EnergyRepresentation.Costume.costumeName setTo 'GEN_sun_energy.png'
   featProp EnergyRepresentation.Costume.scale setTo 0.6
-
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
-
   // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
   prop EnergyRepresentation.energyType setTo 'source'
   prop EnergyRepresentation.energyLevel setTo 100
 
   featProp EnergyRepresentation.Costume.costumeName setTo 'GEN_sun_energy.png'
   featProp EnergyRepresentation.Costume.scale setTo 0.6
-
 ]]
 
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a PLANT
 when EnergyRepresentation centerFirstTouches Plant [[
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_sun-to-plant_heat.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
 
   // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
   // as heat or lost in other ways
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'source' }} [[
+  ifProp EnergyRepresentation.energyType equal 'source' [[
     prop EnergyRepresentation.energyType setTo 'using'
 
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun
@@ -495,26 +483,26 @@ when EnergyRepresentation centerFirstTouches Plant [[
     featProp EnergyRepresentation.Costume.scale setTo 0.6
 
     featProp Plant.Costume.glow setTo 1
-
   ]]
 ]]
 
 when EnergyRepresentation centerLastTouches Plant [[
-
   // if you have no energy type, take some energy from the plant
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Plant.getProp('energyLevel').value > 25 }} [[
-    prop EnergyRepresentation.energyType setTo 'producer'
+  ifProp EnergyRepresentation.energyType equal 'using' [[
+    ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
 
-    // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
-    prop Plant.energyLevel sub 10
-    prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 25
+      prop EnergyRepresentation.energyType setTo 'producer'
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'DC_plant_energy.png'
-    featProp EnergyRepresentation.Costume.scale setTo 0.6
+      // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
+      // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop Plant.energyLevel sub 10
+      prop EnergyRepresentation.energyLevel add 25
+      // we are losing 25 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 25
 
+      featProp EnergyRepresentation.Costume.costumeName setTo 'DC_plant_energy.png'
+      featProp EnergyRepresentation.Costume.scale setTo 0.6
+    ]]
   ]]
 
   // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
@@ -522,22 +510,19 @@ when EnergyRepresentation centerLastTouches Plant [[
     prop EnergyRepresentation.energyType setTo 'producer'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_plant_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
-
 ]]
 
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a BUNNY
 when EnergyRepresentation centerFirstTouches Bunny [[
-
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_bunny_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
 
   // if the last thing we touched was a plant
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'producer' }} [[
+  ifProp EnergyRepresentation.energyType equal 'producer' [[
     prop EnergyRepresentation.energyType setTo 'using'
 
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun, and what it does to the energy character
@@ -550,50 +535,44 @@ when EnergyRepresentation centerFirstTouches Bunny [[
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
     featProp EnergyRepresentation.Costume.scale setTo 0.6
 
-
     featProp Bunny.Costume.glow setTo 1
-
-
   ]]
 ]]
 
 when EnergyRepresentation centerLastTouches Bunny [[
-
   // if you have no energy type, take some energy from the bunny
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Bunny.getProp('energyLevel').value > 25 }} [[
-    prop EnergyRepresentation.energyType setTo 'consumer'
+  ifProp EnergyRepresentation.energyType equal 'using' [[
+    ifProp EnergyRepresentation.energyLevel greaterThan 25 [[
+      prop EnergyRepresentation.energyType setTo 'consumer'
 
-    // ✏️ LETS CHANGE THIS to alter how much energy the Bunny gives off
-    prop Bunny.energyLevel sub 15
-    prop EnergyRepresentation.energyLevel add 15
-    // we are losing 15 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 15
+      // ✏️ LETS CHANGE THIS to alter how much energy the Bunny gives off
+      prop Bunny.energyLevel sub 15
+      prop EnergyRepresentation.energyLevel add 15
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'DC_bunny_energy.png'
-    featProp EnergyRepresentation.Costume.scale setTo 0.6
-
+      featProp EnergyRepresentation.Costume.costumeName setTo 'DC_bunny_energy.png'
+      featProp EnergyRepresentation.Costume.scale setTo 0.6
+    ]]
   ]]
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'consumer'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_bunny_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
-
 ]]
 
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WASTE
 when EnergyRepresentation centerFirstTouches Waste [[
-
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_waste_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
 
   // if the last thing we touched was a bunny
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'consumer' }} [[
+  ifProp EnergyRepresentation.energyType equal 'consumer' [[
     prop EnergyRepresentation.energyType setTo 'using'
 
     // set the energy on the waste, but then it'll get converted to matter
@@ -608,52 +587,46 @@ when EnergyRepresentation centerFirstTouches Waste [[
 
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
     featProp Waste.Costume.glow setTo 1
-
-
   ]]
-
 ]]
 
 when EnergyRepresentation centerLastTouches Waste [[
-
   // if you have no energy type, take some energy from the bunny
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Waste.getProp('matterLevel').value > 15 }} [[
+  ifProp EnergyRepresentation.energyType equal 'using' [[
+    ifProp EnergyRepresentation.energyLevel greaterThan 15 [[
 
-    prop EnergyRepresentation.energyType setTo 'waste'
+      prop EnergyRepresentation.energyType setTo 'waste'
 
-    // ✏️ LETS CHANGE THIS to alter how much energy the waste gives to the worm
-    prop Waste.matterLevel sub 15
-    prop EnergyRepresentation.energyLevel add 15
+      // ✏️ LETS CHANGE THIS to alter how much energy the waste gives to the worm
+      prop Waste.matterLevel sub 15
+      prop EnergyRepresentation.energyLevel add 15
 
-    // we are losing 15 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 15
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'DC_waste_energy.png'
-    featProp EnergyRepresentation.Costume.scale setTo 0.6
-
-
+      featProp EnergyRepresentation.Costume.costumeName setTo 'DC_waste_energy.png'
+      featProp EnergyRepresentation.Costume.scale setTo 0.6
+    ]]
   ]]
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'waste'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_waste_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
-
 ]]
 
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WORM
 when EnergyRepresentation centerFirstTouches Worm [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'using'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
 
   // if the last thing we touched was waste
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'waste' }} [[
+  ifProp EnergyRepresentation.energyType equal 'waste' [[
     prop EnergyRepresentation.energyType setTo 'using'
 
     // set the energy on the waste, but then it'll get converted to matter
@@ -669,46 +642,40 @@ when EnergyRepresentation centerFirstTouches Worm [[
     featProp EnergyRepresentation.Costume.currentFrame setTo 1
 
     featProp Worm.Costume.glow setTo 1
-
-
   ]]
-
-
 ]]
 
 when EnergyRepresentation centerLastTouches Worm [[
 
-
   // if you have no energy type, take some energy from the worm
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'using' && Worm.getProp('energyLevel').value > 15 }} [[
-    prop EnergyRepresentation.energyType setTo 'decomposer'
+  ifProp EnergyRepresentation.energyType equal 'using' [[
+    ifProp EnergyRepresentation.energyLevel greaterThan 15 [[
+      prop EnergyRepresentation.energyType setTo 'decomposer'
 
-    // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
-    prop Worm.energyLevel sub 15
-    prop EnergyRepresentation.energyLevel add 15
+      // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
+      prop Worm.energyLevel sub 15
+      prop EnergyRepresentation.energyLevel add 15
 
-    // we are losing 15 of the hundred, so not that in the global
-    prop global.energyReleasedAsHeat add 15
-    featProp EnergyRepresentation.Costume.scale setTo 0.6
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
+      featProp EnergyRepresentation.Costume.scale setTo 0.6
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm_energy.png'
-
+      featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm_energy.png'
+    ]]
   ]]
 
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'using' }} [[
     prop EnergyRepresentation.energyType setTo 'decomposer'
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm_energy.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
-
   ]]
-
-
 ]]
 
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches SOIL
 when EnergyRepresentation centerFirstTouches Soil [[
 
   // if the last thing we touched was a worm
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'decomposer' }} [[
+  ifProp EnergyRepresentation.energyType equal 'decomposer' [[
     prop EnergyRepresentation.energyType setTo 'none'
 
     // set the energy on the waste, but then it'll get converted to matter
@@ -722,23 +689,26 @@ when EnergyRepresentation centerFirstTouches Soil [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm-to-nutrients_heat.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
 
-
-
     // show the nutrients appearing
-    // featProp Soil.Costume.costumeName setTo 'DC_dirt.json'
-    featProp Soil.Costume.currentFrame setTo 1
-
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
   ]]
-
 ]]
 
-// required directive
-# PROGRAM INIT`
+when EnergyRepresentation centerLastTouches Soil [[
+  featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     },
     {
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Graphing
 addFeature Costume
 featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'`
@@ -757,13 +727,10 @@ featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'`
 // ✏️ body
 
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
 addFeature Physics
-
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM UPDATE`
@@ -801,7 +768,7 @@ addFeature Physics
 // ✏️ body
 
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp EnergyInSystem.Costume.costumeName setTo 'GEN_onexone.json'
 
@@ -926,7 +893,7 @@ onEvent Tick [[
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 addFeature Costume
 featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
 featCall SoilBG.Costume setColorize 0.56 0.52 0.4
@@ -934,9 +901,6 @@ addFeature Physics
 featProp SoilBG.Costume.width setTo 800
 featProp SoilBG.Costume.height setTo 400
 prop SoilBG.zIndex setTo -210
-
-// required directive
-# PROGRAM INIT
 
 // required directive
 # PROGRAM UPDATE`
