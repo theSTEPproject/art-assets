@@ -689,13 +689,18 @@ when EnergyRepresentation centerFirstTouches Soil [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'DC_worm-to-nutrients_heat.png'
     featProp EnergyRepresentation.Costume.scale setTo 0.6
 
-    // show the nutrients appearing
+    // show the nutrients appearing and set a timer for them to go away
     featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
+    prop Soil.sparkleCount setTo 3
   ]]
 ]]
 
-when EnergyRepresentation centerLastTouches Soil [[
-  featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+when EnergyRepresentation centerLastTouches Soil [[  
+    ifProp EnergyRepresentation.energyType equal 'none' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'DC_energy_empty.png'
+    featProp EnergyRepresentation.Costume.scale setTo 0.25
+    ]]
+
 ]]
 
 
@@ -950,12 +955,12 @@ featProp Soil.Graphing.text setTo ''
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  ifExpr {{ agent.getProp('sparkleCount').value > 0 }} [[
+  ifProp Soil.sparkleCount greaterThan 0 [[
     prop Soil.sparkleCount sub 1
     featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
 
   ]]
-  ifExpr {{ agent.getProp('sparkleCount').value == 0 }} [[
+  ifProp Soil.sparkleCount equal 0 [[
     featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
   ]]
 ]]`
