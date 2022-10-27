@@ -471,6 +471,10 @@ when EnergyMatterRep centerFirstTouches Plant [[
     prop EnergyMatterRep.energyType setTo 'using'
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_sun-to-plant_heat.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Photosynthesis!'
+    ]]
   ]]
 
   // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
@@ -529,6 +533,10 @@ when EnergyMatterRep centerFirstTouches Bunny [[
     prop EnergyMatterRep.energyType setTo 'using'
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny_energy.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Digestion!'
+    ]]
   ]]
 
   // if the last thing we touched was a plant
@@ -583,6 +591,11 @@ when EnergyMatterRep centerFirstTouches Waste [[
     prop EnergyMatterRep.energyType setTo 'using'
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Excretion!'
+    ]]
+
   ]]
 
   // if the last thing we touched was a bunny
@@ -641,6 +654,10 @@ when EnergyMatterRep centerFirstTouches Worm [[
     prop EnergyMatterRep.energyType setTo 'using'
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm_energy.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Digestion!'
+    ]]
   ]]
 
   // if the last thing we touched was waste
