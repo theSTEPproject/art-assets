@@ -418,6 +418,7 @@ every 1 runAtStart [[
 // add Features
 addFeature Costume
 addFeature Physics
+addFeature Population
 
 // setup costume
 featProp EnergyMatterRep.Costume.costumeName setTo 'DC_energy_empty.png'
@@ -443,12 +444,16 @@ featCall EnergyMatterRep.Touches monitor 'Soil' c2b
 
 # PROGRAM UPDATE
 
-// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches the SUN
+// 🔎 WHAT does the ENERGY and MATTER REPRESENTATION do when it touches the SUN
 when EnergyMatterRep centerFirstTouches Sun [[
 
   // when touching, show an annotation about how the sun produces energy
   featProp EnergyMatterRep.Costume.costumeName setTo 'GEN_sun_energy.png'
   featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+  featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+    prop PopupEffect.textToUse setTo 'Energy Source!'
+  ]]
 ]]
 
 when EnergyMatterRep centerLastTouches Sun [[
@@ -471,6 +476,11 @@ when EnergyMatterRep centerFirstTouches Plant [[
   // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
   // as heat or lost in other ways
   ifProp EnergyMatterRep.energyType equal 'source' [[
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Photosynthesis!'
+    ]]
+
     prop EnergyMatterRep.energyType setTo 'using'
 
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun
@@ -525,6 +535,10 @@ when EnergyMatterRep centerFirstTouches Bunny [[
   ifProp EnergyMatterRep.energyType equal 'producer' [[
     prop EnergyMatterRep.energyType setTo 'using'
 
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Digestion!'
+    ]]
+
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun, and what it does to the energy character
     prop EnergyMatterRep.energyLevel setTo 0
     prop Bunny.energyLevel add 10
@@ -574,6 +588,10 @@ when EnergyMatterRep centerFirstTouches Waste [[
   // if the last thing we touched was a bunny
   ifProp EnergyMatterRep.energyType equal 'consumer' [[
     prop EnergyMatterRep.energyType setTo 'using'
+
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Excretion!'
+    ]]
 
     // set the energy on the waste, but then it'll get converted to matter
     prop EnergyMatterRep.energyLevel setTo 0
@@ -629,6 +647,10 @@ when EnergyMatterRep centerFirstTouches Worm [[
   ifProp EnergyMatterRep.energyType equal 'waste' [[
     prop EnergyMatterRep.energyType setTo 'using'
 
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Digestion!'
+    ]]
+
     // set the energy on the waste, but then it'll get converted to matter
     prop EnergyMatterRep.energyLevel setTo 0
     prop Worm.energyLevel add 20
@@ -678,6 +700,10 @@ when EnergyMatterRep centerFirstTouches Soil [[
   ifProp EnergyMatterRep.energyType equal 'decomposer' [[
     prop EnergyMatterRep.energyType setTo 'none'
 
+    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Decomposition!'
+    ]]
+    
     // set the energy on the waste, but then it'll get converted to matter
     prop EnergyMatterRep.energyLevel setTo 0
     prop Soil.nutrients add 10
@@ -1043,8 +1069,8 @@ featProp PopupEffect.Graphing.text setTo ''
 prop PopupEffect.zIndex setTo 500
 
 addProp costumeToUse string ''
-addProp textToUse string 'TEST'
-addProp countDown Number 2
+addProp textToUse string ''
+addProp countDown Number 3
 
 # PROGRAM UPDATE
 
@@ -1062,7 +1088,6 @@ every 0.1 runAtStart [[
   ]]
 ]]
 every 1 runAtStart [[
-
   prop PopupEffect.countDown sub 1
   ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
     featCall PopupEffect.Population removeCharacter
@@ -1099,18 +1124,11 @@ featProp agent.Costume.height setTo 30
 `
     },
     {
-      "id": "7",
-      "label": "Lost Energy Graph",
-      "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 511.13
-prop y setTo 328.81`
-    },
-    {
       "id": "8",
       "label": "Energy In System Graph",
       "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 511.75
-prop y setTo 134.52`
+      "initScript": `prop x setTo 515.66
+prop y setTo 311.81`
     },
     {
       "id": "1101",
@@ -1285,7 +1303,7 @@ prop y setTo 345.74`
     },
     {
       "id": "1719",
-      "label": "Sun1719",
+      "label": "Sun",
       "bpid": "Sun",
       "initScript": `prop x setTo -258.36
 prop y setTo -308.23`
