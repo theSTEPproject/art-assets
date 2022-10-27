@@ -1,0 +1,1301 @@
+{
+  "id": "decomposition_energy_matter",
+  "label": "Ecosystems 5: Decomposition Energy and Matter",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [false, false],
+    "bounce": true,
+    "bgcolor": "0x00bfff",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// Explanation:
+// This model is inteended to help students exploree how energy moves between the characters in the ecosystem
+
+prop global.visible setTo false
+addProp energyReleasedAsHeat number 0
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+addFeature Costume
+featProp Sun.Costume.costumeName setTo 'GEN_sun-corner.png'
+// featCall Sun.Costume setColorize 255 215 0
+prop Sun.zIndex setTo 0
+
+addFeature Physics
+
+featProp Sun.Costume.scale setTo 1.3
+
+// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
+addProp energyType string 'source'
+
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Bunny",
+      "scriptText": `# BLUEPRINT Bunny
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
+featProp Bunny.Costume.currentFrame setTo 0
+
+
+featProp Bunny.Costume.flipX setTo false
+
+
+addFeature Physics
+featProp Bunny.Costume.scale setTo 0.8
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp energyType string 'consumer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop Bunny.energyLevel setMax 100
+prop Bunny.energyLevel setMin 0
+
+// ✏️ LETS CHANGE THIS to make Bunny lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Bunny.Graphing.meterProp setTo 'energyLevel'
+
+featProp Bunny.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // energyLevel goes down every 2 seconds
+  exprPush {{ Bunny.getProp('energyLevel').value - Bunny.getProp('energyUse').value }}
+  propPop Bunny.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Bunny is
+  // Feeling good / not that hungry
+  ifProp Bunny.energyLevel greaterThan 50 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
+    featProp Bunny.Graphing.meterColor setTo 65280
+  ]]
+  // hungry
+  ifProp Bunny.energyLevel lessThan 50 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
+    featProp Bunny.Graphing.meterColor setTo 16737792
+  ]]
+  // really hungry
+  ifProp Bunny.energyLevel lessThan 20 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_hungry_side.png'
+    featProp Bunny.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Bunny.energyLevel equal 0 [[
+    featProp Bunny.Costume.costumeName setTo 'DC_bunny_default_side.png'
+    prop Bunny.alpha setTo 0.3
+    prop Bunny.isInert setTo true
+  ]]
+
+]]`
+    },
+    {
+      "name": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp Worm.Costume.costumeName setTo 'DC_worm_hungry.png'  
+
+addFeature Physics
+featProp Worm.Costume.scale setTo 0.15
+
+// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
+addProp energyType string 'decomposer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
+
+// ✏️ LETS CHANGE THIS to make Worm lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Worm.Graphing.meterProp setTo energyLevel
+
+featProp Worm.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+  every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Worm.getProp('energyLevel').value - Worm.getProp('energyUse').value}}
+  propPop Worm.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Worm  is
+  // sated
+  ifExpr {{ Worm.getProp('energyLevel').value > 50 }} [[
+    featProp Worm.Costume.currentFrame setTo 0
+    // Green
+    featProp Worm.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Worm.getProp('energyLevel').value < 50 }} [[
+    featProp Worm.Costume.currentFrame setTo 1
+    // Orange
+    featProp Worm.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Worm.getProp('energyLevel').value < 20 }} [[
+    featProp Worm.Costume.currentFrame setTo 1
+    // Red
+    featProp Worm.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Worm.getProp('energyLevel').value < 1 }} [[
+    featProp Worm.Costume.currentFrame setTo 2
+    // featCall Movement setMovementType 'float'
+    prop Worm.alpha setTo 0.3
+    prop Worm.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Worm.Graphing.meterProp setTo 'energyLevel'
+
+]]
+
+`
+    },
+    {
+      "name": "Waste",
+      "scriptText": `# BLUEPRINT Waste
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+
+addFeature Costume
+featProp Waste.Costume.costumeName setTo 'DC_waste.png'
+
+addFeature Physics
+featProp Waste.Costume.scale setTo 0.5
+
+// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
+addProp energyType string 'waste'
+
+// setup to track nutrients and begin at 1/2 way
+addProp matterLevel number 50
+prop Waste.matterLevel setMax 100
+prop Waste.matterLevel setMin 0
+
+// use a widget to depict the current nutrients
+addFeature Graphing
+featProp Waste.Graphing.meterProp setTo 'matterLevel'
+
+// set the waste to be purple because it has nutrients, not energy
+featProp Waste.Graphing.meterColor setTo 5783616
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Plant",
+      "scriptText": `# BLUEPRINT Plant
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp Plant.Costume.costumeName setTo 'DC_plant_healthy_side.png'
+
+addFeature Physics
+
+// types to use for energy transfer: source, producer, consumer (we might add more later)
+addProp energyType string 'producer'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop Plant.energyLevel setMax 100
+prop Plant.energyLevel setMin 0
+
+// ✏️ LETS CHANGE THIS to make Plant lose energy faster (or slower)
+addProp energyUse number 1
+
+// setup so that we can tweak the size more dynamically, and plant by plant
+addProp minimumScale number 0
+
+// ✏️ LETS CHANGE THIS - set a different minimum size for the plants  (used to be 0.25)
+prop Plant.minimumScale setTo 0.7
+prop Plant.minimumScale setMax 1.5
+prop Plant.minimumScale setMin 0
+
+addProp nutrients number 8
+
+// ✏️ LETS CHANGE THIS - sete a different starting eneregy level, max or min?  A higher max will allow a lot more time before the plant looks bad
+prop Plant.nutrients setTo 8
+prop Plant.nutrients setMax 10
+prop Plant.nutrients setMin 0
+
+addProp matter number 50
+
+// ✏️ LETS CHANGE THIS - sete a different range or starting point of matter
+prop Plant.matter setTo 30
+prop Plant.matter setMax 30
+prop Plant.matter setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Plant.Graphing.meterProp setTo 'energyLevel'
+// Green = 0x00FF00
+featProp Plant.Graphing.meterColor setTo 65280
+featCall Plant.Graphing setMeterPosition 'inside-left'
+
+addFeature Touches
+
+// we need to touch the soil to know the nutrients
+featCall Plant.Touches monitor 'Soil' b2b
+
+# PROGRAM INIT
+// set size based on matter (assume matter max of 100) and that we waver between 80-100%
+exprPush {{ Plant.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
+featPropPop Plant.Costume.scale
+
+# PROGRAM UPDATE
+
+when Plant touches Soil [[
+  every 1 runAtStart [[
+    ifExpr {{ Soil.getProp('nutrients').value > 0 }} [[
+      prop Soil.nutrients sub 1
+      prop Plant.nutrients add 1
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ agent.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ agent.getProp('energyLevel').value - agent.getProp('energyUse').value }}
+    propPop agent.energyLevel
+
+    // mirror the energy with the matter since we are running off that (this makes it easier to maybe split eventually)
+    exprPush {{ agent.getProp('energyLevel').value }}
+    propPop agent.matter
+
+    // re-scale the plant based on the energy level
+    exprPush {{ agent.getProp('minimumScale').value + agent.getProp('matter').value / 100 }}
+    featPropPop Plant.Costume.scale
+
+  ]]
+
+  // change how it looks to reflect it's health level (meter below)
+  // is it healthy?  Use some nutrients and then set color
+  prop Plant.nutrients sub 1
+  ifExpr {{ Plant.getProp('nutrients').value > 6 }} [[
+    // healthy
+    featProp Plant.Costume.costumeName setTo 'DC_plant_healthy_side.png'
+    featProp Plant.Costume.currentFrame setTo 0
+  ]]
+  ifExpr {{ Plant.getProp('nutrients').value < 6 }} [[
+    // ok, but not great
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth_side.png'
+    featProp Plant.Costume.currentFrame setTo 1
+
+  ]]
+  ifExpr {{ Plant.getProp('nutrients').value < 2 }} [[
+    // not doing well at all, so lets also lose some matter
+    featProp Plant.Costume.costumeName setTo 'DC_plant_mediumhealth_side.png'
+    prop Plant.matter sub 1
+  ]]
+
+  // set plant energy meter color
+  // doing great
+  ifExpr {{ agent.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Plant.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ agent.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Plant.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ agent.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Plant.Graphing.meterColor setTo 16711680
+
+  ]]
+]]`
+    },
+    {
+      "name": "EnergyMatterRep",
+      "scriptText": `# BLUEPRINT EnergyMatterRep
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// add Features
+addFeature Costume
+addFeature Physics
+
+// setup costume
+featProp EnergyMatterRep.Costume.costumeName setTo 'DC_energy_empty.png'
+featProp EnergyMatterRep.Costume.scale setTo 0.25
+prop EnergyMatterRep.zIndex setTo 0
+
+// setup energy properties
+addProp energyLevel number 0
+prop EnergyMatterRep.energyLevel setMax 100
+prop EnergyMatterRep.energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp energyType string 'none'
+
+addFeature Touches
+featCall EnergyMatterRep.Touches monitor 'Sun' c2b
+featCall EnergyMatterRep.Touches monitor 'Plant' c2b
+featCall EnergyMatterRep.Touches monitor 'Bunny' c2b
+featCall EnergyMatterRep.Touches monitor 'Worm' c2b
+featCall EnergyMatterRep.Touches monitor 'Waste' c2b
+featCall EnergyMatterRep.Touches monitor 'Soil' c2b
+
+# PROGRAM UPDATE
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches the SUN
+when EnergyMatterRep centerFirstTouches Sun [[
+
+  // when touching, show an annotation about how the sun produces energy
+  featProp EnergyMatterRep.Costume.costumeName setTo 'GEN_sun_energy.png'
+  featProp EnergyMatterRep.Costume.scale setTo 0.6
+]]
+
+when EnergyMatterRep centerLastTouches Sun [[
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
+  prop EnergyMatterRep.energyType setTo 'source'
+  prop EnergyMatterRep.energyLevel setTo 100
+
+  featProp EnergyMatterRep.Costume.costumeName setTo 'GEN_sun_energy.png'
+  featProp EnergyMatterRep.Costume.scale setTo 0.6
+]]
+
+// 🔎 WHAT does the ENERGY and MATTER REPRESENTATION do when it touches a PLANT
+when EnergyMatterRep centerFirstTouches Plant [[
+  ifProp EnergyMatterRep.energyType equal 'none' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_sun-to-plant_heat.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+
+  // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifProp EnergyMatterRep.energyType equal 'source' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun
+    prop EnergyMatterRep.energyLevel setTo 0
+    prop Plant.energyLevel add 50
+    // we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 50
+
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_sun-to-plant_heat.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featProp Plant.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyMatterRep centerLastTouches Plant [[
+  // if you have no energy type, take some energy from the plant
+  ifProp EnergyMatterRep.energyType equal 'using' [[
+    ifProp EnergyMatterRep.energyLevel greaterThan 25 [[
+
+      prop EnergyMatterRep.energyType setTo 'producer'
+
+      // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
+      // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop Plant.energyLevel sub 10
+      prop EnergyMatterRep.energyLevel add 25
+      // we are losing 25 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 25
+
+      featProp EnergyMatterRep.Costume.costumeName setTo 'DC_plant_energy.png'
+      featProp EnergyMatterRep.Costume.scale setTo 0.6
+    ]]
+  ]]
+
+  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
+  ifExpr {{ EnergyMatterRep.getProp('energyType').value == 'none' || EnergyMatterRep.getProp('energyType').value == 'using' }} [[
+    prop EnergyMatterRep.energyType setTo 'producer'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_plant_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+]]
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a BUNNY
+when EnergyMatterRep centerFirstTouches Bunny [[
+  ifProp EnergyMatterRep.energyType equal 'none' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+
+  // if the last thing we touched was a plant
+  ifProp EnergyMatterRep.energyType equal 'producer' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+
+    // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun, and what it does to the energy character
+    prop EnergyMatterRep.energyLevel setTo 0
+    prop Bunny.energyLevel add 10
+    // we are losing some, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_plant-to-bunny_heat.png'
+    featProp EnergyMatterRep.Costume.currentFrame setTo 1
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featProp Bunny.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyMatterRep centerLastTouches Bunny [[
+  // if you have no energy type, take some energy from the bunny
+  ifProp EnergyMatterRep.energyType equal 'using' [[
+    ifProp EnergyMatterRep.energyLevel greaterThan 25 [[
+      prop EnergyMatterRep.energyType setTo 'consumer'
+
+      // ✏️ LETS CHANGE THIS to alter how much energy the Bunny gives off
+      prop Bunny.energyLevel sub 15
+      prop EnergyMatterRep.energyLevel add 15
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
+
+      featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny_energy.png'
+      featProp EnergyMatterRep.Costume.scale setTo 0.6
+    ]]
+  ]]
+
+  ifExpr {{ EnergyMatterRep.getProp('energyType').value == 'none' || EnergyMatterRep.getProp('energyType').value == 'using' }} [[
+    prop EnergyMatterRep.energyType setTo 'consumer'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+]]
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WASTE
+when EnergyMatterRep centerFirstTouches Waste [[
+  ifProp EnergyMatterRep.energyType equal 'none' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+
+  // if the last thing we touched was a bunny
+  ifProp EnergyMatterRep.energyType equal 'consumer' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+
+    // set the energy on the waste, but then it'll get converted to matter
+    prop EnergyMatterRep.energyLevel setTo 0
+    prop Waste.matterLevel add 20
+
+    // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
+    prop global.energyReleasedAsHeat add 5
+
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny-to-waste_heat.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featProp EnergyMatterRep.Costume.currentFrame setTo 1
+    featProp Waste.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyMatterRep centerLastTouches Waste [[
+  // if you have no energy type, take some energy from the bunny
+  ifProp EnergyMatterRep.energyType equal 'using' [[
+    ifProp EnergyMatterRep.energyLevel greaterThan 15 [[
+
+      prop EnergyMatterRep.energyType setTo 'waste'
+
+      // ✏️ LETS CHANGE THIS to alter how much energy the waste gives to the worm
+      prop Waste.matterLevel sub 15
+      prop EnergyMatterRep.energyLevel add 15
+
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
+
+      featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
+      featProp EnergyMatterRep.Costume.scale setTo 0.6
+    ]]
+  ]]
+
+  ifExpr {{ EnergyMatterRep.getProp('energyType').value == 'none' || EnergyMatterRep.getProp('energyType').value == 'using' }} [[
+    prop EnergyMatterRep.energyType setTo 'waste'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+]]
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WORM
+when EnergyMatterRep centerFirstTouches Worm [[
+
+  ifProp EnergyMatterRep.energyType equal 'none' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+
+  // if the last thing we touched was waste
+  ifProp EnergyMatterRep.energyType equal 'waste' [[
+    prop EnergyMatterRep.energyType setTo 'using'
+
+    // set the energy on the waste, but then it'll get converted to matter
+    prop EnergyMatterRep.energyLevel setTo 0
+    prop Worm.energyLevel add 20
+
+    // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
+    prop global.energyReleasedAsHeat add 5
+
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste-to-worm_heat.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    featProp EnergyMatterRep.Costume.currentFrame setTo 1
+
+    featProp Worm.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyMatterRep centerLastTouches Worm [[
+
+  // if you have no energy type, take some energy from the worm
+  ifProp EnergyMatterRep.energyType equal 'using' [[
+    ifProp EnergyMatterRep.energyLevel greaterThan 15 [[
+      prop EnergyMatterRep.energyType setTo 'decomposer'
+
+      // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
+      prop Worm.energyLevel sub 15
+      prop EnergyMatterRep.energyLevel add 15
+
+      // we are losing 15 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 15
+      featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+      featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm_energy.png'
+    ]]
+  ]]
+
+  ifExpr {{ EnergyMatterRep.getProp('energyType').value == 'none' || EnergyMatterRep.getProp('energyType').value == 'using' }} [[
+    prop EnergyMatterRep.energyType setTo 'decomposer'
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm_energy.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+  ]]
+]]
+
+// 🔎 WHAT does the ENERGY REPRESENTATION do when it touches SOIL
+when EnergyMatterRep centerFirstTouches Soil [[
+
+  // if the last thing we touched was a worm
+  ifProp EnergyMatterRep.energyType equal 'decomposer' [[
+    prop EnergyMatterRep.energyType setTo 'none'
+
+    // set the energy on the waste, but then it'll get converted to matter
+    prop EnergyMatterRep.energyLevel setTo 0
+    prop Soil.nutrients add 10
+
+    // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
+    prop global.energyReleasedAsHeat add 5
+
+    // glow the soil but then we are off to find new things
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm-to-nutrients_heat.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.6
+
+    // show the nutrients appearing and set a timer for them to go away
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
+    prop Soil.sparkleCount setTo 3
+  ]]
+]]
+
+when EnergyMatterRep centerLastTouches Soil [[  
+    ifProp EnergyMatterRep.energyType equal 'none' [[
+    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_energy_empty.png'
+    featProp EnergyMatterRep.Costume.scale setTo 0.25
+    ]]
+
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+addFeature Physics
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+      # PROGRAM INIT
+      addFeature Graphing
+      addFeature Costume
+      featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+      addProp time number 0
+      prop Timer.zIndex setTo 500
+
+      featProp Timer.Graphing.text setTo 'Time: 0'
+
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
+        prop Timer.time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop Timer.Graphing.text
+      ]]`
+    },
+    {
+      "name": "EnergyInSystem",
+      "scriptText": `# BLUEPRINT EnergyInSystem
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp EnergyInSystem.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp EnergyInSystem.Graphing.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp totalEnergy number 500
+prop EnergyInSystem.totalEnergy setMax 1000
+prop EnergyInSystem.totalEnergy setMin 0
+
+// to store the current values of plant and Bunny separately
+// I could just add them up below, but this way we can see them in the inspector
+addProp totalPlantEnergy number 0
+addProp totalBunnyEnergy number 0
+
+
+featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop EnergyInSystem.x setTo 495
+prop EnergyInSystem.y setTo 187
+prop EnergyInSystem.zIndex setTo 300
+
+featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
+
+// Set the graph to have a range of 0-1000
+featProp EnergyInSystem.Graphing.graphMinY setTo 0
+featProp EnergyInSystem.Graphing.graphMaxY setTo 1000
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // count up the plant
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Plant'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalPlantEnergy
+
+  // count up the Bunny
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Bunny'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalBunnyEnergy
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalPlantEnergy').value + agent.getProp('totalBunnyEnergy').value }}
+  propPop EnergyInSystem.totalEnergy
+
+
+]]
+
+`
+    },
+    {
+      "name": "GraphLostEnergy",
+      "scriptText": `# BLUEPRINT GraphLostEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp GraphLostEnergy.Costume.costumeName setTo 'GEN_onexone.json'
+addFeature Graphing
+addFeature Population
+featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp lostEnergy number 500
+prop GraphLostEnergy.lostEnergy setMax 1000
+prop GraphLostEnergy.lostEnergy setMin 0
+
+featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
+
+// make sure something displays with some initial text, on bottom right at first
+prop GraphLostEnergy.x setTo 495
+prop GraphLostEnergy.y setTo 350
+prop GraphLostEnergy.zIndex setTo 300
+
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy'
+
+// Set the graph to have a range of 0-1000
+featProp GraphLostEnergy.Graphing.graphMinY setTo 0
+featProp GraphLostEnergy.Graphing.graphMaxY setTo 1000
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPush global.energyReleasedAsHeat
+  propPop GraphLostEnergy.lostEnergy
+
+]]
+
+`
+    },
+    {
+      "name": "SoilBG",
+      "scriptText": `# BLUEPRINT SoilBG
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+addFeature Costume
+featProp SoilBG.Costume.costumeName setTo 'GEN_square.json'
+featCall SoilBG.Costume setColorize 0.56 0.52 0.4
+addFeature Physics
+featProp SoilBG.Costume.width setTo 800
+featProp SoilBG.Costume.height setTo 400
+prop SoilBG.zIndex setTo -210
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Soil",
+      "scriptText": `# BLUEPRINT Soil
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+
+addProp nutrients number 50
+prop Soil.nutrients setMax 100
+prop Soil.nutrients setMin 0
+
+addProp sparkleCount number 0
+
+addFeature Physics
+
+featProp Soil.Costume.scale setTo 0.85
+
+prop Soil.zIndex setTo -200
+
+addFeature Touches
+featCall Soil.Touches monitor 'Worm' b2b
+
+addFeature Graphing
+// ✏️ LETS CHANGE THIS - to pick a different thing to display on the meter (note, color won't change below)
+featProp Soil.Graphing.meterProp setTo 'nutrients'
+
+featCall Soil.Graphing setMeterPosition 'inside-left'
+// violet
+featProp Soil.Graphing.meterColor setTo 9055202
+featProp Soil.Graphing.text setTo ''
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  ifProp Soil.sparkleCount greaterThan 0 [[
+    prop Soil.sparkleCount sub 1
+    featProp Soil.Costume.costumeName setTo 'DC_dirt_sparkly.png'
+
+  ]]
+  ifProp Soil.sparkleCount equal 0 [[
+    featProp Soil.Costume.costumeName setTo 'DC_dirt.png'
+  ]]
+]]`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'DC_tomato.png'
+
+addFeature Physics
+featProp Tomato.Costume.scale setTo 0.2
+
+addProp energyType string 'waste'
+
+// setup to track nutrients and begin at 1/2 way
+addProp matterLevel number 50
+prop Tomato.matterLevel setMax 50
+prop Tomato.matterLevel setMin 0
+
+// use a widget to depict the current nutrients
+addFeature Graphing
+featProp Tomato.Graphing.meterProp setTo 'matterLevel'
+
+// set the waste to be purple because it has nutrients, not energy
+featProp Tomato.Graphing.meterColor setTo 5783616
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+prop Tomato.matterLevel sub 1
+
+// healthy
+ifProp Tomato.matterLevel greaterThan 40 [[
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato.png'
+  ]]
+ifProp Tomato.matterLevel lessThan 40 [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_beg_decomp.png'
+  ]]
+ifProp Tomato.matterLevel lessThan 25 [[
+    // healthy
+    featProp Tomato.Costume.costumeName setTo 'DC_tomato_mid_decomp.png'
+  ]]
+ifProp Tomato.matterLevel lessThan 10 [[
+    featProp Tomato.Costume.costumeName setTo 'DC_waste.png'
+  ]]
+
+]]
+
+`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Population
+
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
+
+addProp costumeToUse string ''
+addProp textToUse string 'TEST'
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
+  ]]
+]]
+every 1 runAtStart [[
+
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "2",
+      "label": "Plant 1",
+      "bpid": "Plant",
+      "initScript": `prop x setTo 303.44
+prop y setTo -176.28`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 456.93
+prop y setTo -403.87`
+    },
+    {
+      "id": "6",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 451.24
+prop y setTo -386.02
+featCall Costume setColorize 0 0 0
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "7",
+      "label": "Lost Energy Graph",
+      "bpid": "GraphLostEnergy",
+      "initScript": `prop x setTo 511.13
+prop y setTo 328.81`
+    },
+    {
+      "id": "8",
+      "label": "Energy In System Graph",
+      "bpid": "EnergyInSystem",
+      "initScript": `prop x setTo 511.75
+prop y setTo 134.52`
+    },
+    {
+      "id": "1101",
+      "label": "Soil01",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -301.03
+prop y setTo -51.41
+prop nutrients setTo 10`
+    },
+    {
+      "id": "1102",
+      "label": "Soil02",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -104.13
+prop y setTo -50.57`
+    },
+    {
+      "id": "1103",
+      "label": "Soil03",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 100.42
+prop y setTo -49.01`
+    },
+    {
+      "id": "1104",
+      "label": "Soil04",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 302.84
+prop y setTo -49.36`
+    },
+    {
+      "id": "1105",
+      "label": "Soil05",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -297.38
+prop y setTo 148.20`
+    },
+    {
+      "id": "1106",
+      "label": "Soil06",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -94.85
+prop y setTo 151.28`
+    },
+    {
+      "id": "1107",
+      "label": "Soil07",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 106.52
+prop y setTo 152.65`
+    },
+    {
+      "id": "1108",
+      "label": "Soil08",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 303.11
+prop y setTo 151.48`
+    },
+    {
+      "id": "1110",
+      "label": "Worm 1",
+      "bpid": "Worm",
+      "initScript": `prop x setTo 311.94
+prop y setTo 137.68`
+    },
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457.70
+prop y setTo -359.63
+featProp Graphing text setTo 'Key:'
+featCall Costume setColorize 0 0 0
+
+`
+    },
+    {
+      "id": "1701",
+      "label": "EnergyLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 451.88
+prop y setTo -332.28
+featProp Graphing text setTo 'Energy'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1702",
+      "label": "NutrientsLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 455.64
+prop y setTo -300.08
+featProp Graphing text setTo 'Nutrients'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1703",
+      "label": "MatterLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 453.84
+prop y setTo -267.41
+featProp Graphing text setTo 'Matter'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "1704",
+      "label": "EnergyChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 456.19
+prop y setTo -309.77
+featCall Costume setColorize 0 255 0
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "1705",
+      "label": "NutrientsChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 456.19
+prop y setTo -279.74
+featCall Costume setColorize 138 43 226
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
+    },
+    {
+      "id": "1706",
+      "label": "MatterChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 456.43
+prop y setTo -249.77
+featCall Costume setColorize 0.56 0.52 0.40
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30`
+    },
+    {
+      "id": "1709",
+      "label": "Waste 1",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -70.47
+prop y setTo 182.93`
+    },
+    {
+      "id": "1711",
+      "label": "Soil1711",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 102.38
+prop y setTo 352.50`
+    },
+    {
+      "id": "1712",
+      "label": "Soil1712",
+      "bpid": "Soil",
+      "initScript": `prop x setTo 298.81
+prop y setTo 354.39`
+    },
+    {
+      "id": "1716",
+      "label": "Soil1716",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -293.37
+prop y setTo 343.50`
+    },
+    {
+      "id": "1718",
+      "label": "Soil1718",
+      "bpid": "Soil",
+      "initScript": `prop x setTo -92.36
+prop y setTo 345.74`
+    },
+    {
+      "id": "1719",
+      "label": "Sun1719",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -258.36
+prop y setTo -308.23`
+    },
+    {
+      "id": "1721",
+      "label": "Bunny 1",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo -289.84
+prop y setTo -102.96`
+    }
+  ]
+}
