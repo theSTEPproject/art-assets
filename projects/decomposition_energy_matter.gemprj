@@ -29,21 +29,28 @@
 # TAG IsPtrackControllable false
 # PROGRAM INIT
 
+// 🔎 WHAT DOES THIS DO?
+// 🔎 This model is inteended to help students exploree how energy moves between the characters in the ecosystem
+
+prop global.visible setTo false
+
+// global props we might need to look at
+addProp energyReleasedAsHeat number 0
+
+addProp energyCollectedFromSun number 0
+addProp energyProducedPhotosynthesis number 0
+addProp energyProducedBunnyDigestion number 0
+addProp energyProducedWormDigestion number 0
+
+// required directive
+# PROGRAM UPDATE
+
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
-
-
-// Explanation:
-// This model is inteended to help students exploree how energy moves between the characters in the ecosystem
-
-prop global.visible setTo false
-addProp energyReleasedAsHeat number 0
-
-// required directive
-# PROGRAM UPDATE`
+`
     },
     {
       "name": "Sun",
@@ -461,21 +468,14 @@ when EnergyMatterRep centerLastTouches Sun [[
   prop EnergyMatterRep.energyType setTo 'source'
   prop EnergyMatterRep.energyLevel setTo 100
 
+  prop global.energyCollectedFromSun add 100
+
   featProp EnergyMatterRep.Costume.costumeName setTo 'GEN_sun_energy.png'
   featProp EnergyMatterRep.Costume.scale setTo 0.6
 ]]
 
 // 🔎 WHAT does the ENERGY and MATTER REPRESENTATION do when it touches a PLANT
 when EnergyMatterRep centerFirstTouches Plant [[
-  ifProp EnergyMatterRep.energyType equal 'none' [[
-    prop EnergyMatterRep.energyType setTo 'using'
-    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_sun-to-plant_heat.png'
-    featProp EnergyMatterRep.Costume.scale setTo 0.6
-
-    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Photosynthesis!'
-    ]]
-  ]]
 
   // if you have energy from the sun, then give some energy to the plant, but not all of it because some is released into the environment
   // as heat or lost in other ways
@@ -490,6 +490,8 @@ when EnergyMatterRep centerFirstTouches Plant [[
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun
     prop EnergyMatterRep.energyLevel setTo 0
     prop Plant.energyLevel add 50
+    prop global.energyProducedPhotosynthesis add 50
+
     // we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 50
 
@@ -510,9 +512,9 @@ when EnergyMatterRep centerLastTouches Plant [[
       // ✏️ LETS CHANGE THIS to alter how much energy the plant gives to a Bunny
       // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
       prop Plant.energyLevel sub 10
-      prop EnergyMatterRep.energyLevel add 25
+      prop EnergyMatterRep.energyLevel add 30
       // we are losing 25 of the hundred, so not that in the global
-      prop global.energyReleasedAsHeat add 25
+      prop global.energyReleasedAsHeat add 20
 
       featProp EnergyMatterRep.Costume.costumeName setTo 'DC_plant_energy.png'
       featProp EnergyMatterRep.Costume.scale setTo 0.6
@@ -529,15 +531,6 @@ when EnergyMatterRep centerLastTouches Plant [[
 
 // 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a BUNNY
 when EnergyMatterRep centerFirstTouches Bunny [[
-  ifProp EnergyMatterRep.energyType equal 'none' [[
-    prop EnergyMatterRep.energyType setTo 'using'
-    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_bunny_energy.png'
-    featProp EnergyMatterRep.Costume.scale setTo 0.6
-
-    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Digestion!'
-    ]]
-  ]]
 
   // if the last thing we touched was a plant
   ifProp EnergyMatterRep.energyType equal 'producer' [[
@@ -549,9 +542,11 @@ when EnergyMatterRep centerFirstTouches Bunny [[
 
     // ✏️ LETS CHANGE THIS to alter how much energy the plant gets from the sun, and what it does to the energy character
     prop EnergyMatterRep.energyLevel setTo 0
-    prop Bunny.energyLevel add 10
+    prop Bunny.energyLevel add 25
+    prop global.energyProducedBunnyDigestion add 25
+
     // we are losing some, so note that in the global
-    prop global.energyReleasedAsHeat add 15
+    prop global.energyReleasedAsHeat add 5
 
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_plant-to-bunny_heat.png'
     featProp EnergyMatterRep.Costume.currentFrame setTo 1
@@ -587,16 +582,6 @@ when EnergyMatterRep centerLastTouches Bunny [[
 
 // 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WASTE
 when EnergyMatterRep centerFirstTouches Waste [[
-  ifProp EnergyMatterRep.energyType equal 'none' [[
-    prop EnergyMatterRep.energyType setTo 'using'
-    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
-    featProp EnergyMatterRep.Costume.scale setTo 0.6
-
-    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Excretion!'
-    ]]
-
-  ]]
 
   // if the last thing we touched was a bunny
   ifProp EnergyMatterRep.energyType equal 'consumer' [[
@@ -630,10 +615,10 @@ when EnergyMatterRep centerLastTouches Waste [[
 
       // ✏️ LETS CHANGE THIS to alter how much energy the waste gives to the worm
       prop Waste.matterLevel sub 15
-      prop EnergyMatterRep.energyLevel add 15
+      prop EnergyMatterRep.energyLevel add 10
 
       // we are losing 15 of the hundred, so not that in the global
-      prop global.energyReleasedAsHeat add 15
+      prop global.energyReleasedAsHeat add 10
 
       featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste_energy.png'
       featProp EnergyMatterRep.Costume.scale setTo 0.6
@@ -650,16 +635,6 @@ when EnergyMatterRep centerLastTouches Waste [[
 // 🔎 WHAT does the ENERGY REPRESENTATION do when it touches a WORM
 when EnergyMatterRep centerFirstTouches Worm [[
 
-  ifProp EnergyMatterRep.energyType equal 'none' [[
-    prop EnergyMatterRep.energyType setTo 'using'
-    featProp EnergyMatterRep.Costume.costumeName setTo 'DC_worm_energy.png'
-    featProp EnergyMatterRep.Costume.scale setTo 0.6
-
-    featCall EnergyMatterRep.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Digestion!'
-    ]]
-  ]]
-
   // if the last thing we touched was waste
   ifProp EnergyMatterRep.energyType equal 'waste' [[
     prop EnergyMatterRep.energyType setTo 'using'
@@ -671,9 +646,10 @@ when EnergyMatterRep centerFirstTouches Worm [[
     // set the energy on the waste, but then it'll get converted to matter
     prop EnergyMatterRep.energyLevel setTo 0
     prop Worm.energyLevel add 20
+    prop global.energyProducedWormDigestion add 10
 
     // we are losing some energy, though we'll keep the energy looking decent on the worm so it doesn't die too fast due to scaling
-    prop global.energyReleasedAsHeat add 5
+    prop global.energyReleasedAsHeat add 10
 
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_waste-to-worm_heat.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.6
@@ -720,7 +696,7 @@ when EnergyMatterRep centerFirstTouches Soil [[
     featCall EnergyMatterRep.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Decomposition!'
     ]]
-    
+
     // set the energy on the waste, but then it'll get converted to matter
     prop EnergyMatterRep.energyLevel setTo 0
     prop Soil.nutrients add 10
@@ -738,11 +714,11 @@ when EnergyMatterRep centerFirstTouches Soil [[
   ]]
 ]]
 
-when EnergyMatterRep centerLastTouches Soil [[  
-    ifProp EnergyMatterRep.energyType equal 'none' [[
+when EnergyMatterRep centerLastTouches Soil [[
+  ifProp EnergyMatterRep.energyType equal 'none' [[
     featProp EnergyMatterRep.Costume.costumeName setTo 'DC_energy_empty.png'
     featProp EnergyMatterRep.Costume.scale setTo 0.25
-    ]]
+  ]]
 
 ]]
 
@@ -1111,6 +1087,162 @@ every 1 runAtStart [[
   ]]
 ]]
 `
+    },
+    {
+      "name": "EnergyFromSunMeter",
+      "scriptText": `# BLUEPRINT EnergyFromSunMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// Make costume an invisible dot so we only see the meter
+featProp EnergyFromSunMeter.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp EnergyFromSunMeter.Graphing.isLargeGraphic setTo true
+featProp EnergyFromSunMeter.Graphing.meterColor setTo 65280
+
+addProp numberToGraph number 0
+featProp EnergyFromSunMeter.Graphing.meterProp setTo 'numberToGraph'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  propPush global.energyCollectedFromSun
+  propPop numberToGraph
+  // lets make 1000 the max 
+  prop numberToGraph div 1000
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "EnergyFromPhotosynthesis",
+      "scriptText": `# BLUEPRINT EnergyFromPhotosynthesis
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// Make costume an invisible dot so we only see the meter
+featProp EnergyFromPhotosynthesis.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp EnergyFromPhotosynthesis.Graphing.isLargeGraphic setTo true
+featProp EnergyFromPhotosynthesis.Graphing.meterColor setTo 65280
+
+addProp numberToGraph number 0
+featProp EnergyFromPhotosynthesis.Graphing.meterProp setTo 'numberToGraph'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  propPush global.energyProducedPhotosynthesis
+  propPop numberToGraph
+  // lets make 1000 the max 
+  prop numberToGraph div 1000
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "EnergyFromBunnyDigestion",
+      "scriptText": `# BLUEPRINT EnergyFromBunnyDigestion
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// Make costume an invisible dot so we only see the meter
+featProp EnergyFromBunnyDigestion.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp EnergyFromBunnyDigestion.Graphing.isLargeGraphic setTo true
+featProp EnergyFromBunnyDigestion.Graphing.meterColor setTo 65280
+
+addProp numberToGraph number 0
+featProp EnergyFromBunnyDigestion.Graphing.meterProp setTo 'numberToGraph'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  propPush global.energyProducedBunnyDigestion
+  propPop numberToGraph
+  // lets make 1000 the max 
+  prop numberToGraph div 1000
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "EnergyFromWormDigestion",
+      "scriptText": `# BLUEPRINT EnergyFromWormDigestion
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// Make costume an invisible dot so we only see the meter
+featProp EnergyFromWormDigestion.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp EnergyFromWormDigestion.Graphing.isLargeGraphic setTo true
+featProp EnergyFromWormDigestion.Graphing.meterColor setTo 65280
+
+addProp numberToGraph number 0
+featProp EnergyFromWormDigestion.Graphing.meterProp setTo 'numberToGraph'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  propPush global.energyProducedWormDigestion
+  propPop numberToGraph
+  // lets make 1000 the max 
+  prop numberToGraph div 1000
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1139,13 +1271,6 @@ prop zIndex setTo 0
 featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30
 `
-    },
-    {
-      "id": "8",
-      "label": "Energy In System Graph",
-      "bpid": "EnergyInSystem",
-      "initScript": `prop x setTo 515.66
-prop y setTo 311.81`
     },
     {
       "id": "1101",
@@ -1331,6 +1456,34 @@ prop y setTo -308.23`
       "bpid": "Bunny",
       "initScript": `prop x setTo -289.84
 prop y setTo -102.96`
+    },
+    {
+      "id": "1722",
+      "label": "Energy From Sun",
+      "bpid": "EnergyFromSunMeter",
+      "initScript": `prop x setTo -493.79
+prop y setTo -277.04`
+    },
+    {
+      "id": "1723",
+      "label": "Energy From Photosynthesis",
+      "bpid": "EnergyFromPhotosynthesis",
+      "initScript": `prop x setTo -494.56
+prop y setTo -112.88`
+    },
+    {
+      "id": "1724",
+      "label": "Energy From Bunny  Digestion",
+      "bpid": "EnergyFromBunnyDigestion",
+      "initScript": `prop x setTo -494.95
+prop y setTo 57.15`
+    },
+    {
+      "id": "1725",
+      "label": "Energy From Worm Digestion",
+      "bpid": "EnergyFromWormDigestion",
+      "initScript": `prop x setTo -490.75
+prop y setTo 242.87`
     }
   ]
 }
