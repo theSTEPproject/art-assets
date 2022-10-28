@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x00bfff",
     "roundsCanLoop": true,
@@ -1250,8 +1253,8 @@ every 1 runAtStart [[
       "id": "2",
       "label": "Plant 1",
       "bpid": "Plant",
-      "initScript": `prop x setTo 303.44
-prop y setTo -176.28`
+      "initScript": `prop x setTo 328.59
+prop y setTo -204.27`
     },
     {
       "id": "5",
