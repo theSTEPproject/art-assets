@@ -271,7 +271,7 @@ addFeature Graphing
 featProp Waste.Graphing.meterProp setTo 'matterLevel'
 
 // set the waste to be purple because it has nutrients, not energy
-featProp Waste.Graphing.meterColor setTo 5783616
+featProp Waste.Graphing.meterColor setTo 16767637
 
 // required directive
 # PROGRAM UPDATE`
@@ -1403,7 +1403,7 @@ featProp agent.Costume.height setTo 30`
       "bpid": "ColorChip",
       "initScript": `prop x setTo 456.43
 prop y setTo -249.77
-featCall Costume setColorize 0.56 0.52 0.40
+featCall Costume setColorize 1.0 0.85 0.58
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 100
 featProp agent.Costume.height setTo 30`
