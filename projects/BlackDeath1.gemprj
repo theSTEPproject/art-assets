@@ -6,9 +6,12 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
-    "bgcolor": 13882323,
+    "bgcolor": "0x00bfff",
     "roundsCanLoop": false,
     "showWebCam": false,
     "scaleX": 1,
@@ -23,19 +26,25 @@
     {
       "id": "r1",
       "label": "Before Times",
-      "time": 10,
-      "intro": "Before Times Intro",
+      "time": 60,
+      "intro": "Go about your life. For now, your focus is on eating and getting nutrition.",
       "outtro": "",
-      "initScript": `dbgOut 'roundDef: Round1'`,
+      "initScript": `dbgOut 'roundDef: Round1'
+      
+        prop global.hasPlague setTo false
+      `,
       "endScript": `dbgOut 'END Round!'`
     },
     {
       "id": "r2",
       "label": "Plague Strikes",
-      "time": 20,
-      "intro": "Thee Plague Strikes Town",
+      "time": 60,
+      "intro": "Plague has struck! You still need food, but be careful... ",
       "outtro": "",
-      "initScript": `dbgOut 'roundDef: Round2'`,
+      "initScript": `dbgOut 'roundDef: Round2'
+            
+        prop global.hasPlague setTo true
+      `,
       "endScript": `dbgOut 'END Round!'`
     }
   ],
@@ -54,8 +63,12 @@
 // ✏️ body
 
 # PROGRAM INIT
-
+// hide this
 prop global.visible setTo false
+
+// Setup properties 
+// This helps us determine if plague is something to be worried about
+addProp hasPlague boolean false
 
 # PROGRAM UPDATE`
     },
@@ -80,7 +93,7 @@ featProp Person.Costume.scale setTo 0.7
 
 // make sure we track interactions with other people
 featCall Person.Touches monitor 'Person' b2b
-featCall Person.Touches monitor 'Space' b2b
+featCall Person.Touches monitor 'Place' b2b
 featCall Person.Touches monitor 'Food' b2b
 
 // 🔎 WHAT are the properties of people?
@@ -106,7 +119,7 @@ prop Person.nutritionLevel setMax 10
 featProp Person.Graphing.meterProp setTo 'energylevel'
 
 // Set name
-exprPush {{'$:' + Person.getProp('wealth').value + '; ' + 'Nutrition:' + Person.getProp('nutritionLevel').value }}
+exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
 featPropPop Person.Graphing.text 
 
 # PROGRAM UPDATE
@@ -114,7 +127,7 @@ featPropPop Person.Graphing.text
 every 1 runAtStart [[
   // People use energylevel over time
   // prop Person.energylevel sub 1
-  exprPush {{'$:' + Person.getProp('wealth').value + '; ' + 'Nutrition:' + Person.getProp('nutritionLevel').value }}
+  exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
   featPropPop Person.Graphing.text 
 ]]
 
@@ -126,9 +139,9 @@ when Person firstTouches Person [[
 
 ]]
 
-when Person firstTouches Space [[
-  // if the space has a higher wealth than the person, make them feel unwelcome
-  ifExpr {{ Space.getProp('wealth').value > Person.getProp('wealth').value }} [[
+when Person firstTouches Place [[
+  // if the Place has a higher wealth than the person, make them feel unwelcome
+  ifExpr {{ Place.getProp('wealth').value > Person.getProp('wealth').value }} [[
     featCall Person.Population createCharacter PopupEffect [[
       prop agent.textToUse setTo 'You are not welcome!'
     ]]
@@ -145,7 +158,9 @@ when Person firstTouches Food [[
       prop agent.textToUse setTo 'You cannot afford this!'
     ]]
   ]]
-  ifExpr {{ Person.getProp('wealth').value > Food.getProp('wealth').value }} [[
+
+  // If you can afford the food, eat it
+  ifExpr {{ Person.getProp('wealth').value >= Food.getProp('wealth').value }} [[
     prop Person.energylevel add 1
     // If the food nutrition is higher than person, increase it for the person
     // otherwise lower it
@@ -159,8 +174,8 @@ when Person firstTouches Food [[
 ]]`
     },
     {
-      "name": "Space",
-      "scriptText": `# BLUEPRINT Space
+      "name": "Place",
+      "scriptText": `# BLUEPRINT Place
 # TAG isCharControllable true
 # TAG isPozyxControllable true
 # TAG isPTrackControllable false
@@ -168,19 +183,21 @@ when Person firstTouches Food [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Physics
+addFeature Graphing
 
 // Setup costume
-featProp Space.Costume.costumeName setTo 'GEN_square.json'
-prop Space.zIndex setTo -200
+featProp Place.Costume.costumeName setTo 'GEN_square.json'
+featCall Place.Costume setColorizeHSV 0 0 0.8
+prop Place.zIndex setTo -200
 
-// 🔎 WHAT are the properties of spaces?
+// 🔎 WHAT are the properties of Places?
 // 🔎 Note that many people perceive these as being ranked, rather than
 // 🔎 simply different, and therefore that is how they are represented in the scriptaddProp perceivedColor Number 0
 
-// How wealthy is the space?  This will impact who is welcome.
+// How wealthy is the Place?  This will impact who is welcome.
 addProp wealth number 5
-prop Space.wealth setMin 0
-prop Space.wealth setMax 10
+prop Place.wealth setMin 0
+prop Place.wealth setMax 10
 
 # PROGRAM UPDATE`
     },
@@ -262,8 +279,8 @@ prop Food.nutritionLevel setMax 10
   "instances": [
     {
       "id": "2",
-      "label": "Wealthy Space",
-      "bpid": "Space",
+      "label": "Wealthy Place",
+      "bpid": "Place",
       "initScript": `prop x setTo -271.37
 prop y setTo -272.55
 prop wealth setTo 10
@@ -271,45 +288,76 @@ prop wealth setTo 10
     },
     {
       "id": "3",
-      "label": "Average Space",
-      "bpid": "Space",
-      "initScript": `prop x setTo 268.93
+      "label": "Average Place",
+      "bpid": "Place",
+      "initScript": `prop x setTo 270.54
 prop y setTo -273.32
 prop wealth setTo 5
 `
     },
     {
       "id": "4",
-      "label": "Poor Space",
-      "bpid": "Space",
-      "initScript": `prop x setTo -269.55
-prop y setTo 256.66
+      "label": "Poor Place",
+      "bpid": "Place",
+      "initScript": `prop x setTo -270.67
+prop y setTo 214.00
 prop wealth setTo 2
 `
     },
     {
       "id": "5",
-      "label": "Great food",
+      "label": "Great Food",
       "bpid": "Food",
       "initScript": `prop x setTo -342.15
 prop y setTo -338.28
-prop nutritionLevel setTo 9`
+prop nutritionLevel setTo 10
+prop wealth setTo 10
+`
     },
     {
       "id": "6",
-      "label": "Average food",
+      "label": "Above Average Food",
       "bpid": "Food",
-      "initScript": `prop x setTo 303.96
-prop y setTo -306.74
-prop nutritionLevel setTo 5`
+      "initScript": `prop x setTo 346.39
+prop y setTo -297.27
+prop nutritionLevel setTo 6
+prop wealth setTo 6`
     },
     {
       "id": "7",
-      "label": "Poor food",
+      "label": "Average Food",
+      "bpid": "Food",
+      "initScript": `prop x setTo 233.23
+prop y setTo -343.12
+prop nutritionLevel setTo 5
+prop wealth setTo 5`
+    },
+    {
+      "id": "8",
+      "label": "Poor Food",
       "bpid": "Food",
       "initScript": `prop x setTo -328.40
 prop y setTo 304.29
-prop nutritionLevel setTo 2`
+prop nutritionLevel setTo 2
+prop wealth setTo 2`
+    },
+    {
+      "id": "9",
+      "label": "Poor Food",
+      "bpid": "Food",
+      "initScript": `prop x setTo -256.90
+prop y setTo 313.11
+prop nutritionLevel setTo 2
+prop wealth setTo 2`
+    },
+    {
+      "id": "10",
+      "label": "Great Food",
+      "bpid": "Food",
+      "initScript": `prop x setTo -358.23
+prop y setTo -259.79
+prop nutritionLevel setTo 10
+prop wealth setTo 10`
     }
   ]
 }
