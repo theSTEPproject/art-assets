@@ -398,6 +398,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // Add features
 addFeature Costume
+addFeature Graphing
 
 // Setup costume
 featProp KnowledgeIndicator.Costume.costumeName setTo 'GEN_circle.json'
