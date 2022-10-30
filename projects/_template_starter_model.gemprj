@@ -59,7 +59,7 @@ prop global.visible setTo false
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featProp EmbodiedCharacter1.Costume.costumeName setTo 'circle.json'
+featProp EmbodiedCharacter1.Costume.costumeName setTo 'GEN_circle.json'
 
 addFeature Physics
 addFeature Touches
@@ -89,7 +89,7 @@ addFeature Touches
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featProp InteractingCharacter1.Costume.costumeName setTo 'square.json'
+featProp InteractingCharacter1.Costume.costumeName setTo 'GEN_square.json'
 
 addFeature Physics
 addFeature Touches

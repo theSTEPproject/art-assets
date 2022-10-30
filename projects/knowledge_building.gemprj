@@ -1,0 +1,329 @@
+{
+  "id": "knowledge_building",
+  "label": "Knowledge Building",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [false, false],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+dbgOut 'TODO: Make sure to tweak so that scientists need both obs and the labs?'
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Scientist",
+      "scriptText": `# BLUEPRINT Scientist
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature Population
+
+// Setup costume
+featProp Scientist.Costume.costumeName setTo 'PP_person_neutral.png'
+
+// Add properties
+addProp knowledge number 0
+prop Scientist.knowledge setMax 100
+prop Scientist.knowledge setMin 0
+
+// setup meter to show the knowledge 
+featProp Scientist.Graphing.meterProp setTo 'knowledge'
+
+// check if the scientist is visiting a place - see specif script below 
+featCall Scientist.Touches monitor 'Nature' b2b
+featCall Scientist.Touches monitor 'Place' b2b
+
+# PROGRAM UPDATE
+// ============================================================
+// Scientists when they aren't interacting
+// ============================================================
+every 1 runAtStart [[
+  ifProp Scientist.knowledge greaterThan 50 [[
+    featProp Scientist.Costume.costumeName setTo 'PP_person_happy.png'
+  ]]
+]]
+
+// ============================================================
+// Scientists interacting with nature
+// ============================================================
+when Scientist firstTouches Nature [[
+  prop Nature.collaborators add 1
+
+  ifProp Scientist.knowledge lessThan 50 [[
+    featCall Scientist.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Observing'
+    ]]
+  ]]
+  ifProp Scientist.knowledge greaterThan 50 [[
+    featCall Scientist.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Observing and Helping'
+    ]]
+  ]]
+]]
+
+when Scientist touches Nature [[
+  every 1 runAtStart [[
+  // construct knowlege depending on the kind of place and if others are there
+
+    // 🔎 WHAT do scientists do in NATURE?
+    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments 
+
+    // 🔎 If there is no one else there, building knowledge might be slow 
+    ifProp Nature.collaborators equal 0 [[
+      prop Scientist.knowledge add 1
+    ]]
+    // 🔎 If there are people to collaborate with, knowledge building might go faster 
+    ifProp Nature.collaborators greaterThan 0 [[
+      prop Scientist.knowledge add 2
+    ]]
+
+    // 🔎 Once they understand nature, they can help certain ecosystems better survive
+    // 🔎 Does it always work this well, though?
+    ifProp Scientist.knowledge greaterThan 50 [[
+      prop Nature.health add 1
+    ]]
+  ]]
+]]
+
+when Scientist lastTouches Place [[
+  prop Place.collaborators sub 1
+]]
+
+// ============================================================
+// Scientists interacting with a humaan-made place
+// ============================================================
+when Scientist firstTouches Place [[
+  prop Place.collaborators add 1
+
+  featCall Scientist.Population createCharacter PopupEffect [[
+    prop PopupEffect.textToUse setTo 'Doing Science!'
+  ]]
+]]
+
+when Scientist touches Place [[
+  every 1 runAtStart [[
+  // construct knowlege depending on the kind of place and if others are there
+
+    // 🔎 WHAT do scientists do in other PLACES like labs and offices?
+    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments 
+
+    // 🔎 If there is no one else there, building knowledge might be slow 
+    ifProp Place.collaborators equal 0 [[
+      prop Scientist.knowledge add 1
+    ]]
+    // 🔎 If there are people to collaborate with, knowledge building might go faster 
+    ifProp Place.collaborators greaterThan 0 [[
+      prop Scientist.knowledge add 2
+    ]]
+  ]]
+]]
+
+when Scientist lastTouches Place [[
+  prop Place.collaborators sub 1
+]]
+`
+    },
+    {
+      "name": "Nature",
+      "scriptText": `# BLUEPRINT Nature
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume
+featProp Nature.Costume.costumeName setTo 'GEN_square.json'
+featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
+
+// Properties
+// collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
+// how do we make sure the person already there gets it?
+addProp collaborators number -1
+addProp name string 'nature'
+
+addProp health number 50
+prop Nature.health setMin 0
+prop Nature.health setMax 100
+
+// set name to trackerId to make it easier to read the later code
+propPush Nature.trackerId
+propPop Nature.name
+
+featProp Nature.Graphing.meterProp setTo 'health'
+featProp Nature.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+`
+    },
+    {
+      "name": "Place",
+      "scriptText": `# BLUEPRINT Place
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// Add features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+// Setup costume
+featProp Place.Costume.costumeName setTo 'GEN_square.json'
+featCall Place.Costume setColorizeHSV 0 0 0.8
+// Properties
+// collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
+// how do we make sure the person already there gets it?
+addProp collaborators number -1
+addProp name string 'place'
+
+// set name to trackerId to make it easier to read the later code
+propPush Place.trackerId
+propPop Place.name
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Population
+
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
+
+addProp costumeToUse string ''
+addProp textToUse string ''
+addProp countDown Number 3
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
+  ]]
+]]
+every 1 runAtStart [[
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Pond",
+      "bpid": "Nature",
+      "initScript": `prop x setTo -219.87
+prop y setTo -264.26`
+    },
+    {
+      "id": "2",
+      "label": "Chemical Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 259.59
+prop y setTo -268.57`
+    },
+    {
+      "id": "3",
+      "label": "Modeling Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 262.34
+prop y setTo 204.76`
+    }
+  ]
+}
