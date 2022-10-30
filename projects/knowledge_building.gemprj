@@ -71,6 +71,8 @@ addFeature Graphing
 addFeature Population
 
 // Setup costume
+// TODO: When we switch to art, set that in the map setup not here
+// THOUGH WE WILL MAYBE DROP THE HAPPY VERSION THEN?
 featProp Scientist.Costume.costumeName setTo 'PP_person_neutral.png'
 featProp Scientist.Costume.scale setTo 0.5
 
@@ -104,12 +106,12 @@ when Scientist firstTouches Nature [[
 
   // Show what we are doing, which depends on how much we know about this ecosystem
   ifProp Scientist.knowledge lessThan 50 [[
-    featCall Scientist.Population createCharacter PopupEffect [[
+    featCall Nature.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Observing'
     ]]
   ]]
   ifProp Scientist.knowledge greaterThan 50 [[
-    featCall Scientist.Population createCharacter PopupEffect [[
+    featCall Nature.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Observing and Helping'
     ]]
   ]]
@@ -173,8 +175,8 @@ when Scientist lastTouches Place [[
 when Scientist firstTouches Place [[
   prop Place.collaborators add 1
 
-  featCall Scientist.Population createCharacter PopupEffect [[
-    prop PopupEffect.textToUse setTo 'Doing Science!'
+  featCall Place.Population createCharacter PopupEffect [[
+    prop PopupEffect.textToUse setTo 'Doing Science!' 
   ]]
 
   // check if someone has been here before. If not, not they have now
@@ -213,6 +215,15 @@ when Scientist touches Place [[
       // ✏️ Do something else like maybe add more knowlege because having observed different ecosystems helps? 
       dbgOut 'Visiting a place after having visited at least 1 natural place'
     ]]
+
+    // ✏️ LETS CHANGE THIS: Does it matter where we are?
+    // ✏️ For example, do scientists think about the world at work or only the lab?
+    ifProp Place.type equal 'home' [[
+      // ✏️ Do something else like add extra knowledge in certain places?
+      dbgOut 'We are at home thinking about our work ... '
+    ]]
+
+
   ]]
 ]]
 
@@ -240,8 +251,10 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Graphing
+addFeature Population
 
 // Setup costume
+// TODO: When we switch to art, set that in the map setup not here
 featProp Nature.Costume.costumeName setTo 'GEN_square.json'
 featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
 featProp Nature.Costume.scale setTo 0.5
@@ -260,6 +273,11 @@ prop Nature.health setMax 100
 
 // has a scientist been here before?
 addProp wasVisited boolean false
+
+// What kind of place is this? 
+// You can put anything so long as the scientist touches code uses it
+// This is the default. Change it in the map setup.
+addProp type string 'nature'
 
 // set name to trackerId to make it easier to read the later code
 propPush Nature.trackerId
@@ -294,8 +312,10 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Graphing
+addFeature Population
 
 // Setup costume
+// TODO: When we switch to art, set that in the map setup not here
 featProp Place.Costume.costumeName setTo 'GEN_square.json'
 featCall Place.Costume setColorizeHSV 0 0 0.8
 featProp Place.Costume.scale setTo 0.5
@@ -308,6 +328,11 @@ addProp name string 'place'
 
 // has a scientist been here before?
 addProp wasVisited boolean false
+
+// What kind of place is this? 
+// You can put anything so long as the scientist touches code uses it
+// This is the default. Change it in the map setup.
+addProp type string 'place'
 
 // set name to trackerId to make it easier to read the later code
 propPush Place.trackerId
@@ -369,36 +394,70 @@ every 1 runAtStart [[
       "id": "0",
       "label": "Pond 1",
       "bpid": "Nature",
-      "initScript": `prop x setTo -245.49
-prop y setTo -262.62`
+      "initScript": `prop x setTo -88.09
+prop y setTo -234.72
+prop Nature.type setTo 'pond'
+`
     },
     {
       "id": "2",
       "label": "Chemical Lab",
       "bpid": "Place",
       "initScript": `prop x setTo 251.92
-prop y setTo -258.01`
+prop y setTo -258.01
+prop Place.type setTo 'lab'
+`
     },
     {
       "id": "3",
       "label": "Modeling Lab",
       "bpid": "Place",
-      "initScript": `prop x setTo 249.38
-prop y setTo 218.17`
+      "initScript": `prop x setTo 255.66
+prop y setTo -65.54
+prop Place.type setTo 'lab'
+`
     },
     {
       "id": "4",
       "label": "Office",
       "bpid": "Place",
-      "initScript": `prop x setTo -239.83
-prop y setTo 221.23`
+      "initScript": `prop x setTo 268.28
+prop y setTo 125.07
+prop Place.type setTo 'office'
+`
     },
     {
       "id": "5",
       "label": "Pond 2",
       "bpid": "Nature",
       "initScript": `prop x setTo -245.94
-prop y setTo -64.65`
+prop y setTo -64.65
+prop Nature.type setTo 'pond'
+`
+    },
+    {
+      "id": "6",
+      "label": "Home",
+      "bpid": "Place",
+      "initScript": `prop x setTo -276.42
+prop y setTo -255.41
+prop Place.type setTo 'home'`
+    },
+    {
+      "id": "7",
+      "label": "Home",
+      "bpid": "Place",
+      "initScript": `prop x setTo 66.47
+prop y setTo 240.96
+prop Place.type setTo 'home'`
+    },
+    {
+      "id": "8",
+      "label": "Garden Store",
+      "bpid": "Place",
+      "initScript": `prop x setTo -274.11
+prop y setTo 232.75
+prop Place.type setTo 'store'`
     }
   ]
 }
