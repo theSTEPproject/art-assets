@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x00bfff",
     "roundsCanLoop": false,
@@ -32,6 +29,12 @@
       "initScript": `dbgOut 'roundDef: Round1'
       
         prop global.hasPlague setTo false
+
+        // give each person a random wealth and nutritionLevel
+        featCall global.Population charactersForEach 'Person' [[
+          prop Person.wealth setToRnd 2 10 true
+          prop Person.nutritionLevel setToRnd 2 7 true
+        ]]
       `,
       "endScript": `dbgOut 'END Round!'`
     },
@@ -44,6 +47,13 @@
       "initScript": `dbgOut 'roundDef: Round2'
             
         prop global.hasPlague setTo true
+
+        // create plague vectors and place them
+        featCall global.Population createCharacter PlagueVector [[
+          prop PlagueVector.x setTo 0
+          prop PlagueVector.y setTo 0
+        ]]
+
       `,
       "endScript": `dbgOut 'END Round!'`
     }
@@ -63,12 +73,18 @@
 // ✏️ body
 
 # PROGRAM INIT
-// hide this
+
+// add features
+addFeature Population
+
 prop global.visible setTo false
 
-// Setup properties 
+// Setup properties
 // This helps us determine if plague is something to be worried about
 addProp hasPlague boolean false
+
+// chance of getting plague as a percentage
+addProp chanceOfCatchingPlague number 0.5
 
 # PROGRAM UPDATE`
     },
@@ -95,10 +111,13 @@ featProp Person.Costume.scale setTo 0.7
 featCall Person.Touches monitor 'Person' b2b
 featCall Person.Touches monitor 'Place' b2b
 featCall Person.Touches monitor 'Food' b2b
+featCall Person.Touches monitor 'PlagueVector' b2b
 
 // 🔎 WHAT are the properties of people?
 // Do they currently have the plague?
 addProp hasPlague boolean false
+// Or were they exposed to it?
+addProp wasExposed boolean false
 
 // How wealthy are they?  This will impact access to food.
 addProp wealth number 5
@@ -116,6 +135,10 @@ addProp nutritionLevel number 5
 prop Person.nutritionLevel setMin 0
 prop Person.nutritionLevel setMax 10
 
+// used for calculating whether we get plague 
+addProp randomNum number 0
+addProp tempNum number 0
+
 featProp Person.Graphing.meterProp setTo 'energylevel'
 
 // Set name
@@ -124,19 +147,88 @@ featPropPop Person.Graphing.text
 
 # PROGRAM UPDATE
 
-every 1 runAtStart [[
+every 0.1 runAtStart [[
   // People use energylevel over time
   // prop Person.energylevel sub 1
   exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
   featPropPop Person.Graphing.text 
+
+  // if this is a round where plague is present
+  ifProp global.hasPlague equal true [[
+    // if this person is not positive and has been exposed 
+    ifProp Person.hasPlague equal false [[
+      ifProp Person.wasExposed equal true [[
+
+        // Determine if theey have plague and then clear exposed
+        // The two key variables are:
+        // - global.chanceOfCatchingPlague (percentage)
+        // - Person.nutritionLevel (1-10)
+
+        // Current approach
+        propPush Person.nutritionLevel
+        propPop Person.tempNum
+
+        // change nutrition into a percentage
+        prop Person.tempNum div 10
+
+        // pick a random number between 1 and 10
+        prop Person.randomNum setToRnd 0 1 false
+
+        //dbgOut {{ 'Our random number is: ' + Person.getProp('randomNum').value }}
+        //dbgOut {{ 'Our temp number is: ' + Person.getProp('tempNum').value }}
+
+        // multiple that random number by our temp number
+        propPush Person.randomNum
+        propPush Person.tempNum
+        stackMul
+        propPop Person.tempNum
+
+       // dbgOut {{ 'Mult and result is: ' + Person.getProp('tempNum').value }}
+       // dbgOut {{ 'Checking if we are sick given a tempNum of ' +  Person.getProp('tempNum').value + ' and global: ' + global.getProp('chanceOfCatchingPlague').value }}
+
+        // if the random number is below the threshold, the person is now sick
+        ifExpr {{ Person.getProp('tempNum').value < global.getProp('chanceOfCatchingPlague').value }} [[
+          // We have a new person who is sick
+          dbgOut 'We have a new person who is sick'
+          prop Person.hasPlague setTo true
+        ]]
+
+        // set this to false so we don't bother checking again
+        prop Person.wasExposed setTo false
+      ]]
+
+      // NOTE this does not currently have a period of positive but not visible
+      // if the person now has plague, change their costume to be sad
+      ifProp Person.hasPlague equal true [[
+        featProp Person.Costume.costumeName setTo 'PP_person_sad.png'
+      ]]
+      // if they feel OK still, they are happy because they are relieved!!
+      ifProp Person.hasPlague equal false [[
+        featProp Person.Costume.costumeName setTo 'PP_person_happy.png'
+        ]]
+      ]]
+    ]]
 ]]
 
 when Person firstTouches Person [[
   // glow to show we are interacting
   featProp Person.Costume.glow setTo 1
 
-  // TODO Check for plague
+  ifExpr {{ agent.getProp('trackerId').value !=  Person.getProp('trackerId').value }} [[
+    ifProp Person.hasPlague equal true [[
+      prop agent.wasExposed setTo true
+    ]]
+  ]]
+]]
 
+
+when Person firstTouches PlagueVector [[
+  // glow to show we are interacting
+  featProp Person.Costume.glow setTo 1
+
+  ifProp PlagueVector.hasPlague equal true [[
+    prop Person.wasExposed setTo true
+  ]]
 ]]
 
 when Person firstTouches Place [[
@@ -171,7 +263,9 @@ when Person firstTouches Food [[
       prop Person.nutritionLevel sub 1
     ]]
   ]]
-]]`
+]]
+
+`
     },
     {
       "name": "Place",
@@ -274,6 +368,37 @@ prop Food.nutritionLevel setMin 0
 prop Food.nutritionLevel setMax 10
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "PlagueVector",
+      "scriptText": `# BLUEPRINT PlagueVector
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add features
+addFeature Costume
+addFeature Physics
+
+// setup costume
+featProp PlagueVector.Costume.costumeName setTo 'GEN_circle.json'
+featProp PlagueVector.Costume.scale setTo 0.2
+
+// Do they currently have the plague?
+addProp hasPlague boolean true
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
