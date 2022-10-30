@@ -387,6 +387,103 @@ every 1 runAtStart [[
   ]]
 ]]
 `
+    },
+    {
+      "name": "KnowledgeIndicator",
+      "scriptText": `# BLUEPRINT KnowledgeIndicator
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// Add features
+addFeature Costume
+
+// Setup costume
+featProp KnowledgeIndicator.Costume.costumeName setTo 'GEN_circle.json'
+featProp KnowledgeIndicator.Costume.scale setTo 0.1 
+
+// Setup properties
+addProp knowledgeLevel number 0
+prop KnowledgeIndicator.knowledgeLevel setMin 0
+prop KnowledgeIndicator.knowledgeLevel setMax 100
+
+addProp temp number 0
+
+// featProp KnowledgeIndicator.Graphing.textProp setTo 'knowledgeLevel'
+
+# PROGRAM UPDATE
+every 0.1 runAtStart [[
+  propPush KnowledgeIndicator.y
+  propPop KnowledgeIndicator.temp
+  prop KnowledgeIndicator.temp mul -1
+  prop KnowledgeIndicator.temp add 400
+  prop KnowledgeIndicator.temp div 8
+  propPush KnowledgeIndicator.temp
+  propPop KnowledgeIndicator.knowledgeLevel
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "KnowledgeMeter",
+      "scriptText": `# BLUEPRINT KnowledgeMeter
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Population
+addFeature Graphing
+
+featProp KnowledgeMeter.Costume.costumeName setTo 'GEN_square.json'
+featProp KnowledgeMeter.Costume.width setTo 50
+featProp KnowledgeMeter.Costume.height setTo 1
+
+addProp avgKnowlegeLevel number 0
+addProp meterY number 0
+
+featProp KnowledgeMeter.Graphing.text setTo 'Science Knowledge'
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  // get the average health indicator on a scale of 0-100
+  featCall KnowledgeMeter.Population countCharacterProp 'KnowledgeIndicator' 'knowledgeLevel'
+  featPropPush KnowledgeMeter.Population.avg
+  propPop KnowledgeMeter.avgKnowlegeLevel
+
+  // scale it up to span the screen with a bottom of just high enoughg to show the text
+  prop KnowledgeMeter.avgKnowlegeLevel mul 7.25
+
+  // use the scaled number to set the meter height
+  propPush KnowledgeMeter.avgKnowlegeLevel
+  featPropPop KnowledgeMeter.Costume.height
+  
+  // now use the height to set the y value since we position based on center of the object (not bottom)
+  propPush KnowledgeMeter.avgKnowlegeLevel
+  propPop KnowledgeMeter.meterY
+  prop KnowledgeMeter.meterY div -2
+  prop KnowledgeMeter.meterY add 325
+
+  propPush KnowledgeMeter.meterY 
+  propPop KnowledgeMeter.y
+
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -458,6 +555,13 @@ prop Place.type setTo 'home'`
       "initScript": `prop x setTo -274.11
 prop y setTo 232.75
 prop Place.type setTo 'store'`
+    },
+    {
+      "id": "10",
+      "label": "Knowledge Meter",
+      "bpid": "KnowledgeMeter",
+      "initScript": `prop x setTo 440
+prop y setTo 325`
     }
   ]
 }
