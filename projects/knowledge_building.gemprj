@@ -36,8 +36,13 @@
 
 # PROGRAM INIT
 
+// add properties 
+addProp placesVisited number 0
+addProp natureVisited number 0
+
 dbgOut 'TODO: Make sure to tweak so that scientists need both obs and the labs?'
 
+// hide this since it is just for properties
 prop global.visible setTo false
 
 // required directive
@@ -67,22 +72,23 @@ addFeature Population
 
 // Setup costume
 featProp Scientist.Costume.costumeName setTo 'PP_person_neutral.png'
+featProp Scientist.Costume.scale setTo 0.5
 
 // Add properties
 addProp knowledge number 0
 prop Scientist.knowledge setMax 100
 prop Scientist.knowledge setMin 0
 
-// setup meter to show the knowledge 
+// setup meter to show the knowledge
 featProp Scientist.Graphing.meterProp setTo 'knowledge'
 
-// check if the scientist is visiting a place - see specif script below 
+// check if the scientist is visiting a place - see specif script below
 featCall Scientist.Touches monitor 'Nature' b2b
 featCall Scientist.Touches monitor 'Place' b2b
 
 # PROGRAM UPDATE
 // ============================================================
-// Scientists when they aren't interacting
+// SCIENTISTS, other updates
 // ============================================================
 every 1 runAtStart [[
   ifProp Scientist.knowledge greaterThan 50 [[
@@ -91,11 +97,12 @@ every 1 runAtStart [[
 ]]
 
 // ============================================================
-// Scientists interacting with nature
+// SCIENTISTS interacting with NATURE
 // ============================================================
 when Scientist firstTouches Nature [[
   prop Nature.collaborators add 1
 
+  // Show what we are doing, which depends on how much we know about this ecosystem
   ifProp Scientist.knowledge lessThan 50 [[
     featCall Scientist.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Observing'
@@ -106,25 +113,49 @@ when Scientist firstTouches Nature [[
       prop PopupEffect.textToUse setTo 'Observing and Helping'
     ]]
   ]]
+
+  // check if someone has been here before. If not, not they have now
+  ifProp Nature.wasVisited equal false [[
+    prop Nature.wasVisited setTo true
+    // show that another nature place was visited
+    prop global.natureVisited add 1
+  ]]
 ]]
 
 when Scientist touches Nature [[
   every 1 runAtStart [[
-  // construct knowlege depending on the kind of place and if others are there
+    // construct knowlege depending on the kind of place and if others are there
 
     // 🔎 WHAT do scientists do in NATURE?
-    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments 
+    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments
 
-    // 🔎 If there is no one else there, building knowledge might be slow 
+    // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Nature.collaborators equal 0 [[
       prop Scientist.knowledge add 1
     ]]
-    // 🔎 If there are people to collaborate with, knowledge building might go faster 
+    // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Nature.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
     ]]
 
-    // 🔎 Once they understand nature, they can help certain ecosystems better survive
+    // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
+    // ✏️ For example, does it matter where else they have visited?
+    ifProp global.placesVisited greaterThan 1 [[
+      // ✏️ Do something else like maybe add more knowlege because having worked on these ideas helps? 
+      dbgOut 'We have visited at least 1 human-made place before visiting a natural place'
+    ]]
+
+    ifProp global.natureVisited equal 1 [[
+      // ✏️ Do something else like maybe add more knowlege because having observed this ecosystems helps? 
+      dbgOut 'visiting the first natural place'
+    ]]
+    
+    ifProp global.natureVisited greaterThan 1 [[
+      // ✏️ Do something else like maybe add more knowlege because having observed different ecosystems helps? 
+      dbgOut 'visiting a natural place when at least one other was visited'
+    ]]
+
+    // 🔎 Once they understand this ecosystem, scientists might be able to help them survive
     // 🔎 Does it always work this well, though?
     ifProp Scientist.knowledge greaterThan 50 [[
       prop Nature.health add 1
@@ -137,7 +168,7 @@ when Scientist lastTouches Place [[
 ]]
 
 // ============================================================
-// Scientists interacting with a humaan-made place
+// SCIENTISTS interacting with a human-made PLACE
 // ============================================================
 when Scientist firstTouches Place [[
   prop Place.collaborators add 1
@@ -145,30 +176,49 @@ when Scientist firstTouches Place [[
   featCall Scientist.Population createCharacter PopupEffect [[
     prop PopupEffect.textToUse setTo 'Doing Science!'
   ]]
+
+  // check if someone has been here before. If not, not they have now
+  ifProp Place.wasVisited equal false [[
+    prop Place.wasVisited setTo true
+    // show that another nature place was visited
+    prop global.placesVisited add 1
+  ]]
+
 ]]
 
 when Scientist touches Place [[
   every 1 runAtStart [[
-  // construct knowlege depending on the kind of place and if others are there
+    // construct knowlege depending on the kind of place and if others are there
 
     // 🔎 WHAT do scientists do in other PLACES like labs and offices?
-    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments 
+    // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments
 
-    // 🔎 If there is no one else there, building knowledge might be slow 
+    // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Place.collaborators equal 0 [[
       prop Scientist.knowledge add 1
     ]]
-    // 🔎 If there are people to collaborate with, knowledge building might go faster 
+    // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Place.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
+    ]]
+
+    // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
+    // ✏️ For example, does it matter where else they have visited?
+    ifProp global.placesVisited greaterThan 1 [[
+      // ✏️ Do something else like maybe add more knowlege because having worked on ideas in several places helps? 
+      dbgOut 'Visiting a place after having visited at least 2 places total'
+    ]]
+
+    ifProp global.natureVisited greaterThan 0 [[
+      // ✏️ Do something else like maybe add more knowlege because having observed different ecosystems helps? 
+      dbgOut 'Visiting a place after having visited at least 1 natural place'
     ]]
   ]]
 ]]
 
 when Scientist lastTouches Place [[
   prop Place.collaborators sub 1
-]]
-`
+]]`
     },
     {
       "name": "Nature",
@@ -194,6 +244,8 @@ addFeature Graphing
 // Setup costume
 featProp Nature.Costume.costumeName setTo 'GEN_square.json'
 featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
+featProp Nature.Costume.scale setTo 0.5
+
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
@@ -201,9 +253,13 @@ featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
 addProp collaborators number -1
 addProp name string 'nature'
 
+// Health of the natural ecosystem
 addProp health number 50
 prop Nature.health setMin 0
 prop Nature.health setMax 100
+
+// has a scientist been here before?
+addProp wasVisited boolean false
 
 // set name to trackerId to make it easier to read the later code
 propPush Nature.trackerId
@@ -242,11 +298,16 @@ addFeature Graphing
 // Setup costume
 featProp Place.Costume.costumeName setTo 'GEN_square.json'
 featCall Place.Costume setColorizeHSV 0 0 0.8
+featProp Place.Costume.scale setTo 0.5
+
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
 // how do we make sure the person already there gets it?
 addProp collaborators number -1
 addProp name string 'place'
+
+// has a scientist been here before?
+addProp wasVisited boolean false
 
 // set name to trackerId to make it easier to read the later code
 propPush Place.trackerId
@@ -306,24 +367,38 @@ every 1 runAtStart [[
   "instances": [
     {
       "id": "0",
-      "label": "Pond",
+      "label": "Pond 1",
       "bpid": "Nature",
-      "initScript": `prop x setTo -219.87
-prop y setTo -264.26`
+      "initScript": `prop x setTo -245.49
+prop y setTo -262.62`
     },
     {
       "id": "2",
       "label": "Chemical Lab",
       "bpid": "Place",
-      "initScript": `prop x setTo 259.59
-prop y setTo -268.57`
+      "initScript": `prop x setTo 251.92
+prop y setTo -258.01`
     },
     {
       "id": "3",
       "label": "Modeling Lab",
       "bpid": "Place",
-      "initScript": `prop x setTo 262.34
-prop y setTo 204.76`
+      "initScript": `prop x setTo 249.38
+prop y setTo 218.17`
+    },
+    {
+      "id": "4",
+      "label": "Office",
+      "bpid": "Place",
+      "initScript": `prop x setTo -239.83
+prop y setTo 221.23`
+    },
+    {
+      "id": "5",
+      "label": "Pond 2",
+      "bpid": "Nature",
+      "initScript": `prop x setTo -245.94
+prop y setTo -64.65`
     }
   ]
 }
