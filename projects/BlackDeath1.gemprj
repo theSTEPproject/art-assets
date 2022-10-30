@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x00bfff",
     "roundsCanLoop": false,
@@ -424,8 +427,8 @@ prop wealth setTo 5
       "id": "4",
       "label": "Poor Place",
       "bpid": "Place",
-      "initScript": `prop x setTo -270.67
-prop y setTo 214.00
+      "initScript": `prop x setTo 268.95
+prop y setTo 214.55
 prop wealth setTo 2
 `
     },
@@ -461,8 +464,8 @@ prop wealth setTo 5`
       "id": "8",
       "label": "Poor Food",
       "bpid": "Food",
-      "initScript": `prop x setTo -328.40
-prop y setTo 304.29
+      "initScript": `prop x setTo 290.87
+prop y setTo 285.08
 prop nutritionLevel setTo 2
 prop wealth setTo 2`
     },
@@ -470,8 +473,8 @@ prop wealth setTo 2`
       "id": "9",
       "label": "Poor Food",
       "bpid": "Food",
-      "initScript": `prop x setTo -256.90
-prop y setTo 313.11
+      "initScript": `prop x setTo 343.97
+prop y setTo 201.80
 prop nutritionLevel setTo 2
 prop wealth setTo 2`
     },
