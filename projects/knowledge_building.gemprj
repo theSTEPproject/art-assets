@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -434,7 +437,7 @@ every 0.1 runAtStart [[
     {
       "name": "KnowledgeMeter",
       "scriptText": `# BLUEPRINT KnowledgeMeter
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -467,14 +470,14 @@ every 0.1 runAtStart [[
   // use the scaled number to set the meter height
   propPush KnowledgeMeter.avgKnowlegeLevel
   featPropPop KnowledgeMeter.Costume.height
-  
+
   // now use the height to set the y value since we position based on center of the object (not bottom)
   propPush KnowledgeMeter.avgKnowlegeLevel
   propPop KnowledgeMeter.meterY
   prop KnowledgeMeter.meterY div -2
   prop KnowledgeMeter.meterY add 325
 
-  propPush KnowledgeMeter.meterY 
+  propPush KnowledgeMeter.meterY
   propPop KnowledgeMeter.y
 
 ]]

@@ -429,6 +429,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Physics
 addFeature Population
+addFeature Graphing
 
 // setup costume
 featProp EnergyMatterRep.Costume.costumeName setTo 'DC_energy_empty.png'
