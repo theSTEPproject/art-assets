@@ -493,7 +493,7 @@ every 0.1 runAtStart [[
   "instances": [
     {
       "id": "0",
-      "label": "Pond 1",
+      "label": "Pond",
       "bpid": "Nature",
       "initScript": `prop x setTo -88.09
 prop y setTo -234.72
@@ -529,11 +529,11 @@ prop Place.type setTo 'office'
     },
     {
       "id": "5",
-      "label": "Pond 2",
+      "label": "Forest",
       "bpid": "Nature",
       "initScript": `prop x setTo -245.94
 prop y setTo -64.65
-prop Nature.type setTo 'pond'
+prop Nature.type setTo 'forest'
 `
     },
     {
