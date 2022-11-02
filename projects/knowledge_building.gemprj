@@ -522,8 +522,8 @@ prop Place.type setTo 'lab'
       "id": "4",
       "label": "Office",
       "bpid": "Place",
-      "initScript": `prop x setTo 268.28
-prop y setTo 125.07
+      "initScript": `prop x setTo 259.88
+prop y setTo 122.19
 prop Place.type setTo 'office'
 `
     },
@@ -548,8 +548,8 @@ prop Place.type setTo 'home'`
       "id": "7",
       "label": "Home",
       "bpid": "Place",
-      "initScript": `prop x setTo 66.47
-prop y setTo 240.96
+      "initScript": `prop x setTo -85.72
+prop y setTo 266.84
 prop Place.type setTo 'home'`
     },
     {
@@ -566,6 +566,14 @@ prop Place.type setTo 'store'`
       "bpid": "KnowledgeMeter",
       "initScript": `prop x setTo 440
 prop y setTo 325`
+    },
+    {
+      "id": "11",
+      "label": "Embodied Modeling Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 93.50
+prop y setTo 242.75
+prop Place.type setTo 'lab'\n`
     }
   ]
 }
