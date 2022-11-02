@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -105,17 +102,39 @@ every 1 runAtStart [[
 // SCIENTISTS interacting with NATURE
 // ============================================================
 when Scientist firstTouches Nature [[
+  // note that we have a collaborator here 
   prop Nature.collaborators add 1
 
   // Show what we are doing, which depends on how much we know about this ecosystem
   ifProp Scientist.knowledge lessThan 50 [[
-    featCall Nature.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Observing'
-    ]]
+      ifProp Nature.type equal 'pond' [[
+        featCall Nature.Population createCharacter PopupMessage [[
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little KNOWLEGE
+          prop PopupMessage.textToUse setTo 'Observing pond'
+        ]]
+      ]]
+
+      ifProp Nature.type equal 'forest' [[
+        featCall Nature.Population createCharacter PopupMessage [[
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little KNOWLEGE
+          prop PopupMessage.textToUse setTo 'Observing forest'
+        ]]
+      ]]
   ]]
+
   ifProp Scientist.knowledge greaterThan 50 [[
-    featCall Nature.Population createCharacter PopupEffect [[
-      prop PopupEffect.textToUse setTo 'Observing and Helping'
+    ifProp Nature.type equal 'pond' [[
+      featCall Nature.Population createCharacter PopupMessage [[
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little KNOWLEGE
+        prop PopupMessage.textToUse setTo 'Observing and helping pond'
+      ]]
+    ]]
+
+    ifProp Nature.type equal 'forest' [[
+      featCall Nature.Population createCharacter PopupMessage [[
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little KNOWLEGE
+        prop PopupMessage.textToUse setTo 'Observing and helping forest'
+      ]]
     ]]
   ]]
 
@@ -178,9 +197,48 @@ when Scientist lastTouches Place [[
 when Scientist firstTouches Place [[
   prop Place.collaborators add 1
 
-  featCall Place.Population createCharacter PopupEffect [[
-    prop PopupEffect.textToUse setTo 'Doing Science!' 
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits home
+  ifProp Place.type equal 'home' [[
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at home' 
+    ]]
   ]]
+
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits lab
+  ifProp Place.type equal 'lab' [[
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
+    ]]
+  ]]
+
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits office
+  ifProp Place.type equal 'office' [[
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at office' 
+    ]]
+  ]]
+
+    // ✏️ LETS CHANGE what it says when a SCIENTIST visits store
+    ifProp Place.type equal 'store' [[
+      featCall Place.Population createCharacter PopupMessage [[
+        prop PopupMessage.textToUse setTo 'Doing Science! at store' 
+      ]]
+    ]]
+
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other1
+  ifProp Place.type equal 'other1' [[
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at other1' 
+    ]]
+  ]]
+
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other2
+  ifProp Place.type equal 'other2' [[
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at other2' 
+    ]]
+  ]]
+  
 
   // check if someone has been here before. If not, not they have now
   ifProp Place.wasVisited equal false [[
@@ -347,8 +405,8 @@ propPop Place.name
 // This is also where you can handle touches between characters such as When Algae touches Fish`
     },
     {
-      "name": "PopupEffect",
-      "scriptText": `# BLUEPRINT PopupEffect
+      "name": "PopupMessage",
+      "scriptText": `# BLUEPRINT PopupMessage
 # TAG isPozyxControllable false
 # TAG isCharControllable false
 # TAG isPTrackControllable false
@@ -360,9 +418,9 @@ addFeature Physics
 addFeature Graphing
 addFeature Population
 
-featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
-featProp PopupEffect.Graphing.text setTo ''
-prop PopupEffect.zIndex setTo 500
+featProp PopupMessage.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupMessage.Graphing.text setTo ''
+prop PopupMessage.zIndex setTo 500
 
 addProp costumeToUse string ''
 addProp textToUse string ''
@@ -371,22 +429,22 @@ addProp countDown Number 3
 # PROGRAM UPDATE
 
 every 0.1 runAtStart [[
-  ifProp PopupEffect.costumeToUse notEqual '' [[
-    propPush PopupEffect.costumeToUse
-    featPropPop PopupEffect.Costume.costumeName
-    prop PopupEffect.costumeToUse setTo ''
+  ifProp PopupMessage.costumeToUse notEqual '' [[
+    propPush PopupMessage.costumeToUse
+    featPropPop PopupMessage.Costume.costumeName
+    prop PopupMessage.costumeToUse setTo ''
   ]]
 
-  ifProp PopupEffect.textToUse notEqual '' [[
-    propPush PopupEffect.textToUse
-    featPropPop PopupEffect.Graphing.text
-    prop PopupEffect.textToUse setTo ''
+  ifProp PopupMessage.textToUse notEqual '' [[
+    propPush PopupMessage.textToUse
+    featPropPop PopupMessage.Graphing.text
+    prop PopupMessage.textToUse setTo ''
   ]]
 ]]
 every 1 runAtStart [[
-  prop PopupEffect.countDown sub 1
-  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
-    featCall PopupEffect.Population removeCharacter
+  prop PopupMessage.countDown sub 1
+  ifExpr {{ PopupMessage.getProp('countDown').value == 0 }} [[
+    featCall PopupMessage.Population removeCharacter
   ]]
 ]]
 `
@@ -573,7 +631,7 @@ prop y setTo 325`
       "bpid": "Place",
       "initScript": `prop x setTo 93.50
 prop y setTo 242.75
-prop Place.type setTo 'lab'\n`
+prop Place.type setTo 'lab'`
     }
   ]
 }
