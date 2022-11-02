@@ -538,7 +538,7 @@ prop Nature.type setTo 'pond'
     },
     {
       "id": "6",
-      "label": "Home",
+      "label": "Home 1",
       "bpid": "Place",
       "initScript": `prop x setTo -276.42
 prop y setTo -255.41
@@ -546,7 +546,7 @@ prop Place.type setTo 'home'`
     },
     {
       "id": "7",
-      "label": "Home",
+      "label": "Home 2",
       "bpid": "Place",
       "initScript": `prop x setTo -85.72
 prop y setTo 266.84
