@@ -118,7 +118,7 @@ addFeature Graphing
 
 // setup the costume
 featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
-featProp Person.Costume.scale setTo 0.7
+featProp Person.Costume.scale setTo 0.5
 
 // make sure we track interactions with other people
 featCall Person.Touches monitor 'Person' b2b
@@ -157,14 +157,19 @@ featProp Person.Graphing.meterColor setTo 65280
 
 
 // Set name
-exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+exprPush {{'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
 featPropPop Person.Graphing.text 
 
 # PROGRAM UPDATE
 
+every 3 runAtStart [[
+    // People use energylevel over time
+  prop Person.energylevel sub 1
+]]
+
 every 0.1 runAtStart [[
-  // People use energylevel over time
-  // prop Person.energylevel sub 1
+  
+  // update display of wealth
   exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
   featPropPop Person.Graphing.text 
 
