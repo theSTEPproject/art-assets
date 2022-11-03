@@ -53,6 +53,16 @@
 
         // create plague vectors and place them
         featCall global.Population createCharacter PlagueVector [[
+          prop PlagueVector.x setTo 20
+          prop PlagueVector.y setTo 100
+        ]]
+
+        featCall global.Population createCharacter PlagueVector [[
+          prop PlagueVector.x setTo 50
+          prop PlagueVector.y setTo 200
+        ]]
+
+        featCall global.Population createCharacter PlagueVector [[
           prop PlagueVector.x setTo 0
           prop PlagueVector.y setTo 0
         ]]
@@ -143,6 +153,8 @@ addProp randomNum number 0
 addProp tempNum number 0
 
 featProp Person.Graphing.meterProp setTo 'energylevel'
+featProp Person.Graphing.meterColor setTo 65280
+
 
 // Set name
 exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
@@ -219,7 +231,7 @@ when Person firstTouches Person [[
 
   ifExpr {{ agent.getProp('trackerId').value !=  Person.getProp('trackerId').value }} [[
     ifProp Person.hasPlague equal true [[
-      prop agent.wasExposed setTo true
+      prop Person.wasExposed setTo true
     ]]
   ]]
 ]]
@@ -238,7 +250,7 @@ when Person firstTouches Place [[
   // if the Place has a higher wealth than the person, make them feel unwelcome
   ifExpr {{ Place.getProp('wealth').value > Person.getProp('wealth').value }} [[
     featCall Person.Population createCharacter PopupEffect [[
-      prop agent.textToUse setTo 'You are not welcome!'
+      prop PopupEffect.textToUse setTo 'You are not welcome!'
     ]]
   ]]
 ]]
@@ -250,7 +262,7 @@ when Person firstTouches Food [[
   // If you cant afford the food, you are notified, if you can, get some nutrition and energylevel
   ifExpr {{ Food.getProp('wealth').value > Person.getProp('wealth').value }} [[
     featCall Person.Population createCharacter PopupEffect [[
-      prop agent.textToUse setTo 'You cannot afford this!'
+      prop PopupEffect.textToUse setTo 'You cannot afford this!'
     ]]
   ]]
 
@@ -338,7 +350,7 @@ every 0.1 runAtStart [[
 every 1 runAtStart [[
 
   prop PopupEffect.countDown sub 1
-  ifExpr {{ agent.getProp('countDown').value == 0 }} [[
+  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
     featCall PopupEffect.Population removeCharacter
   ]]
 ]]`
@@ -387,6 +399,7 @@ addFeature Physics
 // setup costume
 featProp PlagueVector.Costume.costumeName setTo 'GEN_circle.json'
 featProp PlagueVector.Costume.scale setTo 0.2
+featCall PlagueVector.Costume setColorizeHSV 0 0 0.5
 
 // Do they currently have the plague?
 addProp hasPlague boolean true
@@ -411,7 +424,7 @@ addProp hasPlague boolean true
       "bpid": "Place",
       "initScript": `prop x setTo -271.37
 prop y setTo -272.55
-prop wealth setTo 10
+prop wealth setTo 9
 `
     },
     {
