@@ -27,7 +27,7 @@
       "id": "r1",
       "label": "Before Times",
       "time": 60,
-      "intro": "Go about your life. For now, your focus is on eating and getting nutrition.",
+      "intro": "Go about your life. For now, your focus is on eating to get energy and nutrition.",
       "outtro": "",
       "initScript": `dbgOut 'roundDef: Round1'
       
@@ -97,7 +97,10 @@ prop global.visible setTo false
 addProp hasPlague boolean false
 
 // chance of getting plague as a percentage
-addProp chanceOfCatchingPlague number 0.5
+addProp chanceOfCatchingPlague number 0.3
+
+// chance of dying each round once you have plague (so not a direct rate of death)
+addProp chanceOfDying number 0.1
 
 # PROGRAM UPDATE`
     },
@@ -137,10 +140,10 @@ addProp wealth number 5
 prop Person.wealth setMin 0
 prop Person.wealth setMax 10
 
-// How much energylevel do they have?  Need food for energylevel
-addProp energylevel number 5
-prop Person.energylevel setMin 0
-prop Person.energylevel setMax 10
+// How much energyLevel do they have?  Need food for energyLevel
+addProp energyLevel number 5
+prop Person.energyLevel setMin 0
+prop Person.energyLevel setMax 10
 
 // How healthy are they generally in terms of nutrition?
 // for simplicity of modeling, start at 5 (middle of the road) and go up for eating good food
@@ -148,34 +151,49 @@ addProp nutritionLevel number 5
 prop Person.nutritionLevel setMin 0
 prop Person.nutritionLevel setMax 10
 
-// used for calculating whether we get plague 
+// used for calculating whether we get plague
 addProp randomNum number 0
 addProp tempNum number 0
 
-featProp Person.Graphing.meterProp setTo 'energylevel'
+featProp Person.Graphing.meterProp setTo 'energyLevel'
 featProp Person.Graphing.meterColor setTo 65280
 
 
 // Set name
-exprPush {{'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
-featPropPop Person.Graphing.text 
+exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+featPropPop Person.Graphing.text
 
 # PROGRAM UPDATE
 
 every 3 runAtStart [[
-    // People use energylevel over time
-  prop Person.energylevel sub 1
+  // People use energyLevel over time
+  prop Person.energyLevel sub 1
+
+  // check if they have plague and maybe die if they do
+  prop Person.randomNum setToRnd 1 10 true
+
+  ifProp Person.randomNum lessThan chanceOfDying [[
+    prop Person.energyLevel setTo 0
+  ]]
+
+  // if we have no energy, we are dead 
+  ifProp Person.energyLevel equal 0 [[
+    prop Person.alpha setTo 0.5
+    featProp Person.Costume.costumeName setTo 'PP_person_sad.png'
+    prop Person.isInert setTo true
+  ]]
+
 ]]
 
 every 0.1 runAtStart [[
-  
+
   // update display of wealth
-  exprPush {{'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
-  featPropPop Person.Graphing.text 
+  exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+  featPropPop Person.Graphing.text
 
   // if this is a round where plague is present
   ifProp global.hasPlague equal true [[
-    // if this person is not positive and has been exposed 
+    // if this person is not positive and has been exposed
     ifProp Person.hasPlague equal false [[
       ifProp Person.wasExposed equal true [[
 
@@ -194,8 +212,8 @@ every 0.1 runAtStart [[
         // pick a random number between 1 and 10
         prop Person.randomNum setToRnd 0 1 false
 
-        //dbgOut {{ 'Our random number is: ' + Person.getProp('randomNum').value }}
-        //dbgOut {{ 'Our temp number is: ' + Person.getProp('tempNum').value }}
+        // dbgOut {{ 'Our random number is: ' + Person.getProp('randomNum').value }}
+        // dbgOut {{ 'Our temp number is: ' + Person.getProp('tempNum').value }}
 
         // multiple that random number by our temp number
         propPush Person.randomNum
@@ -203,8 +221,8 @@ every 0.1 runAtStart [[
         stackMul
         propPop Person.tempNum
 
-       // dbgOut {{ 'Mult and result is: ' + Person.getProp('tempNum').value }}
-       // dbgOut {{ 'Checking if we are sick given a tempNum of ' +  Person.getProp('tempNum').value + ' and global: ' + global.getProp('chanceOfCatchingPlague').value }}
+        // dbgOut {{ 'Mult and result is: ' + Person.getProp('tempNum').value }}
+        // dbgOut {{ 'Checking if we are sick given a tempNum of ' +  Person.getProp('tempNum').value + ' and global: ' + global.getProp('chanceOfCatchingPlague').value }}
 
         // if the random number is below the threshold, the person is now sick
         ifExpr {{ Person.getProp('tempNum').value < global.getProp('chanceOfCatchingPlague').value }} [[
@@ -225,9 +243,9 @@ every 0.1 runAtStart [[
       // if they feel OK still, they are happy because they are relieved!!
       ifProp Person.hasPlague equal false [[
         featProp Person.Costume.costumeName setTo 'PP_person_happy.png'
-        ]]
       ]]
     ]]
+  ]]
 ]]
 
 when Person firstTouches Person [[
@@ -257,6 +275,9 @@ when Person firstTouches Place [[
     featCall Person.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'You are not welcome!'
     ]]
+
+    featProp Person.Costume.costumeName setTo 'PP_person_sad.png'
+
   ]]
 ]]
 
@@ -264,28 +285,42 @@ when Person firstTouches Food [[
   // glow to show we are interacting
   featProp Person.Costume.glow setTo 1
 
-  // If you cant afford the food, you are notified, if you can, get some nutrition and energylevel
+  // If you cant afford the food, you are notified, if you can, get some nutrition and energyLevel
   ifExpr {{ Food.getProp('wealth').value > Person.getProp('wealth').value }} [[
     featCall Person.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'You cannot afford this!'
     ]]
+
+    featProp Person.Costume.costumeName setTo 'PP_person_sad.png'
+
   ]]
 
   // If you can afford the food, eat it
   ifExpr {{ Person.getProp('wealth').value >= Food.getProp('wealth').value }} [[
-    prop Person.energylevel add 1
+    prop Person.energyLevel add 1
     // If the food nutrition is higher than person, increase it for the person
     // otherwise lower it
     ifExpr {{ Food.getProp('nutritionLevel').value > Person.getProp('nutritionLevel').value }} [[
       prop Person.nutritionLevel add 1
+      featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
     ]]
+
+    // decreate nutrition if you are eating unhealthy food
     ifExpr {{ Food.getProp('nutritionLevel').value < Person.getProp('nutritionLevel').value }} [[
       prop Person.nutritionLevel sub 1
     ]]
-  ]]
-]]
 
-`
+    // if you are doing pretty well, smile! 
+    ifProp Person.nutritionLevel greaterThanOrEqual 6 [[
+            featProp Person.Costume.costumeName setTo 'PP_person_happy.png'
+    ]]
+
+    // if you are doing less well ... 
+    ifProp Person.nutritionLevel lessThan 6 [[
+            featProp Person.Costume.costumeName setTo 'PP_person_neutral.png'
+    ]]
+  ]]
+]]`
     },
     {
       "name": "Place",
@@ -456,8 +491,8 @@ prop wealth setTo 2
       "bpid": "Food",
       "initScript": `prop x setTo -342.15
 prop y setTo -338.28
-prop nutritionLevel setTo 10
-prop wealth setTo 10
+prop nutritionLevel setTo 9
+prop wealth setTo 9
 `
     },
     {
@@ -502,7 +537,7 @@ prop wealth setTo 2`
       "bpid": "Food",
       "initScript": `prop x setTo -358.23
 prop y setTo -259.79
-prop nutritionLevel setTo 10
+prop nutritionLevel setTo 9
 prop wealth setTo 10`
     }
   ]
