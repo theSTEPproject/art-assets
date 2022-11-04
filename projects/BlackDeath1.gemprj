@@ -336,7 +336,6 @@ addFeature Graphing
 
 // Setup costume
 featProp Place.Costume.costumeName setTo 'GEN_square.json'
-featCall Place.Costume setColorizeHSV 0 0 0.8
 prop Place.zIndex setTo -200
 
 // 🔎 WHAT are the properties of Places?
@@ -465,6 +464,7 @@ addProp hasPlague boolean true
       "initScript": `prop x setTo -271.37
 prop y setTo -272.55
 prop wealth setTo 9
+featCall Place.Costume setColorizeHSV 0.2 1 1
 `
     },
     {
@@ -474,6 +474,7 @@ prop wealth setTo 9
       "initScript": `prop x setTo 270.54
 prop y setTo -273.32
 prop wealth setTo 5
+featCall Place.Costume setColorizeHSV 0 0 0.8
 `
     },
     {
@@ -483,6 +484,7 @@ prop wealth setTo 5
       "initScript": `prop x setTo 268.95
 prop y setTo 214.55
 prop wealth setTo 2
+featCall Place.Costume setColorizeHSV 0.2 0.2 0.8
 `
     },
     {
