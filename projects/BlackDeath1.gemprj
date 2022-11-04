@@ -12,7 +12,7 @@
     ],
     "bounce": true,
     "bgcolor": "0x00bfff",
-    "roundsCanLoop": false,
+    "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
     "scaleY": 1,
@@ -53,18 +53,18 @@
 
         // create plague vectors and place them
         featCall global.Population createCharacter PlagueVector [[
-          prop PlagueVector.x setTo 20
-          prop PlagueVector.y setTo 100
+          prop PlagueVector.x setTo 60
+          prop PlagueVector.y setTo 40
         ]]
 
         featCall global.Population createCharacter PlagueVector [[
-          prop PlagueVector.x setTo 50
+          prop PlagueVector.x setTo 80
           prop PlagueVector.y setTo 200
         ]]
 
         featCall global.Population createCharacter PlagueVector [[
-          prop PlagueVector.x setTo 0
-          prop PlagueVector.y setTo 0
+          prop PlagueVector.x setTo 10
+          prop PlagueVector.y setTo 1000
         ]]
 
       `,
@@ -189,7 +189,7 @@ every 3 runAtStart [[
 every 0.1 runAtStart [[
 
   // update display of wealth
-  exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+  exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value + ' Plague: ' + Person.getProp('hasPlague').value }}
   featPropPop Person.Graphing.text
 
   // if this is a round where plague is present
@@ -440,7 +440,7 @@ addFeature Physics
 featProp PlagueVector.Costume.costumeName setTo 'GEN_circle.json'
 featProp PlagueVector.Costume.scale setTo 0.2
 featCall PlagueVector.Costume setColorizeHSV 0 0 0.5
-
+prop PlagueVector.alpha setTo 0
 // Do they currently have the plague?
 addProp hasPlague boolean true
 
