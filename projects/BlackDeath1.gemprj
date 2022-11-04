@@ -160,8 +160,9 @@ featProp Person.Graphing.meterColor setTo 65280
 
 
 // Set name
-exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
-featPropPop Person.Graphing.text
+// exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+// featPropPop Person.Graphing.text
+featProp Person.Graphing.text setTo 'Wealth: ## Nutrition: ##'
 
 # PROGRAM UPDATE
 
@@ -188,7 +189,7 @@ every 3 runAtStart [[
 every 0.1 runAtStart [[
 
   // update display of wealth
-  exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + '; ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
+  exprPush {{ 'Wealth: ' + Person.getProp('wealth').value + ' ' + 'Nutrition: ' + Person.getProp('nutritionLevel').value }}
   featPropPop Person.Graphing.text
 
   // if this is a round where plague is present
