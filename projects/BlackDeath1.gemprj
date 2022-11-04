@@ -12,7 +12,7 @@
     ],
     "bounce": true,
     "bgcolor": "0x00bfff",
-    "roundsCanLoop": true,
+    "roundsCanLoop": false,
     "showWebCam": false,
     "scaleX": 1,
     "scaleY": 1,
