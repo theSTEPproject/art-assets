@@ -226,6 +226,17 @@ when Scientist firstTouches Place [[
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits lab
   ifProp Place.type equal 'lab' [[
+
+    ifProp Place.subType equal 'Ecology Lab' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_EcologyLabVisited.png'
+    ]]
+    ifProp Place.subType equal 'Modeling Lab' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_ModelingLabVisited.png'
+    ]]
+    ifProp Place.subType equal 'Embodied Modeling Lab' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_EmbodiedModelingLabVisited.png'
+    ]]
+    
     featCall Place.Population createCharacter PopupMessage [[
       prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
     ]]
@@ -245,6 +256,8 @@ when Scientist firstTouches Place [[
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits office
   ifProp Place.type equal 'office' [[
+    featProp Place.Costume.costumeName setTo 'KB_Place_OfficeVisited.png'
+
     featCall Place.Population createCharacter PopupMessage [[
       prop PopupMessage.textToUse setTo 'Doing Science! at office' 
     ]]
@@ -252,6 +265,8 @@ when Scientist firstTouches Place [[
 
     // ✏️ LETS CHANGE what it says when a SCIENTIST visits store
     ifProp Place.type equal 'store' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
+
       featCall Place.Population createCharacter PopupMessage [[
         prop PopupMessage.textToUse setTo 'Doing Science! at store' 
       ]]
@@ -415,7 +430,7 @@ addFeature Population
 // TODO: When we switch to art, set that in the map setup not here
 featProp Place.Costume.costumeName setTo 'GEN_square.json'
 featCall Place.Costume setColorizeHSV 0 0 0.8
-featProp Place.Costume.scale setTo 0.35
+featProp Place.Costume.scale setTo 0.25
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
@@ -589,12 +604,13 @@ featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
     },
     {
       "id": "2",
-      "label": "Chemical Lab",
+      "label": "Ecology Lab",
       "bpid": "Place",
       "initScript": `prop x setTo 251.92
 prop y setTo -258.01
 prop Place.type setTo 'lab'
-prop Place.subType setTo 'Chemical Lab'
+prop Place.subType setTo 'Ecology Lab'
+featProp Place.Costume.costumeName setTo 'KB_Place_EcologyLabUnvisited.png'
 
 `
     },
@@ -606,6 +622,8 @@ prop Place.subType setTo 'Chemical Lab'
 prop y setTo -65.54
 prop Place.type setTo 'lab'
 prop Place.subType setTo 'Modeling Lab'
+featProp Place.Costume.costumeName setTo 'KB_Place_ModelingLabUnvisited.png'
+
 `
     },
     {
@@ -616,6 +634,7 @@ prop Place.subType setTo 'Modeling Lab'
 prop y setTo 122.19
 prop Place.type setTo 'office'
 prop Place.subType setTo 'office'
+featProp Place.Costume.costumeName setTo 'KB_Place_OfficeNotvisited.png'
 
 `
     },
@@ -660,6 +679,8 @@ featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
 prop y setTo 232.75
 prop Place.type setTo 'store'
 prop Place.subType setTo 'Garden Center'
+featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterNotvisited.png'
+
 `
     },
     {
@@ -677,6 +698,8 @@ prop y setTo 325`
 prop y setTo 242.75
 prop Place.type setTo 'lab'
 prop Place.subType setTo 'Embodied Modeling Lab'
+featProp Place.Costume.costumeName setTo 'KB_Place_EmbodiedModelingLabUnvisited.png'
+
 `
     },
     {
