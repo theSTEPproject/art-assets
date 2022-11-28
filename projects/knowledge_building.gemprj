@@ -128,14 +128,16 @@ when Scientist firstTouches Nature [[
       ifProp Nature.subType equal 'lake' [[
         featCall Nature.Population createCharacter PopupMessage [[
           // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
-          prop PopupMessage.textToUse setTo 'Observing lake'
+           prop y sub 100
+           prop PopupMessage.textToUse setTo 'Observing lake'
         ]]
       ]]
 
       ifProp Nature.subType equal 'garden' [[
         featCall Nature.Population createCharacter PopupMessage [[
           // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
-          prop PopupMessage.textToUse setTo 'Observing garden'
+           prop y sub 100
+           prop PopupMessage.textToUse setTo 'Observing garden'
         ]]
       ]]
   ]]
@@ -144,14 +146,16 @@ when Scientist firstTouches Nature [[
     ifProp Nature.subType equal 'lake' [[
       featCall Nature.Population createCharacter PopupMessage [[
         // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
-        prop PopupMessage.textToUse setTo 'Observing and helping lake'
+         prop y sub 100
+         prop PopupMessage.textToUse setTo 'Observing and helping lake'
       ]]
     ]]
 
     ifProp Nature.subType equal 'garden' [[
       featCall Nature.Population createCharacter PopupMessage [[
         // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
-        prop PopupMessage.textToUse setTo 'Observing and helping garden'
+         prop y sub 100
+         prop PopupMessage.textToUse setTo 'Observing and helping garden'
       ]]
     ]]
   ]]
@@ -218,7 +222,8 @@ when Scientist firstTouches Place [[
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits home
   ifProp Place.type equal 'home' [[
     featCall Place.Population createCharacter PopupMessage [[
-      prop PopupMessage.textToUse setTo 'Doing Science! at home' 
+       prop y sub 100
+       prop PopupMessage.textToUse setTo 'Doing Science! at home' 
     ]]
 
     // also update the home art for this specific home
@@ -239,7 +244,8 @@ when Scientist firstTouches Place [[
     ]]
     
     featCall Place.Population createCharacter PopupMessage [[
-      prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
+       prop y sub 100
+       prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
     ]]
   ]]
 
@@ -248,7 +254,8 @@ when Scientist firstTouches Place [[
     featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceVisited.png'
 
     featCall Place.Population createCharacter PopupMessage [[
-      prop PopupMessage.textToUse setTo 'Doing Science! at conference' 
+        prop y sub 100
+        prop PopupMessage.textToUse setTo 'Doing Science! at conference' 
     ]]
 
     // Conferences are special, so also set the global
@@ -260,6 +267,7 @@ when Scientist firstTouches Place [[
     featProp Place.Costume.costumeName setTo 'KB_Place_OfficeVisited.png'
 
     featCall Place.Population createCharacter PopupMessage [[
+      prop y sub 100
       prop PopupMessage.textToUse setTo 'Doing Science! at office' 
     ]]
   ]]
@@ -269,6 +277,7 @@ when Scientist firstTouches Place [[
       featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
 
       featCall Place.Population createCharacter PopupMessage [[
+        prop y sub 100
         prop PopupMessage.textToUse setTo 'Doing Science! at store' 
       ]]
     ]]
@@ -277,6 +286,7 @@ when Scientist firstTouches Place [[
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits other1
   ifProp Place.type equal 'other1' [[
     featCall Place.Population createCharacter PopupMessage [[
+      prop y sub 100
       prop PopupMessage.textToUse setTo 'Doing Science! at other1' 
     ]]
   ]]
