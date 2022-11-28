@@ -632,6 +632,45 @@ addFeature Physics
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+
+// this is the time we will track
+addProp time number 0
+
+// set the timer to the starting text
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
     }
   ],
   "instances": [
@@ -814,6 +853,13 @@ featCall Costume setColorize 138 43 226
 prop zIndex setTo 95
 featProp agent.Costume.width setTo 150
 featProp agent.Costume.height setTo 30`
+    },
+    {
+      "id": "29",
+      "label": "Timer29",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 472.69
+prop y setTo -275.08`
     }
   ]
 }
