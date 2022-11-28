@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -28,6 +31,10 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+// track the collective scientiic knowledge of the community
+// this will be updated in the KnowledgeMeter
+addProp sharedScientificKnowledge number 1
+
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
@@ -36,14 +43,12 @@
 
 # PROGRAM INIT
 
+// hide this character since it is just for properties
+prop global.visible setTo false
+
 // add properties 
 addProp placesVisited number 0
 addProp natureVisited number 0
-
-dbgOut 'TODO: Make sure to tweak so that scientists need both obs and the labs?'
-
-// hide this since it is just for properties
-prop global.visible setTo false
 
 // required directive
 # PROGRAM UPDATE`
@@ -93,9 +98,9 @@ featCall Scientist.Touches monitor 'Place' b2b
 // SCIENTISTS, other updates
 // ============================================================
 every 1 runAtStart [[
-  ifProp Scientist.knowledge greaterThan 50 [[
-    featProp Scientist.Costume.costumeName setTo 'PP_person_happy.png'
-  ]]
+  // ifProp Scientist.knowledge greaterThan 50 [[
+  //   featProp Scientist.Costume.costumeName setTo 'PP_person_happy.png'
+  // ]]
 ]]
 
 // ============================================================
@@ -105,34 +110,34 @@ when Scientist firstTouches Nature [[
   // note that we have a collaborator here 
   prop Nature.collaborators add 1
 
-  // Show what we are doing, which depends on how much we know about this ecosystem
-  ifProp Scientist.knowledge lessThan 50 [[
+  // Show what we are doing, which depends on how much the scientific community knows about this ecosystem
+  ifProp global.sharedScientificKnowledge lessThan 100 [[
       ifProp Nature.type equal 'pond' [[
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little KNOWLEGE
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little Knowledge
           prop PopupMessage.textToUse setTo 'Observing pond'
         ]]
       ]]
 
       ifProp Nature.type equal 'forest' [[
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little KNOWLEGE
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little Knowledge
           prop PopupMessage.textToUse setTo 'Observing forest'
         ]]
       ]]
   ]]
 
-  ifProp Scientist.knowledge greaterThan 50 [[
+  ifProp global.sharedScientificKnowledge greaterThan 100 [[
     ifProp Nature.type equal 'pond' [[
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little KNOWLEGE
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little Knowledge
         prop PopupMessage.textToUse setTo 'Observing and helping pond'
       ]]
     ]]
 
     ifProp Nature.type equal 'forest' [[
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little KNOWLEGE
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little Knowledge
         prop PopupMessage.textToUse setTo 'Observing and helping forest'
       ]]
     ]]
@@ -148,7 +153,7 @@ when Scientist firstTouches Nature [[
 
 when Scientist touches Nature [[
   every 1 runAtStart [[
-    // construct knowlege depending on the kind of place and if others are there
+    // construct knowledge depending on the kind of place and if others are there
 
     // 🔎 WHAT do scientists do in NATURE?
     // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments
@@ -165,17 +170,17 @@ when Scientist touches Nature [[
     // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
     // ✏️ For example, does it matter where else they have visited?
     ifProp global.placesVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowlege because having worked on these ideas helps? 
+      // ✏️ Do something else like maybe add more knowledge because having worked on these ideas helps? 
       dbgOut 'We have visited at least 1 human-made place before visiting a natural place'
     ]]
 
     ifProp global.natureVisited equal 1 [[
-      // ✏️ Do something else like maybe add more knowlege because having observed this ecosystems helps? 
+      // ✏️ Do something else like maybe add more knowledge because having observed this ecosystems helps? 
       dbgOut 'visiting the first natural place'
     ]]
     
     ifProp global.natureVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowlege because having observed different ecosystems helps? 
+      // ✏️ Do something else like maybe add more knowledge because having observed different ecosystems helps? 
       dbgOut 'visiting a natural place when at least one other was visited'
     ]]
 
@@ -251,7 +256,7 @@ when Scientist firstTouches Place [[
 
 when Scientist touches Place [[
   every 1 runAtStart [[
-    // construct knowlege depending on the kind of place and if others are there
+    // construct knowledge depending on the kind of place and if others are there
 
     // 🔎 WHAT do scientists do in other PLACES like labs and offices?
     // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments
@@ -268,12 +273,12 @@ when Scientist touches Place [[
     // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
     // ✏️ For example, does it matter where else they have visited?
     ifProp global.placesVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowlege because having worked on ideas in several places helps? 
+      // ✏️ Do something else like maybe add more knowledge because having worked on ideas in several places helps? 
       dbgOut 'Visiting a place after having visited at least 2 places total'
     ]]
 
     ifProp global.natureVisited greaterThan 0 [[
-      // ✏️ Do something else like maybe add more knowlege because having observed different ecosystems helps? 
+      // ✏️ Do something else like maybe add more knowledge because having observed different ecosystems helps? 
       dbgOut 'Visiting a place after having visited at least 1 natural place'
     ]]
 
@@ -450,49 +455,6 @@ every 1 runAtStart [[
 `
     },
     {
-      "name": "KnowledgeIndicator",
-      "scriptText": `# BLUEPRINT KnowledgeIndicator
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// Add features
-addFeature Costume
-addFeature Graphing
-
-// Setup costume
-featProp KnowledgeIndicator.Costume.costumeName setTo 'GEN_circle.json'
-featProp KnowledgeIndicator.Costume.scale setTo 0.1 
-
-// Setup properties
-addProp knowledgeLevel number 0
-prop KnowledgeIndicator.knowledgeLevel setMin 0
-prop KnowledgeIndicator.knowledgeLevel setMax 100
-
-addProp temp number 0
-
-// featProp KnowledgeIndicator.Graphing.textProp setTo 'knowledgeLevel'
-
-# PROGRAM UPDATE
-every 0.1 runAtStart [[
-  propPush KnowledgeIndicator.y
-  propPop KnowledgeIndicator.temp
-  prop KnowledgeIndicator.temp mul -1
-  prop KnowledgeIndicator.temp add 400
-  prop KnowledgeIndicator.temp div 8
-  propPush KnowledgeIndicator.temp
-  propPop KnowledgeIndicator.knowledgeLevel
-]]
-
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
       "name": "KnowledgeMeter",
       "scriptText": `# BLUEPRINT KnowledgeMeter
 # TAG isCharControllable false
@@ -509,28 +471,35 @@ featProp KnowledgeMeter.Costume.costumeName setTo 'GEN_square.json'
 featProp KnowledgeMeter.Costume.width setTo 50
 featProp KnowledgeMeter.Costume.height setTo 1
 
-addProp avgKnowlegeLevel number 0
+addProp sharedScientificKnowledge number 1
+
 addProp meterY number 0
 
 featProp KnowledgeMeter.Graphing.text setTo 'Science Knowledge'
 
 # PROGRAM UPDATE
 
-every 0.1 runAtStart [[
-  // get the average health indicator on a scale of 0-100
-  featCall KnowledgeMeter.Population countCharacterProp 'KnowledgeIndicator' 'knowledgeLevel'
-  featPropPush KnowledgeMeter.Population.avg
-  propPop KnowledgeMeter.avgKnowlegeLevel
+every 1 runAtStart [[
+  // sum the knowledge of all scientists 
+  featCall KnowledgeMeter.Population countCharacterProp 'Scientist' 'knowledge'
+  featPropPush KnowledgeMeter.Population.sum
+  propPop KnowledgeMeter.sharedScientificKnowledge
 
-  // scale it up to span the screen with a bottom of just high enoughg to show the text
-  prop KnowledgeMeter.avgKnowlegeLevel mul 7.25
+  // update the shared variable in global
+  propPush KnowledgeMeter.sharedScientificKnowledge
+  propPop global.sharedScientificKnowledge
 
-  // use the scaled number to set the meter height
-  propPush KnowledgeMeter.avgKnowlegeLevel
-  featPropPop KnowledgeMeter.Costume.height
+  // scale it up to span the screen with a bottom of just high enough to show the text
+  // prop KnowledgeMeter.sharedScientificKnowledge mul 7.25
+
+  // use the scaled number to set the meter height - but only if it is greater than 0 otherwise funny things happen
+  ifProp KnowledgeMeter.sharedScientificKnowledge greaterThan 0 [[
+    propPush KnowledgeMeter.sharedScientificKnowledge
+    featPropPop KnowledgeMeter.Costume.height
+  ]]
 
   // now use the height to set the y value since we position based on center of the object (not bottom)
-  propPush KnowledgeMeter.avgKnowlegeLevel
+  propPush KnowledgeMeter.sharedScientificKnowledge
   propPop KnowledgeMeter.meterY
   prop KnowledgeMeter.meterY div -2
   prop KnowledgeMeter.meterY add 325
