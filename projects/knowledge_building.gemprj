@@ -114,24 +114,24 @@ when Scientist firstTouches Nature [[
   prop Nature.collaborators add 1
 
   // Change the art to show we have visited here 
-  ifProp Nature.type equal 'lake' [[ 
+  ifProp Nature.subType equal 'lake' [[ 
     featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
   ]]
-  ifProp Nature.type equal 'garden' [[ 
+  ifProp Nature.subType equal 'garden' [[ 
     featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
   ]]
 
 
   // Show what we are doing, which depends on how much the scientific community knows about this ecosystem
   ifProp global.sharedScientificKnowledge lessThan 100 [[
-      ifProp Nature.type equal 'lake' [[
+      ifProp Nature.subType equal 'lake' [[
         featCall Nature.Population createCharacter PopupMessage [[
           // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
           prop PopupMessage.textToUse setTo 'Observing lake'
         ]]
       ]]
 
-      ifProp Nature.type equal 'garden' [[
+      ifProp Nature.subType equal 'garden' [[
         featCall Nature.Population createCharacter PopupMessage [[
           // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
           prop PopupMessage.textToUse setTo 'Observing garden'
@@ -140,14 +140,14 @@ when Scientist firstTouches Nature [[
   ]]
 
   ifProp global.sharedScientificKnowledge greaterThan 100 [[
-    ifProp Nature.type equal 'lake' [[
+    ifProp Nature.subType equal 'lake' [[
       featCall Nature.Population createCharacter PopupMessage [[
         // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
         prop PopupMessage.textToUse setTo 'Observing and helping lake'
       ]]
     ]]
 
-    ifProp Nature.type equal 'garden' [[
+    ifProp Nature.subType equal 'garden' [[
       featCall Nature.Population createCharacter PopupMessage [[
         // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
         prop PopupMessage.textToUse setTo 'Observing and helping garden'
@@ -370,7 +370,11 @@ addProp wasVisited boolean false
 // What kind of place is this? 
 // You can put anything so long as the scientist touches code uses it
 // This is the default. Change it in the map setup.
-addProp type string 'nature'
+addProp type string 'ecosystem'
+
+// use subtype for more specifics
+addProp subType string 'ecosystem'
+
 
 // set name to trackerId to make it easier to read the later code
 propPush Nature.trackerId
@@ -426,6 +430,9 @@ addProp wasVisited boolean false
 // You can put anything so long as the scientist touches code uses it
 // This is the default. Change it in the map setup.
 addProp type string 'place'
+
+// use the subType to change art
+addProp subType string 'place'
 
 // set name to trackerId to make it easier to read the later code
 propPush Place.trackerId
@@ -576,7 +583,7 @@ every 0.5 runAfter [[
       "bpid": "Nature",
       "initScript": `prop x setTo -88.09
 prop y setTo -234.72
-prop Nature.type setTo 'lake'
+prop Nature.subType setTo 'lake'
 featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
 `
     },
@@ -587,6 +594,8 @@ featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
       "initScript": `prop x setTo 251.92
 prop y setTo -258.01
 prop Place.type setTo 'lab'
+prop Place.subType setTo 'Chemical Lab'
+
 `
     },
     {
@@ -596,6 +605,7 @@ prop Place.type setTo 'lab'
       "initScript": `prop x setTo 255.66
 prop y setTo -65.54
 prop Place.type setTo 'lab'
+prop Place.subType setTo 'Modeling Lab'
 `
     },
     {
@@ -605,6 +615,8 @@ prop Place.type setTo 'lab'
       "initScript": `prop x setTo 259.88
 prop y setTo 122.19
 prop Place.type setTo 'office'
+prop Place.subType setTo 'office'
+
 `
     },
     {
@@ -613,7 +625,7 @@ prop Place.type setTo 'office'
       "bpid": "Nature",
       "initScript": `prop x setTo -245.94
 prop y setTo -64.65
-prop Nature.type setTo 'garden'
+prop Nature.subType setTo 'garden'
 featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenUnvisited.png'
 
 `
@@ -625,6 +637,7 @@ featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenUnvisited.png'
       "initScript": `prop x setTo -276.42
 prop y setTo -255.41
 prop Place.type setTo 'home'
+prop Place.subType setTo 'home'
 featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
 `
     },
@@ -635,16 +648,19 @@ featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
       "initScript": `prop x setTo -85.72
 prop y setTo 266.84
 prop Place.type setTo 'home'
+prop Place.subType setTo 'home'
 featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
 `
     },
     {
       "id": "8",
-      "label": "Garden Store",
+      "label": "Garden Center",
       "bpid": "Place",
       "initScript": `prop x setTo -274.11
 prop y setTo 232.75
-prop Place.type setTo 'store'`
+prop Place.type setTo 'store'
+prop Place.subType setTo 'Garden Center'
+`
     },
     {
       "id": "10",
@@ -659,7 +675,9 @@ prop y setTo 325`
       "bpid": "Place",
       "initScript": `prop x setTo 93.50
 prop y setTo 242.75
-prop Place.type setTo 'lab'`
+prop Place.type setTo 'lab'
+prop Place.subType setTo 'Embodied Modeling Lab'
+`
     },
     {
       "id": "12",
@@ -668,6 +686,7 @@ prop Place.type setTo 'lab'`
       "initScript": `prop x setTo 264.44
 prop y setTo 275.74
 prop Place.type setTo 'conference'
+prop Place.subType setTo 'conference'
 featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
 `
     },
