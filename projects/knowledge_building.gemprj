@@ -31,10 +31,6 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// track the collective scientiic knowledge of the community
-// this will be updated in the KnowledgeMeter
-addProp sharedScientificKnowledge number 1
-
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
@@ -49,6 +45,13 @@ prop global.visible setTo false
 // add properties 
 addProp placesVisited number 0
 addProp natureVisited number 0
+
+// track the collective scientiic knowledge of the community
+// this will be updated in the KnowledgeMeter
+addProp sharedScientificKnowledge number 1
+
+// has anyone visited a conference to share knowledge with the public?
+addProp conferenceVisited boolean false
 
 // required directive
 # PROGRAM UPDATE`
@@ -110,35 +113,44 @@ when Scientist firstTouches Nature [[
   // note that we have a collaborator here 
   prop Nature.collaborators add 1
 
+  // Change the art to show we have visited here 
+  ifProp Nature.type equal 'lake' [[ 
+    featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
+  ]]
+  ifProp Nature.type equal 'garden' [[ 
+    featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
+  ]]
+
+
   // Show what we are doing, which depends on how much the scientific community knows about this ecosystem
   ifProp global.sharedScientificKnowledge lessThan 100 [[
-      ifProp Nature.type equal 'pond' [[
+      ifProp Nature.type equal 'lake' [[
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little Knowledge
-          prop PopupMessage.textToUse setTo 'Observing pond'
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
+          prop PopupMessage.textToUse setTo 'Observing lake'
         ]]
       ]]
 
-      ifProp Nature.type equal 'forest' [[
+      ifProp Nature.type equal 'garden' [[
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little Knowledge
-          prop PopupMessage.textToUse setTo 'Observing forest'
+          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
+          prop PopupMessage.textToUse setTo 'Observing garden'
         ]]
       ]]
   ]]
 
   ifProp global.sharedScientificKnowledge greaterThan 100 [[
-    ifProp Nature.type equal 'pond' [[
+    ifProp Nature.type equal 'lake' [[
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a pond with only a little Knowledge
-        prop PopupMessage.textToUse setTo 'Observing and helping pond'
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
+        prop PopupMessage.textToUse setTo 'Observing and helping lake'
       ]]
     ]]
 
-    ifProp Nature.type equal 'forest' [[
+    ifProp Nature.type equal 'garden' [[
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a forest with only a little Knowledge
-        prop PopupMessage.textToUse setTo 'Observing and helping forest'
+        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
+        prop PopupMessage.textToUse setTo 'Observing and helping garden'
       ]]
     ]]
   ]]
@@ -207,6 +219,9 @@ when Scientist firstTouches Place [[
     featCall Place.Population createCharacter PopupMessage [[
       prop PopupMessage.textToUse setTo 'Doing Science! at home' 
     ]]
+
+    // also update the home art for this specific home
+    featProp Place.Costume.costumeName setTo 'KB_Place_HomeVisited.png'
   ]]
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits lab
@@ -214,6 +229,18 @@ when Scientist firstTouches Place [[
     featCall Place.Population createCharacter PopupMessage [[
       prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
     ]]
+  ]]
+
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits a conference
+  ifProp Place.type equal 'conference' [[
+    featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceVisited.png'
+
+    featCall Place.Population createCharacter PopupMessage [[
+      prop PopupMessage.textToUse setTo 'Doing Science! at conference' 
+    ]]
+
+    // Conferences are special, so also set the global
+    prop global.conferenceVisited setTo true
   ]]
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits office
@@ -323,7 +350,7 @@ addFeature Population
 // TODO: When we switch to art, set that in the map setup not here
 featProp Nature.Costume.costumeName setTo 'GEN_square.json'
 featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
-featProp Nature.Costume.scale setTo 0.5
+featProp Nature.Costume.scale setTo 0.35
 
 
 // Properties
@@ -384,7 +411,7 @@ addFeature Population
 // TODO: When we switch to art, set that in the map setup not here
 featProp Place.Costume.costumeName setTo 'GEN_square.json'
 featCall Place.Costume setColorizeHSV 0 0 0.8
-featProp Place.Costume.scale setTo 0.5
+featProp Place.Costume.scale setTo 0.35
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
@@ -515,16 +542,42 @@ every 1 runAtStart [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "KnowledgePresented",
+      "scriptText": `# BLUEPRINT KnowledgePresented
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp KnowledgePresented.Costume.costumeName setTo 'KB_ConferenceNotPresented.png'
+featProp KnowledgePresented.Costume.scale setTo 0.3
+
+# PROGRAM UPDATE
+every 0.5 runAfter [[
+  ifProp global.conferenceVisited equal true [[
+    featProp KnowledgePresented.Costume.costumeName setTo 'KB_ConferencePresented.png'
+  ]]
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "Pond",
+      "label": "Lake",
       "bpid": "Nature",
       "initScript": `prop x setTo -88.09
 prop y setTo -234.72
-prop Nature.type setTo 'pond'
+prop Nature.type setTo 'lake'
+featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
 `
     },
     {
@@ -556,11 +609,13 @@ prop Place.type setTo 'office'
     },
     {
       "id": "5",
-      "label": "Forest",
+      "label": "Garden",
       "bpid": "Nature",
       "initScript": `prop x setTo -245.94
 prop y setTo -64.65
-prop Nature.type setTo 'forest'
+prop Nature.type setTo 'garden'
+featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenUnvisited.png'
+
 `
     },
     {
@@ -569,7 +624,9 @@ prop Nature.type setTo 'forest'
       "bpid": "Place",
       "initScript": `prop x setTo -276.42
 prop y setTo -255.41
-prop Place.type setTo 'home'`
+prop Place.type setTo 'home'
+featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
+`
     },
     {
       "id": "7",
@@ -577,7 +634,9 @@ prop Place.type setTo 'home'`
       "bpid": "Place",
       "initScript": `prop x setTo -85.72
 prop y setTo 266.84
-prop Place.type setTo 'home'`
+prop Place.type setTo 'home'
+featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
+`
     },
     {
       "id": "8",
@@ -601,6 +660,23 @@ prop y setTo 325`
       "initScript": `prop x setTo 93.50
 prop y setTo 242.75
 prop Place.type setTo 'lab'`
+    },
+    {
+      "id": "12",
+      "label": "Conference",
+      "bpid": "Place",
+      "initScript": `prop x setTo 264.44
+prop y setTo 275.74
+prop Place.type setTo 'conference'
+featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
+`
+    },
+    {
+      "id": "13",
+      "label": "KnowledgePresented13",
+      "bpid": "KnowledgePresented",
+      "initScript": `prop x setTo 86.53
+prop y setTo -355.82`
     }
   ]
 }
