@@ -273,6 +273,7 @@ when Scientist firstTouches Place [[
       ]]
     ]]
 
+  // 🔎 This is to make it easy to add a new place type reeaally quickly if we know the type or subtype
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits other1
   ifProp Place.type equal 'other1' [[
     featCall Place.Population createCharacter PopupMessage [[
