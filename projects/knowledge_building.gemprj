@@ -91,6 +91,7 @@ prop Scientist.knowledge setMin 0
 
 // setup meter to show the knowledge
 featProp Scientist.Graphing.meterProp setTo 'knowledge'
+featProp Scientist.Graphing.meterColor setTo 9055202
 
 // check if the scientist is visiting a place - see specif script below
 featCall Scientist.Touches monitor 'Nature' b2b
@@ -517,6 +518,7 @@ addFeature Population
 addFeature Graphing
 
 featProp KnowledgeMeter.Costume.costumeName setTo 'GEN_square.json'
+featCall KnowledgeMeter.Costume setColorize 138 43 226
 featProp KnowledgeMeter.Costume.width setTo 50
 featProp KnowledgeMeter.Costume.height setTo 1
 
@@ -589,6 +591,36 @@ every 0.5 runAfter [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+addFeature Physics
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -651,7 +683,7 @@ featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenUnvisited.png'
     },
     {
       "id": "6",
-      "label": "Home 1",
+      "label": "Home",
       "bpid": "Place",
       "initScript": `prop x setTo -276.42
 prop y setTo -255.41
@@ -662,7 +694,7 @@ featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
     },
     {
       "id": "7",
-      "label": "Home 2",
+      "label": "Home",
       "bpid": "Place",
       "initScript": `prop x setTo -85.72
 prop y setTo 266.84
@@ -719,6 +751,58 @@ featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
       "bpid": "KnowledgePresented",
       "initScript": `prop x setTo 86.53
 prop y setTo -355.82`
+    },
+    {
+      "id": "14",
+      "label": "KeyLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 472.49
+prop y setTo -406.54
+featProp Graphing text setTo 'Key:'
+featCall Costume setColorize 0 0 0
+
+`
+    },
+    {
+      "id": "15",
+      "label": "HealthLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 473.75
+prop y setTo -370.75
+featProp Graphing text setTo 'Ecoysystem Health'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "16",
+      "label": "KnowledgeLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 473.47
+prop y setTo -314.42
+featProp Graphing text setTo 'Knowledge'
+prop zIndex setTo 100`
+    },
+    {
+      "id": "17",
+      "label": "HealthChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 473.96
+prop y setTo -342.79
+featCall Costume setColorize 0 255 0
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 150
+featProp agent.Costume.height setTo 60
+`
+    },
+    {
+      "id": "28",
+      "label": "KnowwledgeChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 473.96
+prop y setTo -295.29
+featCall Costume setColorize 138 43 226
+prop zIndex setTo 95
+featProp agent.Costume.width setTo 150
+featProp agent.Costume.height setTo 30`
     }
   ]
 }
