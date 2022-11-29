@@ -81,7 +81,7 @@ addFeature Population
 // Setup costume
 // TODO: When we switch to art, set that in the map setup not here
 // THOUGH WE WILL MAYBE DROP THE HAPPY VERSION THEN?
-featProp Scientist.Costume.costumeName setTo 'PP_person_neutral.png'
+featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
 featProp Scientist.Costume.scale setTo 0.5
 
 // Add properties
@@ -101,11 +101,9 @@ featCall Scientist.Touches monitor 'Place' b2b
 // ============================================================
 // SCIENTISTS, other updates
 // ============================================================
-every 1 runAtStart [[
-  // ifProp Scientist.knowledge greaterThan 50 [[
-  //   featProp Scientist.Costume.costumeName setTo 'PP_person_happy.png'
-  // ]]
-]]
+//every 1 runAtStart [[
+
+//]]
 
 // ============================================================
 // SCIENTISTS interacting with NATURE
@@ -176,10 +174,13 @@ when Scientist touches Nature [[
     // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Nature.collaborators equal 0 [[
       prop Scientist.knowledge add 1
+      featProp Scientist.Costume.costumeName setTo 'KB_person_building.png'
+
     ]]
     // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Nature.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
+      featProp Scientist.Costume.costumeName setTo 'KB_person_collab.png'
     ]]
 
     // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
@@ -220,6 +221,8 @@ when Scientist lastTouches Nature [[
       featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
     ]]
   ]]
+
+  featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
 ]]
 
 // ============================================================
@@ -327,10 +330,13 @@ when Scientist touches Place [[
     // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Place.collaborators equal 0 [[
       prop Scientist.knowledge add 1
+      featProp Scientist.Costume.costumeName setTo 'KB_person_building.png'
+
     ]]
     // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Place.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
+      featProp Scientist.Costume.costumeName setTo 'KB_person_collab.png'
     ]]
 
     // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
@@ -358,6 +364,7 @@ when Scientist touches Place [[
 
 when Scientist lastTouches Place [[
   prop Place.collaborators sub 1
+  featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
 ]]`
     },
     {
