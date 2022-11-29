@@ -111,31 +111,25 @@ every 1 runAtStart [[
 // SCIENTISTS interacting with NATURE
 // ============================================================
 when Scientist firstTouches Nature [[
-  // note that we have a collaborator here 
   prop Nature.collaborators add 1
-
-  // Change the art to show we have visited here 
-  ifProp Nature.subType equal 'lake' [[ 
-    featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
-  ]]
-  ifProp Nature.subType equal 'garden' [[ 
-    featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
-  ]]
-
 
   // Show what we are doing, which depends on how much the scientific community knows about this ecosystem
   ifProp global.sharedScientificKnowledge lessThan 100 [[
       ifProp Nature.subType equal 'lake' [[
+
+        featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
+
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
            prop y sub 100
            prop PopupMessage.textToUse setTo 'Observing lake'
         ]]
       ]]
 
       ifProp Nature.subType equal 'garden' [[
+
+        featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
+
         featCall Nature.Population createCharacter PopupMessage [[
-          // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
            prop y sub 100
            prop PopupMessage.textToUse setTo 'Observing garden'
         ]]
@@ -144,16 +138,20 @@ when Scientist firstTouches Nature [[
 
   ifProp global.sharedScientificKnowledge greaterThan 50 [[
     ifProp Nature.subType equal 'lake' [[
+
+      featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeHelping.png'
+
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a lake with only a little Knowledge
          prop y sub 100
          prop PopupMessage.textToUse setTo 'Observing and helping lake'
       ]]
     ]]
 
     ifProp Nature.subType equal 'garden' [[
+
+      featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenHelping.png'
+
       featCall Nature.Population createCharacter PopupMessage [[
-        // ✏️ LETS CHANGE what it says when a SCIENTIST visits a garden with only a little Knowledge
          prop y sub 100
          prop PopupMessage.textToUse setTo 'Observing and helping garden'
       ]]
@@ -209,8 +207,19 @@ when Scientist touches Nature [[
   ]]
 ]]
 
-when Scientist lastTouches Place [[
-  prop Place.collaborators sub 1
+when Scientist lastTouches Nature [[
+  prop Nature.collaborators sub 1
+
+  // collaborators is -1 if no one is there at all
+  ifProp Nature.collaborators equal -1 [[
+    // Change the art to show we have visited here 
+    ifProp Nature.subType equal 'lake' [[ 
+      featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
+    ]]
+    ifProp Nature.subType equal 'garden' [[ 
+      featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
+    ]]
+  ]]
 ]]
 
 // ============================================================
@@ -382,7 +391,6 @@ featProp Nature.Costume.scale setTo 0.35
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
-// how do we make sure the person already there gets it?
 addProp collaborators number -1
 addProp name string 'nature'
 
