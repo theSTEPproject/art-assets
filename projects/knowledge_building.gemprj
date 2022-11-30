@@ -116,21 +116,11 @@ when Scientist firstTouches Nature [[
       ifProp Nature.subType equal 'lake' [[
 
         featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
-
-        featCall Nature.Population createCharacter PopupMessage [[
-           prop y sub 100
-           prop PopupMessage.textToUse setTo 'Observing lake'
-        ]]
       ]]
 
       ifProp Nature.subType equal 'garden' [[
 
         featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
-
-        featCall Nature.Population createCharacter PopupMessage [[
-           prop y sub 100
-           prop PopupMessage.textToUse setTo 'Observing garden'
-        ]]
       ]]
   ]]
 
@@ -139,20 +129,11 @@ when Scientist firstTouches Nature [[
 
       featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeHelping.png'
 
-      featCall Nature.Population createCharacter PopupMessage [[
-         prop y sub 100
-         prop PopupMessage.textToUse setTo 'Observing and helping lake'
-      ]]
     ]]
 
     ifProp Nature.subType equal 'garden' [[
 
       featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenHelping.png'
-
-      featCall Nature.Population createCharacter PopupMessage [[
-         prop y sub 100
-         prop PopupMessage.textToUse setTo 'Observing and helping garden'
-      ]]
     ]]
   ]]
 
@@ -233,10 +214,6 @@ when Scientist firstTouches Place [[
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits home
   ifProp Place.type equal 'home' [[
-    featCall Place.Population createCharacter PopupMessage [[
-       prop y sub 100
-       prop PopupMessage.textToUse setTo 'Doing Science! at home' 
-    ]]
 
     // also update the home art for this specific home
     featProp Place.Costume.costumeName setTo 'KB_Place_HomeVisited.png'
@@ -245,70 +222,48 @@ when Scientist firstTouches Place [[
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits lab
   ifProp Place.type equal 'lab' [[
 
-    ifProp Place.subType equal 'Ecology Lab' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_EcologyLabVisited.png'
+    ifProp Place.subType equal 'Chemistry Lab' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_ChemistryLabVisited.png'
     ]]
-    ifProp Place.subType equal 'Modeling Lab' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_ModelingLabVisited.png'
+    ifProp Place.subType equal 'Lab Desk' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_LabDeskVisited.png'
     ]]
-    ifProp Place.subType equal 'Embodied Modeling Lab' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_EmbodiedModelingLabVisited.png'
+    ifProp Place.subType equal 'Whiteboard' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_WhiteboardVisited.png'
+    ]]
+    ifProp Place.subType equal 'Computer' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_ComputerVisited.png'
     ]]
     
-    featCall Place.Population createCharacter PopupMessage [[
-       prop y sub 100
-       prop PopupMessage.textToUse setTo 'Doing Science! at lab' 
-    ]]
   ]]
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits a conference
   ifProp Place.type equal 'conference' [[
     featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceVisited.png'
 
-    featCall Place.Population createCharacter PopupMessage [[
-        prop y sub 100
-        prop PopupMessage.textToUse setTo 'Doing Science! at conference' 
-    ]]
-
     // Conferences are special, so also set the global
     prop global.conferenceVisited setTo true
   ]]
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits office
-  ifProp Place.type equal 'office' [[
-    featProp Place.Costume.costumeName setTo 'KB_Place_OfficeVisited.png'
-
-    featCall Place.Population createCharacter PopupMessage [[
-      prop y sub 100
-      prop PopupMessage.textToUse setTo 'Doing Science! at office' 
-    ]]
-  ]]
+  //ifProp Place.type equal 'office' [[
+  //  featProp Place.Costume.costumeName setTo 'KB_Place_OfficeVisited.png'
+  //]]
 
     // ✏️ LETS CHANGE what it says when a SCIENTIST visits store
     ifProp Place.type equal 'store' [[
       featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
 
-      featCall Place.Population createCharacter PopupMessage [[
-        prop y sub 100
-        prop PopupMessage.textToUse setTo 'Doing Science! at store' 
-      ]]
     ]]
 
   // 🔎 This is to make it easy to add a new place type reeaally quickly if we know the type or subtype
-  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other1
-  ifProp Place.type equal 'other1' [[
-    featCall Place.Population createCharacter PopupMessage [[
-      prop y sub 100
-      prop PopupMessage.textToUse setTo 'Doing Science! at other1' 
-    ]]
+  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other
+  ifProp Place.type equal 'other' [[
+      featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
+
   ]]
 
-  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other2
-  ifProp Place.type equal 'other2' [[
-    featCall Place.Population createCharacter PopupMessage [[
-      prop PopupMessage.textToUse setTo 'Doing Science! at other2' 
-    ]]
-  ]]
+
   
 
   // check if someone has been here before. If not, not they have now
@@ -701,37 +656,37 @@ featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
     },
     {
       "id": "2",
-      "label": "Ecology Lab",
+      "label": "Chemistry Lab",
       "bpid": "Place",
       "initScript": `prop x setTo 271.61
 prop y setTo -307.80
 prop Place.type setTo 'lab'
-prop Place.subType setTo 'Ecology Lab'
-featProp Place.Costume.costumeName setTo 'KB_Place_EcologyLabUnvisited.png'
+prop Place.subType setTo 'Chemistry Lab'
+featProp Place.Costume.costumeName setTo 'KB_Place_ChemistryLabUnvisited.png'
 
 `
     },
     {
       "id": "3",
-      "label": "Modeling Lab",
+      "label": "Lab desk",
       "bpid": "Place",
-      "initScript": `prop x setTo 255.66
-prop y setTo -65.54
+      "initScript": `prop x setTo 191.97
+prop y setTo -120.19
 prop Place.type setTo 'lab'
-prop Place.subType setTo 'Modeling Lab'
-featProp Place.Costume.costumeName setTo 'KB_Place_ModelingLabUnvisited.png'
+prop Place.subType setTo 'Lab Desk'
+featProp Place.Costume.costumeName setTo 'KB_Place_LabDeskUnvisited.png'
 
 `
     },
     {
       "id": "4",
-      "label": "Office",
+      "label": "Computer",
       "bpid": "Place",
-      "initScript": `prop x setTo 288.05
-prop y setTo 276.07
-prop Place.type setTo 'office'
-prop Place.subType setTo 'office'
-featProp Place.Costume.costumeName setTo 'KB_Place_OfficeNotvisited.png'
+      "initScript": `prop x setTo 193.53
+prop y setTo 27.21
+prop Place.type setTo 'lab'
+prop Place.subType setTo 'Computer'
+featProp Place.Costume.costumeName setTo 'KB_Place_ComputerUnvisited.png'
 
 `
     },
@@ -761,8 +716,8 @@ featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
       "id": "7",
       "label": "Home",
       "bpid": "Place",
-      "initScript": `prop x setTo 122.79
-prop y setTo 281.03
+      "initScript": `prop x setTo 224.84
+prop y setTo 296.58
 prop Place.type setTo 'home'
 prop Place.subType setTo 'home'
 featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
@@ -789,22 +744,22 @@ prop y setTo 325`
     },
     {
       "id": "11",
-      "label": "Embodied Modeling Lab",
+      "label": "Whiteboard",
       "bpid": "Place",
-      "initScript": `prop x setTo -112.89
-prop y setTo 255.17
+      "initScript": `prop x setTo 327.54
+prop y setTo -117.92
 prop Place.type setTo 'lab'
-prop Place.subType setTo 'Embodied Modeling Lab'
+prop Place.subType setTo 'Whiteboard'
 featProp Place.Costume.costumeName setTo 'KB_Place_EmbodiedModelingLabUnvisited.png'
 
 `
     },
     {
       "id": "12",
-      "label": "Meeting Area",
+      "label": "Conference Meeting Area",
       "bpid": "Place",
-      "initScript": `prop x setTo 36.81
-prop y setTo 41.22
+      "initScript": `prop x setTo -1.03
+prop y setTo 92.75
 prop Place.type setTo 'conference'
 prop Place.subType setTo 'conference'
 featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
@@ -812,7 +767,7 @@ featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
     },
     {
       "id": "13",
-      "label": "KnowledgePresented13",
+      "label": "KnowledgePresented",
       "bpid": "KnowledgePresented",
       "initScript": `prop x setTo 86.53
 prop y setTo -355.82`
@@ -875,6 +830,36 @@ featProp agent.Costume.height setTo 30`
       "bpid": "Timer",
       "initScript": `prop x setTo 472.69
 prop y setTo -275.08`
+    },
+    {
+      "id": "30",
+      "label": "ColorChip30",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 263.37
+prop y setTo -37.47
+prop zIndex setTo -300
+featProp agent.Costume.height setTo 300
+`
+    },
+    {
+      "id": "31",
+      "label": "Biology Lab",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 274.26
+prop y setTo 108.46
+featProp agent.Costume.height setTo 350
+`
+    },
+    {
+      "id": "32",
+      "label": "Other",
+      "bpid": "Place",
+      "initScript": `prop x setTo -142.91
+prop y setTo 291.56
+prop Place.type setTo 'other'
+prop Place.subType setTo 'other'
+featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterNotvisited.png'
+\n`
     }
   ]
 }
