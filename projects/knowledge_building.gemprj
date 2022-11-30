@@ -46,6 +46,16 @@ prop global.visible setTo false
 addProp placesVisited number 0
 addProp natureVisited number 0
 
+addProp homeVisited boolean false
+addProp officeVisited boolean false
+addProp conferenceLocVisited boolean false
+addProp biologyVisited boolean false
+addProp chemistryVisited boolean false
+addProp modelingVisited boolean false
+addProp embodiedVisited boolean false
+addProp gardencenterVisited boolean false
+addProp otherVisited boolean false
+
 // track the collective scientiic knowledge of the community
 // this will be updated in the KnowledgeMeter
 addProp sharedScientificKnowledge number 1
@@ -81,8 +91,8 @@ addFeature Population
 // Setup costume
 // TODO: When we switch to art, set that in the map setup not here
 // THOUGH WE WILL MAYBE DROP THE HAPPY VERSION THEN?
-featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
-featProp Scientist.Costume.scale setTo 0.5
+featProp Scientist.Costume.costumeName setTo 'KB_meeple_idle.png'
+featProp Scientist.Costume.scale setTo 0.3
 
 // Add properties
 addProp knowledge number 0
@@ -101,9 +111,9 @@ featCall Scientist.Touches monitor 'Place' b2b
 // ============================================================
 // SCIENTISTS, other updates
 // ============================================================
-//every 1 runAtStart [[
+// every 1 runAtStart [[
 
-//]]
+// ]]
 
 // ============================================================
 // SCIENTISTS interacting with NATURE
@@ -112,28 +122,28 @@ when Scientist firstTouches Nature [[
   prop Nature.collaborators add 1
 
   // Show what we are doing, which depends on how much the scientific community knows about this ecosystem
-  ifProp global.sharedScientificKnowledge lessThan 100 [[
-      ifProp Nature.subType equal 'lake' [[
+ // ifProp global.sharedScientificKnowledge lessThan 100 [[
+  //  ifProp Nature.name equal 'lake' [[
 
-        featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
-      ]]
+//      featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
+  //  ]]
 
-      ifProp Nature.subType equal 'garden' [[
+ //   ifProp Nature.name equal 'garden' [[
 
-        featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
-      ]]
-  ]]
+ //     featProp Nature.Costume.costumeName setTo 'KB_location_garden_help.png'
+  //  ]]
+ // ]]
 
   ifProp global.sharedScientificKnowledge greaterThan 50 [[
-    ifProp Nature.subType equal 'lake' [[
+    ifProp Nature.name equal 'lake' [[
 
-      featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeHelping.png'
+      featProp Nature.Costume.costumeName setTo 'KB_location_lake_help.png'
 
     ]]
 
-    ifProp Nature.subType equal 'garden' [[
+    ifProp Nature.name equal 'garden' [[
 
-      featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenHelping.png'
+      featProp Nature.Costume.costumeName setTo 'KB_location_garden_help.png'
     ]]
   ]]
 
@@ -155,35 +165,35 @@ when Scientist touches Nature [[
     // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Nature.collaborators equal 0 [[
       prop Scientist.knowledge add 1
-      featProp Scientist.Costume.costumeName setTo 'KB_person_building.png'
+      featProp Scientist.Costume.costumeName setTo 'KB_meeple_thinking.png'
 
     ]]
     // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Nature.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
-      featProp Scientist.Costume.costumeName setTo 'KB_person_collab.png'
+      featProp Scientist.Costume.costumeName setTo 'KB_meeple_collabing.png'
     ]]
 
     // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
     // ✏️ For example, does it matter where else they have visited?
     ifProp global.placesVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowledge because having worked on these ideas helps? 
+      // ✏️ Do something else like maybe add more knowledge because having worked on these ideas helps?
       // dbgOut 'We have visited at least 1 human-made place before visiting a natural place'
     ]]
 
     ifProp global.natureVisited equal 1 [[
-      // ✏️ Do something else like maybe add more knowledge because having observed this ecosystems helps? 
+      // ✏️ Do something else like maybe add more knowledge because having observed this ecosystems helps?
       // dbgOut 'visiting the first natural place'
     ]]
-    
+
     ifProp global.natureVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowledge because having observed different ecosystems helps? 
+      // ✏️ Do something else like maybe add more knowledge because having observed different ecosystems helps?
       // dbgOut 'visiting a natural place when at least one other was visited'
     ]]
 
     // 🔎 Once they understand this ecosystem, scientists might be able to help them survive
     // 🔎 Does it always work this well, though?
-  ifProp global.sharedScientificKnowledge greaterThan 50 [[
+    ifProp global.sharedScientificKnowledge greaterThan 50 [[
       prop Nature.health add 1
     ]]
   ]]
@@ -194,16 +204,16 @@ when Scientist lastTouches Nature [[
 
   // collaborators is -1 if no one is there at all
   ifProp Nature.collaborators equal -1 [[
-    // Change the art to show we have visited here 
-    ifProp Nature.subType equal 'lake' [[ 
-      featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeVisited.png'
+    // Change the art to show we have visited here
+    ifProp Nature.subType equal 'lake' [[
+      featProp Nature.Costume.costumeName setTo 'KB_location_lake.png'
     ]]
-    ifProp Nature.subType equal 'garden' [[ 
-      featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenVisited.png'
+    ifProp Nature.subType equal 'garden' [[
+      featProp Nature.Costume.costumeName setTo 'KB_location_garden.png'
     ]]
   ]]
 
-  featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
+  featProp Scientist.Costume.costumeName setTo 'KB_meeple_idle.png'
 ]]
 
 // ============================================================
@@ -213,113 +223,70 @@ when Scientist firstTouches Place [[
   prop Place.collaborators add 1
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits home
-  ifProp Place.type equal 'home' [[
-
+  ifProp Place.name equal 'home' [[
     // also update the home art for this specific home
-    featProp Place.Costume.costumeName setTo 'KB_Place_HomeVisited.png'
+   // featProp Place.Costume.costumeName setTo 'KB_Place_HomeVisited.png'
+   prop global.homeVisited setTo true
   ]]
 
   // ✏️ LETS CHANGE what it says when a SCIENTIST visits lab
-  ifProp Place.type equal 'lab' [[
-
-    ifProp Place.subType equal 'Chemistry Lab' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_ChemistryLabVisited.png'
-    ]]
-    ifProp Place.subType equal 'Lab Desk' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_LabDeskVisited.png'
-    ]]
-    ifProp Place.subType equal 'Whiteboard' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_WhiteboardVisited.png'
-    ]]
-    ifProp Place.subType equal 'Computer' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_ComputerVisited.png'
-    ]]
-    
+  ifProp Place.name equal 'chemistry' [[
+   prop global.chemistryVisited setTo true
   ]]
-
-  // ✏️ LETS CHANGE what it says when a SCIENTIST visits a conference
-  ifProp Place.type equal 'conference' [[
-    featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceVisited.png'
-
-    // Conferences are special, so also set the global
-    prop global.conferenceVisited setTo true
-  ]]
-
-  // ✏️ LETS CHANGE what it says when a SCIENTIST visits office
-  //ifProp Place.type equal 'office' [[
-  //  featProp Place.Costume.costumeName setTo 'KB_Place_OfficeVisited.png'
-  //]]
-
-    // ✏️ LETS CHANGE what it says when a SCIENTIST visits store
-    ifProp Place.type equal 'store' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
-
-    ]]
-
-  // 🔎 This is to make it easy to add a new place type reeaally quickly if we know the type or subtype
-  // ✏️ LETS CHANGE what it says when a SCIENTIST visits other
-  ifProp Place.type equal 'other' [[
-      featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterVisited.png'
-
-  ]]
-
-
   
-
-  // check if someone has been here before. If not, not they have now
-  ifProp Place.wasVisited equal false [[
-    prop Place.wasVisited setTo true
-    // show that another nature place was visited
-    prop global.placesVisited add 1
+    ifProp Place.name equal 'biology' [[
+   prop global.biologyVisited setTo true
   ]]
-
+  
+    ifProp Place.name equal 'embodied' [[
+   prop global.embodiedVisited setTo true
+  ]]
+  
+    ifProp Place.name equal 'modeling' [[
+   prop global.modelingVisited setTo true
+  ]]
+  
+      ifProp Place.name equal 'gardencenter' [[
+   prop global.gardencenterVisited setTo true
+  ]]
+  
+    ifProp Place.name equal 'conference' [[
+   prop global.conferenceLocVisited setTo true
+  ]]
+  
+     ifProp Place.name equal 'other' [[
+   prop global.otherVisited setTo true
+  ]]
+  
+       ifProp Place.name equal 'office' [[
+   prop global.officeVisited setTo true
+  ]]  
 ]]
 
 when Scientist touches Place [[
   every 1 runAtStart [[
     // construct knowledge depending on the kind of place and if others are there
 
-    // 🔎 WHAT do scientists do in other PLACES like labs and offices?
+    // 🔎 WHAT do scientists do in NATURE?
     // 🔎 Develop knowledge by observing, developing hypotheses, and running experiments
 
     // 🔎 If there is no one else there, building knowledge might be slow
     ifProp Place.collaborators equal 0 [[
       prop Scientist.knowledge add 1
-      featProp Scientist.Costume.costumeName setTo 'KB_person_building.png'
+      featProp Scientist.Costume.costumeName setTo 'KB_meeple_thinking.png'
 
     ]]
     // 🔎 If there are people to collaborate with, knowledge building might go faster
     ifProp Place.collaborators greaterThan 0 [[
       prop Scientist.knowledge add 2
-      featProp Scientist.Costume.costumeName setTo 'KB_person_collab.png'
+      featProp Scientist.Costume.costumeName setTo 'KB_meeple_collabing.png'
     ]]
-
-    // ✏️ LETS CHANGE THIS: What else impacts scientist's learning?
-    // ✏️ For example, does it matter where else they have visited?
-    ifProp global.placesVisited greaterThan 1 [[
-      // ✏️ Do something else like maybe add more knowledge because having worked on ideas in several places helps? 
-      // dbgOut 'Visiting a place after having visited at least 2 places total'
     ]]
-
-    ifProp global.natureVisited greaterThan 0 [[
-      // ✏️ Do something else like maybe add more knowledge because having observed different ecosystems helps? 
-      // dbgOut 'Visiting a place after having visited at least 1 natural place'
     ]]
-
-    // ✏️ LETS CHANGE THIS: Does it matter where we are?
-    // ✏️ For example, do scientists think about the world at work or only the lab?
-    ifProp Place.type equal 'home' [[
-      // ✏️ Do something else like add extra knowledge in certain places?
-      // dbgOut 'We are at home thinking about our work ... '
-    ]]
-
-
-  ]]
-]]
 
 when Scientist lastTouches Place [[
   prop Place.collaborators sub 1
-  featProp Scientist.Costume.costumeName setTo 'KB_person_neutral.png'
+  featProp Scientist.Costume.costumeName setTo 'KB_meeple_idle.png'
 ]]`
     },
     {
@@ -346,15 +313,15 @@ addFeature Population
 
 // Setup costume
 // TODO: When we switch to art, set that in the map setup not here
-featProp Nature.Costume.costumeName setTo 'GEN_square.json'
-featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
-featProp Nature.Costume.scale setTo 0.35
+featProp Nature.Costume.costumeName setTo 'KB_location_garden.png'
 
+// featCall Nature.Costume setColorizeHSV 0.3 0.5 0.8
+featProp Nature.Costume.scale setTo 0.5
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
 addProp collaborators number -1
-addProp name string 'nature'
+addProp name string 'garden'
 
 // Health of the natural ecosystem
 addProp health number 50
@@ -364,14 +331,13 @@ prop Nature.health setMax 100
 // has a scientist been here before?
 addProp wasVisited boolean false
 
-// What kind of place is this? 
+// What kind of place is this?
 // You can put anything so long as the scientist touches code uses it
 // This is the default. Change it in the map setup.
 addProp type string 'ecosystem'
 
 // use subtype for more specifics
 addProp subType string 'ecosystem'
-
 
 // set name to trackerId to make it easier to read the later code
 propPush Nature.trackerId
@@ -380,11 +346,20 @@ propPop Nature.name
 featProp Nature.Graphing.meterProp setTo 'health'
 featProp Nature.Graphing.meterColor setTo 65280
 
+
 # PROGRAM UPDATE
+onEvent Start [[
+  ifExpr {{ (Nature.getProp('name').value == 'garden') }} [[
+    featProp Nature.Costume.costumeName setTo 'KB_location_garden.png'
+  ]]
+  ifExpr {{ (Nature.getProp('name').value == 'lake') }} [[
+    featProp Nature.Costume.costumeName setTo 'KB_location_lake.png'
+  ]]
+
+]]
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-`
+// This is also where you can handle touches between characters such as When Algae touches Fish`
     },
     {
       "name": "Place",
@@ -410,20 +385,19 @@ addFeature Population
 
 // Setup costume
 // TODO: When we switch to art, set that in the map setup not here
-featProp Place.Costume.costumeName setTo 'GEN_square.json'
-featCall Place.Costume setColorizeHSV 0 0 0.8
-featProp Place.Costume.scale setTo 0.25
+featProp Place.Costume.costumeName setTo 'KB_building_other.png'
+featProp Place.Costume.scale setTo 0.5
 
 // Properties
 // collaborators - start at -1 so that it requires 2 people at a place to have 1 collaborator
 // how do we make sure the person already there gets it?
 addProp collaborators number -1
-addProp name string 'place'
+addProp name string 'other'
 
 // has a scientist been here before?
 addProp wasVisited boolean false
 
-// What kind of place is this? 
+// What kind of place is this?
 // You can put anything so long as the scientist touches code uses it
 // This is the default. Change it in the map setup.
 addProp type string 'place'
@@ -435,10 +409,65 @@ addProp subType string 'place'
 propPush Place.trackerId
 propPop Place.name
 
+ifExpr {{ (Place.getProp('name').value == 'home') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_home.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'office') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_office.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'chemistry') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_chem.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'biology') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_biology.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'modeling') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_modeling.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'embodied') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_embodied.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'gardencenter') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_gardencenter.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'conference') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_conference.png'
+]]
+ifExpr {{ (Place.getProp('name').value == 'other') }} [[
+  featProp Place.Costume.costumeName setTo 'KB_building_other.png'
+]]
+
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish`
+onEvent Start [[
+  ifExpr {{ (Place.getProp('name').value == 'home') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_home.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'office') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_office.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'chemistry') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_chem.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'biology') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_biology.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'modeling') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_modeling.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'embodied') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_embodied.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'gardencenter') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_gardencenter.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'conference') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_conference.png'
+  ]]
+  ifExpr {{ (Place.getProp('name').value == 'other') }} [[
+    featProp Place.Costume.costumeName setTo 'KB_building_other.png'
+  ]]
+
+]]`
     },
     {
       "name": "PopupMessage",
@@ -641,136 +670,121 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.Graphing.text
 ]]`
+    },
+    {
+      "name": "Marker",
+      "scriptText": `# BLUEPRINT Marker
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'KB_marker_other.png'
+
+addProp type string 'other'
+addProp visited boolean false
+
+featProp Marker.Costume.scale setTo 0.3
+# PROGRAM UPDATE
+onEvent Start [[
+  ifExpr {{ (Marker.getProp('type').value == 'home') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_home_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'office') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_office_invert.png'
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'chemistry') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_chem_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'biology') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_biology_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'modeling') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_modeling_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'embodied') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_embodied_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'gardencenter') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_gardencenter_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'conference') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_conference_invert.png'
+  ]]
+  ifExpr {{ (Marker.getProp('type').value == 'other') }} [[
+    featProp Marker.Costume.costumeName setTo 'KB_marker_other_invert.png'
+  ]]
+]]
+
+every 1 runAtStart [[
+
+  ifExpr {{ (Marker.getProp('type').value == 'home') }} [[
+    ifExpr {{ (global.getProp('homeVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_home.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'office') }} [[
+    ifExpr {{ (global.getProp('officeVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_office.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'chemistry') }} [[
+    ifExpr {{ (global.getProp('chemistryVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_chem.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'biology') }} [[
+    ifExpr {{ (global.getProp('biologyVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_biology.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'modeling') }} [[
+    ifExpr {{ (global.getProp('modelingVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_modeling.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'embodied') }} [[
+    ifExpr {{ (global.getProp('embodiedVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_embodied.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'gardencenter') }} [[
+    ifExpr {{ (global.getProp('gardencenterVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_gardencenter.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'conference') }} [[
+    ifExpr {{ (global.getProp('conferenceLocVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_conference.png'
+    ]]
+  ]]
+
+  ifExpr {{ (Marker.getProp('type').value == 'other') }} [[
+    ifExpr {{ (global.getProp('otherVisited').value == true) }} [[
+      featProp Marker.Costume.costumeName setTo 'KB_marker_other.png'
+    ]]
+  ]]
+
+
+]]`
     }
   ],
   "instances": [
-    {
-      "id": "0",
-      "label": "Lake",
-      "bpid": "Nature",
-      "initScript": `prop x setTo -88.09
-prop y setTo -234.72
-prop Nature.subType setTo 'lake'
-featProp Nature.Costume.costumeName setTo 'KB_Nature_LakeUnvisited.png'
-`
-    },
-    {
-      "id": "2",
-      "label": "Chemistry Lab",
-      "bpid": "Place",
-      "initScript": `prop x setTo 271.61
-prop y setTo -307.80
-prop Place.type setTo 'lab'
-prop Place.subType setTo 'Chemistry Lab'
-featProp Place.Costume.costumeName setTo 'KB_Place_ChemistryLabUnvisited.png'
-
-`
-    },
-    {
-      "id": "3",
-      "label": "Lab desk",
-      "bpid": "Place",
-      "initScript": `prop x setTo 191.97
-prop y setTo -120.19
-prop Place.type setTo 'lab'
-prop Place.subType setTo 'Lab Desk'
-featProp Place.Costume.costumeName setTo 'KB_Place_LabDeskUnvisited.png'
-
-`
-    },
-    {
-      "id": "4",
-      "label": "Computer",
-      "bpid": "Place",
-      "initScript": `prop x setTo 193.53
-prop y setTo 27.21
-prop Place.type setTo 'lab'
-prop Place.subType setTo 'Computer'
-featProp Place.Costume.costumeName setTo 'KB_Place_ComputerUnvisited.png'
-
-`
-    },
-    {
-      "id": "5",
-      "label": "Garden",
-      "bpid": "Nature",
-      "initScript": `prop x setTo -245.94
-prop y setTo -64.65
-prop Nature.subType setTo 'garden'
-featProp Nature.Costume.costumeName setTo 'KB_Nature_GardenUnvisited.png'
-
-`
-    },
-    {
-      "id": "6",
-      "label": "Home",
-      "bpid": "Place",
-      "initScript": `prop x setTo -324.38
-prop y setTo -338.30
-prop Place.type setTo 'home'
-prop Place.subType setTo 'home'
-featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
-`
-    },
-    {
-      "id": "7",
-      "label": "Home",
-      "bpid": "Place",
-      "initScript": `prop x setTo 224.84
-prop y setTo 296.58
-prop Place.type setTo 'home'
-prop Place.subType setTo 'home'
-featProp Place.Costume.costumeName setTo 'KB_Place_HomeUnvisited.png'
-`
-    },
-    {
-      "id": "8",
-      "label": "Garden Center",
-      "bpid": "Place",
-      "initScript": `prop x setTo -317.34
-prop y setTo 252.52
-prop Place.type setTo 'store'
-prop Place.subType setTo 'Garden Center'
-featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterNotvisited.png'
-
-`
-    },
     {
       "id": "10",
       "label": "Knowledge Meter",
       "bpid": "KnowledgeMeter",
       "initScript": `prop x setTo 440
 prop y setTo 325`
-    },
-    {
-      "id": "11",
-      "label": "Whiteboard",
-      "bpid": "Place",
-      "initScript": `prop x setTo 327.54
-prop y setTo -117.92
-prop Place.type setTo 'lab'
-prop Place.subType setTo 'Whiteboard'
-featProp Place.Costume.costumeName setTo 'KB_Place_EmbodiedModelingLabUnvisited.png'
-
-`
-    },
-    {
-      "id": "12",
-      "label": "Conference Meeting Area",
-      "bpid": "Place",
-      "initScript": `prop x setTo -1.03
-prop y setTo 92.75
-prop Place.type setTo 'conference'
-prop Place.subType setTo 'conference'
-featProp Place.Costume.costumeName setTo 'KB_Place_ConferenceUnvisited.png'
-`
-    },
-    {
-      "id": "13",
-      "label": "KnowledgePresented",
-      "bpid": "KnowledgePresented",
-      "initScript": `prop x setTo 86.53
-prop y setTo -355.82`
     },
     {
       "id": "14",
@@ -815,7 +829,7 @@ featProp agent.Costume.height setTo 60
     },
     {
       "id": "28",
-      "label": "KnowwledgeChip",
+      "label": "KnowledgeChip",
       "bpid": "ColorChip",
       "initScript": `prop x setTo 473.96
 prop y setTo -295.29
@@ -832,34 +846,170 @@ featProp agent.Costume.height setTo 30`
 prop y setTo -275.08`
     },
     {
-      "id": "30",
-      "label": "ColorChip30",
-      "bpid": "ColorChip",
-      "initScript": `prop x setTo 263.37
-prop y setTo -37.47
-prop zIndex setTo -300
-featProp agent.Costume.height setTo 300
-`
+      "id": "33",
+      "label": "Garden",
+      "bpid": "Nature",
+      "initScript": `prop x setTo -197.78
+prop y setTo -305.73`
     },
     {
-      "id": "31",
-      "label": "Biology Lab",
-      "bpid": "TextLabel",
-      "initScript": `prop x setTo 274.26
-prop y setTo 108.46
-featProp agent.Costume.height setTo 350
-`
+      "id": "34",
+      "label": "Lake",
+      "bpid": "Nature",
+      "initScript": `prop x setTo -294.27
+prop y setTo -147.89
+prop name setTo 'lake'`
     },
     {
-      "id": "32",
+      "id": "35",
       "label": "Other",
       "bpid": "Place",
-      "initScript": `prop x setTo -142.91
-prop y setTo 291.56
-prop Place.type setTo 'other'
-prop Place.subType setTo 'other'
-featProp Place.Costume.costumeName setTo 'KB_Place_GardenCenterNotvisited.png'
-\n`
+      "initScript": `prop x setTo -248.52
+prop y setTo 243.94
+prop name setTo 'other'`
+    },
+    {
+      "id": "36",
+      "label": "Chemistry Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo -44.08
+prop y setTo 284.39
+prop name setTo 'chemistry'`
+    },
+    {
+      "id": "37",
+      "label": "Biology Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 131.66
+prop y setTo 278.49
+prop name setTo 'biology'`
+    },
+    {
+      "id": "38",
+      "label": "Conference Center",
+      "bpid": "Place",
+      "initScript": `prop x setTo 325.08
+prop y setTo 229.32
+prop name setTo 'conference'`
+    },
+    {
+      "id": "39",
+      "label": "Home",
+      "bpid": "Place",
+      "initScript": `prop x setTo -313.54
+prop y setTo 38.33
+prop name setTo 'home'`
+    },
+    {
+      "id": "40",
+      "label": "Embodied Modeling",
+      "bpid": "Place",
+      "initScript": `prop x setTo 326.23
+prop y setTo -49.7
+prop name setTo 'embodied'`
+    },
+    {
+      "id": "41",
+      "label": "Modeling Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 290.97
+prop y setTo -208.99
+prop name setTo 'modeling'`
+    },
+    {
+      "id": "42",
+      "label": "Office",
+      "bpid": "Place",
+      "initScript": `prop x setTo 169.7
+prop y setTo -313.72
+prop name setTo 'office'`
+    },
+    {
+      "id": "43",
+      "label": "Garden Center",
+      "bpid": "Place",
+      "initScript": `prop x setTo 2.12
+prop y setTo -297.82
+prop name setTo 'gardencenter'`
+    },
+    {
+      "id": "44",
+      "label": "Meeple",
+      "bpid": "Scientist",
+      "initScript": `prop x setTo -45.1
+prop y setTo -75.86`
+    },
+    {
+      "id": "45",
+      "label": "conferencemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 319.42
+prop y setTo 159.18
+prop type setTo 'conference'`
+    },
+    {
+      "id": "46",
+      "label": "homemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -319.67
+prop y setTo -21.78
+prop type setTo 'home'`
+    },
+    {
+      "id": "47",
+      "label": "gardencentermarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -2.84
+prop y setTo -360.16
+prop type setTo 'gardencenter'`
+    },
+    {
+      "id": "48",
+      "label": "embodiedmarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 313.94
+prop y setTo -103.55
+prop type setTo 'embodied'`
+    },
+    {
+      "id": "49",
+      "label": "modelingmarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 289.56
+prop y setTo -267.55
+prop type setTo 'modeling'`
+    },
+    {
+      "id": "50",
+      "label": "chem marker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -40.45
+prop y setTo 219.92
+prop type setTo 'chemistry'`
+    },
+    {
+      "id": "51",
+      "label": "other",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -258.33
+prop y setTo 177.54
+prop type setTo 'other'`
+    },
+    {
+      "id": "52",
+      "label": "biomarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 127.36
+prop y setTo 208.4
+prop type setTo 'biology'`
+    },
+    {
+      "id": "53",
+      "label": "officemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 161.19
+prop y setTo -370.35
+prop type setTo 'office'`
     }
   ]
 }
