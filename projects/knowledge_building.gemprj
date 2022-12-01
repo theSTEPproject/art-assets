@@ -103,7 +103,7 @@ prop zIndex setTo 100
 
 // setup meter to show the knowledge
 featProp Scientist.Graphing.meterProp setTo 'knowledge'
-featProp Scientist.Graphing.meterColor setTo 9055202
+featProp Scientist.Graphing.meterColor setTo 16737792
 
 // check if the scientist is visiting a place - see specif script below
 featCall Scientist.Touches monitor 'Nature' b2b
@@ -791,7 +791,7 @@ addFeature Costume
 featProp agent.Costume.costumeName setTo 'KB_background.png'
 
 prop zIndex setTo -100
-featProp agent.Costume.scale setTo 3.20
+featProp agent.Costume.scale setTo 3.2
 
 
 # PROGRAM UPDATE
@@ -879,6 +879,8 @@ prop y setTo -275.08`
       "label": "Garden",
       "bpid": "Nature",
       "initScript": `prop x setTo -273.25
+      prop name setTo 'garden'
+
 prop y setTo -276.63`
     },
     {
