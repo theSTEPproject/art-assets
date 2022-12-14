@@ -1,6 +1,6 @@
 {
-  "id": "beeDissertation(v6)",
-  "label": "Bee Dissertation",
+  "id": "honeybees",
+  "label": "Bees and Pollination",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -12,86 +12,127 @@
     ],
     "bounce": true,
     "bgcolor": 0,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
     {
-      "id": "Bee",
-      "label": "Bee",
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// add features
+addFeature Population
+
+// add props
+addProp hiveIDPassing number 1
+
+// use this global in the bee dance watching
+addProp flowerXPassing number 0
+addProp flowerYPassing number 0
+
+// for updating the hive counts to display 
+addProp dancingBeesCounter number 0
+addProp watchingBeesCounter number 0
+
+// to create flowers of a specific type 
+addProp baseTypePassing string ''
+
+// hide this
+prop global.visible setTo false
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Bee",
       "scriptText": `# BLUEPRINT Bee
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 useFeature Costume
-featCall Costume setCostume 'bee.png' 
-
 useFeature Physics
-featCall Physics init
-featProp Physics scale setTo 0.3
-
 useFeature Movement
-featProp Movement useAutoOrientation setTo true
-
 useFeature Touches
-featCall Touches monitor Flower c2b
-featCall Touches monitor Hive c2b
+useFeature Graphing
+useFeature Population
 
-addProp nectarAmount Number 0
-prop nectarAmount setMax 20
-prop nectarAmount setMin 0
+featProp Bee.Costume.costumeName setTo 'bee.png' 
+featProp Bee.Costume.scale setTo 0.3
+featProp Bee.Movement.useAutoOrientation setTo true
+
+featCall Bee.Touches monitor Flower c2b
+featCall Bee.Touches monitor Hive c2b
+
+addProp nectarAmount number 0
+prop Bee.nectarAmount setMax 20
+prop Bee.nectarAmount setMin 0
 
 // this tracks the hive the bee belongs to. If it is 0, we assume kids control the bee and it can go anywhere. 
 // if it is a number, we assume code created the bee, and it will only go to its home hive 
-addProp hiveID Number 0
+addProp hiveID number 0
 
 // where is our hive located?
-addProp hiveX Number 0
-addProp hiveY Number 0
+addProp hiveX number 0
+addProp hiveY number 0
 
 // remember if we are pollinating this color or not (might be redundant if we use the ID cleverly?)
-addProp pollinateRed Boolean false
-addProp pollinateYellow Boolean false
-addProp pollinateBlue Boolean false
-addProp pollinateSquash Boolean false
-addProp pollinateWaterMelon  Boolean false
-addProp pollinatePumpkin Boolean false
+addProp pollinateRed boolean false
+addProp pollinateYellow boolean false
+addProp pollinateBlue boolean false
+addProp pollinateSquash boolean false
+addProp pollinateWaterMelon  boolean false
+addProp pollinatePumpkin boolean false
 
 // what was the last flower of a given color that we visited so that we don't self-pollinate
 // future iterations might use a separate variable for self-pollination
-addProp redID Number 0
-addProp blueID Number 0
-addProp yellowID Number 0
-addProp squashID Number 0
-addProp watermelonID Number 0
-addProp pumpkinID Number 0
+addProp redID number 0
+addProp blueID number 0
+addProp yellowID number 0
+addProp squashID number 0
+addProp watermelonID number 0
+addProp pumpkinID number 0
 
 // temp variables so that we can dynamically access the stuff above?
-addProp pollinatedColor Boolean false
-addProp pollinatedID Number 0
+addProp pollinatedColor boolean false
+addProp pollinatedID number 0
 
-useFeature AgentWidgets
-featCall AgentWidgets bindMeterTo nectarAmount
+featProp Bee.Graphing.meterProp setTo 'nectarAmount'
 
-useFeature Population
-
-addProp beeID Number 1
+addProp beeID number 1
 
 // setup some variables to remember a flower we visited and its location
-addProp visitedX Number 0
-addProp visitedY Number 0
-addProp visitedQuality Number 0
-addProp visitedAmount Number 0
+addProp visitedX number 0
+addProp visitedY number 0
+addProp visitedQuality number 0
+addProp visitedAmount number 0
 
 // to keep track of how long we've been dancing if in fancing mode
-addProp dancingCounter Number 0
-addProp watchingCounter Number 0
+addProp dancingCounter number 0
+addProp watchingCounter number 0
 
 // speed of flight
-addProp beeSpeed Number 3
-prop beeSpeed setTo 10
+addProp beeSpeed number 3
+prop Bee.beeSpeed setTo 10
 
 // mode to determine what AI bees do
 // if the mode is set to user, which is the default, assume the AI shouldn't do anything because it is controlled
@@ -106,34 +147,36 @@ prop beeSpeed setTo 10
   // collecting: while grabbing the nectar at a flower
   // returning: we should head back to the hive
 
-  addProp mode String 'user'
+  addProp mode string 'user'
 
   // give it the next available ID, in order 
-  exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + 1 }}         
-  propPop beeID
+featCall Bee.Population getActiveCharactersCount 'Bee'
+featPropPush Bee.Population.count
+propPop Bee.beeID
+prop Bee.beeID add 1
 
   ifExpr {{ agent.getProp('mode').value != 'user'}} [[
     exprPush {{ 'Bee ' + (agent.getProp('beeID').value) }}
-    featPropPop AgentWidgets text
+    featPropPop Bee.Graphing.text
   ]]
 
-# PROGRAM EVENT 
+# PROGRAM UPDATE 
 
   onEvent Tick [[
       // if this is AI and set to start, start moving
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[  
        
         
-        prop mode setTo 'scouting'
-        featCall Movement setMovementType 'edgeToEdge' 5 0 180
-        featCall Movement setRandomDirection
-        
+        prop Bee.mode setTo 'scouting'
+        // TODO: CONVERT
+        //featCall Bee.Movement setMovementType 'edgeToEdge' 5 0 180
+        //featCall Bee.Movement setRandomDirection
+        featProp Bee.Movement.movementType setTo 'edgeToEdge'
+
         exprPush {{ Bee.getProp('beeSpeed').value }}
-        featPropPop Movement distance
+        featPropPop Bee.Movement.distance
       ]]
     ]]
-
-# PROGRAM UPDATE
 
   // see if the bee is looking for a flower that doesn't exist 
 
@@ -147,24 +190,25 @@ prop beeSpeed setTo 10
         ifExpr {{Bee.getFeatProp('Movement', 'isMoving').value == false}} [[
           
           // go back to the hive to re-set the key variables and the search etc.
-          prop mode setTo 'returning'
+          prop Bee.mode setTo 'returning'
 
           // also clear out our memory since nothing to see here
-          prop visitedX setTo 0
-          prop visitedY setTo 0
-          prop visitedAmount setTo 0
-          prop visitedQuality setTo 0
+          prop Bee.visitedX setTo 0
+          prop Bee.visitedY setTo 0
+          prop Bee.visitedAmount setTo 0
+          prop Bee.visitedQuality setTo 0
 
           // set the x and y of the hive, then go there
           exprPush {{Bee.getProp('hiveX').value}}
-          featPropPop Movement targetX
+          featPropPop Bee.Movement targetX
 
           exprPush {{Bee.getProp('hiveY').value}}
-          featPropPop Movement targetY
+          featPropPop Bee.Movement targetY
         
-          featCall Movement setMovementType 'goLocation' 5
+          // TODO: CONVERT ... go to 5 
+          featProp Bee.Movement.movementType setTo 'goLocation' 
           exprPush {{ Bee.getProp('beeSpeed').value }}
-          featPropPop Movement distance
+          featPropPop Bee.Movement distance
 
         ]]
       ]]
@@ -178,32 +222,33 @@ when Bee centerFirstTouches Hive [[
 
   ifExpr {{ Bee.getProp('mode').value == 'scouting' }} [[ 
     // if we found our way back here and haven't found anyhting yet, try watching first, but shorter than usual
-    prop mode setTo 'watching'
-    prop watchingCounter setTo 2
-    featCall Movement setMovementType 'static'
+    prop Bee.mode setTo 'watching'
+    prop Bee.watchingCounter setTo 2
+    
+    featProp Bee.Movement.movementType setTo 'static'
   ]]
 
   ifExpr {{ Bee.getProp('mode').value != 'user' }} [[
-    prop visible setTo false
+    prop Bee.visible setTo false
   ]]
 
 ]]
 
 when Bee centerLastTouches Hive [[
-  prop visible setTo true
+  prop Bee.visible setTo true
 
   // clear out any visited flower memory unless we are foraging in which case, that's our target
   ifExpr {{Bee.getProp('mode').value != 'foraging'}} [[
-    prop visitedX setTo 0
-    prop visitedY setTo 0
-    prop visitedAmount setTo 0
-    prop visitedQuality setTo 0
+    prop Bee.visitedX setTo 0
+    prop Bee.visitedY setTo 0
+    prop Bee.visitedAmount setTo 0
+    prop Bee.visitedQuality setTo 0
   ]]
 
 
   // if the user was also dancing, have them stop when they leave
   ifExpr {{Bee.getProp('mode').value == 'user-dancing'}} [[
-      prop mode setTo 'user'
+      prop Bee.mode setTo 'user'
     ]]
 ]]
 
@@ -211,7 +256,7 @@ when Bee centerTouches Hive [[
   every 1 runAtStart [[
     // only drop off if you have some and it is your hive 
     ifExpr {{ Bee.getProp('nectarAmount').value > 0 && Bee.getProp('hiveID').value == Hive.getProp('hiveID').value }} [[
-      featCall Bee.Costume setGlow 2
+      featProp Bee.Costume.glow setTo 2
       prop Bee.nectarAmount sub 5
       prop Hive.nectarAmount add 5 
     ]] 
@@ -219,14 +264,14 @@ when Bee centerTouches Hive [[
     // if it's the user, and they have decent nectar, have them dance too (note that user bees belong to all hives - handle where they can go socially for now)
     ifExpr {{Bee.getProp('mode').value == 'user'}} [[
       ifExpr {{ Bee.getProp('visitedAmount').value >= 40 && Bee.getProp('visitedQuality').value >= 3}} [[
-        prop mode setTo 'user-dancing'
+        prop Bee.mode setTo 'user-dancing'
       ]]
     ]]
 
     // if you re returning and this is your hive ... 
     ifExpr {{ Bee.getProp('mode').value == 'returning' && Bee.getProp('hiveID').value == Hive.getProp('hiveID').value }} [[ 
 
-        featCall Movement setMovementType 'static'
+      featProp Bee.Movement.movementType setTo 'static'
 
         // if we are done depositing nectar figure out what's next
         ifExpr {{ Bee.getProp('nectarAmount').value == 0 }} [[
@@ -236,23 +281,23 @@ when Bee centerTouches Hive [[
            
             // if it was enough nectar for others, dance 
             ifExpr {{ Bee.getProp('visitedAmount').value >= 40 }} [[
-              prop mode setTo 'dancing'
+              prop Bee.mode setTo 'dancing'
 
               // start the dancingCounter 
-              prop dancingCounter setTo 5
+              prop Bee.dancingCounter setTo 5
               
             ]]
             // if it was just enough for me
              ifExpr {{ Bee.getProp('visitedAmount').value <= 40 }} [[
-               prop mode setTo 'foraging'
+               prop Bee.mode setTo 'foraging'
                // note, handle foraging below to avoid redundancy
 
             ]]
 
             // there wasn't much nectar left, so desspite it being decent quality, let's watch 
             ifExpr {{ Bee.getProp('visitedAmount').value < 20  }} [[
-              prop mode setTo 'watching'
-              prop watchingCounter setTo 5
+              prop Bee.mode setTo 'watching'
+              prop Bee.watchingCounter setTo 5
 
           ]]
           // not worth dancing, so watch
@@ -260,8 +305,8 @@ when Bee centerTouches Hive [[
           // end, it was decent quality nectar
           // if it was NOT decent quality nectar, also start the qatching
          ifExpr {{ Bee.getProp('visitedQuality').value < 3 && Bee.getProp('mode') != 'watching'}} [[
-              prop mode setTo 'watching'
-              prop watchingCounter setTo 5
+              prop Bee.mode setTo 'watching'
+              prop Bee.watchingCounter setTo 5
          ]]
       ]]
       // bee out of nectar
@@ -270,11 +315,11 @@ when Bee centerTouches Hive [[
 
     ifExpr {{ Bee.getProp('mode').value == 'dancing' }} [[
 
-        prop dancingCounter sub 1
+        prop Bee.dancingCounter sub 1
         
         ifExpr {{ Bee.getProp('dancingCounter').value == 0 }} [[
 
-          prop mode setTo 'foraging'
+          prop Bee.mode setTo 'foraging'
           // note, handle foraging below to avoid redundancy
         ]]
     ]] 
@@ -304,13 +349,13 @@ when Bee centerTouches Hive [[
           propPop Bee.visitedX
           exprPush {{ global.getProp('flowerYPassing').value }}
           propPop Bee.visitedY
-          prop mode setTo 'foraging'
+          prop Bee.mode setTo 'foraging'
         ]]
 
         // watchingCounter if we are still watching and hit 0 on the counter  
         ifExpr {{ Bee.getProp('mode').value == 'watching' && Bee.getProp('watchingCounter').value == 0 }} [[
           // use start because it will switch to scout on the tick and keep that code all in one spot
-          prop mode setTo 'start'
+          prop Bee.mode setTo 'start'
         ]]
 
         prop watchingCounter sub 1
@@ -328,9 +373,9 @@ when Bee centerTouches Hive [[
       exprPush {{Bee.getProp('visitedY').value}}
       featPropPop Movement targetY
     
-      featCall Movement setMovementType 'goLocation' 5
+      featProp Bee.Movement.movementType setTo 'goLocation' 5
       exprPush {{ Bee.getProp('beeSpeed').value }}
-      featPropPop Movement distance
+      featPropPop Bee.Movement.distance
     ]]
 
   ]]
@@ -346,7 +391,7 @@ when Bee centerTouches Flower [[
    // AI or NOT AI, if you are not full and there is some food left, take some 
    ifExpr {{ Bee.getProp('nectarAmount').value < 20 }} [[
       ifExpr {{ Flower.getProp('nectarAmount').value >= 5 }} [[ 
-        featCall Bee.Costume setGlow 2
+        featProp Bee.Costume setGlow 2
         prop Bee.nectarAmount add 5
         prop Flower.nectarAmount sub 5
         ]]
@@ -359,17 +404,17 @@ when Bee centerTouches Flower [[
     ifExpr {{ Bee.getProp('mode').value == 'collecting' }} [[ 
       // maxed out, switch to returning
       ifExpr {{ Bee.getProp('nectarAmount').value == 20 }} [[
-        prop mode setTo 'returning'
+        prop Bee.mode setTo 'returning'
       ]]
 
       // if the flower is running low, and you are middle / high, returning
       ifExpr {{ Flower.getProp('nectarAmount').value <= 5 && Bee.getProp('nectarAmount').value > 10 }} [[
-        prop mode setTo 'returning'
+        prop Bee.mode setTo 'returning'
       ]]
 
       // if the flowe is running low and you are low, switch to scouting
        ifExpr {{ Flower.getProp('nectarAmount').value <= 5 && Bee.getProp('nectarAmount').value <= 10 }} [[
-        prop mode setTo 'returning'
+        prop Bee.mode setTo 'returning'
       ]]
 
     ]]
@@ -379,39 +424,40 @@ when Bee centerTouches Flower [[
     ifExpr {{ Bee.getProp('mode').value == 'returning' }} [[
         // set the x and y of the hive, then go there
         exprPush {{Bee.getProp('hiveX').value}}
-        featPropPop Movement targetX
+        featPropPop Bee.Movement targetX
 
         exprPush {{Bee.getProp('hiveY').value}}
-        featPropPop Movement targetY
+        featPropPop Bee.Movement targetY
        
-        featCall Movement setMovementType 'goLocation' 5
+        // TODO: CONVERTY
+        // featCall Bee.Movement.movementType setTo 'goLocation' 5
         exprPush {{ Bee.getProp('beeSpeed').value }}
-        featPropPop Movement distance
+        featPropPop Bee.Movement distance
     ]]
   ]]
 ]]
 
 //setting pollination-related properties for next Flower
 when Bee centerLastTouches Flower [[
-  featCall Bee.Costume setGlow 0
+  featProp Bee.Costume setGlow 0
   
   ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
-    prop pollinateBlue setTo true
+    prop Bee.pollinateBlue setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
-    prop pollinateRed setTo true
+    prop Bee.pollinateRed setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
-  prop pollinateYellow setTo true
+  prop Bee.pollinateYellow setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
-  prop pollinateSquash setTo true
+  prop Bee.pollinateSquash setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
-  prop pollinatePumpkin setTo true
+  prop Bee.pollinatePumpkin setTo true
   ]]
   ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
-    prop pollinateWaterMelon  setTo true
+    prop Bee.pollinateWaterMelon  setTo true
 
   ]]
 
@@ -423,27 +469,27 @@ when Bee centerLastTouches Flower [[
         
     ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop blueID
+        propPop Bee.blueID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop redID
+        propPop Bee.redID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop yellowID
+        propPop Bee.yellowID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop squashID
+        propPop Bee.squashID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop pumpkinID
+        propPop Bee.pumpkinID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
         exprPush {{ Flower.getProp('flowerID').value }}
-        propPop watermelonID
+        propPop Bee.watermelonID
     ]]
   ]]
 
@@ -455,17 +501,18 @@ when Bee centerLastTouches Flower [[
 
   // if the bee is still collecting, switch to returning and it'll re-orient in the hive 
   ifExpr {{ Bee.getProp('mode').value == 'collecting'}} [[
-    prop mode setTo 'returning'
+    prop Bee.mode setTo 'returning'
     
     exprPush {{Bee.getProp('hiveX').value}}
-    featPropPop Movement targetX
+    featPropPop Bee.Movement targetX
 
     exprPush {{Bee.getProp('hiveY').value}}
-    featPropPop Movement targetY
+    featPropPop Bee.Movement targetY
     
-    featCall Movement setMovementType 'goLocation' 5
+    // TODO: CONVERTY go to 5
+    featProp Movement setMovementType 'goLocation'
     exprPush {{ Bee.getProp('beeSpeed').value }}
-    featPropPop Movement distance 
+    featPropPop Bee.Movement distance 
   ]]
 
 ]]
@@ -476,10 +523,10 @@ when Bee centerFirstTouches Flower [[
 // if we were forgaging, we xan now forget the flower location since we are here, and then update
 // based on the visit
  ifExpr {{Bee.getProp('mode').value == 'foraging'}} [[
-    prop visitedX setTo 0
-    prop visitedY setTo 0
-    prop visitedAmount setTo 0
-    prop visitedQuality setTo 0
+    prop Bee.visitedX setTo 0
+    prop Bee.visitedY setTo 0
+    prop Bee.visitedAmount setTo 0
+    prop Bee.visitedQuality setTo 0
   ]]
 
   // track how many bees are at the flower so that we can re-hide (if that is set) upon leaving
@@ -489,15 +536,15 @@ when Bee centerFirstTouches Flower [[
   // TODO: add the hearts to the name now that we know what the quality might be
   ifExpr{{ Flower.getProp('nectarQuality').value == 1}} [[
     exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️' }}
-    featPropPop  Flower.AgentWidgets text
+    featPropPop  Flower.Graphing text
   ]]
   ifExpr{{ Flower.getProp('nectarQuality').value == 2}} [[
     exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
+    featPropPop  Flower.Graphing text
   ]]
   ifExpr{{ Flower.getProp('nectarQuality').value == 3}} [[
     exprPush {{ Flower.getProp('nameBase').value + ' ' + '❤️❤️❤️' }}
-    featPropPop  Flower.AgentWidgets text
+    featPropPop  Flower.Graphing text
   ]]
 
 
@@ -507,21 +554,20 @@ when Bee centerFirstTouches Flower [[
 
         // we are using user above for the values below, so this makes sure we only change non-user bees' mode
         ifExpr {{ Bee.getProp('mode').value != 'user'}} [[
-          featCall Movement setMovementType 'static'
-          prop mode setTo 'collecting'
+          featProp Bee.Movement.movementType setTo 'static'
+          prop Bee.mode setTo 'collecting'
         ]]
         
         // remember this location and other info so we can dance and / or come back later 
         // we only remember the last one, but assume we wouldn't move on if we didn't need it
         exprPush {{ Flower.getProp('x').value }}
-        propPop visitedX 
+        propPop Bee.visitedX 
         exprPush {{ Flower.getProp('y').value }}
-        propPop visitedY
+        propPop Bee.visitedY
         exprPush {{Flower.getProp('nectarQuality').value }}
-        propPop visitedQuality
+        propPop Bee.visitedQuality
         exprPush {{Flower.getProp('nectarAmount').value }}
-        propPop visitedAmount
-
+        propPop Bee.visitedAmount
       ]]
     ]]
 
@@ -530,39 +576,39 @@ when Bee centerFirstTouches Flower [[
 
     ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
       exprPush {{ Bee.getProp('pollinateBlue').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('blueID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'red'}} [[
       exprPush {{ Bee.getProp('pollinateRed').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('redID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'yellow'}} [[
       exprPush {{ Bee.getProp('pollinateYellow').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('yellowID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'squash'}} [[
       exprPush {{ Bee.getProp('pollinateSquash').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('squashID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'pumpkin'}} [[
       exprPush {{ Bee.getProp('pollinatePumpkin').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('pumpkinID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
     ifExpr {{ Flower.getProp('baseType').value == 'watermelon'}} [[
       exprPush {{ Bee.getProp('pollinateWaterMelon').value }}
-      propPop pollinatedColor
+      propPop Bee.pollinatedColor
       exprPush {{ Bee.getProp('watermelonID').value }}
-      propPop pollinatedID
+      propPop Bee.pollinatedID
     ]]
 
     // grab some pollen whether you stop or not, since you checked it out ... 
@@ -575,17 +621,12 @@ when Bee centerFirstTouches Flower [[
       
       //POLLINATION IS HAPPENING HERE (for growth/costume logic)
       prop Flower.pollenAmount add 1
-    //  ifExpr {{ Flower.getProp('pollenAmount').value > 0 }}[[
-    //    exprPush {{ Flower.getProp('costumeName').value + 'Pollen'}}
-    //  \tpropPop Flower.costumeName
-   //   ]]
-  
       
         featCall Population createAgent Flower [[
         prop x addRndInt -50 50
         prop y addRndInt -50 50
         prop nectarAmount setTo 50
-        featProp Physics scale setTo 0.25
+        featProp scale setTo 0.25
         prop generation setTo 2 
         exprPush {{global.getProp('baseTypePassing').value}} 
         propPop baseType
@@ -597,115 +638,104 @@ when Bee centerFirstTouches Flower [[
 `
     },
     {
-      "id": "Hive",
-      "label": "Hive",
+      "name": "Hive",
       "scriptText": `# BLUEPRINT Hive
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 useFeature Costume
-featCall Costume setCostume 'hiveNatural.png'
-
 useFeature Physics
+
+
+featProp Hive.Costume.costumeName setTo 'HB_hiveNatural.png'
+
 featCall Physics init
-featProp Physics scale setTo 0.5
 
-addProp hiveType String 'commercial'
+addProp hiveType string 'natural'
 ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
-  featCall Costume setCostume 'hiveCommercial.png' 
-    featProp Physics scale setTo 0.5
-
+  featProp Hive.Costume.costumeName setTo  'HB_hiveCommercial.png' 
 ]]
 ifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
-  featCall Costume setCostume 'hiveNatural.png' 
-    featProp Physics scale setTo 0.5
-
+  featProp Hive.Costume.costumeName setTo  'HB_hiveNatural.png' 
 ]]
+
+featProp Hive.Costume.scale setTo 0.5
+
 
 useFeature Touches
 featCall Touches monitor Bee c2b
 
 // track hiveID in case we have more than one
-addProp hiveID Number 0
+addProp hiveID number 0
 
 // number of AI bees to generate on runAtStart
-addProp aiBeeCount Number 0
+addProp aiBeeCount number 8
 // set it separately so it'll appear in map editor - remove if that feature
 prop aiBeeCount setTo 0
 
 // temp variable for use in creating AI bees
-addProp aiBeeCountTemp Number 0
+addProp aiBeeCountTemp number 0
 
 useFeature Population
 
-// set the id to the current count of agents so that it keeps incrementing 
-exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Hive') + 1 }} 
-propPop hiveID
+featCall Hive.Population getActiveCharactersCount 'Hive'
+featPropPush Hive.Population.count
+propPop Hive.hiveID
+prop Hive.hiveID add 1
 
 // TODO: we can switch this to a population calculation to make this cleaner if we need
 // keep track of how many bees are dancing and watching
-addProp dancingBeesCounter Number 0
-addProp watchingBeesCounter Number 0
+addProp dancingBeesCounter number 0
+addProp watchingBeesCounter number 0
 
-addProp nectarAmount Number 0
-prop nectarAmount setMax 100
+addProp nectarAmount number 0
+prop nectarAmount setMax 10000
 prop nectarAmount setMin 0
 
-addProp nectarQuality Number 2
+addProp nectarQuality number 2
 prop nectarQuality setMax 3
 prop nectarQuality setMin 1
 
-useFeature Global
+useFeature Graphing
+exprPush {{'Hive Nectar Amount: 0'}}
+featPropPop Graphing text
+featCall Hive.Graphing.meterProp setTo 'nectarAmount'
 
-// setup a global variable so we can pass info into the creation of bees, but only do it once
-ifExpr{{ agent.callFeatMethod('Global', 'getGlobalProp', 'hiveIDPassing') == undefined }} [[
-  featCall Global addGlobalProp hiveIDPassing Number 1
 
-  // use this global in the bee dance watching
-  featCall Global addGlobalProp flowerXPassing Number 0
-  featCall Global addGlobalProp flowerYPassing Number 0
+addProp doOnce boolean true
 
-  // for updating the hive counts to display 
-  featCall Global addGlobalProp dancingBeesCounter Number 0
-  featCall Global addGlobalProp watchingBeesCounter Number 0
-
-  // to create flowers of a specific type 
-  featCall Global addGlobalProp baseTypePassing String ''
-]]
-
-useFeature AgentWidgets
-exprPush {{'Hive [D:0; W:0]'}}
-featPropPop AgentWidgets text
-featCall AgentWidgets bindMeterTo nectarAmount
-
-addProp doOnce Boolean true
+addProp tempNectarDisplay number 0
+prop tempNectarDisplay setTo 0
 
 # PROGRAM UPDATE
 
 every 0.1 [[
   
+  exprPush {{agent.getProp('nectarAmount').value / 5}} 
+  propPop agent.tempNectarDisplay
+  
+  exprPush {{'Hive Nectar Amount: ' + agent.getProp('tempNectarDisplay').value}}
+  featPropPop Graphing text 
+  
   // update our name to reflect the number of dancing and watching bees
   // first we need to calculate them, though
   
-  ifExpr {{ agent.getProp('doOnce').value == true }} [[
-  \tifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
-  \t\tfeatCall Costume setCostume 'hiveCommercial.png' 
-   \t featProp Physics scale setTo 0.5
+ifExpr {{ agent.getProp('doOnce').value == true }} [[
+    ifExpr {{ agent.getProp('hiveType').value == 'commercial'}} [[
+    featProp Hive.Costume.costumeName setTo 'HB_hiveCommercial.png' 
 
-\t]]
-\tifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
-  \t\tfeatCall Costume setCostume 'hiveNatural.png' 
-    \tfeatProp Physics scale setTo 0.5
+]]
+ifExpr {{ agent.getProp('hiveType').value == 'natural'}} [[
+  featProp Hive.Costume.costumeName setTo 'HB_hiveNatural.png' 
 
-\t]]
-\tprop doOnce setTo false
+]]
+prop doOnce setTo false
   ]]
    
-
-  prop global.dancingBeesCounter setTo 0
-  prop global.watchingBeesCounter setTo 0
+\t prop global.dancingBeesCounter setTo 0
+ \t prop global.watchingBeesCounter setTo 0
 
   exprPush {{agent.getProp('hiveID').value}}
   propPop global.hiveIDPassing
@@ -729,8 +759,8 @@ every 0.1 [[
     ]]
   ]]
 
-  exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
-  featPropPop AgentWidgets text 
+ // exprPush {{'Hive [D:' + global.getProp('dancingBeesCounter').value + '; W:' + global.getProp('watchingBeesCounter').value +']'}}
+ // featPropPop Graphing text 
 ]]
 
 every 0.5 runAtStart [[
@@ -771,62 +801,61 @@ every 0.5 runAtStart [[
 `
     },
     {
-      "id": "Flower",
-      "label": "Flower",
+      "name": "Flower",
       "scriptText": `# BLUEPRINT Flower
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-# PROGRAM DEFINE
+# PROGRAM INIT
 useFeature Costume
-//TODO: change the costume feature to do this via a property
+// TODO: change the costume feature to do this via a property
 
 // setup a short name so that we can use to set all the other things
 // options are blue, red, yellow, squash, pumpkin, and watermelon
-addProp baseType String 'blue'
+addProp baseType string 'blue'
 prop baseType setTo 'blue'
 
-// setup the name and image info 
-addProp nameBase String 'Plant'
+// setup the name and image info
+addProp nameBase string 'Plant'
 prop nameBase setTo 'Blue Flower'
 
-addProp costumeName String 'blue'
+addProp costumeName string 'blue'
 prop costumeName setTo ''
 
-//spawnNewFlowers
+// spawnNewFlowers
 // this determines whether new flowers get made
-addProp spawnNewFlowers Boolean false
+addProp spawnNewFlowers boolean true
 prop spawnNewFlowers setTo true
 
-// set all the defaults for name, etc. 
-ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
-  featCall Costume setCostume 'blueFlower.png'
+// set all the defaults for name, etc.
+ifExpr {{ agent.getProp('baseType').value == 'blue' }} [[
+  featProp Flower.Costume.costumeName setTo 'HB_blueFlower.png'
   prop costumeName setTo 'blue'
 
 ]]
-ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
-  featCall Costume setCostume 'redFlower.png'
+ifExpr {{ agent.getProp('baseType').value == 'red' }} [[
+  featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
   prop costumeName setTo 'red'
 
- ]]
-ifExpr {{ agent.getProp('baseType').value == 'yellow.png'}} [[
-  featCall Costume setCostume 'yellowFlower.png' 
+]]
+ifExpr {{ agent.getProp('baseType').value == 'yellow.png' }} [[
+  featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
   prop costumeName setTo 'yellow'
 
 ]]
-ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
-  featCall Costume setCostume 'squashSprout.png' 
+ifExpr {{ agent.getProp('baseType').value == 'squash' }} [[
+  featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
   prop costumeName setTo 'squashSprout'
 
 ]]
-ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
-  featCall Costume setCostume 'pumpkinSprout.png' 
+ifExpr {{ agent.getProp('baseType').value == 'pumpkin' }} [[
+  featProp Flower.Costume.costumeName setTo 'pumpkinSprout.png'
   prop costumeName setTo 'pumpkinSprout'
 
 ]]
-ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
-  featCall Costume setCostume 'watermelonSprout.png' 
+ifExpr {{ agent.getProp('baseType').value == 'watermelon' }} [[
+  featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
   prop costumeName setTo 'watermelonSprout'
 
 ]]
@@ -836,150 +865,147 @@ ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
 prop visible setTo true
 
 // once it has been discovered, should we re-hide a flower once we fly away from it
-addProp rehideAfterVisit Boolean true
-prop rehideAfterVisit setTo false 
+addProp rehideAfterVisit boolean false
+prop rehideAfterVisit setTo false
 
-// to make sure we re-hide only if no one is here anymore 
-addProp currentVisitorCount Number 0
+// to make sure we re-hide only if no one is here anymore
+addProp currentVisitorCount number 0
 
 useFeature Physics
 featCall Physics init
-featProp Physics scale setTo 0.5
+featProp Flower.Costume.scale setTo 0.5
 
 useFeature Touches
 featCall Touches monitor Bee c2b
 
-addProp nectarAmount Number 100 
+addProp nectarAmount number 100
 prop nectarAmount setMax 100
-prop nectarAmount setMin 0 
+prop nectarAmount setMin 0
 
-addProp nectarQuality Number 2
-prop nectarQuality setMax 3
-prop nectarQuality setMin 1
+addProp nectarQuality number 0
+prop nectarQuality setMax 0
+prop nectarQuality setMin 0
 
-addProp pollenAmount Number 0
+addProp pollenAmount number 0
 prop pollenAmount setMax 2
-prop pollenAmount setMin 0 
+prop pollenAmount setMin 0
 prop pollenAmount setTo 0
 
-addProp generation Number 1
+addProp generation number 1
 
 useFeature Population
 
-addProp flowerID Number 0
+addProp flowerID number 0
 
 // set the id to the current count of agents so that it keeps incrementing
-exprPush {{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Flower') + 1 }}
-propPop flowerID
+featCall Flower.Population getActiveCharactersCount 'Flower'
+featPropPush Flower.Population.count
+propPop Flower.flowerID
+prop Flower.flowerID add 1
 
-useFeature AgentWidgets
+useFeature Graphing
 exprPush {{ agent.getProp('nameBase').value }}
-featPropPop  AgentWidgets text
-featCall AgentWidgets bindMeterTo nectarAmount
+featPropPop Graphing text
+featCall Flower.Graphing.meterProp setTo 'nectarAmount'
 
-addProp doOnce Boolean true 
+addProp doOnce boolean true
 
 # PROGRAM UPDATE
-  every 1 runAtStart [[
+every 1 runAtStart [[
 
-//START OF DOONCE
+  // START OF DOONCE
   ifExpr {{ Flower.getProp('doOnce').value == true }} [[
     prop doOnce setTo false
-  // TODO is there a better way to do this timing-wise?
-  // use placeholder art?  Or if they are invisible to start it doesn't really matter ... 
+    // TODO is there a better way to do this timing-wise?
+    // use placeholder art?  Or if they are invisible to start it doesn't really matter ...
 
-  // change the costume
-  // for now, set names, etc., to match
-  // long-term, do we want that here or in the stage setup?
-  ifExpr {{ agent.getProp('baseType').value == 'blue'}} [[
-    featCall Costume setCostume 'blueFlower.png'
-    prop nameBase setTo 'Blue Flower' 
-          prop costumeName setTo 'blue'
+    // change the costume
+    // for now, set names, etc., to match
+    // long-term, do we want that here or in the stage setup?
+    ifExpr {{ agent.getProp('baseType').value == 'blue' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_blueFlower.png'
+      prop nameBase setTo 'Blue Flower'
+      prop costumeName setTo 'blue'
 
-  ]]
-  ifExpr {{ agent.getProp('baseType').value == 'red'}} [[
-    featCall Costume setCostume 'redFlower.png'
-    prop nameBase setTo 'Red Flower' 
-          prop costumeName setTo 'red'
+    ]]
+    ifExpr {{ agent.getProp('baseType').value == 'red' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+      prop nameBase setTo 'Red Flower'
+      prop costumeName setTo 'red'
 
-  ]]
-  ifExpr {{ agent.getProp('baseType').value == 'yellow'}} [[
-    featCall Costume setCostume 'yellowFlower.png' 
-    prop nameBase setTo 'Yellow Flower' 
-          prop costumeName setTo 'yellow'
+    ]]
+    ifExpr {{ agent.getProp('baseType').value == 'yellow' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+      prop nameBase setTo 'Yellow Flower'
+      prop costumeName setTo 'yellow'
 
-  ]]
-  ifExpr {{ agent.getProp('baseType').value == 'squash'}} [[
-    featCall Costume setCostume 'squashSprout.png' 
-    prop nameBase setTo 'Squash' 
+    ]]
+    ifExpr {{ agent.getProp('baseType').value == 'squash' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
+      prop nameBase setTo 'Squash'
       prop costumeName setTo 'squashSprout'
-  ]]
-  ifExpr {{ agent.getProp('baseType').value == 'pumpkin'}} [[
-    featCall Costume setCostume 'pumpkinSprout.png' 
-    prop nameBase setTo 'Pumpkin' 
+    ]]
+    ifExpr {{ agent.getProp('baseType').value == 'pumpkin' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
+      prop nameBase setTo 'Pumpkin'
       prop costumeName setTo 'pumpkinSprout'
 
-  ]]
-  ifExpr {{ agent.getProp('baseType').value == 'watermelon'}} [[
-    featCall Costume setCostume 'watermelonSprout.png'
-    prop nameBase setTo 'Watermelon' 
+    ]]
+    ifExpr {{ agent.getProp('baseType').value == 'watermelon' }} [[
+      featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
+      prop nameBase setTo 'Watermelon'
       prop costumeName setTo 'watermelonSprout'
-  ]]
+    ]]
 
-  // make the name match
-  exprPush {{ agent.getProp('nameBase').value }}
-  featPropPop  AgentWidgets text
+    // make the name match
+    exprPush {{ agent.getProp('nameBase').value }}
+    featPropPop Graphing text
   ]]
-  //END OF DOONCE
-  
-  //START OF POLLEN COSTUMES
+  // END OF DOONCE
+
+  // START OF POLLEN COSTUMES
   ifExpr {{ agent.getProp('baseType').value == 'red' && agent.getProp('pollenAmount').value > 0 }} [[
-   \t\tfeatCall Costume setCostume 'redPollen.png'
+    featProp Flower.Costume.costumeName setTo 'HB_redPollen.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'blue' && agent.getProp('pollenAmount').value > 0 }} [[
-   \t\tfeatCall Costume setCostume 'bluePollen.png'
+  ifExpr {{ agent.getProp('baseType').value == 'blue' && agent.getProp('pollenAmount').value > 0 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_bluePollen.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'yellow' && agent.getProp('pollenAmount').value > 0 }} [[
-   \t\tfeatCall Costume setCostume 'yellowPollen.png'
+  ifExpr {{ agent.getProp('baseType').value == 'yellow' && agent.getProp('pollenAmount').value > 0 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_yellowPollen.png'
   ]]
-    ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value == 1 }} [[
-   \t\tfeatCall Costume setCostume 'watermelonSproutPollen.png'
+  ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value == 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'watermelonSproutPollen.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value == 1 }} [[
-   \t\tfeatCall Costume setCostume 'squashSproutPollen.png'
+  ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value == 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_squashSproutPollen.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value == 1 }} [[
-   \t\tfeatCall Costume setCostume 'pumpkinSproutPollen.png'
+  ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value == 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_pumpkinSproutPollen.png'
   ]]
-  //END OF POLLEN COSTUMES
-  //START OF VEGGIE GROWTH COSTUMES
-     ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value > 1 }} [[
-   \t\tfeatCall Costume setCostume 'watermelonVeggie.png'
+  // END OF POLLEN COSTUMES
+  // START OF VEGGIE GROWTH COSTUMES
+  ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value > 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_watermelonVeggie.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value > 1 }} [[
-   \t\tfeatCall Costume setCostume 'squashVeggie.png'
+  ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value > 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_squashVeggie.png'
   ]]
-   ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value > 1  }} [[
-   \t\tfeatCall Costume setCostume 'pumpkinVeggie.png'
+  ifExpr {{ agent.getProp('baseType').value == 'pumpkin' && agent.getProp('pollenAmount').value > 1 }} [[
+    featProp Flower.Costume.costumeName setTo 'HB_pumpkinVeggie.png'
   ]]
-  //END OF VEGGIE GROWTH COSTUMES
-]]
-
-`
+  // END OF VEGGIE GROWTH COSTUMES
+]]`
     },
     {
-      "id": "Timer",
-      "label": "Timer",
+      "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-# PROGRAM DEFINE
-useFeature AgentWidgets
-useFeature Costume
-featCall Costume setCostume 'onexone.json' 0
-addProp time Number 0
-
-featProp AgentWidgets text setTo 'Time: 0'
-
 # PROGRAM INIT
+useFeature Graphing
+useFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json' 0
+addProp time number 0
+
+featProp Graphing text setTo 'Time: 0'
 
 prop x setTo 445
 prop y setTo -256
@@ -988,22 +1014,20 @@ prop y setTo -256
   every 1 runAtStart [[
   prop time add 1
   exprPush {{ 'Time: ' + agent.getProp('time').value }}
-  featPropPop AgentWidgets text
+  featPropPop Graphing text
 ]]`
     },
     {
-      "id": "Background",
-      "label": "Background",
+      "name": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable false
-# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
-# PROGRAM DEFINE
+# PROGRAM INIT
 useFeature Costume
-featCall Costume setCostume 'background (filter).png' 0
-featCall Costume setScale 0.8
-// useFeature Movement
-# PROGRAM EVENT
+featProp Background.Costume.costumeName setTo'HB_background (filter).png' 0
+// TODO: CONVERT
+featCall Background.Costume.scale setTo 0.8
 
 # PROGRAM UPDATE
 `
@@ -1012,24 +1036,176 @@ featCall Costume setScale 0.8
   "instances": [
     {
       "id": "0",
-      "label": "Background0",
+      "label": "Background",
       "bpid": "Background",
       "initScript": `prop x setTo 3.30
 prop y setTo 0.12`
     },
     {
-      "id": "1",
-      "label": "Bee1",
-      "bpid": "Bee",
-      "initScript": `prop x setTo -41
-prop y setTo -29`
-    },
-    {
       "id": "2",
-      "label": "Timer2",
+      "label": "Timer",
       "bpid": "Timer",
       "initScript": `prop x setTo 356.96
 prop y setTo -396.19`
+    },
+    {
+      "id": "8",
+      "label": "Hive",
+      "bpid": "Hive",
+      "initScript": `prop hiveType setTo 'natural'
+prop x setTo -146.09
+prop y setTo 279.34
+prop scale setTo 2
+prop hiveID setTo 0`
+    },
+    {
+      "id": "9",
+      "label": "squash2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'squash'
+prop x setTo -608.81
+prop y setTo 25.96`
+    },
+    {
+      "id": "10",
+      "label": "watermelon1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'watermelon'
+prop x setTo -590.8
+prop y setTo 227.45`
+    },
+    {
+      "id": "11",
+      "label": "squash1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'squash'
+prop x setTo -604.76
+prop y setTo -33.3`
+    },
+    {
+      "id": "12",
+      "label": "pumpkin2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'pumpkin'
+prop x setTo 311.2
+prop y setTo 290.55`
+    },
+    {
+      "id": "13",
+      "label": "pumpkin1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'pumpkin'
+prop x setTo -623.28
+prop y setTo -274`
+    },
+    {
+      "id": "14",
+      "label": "watermelon2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'watermelon'
+prop x setTo -274.94
+prop y setTo 153.57`
+    },
+    {
+      "id": "15",
+      "label": "squash4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'squash'
+prop x setTo -671.01
+prop y setTo 13.87`
+    },
+    {
+      "id": "16",
+      "label": "watermelon4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'watermelon'
+prop x setTo -580.63
+prop y setTo 278.46`
+    },
+    {
+      "id": "18",
+      "label": "squash3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'squash'
+prop x setTo -64.4
+prop y setTo -59.42`
+    },
+    {
+      "id": "17",
+      "label": "pumpkin4",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'pumpkin'
+prop x setTo 308.05
+prop y setTo 69.56`
+    },
+    {
+      "id": "19",
+      "label": "pumpkin3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'pumpkin'
+prop x setTo 113.9
+prop y setTo -36.17`
+    },
+    {
+      "id": "20",
+      "label": "watermelon3",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo 'watermelon'
+prop x setTo -282.5
+prop y setTo 41.34`
+    },
+    {
+      "id": "21",
+      "label": "blue1",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo blue
+prop x setTo -523.48
+prop y setTo 102.95`
+    },
+    {
+      "id": "22",
+      "label": "red1",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 106.62
+prop y setTo 143.83
+prop baseType setTo 'red'`
+    },
+    {
+      "id": "23",
+      "label": "blue2",
+      "bpid": "Flower",
+      "initScript": `prop baseType setTo blue
+prop x setTo -570.81
+prop y setTo 108.15`
+    },
+    {
+      "id": "24",
+      "label": "Flower24",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 318.38
+prop y setTo -153.5`
+    },
+    {
+      "id": "25",
+      "label": "Flower25",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 628.53
+prop y setTo -235.37`
+    },
+    {
+      "id": "26",
+      "label": "Flower26",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -287.97
+prop y setTo -128.16
+prop baseType setTo 'yellow'`
+    },
+    {
+      "id": "27",
+      "label": "Flower27",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 83.66
+prop y setTo -161.79`
     }
   ]
 }
