@@ -1,0 +1,157 @@
+{
+  "id": "sorting_Finches",
+  "label": "SSMV CT Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 11393254,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// and one that is not though you can use character controller with the second
+// Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "InteractingCharacter1",
+      "scriptText": `# BLUEPRINT InteractingCharacter1
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp InteractingCharacter1.Costume.costumeName setTo 'square.json'
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+`
+    },
+    {
+      "name": "scientist",
+      "scriptText": `# BLUEPRINT scientist
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
+featProp scientist.Costume.scale setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "background",
+      "scriptText": `# BLUEPRINT background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp background.Costume.costumeName setTo 'SF_background.png'
+featProp background.Costume.scale setTo 0.795
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island1",
+      "scriptText": `# BLUEPRINT island1
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island1.Costume.costumeName setTo 'SF_island1.png'
+featProp island1.Costume.scale setTo 0.5
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1",
+      "label": "background1",
+      "bpid": "background",
+      "initScript": `prop x setTo -0.54
+prop y setTo 19.72`
+    },
+    {
+      "id": "2",
+      "label": "island12",
+      "bpid": "island1",
+      "initScript": `prop x setTo -119.96
+prop y setTo -239.66`
+    }
+  ]
+}
