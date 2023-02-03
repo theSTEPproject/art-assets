@@ -123,13 +123,123 @@ featProp background.Costume.scale setTo 0.795
 # PROGRAM INIT
 addFeature Costume
 featProp island1.Costume.costumeName setTo 'SF_island1.png'
-featProp island1.Costume.scale setTo 0.5
+featProp island1.Costume.scale setTo 0.15
 
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island2",
+      "scriptText": `# BLUEPRINT island2
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island2.Costume.costumeName setTo 'SF_island2.png'
+featProp island2.Costume.scale setTo 0.7
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island3",
+      "scriptText": `# BLUEPRINT island3
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island3.Costume.costumeName setTo 'SF_island3.png'
+featProp island3.Costume.scale setTo 0.5
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island4",
+      "scriptText": `# BLUEPRINT island4
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island4.Costume.costumeName setTo 'SF_island4.png'
+featProp island4.Costume.scale setTo 0.13
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "finches",
+      "scriptText": `# BLUEPRINT finches
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Movement
+addFeature Touches
+addFeature Physics
+
+addProp beakLength number 1
+
+featProp finches.Costume.costumeName setTo 'SF_finch1.png'
+featProp finches.Costume.scale setTo 0.3
+
+prop finches.beakLength setToRnd 3 17 false
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+onEvent START [[
+  featProp finches.Movement.movementType setTo 'jitter'
+  featProp finches.Movement.distance setTo 1
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -143,15 +253,78 @@ featProp island1.Costume.scale setTo 0.5
       "id": "1",
       "label": "background1",
       "bpid": "background",
-      "initScript": `prop x setTo -0.54
-prop y setTo 19.72`
+      "initScript": `prop x setTo -1.94
+prop y setTo -19.44`
     },
     {
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -119.96
-prop y setTo -239.66`
+      "initScript": `prop x setTo -301.78
+prop y setTo -220.09`
+    },
+    {
+      "id": "3",
+      "label": "scientist3",
+      "bpid": "scientist",
+      "initScript": `prop x setTo 283.55
+prop y setTo 267.76`
+    },
+    {
+      "id": "4",
+      "label": "scientist4",
+      "bpid": "scientist",
+      "initScript": `prop x setTo 104.27
+prop y setTo 271.57`
+    },
+    {
+      "id": "5",
+      "label": "scientist5",
+      "bpid": "scientist",
+      "initScript": `prop x setTo -119.32
+prop y setTo 274.49`
+    },
+    {
+      "id": "6",
+      "label": "scientist6",
+      "bpid": "scientist",
+      "initScript": `prop x setTo -324.49
+prop y setTo 278.92`
+    },
+    {
+      "id": "7",
+      "label": "island27",
+      "bpid": "island2",
+      "initScript": `prop x setTo -113.89
+prop y setTo -340.87`
+    },
+    {
+      "id": "8",
+      "label": "island38",
+      "bpid": "island3",
+      "initScript": `prop x setTo 103.67
+prop y setTo -228.58`
+    },
+    {
+      "id": "9",
+      "label": "island49",
+      "bpid": "island4",
+      "initScript": `prop x setTo 304.05
+prop y setTo -324.86`
+    },
+    {
+      "id": "10",
+      "label": "finches10",
+      "bpid": "finches",
+      "initScript": `prop x setTo -300.69
+prop y setTo 24.39`
+    },
+    {
+      "id": "11",
+      "label": "finches11",
+      "bpid": "finches",
+      "initScript": `prop x setTo 198.79
+prop y setTo 16.36`
     }
   ]
 }
