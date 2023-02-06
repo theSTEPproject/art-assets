@@ -237,10 +237,109 @@ prop finches.beakLength setToRnd 3 17 false
 // onEvent Tick [[ ]]
 onEvent START [[
   featProp finches.Movement.movementType setTo 'jitter'
-  featProp finches.Movement.distance setTo 1
+  featProp finches.Movement.distance setTo 0.1
 ]]
 
 
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "FinchesSmall",
+      "scriptText": `# BLUEPRINT FinchesSmall
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+addProp beakLength number 1
+
+
+featProp FinchesSmall.Costume.costumeName setTo 'SF_finch3.png'
+featProp FinchesSmall.Costume.scale setTo 0.4
+
+featCall FinchesSmall.Touches monitor 'scientist' b2b
+
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+onEvent START [[
+  featProp FinchesSmall.Movement.movementType setTo 'jitter'
+  featProp FinchesSmall.Movement.jitterDistance setTo 1
+]]
+
+
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "finchesMedium",
+      "scriptText": `# BLUEPRINT finchesMedium
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp finchesMedium.Costume.costumeName setTo 'SF_finches4.png'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "finchesLarge",
+      "scriptText": `# BLUEPRINT finchesLarge
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Movement
+addFeature Touches
+addProp beakLength number 17
+
+featProp finchesLarge.Costume.costumeName setTo 'SF_finches6'
+prop finchesLarge.beakLength setToRnd 14 17 false
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+onEvent START [[
+  featProp finchesLarge.Movement.movementType setTo 'edgetoedge'
+  featProp finchesLarge.Movement.distance setTo 1
+]]
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
@@ -325,6 +424,13 @@ prop y setTo 24.39`
       "bpid": "finches",
       "initScript": `prop x setTo 198.79
 prop y setTo 16.36`
+    },
+    {
+      "id": "12",
+      "label": "FinchesSmall12",
+      "bpid": "FinchesSmall",
+      "initScript": `prop x setTo -32.35
+prop y setTo 38.29`
     }
   ]
 }
