@@ -44,30 +44,6 @@ prop global.visible setTo false
 # PROGRAM UPDATE`
     },
     {
-      "name": "InteractingCharacter1",
-      "scriptText": `# BLUEPRINT InteractingCharacter1
-# TAG isPozyxControllable false
-# TAG isCharControllable true
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// This is the most basic setup of properties that happens as soon as this character is saved
-
-addFeature Costume
-featProp InteractingCharacter1.Costume.costumeName setTo 'square.json'
-
-addFeature Physics
-addFeature Touches
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-
-`
-    },
-    {
       "name": "scientist",
       "scriptText": `# BLUEPRINT scientist
 # TAG isPozyxControllable true
@@ -238,14 +214,18 @@ prop finchesMedium.beakLength setToRnd 9 13 false
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
   prop finchesMedium.x setToRnd -350 350 false
-  prop finchesMedium.y setToRnd -80 160 false
+  prop finchesMedium.y setToRnd -74 74 false
 ]]
-
 
 onEvent START [[
   featProp finchesMedium.Movement.movementType setTo 'jitter'
   featProp finchesMedium.Movement.jitterDistance setTo 1
+
+
+
+
 ]]
+
 
 
 // COMMENT KEY
@@ -269,7 +249,7 @@ addFeature Touches
 addProp beakLength number 17
 
 featProp finchesLarge.Costume.costumeName setTo 'SF_finch6.png'
-featProp finchesLarge.Costume.scale setTo 0.3
+featProp finchesLarge.Costume.scale setTo 0.2
 
 prop finchesLarge.beakLength setToRnd 14 17 false
 
@@ -281,7 +261,7 @@ prop finchesLarge.beakLength setToRnd 14 17 false
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
   prop finchesLarge.x setToRnd -350 350 false
-  prop finchesLarge.y setToRnd -80 160 false
+  prop finchesLarge.y setToRnd -74 74 false
 ]]
 
 onEvent START [[
@@ -313,6 +293,7 @@ addProp beakLength number 1
 featProp finchesSmall.Costume.costumeName setTo 'SF_finch3.png'
 featProp finchesSmall.Costume.scale setTo 0.3
 
+prop finchesSmall.x setToRnd -350 350 false
 
 featCall finchesSmall.Touches monitor 'scientist' b2b
 
@@ -325,7 +306,7 @@ featCall finchesSmall.Touches monitor 'scientist' b2b
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
   prop finchesSmall.x setToRnd -350 350 false
-  prop finchesSmall.y setToRnd -80 160 false
+  prop finchesSmall.y setToRnd -74 74 false
 ]]
 
 
@@ -336,6 +317,80 @@ onEvent START [[
 
 
 
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "nestSmall",
+      "scriptText": `# BLUEPRINT nestSmall
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp nestSmall.Costume.costumeName setTo 'SF_nest.png'
+featProp nestSmall.Costume.scale setTo 0.1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "nestMedium",
+      "scriptText": `# BLUEPRINT nestMedium
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp nestMedium.Costume.costumeName setTo 'SF_nest.png'
+featProp nestMedium.Costume.scale setTo 0.1
+
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "nestLarge",
+      "scriptText": `# BLUEPRINT nestLarge
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp nestLarge.Costume.costumeName setTo 'SF_nest.png'
+featProp nestLarge.Costume.scale setTo 0.1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -356,8 +411,8 @@ prop y setTo -19.44`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -319.43
-prop y setTo -280.39`
+      "initScript": `prop x setTo -310.61
+prop y setTo -284.80`
     },
     {
       "id": "3",
@@ -391,22 +446,15 @@ prop y setTo 184.80`
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo -99.18
-prop y setTo -346.75`
-    },
-    {
-      "id": "8",
-      "label": "island38",
-      "bpid": "island3",
-      "initScript": `prop x setTo 122.79
-prop y setTo -294.76`
+      "initScript": `prop x setTo 3.76
+prop y setTo -292.34`
     },
     {
       "id": "9",
       "label": "island49",
       "bpid": "island4",
-      "initScript": `prop x setTo 302.58
-prop y setTo -338.10`
+      "initScript": `prop x setTo 306.99
+prop y setTo -301.34`
     },
     {
       "id": "12",
@@ -449,6 +497,48 @@ prop y setTo -40.35`
       "bpid": "finchesLarge",
       "initScript": `prop x setTo 244.12
 prop y setTo -40.53`
+    },
+    {
+      "id": "19",
+      "label": "nestMedium19",
+      "bpid": "nestMedium",
+      "initScript": `prop x setTo -40.00
+prop y setTo -214.47`
+    },
+    {
+      "id": "20",
+      "label": "nestMedium20",
+      "bpid": "nestMedium",
+      "initScript": `prop x setTo 58.65
+prop y setTo -216.82`
+    },
+    {
+      "id": "21",
+      "label": "nestSmall21",
+      "bpid": "nestSmall",
+      "initScript": `prop x setTo -241.18
+prop y setTo -195.88`
+    },
+    {
+      "id": "22",
+      "label": "nestSmall22",
+      "bpid": "nestSmall",
+      "initScript": `prop x setTo -338.59
+prop y setTo -163.24`
+    },
+    {
+      "id": "23",
+      "label": "nestLarge23",
+      "bpid": "nestLarge",
+      "initScript": `prop x setTo 266.29
+prop y setTo -203.76`
+    },
+    {
+      "id": "24",
+      "label": "nestLarge24",
+      "bpid": "nestLarge",
+      "initScript": `prop x setTo 355.17
+prop y setTo -166.41`
     }
   ]
 }
