@@ -100,6 +100,7 @@ addFeature Touches
 addFeature Costume
 featProp background.Costume.costumeName setTo 'SF_background.png'
 featProp background.Costume.scale setTo 0.795
+featProp background.Costume.height setTo 1800
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -210,87 +211,6 @@ featProp island4.Costume.scale setTo 0.13
 // ✏️ body`
     },
     {
-      "name": "finches",
-      "scriptText": `# BLUEPRINT finches
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Movement
-addFeature Touches
-addFeature Physics
-
-addProp beakLength number 1
-
-featProp finches.Costume.costumeName setTo 'SF_finch1.png'
-featProp finches.Costume.scale setTo 0.3
-
-prop finches.beakLength setToRnd 3 17 false
-
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-onEvent START [[
-  featProp finches.Movement.movementType setTo 'jitter'
-  featProp finches.Movement.distance setTo 0.1
-]]
-
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
-      "name": "FinchesSmall",
-      "scriptText": `# BLUEPRINT FinchesSmall
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Movement
-
-addProp beakLength number 1
-
-
-featProp FinchesSmall.Costume.costumeName setTo 'SF_finch3.png'
-featProp FinchesSmall.Costume.scale setTo 0.4
-
-featCall FinchesSmall.Touches monitor 'scientist' b2b
-
-
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-onEvent START [[
-  featProp FinchesSmall.Movement.movementType setTo 'jitter'
-  featProp FinchesSmall.Movement.jitterDistance setTo 1
-]]
-
-
-
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
       "name": "finchesMedium",
       "scriptText": `# BLUEPRINT finchesMedium
 # TAG isCharControllable false
@@ -299,13 +219,34 @@ onEvent START [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp finchesMedium.Costume.costumeName setTo 'SF_finches4.png'
+addFeature Movement
+addFeature Touches
+addFeature Physics
+
+addProp beakLength number 1
+
+featProp finchesMedium.Costume.costumeName setTo 'SF_finch5.png'
+featProp finchesMedium.Costume.scale setTo 0.2
+
+prop finchesMedium.beakLength setToRnd 9 13 false
+
 
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
+onEvent ROUNDINIT [[
+  prop finchesMedium.x setToRnd -350 350 false
+  prop finchesMedium.y setToRnd -80 160 false
+]]
+
+
+onEvent START [[
+  featProp finchesMedium.Movement.movementType setTo 'jitter'
+  featProp finchesMedium.Movement.jitterDistance setTo 1
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -327,7 +268,9 @@ addFeature Movement
 addFeature Touches
 addProp beakLength number 17
 
-featProp finchesLarge.Costume.costumeName setTo 'SF_finches6'
+featProp finchesLarge.Costume.costumeName setTo 'SF_finch6.png'
+featProp finchesLarge.Costume.scale setTo 0.3
+
 prop finchesLarge.beakLength setToRnd 14 17 false
 
 
@@ -336,10 +279,64 @@ prop finchesLarge.beakLength setToRnd 14 17 false
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
-onEvent START [[
-  featProp finchesLarge.Movement.movementType setTo 'edgetoedge'
-  featProp finchesLarge.Movement.distance setTo 1
+onEvent ROUNDINIT [[
+  prop finchesLarge.x setToRnd -350 350 false
+  prop finchesLarge.y setToRnd -80 160 false
 ]]
+
+onEvent START [[
+  featProp finchesLarge.Movement.movementType setTo 'jitter'
+  featProp finchesLarge.Movement.jitterDistance setTo 1
+]]
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "finchesSmall",
+      "scriptText": `# BLUEPRINT finchesSmall
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+addProp beakLength number 1
+
+
+featProp finchesSmall.Costume.costumeName setTo 'SF_finch3.png'
+featProp finchesSmall.Costume.scale setTo 0.3
+
+
+featCall finchesSmall.Touches monitor 'scientist' b2b
+
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+onEvent ROUNDINIT [[
+  prop finchesSmall.x setToRnd -350 350 false
+  prop finchesSmall.y setToRnd -80 160 false
+]]
+
+
+onEvent START [[
+  featProp finchesSmall.Movement.movementType setTo 'jitter'
+  featProp finchesSmall.Movement.jitterDistance setTo 1
+]]
+
+
+
+
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
@@ -359,78 +356,99 @@ prop y setTo -19.44`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -301.78
-prop y setTo -220.09`
+      "initScript": `prop x setTo -319.43
+prop y setTo -280.39`
     },
     {
       "id": "3",
       "label": "scientist3",
       "bpid": "scientist",
-      "initScript": `prop x setTo 283.55
-prop y setTo 267.76`
+      "initScript": `prop x setTo 285.02
+prop y setTo 186.88`
     },
     {
       "id": "4",
       "label": "scientist4",
       "bpid": "scientist",
       "initScript": `prop x setTo 104.27
-prop y setTo 271.57`
+prop y setTo 183.33`
     },
     {
       "id": "5",
       "label": "scientist5",
       "bpid": "scientist",
-      "initScript": `prop x setTo -119.32
-prop y setTo 274.49`
+      "initScript": `prop x setTo -123.73
+prop y setTo 184.78`
     },
     {
       "id": "6",
       "label": "scientist6",
       "bpid": "scientist",
-      "initScript": `prop x setTo -324.49
-prop y setTo 278.92`
+      "initScript": `prop x setTo -323.02
+prop y setTo 184.80`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo -113.89
-prop y setTo -340.87`
+      "initScript": `prop x setTo -99.18
+prop y setTo -346.75`
     },
     {
       "id": "8",
       "label": "island38",
       "bpid": "island3",
-      "initScript": `prop x setTo 103.67
-prop y setTo -228.58`
+      "initScript": `prop x setTo 122.79
+prop y setTo -294.76`
     },
     {
       "id": "9",
       "label": "island49",
       "bpid": "island4",
-      "initScript": `prop x setTo 304.05
-prop y setTo -324.86`
-    },
-    {
-      "id": "10",
-      "label": "finches10",
-      "bpid": "finches",
-      "initScript": `prop x setTo -300.69
-prop y setTo 24.39`
-    },
-    {
-      "id": "11",
-      "label": "finches11",
-      "bpid": "finches",
-      "initScript": `prop x setTo 198.79
-prop y setTo 16.36`
+      "initScript": `prop x setTo 302.58
+prop y setTo -338.10`
     },
     {
       "id": "12",
       "label": "FinchesSmall12",
-      "bpid": "FinchesSmall",
-      "initScript": `prop x setTo -32.35
-prop y setTo 38.29`
+      "bpid": "finchesSmall",
+      "initScript": `prop x setTo -323.53
+prop y setTo -30.83`
+    },
+    {
+      "id": "13",
+      "label": "finchesMedium13",
+      "bpid": "finchesMedium",
+      "initScript": `prop x setTo -41.23
+prop y setTo -43.53`
+    },
+    {
+      "id": "15",
+      "label": "FinchesSmall15",
+      "bpid": "finchesSmall",
+      "initScript": `prop x setTo -323.59
+prop y setTo -29.35`
+    },
+    {
+      "id": "16",
+      "label": "finchesMedium16",
+      "bpid": "finchesMedium",
+      "initScript": `prop x setTo -38.29
+prop y setTo -38.35`
+    },
+    {
+      "id": "17",
+      "label": "finchesLarge17",
+      "bpid": "finchesLarge",
+      "initScript": `prop x setTo 243.35
+prop y setTo -40.35`
+    },
+    {
+      "id": "18",
+      "label": "finchesLarge18",
+      "bpid": "finchesLarge",
+      "initScript": `prop x setTo 244.12
+prop y setTo -40.53`
     }
   ]
 }
