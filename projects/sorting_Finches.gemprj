@@ -70,17 +70,15 @@ featCall scientist.Touches monitor 'finchesLarge' c2c
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
-onEvent START [[
 
-  when scientist firsttouches finchesSmall [[
-    ifProp scientist.carrying equal false [[
-      ifProp finchesSmall.carried equal false [[
-        featProp finchesSmall.Costume.glow setTo 1
-        featProp finchesSmall.Movement.distance setTo 10
-        featCall finchesSmall.Movement seekNearest 'scientist'
-        prop finchesSmall.carried setTo true
-        prop scientist.carrying setTo true
-      ]]
+when scientist firsttouches finchesSmall [[
+  ifProp scientist.carrying equal false [[
+    ifProp finchesSmall.carried equal false [[
+      featProp finchesSmall.Costume.glow setTo 1
+      featProp finchesSmall.Movement.distance setTo 10
+      featCall finchesSmall.Movement seekNearest 'scientist'
+      prop finchesSmall.carried setTo true
+      prop scientist.carrying setTo true
     ]]
   ]]
 ]]`
@@ -331,9 +329,9 @@ featCall finchesSmall.Touches monitor 'scientist' b2b
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
-]]
 featProp finchesSmall.Movement.movementType setTo 'edgeToEdge'
 featProp finchesSmall.Movement.distance setTo 1
+]]
 
 
 
