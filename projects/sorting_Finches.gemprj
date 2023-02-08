@@ -62,7 +62,7 @@ addProp carrying boolean false
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
 featProp scientist.Costume.scale setTo 0.5
 
-featCall scientist.Touches monitor 'finchesSmall' c2c
+featCall scientist.Touches monitor 'finchesSmall' b2b
 featCall scientist.Touches monitor 'finchesMedium' c2c
 featCall scientist.Touches monitor 'finchesLarge' c2c
 
@@ -72,19 +72,18 @@ featCall scientist.Touches monitor 'finchesLarge' c2c
 // This is also where you can handle touches between characters such as When Algae touches Fish
 onEvent START [[
 
-\twhen scientist centertouches finchesSmall [[
-  \t\tifProp scientist.carrying equal false [[
-   \t\tifProp finchesSmall.carried equal false [[
-     \t\tfeatProp finchesSmall.Costume.glow setTo 1
-      \t\tfeatProp finchesSmall.Movement.distance setTo 10
-      \t\tfeatCall finchesSmall.Movement seekNearest 'scientist'
-      \t\tprop finchesSmall.carried setTo true
-      \t\tprop scientist.carrying setTo true
+  when scientist firsttouches finchesSmall [[
+    ifProp scientist.carrying equal false [[
+      ifProp finchesSmall.carried equal false [[
+        featProp finchesSmall.Costume.glow setTo 1
+        featProp finchesSmall.Movement.distance setTo 10
+        featCall finchesSmall.Movement seekNearest 'scientist'
+        prop finchesSmall.carried setTo true
+        prop scientist.carrying setTo true
+      ]]
     ]]
   ]]
-]]
-]]
-`
+]]`
     },
     {
       "name": "background",
@@ -320,10 +319,9 @@ addProp carried boolean false
 featProp finchesSmall.Costume.costumeName setTo 'SF_finch3.png'
 featProp finchesSmall.Costume.scale setTo 0.3
 
-prop finchesSmall.x setToRnd -350 350 false
-prop finchesSmall.y setToRnd -74 74 false
 
-featCall finchesSmall.Touches monitor 'scientist' c2c
+
+featCall finchesSmall.Touches monitor 'scientist' b2b
 
 
 
@@ -333,15 +331,9 @@ featCall finchesSmall.Touches monitor 'scientist' c2c
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
-  prop finchesSmall.x setToRnd -350 350 false
- prop finchesSmall.y setToRnd -74 74 false
 ]]
-
-
-onEvent START [[
-  featProp finchesSmall.Movement.movementType setTo 'jitter'
-  featProp finchesSmall.Movement.jitterDistance setTo 1
-]]
+featProp finchesSmall.Movement.movementType setTo 'edgeToEdge'
+featProp finchesSmall.Movement.distance setTo 1
 
 
 
@@ -443,34 +435,6 @@ prop y setTo -19.44`
 prop y setTo -284.80`
     },
     {
-      "id": "3",
-      "label": "scientist3",
-      "bpid": "scientist",
-      "initScript": `prop x setTo 285.02
-prop y setTo 186.88`
-    },
-    {
-      "id": "4",
-      "label": "scientist4",
-      "bpid": "scientist",
-      "initScript": `prop x setTo 104.27
-prop y setTo 183.33`
-    },
-    {
-      "id": "5",
-      "label": "scientist5",
-      "bpid": "scientist",
-      "initScript": `prop x setTo -123.73
-prop y setTo 184.78`
-    },
-    {
-      "id": "6",
-      "label": "scientist6",
-      "bpid": "scientist",
-      "initScript": `prop x setTo -323.02
-prop y setTo 184.8`
-    },
-    {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
@@ -495,8 +459,8 @@ prop y setTo -30.83`
       "id": "15",
       "label": "FinchesSmall15",
       "bpid": "finchesSmall",
-      "initScript": `prop x setTo -323.59
-prop y setTo -29.35`
+      "initScript": `prop x setTo -116.24
+prop y setTo 69.18`
     },
     {
       "id": "19",
