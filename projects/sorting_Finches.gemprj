@@ -58,6 +58,7 @@ addFeature Physics
 addFeature Touches
 
 addProp carrying boolean false
+addProp beakLength number 0
 
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
 featProp scientist.Costume.scale setTo 0.5
@@ -76,6 +77,9 @@ when scientist firsttouches finchesSmall [[
     ifProp finchesSmall.carried equal false [[
       featProp finchesSmall.Costume.glow setTo 1
       featProp finchesSmall.Movement.distance setTo 10
+      ifProp finchesSmall.beakLength greaterThan 0 [[
+        prop scientist.beakLength setTo finchesSmall.beakLength
+      ]]
       featCall finchesSmall.Movement seekNearest 'scientist'
       prop finchesSmall.carried setTo true
       prop scientist.carrying setTo true
@@ -318,7 +322,6 @@ featProp finchesSmall.Costume.costumeName setTo 'SF_finch3.png'
 featProp finchesSmall.Costume.scale setTo 0.3
 
 
-
 featCall finchesSmall.Touches monitor 'scientist' b2b
 
 
@@ -329,8 +332,8 @@ featCall finchesSmall.Touches monitor 'scientist' b2b
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
-featProp finchesSmall.Movement.movementType setTo 'edgeToEdge'
-featProp finchesSmall.Movement.distance setTo 1
+  featProp finchesSmall.Movement.movementType setTo 'edgeToEdge'
+  featProp finchesSmall.Movement.distance setTo 1
 ]]
 
 
