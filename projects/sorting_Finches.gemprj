@@ -54,16 +54,37 @@ prop global.visible setTo false
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
+addFeature Physics
+addFeature Touches
+
+addProp carrying boolean false
+
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
 featProp scientist.Costume.scale setTo 0.5
 
-addFeature Physics
-addFeature Touches
+featCall scientist.Touches monitor 'finchesSmall' c2c
+featCall scientist.Touches monitor 'finchesMedium' c2c
+featCall scientist.Touches monitor 'finchesLarge' c2c
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish`
+// This is also where you can handle touches between characters such as When Algae touches Fish
+onEvent START [[
+
+\twhen scientist centertouches finchesSmall [[
+  \t\tifProp scientist.carrying equal false [[
+   \t\tifProp finchesSmall.carried equal false [[
+     \t\tfeatProp finchesSmall.Costume.glow setTo 1
+      \t\tfeatProp finchesSmall.Movement.distance setTo 10
+      \t\tfeatCall finchesSmall.Movement seekNearest 'scientist'
+      \t\tprop finchesSmall.carried setTo true
+      \t\tprop scientist.carrying setTo true
+    ]]
+  ]]
+]]
+]]
+`
     },
     {
       "name": "background",
@@ -200,6 +221,7 @@ addFeature Touches
 addFeature Physics
 
 addProp beakLength number 1
+addProp carried boolean false
 
 featProp finchesMedium.Costume.costumeName setTo 'SF_finch5.png'
 featProp finchesMedium.Costume.scale setTo 0.2
@@ -246,7 +268,9 @@ addFeature Costume
 addFeature Physics
 addFeature Movement
 addFeature Touches
+
 addProp beakLength number 17
+addProp carried boolean false
 
 featProp finchesLarge.Costume.costumeName setTo 'SF_finch6.png'
 featProp finchesLarge.Costume.scale setTo 0.2
@@ -286,16 +310,20 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature Vision
 
 addProp beakLength number 1
+addProp carried boolean false
+
 
 
 featProp finchesSmall.Costume.costumeName setTo 'SF_finch3.png'
 featProp finchesSmall.Costume.scale setTo 0.3
 
 prop finchesSmall.x setToRnd -350 350 false
+prop finchesSmall.y setToRnd -74 74 false
 
-featCall finchesSmall.Touches monitor 'scientist' b2b
+featCall finchesSmall.Touches monitor 'scientist' c2c
 
 
 
@@ -306,7 +334,7 @@ featCall finchesSmall.Touches monitor 'scientist' b2b
 // onEvent Tick [[ ]]
 onEvent ROUNDINIT [[
   prop finchesSmall.x setToRnd -350 350 false
-  prop finchesSmall.y setToRnd -74 74 false
+ prop finchesSmall.y setToRnd -74 74 false
 ]]
 
 
@@ -440,7 +468,7 @@ prop y setTo 184.78`
       "label": "scientist6",
       "bpid": "scientist",
       "initScript": `prop x setTo -323.02
-prop y setTo 184.80`
+prop y setTo 184.8`
     },
     {
       "id": "7",
@@ -464,39 +492,11 @@ prop y setTo -301.34`
 prop y setTo -30.83`
     },
     {
-      "id": "13",
-      "label": "finchesMedium13",
-      "bpid": "finchesMedium",
-      "initScript": `prop x setTo -41.23
-prop y setTo -43.53`
-    },
-    {
       "id": "15",
       "label": "FinchesSmall15",
       "bpid": "finchesSmall",
       "initScript": `prop x setTo -323.59
 prop y setTo -29.35`
-    },
-    {
-      "id": "16",
-      "label": "finchesMedium16",
-      "bpid": "finchesMedium",
-      "initScript": `prop x setTo -38.29
-prop y setTo -38.35`
-    },
-    {
-      "id": "17",
-      "label": "finchesLarge17",
-      "bpid": "finchesLarge",
-      "initScript": `prop x setTo 243.35
-prop y setTo -40.35`
-    },
-    {
-      "id": "18",
-      "label": "finchesLarge18",
-      "bpid": "finchesLarge",
-      "initScript": `prop x setTo 244.12
-prop y setTo -40.53`
     },
     {
       "id": "19",
