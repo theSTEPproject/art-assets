@@ -70,7 +70,6 @@ featProp scientist.Costume.scale setTo 0.5
 
 featCall scientist.Touches monitor 'finches' b2b
 featCall scientist.Touches monitor 'nest' c2c
-featCall scientist.Touches monitor 'nest' b2b
 
 
 # PROGRAM UPDATE
@@ -110,20 +109,22 @@ when scientist firsttouches finches [[
 when scientist centerfirsttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal false [[
-      featProp nest.Costume.glow setTo 1
+
+      // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
+      featProp nest.Costume.glow setTo 1
       featProp nest.Costume.scale setTo 0.2
       featProp nest.Costume.glow setTo 1
+
       // transfer the beaklength and beaktype properties from the scientist to the nest
       propPush scientist.beakLength
       propPop nest.beakLength
       propPush scientist.beakType
       propPop nest.beakType
-      // set the new scientist and nest carrying properties
+
+      // set the nest as full
       prop nest.occupied setTo true
-
-
     ]]
   ]]
   ifProp scientist.carrying equal false [[
@@ -144,9 +145,7 @@ when scientist centerfirsttouchescenter nest [[
     ]]
   ]]
 ]]
-
-
-when scientist lasttouches nest [[
+when scientist centerlasttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal true [[
       prop scientist.carrying setTo false
@@ -355,7 +354,6 @@ featProp nest.Costume.costumeName setTo 'SF_nest.png'
 featProp nest.Costume.scale setTo 0.1
 
 featCall nest.Touches monitor 'scientist' c2c
-featCall nest.Touches monitor 'scientist' b2b
 
 
 # PROGRAM UPDATE
@@ -367,7 +365,7 @@ every 1 runAtStart [[
   ifProp nest.occupied equal false [[
     dbgOut 'occupied false'
   ]]
-   ifProp nest.occupied equal true [[
+  ifProp nest.occupied equal true [[
     dbgOut 'occupied true'
   ]]
 ]]
