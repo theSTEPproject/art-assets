@@ -170,13 +170,9 @@ when scientist firsttouches scientist [[
       propPop scientist.tempBeakLength
       ifExpr {{ scientist.getProp('beakLength').value >= scientist.getProp('tempBeakLength').value }} [[
         featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+        featProp scientist.Costume.scale setTo 0.2
         featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-        featProp scientist.Costume.glow setTo 1
-        featProp agent.Costume.glow setTo 1
-      ]]
-      ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
-        featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-        featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+        featProp agent.Costume.scale setTo 0.2
         featProp scientist.Costume.glow setTo 1
         featProp agent.Costume.glow setTo 1
       ]]
@@ -379,20 +375,21 @@ every 1 runAtStart [[
   ]]
 ]]
 
-ifProp global.prediction equal true [[
-  ifProp nest.occupied equal true [[
-    exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
-    propPop nest.match
-    ifProp nest.match equal 0 [[
-      featProp finches.Costume.glow setTo 1
-      featProp finches.Movement.movementType setTo 'jitter'
-      featProp finches.Movement.jitterDistance setTo 1
-    ]]
-    ifProp nest.match notEqual 0 [[
-      prop finches.alpha setTo 0.3
+every 1 [[
+  ifProp global.prediction equal true [[
+    ifProp nest.occupied equal true [[
+      exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
+      propPop nest.match
+      ifProp nest.match equal 0 [[
+        featProp nest.Costume.glow setTo 1
+      ]]
+      ifProp nest.match notEqual 0 [[
+        prop nest.alpha setTo 0.3
+      ]]
     ]]
   ]]
 ]]
+
 
 
 // COMMENT KEY
