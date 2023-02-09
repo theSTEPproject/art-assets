@@ -62,6 +62,7 @@ addFeature Physics
 addFeature Touches
 
 addProp beakLength number 0
+addProp tempBeakLength number 0
 addProp beakType number 0
 addProp carrying boolean false
 
@@ -70,7 +71,7 @@ featProp scientist.Costume.scale setTo 0.5
 
 featCall scientist.Touches monitor 'finches' b2b
 featCall scientist.Touches monitor 'nest' c2c
-
+featCall scientist.Touches monitor 'scientist' b2b
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -142,13 +143,41 @@ when scientist centerfirsttouchescenter nest [[
       // set the new nest and scientist carrying properties
       prop scientist.carrying setTo true
       prop nest.occupied setTo false
+      _comment
+      prop nest.beakLength setTo 0
+      prop nest.beakType setTo 0
     ]]
   ]]
 ]]
+
 when scientist centerlasttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal true [[
       prop scientist.carrying setTo false
+      prop scientist.beakLength setTo 0
+      prop scientist.beakType setTo 0
+    ]]
+  ]]
+]]
+
+// scientists holding a finch can interact with another scientist holding a finch
+when scientist firsttouches scientist [[
+  ifProp scientist.carrying equal true [[
+    ifProp agent.carrying equal true [[
+      propPush agent.beakLength
+      propPop scientist.tempBeakLength
+      ifExpr {{ scientist.getProp('beakLength').value >= scientist.getProp('tempBeakLength').value }} [[
+        featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+        featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+        featProp scientist.Costume.glow setTo 1
+        featProp agent.Costume.glow setTo 1
+      ]]
+      ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
+        featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+        featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+        featProp scientist.Costume.glow setTo 1
+        featProp agent.Costume.glow setTo 1
+      ]]
     ]]
   ]]
 ]]`
