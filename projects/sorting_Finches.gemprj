@@ -441,7 +441,7 @@ featProp foodSeeds.Costume.scale setTo 0.2
     {
       "name": "foodInsects",
       "scriptText": `# BLUEPRINT foodInsects
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -466,7 +466,7 @@ featProp foodInsects.Costume.flipX setTo true
     {
       "name": "foodFruit",
       "scriptText": `# BLUEPRINT foodFruit
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -525,15 +525,15 @@ prop y setTo -19.44`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -290.95
-prop y setTo -322.15`
+      "initScript": `prop x setTo -37.28
+prop y setTo -329.12`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo 7.69
-prop y setTo -310.03`
+      "initScript": `prop x setTo 251.48
+prop y setTo -305.10`
     },
     {
       "id": "25",
@@ -648,29 +648,29 @@ prop y setTo 308.59`
       "id": "39",
       "label": "foodInsects39",
       "bpid": "foodInsects",
-      "initScript": `prop x setTo 13.52
-prop y setTo -271.11`
+      "initScript": `prop x setTo 331.85
+prop y setTo -264.61`
     },
     {
       "id": "40",
       "label": "foodFruit40",
       "bpid": "foodFruit",
-      "initScript": `prop x setTo -308.38
-prop y setTo -261.35`
+      "initScript": `prop x setTo 30.31
+prop y setTo -289.6`
     },
     {
       "id": "41",
       "label": "island341",
       "bpid": "island3",
-      "initScript": `prop x setTo 281.70
-prop y setTo -322.08`
+      "initScript": `prop x setTo -302.77
+prop y setTo -320.86`
     },
     {
       "id": "42",
       "label": "foodSeeds42",
       "bpid": "foodSeeds",
-      "initScript": `prop x setTo 341.12
-prop y setTo -262.18`
+      "initScript": `prop x setTo -343.20
+prop y setTo -248.79`
     }
   ]
 }
