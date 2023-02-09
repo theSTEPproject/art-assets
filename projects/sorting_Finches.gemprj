@@ -342,29 +342,6 @@ featCall finches.Touches monitor 'scientist' b2b
 // ✏️ body`
     },
     {
-      "name": "finchesSmall",
-      "scriptText": `# BLUEPRINT finchesSmall
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp agent.Costume.costumeName setTo 'circle.json'
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
       "name": "nest",
       "scriptText": `# BLUEPRINT nest
 # TAG isCharControllable false
