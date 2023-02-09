@@ -61,6 +61,7 @@ addProp prediction boolean false
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Movement
 
 addProp beakLength number 0
 addProp tempBeakLength number 0
@@ -81,12 +82,13 @@ featCall scientist.Touches monitor 'clipboard' b2b
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
 
-every 1 runAtStart [[
-  ifProp scientist.carrying equal true [[
-    dbgOut 'carrying true'
+
+every 0.1 runAtStart [[
+  ifFeatProp scientist.Movement.compassDirection equal 'E' [[
+    featProp scientist.Costume.flipX setTo true
   ]]
-  ifProp scientist.carrying equal false [[
-    dbgOut 'carrying false'
+  ifFeatProp scientist.Movement.compassDirection equal 'W' [[
+    featProp scientist.Costume.flipX setTo false
   ]]
 ]]
 
@@ -163,7 +165,7 @@ when scientist centerlasttouchescenter nest [[
 ]]
 
 // scientists holding a finch can interact with another scientist holding a finch
-when scientist firsttouches scientist [[
+when scientist touches scientist [[
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
       propPush agent.beakLength
@@ -175,8 +177,16 @@ when scientist firsttouches scientist [[
         featProp agent.Costume.scale setTo 0.2
         featProp scientist.Costume.glow setTo 1
         featProp agent.Costume.glow setTo 1
+
       ]]
     ]]
+  ]]
+]]
+
+when scientist lasttouches scientist [[
+  ifProp scientist.carrying equal true [[
+    prop scientist.tempBeakLength setTo 0
+    featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
   ]]
 ]]`
     },
