@@ -61,19 +61,28 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-addProp carrying boolean false
 addProp beakLength number 0
 addProp beakType number 0
+addProp carrying boolean false
 
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
 featProp scientist.Costume.scale setTo 0.5
 
 featCall scientist.Touches monitor 'finches' b2b
+featCall scientist.Touches monitor 'nest' c2c
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
+
+
+every 1 runAtStart [[
+  ifProp scientist.carrying equal true [[
+    dbgOut 'true'
+  ]]
+]]
+
 
 when scientist firsttouches finches [[
   ifProp scientist.carrying equal false [[
@@ -93,41 +102,43 @@ when scientist firsttouches finches [[
   ]]
 ]]
 
-when scientist firsttouches nest [[
+
+when scientist centerfirsttouchescenter nest [[
   ifProp scientist.carrying equal true [[
+    featProp scientist.Costume.glow setTo 1
     ifProp nest.occupied equal false [[
       featProp nest.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
       featProp nest.Costume.glow setTo 1
-//transfer the beaklength and beaktype properties from the scientist to the nest
+      // transfer the beaklength and beaktype properties from the scientist to the nest
       propPush scientist.beakLength
       propPop nest.beakLength
       propPush scientist.beakType
       propPop nest.beakType
-//set the new scientist and nest carrying properties 
-      prop scientist.carrying setTo false 
+      // set the new scientist and nest carrying properties
+      prop scientist.carrying setTo false
       prop nest.occupied setTo true
     ]]
   ]]
+]]
 
+when scientist firsttouches nest [[
   ifProp scientist.carrying equal false [[
     ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp nest.Costume.costumeName setTo 'SF_nest.png'
-//transfer the beaklength and beaktype properties from the nest to the scientist 
-\t  propPush nest.beakLength 
-\t  propPop scientist.beakLength 
-\t  propPush nest.beakType 
-\t  propPop scientist.beakType
-//set the new nest and scientist carrying properties 
-\t  prop scientist.carrying setTo true 
-\t  prop nest.occupied setTo false\t       
+      // transfer the beaklength and beaktype properties from the nest to the scientist
+      propPush nest.beakLength
+      propPop scientist.beakLength
+      propPush nest.beakType
+      propPop scientist.beakType
+      // set the new nest and scientist carrying properties
+      prop scientist.carrying setTo true
+      prop nest.occupied setTo false
     ]]
   ]]
-
-
 ]]`
     },
     {
@@ -330,7 +341,7 @@ addProp beakType number 0
 featProp nest.Costume.costumeName setTo 'SF_nest.png'
 featProp nest.Costume.scale setTo 0.1
 
-featCall nest.Touches monitor 'scientist' b2b
+featCall nest.Touches monitor 'scientist' c2c
 
 
 # PROGRAM UPDATE
