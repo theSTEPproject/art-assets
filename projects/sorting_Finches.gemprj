@@ -68,9 +68,11 @@ addProp tempBeakLength number 0
 addProp beakType number 0
 addProp carrying boolean false
 
+// set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-featProp scientist.Costume.scale setTo 0.5
+featProp scientist.Costume.scale setTo 0.3
 
+// monitor interactions beetween scientists and other agents in the model
 featCall scientist.Touches monitor 'finches' b2b
 featCall scientist.Touches monitor 'nest' c2c
 featCall scientist.Touches monitor 'scientist' b2b
@@ -82,7 +84,7 @@ featCall scientist.Touches monitor 'clipboard' b2b
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
 
-
+// flips the scientist costume to show what direction they are moving
 every 0.1 runAtStart [[
   ifFeatProp scientist.Movement.compassDirection equal 'E' [[
     featProp scientist.Costume.flipX setTo true
@@ -92,16 +94,20 @@ every 0.1 runAtStart [[
   ]]
 ]]
 
-
+// scientists who are not carrying finch beak properties can interact with a finch
 when scientist firsttouches finches [[
   ifProp scientist.carrying equal false [[
     ifProp finches.carried equal false [[
       featProp finches.Costume.glow setTo 1
+      // push the finch beaktype and beaklength properties to the scientist beaktype and beaklength properties
       propPush finches.beakLength
       propPop scientist.beakLength
       propPush finches.beakType
       propPop scientist.beakType
+      // hide finches and set them as inert so we cannot interact with them again
       prop finches.visible setTo false
+      prop finches.isInert setTo true
+      // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.3
       prop finches.carried setTo true
@@ -110,7 +116,7 @@ when scientist firsttouches finches [[
     ]]
   ]]
 ]]
-
+// scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
 when scientist centerfirsttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal false [[
@@ -118,20 +124,21 @@ when scientist centerfirsttouchescenter nest [[
       // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
-      featProp nest.Costume.glow setTo 1
       featProp nest.Costume.scale setTo 0.2
       featProp nest.Costume.glow setTo 1
 
-      // transfer the beaklength and beaktype properties from the scientist to the nest
+      // transfer the finch beaklength and beaktype properties from the scientist to the nest
       propPush scientist.beakLength
       propPop nest.beakLength
       propPush scientist.beakType
       propPop nest.beakType
 
-      // set the nest as full
+      // set the nest as occupied
       prop nest.occupied setTo true
     ]]
   ]]
+
+  // scientists who are not carrying finches can interact with a nest to pick up the beak properties housed in the nest
   ifProp scientist.carrying equal false [[
     ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
@@ -147,13 +154,13 @@ when scientist centerfirsttouchescenter nest [[
       // set the new nest and scientist carrying properties
       prop scientist.carrying setTo true
       prop nest.occupied setTo false
-      _comment
+      // reset the nest beak properties to 0
       prop nest.beakLength setTo 0
       prop nest.beakType setTo 0
     ]]
   ]]
 ]]
-
+// when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
 when scientist centerlasttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal true [[
@@ -168,13 +175,14 @@ when scientist centerlasttouchescenter nest [[
 when scientist touches scientist [[
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
+      // send the other scientist beakLength to the scientist tempBeaklength property and compare beaklength to tempbeaklength
       propPush agent.beakLength
       propPop scientist.tempBeakLength
       ifExpr {{ scientist.getProp('beakLength').value >= scientist.getProp('tempBeakLength').value }} [[
         featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
-        featProp scientist.Costume.scale setTo 0.2
+        featProp scientist.Costume.scale setTo 0.3
         featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-        featProp agent.Costume.scale setTo 0.2
+        featProp agent.Costume.scale setTo 0.3
         featProp scientist.Costume.glow setTo 1
         featProp agent.Costume.glow setTo 1
 
@@ -183,10 +191,13 @@ when scientist touches scientist [[
   ]]
 ]]
 
+// change the costume of scientist after interacting with another scientist to compare beaklength properties
 when scientist lasttouches scientist [[
   ifProp scientist.carrying equal true [[
-    prop scientist.tempBeakLength setTo 0
-    featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+    ifProp agent.carrying equal true [[
+      featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+      featProp scientist.Costume.scale setTo 0.3
+    ]]
   ]]
 ]]`
     },
