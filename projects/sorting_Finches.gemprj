@@ -249,8 +249,9 @@ featProp background.Costume.height setTo 1800
 
 # PROGRAM INIT
 addFeature Costume
-featProp island1.Costume.costumeName setTo 'SF_island1.png'
-featProp island1.Costume.scale setTo 0.15
+featProp island1.Costume.costumeName setTo 'SF_cactus.png'
+featProp island1.Costume.scale setTo 0.2
+prop island1.alpha setTo 0.7
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -275,54 +276,7 @@ featProp island1.Costume.scale setTo 0.15
 addFeature Costume
 featProp island2.Costume.costumeName setTo 'SF_island2.png'
 featProp island2.Costume.scale setTo 0.7
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
-      "name": "island3",
-      "scriptText": `# BLUEPRINT island3
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp island3.Costume.costumeName setTo 'SF_island3.png'
-featProp island3.Costume.scale setTo 0.5
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
-      "name": "island4",
-      "scriptText": `# BLUEPRINT island4
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp island4.Costume.costumeName setTo 'SF_island4.png'
-featProp island4.Costume.scale setTo 0.13
+prop island2.alpha setTo 0.7
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -459,6 +413,104 @@ when scientist firsttouches clipboard [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "foodSeeds",
+      "scriptText": `# BLUEPRINT foodSeeds
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp foodSeeds.Costume.costumeName setTo 'SF_seeds.png'
+featProp foodSeeds.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "foodInsects",
+      "scriptText": `# BLUEPRINT foodInsects
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp foodInsects.Costume.costumeName setTo 'SF_insects.png'
+featProp foodInsects.Costume.scale setTo 0.15
+featProp foodInsects.Costume.flipX setTo true
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "foodFruit",
+      "scriptText": `# BLUEPRINT foodFruit
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp foodFruit.Costume.costumeName setTo 'SF_cactusfruit.png'
+featProp foodFruit.Costume.scale setTo 0.15
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island3",
+      "scriptText": `# BLUEPRINT island3
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island3.Costume.costumeName setTo 'SF_island4.png'
+featProp island3.Costume.scale setTo 0.13
+prop island3.alpha setTo 0.7
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -473,22 +525,15 @@ prop y setTo -19.44`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -310.61
-prop y setTo -284.80`
+      "initScript": `prop x setTo -290.95
+prop y setTo -322.15`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo 3.76
-prop y setTo -292.34`
-    },
-    {
-      "id": "9",
-      "label": "island49",
-      "bpid": "island4",
-      "initScript": `prop x setTo 306.99
-prop y setTo -301.34`
+      "initScript": `prop x setTo 7.69
+prop y setTo -310.03`
     },
     {
       "id": "25",
@@ -598,6 +643,34 @@ prop nestSize setTo 2`
       "bpid": "clipboard",
       "initScript": `prop x setTo -348.7
 prop y setTo 308.59`
+    },
+    {
+      "id": "39",
+      "label": "foodInsects39",
+      "bpid": "foodInsects",
+      "initScript": `prop x setTo 13.52
+prop y setTo -271.11`
+    },
+    {
+      "id": "40",
+      "label": "foodFruit40",
+      "bpid": "foodFruit",
+      "initScript": `prop x setTo -308.38
+prop y setTo -261.35`
+    },
+    {
+      "id": "41",
+      "label": "island341",
+      "bpid": "island3",
+      "initScript": `prop x setTo 281.70
+prop y setTo -322.08`
+    },
+    {
+      "id": "42",
+      "label": "foodSeeds42",
+      "bpid": "foodSeeds",
+      "initScript": `prop x setTo 341.12
+prop y setTo -262.18`
     }
   ]
 }
