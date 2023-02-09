@@ -63,13 +63,12 @@ addFeature Touches
 
 addProp carrying boolean false
 addProp beakLength number 0
+addProp beakType number 0
 
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
 featProp scientist.Costume.scale setTo 0.5
 
-featCall scientist.Touches monitor 'finchesSmall' b2b
-featCall scientist.Touches monitor 'finchesMedium' c2c
-featCall scientist.Touches monitor 'finchesLarge' c2c
+featCall scientist.Touches monitor 'finches' b2b
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -80,9 +79,13 @@ when scientist firsttouches finches [[
   ifProp scientist.carrying equal false [[
     ifProp finches.carried equal false [[
       featProp finches.Costume.glow setTo 1
+      propPush finches.beakLength
+      propPop scientist.beakLength
+      propPush finches.beakType
+      propPop scientist.beakType
       prop finches.visible setTo false
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.5
+      featProp scientist.Costume.scale setTo 0.3
       prop finches.carried setTo true
       prop scientist.carrying setTo true
 
@@ -90,18 +93,37 @@ when scientist firsttouches finches [[
   ]]
 ]]
 
-when scientist firsttouches nestSmall [[
+when scientist firsttouches nest [[
   ifProp scientist.carrying equal true [[
-    ifProp nestSmall.occupied setTo false [[
-      featProp nestSmall.Costume.glow setTo 1
+    ifProp nest.occupied equal false [[
+      featProp nest.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-
+      featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
+      featProp nest.Costume.glow setTo 1
+//transfer the beaklength and beaktype properties from the scientist to the nest
+      propPush scientist.beakLength
+      propPop nest.beakLength
+      propPush scientist.beakType
+      propPop nest.beakType
+//set the new scientist and nest carrying properties 
+      prop scientist.carrying setTo false 
+      prop nest.occupied setTo true
     ]]
   ]]
-  ifProp scientist.carrying setTo false [[
-    ifProp nestSmall.occupied setTo true [[
+
+  ifProp scientist.carrying equal false [[
+    ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+      featProp nest.Costume.costumeName setTo 'SF_nest.png'
+//transfer the beaklength and beaktype properties from the nest to the scientist 
+\t  propPush nest.beakLength 
+\t  propPop scientist.beakLength 
+\t  propPush nest.beakType 
+\t  propPop scientist.beakType
+//set the new nest and scientist carrying properties 
+\t  prop scientist.carrying setTo true 
+\t  prop nest.occupied setTo false\t       
     ]]
   ]]
 
@@ -230,120 +252,6 @@ featProp island4.Costume.scale setTo 0.13
 // ✏️ body`
     },
     {
-      "name": "nestSmall",
-      "scriptText": `# BLUEPRINT nestSmall
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Touches
-addFeature Physics
-
-addProp occupied boolean false
-
-
-featProp nestSmall.Costume.costumeName setTo 'SF_nest.png'
-featProp nestSmall.Costume.scale setTo 0.1
-
-featCall nestSmall.Touches monitor 'scientist' b2b
-featCall nestSmall.Touches monitor 'finchesSmall' c2c
-featCall nestSmall.Touches monitor 'finchesMedium' c2c
-featCall nestSmall.Touches monitor 'finchesLarge' c2c
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-when nestSmall centertouches finchesSmall [[
-  prop nestSmall.occupied setTo true
-]]
-
-
-when nestSmall centertouches finchesMedium [[
-  prop nestSmall.occupied setTo true
-]]
-
-when nestSmall centertouches finchesLarge [[
-  prop nestSmall.occupied setTo true
-]]
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
-      "name": "nestMedium",
-      "scriptText": `# BLUEPRINT nestMedium
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Touches
-addFeature Physics
-addProp occupied boolean false
-
-featProp nestMedium.Costume.costumeName setTo 'SF_nest.png'
-featProp nestMedium.Costume.scale setTo 0.1
-
-featCall nestMedium.Touches monitor 'scientist' b2b
-featCall nestMedium.Touches monitor 'finchesSmall' c2c
-featCall nestMedium.Touches monitor 'finchesMedium' c2c
-featCall nestMedium.Touches monitor 'finchesLarge' c2c
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
-      "name": "nestLarge",
-      "scriptText": `# BLUEPRINT nestLarge
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Touches
-addFeature Physics
-
-addProp occupied boolean false
-
-featProp nestLarge.Costume.costumeName setTo 'SF_nest.png'
-featProp nestLarge.Costume.scale setTo 0.1
-
-featCall nestLarge.Touches monitor 'scientist' b2b
-featCall nestLarge.Touches monitor 'finchesSmall' c2c
-featCall nestLarge.Touches monitor 'finchesMedium' c2c
-featCall nestLarge.Touches monitor 'finchesLarge' c2c
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
       "name": "finches",
       "scriptText": `# BLUEPRINT finches
 # TAG isCharControllable false
@@ -364,16 +272,14 @@ addProp carried boolean false
 featProp finches.Costume.costumeName setTo 'SF_finch.png'
 featProp finches.Costume.scale setTo 0.3
 
+featCall finches.Touches monitor 'scientist' b2b
+
 
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
-onEvent ROUNDINIT [[
-
-]]
-
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -391,6 +297,41 @@ onEvent ROUNDINIT [[
 # PROGRAM INIT
 addFeature Costume
 featProp agent.Costume.costumeName setTo 'circle.json'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "nest",
+      "scriptText": `# BLUEPRINT nest
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+addProp occupied boolean false
+addProp nestSize number 0
+addProp beakLength number 0
+addProp beakType number 0
+
+featProp nest.Costume.costumeName setTo 'SF_nest.png'
+featProp nest.Costume.scale setTo 0.1
+
+featCall nest.Touches monitor 'scientist' b2b
+
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -433,48 +374,6 @@ prop y setTo -292.34`
       "bpid": "island4",
       "initScript": `prop x setTo 306.99
 prop y setTo -301.34`
-    },
-    {
-      "id": "19",
-      "label": "nestMedium19",
-      "bpid": "nestMedium",
-      "initScript": `prop x setTo -40
-prop y setTo -214.47`
-    },
-    {
-      "id": "20",
-      "label": "nestMedium20",
-      "bpid": "nestMedium",
-      "initScript": `prop x setTo 58.65
-prop y setTo -216.82`
-    },
-    {
-      "id": "21",
-      "label": "nestSmall21",
-      "bpid": "nestSmall",
-      "initScript": `prop x setTo -241.18
-prop y setTo -195.88`
-    },
-    {
-      "id": "22",
-      "label": "nestSmall22",
-      "bpid": "nestSmall",
-      "initScript": `prop x setTo -338.59
-prop y setTo -163.24`
-    },
-    {
-      "id": "23",
-      "label": "nestLarge23",
-      "bpid": "nestLarge",
-      "initScript": `prop x setTo 266.29
-prop y setTo -203.76`
-    },
-    {
-      "id": "24",
-      "label": "nestLarge24",
-      "bpid": "nestLarge",
-      "initScript": `prop x setTo 355.17
-prop y setTo -166.41`
     },
     {
       "id": "25",
@@ -529,6 +428,54 @@ prop beakLength setToRnd 14 17 false`
 prop y setToRnd -74 74 false
 prop beakType setTo 2
 prop beakLength setToRnd 14 17 false`
+    },
+    {
+      "id": "31",
+      "label": "nest1",
+      "bpid": "nest",
+      "initScript": `prop x setTo -348.82
+prop y setTo -139.18
+prop nestSize setTo 0`
+    },
+    {
+      "id": "32",
+      "label": "nest2",
+      "bpid": "nest",
+      "initScript": `prop x setTo -250.47
+prop y setTo -191.47
+prop nestSize setTo 0`
+    },
+    {
+      "id": "33",
+      "label": "nest3",
+      "bpid": "nest",
+      "initScript": `prop x setTo -65.35
+prop y setTo -209.12
+prop nestSize setTo 1`
+    },
+    {
+      "id": "34",
+      "label": "nest4",
+      "bpid": "nest",
+      "initScript": `prop x setTo 61.18
+prop y setTo -209.7
+prop nestSize setTo 1`
+    },
+    {
+      "id": "35",
+      "label": "nest5",
+      "bpid": "nest",
+      "initScript": `prop x setTo 245.36
+prop y setTo -200.29
+prop nestSize setTo 2`
+    },
+    {
+      "id": "36",
+      "label": "nest6",
+      "bpid": "nest",
+      "initScript": `prop x setTo 356
+prop y setTo -146.24
+prop nestSize setTo 2`
     }
   ]
 }
