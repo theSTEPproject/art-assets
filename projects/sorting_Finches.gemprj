@@ -70,7 +70,7 @@ addProp carrying boolean false
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-featProp scientist.Costume.scale setTo 0.48
+featProp scientist.Costume.scale setTo 0.3
 
 // monitor interactions beetween scientists and other agents in the model
 featCall scientist.Touches monitor 'finches' c2b
@@ -120,7 +120,7 @@ when scientist centerfirsttouches finches [[
       prop finches.isInert setTo true
       // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.3
+      featProp scientist.Costume.scale setTo 0.15
       prop finches.carried setTo true
       prop scientist.carrying setTo true
 
@@ -134,7 +134,7 @@ when scientist centerfirsttouchescenter nest [[
 
       // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-      featProp scientist.Costume.scale setTo 0.48
+      featProp scientist.Costume.scale setTo 0.3
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
       featProp nest.Costume.scale setTo 0.2
       featProp nest.Costume.glow setTo 1
@@ -155,7 +155,7 @@ when scientist centerfirsttouchescenter nest [[
     ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.3
+      featProp scientist.Costume.scale setTo 0.15
       featProp nest.Costume.costumeName setTo 'SF_nest.png'
       featProp nest.Costume.scale setTo 0.1
       // transfer the beaklength and beaktype properties from the nest to the scientist
@@ -193,9 +193,9 @@ every 1 [[
         propPop scientist.tempBeakLength
         ifExpr {{ scientist.getProp('beakLength').value >= scientist.getProp('tempBeakLength').value }} [[
           featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
-          featProp scientist.Costume.scale setTo 0.3
+          featProp scientist.Costume.scale setTo 0.1
           featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-          featProp agent.Costume.scale setTo 0.3
+          featProp agent.Costume.scale setTo 0.1
           featProp scientist.Costume.glow setTo 1
           featProp agent.Costume.glow setTo 1
 
@@ -210,7 +210,7 @@ when scientist lasttouches scientist [[
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.3
+      featProp scientist.Costume.scale setTo 0.15
     ]]
   ]]
 ]]`
@@ -225,8 +225,8 @@ when scientist lasttouches scientist [[
 # PROGRAM INIT
 addFeature Costume
 featProp background.Costume.costumeName setTo 'SF_background.png'
-featProp background.Costume.scale setTo 0.795
-featProp background.Costume.height setTo 1800
+featProp background.Costume.scale setTo 1.09
+// featProp background.Costume.height setTo 1800
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -251,7 +251,7 @@ featProp background.Costume.height setTo 1800
 addFeature Costume
 featProp island1.Costume.costumeName setTo 'SF_cactus.png'
 featProp island1.Costume.scale setTo 0.2
-prop island1.alpha setTo 0.7
+prop island1.alpha setTo 0.8
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -275,8 +275,8 @@ prop island1.alpha setTo 0.7
 # PROGRAM INIT
 addFeature Costume
 featProp island2.Costume.costumeName setTo 'SF_island2.png'
-featProp island2.Costume.scale setTo 0.7
-prop island2.alpha setTo 0.7
+featProp island2.Costume.scale setTo 0.6
+prop island2.alpha setTo 0.8
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -404,6 +404,7 @@ featCall clipboard.Touches monitor 'scientist' b2b
 
 
 when scientist firsttouches clipboard [[
+  featProp clipboard.Costume.glow setTo 1
   prop global.prediction setTo true
 
 ]]
@@ -497,8 +498,8 @@ featProp foodFruit.Costume.scale setTo 0.15
 # PROGRAM INIT
 addFeature Costume
 featProp island3.Costume.costumeName setTo 'SF_island4.png'
-featProp island3.Costume.scale setTo 0.13
-prop island3.alpha setTo 0.7
+featProp island3.Costume.scale setTo 0.15
+prop island3.alpha setTo 0.8
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -518,29 +519,29 @@ prop island3.alpha setTo 0.7
       "id": "1",
       "label": "background1",
       "bpid": "background",
-      "initScript": `prop x setTo -1.94
-prop y setTo -19.44`
+      "initScript": `prop x setTo 0.6
+prop y setTo -3.72`
     },
     {
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -37.28
-prop y setTo -329.12`
+      "initScript": `prop x setTo -29.07
+prop y setTo 324.18`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo 251.48
-prop y setTo -305.10`
+      "initScript": `prop x setTo 278.39
+prop y setTo 331.37`
     },
     {
       "id": "25",
       "label": "finches4",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 false
 prop beakType setTo 1
 prop beakLength setToRnd 9 13 false`
     },
@@ -549,7 +550,7 @@ prop beakLength setToRnd 9 13 false`
       "label": "finches2",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 falsep
 prop beakType setTo 0
 prop beakLength setToRnd 5 8 false`
     },
@@ -558,7 +559,7 @@ prop beakLength setToRnd 5 8 false`
       "label": "finches1",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 false
 prop beakType setTo 0
 prop beakLength setToRnd 5 8 false`
     },
@@ -567,7 +568,7 @@ prop beakLength setToRnd 5 8 false`
       "label": "finches3",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 false
 prop beakType setTo 1
 prop beakLength setToRnd 9 13 false`
     },
@@ -576,7 +577,7 @@ prop beakLength setToRnd 9 13 false`
       "label": "finches5",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 false
 prop beakType setTo 2
 prop beakLength setToRnd 14 17 false`
     },
@@ -585,7 +586,7 @@ prop beakLength setToRnd 14 17 false`
       "label": "finches6",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -74 74 false
+prop y setToRnd -241 12 false
 prop beakType setTo 2
 prop beakLength setToRnd 14 17 false`
     },
@@ -593,84 +594,84 @@ prop beakLength setToRnd 14 17 false`
       "id": "31",
       "label": "nest1",
       "bpid": "nest",
-      "initScript": `prop x setTo -348.82
-prop y setTo -139.18
+      "initScript": `prop x setTo -372.16
+prop y setTo 133.99
 prop nestSize setTo 0`
     },
     {
       "id": "32",
       "label": "nest2",
       "bpid": "nest",
-      "initScript": `prop x setTo -250.47
-prop y setTo -191.47
+      "initScript": `prop x setTo -289.61
+prop y setTo 190.18
 prop nestSize setTo 0`
     },
     {
       "id": "33",
       "label": "nest3",
       "bpid": "nest",
-      "initScript": `prop x setTo -65.35
-prop y setTo -209.12
+      "initScript": `prop x setTo -81.16
+prop y setTo 185.45
 prop nestSize setTo 1`
     },
     {
       "id": "34",
       "label": "nest4",
       "bpid": "nest",
-      "initScript": `prop x setTo 61.18
-prop y setTo -209.7
+      "initScript": `prop x setTo 48.85
+prop y setTo 190.06
 prop nestSize setTo 1`
     },
     {
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 245.36
-prop y setTo -200.29
+      "initScript": `prop x setTo 284.21
+prop y setTo 192.08
 prop nestSize setTo 2`
     },
     {
       "id": "36",
       "label": "nest6",
       "bpid": "nest",
-      "initScript": `prop x setTo 356
-prop y setTo -146.24
+      "initScript": `prop x setTo 376.80
+prop y setTo 114.50
 prop nestSize setTo 2`
     },
     {
       "id": "37",
       "label": "clipboard37",
       "bpid": "clipboard",
-      "initScript": `prop x setTo -348.7
-prop y setTo 308.59`
+      "initScript": `prop x setTo 115
+prop y setTo 303.32`
     },
     {
       "id": "39",
       "label": "foodInsects39",
       "bpid": "foodInsects",
-      "initScript": `prop x setTo 331.85
-prop y setTo -264.61`
+      "initScript": `prop x setTo 336.50
+prop y setTo 266.23`
     },
     {
       "id": "40",
       "label": "foodFruit40",
       "bpid": "foodFruit",
-      "initScript": `prop x setTo 30.31
-prop y setTo -289.6`
+      "initScript": `prop x setTo 1.19
+prop y setTo 256.61`
     },
     {
       "id": "41",
       "label": "island341",
       "bpid": "island3",
-      "initScript": `prop x setTo -302.77
-prop y setTo -320.86`
+      "initScript": `prop x setTo -294.21
+prop y setTo 300.60`
     },
     {
       "id": "42",
       "label": "foodSeeds42",
       "bpid": "foodSeeds",
-      "initScript": `prop x setTo -343.20
-prop y setTo -248.79`
+      "initScript": `prop x setTo -366.78
+prop y setTo 251.37`
     }
   ]
 }
