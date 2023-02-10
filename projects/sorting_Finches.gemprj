@@ -44,9 +44,21 @@ addProp numfinchSmall number 0
 addProp numfinchMed number 0
 addProp numfinchLar number 0
 addProp prediction boolean false
+addProp numPlayers number 0
+addProp numOccupiedNests number 0
 
+addProp countReady number 0
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+ifProp global.numOccupiedNests greaterThanOrEqual 1 [[
+  ifExpr {{ global.getProp('numPlayer').value == global.getProp('countReady') }} [[
+    prop global.prediction setTo true
+    featProp clipboard.Costume.glow setTo 1
+    prop scientist.isInert setTo true
+    prop background.alpha setTo 0.5
+  ]]
+]]`
     },
     {
       "name": "scientist",
@@ -67,6 +79,8 @@ addProp beakLength number 0
 addProp tempBeakLength number 0
 addProp beakType number 0
 addProp carrying boolean false
+addProp player boolean false
+addProp readyToPredict boolean false
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
@@ -83,6 +97,13 @@ featCall scientist.Touches monitor 'clipboard' b2b
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
+onEvent ROUNDINIT [[
+  ifProp scientist.player equal false [[
+    prop global.numPlayers add 1
+    prop scientist.player setTo true
+  ]]
+]]
+
 
 // flips the scientist costume to show what direction they are moving
 every 0.1 runAtStart [[
@@ -91,17 +112,6 @@ every 0.1 runAtStart [[
   ]]
   ifFeatProp scientist.Movement.compassDirection equal 'W' [[
     featProp scientist.Costume.flipX setTo false
-  ]]
-]]
-
-every 2 runAtStart [[
-  ifProp scientist.carrying equal true [[
-    dbgOut 'carrying true'
-
-  ]]
-  ifProp scientist.carrying equal false [[
-    dbgOut 'carrying false'
-
   ]]
 ]]
 
@@ -147,6 +157,7 @@ when scientist centerfirsttouchescenter nest [[
 
       // set the nest as occupied
       prop nest.occupied setTo true
+      prop global.numOccupiedNests add 1
     ]]
   ]]
 
@@ -166,6 +177,7 @@ when scientist centerfirsttouchescenter nest [[
       // set the new nest and scientist carrying properties
       prop scientist.carrying setTo true
       prop nest.occupied setTo false
+      prop global.numOccupiedNests sub 1
       // reset the nest beak properties to 0
       prop nest.beakLength setTo 0
       prop nest.beakType setTo 0
@@ -392,7 +404,7 @@ addFeature Physics
 addFeature Touches
 
 featProp clipboard.Costume.costumeName setTo 'SF_clipboard.png'
-featProp clipboard.Costume.scale setTo 0.12
+featProp clipboard.Costume.scale setTo 0.1
 
 featCall clipboard.Touches monitor 'scientist' b2b
 
@@ -403,11 +415,19 @@ featCall clipboard.Touches monitor 'scientist' b2b
 // onEvent Tick [[ ]]
 
 
-when scientist firsttouches clipboard [[
-  featProp clipboard.Costume.glow setTo 1
-  prop global.prediction setTo true
-
+when scientist touches clipboard [[
+  ifProp scientist.readyToPredict equal false [[
+    prop global.countReady add 1
+    prop scientist.readyToPredict setTo true
+  ]]
 ]]
+
+
+when scientist lasttouches clipboard [[
+  prop global.countReady sub 1
+  prop scientist.readyToPredict setTo false
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -543,7 +563,7 @@ prop y setTo 331.37`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 false
 prop beakType setTo 1
-prop beakLength setToRnd 9 13 false`
+prop beakLength setTo 4`
     },
     {
       "id": "26",
@@ -552,7 +572,7 @@ prop beakLength setToRnd 9 13 false`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 falsep
 prop beakType setTo 0
-prop beakLength setToRnd 5 8 false`
+prop beakLength setTo 2`
     },
     {
       "id": "27",
@@ -561,7 +581,7 @@ prop beakLength setToRnd 5 8 false`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 false
 prop beakType setTo 0
-prop beakLength setToRnd 5 8 false`
+prop beakLength setTo 1`
     },
     {
       "id": "28",
@@ -570,7 +590,7 @@ prop beakLength setToRnd 5 8 false`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 false
 prop beakType setTo 1
-prop beakLength setToRnd 9 13 false`
+prop beakLength setTo 3`
     },
     {
       "id": "29",
@@ -579,7 +599,7 @@ prop beakLength setToRnd 9 13 false`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 false
 prop beakType setTo 2
-prop beakLength setToRnd 14 17 false`
+prop beakLength setTo 5`
     },
     {
       "id": "30",
@@ -588,14 +608,14 @@ prop beakLength setToRnd 14 17 false`
       "initScript": `prop x setToRnd -350 350 false
 prop y setToRnd -241 12 false
 prop beakType setTo 2
-prop beakLength setToRnd 14 17 false`
+prop beakLength setTo 6`
     },
     {
       "id": "31",
       "label": "nest1",
       "bpid": "nest",
       "initScript": `prop x setTo -372.16
-prop y setTo 133.99
+prop y setTo 123.03
 prop nestSize setTo 0`
     },
     {
@@ -603,31 +623,31 @@ prop nestSize setTo 0`
       "label": "nest2",
       "bpid": "nest",
       "initScript": `prop x setTo -289.61
-prop y setTo 190.18
+prop y setTo 180.44
 prop nestSize setTo 0`
     },
     {
       "id": "33",
       "label": "nest3",
       "bpid": "nest",
-      "initScript": `prop x setTo -81.16
-prop y setTo 185.45
+      "initScript": `prop x setTo -72.64
+prop y setTo 174.49
 prop nestSize setTo 1`
     },
     {
       "id": "34",
       "label": "nest4",
       "bpid": "nest",
-      "initScript": `prop x setTo 48.85
-prop y setTo 190.06
+      "initScript": `prop x setTo 42.76
+prop y setTo 170.58
 prop nestSize setTo 1`
     },
     {
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 284.21
-prop y setTo 192.08
+      "initScript": `prop x setTo 269.60
+prop y setTo 171.38
 prop nestSize setTo 2`
     },
     {
@@ -642,8 +662,8 @@ prop nestSize setTo 2`
       "id": "37",
       "label": "clipboard37",
       "bpid": "clipboard",
-      "initScript": `prop x setTo 115
-prop y setTo 303.32`
+      "initScript": `prop x setTo -375.72
+prop y setTo -356.65`
     },
     {
       "id": "39",
