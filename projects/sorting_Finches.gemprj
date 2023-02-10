@@ -50,9 +50,12 @@ addProp numOccupiedNests number 0
 addProp countReady number 0
 // required directive
 # PROGRAM UPDATE
-ifProp global.numPlayers greaterThan 1 [[
 
-  // insert code here
+
+ifExpr {{ global.getProp('countReady').value == global.getProp('numPlayers').value }} [[
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    prop global.prediction setTo true
+  ]]
 ]]`
     },
     {
@@ -235,6 +238,20 @@ when scientist lasttouches scientist [[
       prop scientist.hasPartner setTo 0
     ]]
   ]]
+]]
+
+when scientist touches clipboard [[
+  ifProp scientist.readyToPredict equal false [[
+    featProp scientist.Costume.glow setTo 1
+    prop scientist.readyToPredict setTo true
+    prop global.countReady add 1
+  ]]
+]]
+
+
+when scientist lasttouches clipboard [[
+  prop global.countReady sub 1
+  prop scientist.readyToPredict setTo false
 ]]`
     },
     {
@@ -425,18 +442,6 @@ featCall clipboard.Touches monitor 'scientist' b2b
 // onEvent Tick [[ ]]
 
 
-when scientist touches clipboard [[
-  ifProp scientist.readyToPredict equal false [[
-    prop global.countReady add 1
-    prop scientist.readyToPredict setTo true
-  ]]
-]]
-
-
-when scientist lasttouches clipboard [[
-  prop global.countReady sub 1
-  prop scientist.readyToPredict setTo false
-]]
 
 
 // COMMENT KEY
@@ -672,8 +677,8 @@ prop nestSize setTo 2`
       "id": "37",
       "label": "clipboard37",
       "bpid": "clipboard",
-      "initScript": `prop x setTo -375.72
-prop y setTo -356.65`
+      "initScript": `prop x setTo 1.75
+prop y setTo -343.26`
     },
     {
       "id": "39",
