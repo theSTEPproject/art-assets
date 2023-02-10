@@ -128,11 +128,11 @@ when scientist centerfirsttouches finches [[
       propPop scientist.beakType
       // hide finches and set them as inert so we cannot interact with them again
       prop finches.visible setTo false
+      prop finches.carried setTo true
       prop finches.isInert setTo true
       // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.15
-      prop finches.carried setTo true
       prop scientist.carrying setTo true
 
     ]]
@@ -186,7 +186,7 @@ when scientist centerfirsttouchescenter nest [[
   ]]
 ]]
 // when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
-when scientist centerlasttouchescenter nest [[
+when scientist lasttouches nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal true [[
       prop scientist.carrying setTo false
@@ -197,35 +197,33 @@ when scientist centerlasttouchescenter nest [[
 ]]
 
 // scientists holding a finch can interact with another scientist holding a finch
-every 1 [[
-  when scientist touches scientist [[
-    ifProp scientist.carrying equal true [[
-      ifProp scientist.hasPartner equal 0 [[
-        propPush agent.beakLength
-        propPop scientist.isThatMe
-        ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
-          ifProp agent.hasPartner equal 0 [[
-            ifProp agent.carrying equal true [[
-              prop scientist.hasPartner setTo 1
-              prop agent.hasPartner setTo 1
-              propPush agent.beakLength
-              propPop scientist.tempBeakLength
-              ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
-                // insert code here
-                featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
-                featProp scientist.Costume.scale setTo 0.1
-                featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-                featProp agent.Costume.scale setTo 0.1
-                featProp scientist.Costume.glow setTo 1
-                featProp agent.Costume.glow setTo 1
-              ]]
+
+when scientist touches scientist [[
+  ifProp scientist.carrying equal true [[
+    ifProp scientist.hasPartner equal 0 [[
+      propPush agent.beakLength
+      propPop scientist.isThatMe
+      ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
+        ifProp agent.hasPartner equal 0 [[
+          ifProp agent.carrying equal true [[
+            prop scientist.hasPartner setTo 1
+            // prop agent.hasPartner setTo 1
+            propPush agent.beakLength
+            propPop scientist.tempBeakLength
+
+            ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
+              featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+              featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+              featProp scientist.Costume.scale setTo 0.1
+              featProp agent.Costume.scale setTo 0.1
+              featProp scientist.Costume.glow setTo 1
+              featProp agent.Costume.glow setTo 1
             ]]
           ]]
         ]]
       ]]
     ]]
   ]]
-
 ]]
 
 
@@ -236,6 +234,7 @@ when scientist lasttouches scientist [[
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.15
       prop scientist.hasPartner setTo 0
+      prop agent.hasPartner setTo 0
     ]]
   ]]
 ]]
@@ -386,7 +385,7 @@ addProp match number 0
 featProp nest.Costume.costumeName setTo 'SF_nest.png'
 featProp nest.Costume.scale setTo 0.1
 
-featCall nest.Touches monitor 'scientist' c2c
+featCall nest.Touches monitor 'scientist' c2b
 
 
 # PROGRAM UPDATE
@@ -395,7 +394,6 @@ featCall nest.Touches monitor 'scientist' c2c
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 
-every 1 [[
   ifProp global.prediction equal true [[
     ifProp nest.occupied equal true [[
       exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
@@ -408,8 +406,6 @@ every 1 [[
       ]]
     ]]
   ]]
-]]
-
 
 
 // COMMENT KEY
@@ -661,7 +657,7 @@ prop nestSize setTo 1`
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 269.60
+      "initScript": `prop x setTo 269.6
 prop y setTo 171.38
 prop nestSize setTo 2`
     },
@@ -669,8 +665,8 @@ prop nestSize setTo 2`
       "id": "36",
       "label": "nest6",
       "bpid": "nest",
-      "initScript": `prop x setTo 376.80
-prop y setTo 114.50
+      "initScript": `prop x setTo 376.8
+prop y setTo 114.5
 prop nestSize setTo 2`
     },
     {
