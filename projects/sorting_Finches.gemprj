@@ -50,14 +50,9 @@ addProp numOccupiedNests number 0
 addProp countReady number 0
 // required directive
 # PROGRAM UPDATE
+ifProp global.numPlayers greaterThan 1 [[
 
-ifProp global.numOccupiedNests greaterThanOrEqual 1 [[
-  ifExpr {{ global.getProp('numPlayer').value == global.getProp('countReady') }} [[
-    prop global.prediction setTo true
-    featProp clipboard.Costume.glow setTo 1
-    prop scientist.isInert setTo true
-    prop background.alpha setTo 0.5
-  ]]
+  // insert code here
 ]]`
     },
     {
@@ -81,6 +76,9 @@ addProp beakType number 0
 addProp carrying boolean false
 addProp player boolean false
 addProp readyToPredict boolean false
+addProp hasPartner number 0
+addProp tempOtherScientist number 0
+addProp isThatMe number 0
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
@@ -199,23 +197,34 @@ when scientist centerlasttouchescenter nest [[
 every 1 [[
   when scientist touches scientist [[
     ifProp scientist.carrying equal true [[
-      ifProp agent.carrying equal true [[
-        // send the other scientist beakLength to the scientist tempBeaklength property and compare beaklength to tempbeaklength
+      ifProp scientist.hasPartner equal 0 [[
         propPush agent.beakLength
-        propPop scientist.tempBeakLength
-        ifExpr {{ scientist.getProp('beakLength').value >= scientist.getProp('tempBeakLength').value }} [[
-          featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
-          featProp scientist.Costume.scale setTo 0.1
-          featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-          featProp agent.Costume.scale setTo 0.1
-          featProp scientist.Costume.glow setTo 1
-          featProp agent.Costume.glow setTo 1
-
+        propPop scientist.isThatMe
+        ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
+          ifProp agent.hasPartner equal 0 [[
+            ifProp agent.carrying equal true [[
+              prop scientist.hasPartner setTo 1
+              prop agent.hasPartner setTo 1
+              propPush agent.beakLength
+              propPop scientist.tempBeakLength
+              ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
+                // insert code here
+                featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+                featProp scientist.Costume.scale setTo 0.1
+                featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+                featProp agent.Costume.scale setTo 0.1
+                featProp scientist.Costume.glow setTo 1
+                featProp agent.Costume.glow setTo 1
+              ]]
+            ]]
+          ]]
         ]]
       ]]
     ]]
   ]]
+
 ]]
+
 
 // change the costume of scientist after interacting with another scientist to compare beaklength properties
 when scientist lasttouches scientist [[
@@ -223,6 +232,7 @@ when scientist lasttouches scientist [[
     ifProp agent.carrying equal true [[
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.15
+      prop scientist.hasPartner setTo 0
     ]]
   ]]
 ]]`
