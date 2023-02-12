@@ -85,7 +85,7 @@ addProp isThatMe number 0
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-featProp scientist.Costume.scale setTo 0.3
+featProp scientist.Costume.scale setTo 0.4
 
 // monitor interactions beetween scientists and other agents in the model
 featCall scientist.Touches monitor 'finches' c2b
@@ -132,7 +132,7 @@ when scientist centerfirsttouches finches [[
       prop finches.isInert setTo true
       // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.15
+      featProp scientist.Costume.scale setTo 0.4
       prop scientist.carrying setTo true
 
     ]]
@@ -145,7 +145,7 @@ when scientist centerfirsttouchescenter nest [[
 
       // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-      featProp scientist.Costume.scale setTo 0.3
+      featProp scientist.Costume.scale setTo 0.4
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
       featProp nest.Costume.scale setTo 0.2
       featProp nest.Costume.glow setTo 1
@@ -167,7 +167,7 @@ when scientist centerfirsttouchescenter nest [[
     ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.15
+      featProp scientist.Costume.scale setTo 0.3
       featProp nest.Costume.costumeName setTo 'SF_nest.png'
       featProp nest.Costume.scale setTo 0.1
       // transfer the beaklength and beaktype properties from the nest to the scientist
@@ -186,7 +186,7 @@ when scientist centerfirsttouchescenter nest [[
   ]]
 ]]
 // when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
-when scientist lasttouches nest [[
+when scientist centerlasttouchescenter nest [[
   ifProp scientist.carrying equal true [[
     ifProp nest.occupied equal true [[
       prop scientist.carrying setTo false
@@ -203,17 +203,30 @@ when scientist touches scientist [[
     ifProp scientist.hasPartner equal 0 [[
       propPush agent.beakLength
       propPop scientist.isThatMe
+      propPush scientist.beakLength
+      propPop agent.isThatMe
       ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
         ifProp agent.hasPartner equal 0 [[
           ifProp agent.carrying equal true [[
             prop scientist.hasPartner setTo 1
-            // prop agent.hasPartner setTo 1
+            prop agent.hasPartner setTo 1
             propPush agent.beakLength
             propPop scientist.tempBeakLength
+            propPush scientist.beakLength
+            propPop agent.tempBeakLength
 
             ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
               featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
               featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+              featProp scientist.Costume.scale setTo 0.1
+              featProp agent.Costume.scale setTo 0.1
+              featProp scientist.Costume.glow setTo 1
+              featProp agent.Costume.glow setTo 1
+            ]]
+
+            ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
+              featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+              featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
               featProp scientist.Costume.scale setTo 0.1
               featProp agent.Costume.scale setTo 0.1
               featProp scientist.Costume.glow setTo 1
@@ -229,12 +242,13 @@ when scientist touches scientist [[
 
 // change the costume of scientist after interacting with another scientist to compare beaklength properties
 when scientist lasttouches scientist [[
+  prop scientist.hasPartner setTo 0
+  prop agent.hasPartner setTo 0
+
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.15
-      prop scientist.hasPartner setTo 0
-      prop agent.hasPartner setTo 0
     ]]
   ]]
 ]]
