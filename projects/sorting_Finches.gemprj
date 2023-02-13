@@ -320,7 +320,7 @@ featProp background.Costume.scale setTo 1.09
 
 # PROGRAM INIT
 addFeature Costume
-featProp island1.Costume.costumeName setTo 'SF_cactus.png'
+featProp island1.Costume.costumeName setTo 'SF_island3.png'
 featProp island1.Costume.scale setTo 0.2
 prop island1.alpha setTo 0.8
 
@@ -486,8 +486,8 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-featProp clipboard.Costume.costumeName setTo 'SF_clipboard.png'
-featProp clipboard.Costume.scale setTo 0.15
+featProp clipboard.Costume.costumeName setTo 'SF_clipboardislands.png'
+featProp clipboard.Costume.scale setTo 0.19
 
 featCall clipboard.Touches monitor 'scientist' b2b
 
@@ -592,7 +592,7 @@ addFeature Costume
 // sets the island costume
 featProp island3.Costume.costumeName setTo 'SF_island4.png'
 featProp island3.Costume.scale setTo 0.15
-prop island3.alpha setTo 0.8
+prop island3.alpha setTo 0.7
 
 # PROGRAM UPDATE
 
@@ -675,15 +675,15 @@ prop y setTo -3.72`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -7.45
-prop y setTo 314.01`
+      "initScript": `prop x setTo 7.81
+prop y setTo 310.19`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo -267.24
-prop y setTo 325.01`
+      "initScript": `prop x setTo -259.61
+prop y setTo 317.38`
     },
     {
       "id": "25",
@@ -759,7 +759,7 @@ prop nestSize setTo 0`
       "id": "33",
       "label": "nest3",
       "bpid": "nest",
-      "initScript": `prop x setTo -72.64
+      "initScript": `prop x setTo -67.55
 prop y setTo 174.49
 prop nestSize setTo 1`
     },
@@ -767,7 +767,7 @@ prop nestSize setTo 1`
       "id": "34",
       "label": "nest4",
       "bpid": "nest",
-      "initScript": `prop x setTo 42.76
+      "initScript": `prop x setTo 51.66
 prop y setTo 170.58
 prop nestSize setTo 1`
     },
@@ -791,29 +791,29 @@ prop nestSize setTo 2`
       "id": "37",
       "label": "clipboard37",
       "bpid": "clipboard",
-      "initScript": `prop x setTo -340.38
-prop y setTo -320.37`
+      "initScript": `prop x setTo -328.93
+prop y setTo -305.11`
     },
     {
       "id": "39",
       "label": "foodInsects39",
       "bpid": "foodInsects",
-      "initScript": `prop x setTo -322.32
-prop y setTo 253.51`
+      "initScript": `prop x setTo -319.78
+prop y setTo 249.69`
     },
     {
       "id": "40",
       "label": "foodFruit40",
       "bpid": "foodFruit",
-      "initScript": `prop x setTo 5.01
-prop y setTo 250.25`
+      "initScript": `prop x setTo 16.46
+prop y setTo 243.89`
     },
     {
       "id": "41",
       "label": "island341",
       "bpid": "island3",
-      "initScript": `prop x setTo 271.77
-prop y setTo 291.7`
+      "initScript": `prop x setTo 283.22
+prop y setTo 286.61`
     },
     {
       "id": "42",
