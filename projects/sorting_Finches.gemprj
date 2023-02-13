@@ -690,7 +690,7 @@ prop y setTo 317.38`
       "label": "finches4",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 false
+prop y setToRnd -164 12 false
 prop beakType setTo 1
 prop beakLength setTo 4`
     },
@@ -699,7 +699,7 @@ prop beakLength setTo 4`
       "label": "finches2",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 falsep
+prop y setToRnd -164 12 false
 prop beakType setTo 0
 prop beakLength setTo 2`
     },
@@ -708,7 +708,7 @@ prop beakLength setTo 2`
       "label": "finches1",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 false
+prop y setToRnd -164 12 false
 prop beakType setTo 0
 prop beakLength setTo 1`
     },
@@ -717,7 +717,7 @@ prop beakLength setTo 1`
       "label": "finches3",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 false
+prop y setToRnd -164 12 false
 prop beakType setTo 1
 prop beakLength setTo 3`
     },
@@ -726,7 +726,7 @@ prop beakLength setTo 3`
       "label": "finches5",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 false
+prop y setToRnd -164 12 false
 prop beakType setTo 2
 prop beakLength setTo 5`
     },
@@ -735,7 +735,7 @@ prop beakLength setTo 5`
       "label": "finches6",
       "bpid": "finches",
       "initScript": `prop x setToRnd -350 350 false
-prop y setToRnd -241 12 false
+prop y setToRnd -164 12 false
 prop beakType setTo 2
 prop beakLength setTo 6`
     },
