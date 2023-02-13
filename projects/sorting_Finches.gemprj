@@ -85,7 +85,7 @@ addProp isThatMe number 0
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-featProp scientist.Costume.scale setTo 0.4
+featProp scientist.Costume.scale setTo 0.35
 
 // monitor interactions beetween scientists and other agents in the model
 featCall scientist.Touches monitor 'finches' c2b
@@ -132,7 +132,7 @@ when scientist centerfirsttouches finches [[
       prop finches.isInert setTo true
       // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.4
+      featProp scientist.Costume.scale setTo 0.35
       prop scientist.carrying setTo true
 
     ]]
@@ -145,7 +145,7 @@ when scientist centerfirsttouchescenter nest [[
 
       // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-      featProp scientist.Costume.scale setTo 0.4
+      featProp scientist.Costume.scale setTo 0.35
       featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
       featProp nest.Costume.scale setTo 0.2
       featProp nest.Costume.glow setTo 1
@@ -167,7 +167,7 @@ when scientist centerfirsttouchescenter nest [[
     ifProp nest.occupied equal true [[
       featProp scientist.Costume.glow setTo 1
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.3
+      featProp scientist.Costume.scale setTo 0.35
       featProp nest.Costume.costumeName setTo 'SF_nest.png'
       featProp nest.Costume.scale setTo 0.1
       // transfer the beaklength and beaktype properties from the nest to the scientist
@@ -218,8 +218,8 @@ when scientist touches scientist [[
             ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
               featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
               featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-              featProp scientist.Costume.scale setTo 0.1
-              featProp agent.Costume.scale setTo 0.1
+              featProp scientist.Costume.scale setTo 0.35
+              featProp agent.Costume.scale setTo 0.35
               featProp scientist.Costume.glow setTo 1
               featProp agent.Costume.glow setTo 1
             ]]
@@ -227,8 +227,8 @@ when scientist touches scientist [[
             ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
               featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
               featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
-              featProp scientist.Costume.scale setTo 0.1
-              featProp agent.Costume.scale setTo 0.1
+              featProp scientist.Costume.scale setTo 0.35
+              featProp agent.Costume.scale setTo 0.35
               featProp scientist.Costume.glow setTo 1
               featProp agent.Costume.glow setTo 1
             ]]
@@ -248,24 +248,29 @@ when scientist lasttouches scientist [[
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.15
+      featProp scientist.Costume.scale setTo 0.35
     ]]
   ]]
 ]]
 
 when scientist touches clipboard [[
-  ifProp scientist.readyToPredict equal false [[
-    featProp scientist.Costume.glow setTo 1
-    prop scientist.readyToPredict setTo true
-    prop global.countReady add 1
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    ifProp scientist.readyToPredict equal false [[
+      featProp scientist.Costume.glow setTo 1
+      prop scientist.readyToPredict setTo true
+      prop global.countReady add 1
+    ]]
   ]]
 ]]
 
 
 when scientist lasttouches clipboard [[
-  prop global.countReady sub 1
-  prop scientist.readyToPredict setTo false
-]]`
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    prop global.countReady sub 1
+    prop scientist.readyToPredict setTo false
+  ]]
+]]
+`
     },
     {
       "name": "background",
@@ -372,6 +377,17 @@ featCall finches.Touches monitor 'scientist' c2b
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 
+every 1 runAtStart [[
+  featProp finches.Movement.movementType setTo 'jitter'
+  featProp finches.Movement.jitterDistance setTo 1
+]]
+
+ifProp global.prediction equal true [[
+  featProp finches.Movement.movementType setTo 'stop'
+  prop finches.alpha setTo 0.3
+  prop finches.isInert setTo true
+]]
+
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
@@ -408,18 +424,18 @@ featCall nest.Touches monitor 'scientist' c2b
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
 
-  ifProp global.prediction equal true [[
-    ifProp nest.occupied equal true [[
-      exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
-      propPop nest.match
-      ifProp nest.match equal 0 [[
-        featProp nest.Costume.glow setTo 1
-      ]]
-      ifProp nest.match notEqual 0 [[
-        prop nest.alpha setTo 0.3
-      ]]
+ifProp global.prediction equal true [[
+  ifProp nest.occupied equal true [[
+    exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
+    propPop nest.match
+    ifProp nest.match equal 0 [[
+      featProp nest.Costume.glow setTo 1
+    ]]
+    ifProp nest.match notEqual 0 [[
+      prop nest.alpha setTo 0.3
     ]]
   ]]
+]]
 
 
 // COMMENT KEY
@@ -441,7 +457,7 @@ addFeature Physics
 addFeature Touches
 
 featProp clipboard.Costume.costumeName setTo 'SF_clipboard.png'
-featProp clipboard.Costume.scale setTo 0.1
+featProp clipboard.Costume.scale setTo 0.15
 
 featCall clipboard.Touches monitor 'scientist' b2b
 
@@ -557,6 +573,65 @@ prop island3.alpha setTo 0.8
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "beakChart",
+      "scriptText": `# BLUEPRINT beakChart
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp beakChart.Costume.costumeName setTo 'SF_beakchart.png'
+featProp beakChart.Costume.scale setTo 0.25
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'onexone.json'
+
+// this is the time we will track
+addProp time number 0
+
+// set the timer to the starting text
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
+// timer stops when the prediction phase begins
+every 1 runAtStart [[
+  ifProp global.prediction equal false [[
+    prop Timer.time add 1
+  \texprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  \tfeatPropPop Timer.Graphing.text
+  ]]
+]]`
     }
   ],
   "instances": [
@@ -571,15 +646,15 @@ prop y setTo -3.72`
       "id": "2",
       "label": "island12",
       "bpid": "island1",
-      "initScript": `prop x setTo -29.07
-prop y setTo 324.18`
+      "initScript": `prop x setTo -7.45
+prop y setTo 314.01`
     },
     {
       "id": "7",
       "label": "island27",
       "bpid": "island2",
-      "initScript": `prop x setTo 278.39
-prop y setTo 331.37`
+      "initScript": `prop x setTo -267.24
+prop y setTo 325.01`
     },
     {
       "id": "25",
@@ -639,7 +714,7 @@ prop beakLength setTo 6`
       "id": "31",
       "label": "nest1",
       "bpid": "nest",
-      "initScript": `prop x setTo -372.16
+      "initScript": `prop x setTo -365.8
 prop y setTo 123.03
 prop nestSize setTo 0`
     },
@@ -647,7 +722,7 @@ prop nestSize setTo 0`
       "id": "32",
       "label": "nest2",
       "bpid": "nest",
-      "initScript": `prop x setTo -289.61
+      "initScript": `prop x setTo -273.08
 prop y setTo 180.44
 prop nestSize setTo 0`
     },
@@ -671,7 +746,7 @@ prop nestSize setTo 1`
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 269.6
+      "initScript": `prop x setTo 264.51
 prop y setTo 171.38
 prop nestSize setTo 2`
     },
@@ -679,7 +754,7 @@ prop nestSize setTo 2`
       "id": "36",
       "label": "nest6",
       "bpid": "nest",
-      "initScript": `prop x setTo 376.8
+      "initScript": `prop x setTo 362.81
 prop y setTo 114.5
 prop nestSize setTo 2`
     },
@@ -687,36 +762,50 @@ prop nestSize setTo 2`
       "id": "37",
       "label": "clipboard37",
       "bpid": "clipboard",
-      "initScript": `prop x setTo 1.75
-prop y setTo -343.26`
+      "initScript": `prop x setTo -340.38
+prop y setTo -320.37`
     },
     {
       "id": "39",
       "label": "foodInsects39",
       "bpid": "foodInsects",
-      "initScript": `prop x setTo 336.50
-prop y setTo 266.23`
+      "initScript": `prop x setTo -322.32
+prop y setTo 253.51`
     },
     {
       "id": "40",
       "label": "foodFruit40",
       "bpid": "foodFruit",
-      "initScript": `prop x setTo 1.19
-prop y setTo 256.61`
+      "initScript": `prop x setTo 5.01
+prop y setTo 250.25`
     },
     {
       "id": "41",
       "label": "island341",
       "bpid": "island3",
-      "initScript": `prop x setTo -294.21
-prop y setTo 300.60`
+      "initScript": `prop x setTo 271.77
+prop y setTo 291.70`
     },
     {
       "id": "42",
       "label": "foodSeeds42",
       "bpid": "foodSeeds",
-      "initScript": `prop x setTo -366.78
-prop y setTo 251.37`
+      "initScript": `prop x setTo 340.37
+prop y setTo 231.02`
+    },
+    {
+      "id": "43",
+      "label": "beakChart43",
+      "bpid": "beakChart",
+      "initScript": `prop x setTo 500.36
+prop y setTo 2.93`
+    },
+    {
+      "id": "44",
+      "label": "Timer44",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 451.69
+prop y setTo -391.17`
     }
   ]
 }
