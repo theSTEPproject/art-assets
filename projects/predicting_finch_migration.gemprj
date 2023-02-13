@@ -1,5 +1,5 @@
 {
-  "id": "sorting_Finches",
+  "id": "predicting_finch_migration",
   "label": "SSMV CT Model",
   "metadata": {
     "top": -400,
@@ -75,17 +75,17 @@ addFeature Movement
 
 // beak length holds the finch beak length property of a carried finch
 addProp beakLength number 0
-// temp beak length property holds the beak length of another scientist holding a finch if interacting with the scientist 
+// temp beak length property holds the beak length of another scientist holding a finch if interacting with the scientist
 addProp tempBeakLength number 0
 // beak type holds the finch beak type property of a carried finch
 addProp beakType number 0
-// carrying is set to true if the scientist is carrying beak properties 
+// carrying is set to true if the scientist is carrying beak properties
 addProp carrying boolean false
-// boolean used to ensure scientists arent counted as more than one player on init 
+// boolean used to ensure scientists arent counted as more than one player on init
 addProp player boolean false
-// ready to predict is set to true if the player is interacting with the prediction clipboard 
+// ready to predict is set to true if the player is interacting with the prediction clipboard
 addProp readyToPredict boolean false
-// increases if a scientist has a partner, used to limit comparisons between 2 scientist agents 
+// increases if a scientist has a partner, used to limit comparisons between 2 scientist agents
 addProp hasPartner number 0
 // a temp property to check if scientists are interacting with themselves in scientist-scientist interactions
 addProp isThatMe number 0
@@ -102,7 +102,7 @@ featCall scientist.Touches monitor 'clipboard' b2b
 
 # PROGRAM UPDATE
 
-//on init, set the number of players to the number of scientist agents 
+// on init, set the number of players to the number of scientist agents
 onEvent ROUNDINIT [[
   ifProp scientist.player equal false [[
     prop global.numPlayers add 1
@@ -144,11 +144,12 @@ when scientist centerfirsttouches finches [[
   ]]
 ]]
 
-// describes the interactions between scientists and nests. There are two states that can happen: 1) when scientist is carrying finch properties and the nest is empty and, 2) when scientist is not carrying finch properties and the nest is occupied 
+// describes the interactions between scientists and nests. There are two states that can happen: 1) when scientist is carrying finch properties and the nest is empty and, 2) when scientist is not carrying finch properties and the nest is occupied
 when scientist centerfirsttouchescenter nest [[
- // scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
-  ifProp scientist.carrying equal true [[
-    ifProp nest.occupied equal false [[
+  // scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
+  ifProp scientist.hasPartner equal 0 [[
+ \tifProp scientist.carrying equal true [[
+    \tifProp nest.occupied equal false [[
 
       // change costumes to show scientist placing finch in nest
       featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
@@ -191,43 +192,47 @@ when scientist centerfirsttouchescenter nest [[
       prop nest.beakType setTo 0
     ]]
   ]]
+]]  
 ]]
-
+ 
 // when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
 when scientist centerlasttouchescenter nest [[
-  ifProp scientist.carrying equal true [[
-    ifProp nest.occupied equal true [[
-      prop scientist.carrying setTo false
-      prop scientist.beakLength setTo 0
-      prop scientist.beakType setTo 0
+  ifProp scientist.hasPartner equal 0 [[
+    ifProp scientist.carrying equal true [[
+      ifProp nest.occupied equal true [[
+        prop scientist.carrying setTo false
+        prop scientist.beakLength setTo 0
+        prop scientist.beakType setTo 0
+      ]]
     ]]
   ]]
+
 ]]
 
 // scientists holding a finch can interact with another scientist holding a finch
 when scientist touches scientist [[
- // scientists carrying finch properties but are not interacting with another scientist
+  // scientists carrying finch properties but are not interacting with another scientist
   ifProp scientist.carrying equal true [[
     ifProp scientist.hasPartner equal 0 [[
-      // push the beaklength property of the other agent and put it into a temporary property on the scientist 
+      // push the beaklength property of the other agent and put it into a temporary property on the scientist
       propPush agent.beakLength
       propPop scientist.isThatMe
       propPush scientist.beakLength
       propPop agent.isThatMe
-      // compare the temporary property with the beaklength property of the scientist to check if the other agent is myself 
+      // compare the temporary property with the beaklength property of the scientist to check if the other agent is myself
       ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
-        // if the other agent is not me, check if the other agent has a partner and if it is carrying finch properties. 
+        // if the other agent is not me, check if the other agent has a partner and if it is carrying finch properties.
         ifProp agent.hasPartner equal 0 [[
           ifProp agent.carrying equal true [[
-           // set the scientist and agent as having a partner 
+            // set the scientist and agent as having a partner
             prop scientist.hasPartner setTo 1
             prop agent.hasPartner setTo 1
-            // push the beaklength property of the agent and put it in a temporary beak length property of the scientist and vise versa 
+            // push the beaklength property of the agent and put it in a temporary beak length property of the scientist and vise versa
             propPush agent.beakLength
             propPop scientist.tempBeakLength
             propPush scientist.beakLength
             propPop agent.tempBeakLength
-\t\t\t// compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to larger and the agent costume to smaller
+            // compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to larger and the agent costume to smaller
             ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
               featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
               featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
@@ -236,7 +241,7 @@ when scientist touches scientist [[
               featProp scientist.Costume.glow setTo 1
               featProp agent.Costume.glow setTo 1
             ]]
-\t\t\t// compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to smaller and the agent costume to larger
+            // compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to smaller and the agent costume to larger
             ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
               featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
               featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
@@ -255,18 +260,18 @@ when scientist touches scientist [[
 
 // change the costume of scientist after interacting with another scientist to compare beaklength properties
 when scientist lasttouches scientist [[
-  prop scientist.hasPartner setTo 0
-  prop agent.hasPartner setTo 0
   // change the scientist back to carrying a finch after the finch comparison
   ifProp scientist.carrying equal true [[
     ifProp agent.carrying equal true [[
+      prop scientist.hasPartner setTo 0
+ \t prop agent.hasPartner setTo 0
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.35
     ]]
   ]]
 ]]
 
-// when a scientist actively interacts with the clipboard, set the player status as ready to make a prediction and add one to the global property to count ready players 
+// when a scientist actively interacts with the clipboard, set the player status as ready to make a prediction and add one to the global property to count ready players
 when scientist touches clipboard [[
   ifProp global.numOccupiedNests greaterThan 0 [[
     ifProp scientist.readyToPredict equal false [[
@@ -283,8 +288,7 @@ when scientist lasttouches clipboard [[
     prop global.countReady sub 1
     prop scientist.readyToPredict setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "background",
