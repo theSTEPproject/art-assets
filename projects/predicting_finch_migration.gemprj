@@ -89,6 +89,7 @@ addProp readyToPredict boolean false
 addProp hasPartner number 0
 // a temp property to check if scientists are interacting with themselves in scientist-scientist interactions
 addProp isThatMe number 0
+addProp nestInteraction boolean false
 
 // set the scientist costume
 featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
@@ -96,7 +97,7 @@ featProp scientist.Costume.scale setTo 0.35
 
 // monitor interactions beetween scientists and other agents in the model
 featCall scientist.Touches monitor 'finches' c2b
-featCall scientist.Touches monitor 'nest' c2c
+featCall scientist.Touches monitor 'nest' c2b
 featCall scientist.Touches monitor 'scientist' b2b
 featCall scientist.Touches monitor 'clipboard' b2b
 
@@ -125,6 +126,8 @@ every 0.1 runAtStart [[
 when scientist centerfirsttouches finches [[
   ifProp scientist.carrying equal false [[
     ifProp finches.carried equal false [[
+      prop finches.carried setTo true
+      prop scientist.carrying setTo true
       featProp finches.Costume.glow setTo 1
       // push the finch beaktype and beaklength properties to the scientist beaktype and beaklength properties
       propPush finches.beakLength
@@ -133,24 +136,22 @@ when scientist centerfirsttouches finches [[
       propPop scientist.beakType
       // hide finches and set them as inert so we cannot interact with them again
       prop finches.visible setTo false
-      prop finches.carried setTo true
       prop finches.isInert setTo true
       // change the costume of the scientist to show they are carrying beak properties
       featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
       featProp scientist.Costume.scale setTo 0.35
-      prop scientist.carrying setTo true
 
     ]]
   ]]
 ]]
 
 // describes the interactions between scientists and nests. There are two states that can happen: 1) when scientist is carrying finch properties and the nest is empty and, 2) when scientist is not carrying finch properties and the nest is occupied
-when scientist centerfirsttouchescenter nest [[
+when scientist centerfirsttouches nest [[
   // scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
   ifProp scientist.hasPartner equal 0 [[
     ifProp scientist.carrying equal true [[
       ifProp nest.occupied equal false [[
-
+        prop scientist.nestInteraction setTo true
         // change costumes to show scientist placing finch in nest
         featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
         featProp scientist.Costume.scale setTo 0.35
@@ -196,17 +197,19 @@ when scientist centerfirsttouchescenter nest [[
 ]]
 
 // when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
-when scientist centerlasttouchescenter nest [[
-  ifProp scientist.hasPartner equal 0 [[
-    ifProp scientist.carrying equal true [[
-      ifProp nest.occupied equal true [[
-        prop scientist.carrying setTo false
-        prop scientist.beakLength setTo 0
-        prop scientist.beakType setTo 0
+when scientist centerlasttouches nest [[
+  ifProp scientist.nestInteraction equal true [[
+    ifProp scientist.hasPartner equal 0 [[
+      ifProp scientist.carrying equal true [[
+        ifProp nest.occupied equal true [[
+          prop scientist.carrying setTo false
+          prop scientist.beakLength setTo 0
+          prop scientist.beakType setTo 0
+          prop scientist.nestInteraction setTo false
+        ]]
       ]]
     ]]
   ]]
-
 ]]
 
 // scientists holding a finch can interact with another scientist holding a finch
@@ -265,15 +268,15 @@ when scientist lasttouches scientist [[
     ifProp agent.hasPartner equal 1 [[
       ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
         ifProp scientist.carrying equal true [[
-        ifProp agent.carrying equal true [[
-          prop scientist.hasPartner setTo 0
-          prop agent.hasPartner setTo 0
-          featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-          featProp scientist.Costume.scale setTo 0.35
-          featProp agent.Costume.costumeName setTo 'SF_scientistcarrying.png'
-          featProp agent.Costume.scale setTo 0.35
-      ]]
-      
+          ifProp agent.carrying equal true [[
+            prop scientist.hasPartner setTo 0
+            prop agent.hasPartner setTo 0
+            featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+            featProp scientist.Costume.scale setTo 0.35
+            featProp agent.Costume.costumeName setTo 'SF_scientistcarrying.png'
+            featProp agent.Costume.scale setTo 0.35
+          ]]
+
         ]]
       ]]
     ]]
@@ -780,24 +783,24 @@ prop nestSize setTo 0`
       "id": "33",
       "label": "nest3",
       "bpid": "nest",
-      "initScript": `prop x setTo -73.64
-prop y setTo 197.63
+      "initScript": `prop x setTo -99.95
+prop y setTo 225.48
 prop nestSize setTo 1`
     },
     {
       "id": "34",
       "label": "nest4",
       "bpid": "nest",
-      "initScript": `prop x setTo 90.62
-prop y setTo 201.03
+      "initScript": `prop x setTo 118.47
+prop y setTo 230.43
 prop nestSize setTo 1`
     },
     {
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 298.61
-prop y setTo 181.12
+      "initScript": `prop x setTo 306.35
+prop y setTo 176.48
 prop nestSize setTo 2`
     },
     {
@@ -827,7 +830,7 @@ prop y setTo 249.69`
       "label": "foodFruit40",
       "bpid": "foodFruit",
       "initScript": `prop x setTo 16.46
-prop y setTo 243.89`
+prop y setTo 246.98`
     },
     {
       "id": "41",
