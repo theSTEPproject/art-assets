@@ -148,53 +148,53 @@ when scientist centerfirsttouches finches [[
 when scientist centerfirsttouchescenter nest [[
   // scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
   ifProp scientist.hasPartner equal 0 [[
- \tifProp scientist.carrying equal true [[
-    \tifProp nest.occupied equal false [[
+    ifProp scientist.carrying equal true [[
+      ifProp nest.occupied equal false [[
 
-      // change costumes to show scientist placing finch in nest
-      featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
-      featProp scientist.Costume.scale setTo 0.35
-      featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
-      featProp nest.Costume.scale setTo 0.2
-      featProp nest.Costume.glow setTo 1
+        // change costumes to show scientist placing finch in nest
+        featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
+        featProp scientist.Costume.scale setTo 0.35
+        featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
+        featProp nest.Costume.scale setTo 0.2
+        featProp nest.Costume.glow setTo 1
 
-      // transfer the finch beaklength and beaktype properties from the scientist to the nest
-      propPush scientist.beakLength
-      propPop nest.beakLength
-      propPush scientist.beakType
-      propPop nest.beakType
+        // transfer the finch beaklength and beaktype properties from the scientist to the nest
+        propPush scientist.beakLength
+        propPop nest.beakLength
+        propPush scientist.beakType
+        propPop nest.beakType
 
-      // set the nest as occupied
-      prop nest.occupied setTo true
-      prop global.numOccupiedNests add 1
+        // set the nest as occupied
+        prop nest.occupied setTo true
+        prop global.numOccupiedNests add 1
+      ]]
+    ]]
+
+    // scientists who are not carrying finches can interact with a nest to pick up the beak properties housed in the nest
+    ifProp scientist.carrying equal false [[
+      ifProp nest.occupied equal true [[
+        featProp scientist.Costume.glow setTo 1
+        featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+        featProp scientist.Costume.scale setTo 0.35
+        featProp nest.Costume.costumeName setTo 'SF_nest.png'
+        featProp nest.Costume.scale setTo 0.1
+        // transfer the beaklength and beaktype properties from the nest to the scientist
+        propPush nest.beakLength
+        propPop scientist.beakLength
+        propPush nest.beakType
+        propPop scientist.beakType
+        // set the new nest and scientist carrying properties
+        prop scientist.carrying setTo true
+        prop nest.occupied setTo false
+        prop global.numOccupiedNests sub 1
+        // reset the nest beak properties to 0
+        prop nest.beakLength setTo 0
+        prop nest.beakType setTo 0
+      ]]
     ]]
   ]]
-
-  // scientists who are not carrying finches can interact with a nest to pick up the beak properties housed in the nest
-  ifProp scientist.carrying equal false [[
-    ifProp nest.occupied equal true [[
-      featProp scientist.Costume.glow setTo 1
-      featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.35
-      featProp nest.Costume.costumeName setTo 'SF_nest.png'
-      featProp nest.Costume.scale setTo 0.1
-      // transfer the beaklength and beaktype properties from the nest to the scientist
-      propPush nest.beakLength
-      propPop scientist.beakLength
-      propPush nest.beakType
-      propPop scientist.beakType
-      // set the new nest and scientist carrying properties
-      prop scientist.carrying setTo true
-      prop nest.occupied setTo false
-      prop global.numOccupiedNests sub 1
-      // reset the nest beak properties to 0
-      prop nest.beakLength setTo 0
-      prop nest.beakType setTo 0
-    ]]
-  ]]
-]]  
 ]]
- 
+
 // when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
 when scientist centerlasttouchescenter nest [[
   ifProp scientist.hasPartner equal 0 [[
@@ -261,14 +261,24 @@ when scientist touches scientist [[
 // change the costume of scientist after interacting with another scientist to compare beaklength properties
 when scientist lasttouches scientist [[
   // change the scientist back to carrying a finch after the finch comparison
-  ifProp scientist.carrying equal true [[
-    ifProp agent.carrying equal true [[
-      prop scientist.hasPartner setTo 0
- \t prop agent.hasPartner setTo 0
-      featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
-      featProp scientist.Costume.scale setTo 0.35
+  ifProp scientist.hasPartner equal 1 [[
+    ifProp agent.hasPartner equal 1 [[
+      ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
+        ifProp scientist.carrying equal true [[
+        ifProp agent.carrying equal true [[
+          prop scientist.hasPartner setTo 0
+          prop agent.hasPartner setTo 0
+          featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+          featProp scientist.Costume.scale setTo 0.35
+          featProp agent.Costume.costumeName setTo 'SF_scientistcarrying.png'
+          featProp agent.Costume.scale setTo 0.35
+      ]]
+      
+        ]]
+      ]]
     ]]
   ]]
+
 ]]
 
 // when a scientist actively interacts with the clipboard, set the player status as ready to make a prediction and add one to the global property to count ready players
@@ -425,23 +435,24 @@ addFeature Physics
 addFeature Touches
 addFeature Movement
 
-//occupied is true if the nest has beak properties in it 
+// occupied is true if the nest has beak properties in it
 addProp occupied boolean false
-//nestSize 0,1,2 represent small, medium, large beaks 
+// nestSize 0,1,2 represent small, medium, large beaks
 addProp nestSize number 0
-//beaklength holds the beaklength of a finch 
+// beaklength holds the beaklength of a finch
 addProp beakLength number 0
-//beaktype represents if the beak is small, medium, large 
+// beaktype represents if the beak is small, medium, large
 addProp beakType number 0
 // match number is used to compare beaktype to nest type to see if the finch placement is correct
 addProp match number 0
+addProp hasPartner number 0
 
 
-//set the nest costume and scale
+// set the nest costume and scale
 featProp nest.Costume.costumeName setTo 'SF_nest.png'
 featProp nest.Costume.scale setTo 0.1
 
-//set nest interactions with scientist agents 
+// set nest interactions with scientist agents
 featCall nest.Touches monitor 'scientist' c2b
 
 
@@ -453,17 +464,17 @@ ifProp global.prediction equal true [[
     prop nest.alpha setTo 0.3
     prop nest.isInert setTo true
   ]]
-  
-  //occupied nests are checked to see if the finch properties match their nest type by subtracting the beakType from beakSize
+
+  // occupied nests are checked to see if the finch properties match their nest type by subtracting the beakType from beakSize
   ifProp nest.occupied equal true [[
     exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
     propPop nest.match
-   //if the nest and finch beak type match
+    // if the nest and finch beak type match
     ifProp nest.match equal 0 [[
       featProp nest.Costume.glow setTo 1
       prop nest.isInert setTo true
     ]]
-    //if the nest and finch beak type do not match
+    // if the nest and finch beak type do not match
     ifProp nest.match notEqual 0 [[
       prop nest.alpha setTo 0.3
       prop nest.isInert setTo true
@@ -568,8 +579,14 @@ featProp foodInsects.Costume.flipX setTo true
 
 # PROGRAM INIT
 addFeature Costume
+
+addProp small boolean false
+
 featProp foodFruit.Costume.costumeName setTo 'SF_cactusfruit.png'
 featProp foodFruit.Costume.scale setTo 0.15
+ifProp foodFruit.small equal true [[
+  featProp foodFruit.Costume.scale setTo 0.05
+]]
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -672,7 +689,7 @@ every 1 runAtStart [[
       "id": "1",
       "label": "background1",
       "bpid": "background",
-      "initScript": `prop x setTo 0.6
+      "initScript": `prop x setTo 0.60
 prop y setTo -3.72`
     },
     {
@@ -747,48 +764,48 @@ prop beakLength setTo 6`
       "id": "31",
       "label": "nest1",
       "bpid": "nest",
-      "initScript": `prop x setTo -365.8
-prop y setTo 123.03
+      "initScript": `prop x setTo -348.75
+prop y setTo 6.14
 prop nestSize setTo 0`
     },
     {
       "id": "32",
       "label": "nest2",
       "bpid": "nest",
-      "initScript": `prop x setTo -273.08
-prop y setTo 180.44
+      "initScript": `prop x setTo -307.17
+prop y setTo 167.05
 prop nestSize setTo 0`
     },
     {
       "id": "33",
       "label": "nest3",
       "bpid": "nest",
-      "initScript": `prop x setTo -67.55
-prop y setTo 174.49
+      "initScript": `prop x setTo -73.64
+prop y setTo 197.63
 prop nestSize setTo 1`
     },
     {
       "id": "34",
       "label": "nest4",
       "bpid": "nest",
-      "initScript": `prop x setTo 51.66
-prop y setTo 170.58
+      "initScript": `prop x setTo 90.62
+prop y setTo 201.03
 prop nestSize setTo 1`
     },
     {
       "id": "35",
       "label": "nest5",
       "bpid": "nest",
-      "initScript": `prop x setTo 264.51
-prop y setTo 171.38
+      "initScript": `prop x setTo 298.61
+prop y setTo 181.12
 prop nestSize setTo 2`
     },
     {
       "id": "36",
       "label": "nest6",
       "bpid": "nest",
-      "initScript": `prop x setTo 362.81
-prop y setTo 114.5
+      "initScript": `prop x setTo 350.64
+prop y setTo 17.08
 prop nestSize setTo 2`
     },
     {
