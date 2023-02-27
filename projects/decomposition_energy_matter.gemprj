@@ -1254,8 +1254,8 @@ every 1 runAtStart [[
       "id": "2",
       "label": "Plant 1",
       "bpid": "Plant",
-      "initScript": `prop x setTo 328.59
-prop y setTo -204.27`
+      "initScript": `prop x setTo 310.61
+prop y setTo -199.12`
     },
     {
       "id": "5",
@@ -1416,8 +1416,8 @@ featProp agent.Costume.height setTo 30`
       "id": "1709",
       "label": "Waste 1",
       "bpid": "Waste",
-      "initScript": `prop x setTo -70.47
-prop y setTo 182.93`
+      "initScript": `prop x setTo 111.34
+prop y setTo 147.46`
     },
     {
       "id": "1711",
@@ -1488,6 +1488,34 @@ prop y setTo 57.15`
       "bpid": "EnergyFromWormDigestion",
       "initScript": `prop x setTo -490.75
 prop y setTo 242.87`
+    },
+    {
+      "id": "1726",
+      "label": "Bunny1726",
+      "bpid": "Bunny",
+      "initScript": `prop x setTo 119.76
+prop y setTo -107.99`
+    },
+    {
+      "id": "1727",
+      "label": "Worm1727",
+      "bpid": "Worm",
+      "initScript": `prop x setTo -72.30
+prop y setTo 290.34`
+    },
+    {
+      "id": "1728",
+      "label": "Waste1728",
+      "bpid": "Waste",
+      "initScript": `prop x setTo -284.52
+prop y setTo 306.54`
+    },
+    {
+      "id": "1729",
+      "label": "Plant1729",
+      "bpid": "Plant",
+      "initScript": `prop x setTo -104.31
+prop y setTo -152.45`
     }
   ]
 }

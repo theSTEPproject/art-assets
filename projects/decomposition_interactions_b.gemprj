@@ -1169,6 +1169,57 @@ every 1 runAtStart [[
   ]]
 ]]
 `
+    },
+    {
+      "name": "DungBeetle",
+      "scriptText": `# BLUEPRINT DungBeetle
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+addFeature Population
+featProp agent.Costume.costumeName setTo 'Dungbeetle.png'
+
+prop DungBeetle.zIndex setTo 100
+addProp feeling string 'hungry'
+
+addProp energy number 50
+prop DungBeetle.energy setMax 100
+prop DungBeetle.energy setMin 0
+
+addProp wastepile number 0
+prop DungBeetle.wastepile setMax 100
+prop DungBeetle.wastepile setMin 0
+
+featCall DungBeetle.Touches monitor 'Waste' b2b
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+when DungBeetle touches Waste [[
+  every 1 runAtStart [[
+    ifProp DungBeetle.feeling equal 'hungry' [[
+      prop DungBeetle.energy add 10
+      prop Waste.matterLevel sub 10
+      featProp DungBeetle.Costume.glow setTo 3
+      // insert code here
+    ]]
+    // insert code here
+  ]]
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1482,6 +1533,13 @@ prop y setTo -89.15`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 517.48
 prop y setTo 312.89`
+    },
+    {
+      "id": "1905",
+      "label": "DungBeetle1905",
+      "bpid": "DungBeetle",
+      "initScript": `prop x setTo -139.28
+prop y setTo 116.61`
     }
   ]
 }

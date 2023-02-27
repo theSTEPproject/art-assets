@@ -1542,6 +1542,13 @@ prop y setTo 286.61`
       "bpid": "HealthGraph",
       "initScript": `prop x setTo 516.79
 prop y setTo 91.43`
+    },
+    {
+      "id": "1906",
+      "label": "Worm1906",
+      "bpid": "Worm",
+      "initScript": `prop x setTo -2
+prop y setTo -8`
     }
   ]
 }
