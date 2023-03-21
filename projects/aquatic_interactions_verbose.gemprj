@@ -1,0 +1,1414 @@
+{
+  "id": "aquatic_interactions_verbose",
+  "label": "Ecosystems 1: Aquatic Interactions (Verbose)",
+  "description": "Tweaks for later runs",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": "1.3",
+    "scaleY": "0.5",
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// EXPLANATION of this model:
+// This model involves learners repreesenting fish eating algae
+// The goal is to explore how the number of fish, number of algae,
+// and different locations can impact the survival of the ecosystem
+
+// EXPLANATION of this character:
+// This is the script that runs when the model is setup
+
+# PROGRAM INIT
+
+// we don't need to see this character, we just use it to keep track of things
+prop global.visible setTo false
+
+// Add features
+addFeature Population
+
+// =============================================================
+// Add any code for global properties here (e,g. addProp)
+
+// Counters to be used in the HealthMeter Character
+// We set them up and update them here to make it 
+// easier to edit that character
+addProp fishCount number 0
+addProp algaeCount number 0
+addProp predatorCount number 0
+addProp allOrganismsCount number 0
+addProp averageFishEnergy number 0
+addProp averageAlgaeEnergy number 0
+addProp averagePredatorEnergy number 0
+addProp averageConsumerEnergy number 0
+addProp averageProducerEnergy number 0
+addProp averageEnergyAllOrganisms number 0
+
+// =============================================================
+
+// this is a required keyword in case we want to run script every second. 
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  // Update our global variables
+
+  // grab the Fish average energy and count
+  featCall global.Population countCharacterProp 'Fish' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageFishEnergy
+  featPropPush global.Population.count
+  propPop global.fishCount
+
+  // grab the Algae average eenergy  and count
+  featCall global.Population countCharacterProp 'Algae' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averageAlgaeEnergy
+  featPropPush global.Population.count
+  propPop global.algaeCount
+
+  // grab the Predator average eenergy  and count
+  featCall global.Population countCharacterProp 'Predator' 'energyLevel'
+  featPropPush global.Population.avg
+  propPop global.averagePredatorEnergy
+  featPropPush global.Population.count
+  propPop global.predatorCount
+
+  // add the producers and divide by the number of producers
+  // ignore divide step since only 1 type (Algae)
+  propPush global.averageAlgaeEnergy
+  propPop global.averageProducerEnergy
+
+  // calculate the big averages ...
+  exprPush {{ (global.getProp('averageFishEnergy').value *  global.getProp('fishCount').value  +  global.getProp('averagePredatorEnergy').value *  global.getProp('predatorCount').value) / (global.getProp('fishCount').value  +  global.getProp('predatorCount').value) }}
+  propPop global.averageConsumerEnergy
+
+  exprPush {{ (global.getProp('fishCount').value + global.getProp('predatorCount').value + global.getProp('algaeCount').value) }}
+  propPop global.allOrganismsCount
+
+  exprPush {{ ( ((global.getProp('averageConsumerEnergy').value * (global.getProp('fishCount').value + global.getProp('predatorCount').value)) + ( global.getProp('averageProducerEnergy').value * global.getProp('algaeCount').value) )) / global.getProp('allOrganismsCount').value }}
+  propPop global.averageEnergyAllOrganisms
+
+
+
+]]`
+    },
+    {
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A FISH?
+// 🔎 FISH are CONSUMERS who EAT ALGAE to make FISH ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Movement
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+addFeature IU
+
+// Set the fish artwork and make it 1/2 size since it is really big
+featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
+
+
+// 🔎 WHAT SIZE IS THE FISH?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER FISH
+featProp Fish.Costume.scale setTo 0.5
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do FISH START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of energy an algae can have?
+prop Fish.energyLevel setMax 100
+prop Fish.energyLevel setMin 0
+
+
+// The fish is a consumer because it eats other organisms (the algae, which are producers)
+addProp energyType string 'consumer'
+addProp consumerType string 'herbivore'
+// Check when the fish touches an algae so it can eat it
+featCall Fish.Touches monitor 'Algae' b2b
+// Set the meter to show the energyLevel and update whenever the energyLevel does
+featProp Fish.Graphing.meterProp setTo 'energyLevel'
+# PROGRAM UPDATE
+onEvent Start [[
+  featCall Fish.IU logEvent 'A fish is receiving a Start event'
+  // This tells any fish that are controlled by the computer instead of by a student
+  // to wander around randomly, and eat any algae that they bump into
+  featProp Fish.Movement.movementType setTo 'wander'
+  // This is the speed the fish moves at when it is not character controlled
+  featProp Fish.Movement.distance setTo 2
+]]
+// This script flips the artowkr depending on whether the fish is moving left or right
+ifFeatProp Fish.Movement.compassDirection equal 'E' [[
+  featProp Fish.Costume.flipX setTo false
+]]
+ifFeatProp Fish.Movement.compassDirection equal 'W' [[
+  featProp Fish.Costume.flipX setTo true
+]]
+// whenever the fish is touching an algae
+when Fish touches Algae [[
+  // do the rest of this once every second (instead of 30 times a second which is too much)
+  every 1 runAtStart [[
+
+
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 How much ENERGY do ALAGE LOSE when eaten?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ HIGHER numbers => LOSE MORE ENERGY
+    prop Algae.energyLevel sub 10
+
+
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 How much ENERGY do FISH GAIN when eating?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ HIGHER numbers => GAIN MORE ENERGY
+    prop Fish.energyLevel add 10
+
+
+    // finally, make the fish glow so tha we know something is happening
+    featProp Fish.Costume.glow setTo 4
+    // if the algae is out of energy, it is dead so make it
+    // faded and inert which means it won't interact with other things
+    // also set it to be really small so we know it is just the leftover bits
+    ifProp Algae.energyLevel lessThanOrEqual 0 [[
+      prop Algae.alpha setTo 0.5
+      // featProp Algae.Costume.scale setTo 0.1
+      prop Algae.isInert setTo true
+      featCall Fish.IU logEvent 'A Fish is eating algae and killed it'
+    ]]
+  ]]
+]]
+// When a fish moves off of algae, it will not glow anymore and will stop eating
+when Fish lastTouches Algae [[
+  featProp Fish.Costume.glow setTo 0
+]]
+every 1 runAtStart [[
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do FISH LOSE when swimming?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Fish.energyLevel sub 3
+
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the Fish's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  // The fish is feeling good, so make the meter grreen if the fish has over 50 energy (out of 100)
+  ifProp Fish.energyLevel greaterThanOrEqual 50 [[
+    featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
+    featProp Fish.Graphing.meterColor setTo 65280
+  ]]
+  // The fish is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Fish.energyLevel lessThan 50 [[
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
+    featProp Fish.Graphing.meterColor setTo 16737792
+  ]]
+  // The fish is really hungry, so make the meter red if we are under 20
+  ifProp Fish.energyLevel lessThan 20 [[
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_hungry.png'
+    featProp Fish.Graphing.meterColor setTo 16711680
+  ]]
+  // The fish is dead if it has 0 energy
+  ifProp Fish.energyLevel equal 0 [[
+    featProp Fish.Costume.costumeName setTo 'AQ_fish_dead.png'
+    featCall Fish.IU logEvent 'Fish died, changing its artwork to AQ_fish_dead.png'
+    // Switch to floating if this fish is not controlled by a student
+    featProp Fish.Movement.movementType setTo 'float'
+    // make the fish faded so that it looks dead
+    prop Fish.alpha setTo 0.3
+    // this means that we wont test if this fish is touching anything anymore
+    prop Fish.isInert setTo true
+  ]]
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Algae",
+      "scriptText": `# BLUEPRINT Algae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS AN ALGAE?
+// 🔎 ALGAES are PRODUCERS who USE SUN ENERGY and get EATEN by FISH
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+
+# PROGRAM INIT
+// Setup some script features the Algae use
+addFeature Costume
+addFeature Movement
+addFeature Population
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+addFeature IU
+
+// Algae are producers, which means they take in energy from the sun
+// and convert that to food. Producers are eaten by consumers like fish.
+addProp energyType string 'producer'
+// This sets the art for the algae character
+featProp Algae.Costume.costumeName setTo 'AQ_algae.png'
+// This shows the energyLevel next to the algae character
+featProp Algae.Graphing.meterProp setTo 'energyLevel'
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each algae START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel number 75
+
+
+// 🔎 what is the MOST/LEAST amount of energy an algae can have?
+prop Algae.energyLevel setMax 100
+prop Algae.energyLevel setMin 0
+
+
+// Make the algae appear farther back so that we can see fish in front of them
+prop Algae.zIndex setTo 1
+// Set the color of the energy meter depending on the amount of energy that the algae has
+ifProp Algae.energyLevel greaterThanOrEqual 50 [[
+  // set the meter to green
+  featProp Algae.Graphing.meterColor setTo 65280
+]]
+ifProp Algae.energyLevel lessThan 50 [[
+  // set the meter to orange
+  featProp Algae.Graphing.meterColor setTo 16737792
+]]
+ifProp Algae.energyLevel lessThan 20 [[
+  // set the meter to red
+  featProp Algae.Graphing.meterColor setTo 16711680
+]]
+// Setup the algae to see if it is touching the sunbeam so that we know if it should be getting more energy.
+// If it is, call the when Algae touches Sun script below
+featCall Algae.Touches monitor 'Sunbeam' b2b
+// This tells the algae that we don't need a label underneath it, so make that blank
+featProp Algae.Graphing.text setTo ''
+// Setup movement to wander
+featProp Algae.Movement.movementType setTo 'wander'
+featProp Algae.Movement.distance setTo 0.2
+// scale the algae to it's starting size
+// we divide by 350 instead of 100 because the algae are really big and we want to make
+// them smaller to fit on-screen.
+exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
+featPropPop Algae.Costume.scale
+// Move the algae back so that it is behind the fish
+prop Algae.zIndex setTo -110
+
+# PROGRAM UPDATE
+// This script happens once every second whenever the algae is touching the sunbeam
+when Algae touches Sunbeam [[
+  every 1 runAtStart [[
+
+
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how much energy does algae get in the sunlight?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ Lower numbers => gain energy faster
+    prop Algae.energyLevel add 5
+
+
+    // glow so that we know something is happening
+    featProp Algae.Costume.glow setTo 1
+  ]]
+]]
+// When the algae moves out of the sunbeam, stop glowing
+// It will also stop getting energy since that script
+// won't get called unless it moves back into the sunbeam.
+when Algae lastTouches Sunbeam [[
+  featProp Algae.Costume.glow setTo 0
+]]
+every 1 runAtStart [[
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 how much energy does algae lose each second?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ Higher numbers => lose energy faster
+  prop Algae.energyLevel sub 1
+
+
+  // Set the color of the energy meter depending on the amount of energy that the algae has
+  // Reminder that this energy is between 0 and 100, so 50 is 1/2 of the energy still there
+  // That's still pretty good, so we are making it green
+  ifProp Algae.energyLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp Algae.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Algae.energyLevel lessThan 50 [[
+    // set the meter to orange
+    featProp Algae.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Algae.energyLevel lessThan 20 [[
+    // set the meter to red
+    featProp Algae.Graphing.meterColor setTo 16711680
+  ]]
+  // re-size the algae based on its energy level (make it smaller if it has less energy)
+  ifProp Algae.energyLevel greaterThan 0 [[
+    exprPush {{ (Algae.getProp('energyLevel').value / 350) }}
+    featPropPop Algae.Costume.scale
+  ]]
+  // Don't let the algae totally disappear
+  ifFeatProp Algae.Costume.scale lessThanOrEqual 0.1 [[
+    featProp Algae.Costume.scale setTo 0.1
+  ]]
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Sunbeam",
+      "scriptText": `# BLUEPRINT Sunbeam
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 The Sunbeam character represents a beam of light that moves across the water
+// 🔎 as the sun moves in the sky. This is a source of energy that the producers
+// 🔎 use to convert into their own energy and matter (see the algae script for details)
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Sunbeam.Costume.costumeName setTo 'GEN_sunbeam.png'
+
+// the sun is a source of energy
+addProp energyType string 'source'
+
+// ✏️ LETS CHANGE THIS - how wide the sunbeam is
+featProp Sunbeam.Costume.width setTo 100
+
+// ✏️ LETS CHANGE THIS - how tall the sunbeam is
+featProp Sunbeam.Costume.height setTo 500
+
+// default position for moving across the top
+prop Sunbeam.x setTo -400
+prop Sunbeam.y setTo -180
+
+// This moves the sunbeam across the screen every second using the direction and speed properties
+// that are setup above in the INIT script and then if the sunbeam goes off the edge of the screen
+// it comes back on from the other side representing the next day though we don't bother shwwing night
+# PROGRAM UPDATE
+
+// move the sun every 1/10 second
+every 0.1 runAtStart [[
+
+  // ✏️ LETS CHANGE THIS the sunbeams speed
+  // ✏️ Move the sun a little every 1/2 second ... making this number bigger moves it faster
+  prop Sunbeam.x add 3
+
+  // If the sunbeam goes off the right edge then start over on the left
+  ifProp Sunbeam.x greaterThan 400 [[
+    prop Sunbeam.x setTo -400
+  ]]
+]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+
+// this is the time we will track
+addProp time number 0
+
+// set the timer to the starting text
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "Rock",
+      "scriptText": `# BLUEPRINT Rock
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character is just a picture of a rock to make it feel a bit more realistic
+// 🔎 and also so that students can think about what happens if fish hide behind the rock
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Rock.Costume.costumeName setTo 'AQ_boulder.json'
+
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Trash",
+      "scriptText": `# BLUEPRINT Trash
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character represents trash that was thrown in the water
+// 🔎 If a predator eats it, it is hurt and can't eat as much - see the 
+// 🔎 predator script to see how that works 
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Population
+featProp Trash.Costume.costumeName setTo 'AQ_trash.json'
+
+addFeature Physics
+
+featProp Trash.Costume.scale setTo 0.05
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a text label for use in the key or somewhere else to display information
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// invisible since we just want the text to show up
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "ColorChip",
+      "scriptText": `# BLUEPRINT ColorChip
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is just a color square for use in the KEY. See the instance for where the size and color are set
+// 🔎 (e.g., go to map setup)
+
+# PROGRAM INIT
+addFeature Costume
+featProp ColorChip.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+
+// this is required by GEM-STEP in case we need to udpate this ecery second
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "GraphAlgaeEnergy",
+      "scriptText": `# BLUEPRINT GraphAlgaeEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp GraphAlgaeEnergy.Costume.costumeName setTo 'GEN_onexone.json'
+
+addProp characterType string 'Algae'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Algae energyLevel'
+
+// ✏️ LETS CHANGE THIS - change the character, variable, and possible countTypeto a different name as needed
+// ✏️ -- Character options: Fish, Algae
+// ✏️ -- Variable options: energyLevel
+// ✏️ -- Population options: sum, avg, min, max
+prop GraphAlgaeEnergy.characterType setTo 'Algae'
+prop GraphAlgaeEnergy.countType setTo 'avg'
+prop GraphAlgaeEnergy.variableToGraph setTo 'energyLevel'
+prop GraphAlgaeEnergy.labelText setTo 'Algae energyLevel'
+
+addFeature Graphing
+addFeature Population
+featProp GraphAlgaeEnergy.Graphing.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp graphValue number 0
+prop GraphAlgaeEnergy.graphValue setMax 100
+prop GraphAlgaeEnergy.graphValue setMin 0
+
+featProp GraphAlgaeEnergy.Graphing.graphProp setTo 'graphValue'
+
+featProp GraphAlgaeEnergy.Graphing.graphMinY setTo 0
+featProp GraphAlgaeEnergy.Graphing.graphMaxY setTo 100
+
+exprPush {{ GraphAlgaeEnergy.getProp('characterType').value + ' ' + GraphAlgaeEnergy.getProp('countType').value + ' ' + GraphAlgaeEnergy.getProp('variableToGraph').value }}
+propPop GraphAlgaeEnergy.labelText
+
+propPush GraphAlgaeEnergy.labelText
+featPropPop GraphAlgaeEnergy.Graphing.text
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  propPush GraphAlgaeEnergy.characterType
+  featPropPop GraphAlgaeEnergy.Population.monitoredCharacter
+
+  propPush GraphAlgaeEnergy.variableToGraph
+  featPropPop GraphAlgaeEnergy.Population.monitoredCharacterProp
+
+  featCall GraphAlgaeEnergy.Population countCharacterProp 'Algae' 'energyLevel'
+
+  exprPush {{ GraphAlgaeEnergy.getFeatProp('Population', GraphAlgaeEnergy.prop.countType.value).value }}
+  propPop GraphAlgaeEnergy.graphValue
+]]`
+    },
+    {
+      "name": "GraphFishEnergy",
+      "scriptText": `# BLUEPRINT GraphFishEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+addFeature Costume
+featProp GraphFishEnergy.Costume.costumeName setTo 'GEN_onexone.json'
+
+addProp characterType string 'Fish'
+addProp countType string 'avg'
+addProp variableToGraph string 'energyLevel'
+addProp labelText string 'Fish energyLevel'
+
+// ✏️ LETS CHANGE THIS - change the character, variable, and possible countTypeto a different name as needed
+// -- Character options: Fish, Algae
+// -- Variable options: energyLevel
+// -- Population options: sum, avg, min, max
+prop GraphFishEnergy.characterType setTo 'Fish'
+prop GraphFishEnergy.countType setTo 'avg'
+prop GraphFishEnergy.variableToGraph setTo 'energyLevel'
+prop GraphFishEnergy.labelText setTo 'Fish energyLevel'
+
+addFeature Graphing
+addFeature Population
+featProp GraphFishEnergy.Graphing.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp graphValue number 0
+prop GraphFishEnergy.graphValue setMax 100
+prop GraphFishEnergy.graphValue setMin 0
+
+// Setup which property we will use to graph, and then change if it changes (use graphValue)
+featProp GraphFishEnergy.Graphing.graphProp setTo 'graphValue'
+
+dbgOut 'graph Value' GraphFishEnergy.graphValue
+
+featProp GraphFishEnergy.Graphing.graphMinY setTo 0
+featProp GraphFishEnergy.Graphing.graphMaxY setTo 100
+
+// Setup the graph label dynaamically
+exprPush {{ GraphFishEnergy.getProp('characterType').value + ' ' + GraphFishEnergy.getProp('countType').value + ' ' + GraphFishEnergy.getProp('variableToGraph').value }}
+propPop GraphFishEnergy.labelText
+exprPush {{ GraphFishEnergy.getProp('labelText').value }}
+
+featPropPop GraphFishEnergy.Graphing.text
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  propPush GraphFishEnergy.characterType
+  featPropPop GraphFishEnergy.Population.monitoredCharacter
+
+  propPush GraphFishEnergy.variableToGraph
+  featPropPop GraphFishEnergy.Population.monitoredCharacterProp
+
+  featCall GraphFishEnergy.Population countCharacterProp
+
+  exprPush {{ GraphFishEnergy.getFeatProp('Population', GraphFishEnergy.prop.countType.value).value }}
+  propPop GraphFishEnergy.graphValue
+
+]]
+
+
+// required directive`
+    },
+    {
+      "name": "HealthMeter",
+      "scriptText": `# BLUEPRINT HealthMeter
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a meter to show the health of the entire ecosystem
+// 🔎 Initialy it only shows fish health, but we want to explore changing this
+
+# PROGRAM INIT
+addFeature Population
+addFeature Graphing
+addFeature Costume
+
+// setup a healthLevel that we will use to make the meter show a level
+addProp healthLevel number 100
+prop HealthMeter.healthLevel setMin 0
+prop HealthMeter.healthLevel setMax 100
+
+// ✏️ LETS CHANGE the meter label if we think there is a better way to describe this
+featProp HealthMeter.Graphing.text setTo 'Ecosystem Health'
+
+// Make costume an invisible dot so we only see the meter
+featProp HealthMeter.Costume.costumeName setTo 'GEN_onexone.json'
+
+// Show meter on start, and make it big
+featProp HealthMeter.Graphing.isLargeGraphic setTo true
+featProp HealthMeter.Graphing.meterColor setTo 65280
+
+// Set the meter to reflect the health level so that it will update
+// whenever the health does
+featProp HealthMeter.Graphing.meterProp setTo 'healthLevel'
+
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+  // This script below is where you can decide what the current health meter shows
+
+  // 🔎 WHAT does it mean to say an ecoyststem is healthy?
+  // 🔎 Nathan thinks that the fish are the most important thing in the pond
+  // 🔎 So, we set the system health to the averageFishEnergy, but you can change that to match what you uwant
+  // ✏️ LETS CHANGE what variable the meter displays as health
+  propPush global.averageFishEnergy
+
+  // put our variable into the healthLevel
+  propPop HealthMeter.healthLevel
+
+  // 🔎 This changes the meter colors to help show how well the ecosystem is doing
+  ifProp HealthMeter.healthLevel greaterThanOrEqual 50 [[
+    // set the meter to green
+    featProp HealthMeter.Graphing.meterColor setTo 65280
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 50 [[
+    // set the meter to orange
+    featProp HealthMeter.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp HealthMeter.healthLevel lessThan 20 [[
+    // set the meter to red
+    featProp HealthMeter.Graphing.meterColor setTo 16711680
+  ]]
+
+]]`
+    },
+    {
+      "name": "Wand1",
+      "scriptText": `# BLUEPRINT Wand1
+# TAG IsCharControllable true
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a wand that stuents can setup to give or take energy or other things
+// 🔎 so that  they can help with the experiment
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+// set up the wand to use this artwork and be a good size
+featProp Wand1.Costume.costumeName setTo 'AQ_wand_alive.png'
+featProp Wand1.Costume.scale setTo 0.2
+
+// make sure the wand checks to see if it is touching a fish or algae 
+featCall Wand1.Touches monitor 'Fish' b2b
+featCall Wand1.Touches monitor 'Algae' b2b
+
+# PROGRAM UPDATE
+
+// do something the first time a wand touches a specific fish 
+when Wand1 firsttouches Fish [[
+  // make the wand glow so that we know something happened
+  featProp Wand1.Costume.glow setTo 1
+
+  // ✏️ LETS CHANGE THIS
+  // ✏️ this currently adds 10 energy to the fish
+  // ✏️ if you change the number it will add more or less energy
+  // ✏️ you can also change the function to sub to subtract if you want 
+  prop Fish.energyLevel add 10
+]]
+
+// do something the first time a wand touches a specific algae 
+when Wand1 firsttouches Algae [[
+  // make the wand glow so that we know something happened
+  featProp Wand1.Costume.glow setTo 1
+
+  // ✏️ LETS CHANGE THIS
+  // ✏️ this currently adds 10 energy to the algae
+  // ✏️ if you change the number it will add more or less energy
+  // ✏️ you can also change the function to sub to subtract if you want 
+  prop Algae.energyLevel add 10
+]]
+
+`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background LOAD
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This character is just the background image for this model
+// 🔎 You should not need to change it
+
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'AQ_background_aquatic.png'
+featProp Background.Costume.scale setTo 1.33
+// move this way back so everything else is in front of it
+prop Background.zIndex setTo -999
+
+# PROGRAM UPDATE `
+    },
+    {
+      "name": "Turtle",
+      "scriptText": `# BLUEPRINT Turtle
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A TURTLE?
+// 🔎 TURTLES are CONSUMERS who are OMNIVORES
+
+// 🔎 WHAT IS AN OMNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT PRODUCERS OR other CONSUMERS
+// 🔎 WHAT IS A CARNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT other CONSUMERS
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Movement
+addFeature Physics
+addFeature Touches
+// This sets up the artwork for the omnivore
+featProp Turtle.Costume.costumeName setTo 'AQ_turtle_alive.png'
+
+// This sets up the energyLevel so that it goes between 0 and 100
+addProp energyLevel number 50
+prop Turtle.energyLevel setMax 100
+prop Turtle.energyLevel setMin 0
+
+// The omnivore is a consumer, that consumes energy
+addProp energyType string 'consumer'
+
+addProp consumerType string 'omnivore'
+
+addProp health string 'healthy'
+
+
+// 🔎 WHAT SIZE IS THE TURTLE?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER TURTLE
+featProp Turtle.Costume.scale setTo 0.15
+
+
+// We want to know if the omnivore touches other characters
+// if it touches fish, eat them, trash might make it sick, and it will
+// also eat algae if the omnivore is an omnivore, but not if it is a
+// carnivore
+featCall Turtle.Touches monitor 'Fish' b2b
+// featCall Turtle.Touches monitor 'Trash' b2b
+featCall Turtle.Touches monitor 'Algae' b2b
+// show meter immediately
+featProp Turtle.Graphing.meterProp setTo 'energyLevel'
+// we don't need a text label so set it to be blank
+featProp Turtle.Graphing.text setTo ''
+# PROGRAM UPDATE
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Turtle.Movement.compassDirection equal 'E' [[
+  featProp Turtle.Costume.flipX setTo false
+]]
+ifFeatProp Turtle.Movement.compassDirection equal 'W' [[
+  featProp Turtle.Costume.flipX setTo true
+]]
+every 1 runAtStart [[
+  // The omnivore uses energy to be alive and move around
+  // so move this down each second
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER number => GAIN MORE ENERGY
+  prop Turtle.energyLevel sub 1
+
+
+  // If the omnivore has no energy left, it is dead so change how it looks
+  // and stop it from interacting with other characters
+  ifProp Turtle.energyLevel equal 0 [[
+    prop Turtle.isInert setTo true
+    prop Turtle.alpha setTo 0.3
+  ]]
+]]
+when Turtle touches Algae [[
+  every 1 runAtStart [[
+    // only consider eating algae if this is an omnivore
+    ifProp Turtle.consumerType equal 'omnivore' [[
+      // only eat the algae if you are healthy or if you are really really hungry (< 50% full)
+      ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+        // only glow when we are healthy and can eat
+        featProp Turtle.Costume.glow setTo 1
+        // only eat if the algae is above 0
+        ifExpr {{ Algae.getProp('energyLevel').value > 0 }} [[
+
+
+          // 🔎 WHAT DOES THIS DO?
+          // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+          // ✏️ LETS CHANGE THIS:
+          // ✏️ HIGHER number => GAIN MORE ENERGY
+          prop Turtle.energyLevel add 10
+
+
+          // 🔎 WHAT DOES THIS DO?
+          // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+          // ✏️ LETS CHANGE THIS:
+          // ✏️ HIGHER number => GAIN MORE ENERGY
+          prop Algae.energyLevel sub 10
+        ]]
+
+
+        // if the omnivore ate all the algae make a small version so that we
+        // can still see something
+        ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
+          prop Algae.alpha setTo 0.5
+          prop Algae.isInert setTo true
+          featCall Algae.IU logEvent 'Algae noting it is dead when eaten by turtle'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+when Turtle touches Fish [[
+  every 1 runAtStart [[
+    // Both omnivores and carnivores eat fish
+    // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
+    ifExpr {{ (Turtle.getProp('energyLevel').value < 50) || (Turtle.getProp('health').value == 'healthy') }} [[
+      // only glow when we are healthy and can eat
+      featProp Turtle.Costume.glow setTo 1
+
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How much ENERGY does an TURTLE GAIN when eating a FISH?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ HIGHER number => GAIN MORE ENERGY
+      prop Turtle.energyLevel add 20
+
+
+      // Fish is dead
+      featCall Fish.IU logEvent 'Fish killed by a turtle'
+      prop Fish.isInert setTo true
+      prop Fish.alpha setTo 0.3
+      // featProp Fish.Costume setPose 2
+      prop Fish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+when Turtle lastTouches Fish [[
+  featProp Turtle.Costume.glow setTo 0
+]]
+// If the omnivore touches the trash, it eats it and get sick
+// once it is sick it won't eat as much of other foods
+// see the touches fish and algae to see the difference
+when Turtle touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featProp Turtle.Costume.glow setTo 0.5
+    // this is normally set to healthy
+    prop Turtle.health setTo 'hurt'
+    featCall Turtle.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeCharacter
+    // change art
+  ]]
+]]
+when Turtle lastTouches Trash [[
+  featProp Turtle.Costume.glow setTo 0
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Otter",
+      "scriptText": `# BLUEPRINT Otter
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A OTTER?
+// 🔎 OTTERS are CONSUMERS who are CARNIVORES
+
+// 🔎 WHAT IS AN OMNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT PRODUCERS OR other CONSUMERS
+// 🔎 WHAT IS A CARNIVORE?
+// 🔎 OMNIVORES are CONSUMERS that EAT other CONSUMERS
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Movement
+addFeature Physics
+addFeature Touches
+// This sets up the artwork for the omnivore
+featProp Otter.Costume.costumeName setTo 'AQ_otter.png'
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do OTTERS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of ENERGY an OTTER can have?
+prop Otter.energyLevel setMax 100
+prop Otter.energyLevel setMin 0
+
+
+// The omnivore is a consumer, that consumes energy
+addProp energyType string 'consumer'
+addProp consumerType string 'carnivore'
+addProp health string 'healthy'
+
+
+// 🔎 WHAT SIZE IS THE OTTER?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER OTTER
+featProp Otter.Costume.scale setTo 0.8
+
+
+// We want to know if the omnivore touches other characters
+// if it touches fish, eat them, trash might make it sick, and it will
+// also eat algae if the omnivore is an omnivore, but not if it is a
+// carnivore
+featCall Otter.Touches monitor 'Fish' b2b
+// featCall Otter.Touches monitor 'Trash' b2b
+featCall Otter.Touches monitor 'Algae' b2b
+// show meter immediately
+featProp Otter.Graphing.meterProp setTo 'energyLevel'
+// we don't need a text label so set it to be blank
+featProp Otter.Graphing.text setTo ''
+# PROGRAM UPDATE
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Otter.Movement.compassDirection equal 'E' [[
+  featProp Otter.Costume.flipX setTo false
+]]
+ifFeatProp Otter.Movement.compassDirection equal 'W' [[
+  featProp Otter.Costume.flipX setTo true
+]]
+every 1 runAtStart [[
+  // The omnivore uses energy to be alive and move around
+  // so move this down each second
+
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY does an OTTER GAIN when eating a FISH?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER number => GAIN MORE ENERGY
+  prop Otter.energyLevel sub 1
+
+
+  // If the omnivore has no energy left, it is dead so change how it looks
+  // and stop it from interacting with other characters
+  ifProp Otter.energyLevel equal 0 [[
+    prop Otter.isInert setTo true
+    prop Otter.alpha setTo 0.3
+  ]]
+]]
+when Otter touches Fish [[
+  every 1 runAtStart [[
+    // Both omnivores and carnivores eat fish
+    // only eat the fish if you are healthy or if you are really really hungry (< 50% full)
+    ifExpr {{ (Otter.getProp('energyLevel').value < 50) || (Otter.getProp('health').value == 'healthy') }} [[
+      // only glow when we are healthy and can eat
+      featProp Otter.Costume.glow setTo 1
+
+
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 How much ENERGY does an OTTER GAIN when eating a FISH?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ HIGHER number => GAIN MORE ENERGY
+      prop Otter.energyLevel add 25
+
+
+      // Fish is dead
+      prop Fish.isInert setTo true
+      prop Fish.alpha setTo 0.3
+      // featProp Fish.Costume setPose 2
+      prop Fish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+when Otter lastTouches Fish [[
+  featProp Otter.Costume.glow setTo 0
+]]
+// If the omnivore touches the trash, it eats it and get sick
+// once it is sick it won't eat as much of other foods
+// see the touches fish and algae to see the difference
+when Otter touches Trash [[
+  every 1 runAtStart [[
+    // always glow to show the interaction
+    featProp Otter.Costume.glow setTo 0.5
+    // this is normally set to healthy
+    prop Otter.health setTo 'hurt'
+    featCall Otter.Costume setColorizeHSV 0.5 1 0.5
+    featCall Trash.Population removeCharacter
+    // change art
+  ]]
+]]
+when Otter lastTouches Trash [[
+  featProp Otter.Costume.glow setTo 0
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1700",
+      "label": "LegendLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -378.2
+featProp Graphing text setTo 'Energy Key:'`
+    },
+    {
+      "id": "1701",
+      "label": "HighLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -348
+featProp Graphing text setTo 'High'`
+    },
+    {
+      "id": "1702",
+      "label": "MediumLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -312.29
+featProp Graphing text setTo 'Medium'`
+    },
+    {
+      "id": "1703",
+      "label": "LowLabel",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 457
+prop y setTo -280.94
+featProp Graphing text setTo 'Low'`
+    },
+    {
+      "id": "1704",
+      "label": "HighChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457
+prop y setTo -328.04
+prop zIndex setTo -100
+featCall agent.Costume setColorize 0 255 0
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
+    },
+    {
+      "id": "1705",
+      "label": "MediumChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457
+prop y setTo -296.93
+prop zIndex setTo -100
+featCall Costume setColorize 210 140 0
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
+    },
+    {
+      "id": "1706",
+      "label": "LowChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457
+prop y setTo -265.28
+prop zIndex setTo -100
+featCall Costume setColorize 255 0 0
+featProp agent.Costume.height setTo 30
+featProp agent.Costume.width setTo 100`
+    },
+    {
+      "id": "1710",
+      "label": "Algae 1",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -248.71
+prop y setTo -95.88`
+    },
+    {
+      "id": "1711",
+      "label": "Algae 2",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -9.08
+prop y setTo -131.48`
+    },
+    {
+      "id": "1712",
+      "label": "Sunbeam",
+      "bpid": "Sunbeam",
+      "initScript": `prop x setTo -394.03
+prop y setTo -210.21`
+    },
+    {
+      "id": "1713",
+      "label": "Rock 1",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -301.41
+prop y setTo 349.49`
+    },
+    {
+      "id": "1714",
+      "label": "Rock 2",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 318.43
+prop y setTo 347.53
+featProp Rock.Costume.flipX setTo true`
+    },
+    {
+      "id": "1715",
+      "label": "Algae 3",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "1716",
+      "label": "Algae 4",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -135.86
+prop y setTo -35.95`
+    },
+    {
+      "id": "1720",
+      "label": "Background Image",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
+    },
+    {
+      "id": "1721",
+      "label": "Timer1721",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 456.93
+prop y setTo -403.87`
+    },
+    {
+      "id": "1900",
+      "label": "TimerChip",
+      "bpid": "ColorChip",
+      "initScript": `prop x setTo 457.00
+prop y setTo -388
+featCall Costume setColorize 0 0 0
+prop zIndex setTo 0
+featProp agent.Costume.width setTo 100
+featProp agent.Costume.height setTo 30
+`
+    },
+    {
+      "id": "1901",
+      "label": "GraphAlgaeEnergy1901",
+      "bpid": "GraphAlgaeEnergy",
+      "initScript": `prop x setTo 499.92
+prop y setTo 261.99`
+    },
+    {
+      "id": "1902",
+      "label": "GraphFishEnergy1902",
+      "bpid": "GraphFishEnergy",
+      "initScript": `prop x setTo 498.13
+prop y setTo 75.57`
+    }
+  ]
+}
