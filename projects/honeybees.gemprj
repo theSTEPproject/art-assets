@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 0,
     "roundsCanLoop": true,
@@ -1054,7 +1057,9 @@ prop x setTo -135.39
 prop y setTo 272.46
 prop scale setTo 2
 prop hiveID setTo 0
-prop aiBeeCount setTo 8
+// set the below to a number to
+// create AI Bees
+prop aiBeeCount setTo 0
 `
     },
     {
