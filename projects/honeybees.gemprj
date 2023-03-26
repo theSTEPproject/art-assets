@@ -76,7 +76,7 @@ useFeature Touches
 useFeature Graphing
 useFeature Population
 
-featProp Bee.Costume.costumeName setTo 'bee.png' 
+featProp Bee.Costume.costumeName setTo 'HB_bee.png' 
 featProp Bee.Costume.scale setTo 0.3
 featProp Bee.Movement.useAutoOrientation setTo true
 
@@ -331,7 +331,7 @@ when Bee centerTouches Hive [[
         prop global.flowerXPassing setTo 0
         prop global.flowerYPassing setTo 0
 
-        featCall Population agentsForEach Bee [[
+        featCall Population charactersForEach Bee [[
           
           ifExpr {{ agent.getProp('mode').value == 'dancing' || agent.getProp('mode').value == 'user-dancing' }} [[ 
               
@@ -391,7 +391,7 @@ when Bee centerTouches Flower [[
    // AI or NOT AI, if you are not full and there is some food left, take some 
    ifExpr {{ Bee.getProp('nectarAmount').value < 20 }} [[
       ifExpr {{ Flower.getProp('nectarAmount').value >= 5 }} [[ 
-        featProp Bee.Costume setGlow 2
+        featProp Bee.Costume.glow setTo 2
         prop Bee.nectarAmount add 5
         prop Flower.nectarAmount sub 5
         ]]
@@ -439,7 +439,7 @@ when Bee centerTouches Flower [[
 
 //setting pollination-related properties for next Flower
 when Bee centerLastTouches Flower [[
-  featProp Bee.Costume setGlow 0
+  featProp Bee.Costume.glow setTo 0
   
   ifExpr {{ Flower.getProp('baseType').value == 'blue'}} [[
     prop Bee.pollinateBlue setTo true
@@ -622,11 +622,11 @@ when Bee centerFirstTouches Flower [[
       //POLLINATION IS HAPPENING HERE (for growth/costume logic)
       prop Flower.pollenAmount add 1
       
-        featCall Population createAgent Flower [[
+        featCall Population createCharacter Flower [[
         prop x addRndInt -50 50
         prop y addRndInt -50 50
         prop nectarAmount setTo 50
-        featProp scale setTo 0.25
+        featProp Flower.Costume.scale setTo 0.25
         prop generation setTo 2 
         exprPush {{global.getProp('baseTypePassing').value}} 
         propPop baseType
@@ -701,7 +701,7 @@ prop nectarQuality setMin 1
 useFeature Graphing
 exprPush {{'Hive Nectar Amount: 0'}}
 featPropPop Graphing text
-featCall Hive.Graphing.meterProp setTo 'nectarAmount'
+featProp Hive.Graphing.meterProp setTo 'nectarAmount'
 
 
 addProp doOnce boolean true
@@ -740,7 +740,7 @@ prop doOnce setTo false
   exprPush {{agent.getProp('hiveID').value}}
   propPop global.hiveIDPassing
 
-  featCall Population agentsForEach Bee [[
+  featCall Population charactersForEach Bee [[
 
     // TODO: setup the user hive to change to whatever the current hive is when you visit it or else this number will be off      
 
@@ -769,17 +769,17 @@ every 0.5 runAtStart [[
   // in the system will much with the count
  
  ifExpr {{ agent.getProp('aiBeeCountTemp').value == 0}} [[
-    exprPush{{ agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') + agent.getProp('aiBeeCount').value }}
+    exprPush{{ agent.callFeatMethod('Population', 'getActiveCharactersCount', 'Bee') + agent.getProp('aiBeeCount').value }}
     propPop aiBeeCountTemp
   ]]
 
-  ifExpr {{ agent.getProp('aiBeeCountTemp').value >  agent.callFeatMethod('Population', 'getActiveAgentsCount', 'Bee') }} [[ 
+  ifExpr {{ agent.getProp('aiBeeCountTemp').value >  agent.callFeatMethod('Population', 'getActiveCharactersCount', 'Bee') }} [[ 
 
-  // send this hiveID to the global variable so we can grab it inside of createAgent  
+  // send this hiveID to the global variable so we can grab it inside of createCharacter  
   exprPush {{ agent.getProp('hiveID').value }}
   propPop global.hiveIDPassing
 
-  featCall Population createAgent Bee [[
+  featCall Population createCharacter Bee [[
         
       // grab the hiveID we passed in, and set it to this bee's hiveID so we can check stuff later
       exprPush {{global.getProp('hiveIDPassing').value}}
@@ -850,7 +850,7 @@ ifExpr {{ agent.getProp('baseType').value == 'squash' }} [[
 
 ]]
 ifExpr {{ agent.getProp('baseType').value == 'pumpkin' }} [[
-  featProp Flower.Costume.costumeName setTo 'pumpkinSprout.png'
+  featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
   prop costumeName setTo 'pumpkinSprout'
 
 ]]
@@ -906,7 +906,7 @@ prop Flower.flowerID add 1
 useFeature Graphing
 exprPush {{ agent.getProp('nameBase').value }}
 featPropPop Graphing text
-featCall Flower.Graphing.meterProp setTo 'nectarAmount'
+featProp Flower.Graphing.meterProp setTo 'nectarAmount'
 
 addProp doOnce boolean true
 
@@ -974,7 +974,7 @@ every 1 runAtStart [[
     featProp Flower.Costume.costumeName setTo 'HB_yellowPollen.png'
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'watermelon' && agent.getProp('pollenAmount').value == 1 }} [[
-    featProp Flower.Costume.costumeName setTo 'watermelonSproutPollen.png'
+    featProp Flower.Costume.costumeName setTo 'HB_watermelonSproutPollen.png'
   ]]
   ifExpr {{ agent.getProp('baseType').value == 'squash' && agent.getProp('pollenAmount').value == 1 }} [[
     featProp Flower.Costume.costumeName setTo 'HB_squashSproutPollen.png'
@@ -1027,7 +1027,7 @@ prop y setTo -256
 useFeature Costume
 featProp Background.Costume.costumeName setTo'HB_background (filter).png' 0
 // TODO: CONVERT
-featCall Background.Costume.scale setTo 0.8
+featProp Background.Costume.scale setTo 0.8
 
 # PROGRAM UPDATE
 `
