@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 0,
     "roundsCanLoop": true,
@@ -699,7 +696,7 @@ prop nectarQuality setMax 3
 prop nectarQuality setMin 1
 
 useFeature Graphing
-exprPush {{'Hive Nectar Amount: 0'}}
+exprPush {{'Nectar: 0'}}
 featPropPop Graphing text
 featProp Hive.Graphing.meterProp setTo 'nectarAmount'
 
@@ -716,7 +713,7 @@ every 0.1 [[
   exprPush {{agent.getProp('nectarAmount').value / 5}} 
   propPop agent.tempNectarDisplay
   
-  exprPush {{'Hive Nectar Amount: ' + agent.getProp('tempNectarDisplay').value}}
+  exprPush {{'Nectar: ' + agent.getProp('tempNectarDisplay').value}}
   featPropPop Graphing text 
   
   // update our name to reflect the number of dancing and watching bees
@@ -1053,8 +1050,8 @@ prop y setTo -396.19`
       "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop hiveType setTo 'natural'
-prop x setTo -146.09
-prop y setTo 279.34
+prop x setTo -135.39
+prop y setTo 272.46
 prop scale setTo 2
 prop hiveID setTo 0
 prop aiBeeCount setTo 8
@@ -1066,6 +1063,7 @@ prop aiBeeCount setTo 8
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
       featProp Graphing text setTo 'Squash'
+      featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
 prop x setTo -539.35
 prop y setTo -61.33`
     },
@@ -1075,6 +1073,7 @@ prop y setTo -61.33`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
       featProp Graphing text setTo 'Watermelon'
+      featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
 prop x setTo -543.31
 prop y setTo 262.13`
     },
@@ -1084,8 +1083,9 @@ prop y setTo 262.13`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
       featProp Graphing text setTo 'Squash'
-prop x setTo -535.00
-prop y setTo -67.20`
+      featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
+prop x setTo -539.67
+prop y setTo -60.84`
     },
     {
       "id": "12",
@@ -1093,6 +1093,7 @@ prop y setTo -67.20`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
       featProp Graphing text setTo 'Pumpkin'
+      featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
 prop x setTo 311.2
 prop y setTo 290.55`
     },
@@ -1102,6 +1103,7 @@ prop y setTo 290.55`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
       featProp Graphing text setTo 'Pumpkin'
+      featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
 prop x setTo -537.88
 prop y setTo -231.72`
     },
@@ -1111,6 +1113,7 @@ prop y setTo -231.72`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
       featProp Graphing text setTo 'Watermelon'
+      featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
 prop x setTo -274.94
 prop y setTo 153.57`
     },
@@ -1120,8 +1123,9 @@ prop y setTo 153.57`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
       featProp Graphing text setTo 'Squash'
-prop x setTo -535.86
-prop y setTo -65.20`
+      featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
+prop x setTo -537.93
+prop y setTo -60.20`
     },
     {
       "id": "16",
@@ -1129,6 +1133,7 @@ prop y setTo -65.20`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
       featProp Graphing text setTo 'Watermelon'
+      featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
 prop x setTo -544.29
 prop y setTo 262.17`
     },
@@ -1138,7 +1143,7 @@ prop y setTo 262.17`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
 featProp Graphing text setTo 'Squash'
-featProp Graphing text setTo 'Squash'
+featProp Flower.Costume.costumeName setTo 'HB_squashSprout.png'
 prop x setTo -64.4
 prop y setTo -59.42`
     },
@@ -1148,6 +1153,7 @@ prop y setTo -59.42`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
       featProp Graphing text setTo 'Pumpkin'
+      featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
 prop x setTo 308.05
 prop y setTo 69.56`
     },
@@ -1157,6 +1163,7 @@ prop y setTo 69.56`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
       featProp Graphing text setTo 'Pumpkin'
+      featProp Flower.Costume.costumeName setTo 'HB_pumpkinSprout.png'
 prop x setTo 113.9
 prop y setTo -36.17`
     },
@@ -1166,6 +1173,7 @@ prop y setTo -36.17`
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
       featProp Graphing text setTo 'Watermelon'
+      featProp Flower.Costume.costumeName setTo 'HB_watermelonSprout.png'
 prop x setTo -282.5
 prop y setTo 41.34`
     },
@@ -1185,7 +1193,9 @@ prop y setTo 107.34`
       "initScript": `prop x setTo 106.62
 prop y setTo 143.83
 prop baseType setTo 'red'
+featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
 featProp Graphing text setTo 'Red Flower'
+
 `
     },
     {
@@ -1202,14 +1212,18 @@ prop y setTo 105.90`
       "label": "Flower24",
       "bpid": "Flower",
       "initScript": `prop x setTo 318.38
-prop y setTo -153.5`
+prop y setTo -153.5
+prop baseType setTo blue
+featProp Graphing text setTo 'Blue Flower'`
     },
     {
       "id": "25",
       "label": "Flower25",
       "bpid": "Flower",
       "initScript": `prop x setTo -538.08
-prop y setTo 107.10`
+prop y setTo 107.10
+prop baseType setTo blue
+featProp Graphing text setTo 'Blue Flower'`
     },
     {
       "id": "26",
@@ -1219,6 +1233,8 @@ prop y setTo 107.10`
 prop y setTo -128.16
 prop baseType setTo 'yellow'
 featProp Graphing text setTo 'Yellow Flower'
+featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+
 `
     },
     {
@@ -1226,7 +1242,9 @@ featProp Graphing text setTo 'Yellow Flower'
       "label": "Flower27",
       "bpid": "Flower",
       "initScript": `prop x setTo 83.66
-prop y setTo -161.79`
+prop y setTo -161.79
+prop baseType setTo blue
+featProp Graphing text setTo 'Blue Flower'`
     }
   ]
 }
