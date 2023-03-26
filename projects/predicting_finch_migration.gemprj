@@ -1,0 +1,864 @@
+{
+  "id": "predicting_finch_migration",
+  "label": "SSMV CT Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 11393254,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// and one that is not though you can use character controller with the second
+// Change this description once you are ready to share the model so others know how it is supposed to work.
+
+addFeature Population
+
+prop global.visible setTo false
+addProp numfinchSmall number 0
+addProp numfinchMed number 0
+addProp numfinchLar number 0
+addProp prediction boolean false
+addProp numPlayers number 0
+addProp numOccupiedNests number 0
+
+addProp countReady number 0
+// required directive
+# PROGRAM UPDATE
+
+
+ifExpr {{ global.getProp('countReady').value == global.getProp('numPlayers').value }} [[
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    prop global.prediction setTo true
+  ]]
+]]`
+    },
+    {
+      "name": "scientist",
+      "scriptText": `# BLUEPRINT scientist
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+// beak length holds the finch beak length property of a carried finch
+addProp beakLength number 0
+// temp beak length property holds the beak length of another scientist holding a finch if interacting with the scientist
+addProp tempBeakLength number 0
+// beak type holds the finch beak type property of a carried finch
+addProp beakType number 0
+// carrying is set to true if the scientist is carrying beak properties
+addProp carrying boolean false
+// boolean used to ensure scientists arent counted as more than one player on init
+addProp player boolean false
+// ready to predict is set to true if the player is interacting with the prediction clipboard
+addProp readyToPredict boolean false
+// increases if a scientist has a partner, used to limit comparisons between 2 scientist agents
+addProp hasPartner number 0
+// a temp property to check if scientists are interacting with themselves in scientist-scientist interactions
+addProp isThatMe number 0
+addProp nestInteraction boolean false
+
+// set the scientist costume
+featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
+featProp scientist.Costume.scale setTo 0.35
+
+// monitor interactions beetween scientists and other agents in the model
+featCall scientist.Touches monitor 'finches' c2b
+featCall scientist.Touches monitor 'nest' c2b
+featCall scientist.Touches monitor 'scientist' b2b
+featCall scientist.Touches monitor 'clipboard' b2b
+
+# PROGRAM UPDATE
+
+// on init, set the number of players to the number of scientist agents
+onEvent ROUNDINIT [[
+  ifProp scientist.player equal false [[
+    prop global.numPlayers add 1
+    prop scientist.player setTo true
+  ]]
+]]
+
+
+// flips the scientist costume to show what direction they are moving
+every 0.1 runAtStart [[
+  ifFeatProp scientist.Movement.compassDirection equal 'E' [[
+    featProp scientist.Costume.flipX setTo true
+  ]]
+  ifFeatProp scientist.Movement.compassDirection equal 'W' [[
+    featProp scientist.Costume.flipX setTo false
+  ]]
+]]
+
+// scientists who are not carrying finch beak properties can interact with a finch
+when scientist centerfirsttouches finches [[
+  ifProp scientist.carrying equal false [[
+    ifProp finches.carried equal false [[
+      prop finches.carried setTo true
+      prop scientist.carrying setTo true
+      featProp finches.Costume.glow setTo 1
+      // push the finch beaktype and beaklength properties to the scientist beaktype and beaklength properties
+      propPush finches.beakLength
+      propPop scientist.beakLength
+      propPush finches.beakType
+      propPop scientist.beakType
+      // hide finches and set them as inert so we cannot interact with them again
+      prop finches.visible setTo false
+      prop finches.isInert setTo true
+      // change the costume of the scientist to show they are carrying beak properties
+      featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+      featProp scientist.Costume.scale setTo 0.35
+
+    ]]
+  ]]
+]]
+
+// describes the interactions between scientists and nests. There are two states that can happen: 1) when scientist is carrying finch properties and the nest is empty and, 2) when scientist is not carrying finch properties and the nest is occupied
+when scientist centerfirsttouches nest [[
+  // scientists carrying finch beak properties can interact with empty nests to transfer beak properties to the nest
+  ifProp scientist.hasPartner equal 0 [[
+    ifProp scientist.carrying equal true [[
+      ifProp nest.occupied equal false [[
+        prop scientist.nestInteraction setTo true
+        // change costumes to show scientist placing finch in nest
+        featProp scientist.Costume.costumeName setTo 'SF_scientist.png'
+        featProp scientist.Costume.scale setTo 0.35
+        featProp nest.Costume.costumeName setTo 'SF_nestoccupied.png'
+        featProp nest.Costume.scale setTo 0.2
+        featProp nest.Costume.glow setTo 1
+
+        // transfer the finch beaklength and beaktype properties from the scientist to the nest
+        propPush scientist.beakLength
+        propPop nest.beakLength
+        propPush scientist.beakType
+        propPop nest.beakType
+
+        // set the nest as occupied
+        prop nest.occupied setTo true
+        prop global.numOccupiedNests add 1
+      ]]
+    ]]
+
+    // scientists who are not carrying finches can interact with a nest to pick up the beak properties housed in the nest
+    ifProp scientist.carrying equal false [[
+      ifProp nest.occupied equal true [[
+        featProp scientist.Costume.glow setTo 1
+        featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+        featProp scientist.Costume.scale setTo 0.35
+        featProp nest.Costume.costumeName setTo 'SF_nest.png'
+        featProp nest.Costume.scale setTo 0.1
+        // transfer the beaklength and beaktype properties from the nest to the scientist
+        propPush nest.beakLength
+        propPop scientist.beakLength
+        propPush nest.beakType
+        propPop scientist.beakType
+        // set the new nest and scientist carrying properties
+        prop scientist.carrying setTo true
+        prop nest.occupied setTo false
+        prop global.numOccupiedNests sub 1
+        // reset the nest beak properties to 0
+        prop nest.beakLength setTo 0
+        prop nest.beakType setTo 0
+      ]]
+    ]]
+  ]]
+]]
+
+// when scientists leave a nest after dropping off a finch, set their carrying property to false and reset beak properties of the scientist
+when scientist centerlasttouches nest [[
+  ifProp scientist.nestInteraction equal true [[
+    ifProp scientist.hasPartner equal 0 [[
+      ifProp scientist.carrying equal true [[
+        ifProp nest.occupied equal true [[
+          prop scientist.carrying setTo false
+          prop scientist.beakLength setTo 0
+          prop scientist.beakType setTo 0
+          prop scientist.nestInteraction setTo false
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+// scientists holding a finch can interact with another scientist holding a finch
+when scientist touches scientist [[
+  // scientists carrying finch properties but are not interacting with another scientist
+  ifProp scientist.carrying equal true [[
+    ifProp scientist.hasPartner equal 0 [[
+      // push the beaklength property of the other agent and put it into a temporary property on the scientist
+      propPush agent.beakLength
+      propPop scientist.isThatMe
+      propPush scientist.beakLength
+      propPop agent.isThatMe
+      // compare the temporary property with the beaklength property of the scientist to check if the other agent is myself
+      ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
+        // if the other agent is not me, check if the other agent has a partner and if it is carrying finch properties.
+        ifProp agent.hasPartner equal 0 [[
+          ifProp agent.carrying equal true [[
+            // set the scientist and agent as having a partner
+            prop scientist.hasPartner setTo 1
+            prop agent.hasPartner setTo 1
+            // push the beaklength property of the agent and put it in a temporary beak length property of the scientist and vise versa
+            propPush agent.beakLength
+            propPop scientist.tempBeakLength
+            propPush scientist.beakLength
+            propPop agent.tempBeakLength
+            // compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to larger and the agent costume to smaller
+            ifExpr {{ scientist.getProp('beakLength').value > scientist.getProp('tempBeakLength').value }} [[
+              featProp scientist.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+              featProp agent.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+              featProp scientist.Costume.scale setTo 0.35
+              featProp agent.Costume.scale setTo 0.35
+              featProp scientist.Costume.glow setTo 1
+              featProp agent.Costume.glow setTo 1
+            ]]
+            // compare the beak length and temporary beak length properties of the scientist. If scientist is larger, change the scientist costume to smaller and the agent costume to larger
+            ifExpr {{ scientist.getProp('beakLength').value < scientist.getProp('tempBeakLength').value }} [[
+              featProp scientist.Costume.costumeName setTo 'SF_scientistcarryingsmaller.png'
+              featProp agent.Costume.costumeName setTo 'SF_scientistcarryinglarger.png'
+              featProp scientist.Costume.scale setTo 0.35
+              featProp agent.Costume.scale setTo 0.35
+              featProp scientist.Costume.glow setTo 1
+              featProp agent.Costume.glow setTo 1
+            ]]
+          ]]
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+
+// change the costume of scientist after interacting with another scientist to compare beaklength properties
+when scientist lasttouches scientist [[
+  // change the scientist back to carrying a finch after the finch comparison
+  ifProp scientist.hasPartner equal 1 [[
+    ifProp agent.hasPartner equal 1 [[
+      ifExpr {{ scientist.getProp('beakLength').value != scientist.getProp('isThatMe').value }} [[
+        ifProp scientist.carrying equal true [[
+          ifProp agent.carrying equal true [[
+            prop scientist.hasPartner setTo 0
+            prop agent.hasPartner setTo 0
+            featProp scientist.Costume.costumeName setTo 'SF_scientistcarrying.png'
+            featProp scientist.Costume.scale setTo 0.35
+            featProp agent.Costume.costumeName setTo 'SF_scientistcarrying.png'
+            featProp agent.Costume.scale setTo 0.35
+          ]]
+
+        ]]
+      ]]
+    ]]
+  ]]
+
+]]
+
+// when a scientist actively interacts with the clipboard, set the player status as ready to make a prediction and add one to the global property to count ready players
+when scientist touches clipboard [[
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    ifProp scientist.readyToPredict equal false [[
+      featProp scientist.Costume.glow setTo 1
+      prop scientist.readyToPredict setTo true
+      prop global.countReady add 1
+    ]]
+  ]]
+]]
+
+// when scientists leave the clipboard, set the player status as not ready to make a prediction and remove their count from the global property to count ready players
+when scientist lasttouches clipboard [[
+  ifProp global.numOccupiedNests greaterThan 0 [[
+    prop global.countReady sub 1
+    prop scientist.readyToPredict setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "background",
+      "scriptText": `# BLUEPRINT background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp background.Costume.costumeName setTo 'SF_background.png'
+featProp background.Costume.scale setTo 1.09
+// featProp background.Costume.height setTo 1800
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island1",
+      "scriptText": `# BLUEPRINT island1
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island1.Costume.costumeName setTo 'SF_island3.png'
+featProp island1.Costume.scale setTo 0.2
+prop island1.alpha setTo 0.8
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island2",
+      "scriptText": `# BLUEPRINT island2
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp island2.Costume.costumeName setTo 'SF_island2.png'
+featProp island2.Costume.scale setTo 0.6
+prop island2.alpha setTo 0.8
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "finches",
+      "scriptText": `# BLUEPRINT finches
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Population
+addFeature Physics
+addFeature Movement
+addFeature Touches
+
+addProp beakType number 0
+addProp beakLength number 0
+addProp carried boolean false
+
+featProp finches.Costume.costumeName setTo 'SF_finch.png'
+featProp finches.Costume.scale setTo 0.3
+
+featCall finches.Touches monitor 'scientist' c2b
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+every 1 runAtStart [[
+  featProp finches.Movement.movementType setTo 'jitter'
+  featProp finches.Movement.jitterDistance setTo 1
+]]
+
+ifProp global.prediction equal true [[
+  featProp finches.Movement.movementType setTo 'stop'
+  prop finches.alpha setTo 0.3
+  prop finches.isInert setTo true
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "nest",
+      "scriptText": `# BLUEPRINT nest
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+// occupied is true if the nest has beak properties in it
+addProp occupied boolean false
+// nestSize 0,1,2 represent small, medium, large beaks
+addProp nestSize number 0
+// beaklength holds the beaklength of a finch
+addProp beakLength number 0
+// beaktype represents if the beak is small, medium, large
+addProp beakType number 0
+// match number is used to compare beaktype to nest type to see if the finch placement is correct
+addProp match number 0
+addProp hasPartner number 0
+
+
+// set the nest costume and scale
+featProp nest.Costume.costumeName setTo 'SF_nest.png'
+featProp nest.Costume.scale setTo 0.1
+
+// set nest interactions with scientist agents
+featCall nest.Touches monitor 'scientist' c2b
+
+
+# PROGRAM UPDATE
+
+// when the players make their prediction, empty nests and finch properties sorted into incorrect nests are made transparent. finch properties sorted into correct nests glow. all nests are made inert.
+ifProp global.prediction equal true [[
+  ifProp nest.occupied equal false [[
+    prop nest.alpha setTo 0.3
+    prop nest.isInert setTo true
+  ]]
+
+  // occupied nests are checked to see if the finch properties match their nest type by subtracting the beakType from beakSize
+  ifProp nest.occupied equal true [[
+    exprPush {{ nest.getProp('nestSize').value - nest.getProp('beakType').value }}
+    propPop nest.match
+    // if the nest and finch beak type match
+    ifProp nest.match equal 0 [[
+      featProp nest.Costume.glow setTo 1
+      prop nest.isInert setTo true
+    ]]
+    // if the nest and finch beak type do not match
+    ifProp nest.match notEqual 0 [[
+      prop nest.alpha setTo 0.3
+      prop nest.isInert setTo true
+    ]]
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "clipboard",
+      "scriptText": `# BLUEPRINT clipboard
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp clipboard.Costume.costumeName setTo 'SF_clipboardislands.png'
+featProp clipboard.Costume.scale setTo 0.19
+
+featCall clipboard.Touches monitor 'scientist' b2b
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "foodSeeds",
+      "scriptText": `# BLUEPRINT foodSeeds
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp foodSeeds.Costume.costumeName setTo 'SF_seeds.png'
+featProp foodSeeds.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "foodInsects",
+      "scriptText": `# BLUEPRINT foodInsects
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp foodInsects.Costume.costumeName setTo 'SF_insects.png'
+featProp foodInsects.Costume.scale setTo 0.15
+featProp foodInsects.Costume.flipX setTo true
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "foodFruit",
+      "scriptText": `# BLUEPRINT foodFruit
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+addProp small boolean false
+
+featProp foodFruit.Costume.costumeName setTo 'SF_cactusfruit.png'
+featProp foodFruit.Costume.scale setTo 0.15
+ifProp foodFruit.small equal true [[
+  featProp foodFruit.Costume.scale setTo 0.05
+]]
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "island3",
+      "scriptText": `# BLUEPRINT island3
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+// sets the island costume
+featProp island3.Costume.costumeName setTo 'SF_island4.png'
+featProp island3.Costume.scale setTo 0.15
+prop island3.alpha setTo 0.7
+
+# PROGRAM UPDATE
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "beakChart",
+      "scriptText": `# BLUEPRINT beakChart
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp beakChart.Costume.costumeName setTo 'SF_beakchart.png'
+featProp beakChart.Costume.scale setTo 0.25
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'onexone.json'
+
+// this is the time we will track
+addProp time number 0
+
+// set the timer to the starting text
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
+// timer stops when the prediction phase begins
+every 1 runAtStart [[
+  ifProp global.prediction equal false [[
+    prop Timer.time add 1
+  \texprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  \tfeatPropPop Timer.Graphing.text
+  ]]
+]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1",
+      "label": "background1",
+      "bpid": "background",
+      "initScript": `prop x setTo 0.60
+prop y setTo -3.72`
+    },
+    {
+      "id": "2",
+      "label": "island12",
+      "bpid": "island1",
+      "initScript": `prop x setTo 7.81
+prop y setTo 310.19`
+    },
+    {
+      "id": "7",
+      "label": "island27",
+      "bpid": "island2",
+      "initScript": `prop x setTo -259.61
+prop y setTo 317.38`
+    },
+    {
+      "id": "25",
+      "label": "finches4",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 1
+prop beakLength setTo 4`
+    },
+    {
+      "id": "26",
+      "label": "finches2",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 0
+prop beakLength setTo 2`
+    },
+    {
+      "id": "27",
+      "label": "finches1",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 0
+prop beakLength setTo 1`
+    },
+    {
+      "id": "28",
+      "label": "finches3",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 1
+prop beakLength setTo 3`
+    },
+    {
+      "id": "29",
+      "label": "finches5",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 2
+prop beakLength setTo 5`
+    },
+    {
+      "id": "30",
+      "label": "finches6",
+      "bpid": "finches",
+      "initScript": `prop x setToRnd -350 350 false
+prop y setToRnd -164 12 false
+prop beakType setTo 2
+prop beakLength setTo 6`
+    },
+    {
+      "id": "31",
+      "label": "nest1",
+      "bpid": "nest",
+      "initScript": `prop x setTo -348.75
+prop y setTo 6.14
+prop nestSize setTo 0`
+    },
+    {
+      "id": "32",
+      "label": "nest2",
+      "bpid": "nest",
+      "initScript": `prop x setTo -307.17
+prop y setTo 167.05
+prop nestSize setTo 0`
+    },
+    {
+      "id": "33",
+      "label": "nest3",
+      "bpid": "nest",
+      "initScript": `prop x setTo -99.95
+prop y setTo 225.48
+prop nestSize setTo 1`
+    },
+    {
+      "id": "34",
+      "label": "nest4",
+      "bpid": "nest",
+      "initScript": `prop x setTo 118.47
+prop y setTo 230.43
+prop nestSize setTo 1`
+    },
+    {
+      "id": "35",
+      "label": "nest5",
+      "bpid": "nest",
+      "initScript": `prop x setTo 306.35
+prop y setTo 176.48
+prop nestSize setTo 2`
+    },
+    {
+      "id": "36",
+      "label": "nest6",
+      "bpid": "nest",
+      "initScript": `prop x setTo 350.64
+prop y setTo 17.08
+prop nestSize setTo 2`
+    },
+    {
+      "id": "37",
+      "label": "clipboard37",
+      "bpid": "clipboard",
+      "initScript": `prop x setTo -328.93
+prop y setTo -305.11`
+    },
+    {
+      "id": "39",
+      "label": "foodInsects39",
+      "bpid": "foodInsects",
+      "initScript": `prop x setTo -319.78
+prop y setTo 249.69`
+    },
+    {
+      "id": "40",
+      "label": "foodFruit40",
+      "bpid": "foodFruit",
+      "initScript": `prop x setTo 16.46
+prop y setTo 246.98`
+    },
+    {
+      "id": "41",
+      "label": "island341",
+      "bpid": "island3",
+      "initScript": `prop x setTo 283.22
+prop y setTo 286.61`
+    },
+    {
+      "id": "42",
+      "label": "foodSeeds42",
+      "bpid": "foodSeeds",
+      "initScript": `prop x setTo 340.37
+prop y setTo 231.02`
+    },
+    {
+      "id": "43",
+      "label": "beakChart43",
+      "bpid": "beakChart",
+      "initScript": `prop x setTo 495.27
+prop y setTo -214.56`
+    },
+    {
+      "id": "44",
+      "label": "Timer44",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 451.69
+prop y setTo -391.17`
+    }
+  ]
+}
