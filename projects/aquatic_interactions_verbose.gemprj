@@ -7,10 +7,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -176,7 +173,13 @@ featCall Fish.Touches monitor 'Algae' b2b
 featProp Fish.Graphing.meterProp setTo 'energyLevel'
 # PROGRAM UPDATE
 onEvent Start [[
-  featCall Fish.IU logEvent 'A fish is receiving a Start event'
+  // Log using the logString
+  featCall Fish.IU logString 'A fish is receiving a Start event'
+
+  // Seperate out to log via a property, so in theory we could add more info via a concatenation
+  featProp Fish.IU.logStringText setTo 'SOMETHING TO LOG'
+  featCall Fish.IU logProperty
+
   // This tells any fish that are controlled by the computer instead of by a student
   // to wander around randomly, and eat any algae that they bump into
   featProp Fish.Movement.movementType setTo 'wander'
@@ -219,7 +222,7 @@ when Fish touches Algae [[
       prop Algae.alpha setTo 0.5
       // featProp Algae.Costume.scale setTo 0.1
       prop Algae.isInert setTo true
-      featCall Fish.IU logEvent 'A Fish is eating algae and killed it'
+      featCall Fish.IU logString 'A Fish is eating algae and killed it'
     ]]
   ]]
 ]]
@@ -258,7 +261,7 @@ every 1 runAtStart [[
   // The fish is dead if it has 0 energy
   ifProp Fish.energyLevel equal 0 [[
     featProp Fish.Costume.costumeName setTo 'AQ_fish_dead.png'
-    featCall Fish.IU logEvent 'Fish died, changing its artwork to AQ_fish_dead.png'
+    featCall Fish.IU logString 'Fish died, changing its artwork to AQ_fish_dead.png'
     // Switch to floating if this fish is not controlled by a student
     featProp Fish.Movement.movementType setTo 'float'
     // make the fish faded so that it looks dead
@@ -1051,7 +1054,7 @@ when Turtle touches Algae [[
         ifExpr {{ Algae.getProp('energyLevel').value <= 0 }} [[
           prop Algae.alpha setTo 0.5
           prop Algae.isInert setTo true
-          featCall Algae.IU logEvent 'Algae noting it is dead when eaten by turtle'
+          featCall Algae.IU logString 'Algae noting it is dead when eaten by turtle'
         ]]
       ]]
     ]]
@@ -1074,7 +1077,7 @@ when Turtle touches Fish [[
 
 
       // Fish is dead
-      featCall Fish.IU logEvent 'Fish killed by a turtle'
+      featCall Fish.IU logString 'Fish killed by a turtle'
       prop Fish.isInert setTo true
       prop Fish.alpha setTo 0.3
       // featProp Fish.Costume setPose 2
