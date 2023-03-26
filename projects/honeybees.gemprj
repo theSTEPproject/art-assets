@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 0,
     "roundsCanLoop": true,
@@ -1062,30 +1065,34 @@ prop aiBeeCount setTo 8
       "label": "squash2",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
-prop x setTo -608.81
-prop y setTo 25.96`
+      featProp Graphing text setTo 'Squash'
+prop x setTo -539.35
+prop y setTo -61.33`
     },
     {
       "id": "10",
       "label": "watermelon1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
-prop x setTo -590.8
-prop y setTo 227.45`
+      featProp Graphing text setTo 'Watermelon'
+prop x setTo -543.31
+prop y setTo 262.13`
     },
     {
       "id": "11",
       "label": "squash1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
-prop x setTo -604.76
-prop y setTo -33.3`
+      featProp Graphing text setTo 'Squash'
+prop x setTo -535.00
+prop y setTo -67.20`
     },
     {
       "id": "12",
       "label": "pumpkin2",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
+      featProp Graphing text setTo 'Pumpkin'
 prop x setTo 311.2
 prop y setTo 290.55`
     },
@@ -1094,14 +1101,16 @@ prop y setTo 290.55`
       "label": "pumpkin1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
-prop x setTo -623.28
-prop y setTo -274`
+      featProp Graphing text setTo 'Pumpkin'
+prop x setTo -537.88
+prop y setTo -231.72`
     },
     {
       "id": "14",
       "label": "watermelon2",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
+      featProp Graphing text setTo 'Watermelon'
 prop x setTo -274.94
 prop y setTo 153.57`
     },
@@ -1110,22 +1119,26 @@ prop y setTo 153.57`
       "label": "squash4",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
-prop x setTo -671.01
-prop y setTo 13.87`
+      featProp Graphing text setTo 'Squash'
+prop x setTo -535.86
+prop y setTo -65.20`
     },
     {
       "id": "16",
       "label": "watermelon4",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
-prop x setTo -580.63
-prop y setTo 278.46`
+      featProp Graphing text setTo 'Watermelon'
+prop x setTo -544.29
+prop y setTo 262.17`
     },
     {
       "id": "18",
       "label": "squash3",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'squash'
+featProp Graphing text setTo 'Squash'
+featProp Graphing text setTo 'Squash'
 prop x setTo -64.4
 prop y setTo -59.42`
     },
@@ -1134,6 +1147,7 @@ prop y setTo -59.42`
       "label": "pumpkin4",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
+      featProp Graphing text setTo 'Pumpkin'
 prop x setTo 308.05
 prop y setTo 69.56`
     },
@@ -1142,6 +1156,7 @@ prop y setTo 69.56`
       "label": "pumpkin3",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'pumpkin'
+      featProp Graphing text setTo 'Pumpkin'
 prop x setTo 113.9
 prop y setTo -36.17`
     },
@@ -1150,6 +1165,7 @@ prop y setTo -36.17`
       "label": "watermelon3",
       "bpid": "Flower",
       "initScript": `prop baseType setTo 'watermelon'
+      featProp Graphing text setTo 'Watermelon'
 prop x setTo -282.5
 prop y setTo 41.34`
     },
@@ -1158,8 +1174,9 @@ prop y setTo 41.34`
       "label": "blue1",
       "bpid": "Flower",
       "initScript": `prop baseType setTo blue
-prop x setTo -523.48
-prop y setTo 102.95`
+      featProp Graphing text setTo 'Blue Flower'
+prop x setTo -539.99
+prop y setTo 107.34`
     },
     {
       "id": "22",
@@ -1167,15 +1184,18 @@ prop y setTo 102.95`
       "bpid": "Flower",
       "initScript": `prop x setTo 106.62
 prop y setTo 143.83
-prop baseType setTo 'red'`
+prop baseType setTo 'red'
+featProp Graphing text setTo 'Red Flower'
+`
     },
     {
       "id": "23",
       "label": "blue2",
       "bpid": "Flower",
       "initScript": `prop baseType setTo blue
-prop x setTo -570.81
-prop y setTo 108.15`
+      featProp Graphing text setTo 'Blue Flower'
+prop x setTo -535.70
+prop y setTo 105.90`
     },
     {
       "id": "24",
@@ -1188,8 +1208,8 @@ prop y setTo -153.5`
       "id": "25",
       "label": "Flower25",
       "bpid": "Flower",
-      "initScript": `prop x setTo 628.53
-prop y setTo -235.37`
+      "initScript": `prop x setTo -538.08
+prop y setTo 107.10`
     },
     {
       "id": "26",
@@ -1197,7 +1217,9 @@ prop y setTo -235.37`
       "bpid": "Flower",
       "initScript": `prop x setTo -287.97
 prop y setTo -128.16
-prop baseType setTo 'yellow'`
+prop baseType setTo 'yellow'
+featProp Graphing text setTo 'Yellow Flower'
+`
     },
     {
       "id": "27",
