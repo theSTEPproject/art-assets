@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 0,
     "roundsCanLoop": true,
@@ -137,6 +134,7 @@ prop Bee.beeSpeed setTo 10
 // mode to determine what AI bees do
 // if the mode is set to user, which is the default, assume the AI shouldn't do anything because it is controlled
 // via pozyx or ptrack. so we need to set the mode to something else if spawned by a hive
+// NOTE: to start some AI bees in the hive, change the hive property aiBeeCount and it will spawn them automatically
 // all modes
   // user: controlled by a user, so no AI 
   // user-dancing: controlled by user, but hanging in the hive
@@ -166,15 +164,14 @@ prop Bee.beeID add 1
       // if this is AI and set to start, start moving
       ifExpr {{ agent.getProp('mode').value == 'start' }} [[  
        
-        
         prop Bee.mode setTo 'scouting'
-        // TODO: CONVERT
+        // This was the old pre-conversion call?
         //featCall Bee.Movement setMovementType 'edgeToEdge' 5 0 180
-        //featCall Bee.Movement setRandomDirection
-        featProp Bee.Movement.movementType setTo 'edgeToEdge'
-
+        featCall Bee.Movement setRandomDirection
         exprPush {{ Bee.getProp('beeSpeed').value }}
         featPropPop Bee.Movement.distance
+        featProp Bee.Movement.bounceAngle setTo 180
+        featProp Bee.Movement.movementType setTo 'edgeToEdge'
       ]]
     ]]
 
@@ -672,8 +669,8 @@ addProp hiveID number 0
 
 // number of AI bees to generate on runAtStart
 addProp aiBeeCount number 8
-// set it separately so it'll appear in map editor - remove if that feature
-prop aiBeeCount setTo 0
+// set it separately so it'll appear in map editor - remove if that feature is fixed
+prop aiBeeCount setTo 8
 
 // temp variable for use in creating AI bees
 addProp aiBeeCountTemp number 0
@@ -1056,7 +1053,9 @@ prop y setTo -396.19`
 prop x setTo -146.09
 prop y setTo 279.34
 prop scale setTo 2
-prop hiveID setTo 0`
+prop hiveID setTo 0
+prop aiBeeCount setTo 8
+`
     },
     {
       "id": "9",
