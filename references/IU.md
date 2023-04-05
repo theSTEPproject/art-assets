@@ -15,7 +15,7 @@ If we have only changed art assets, or ran this yesterday, just use this version
 `npm run start`
 
 # Settings
-- Merge request with expkanation: [171](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/171) 
+- Merge request with explanation: [171](https://gitlab.com/stepsys/gem-step/gsgo/-/merge_requests/171) 
 
 To change the MQTT server and / or local assets location simply edit:
 
