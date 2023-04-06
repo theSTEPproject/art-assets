@@ -35,17 +35,31 @@
 // ✏️ body
 
 # PROGRAM INIT
-
 // 🔎 WHAT DOES MODEL DO?
-// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
-// 🔎 and one that is not though you can use character controller with the second
-// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
-
+// 🔎 TODO: Add a description of this beaver model.
 
 prop global.visible setTo false
 
+
+// to help us keep track in the water
+// the dam needs to update this 
+addProp damBuildLevel number  1
+
+// change this to true once the water is a certain size
+addProp canBuildLodge boolean false
+
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+every 0.5 [[
+  ifProp global.damBuildLevel greaterThan 5 [[
+    prop global.canBuildLodge setTo true
+  ]]
+  ifProp global.damBuildLevel lessThan 5 [[
+    prop global.canBuildLodge setTo false
+  ]]
+]]
+`
     },
     {
       "name": "Beaver",
@@ -103,19 +117,6 @@ when Beaver firsttouches Twig [[
   ]]
 ]]
 
-when Beaver touches Lodge [[
-  every 1 [[
-    ifProp Beaver.carrying equal 'twig' [[
-      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
-        featCall Beaver.IU logString 'Beaver adding a twig to the lodge'
-        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-        prop Beaver.carrying setTo 'nothing'
-        prop Lodge.buildLevel add 1
-      ]]
-    ]]
-  ]]
-]]
-
 when Beaver touches Dam [[
   every 1 [[
     ifProp Beaver.carrying equal 'twig' [[
@@ -124,6 +125,26 @@ when Beaver touches Dam [[
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
         prop Beaver.carrying setTo 'nothing'
         prop Dam.buildLevel add 1
+        propPush Dam.buildLevel
+        propPop global.damBuildLevel
+      ]]
+    ]]
+  ]]
+]]
+
+when Beaver touches Lodge [[
+  every 1 [[
+    ifProp Beaver.carrying equal 'twig' [[
+      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
+        ifProp global.canBuildLodge equal true [[
+          featCall Beaver.IU logString 'Beaver adding a twig to the lodge'
+          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+          prop Beaver.carrying setTo 'nothing'
+          prop Lodge.buildLevel add 1
+        ]]
+        ifProp global.canBuildLodge equal true [[
+          // TODO - twig floats away just as in water
+        ]]
       ]]
     ]]
   ]]
@@ -243,7 +264,7 @@ every 0.5 [[
     propPush Lodge.buildLevel 
     propPop Lodge.tempWidth
     prop Lodge.tempWidth mul 20
-    prop Lodge.tempWidth add 100
+    prop Lodge.tempWidth add 80
     propPush Lodge.tempWidth
     featPropPop Lodge.Costume.width
   ]]
@@ -280,7 +301,7 @@ every 0.5 [[
     propPush Dam.buildLevel 
     propPop Dam.tempWidth
     prop Dam.tempWidth mul 20
-    prop Dam.tempWidth add 100
+    prop Dam.tempWidth add 80
     propPush Dam.tempWidth
     featPropPop Dam.Costume.width
   ]]
@@ -302,11 +323,39 @@ featProp Water.Costume.width setTo 200
 featProp Water.Costume.height setTo 400
 featCall Water.Costume setColorizeHSV 0.5 0.2 0.6
 prop Water.zIndex setTo -200
+
 addProp buildLevel number 1
 prop Water.buildLevel setMin 1
 prop Water.buildLevel setMax 10
 
-# PROGRAM UPDATE`
+// used in calculating the width to match build level
+addProp tempWidth number 0
+
+// can be above or below the dam
+// we only do certain things if it is above
+addProp location string 'belowDam'
+
+// this can be fast, medium, or slow
+addProp speedOfWater string 'fast'
+
+# PROGRAM UPDATE
+
+every 0.5 [[
+  // only the water above the dam changes
+  ifProp Water.location equal 'aboveDam' [[
+    propPush global.damBuildLevel
+    propPop Water.buildLevel
+    propPush Water.buildLevel 
+    propPop Water.tempWidth
+    prop Water.tempWidth mul 30
+    prop Water.tempWidth add 170
+    propPush Water.tempWidth
+    featPropPop Water.Costume.width
+  ]]
+
+]]
+
+`
     }
   ],
   "instances": [
@@ -336,14 +385,18 @@ prop y setTo 0`
       "label": "Water 1",
       "bpid": "Water",
       "initScript": `prop x setTo 0
-prop y setTo -200`
+prop y setTo -200
+prop location setTo 'aboveDam'
+`
     },
     {
       "id": "4",
       "label": "Water 2",
       "bpid": "Water",
       "initScript": `prop x setTo 0
-prop y setTo 200`
+prop y setTo 200
+prop location setTo 'belowDam'
+`
     },
     {
       "id": "5",
@@ -365,6 +418,27 @@ prop y setTo -73.87`
       "bpid": "Twig",
       "initScript": `prop x setTo -316.76
 prop y setTo -106.20`
+    },
+    {
+      "id": "8",
+      "label": "Twig 5",
+      "bpid": "Twig",
+      "initScript": `prop x setTo 271.12
+prop y setTo -187.04`
+    },
+    {
+      "id": "9",
+      "label": "Twig 6",
+      "bpid": "Twig",
+      "initScript": `prop x setTo 174.69
+prop y setTo -159.15`
+    },
+    {
+      "id": "10",
+      "label": "Twig 7",
+      "bpid": "Twig",
+      "initScript": `prop x setTo 244.54
+prop y setTo 172.90`
     }
   ]
 }
