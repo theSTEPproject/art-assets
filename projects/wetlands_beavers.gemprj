@@ -143,7 +143,7 @@ when Beaver touches Lodge [[
           prop Lodge.buildLevel add 1
         ]]
         ifProp global.canBuildLodge equal false [[
-          featCall Beaver.IU logString 'Beaver drops a twig but the lodge cant be built yet so it disappears'
+          featCall Beaver.IU logString 'Beaver drops a twig but the lodge cannot be built yet so it disappears'
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
         ]]
