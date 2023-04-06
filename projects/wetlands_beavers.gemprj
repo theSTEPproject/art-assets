@@ -1,6 +1,6 @@
 {
   "id": "wetlands_beavers",
-  "label": "Starter Model",
+  "label": "Wetlands: Beavers 1",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -11,8 +11,16 @@
       false
     ],
     "bounce": true,
-    "bgcolor": 102,
-    "roundsCanLoop": true
+    "bgcolor": 505,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -43,8 +51,8 @@ prop global.visible setTo false
 # PROGRAM UPDATE`
     },
     {
-      "name": "EmbodiedCharacter1",
-      "scriptText": `# BLUEPRINT EmbodiedCharacter1
+      "name": "Beaver",
+      "scriptText": `# BLUEPRINT Beaver
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
@@ -56,27 +64,45 @@ prop global.visible setTo false
 // ✏️ body
 
 # PROGRAM INIT
-// This is the most basic setup of properties that happens as soon as this character is saved
-
-addFeature Costume
-featProp EmbodiedCharacter1.Costume.costumeName setTo 'GEN_circle.json'
-
+// setup features
 addFeature Physics
 addFeature Touches
+addFeature Costume
+addFeature IU
+addFeature Graphing
+
+
+// set initial costume and resize
+featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+featProp Beaver.Costume.scale setTo 0.2
+
+// the beaver can carry nothing, twig, rock, or mud
+addProp carrying string 'nothing'
+featCall Beaver.IU logString 'Beaver started off carrying nothing'
+
+// setup to see if the beaver is touching anything it might pick up
+featCall Beaver.Touches monitor 'Twig' b2b
+featCall Beaver.Touches monitor 'Rock' b2b
+featCall Beaver.Touches monitor 'Mud' b2b
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
-
-
-`
+when Beaver firsttouches Twig [[
+  // If the beaver isn't carrying anything yet, pick up the twig
+  ifProp Beaver.carrying equal 'nothing' [[
+    prop Beaver.carrying setTo 'twig'
+    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_twig.png'
+    featCall Twig.Population removeCharacter
+  ]]
+]]`
     },
     {
-      "name": "InteractingCharacter1",
-      "scriptText": `# BLUEPRINT InteractingCharacter1
+      "name": "Twig",
+      "scriptText": `# BLUEPRINT Twig
 # TAG isPozyxControllable false
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -86,21 +112,30 @@ addFeature Touches
 // ✏️ body
 
 # PROGRAM INIT
-// This is the most basic setup of properties that happens as soon as this character is saved
 
+// setup all of the features we need
 addFeature Costume
-featProp InteractingCharacter1.Costume.costumeName setTo 'GEN_square.json'
-
 addFeature Physics
 addFeature Touches
+addFeature Population
 
+// set the costume
+featProp Twig.Costume.costumeName setTo 'WL_twig.png'
+featProp Twig.Costume.scale setTo 0.1
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-\n`
+// This is also where you can handle touches between characters such as When Algae touches Fish`
     }
   ],
-  "instances": []
+  "instances": [
+    {
+      "id": "0",
+      "label": "Twig0",
+      "bpid": "Twig",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    }
+  ]
 }
