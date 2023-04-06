@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -82,11 +79,15 @@ featCall Beaver.IU logString 'Beaver started off carrying nothing'
 // if the GestureHelper is touching the beaver, set to true
 // if it moves off, set to false
 addProp gesturing boolean false
+addProp gestureTimer number 0
 
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
 featCall Beaver.Touches monitor 'Rock' b2b
 featCall Beaver.Touches monitor 'Mud' b2b
+featCall Beaver.Touches monitor 'Water' b2b
+featCall Beaver.Touches monitor 'Lodge' b2b
+featCall Beaver.Touches monitor 'Dam' b2b
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -99,6 +100,41 @@ when Beaver firsttouches Twig [[
     prop Beaver.carrying setTo 'twig'
     featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_twig.png'
     featCall Twig.Population removeCharacter
+  ]]
+]]
+
+when Beaver touches Lodge [[
+  every 1 [[
+    ifProp Beaver.carrying equal 'twig' [[
+      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
+        featCall Beaver.IU logString 'Beaver adding a twig to the lodge'
+        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+        prop Beaver.carrying setTo 'nothing'
+        prop Lodge.buildLevel add 1
+      ]]
+    ]]
+  ]]
+]]
+
+when Beaver touches Dam [[
+  every 1 [[
+    ifProp Beaver.carrying equal 'twig' [[
+      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
+        featCall Beaver.IU logString 'Beaver adding a twig to the dam'
+        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+        prop Beaver.carrying setTo 'nothing'
+        prop Dam.buildLevel add 1
+      ]]
+    ]]
+  ]]
+]]
+
+every 1 [[
+  ifProp Beaver.gesturing equal true [[
+    prop Beaver.gestureTimer add 1
+  ]]
+  ifProp Beaver.gesturing equal false [[
+    prop Beaver.gestureTimer setTo 0
   ]]
 ]]`
     },
@@ -125,7 +161,7 @@ addFeature Population
 
 // set the costume
 featProp Twig.Costume.costumeName setTo 'WL_twig.png'
-featProp Twig.Costume.scale setTo 0.1
+featProp Twig.Costume.scale setTo 0.2
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -197,7 +233,21 @@ addProp buildLevel number 1
 prop Lodge.buildLevel setMin 1
 prop Lodge.buildLevel setMax 10
 
+// to be used in re-scaling the width
+addProp tempWidth number 0
+
 # PROGRAM UPDATE
+
+every 0.5 [[
+    // re-scale based on the buildLevel
+    propPush Lodge.buildLevel 
+    propPop Lodge.tempWidth
+    prop Lodge.tempWidth mul 20
+    prop Lodge.tempWidth add 100
+    propPush Lodge.tempWidth
+    featPropPop Lodge.Costume.width
+  ]]
+
 `
     },
     {
@@ -220,7 +270,20 @@ addProp buildLevel number 1
 prop Dam.buildLevel setMin 1
 prop Dam.buildLevel setMax 10
 
+// to be used in re-scaling the width
+addProp tempWidth number 0
+
 # PROGRAM UPDATE
+
+every 0.5 [[
+    // re-scale based on the buildLevel
+    propPush Dam.buildLevel 
+    propPop Dam.tempWidth
+    prop Dam.tempWidth mul 20
+    prop Dam.tempWidth add 100
+    propPush Dam.tempWidth
+    featPropPop Dam.Costume.width
+  ]]
 `
     },
     {
@@ -249,7 +312,7 @@ prop Water.buildLevel setMax 10
   "instances": [
     {
       "id": "0",
-      "label": "Twig0",
+      "label": "Twig 1",
       "bpid": "Twig",
       "initScript": `prop x setTo -331.63
 prop y setTo -164.14`
@@ -281,6 +344,27 @@ prop y setTo -200`
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo 200`
+    },
+    {
+      "id": "5",
+      "label": "Twig 2",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -317.10
+prop y setTo -134.30`
+    },
+    {
+      "id": "6",
+      "label": "Twig 3",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -336.43
+prop y setTo -73.87`
+    },
+    {
+      "id": "7",
+      "label": "Twig 4",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -316.76
+prop y setTo -106.20`
     }
   ]
 }
