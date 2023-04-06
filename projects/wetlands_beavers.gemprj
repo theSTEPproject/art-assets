@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -413,7 +416,7 @@ prop location setTo 'aboveDam'
       "label": "Water 2",
       "bpid": "Water",
       "initScript": `prop x setTo 0
-prop y setTo 200
+prop y setTo 199
 prop location setTo 'belowDam'
 `
     },
