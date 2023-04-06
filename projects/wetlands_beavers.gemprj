@@ -142,8 +142,10 @@ when Beaver touches Lodge [[
           prop Beaver.carrying setTo 'nothing'
           prop Lodge.buildLevel add 1
         ]]
-        ifProp global.canBuildLodge equal true [[
-          // TODO - twig floats away just as in water
+        ifProp global.canBuildLodge equal false [[
+          featCall Beaver.IU logString 'Beaver drops a twig but the lodge cant be built yet so it disappears'
+          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+          prop Beaver.carrying setTo 'nothing'
         ]]
       ]]
     ]]
@@ -248,7 +250,7 @@ addFeature Physics
 featProp Lodge.Costume.costumeName setTo 'GEN_square.json'
 featProp Lodge.Costume.width setTo 100
 featProp Lodge.Costume.height setTo 40
-featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
+featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
 
 addProp buildLevel number 1
 prop Lodge.buildLevel setMin 1
@@ -259,17 +261,22 @@ addProp tempWidth number 0
 
 # PROGRAM UPDATE
 
-every 0.5 [[
-    // re-scale based on the buildLevel
-    propPush Lodge.buildLevel 
-    propPop Lodge.tempWidth
-    prop Lodge.tempWidth mul 20
-    prop Lodge.tempWidth add 80
-    propPush Lodge.tempWidth
-    featPropPop Lodge.Costume.width
-  ]]
+// TODO: somehow indicate you can now build a lodge
 
-`
+every 0.5 [[
+  // re-scale based on the buildLevel
+  propPush Lodge.buildLevel
+  propPop Lodge.tempWidth
+  prop Lodge.tempWidth mul 20
+  prop Lodge.tempWidth add 80
+  propPush Lodge.tempWidth
+  featPropPop Lodge.Costume.width
+
+  ifProp global.canBuildLodge equal true [[
+    // make it clear we can now build
+    featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
+  ]]
+]]`
     },
     {
       "name": "Dam",
@@ -351,6 +358,18 @@ every 0.5 [[
     prop Water.tempWidth add 170
     propPush Water.tempWidth
     featPropPop Water.Costume.width
+  ]]
+
+  // change the water speed based on the size of this water, assuming
+  // it moves faster when it is narrower, and slows down as it pools
+  ifProp Water.buildLevel lessThanOrEqual 3 [[
+    prop Water.speedOfWater setTo 'fast'
+  ]]
+  ifProp Water.buildLevel greaterThan 3 [[
+    prop Water.speedOfWater setTo 'medium'
+  ]]
+  ifProp Water.buildLevel greaterThanOrEqual 5 [[
+    prop Water.speedOfWater setTo 'slow'
   ]]
 
 ]]
