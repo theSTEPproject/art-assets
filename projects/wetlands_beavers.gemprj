@@ -71,7 +71,6 @@ addFeature Costume
 addFeature IU
 addFeature Graphing
 
-
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.2
@@ -79,6 +78,10 @@ featProp Beaver.Costume.scale setTo 0.2
 // the beaver can carry nothing, twig, rock, or mud
 addProp carrying string 'nothing'
 featCall Beaver.IU logString 'Beaver started off carrying nothing'
+
+// if the GestureHelper is touching the beaver, set to true
+// if it moves off, set to false
+addProp gesturing boolean false
 
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
@@ -92,6 +95,7 @@ featCall Beaver.Touches monitor 'Mud' b2b
 when Beaver firsttouches Twig [[
   // If the beaver isn't carrying anything yet, pick up the twig
   ifProp Beaver.carrying equal 'nothing' [[
+    featCall Beaver.IU logString 'Beaver picked up a twig'
     prop Beaver.carrying setTo 'twig'
     featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_twig.png'
     featCall Twig.Population removeCharacter
@@ -127,6 +131,119 @@ featProp Twig.Costume.scale setTo 0.1
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "GestureHelper",
+      "scriptText": `# BLUEPRINT GestureHelper
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT DOES the GestureHelper DO?
+// 🔎 This is a character so that lets a helper tell GEM-STEP when
+// 🔎 the person pretending to be a beaver is doing the right gesture
+// 🔎 to put down what it is carrying (either helping build something or dropping it)
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+featProp GestureHelper.Costume.costumeName setTo 'GEN_circle.json'
+featProp GestureHelper.Costume.scale setTo 0.1
+prop GestureHelper.alpha setTo 0.5
+featCall GestureHelper.Touches monitor 'Beaver' b2b
+
+# PROGRAM UPDATE
+
+
+when GestureHelper firsttouches Beaver [[
+  // insert code here
+  prop Beaver.gesturing setTo true
+  featCall Beaver.IU logString 'Beaver started gesturing'
+]]
+
+when GestureHelper lasttouches Beaver [[
+  // insert code here
+  prop Beaver.gesturing setTo false
+  featCall Beaver.IU logString 'Beaver stopped gesturing'
+
+]]
+
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Lodge",
+      "scriptText": `# BLUEPRINT Lodge
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Lodge.Costume.costumeName setTo 'GEN_square.json'
+featProp Lodge.Costume.width setTo 100
+featProp Lodge.Costume.height setTo 40
+featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
+
+addProp buildLevel number 1
+prop Lodge.buildLevel setMin 1
+prop Lodge.buildLevel setMax 10
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Dam",
+      "scriptText": `# BLUEPRINT Dam
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Dam.Costume.costumeName setTo 'GEN_square.json'
+featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.height setTo 40
+featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
+
+addProp buildLevel number 1
+prop Dam.buildLevel setMin 1
+prop Dam.buildLevel setMax 10
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Water",
+      "scriptText": `# BLUEPRINT Water
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Water.Costume.costumeName setTo 'GEN_square.json'
+featProp Water.Costume.width setTo 200
+featProp Water.Costume.height setTo 400
+featCall Water.Costume setColorizeHSV 0.5 0.2 0.6
+prop Water.zIndex setTo -200
+addProp buildLevel number 1
+prop Water.buildLevel setMin 1
+prop Water.buildLevel setMax 10
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -134,8 +251,36 @@ featProp Twig.Costume.scale setTo 0.1
       "id": "0",
       "label": "Twig0",
       "bpid": "Twig",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "initScript": `prop x setTo -331.63
+prop y setTo -164.14`
+    },
+    {
+      "id": "1",
+      "label": "Lodge",
+      "bpid": "Lodge",
+      "initScript": `prop x setTo 0
+prop y setTo -225`
+    },
+    {
+      "id": "2",
+      "label": "Dam",
+      "bpid": "Dam",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
+    },
+    {
+      "id": "3",
+      "label": "Water 1",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo -200`
+    },
+    {
+      "id": "4",
+      "label": "Water 2",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo 200`
     }
   ]
 }
