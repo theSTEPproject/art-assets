@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -110,7 +113,11 @@ addProp gestureTimer number 0
 addProp tempString string ''
 
 // for predator handling - true if hidden
-addProp protected boolean false 
+addProp protected boolean false
+
+addProp energy number 10
+prop Beaver.energy setMin 0
+prop Beaver.energy setMax 10
 
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
@@ -119,6 +126,12 @@ featCall Beaver.Touches monitor 'Mud' b2b
 featCall Beaver.Touches monitor 'Water' b2b
 featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
+
+addProp displayText string ''
+propPush Beaver.trackerId
+propPop Beaver.displayText
+featProp Beaver.Graphing.textProp setTo 'displayText'
+featProp Beaver.Graphing.meterProp setTo 'energy'
 
 # PROGRAM UPDATE
 
@@ -180,7 +193,7 @@ when Beaver touches Dam [[
         // Show we dropped what we were carrying and update the dam
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
         prop Beaver.carrying setTo 'nothing'
-        prop Dam.buildLevel add 1
+        prop Dam.buildLevel add 3
         propPush Dam.buildLevel
         propPop global.damBuildLevel
       ]]
@@ -188,7 +201,28 @@ when Beaver touches Dam [[
   ]]
 ]]
 
-    // TODO - if the lodge is above a build level 5, protect the beaver when firstTouches and undo on lasttouches
+// TODO - if the lodge is above a build level 5, protect the beaver when firstTouches and undo on lasttouches
+when Beaver firsttouches Lodge [[
+  ifProp Lodge.buildLevel greaterThanOrEqual 3 [[
+    prop Beaver.protected setTo true
+    featCall Beaver.IU logString 'Beaver is protected in the lodge'
+    
+    prop Beaver.displayText add ' 🛡'
+  ]]
+  ifProp Lodge.buildLevel lessThan 3 [[
+    featCall Beaver.IU logString 'Beaver is near the lodge, but the lodge is not big enough to protect it'
+  ]]
+]]
+when Beaver lasttouches Lodge [[
+  ifProp Beaver.protected equal true [[
+    prop Beaver.protected setTo false
+    featCall Beaver.IU logString 'Beaver left the lodge so is no-longer protected'
+
+    propPush Beaver.trackerId
+    propPop Beaver.displayText
+
+  ]]
+]]
 
 when Beaver touches Lodge [[
   every 1 [[
@@ -559,14 +593,18 @@ prop y setTo -164.14`
       "label": "Lodge",
       "bpid": "Lodge",
       "initScript": `prop x setTo 0
-prop y setTo -225`
+prop y setTo -225
+prop Lodge.buildLevel setTo 1
+`
     },
     {
       "id": "2",
       "label": "Dam",
       "bpid": "Dam",
       "initScript": `prop x setTo 0
-prop y setTo 0`
+prop y setTo 0
+prop Dam.buildLevel setTo 1
+`
     },
     {
       "id": "3",
