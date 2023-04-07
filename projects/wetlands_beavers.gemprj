@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -95,7 +98,7 @@ addFeature Graphing
 
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-featProp Beaver.Costume.scale setTo 0.2
+featProp Beaver.Costume.scale setTo 0.15
 
 // the beaver can carry nothing, twig, rock, or mud
 addProp carrying string 'nothing'
@@ -474,6 +477,60 @@ every 0.5 [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
+featProp Predator.Costume.scale setTo 0.3
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "WaterPlant",
+      "scriptText": `# BLUEPRINT WaterPlant
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
+featProp WaterPlant.Costume.scale setTo 0.15
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -597,6 +654,13 @@ prop y setTo 32.32`
       "bpid": "Rock",
       "initScript": `prop x setTo -361.11
 prop y setTo 180.27`
+    },
+    {
+      "id": "17",
+      "label": "WaterPlant",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 63.98
+prop y setTo -345.59`
     }
   ]
 }
