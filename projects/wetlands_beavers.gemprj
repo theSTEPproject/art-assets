@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -112,6 +109,9 @@ addProp gestureTimer number 0
 // For logging more elaborate ideas
 addProp tempString string ''
 
+// for predator handling - true if hidden
+addProp protected boolean false 
+
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
 featCall Beaver.Touches monitor 'Rock' b2b
@@ -188,6 +188,8 @@ when Beaver touches Dam [[
   ]]
 ]]
 
+    // TODO - if the lodge is above a build level 5, protect the beaver when firstTouches and undo on lasttouches
+
 when Beaver touches Lodge [[
   every 1 [[
     ifProp Beaver.carrying notEqual 'nothing' [[
@@ -211,7 +213,7 @@ when Beaver touches Lodge [[
           featPropPop Beaver.IU.logStringText
 
           featCall Beaver.IU logProperty
-            
+
           // update the beave so we know it isn't carrying anything any more
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
@@ -493,7 +495,18 @@ addFeature Touches
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.3
 
+featCall Predator.Touches monitor 'Beaver' b2b
+
 # PROGRAM UPDATE
+
+when Predator firsttouches Beaver [[
+  ifProp Beaver.protected equal false [[
+    // the beaver is killed by the predator
+    featCall Beaver.IU logString 'Beaver was killed by a predator because it was not protected'
+    prop Beaver.alpha setTo 0.5
+    prop Beaver.isInert setTo true
+  ]]
+]]
 // code to run every frame
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
