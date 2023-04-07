@@ -202,7 +202,7 @@ when Beaver touches Dam [[
         // Show we dropped what we were carrying and update the dam
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
         prop Beaver.carrying setTo 'nothing'
-        prop Dam.buildLevel add 3
+        prop Dam.buildLevel add 1
         propPush Dam.buildLevel
         propPop global.damBuildLevel
       ]]
