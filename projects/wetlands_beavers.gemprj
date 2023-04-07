@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -95,6 +92,8 @@ addFeature Touches
 addFeature Costume
 addFeature IU
 addFeature Graphing
+addFeature Movement
+
 
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
@@ -115,9 +114,9 @@ addProp tempString string ''
 // for predator handling - true if hidden
 addProp protected boolean false
 
-addProp energy number 10
-prop Beaver.energy setMin 0
-prop Beaver.energy setMax 10
+addProp energyLevel number 10
+prop Beaver.energyLevel setMin 0
+prop Beaver.energyLevel setMax 10
 
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
@@ -131,9 +130,19 @@ addProp displayText string ''
 propPush Beaver.trackerId
 propPop Beaver.displayText
 featProp Beaver.Graphing.textProp setTo 'displayText'
-featProp Beaver.Graphing.meterProp setTo 'energy'
+featProp Beaver.Graphing.meterProp setTo 'energyLevel'
+featProp Beaver.Graphing.meterColor setTo 65280
+
 
 # PROGRAM UPDATE
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Beaver.Movement.compassDirection equal 'E' [[
+  featProp Beaver.Costume.flipX setTo false
+]]
+ifFeatProp Beaver.Movement.compassDirection equal 'W' [[
+  featProp Beaver.Costume.flipX setTo true
+]]
 
 when Beaver firsttouches Twig [[
   // If the beaver isn't carrying anything yet, pick up the twig
@@ -525,6 +534,7 @@ every 0.5 [[
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Movement
 
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.3
@@ -533,13 +543,26 @@ featCall Predator.Touches monitor 'Beaver' b2b
 
 # PROGRAM UPDATE
 
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Predator.Movement.compassDirection equal 'W' [[
+  featProp Predator.Costume.flipX setTo false
+]]
+ifFeatProp Predator.Movement.compassDirection equal 'E' [[
+  featProp Predator.Costume.flipX setTo true
+]]
+
 when Predator firsttouches Beaver [[
   ifProp Beaver.protected equal false [[
     // the beaver is killed by the predator
     featCall Beaver.IU logString 'Beaver was killed by a predator because it was not protected'
     prop Beaver.alpha setTo 0.5
     prop Beaver.isInert setTo true
+    prop Beaver.energyLevel setTo 0
   ]]
+  ifProp Beaver.protected equal true [[
+    featCall Beaver.IU logString 'The predator tried to attack the beaver but it was protected!'
+  ]]
+
 ]]
 // code to run every frame
 // when xxx touches yyy [[ ]]
