@@ -191,10 +191,25 @@ when Beaver touches Lodge [[
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
         ifProp global.canBuildLodge equal true [[
 
-          featProp global.IU.logStringText setTo 'The beaver added a '
-          featProp global.IU.logStringText add 'to the lodge.'
-          featCall global.IU logProperty
-          
+          // Depending on what we were carrying, log it
+          // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
+          prop Beaver.tempString setTo 'The beaver added a '
+          ifProp Beaver.carrying equal 'twig' [[
+            prop Beaver.tempString add 'twig '
+          ]]
+          ifProp Beaver.carrying equal 'rock' [[
+            prop Beaver.tempString add 'rock '
+          ]]
+          ifProp Beaver.carrying equal 'mud' [[
+            prop Beaver.tempString add 'mud '
+          ]]
+          prop Beaver.tempString add 'to the lodge.'
+          propPush Beaver.tempString
+          featPropPop Beaver.IU.logStringText
+
+          featCall Beaver.IU logProperty
+            
+          // update the beave so we know it isn't carrying anything any more
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
           prop Lodge.buildLevel add 1
