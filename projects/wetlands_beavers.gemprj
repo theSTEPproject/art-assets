@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -41,6 +38,8 @@
 // 🔎 WHAT DOES MODEL DO?
 // 🔎 TODO: Add a description of this beaver model.
 
+addFeature IU
+
 prop global.visible setTo false
 
 
@@ -54,9 +53,18 @@ addProp canBuildLodge boolean false
 // required directive
 # PROGRAM UPDATE
 
+
+
+// TODO: add a check to see if the lodge can't be build, so if it flips 
+// we can log it.
 every 0.5 [[
   ifProp global.damBuildLevel greaterThan 5 [[
-    prop global.canBuildLodge setTo true
+    // so we know it is about to flip
+    ifProp global.canBuildLodge equal false [[
+      featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
+      featCall global.IU logProperty
+      prop global.canBuildLodge setTo true
+    ]]
   ]]
   ifProp global.damBuildLevel lessThan 5 [[
     prop global.canBuildLodge setTo false
@@ -98,6 +106,9 @@ featCall Beaver.IU logString 'Beaver started off carrying nothing'
 addProp gesturing boolean false
 addProp gestureTimer number 0
 
+// For logging more elaborate ideas
+addProp tempString string ''
+
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
 featCall Beaver.Touches monitor 'Rock' b2b
@@ -107,9 +118,7 @@ featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
 
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
+
 when Beaver firsttouches Twig [[
   // If the beaver isn't carrying anything yet, pick up the twig
   ifProp Beaver.carrying equal 'nothing' [[
@@ -120,11 +129,52 @@ when Beaver firsttouches Twig [[
   ]]
 ]]
 
+when Beaver firsttouches Rock [[
+  // If the beaver isn't carrying anything yet, pick up the rock
+  ifProp Beaver.carrying equal 'nothing' [[
+    featCall Beaver.IU logString 'Beaver picked up a rock'
+    prop Beaver.carrying setTo 'rock'
+    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_rock.png'
+    featCall Rock.Population removeCharacter
+  ]]
+]]
+
+when Beaver firsttouches Mud [[
+  // If the beaver isn't carrying anything yet, pick up the mud
+  ifProp Beaver.carrying equal 'nothing' [[
+    featCall Beaver.IU logString 'Beaver picked up some mud'
+    prop Beaver.carrying setTo 'mud'
+    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_mud.png'
+    featCall Mud.Population removeCharacter
+  ]]
+]]
+
 when Beaver touches Dam [[
   every 1 [[
-    ifProp Beaver.carrying equal 'twig' [[
+
+    // We are carrying a rock, mud, or twig
+    ifProp Beaver.carrying notEqual 'nothing' [[
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
-        featCall Beaver.IU logString 'Beaver adding a twig to the dam'
+
+        // Depending on what we were carrying, log it
+        // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
+        prop Beaver.tempString setTo 'The beaver added a '
+        ifProp Beaver.carrying equal 'twig' [[
+          prop Beaver.tempString add 'twig '
+        ]]
+        ifProp Beaver.carrying equal 'rock' [[
+          prop Beaver.tempString add 'rock '
+        ]]
+        ifProp Beaver.carrying equal 'mud' [[
+          prop Beaver.tempString add 'mud '
+        ]]
+        prop Beaver.tempString add 'to the dam.'
+        propPush Beaver.tempString
+        featPropPop Beaver.IU.logStringText
+
+        featCall Beaver.IU logProperty
+
+        // Show we dropped what we were carrying and update the dam
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
         prop Beaver.carrying setTo 'nothing'
         prop Dam.buildLevel add 1
@@ -137,16 +187,20 @@ when Beaver touches Dam [[
 
 when Beaver touches Lodge [[
   every 1 [[
-    ifProp Beaver.carrying equal 'twig' [[
+    ifProp Beaver.carrying notEqual 'nothing' [[
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
         ifProp global.canBuildLodge equal true [[
-          featCall Beaver.IU logString 'Beaver adding a twig to the lodge'
+
+          featProp global.IU.logStringText setTo 'The beaver added a '
+          featProp global.IU.logStringText add 'to the lodge.'
+          featCall global.IU logProperty
+          
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
           prop Lodge.buildLevel add 1
         ]]
         ifProp global.canBuildLodge equal false [[
-          featCall Beaver.IU logString 'Beaver drops a twig but the lodge cannot be built yet so it disappears'
+          featCall Beaver.IU logString 'Beaver drops what it was carrying but the lodge cannot be built yet so it disappears'
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
         ]]
@@ -171,12 +225,6 @@ every 1 [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
 # PROGRAM INIT
 
 // setup all of the features we need
@@ -190,9 +238,51 @@ featProp Twig.Costume.costumeName setTo 'WL_twig.png'
 featProp Twig.Costume.scale setTo 0.2
 
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish`
+`
+    },
+    {
+      "name": "Rock",
+      "scriptText": `# BLUEPRINT Rock
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// setup all of the features we need
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+// set the costume
+featProp Rock.Costume.costumeName setTo 'WL_rock.png'
+featProp Rock.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Mud",
+      "scriptText": `# BLUEPRINT Mud
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+// setup all of the features we need
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+// set the costume
+featProp Mud.Costume.costumeName setTo 'WL_mud.png'
+featProp Mud.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE
+`
     },
     {
       "name": "GestureHelper",
@@ -219,19 +309,15 @@ featCall GestureHelper.Touches monitor 'Beaver' b2b
 
 
 when GestureHelper firsttouches Beaver [[
-  // insert code here
   prop Beaver.gesturing setTo true
-  featCall Beaver.IU logString 'Beaver started gesturing'
+  featCall Beaver.IU logString 'Player acting as a beaver started gesturing'
 ]]
 
 when GestureHelper lasttouches Beaver [[
-  // insert code here
   prop Beaver.gesturing setTo false
-  featCall Beaver.IU logString 'Beaver stopped gesturing'
+  featCall Beaver.IU logString 'Player acting as a beaver stopped gesturing'
 
 ]]
-
-
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -242,7 +328,7 @@ when GestureHelper lasttouches Beaver [[
     {
       "name": "Lodge",
       "scriptText": `# BLUEPRINT Lodge
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -264,8 +350,6 @@ addProp tempWidth number 0
 
 # PROGRAM UPDATE
 
-// TODO: somehow indicate you can now build a lodge
-
 every 0.5 [[
   // re-scale based on the buildLevel
   propPush Lodge.buildLevel
@@ -284,7 +368,7 @@ every 0.5 [[
     {
       "name": "Dam",
       "scriptText": `# BLUEPRINT Dam
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -307,20 +391,19 @@ addProp tempWidth number 0
 # PROGRAM UPDATE
 
 every 0.5 [[
-    // re-scale based on the buildLevel
-    propPush Dam.buildLevel 
-    propPop Dam.tempWidth
-    prop Dam.tempWidth mul 20
-    prop Dam.tempWidth add 80
-    propPush Dam.tempWidth
-    featPropPop Dam.Costume.width
-  ]]
-`
+  // re-scale based on the buildLevel
+  propPush Dam.buildLevel
+  propPop Dam.tempWidth
+  prop Dam.tempWidth mul 20
+  prop Dam.tempWidth add 80
+  propPush Dam.tempWidth
+  featPropPop Dam.Costume.width
+]]`
     },
     {
       "name": "Water",
       "scriptText": `# BLUEPRINT Water
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -355,7 +438,7 @@ every 0.5 [[
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damBuildLevel
     propPop Water.buildLevel
-    propPush Water.buildLevel 
+    propPush Water.buildLevel
     propPop Water.tempWidth
     prop Water.tempWidth mul 30
     prop Water.tempWidth add 170
@@ -375,9 +458,7 @@ every 0.5 [[
     prop Water.speedOfWater setTo 'slow'
   ]]
 
-]]
-
-`
+]]`
     }
   ],
   "instances": [
@@ -408,8 +489,7 @@ prop y setTo 0`
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo -200
-prop location setTo 'aboveDam'
-`
+prop location setTo 'aboveDam'`
     },
     {
       "id": "4",
@@ -417,8 +497,7 @@ prop location setTo 'aboveDam'
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo 199
-prop location setTo 'belowDam'
-`
+prop location setTo 'belowDam'`
     },
     {
       "id": "5",
@@ -452,15 +531,57 @@ prop y setTo -187.04`
       "id": "9",
       "label": "Twig 6",
       "bpid": "Twig",
-      "initScript": `prop x setTo 174.69
-prop y setTo -159.15`
+      "initScript": `prop x setTo 319.34
+prop y setTo -214.83`
     },
     {
       "id": "10",
       "label": "Twig 7",
       "bpid": "Twig",
-      "initScript": `prop x setTo 244.54
-prop y setTo 172.90`
+      "initScript": `prop x setTo 233.44
+prop y setTo 314.78`
+    },
+    {
+      "id": "11",
+      "label": "Mud11",
+      "bpid": "Mud",
+      "initScript": `prop x setTo -332.83
+prop y setTo 53.56`
+    },
+    {
+      "id": "12",
+      "label": "Rock12",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 298.17
+prop y setTo -323.66`
+    },
+    {
+      "id": "13",
+      "label": "Rock13",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -303.54
+prop y setTo 165.14`
+    },
+    {
+      "id": "14",
+      "label": "Mud14",
+      "bpid": "Mud",
+      "initScript": `prop x setTo 309.95
+prop y setTo 66.96`
+    },
+    {
+      "id": "15",
+      "label": "Mud15",
+      "bpid": "Mud",
+      "initScript": `prop x setTo 310.89
+prop y setTo 32.32`
+    },
+    {
+      "id": "16",
+      "label": "Rock16",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -361.11
+prop y setTo 180.27`
     }
   ]
 }
