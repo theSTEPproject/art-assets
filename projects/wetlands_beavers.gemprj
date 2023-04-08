@@ -45,20 +45,26 @@ addFeature IU
 
 prop global.visible setTo false
 
-
 // to help us keep track in the water
-// the dam needs to update this 
-addProp damBuildLevel number  1
+// the dam needs to update this
+addProp damBuildLevel number 1
 
 // change this to true once the water is a certain size
 addProp canBuildLodge boolean false
+
+// count of currently alive water plants
+// the plants themselves update the count in the touches script
+addProp waterPlantCount number 0
+
+// to make it easier to place then hide the plants
+addProp showWaterPlantsToPlace boolean false
 
 // required directive
 # PROGRAM UPDATE
 
 
 
-// TODO: add a check to see if the lodge can't be build, so if it flips 
+// TODO: add a check to see if the lodge can't be build, so if it flips
 // we can log it.
 every 0.5 [[
   ifProp global.damBuildLevel greaterThan 5 [[
@@ -72,8 +78,7 @@ every 0.5 [[
   ifProp global.damBuildLevel lessThan 5 [[
     prop global.canBuildLodge setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Beaver",
@@ -101,6 +106,7 @@ addFeature Movement
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.15
+prop Beaver.zIndex setTo 200
 
 // the beaver can carry nothing, twig, rock, or mud
 addProp carrying string 'nothing'
@@ -234,7 +240,7 @@ when Beaver firsttouches Lodge [[
   ifProp Lodge.buildLevel greaterThanOrEqual 3 [[
     prop Beaver.protected setTo true
     featCall Beaver.IU logString 'Beaver is protected in the lodge'
-    
+
     prop Beaver.displayText add ' 🛡'
   ]]
   ifProp Lodge.buildLevel lessThan 3 [[
@@ -292,10 +298,10 @@ when Beaver touches Lodge [[
 ]]
 
 when Beaver touches DropArea [[
-      // update the beave so we know it isn't carrying anything any more
-      featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
-      featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-      prop Beaver.carrying setTo 'nothing'
+  // update the beave so we know it isn't carrying anything any more
+  featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
+  featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+  prop Beaver.carrying setTo 'nothing'
 ]]
 
 when Beaver touches Stump [[
@@ -636,13 +642,53 @@ when Predator firsttouches Beaver [[
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature IU
 
 featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
 
+featCall WaterPlant.Touches monitor 'Water' c2b
+
+addProp alive boolean false
+prop WaterPlant.visible setTo false
+propPush global.showWaterPlantsToPlace
+propPop WaterPlant.visible
+
 # PROGRAM UPDATE
 
-`
+// if the plant is suddenly under water, and the water is slow enough
+// let's have it appear / grow
+when WaterPlant centertouches Water [[
+  // if the water is slow enough, become alive
+  ifProp WaterPlant.alive equal false [[
+    ifProp Water.speedOfWater notEqual 'fast' [[
+      prop global.waterPlantCount add 1
+      featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
+      prop WaterPlant.alive setTo true
+      prop WaterPlant.visible setTo true
+    ]]
+  ]]
+
+  // if the water is suddenly too fast, dissapear
+  ifProp WaterPlant.alive equal true [[
+    ifProp Water.speedOfWater equal 'fast' [[
+      prop global.waterPlantCount sub 1
+      featCall WaterPlant.IU logString 'A water plant dies off because the water is too fast'
+      prop WaterPlant.alive setTo false
+      prop WaterPlant.visible setTo false
+    ]]
+  ]]
+]]
+
+  // if the water recedes, remove the plant
+  when WaterPlant centerlasttouches Water [[
+    ifProp WaterPlant.alive equal true [[
+        prop WaterPlant.alive setTo false
+        prop global.waterPlantCount sub 1
+        featCall WaterPlant.IU logString 'A water plant dies off because the water receded'
+        prop WaterPlant.visible setTo false
+    ]]
+]]`
     },
     {
       "name": "Stump",
@@ -814,8 +860,10 @@ prop y setTo 180.27`
       "id": "17",
       "label": "WaterPlant",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo 63.98
-prop y setTo -345.59`
+      "initScript": `prop x setTo 68.07
+prop y setTo -301.81
+
+`
     },
     {
       "id": "18",
@@ -828,8 +876,8 @@ prop y setTo 224.4`
       "id": "19",
       "label": "Stump19",
       "bpid": "Stump",
-      "initScript": `prop x setTo -252.6
-prop y setTo -306.61`
+      "initScript": `prop x setTo -316.54
+prop y setTo -331.01`
     },
     {
       "id": "20",
@@ -844,6 +892,45 @@ prop y setTo -359.92`
       "bpid": "DropArea",
       "initScript": `prop x setTo -352.87
 prop y setTo 318.78`
+    },
+    {
+      "id": "22",
+      "label": "WaterPlant 2",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -52.01
+prop y setTo -372.58
+`
+    },
+    {
+      "id": "23",
+      "label": "WaterPlant 3",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 181.57
+prop y setTo -249.59
+`
+    },
+    {
+      "id": "24",
+      "label": "WaterPlant 4",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -209.94
+prop y setTo -274.44
+`
+    },
+    {
+      "id": "25",
+      "label": "WaterPlant 5",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -93.72
+prop y setTo -44.98
+`
+    },
+    {
+      "id": "26",
+      "label": "WaterPlant 6",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 191.07
+prop y setTo -93.94\n`
     }
   ]
 }
