@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -101,7 +104,6 @@ featProp Beaver.Costume.scale setTo 0.15
 
 // the beaver can carry nothing, twig, rock, or mud
 addProp carrying string 'nothing'
-featCall Beaver.IU logString 'Beaver started off carrying nothing'
 
 // if the GestureHelper is touching the beaver, set to true
 // if it moves off, set to false
@@ -114,9 +116,9 @@ addProp tempString string ''
 // for predator handling - true if hidden
 addProp protected boolean false
 
-addProp energyLevel number 10
+addProp energyLevel number 100
 prop Beaver.energyLevel setMin 0
-prop Beaver.energyLevel setMax 10
+prop Beaver.energyLevel setMax 100
 
 // setup to see if the beaver is touching anything it might pick up
 featCall Beaver.Touches monitor 'Twig' b2b
@@ -125,6 +127,9 @@ featCall Beaver.Touches monitor 'Mud' b2b
 featCall Beaver.Touches monitor 'Water' b2b
 featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
+featCall Beaver.Touches monitor 'Stump' b2b
+featCall Beaver.Touches monitor 'DropArea' b2b
+
 
 addProp displayText string ''
 propPush Beaver.trackerId
@@ -132,6 +137,20 @@ propPop Beaver.displayText
 featProp Beaver.Graphing.textProp setTo 'displayText'
 featProp Beaver.Graphing.meterProp setTo 'energyLevel'
 featProp Beaver.Graphing.meterColor setTo 65280
+
+// ✏️ LETS CHANGE THIS: Does the beaver lose energy?
+// ✏️ This helps us explore the model without worrying about food
+addProp beaverLosesEnergy boolean false
+
+// log the value of beaverLosesEnergy
+ifProp Beaver.beaverLosesEnergy equal true [[
+  featCall Beaver.IU logString 'Beaver started with beaverLosesEnergy set to true'
+]]
+ifProp Beaver.beaverLosesEnergy equal false [[
+  featCall Beaver.IU logString 'Beaver started with beaverLosesEnergy set to false'
+]]
+
+featCall Beaver.IU logString 'The beaver started off carrying nothing'
 
 
 # PROGRAM UPDATE
@@ -272,7 +291,39 @@ when Beaver touches Lodge [[
   ]]
 ]]
 
+when Beaver touches DropArea [[
+      // update the beave so we know it isn't carrying anything any more
+      featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
+      featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+      prop Beaver.carrying setTo 'nothing'
+]]
+
+when Beaver touches Stump [[
+  every 1 [[
+    featCall Beaver.IU logString 'Beaver ate some wood at a stump'
+    prop Beaver.energyLevel add 20
+  ]]
+]]
+
 every 1 [[
+
+  ifProp Beaver.beaverLosesEnergy equal true [[
+    // lower energyLevel because living takes energy
+    prop Beaver.energyLevel sub 5
+  ]]
+
+  // check if the beaver is ok
+  // but only if it hasn't already been killed by a predator
+  ifProp Beaver.isInert equal false [[
+    ifProp Beaver.energyLevel equal 0 [[
+      featCall Beaver.IU logString 'Beaver died from starvation'
+      prop Beaver.alpha setTo 0.5
+      prop Beaver.isInert setTo true
+      prop Beaver.energyLevel setTo 0
+    ]]
+  ]]
+
+  // check if gesturing, and then handle that inside the when touches above
   ifProp Beaver.gesturing equal true [[
     prop Beaver.gestureTimer add 1
   ]]
@@ -342,10 +393,9 @@ addFeature Population
 
 // set the costume
 featProp Mud.Costume.costumeName setTo 'WL_mud.png'
-featProp Mud.Costume.scale setTo 0.2
+featProp Mud.Costume.scale setTo 0.1
 
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "GestureHelper",
@@ -591,16 +641,47 @@ featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
 
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
+    },
+    {
+      "name": "Stump",
+      "scriptText": `# BLUEPRINT Stump
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Stump.Costume.costumeName setTo 'WL_stump.png'
+featProp Stump.Costume.scale setTo 0.25
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "DropArea",
+      "scriptText": `# BLUEPRINT DropArea
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+featProp DropArea.Costume.costumeName setTo 'GEN_square.json'
+featProp DropArea.Costume.width setTo 50
+featProp DropArea.Costume.height setTo 50
+featCall DropArea.Costume setColorizeHSV 0.3 0.3 0.3
+
+featProp DropArea.Graphing.text setTo 'Drop here'
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -670,15 +751,15 @@ prop y setTo -106.20`
       "id": "8",
       "label": "Twig 5",
       "bpid": "Twig",
-      "initScript": `prop x setTo 271.12
-prop y setTo -187.04`
+      "initScript": `prop x setTo 293.36
+prop y setTo -167.77`
     },
     {
       "id": "9",
       "label": "Twig 6",
       "bpid": "Twig",
-      "initScript": `prop x setTo 319.34
-prop y setTo -214.83`
+      "initScript": `prop x setTo 319.17
+prop y setTo -197.40`
     },
     {
       "id": "10",
@@ -691,15 +772,15 @@ prop y setTo 314.78`
       "id": "11",
       "label": "Mud11",
       "bpid": "Mud",
-      "initScript": `prop x setTo -332.83
-prop y setTo 53.56`
+      "initScript": `prop x setTo 282.14
+prop y setTo 21.75`
     },
     {
       "id": "12",
       "label": "Rock12",
       "bpid": "Rock",
-      "initScript": `prop x setTo 298.17
-prop y setTo -323.66`
+      "initScript": `prop x setTo 313.35
+prop y setTo -309.91`
     },
     {
       "id": "13",
@@ -719,8 +800,8 @@ prop y setTo 66.96`
       "id": "15",
       "label": "Mud15",
       "bpid": "Mud",
-      "initScript": `prop x setTo 310.89
-prop y setTo 32.32`
+      "initScript": `prop x setTo 277.77
+prop y setTo 47.90`
     },
     {
       "id": "16",
@@ -735,6 +816,34 @@ prop y setTo 180.27`
       "bpid": "WaterPlant",
       "initScript": `prop x setTo 63.98
 prop y setTo -345.59`
+    },
+    {
+      "id": "18",
+      "label": "Stump18",
+      "bpid": "Stump",
+      "initScript": `prop x setTo 322.11
+prop y setTo 224.4`
+    },
+    {
+      "id": "19",
+      "label": "Stump19",
+      "bpid": "Stump",
+      "initScript": `prop x setTo -252.6
+prop y setTo -306.61`
+    },
+    {
+      "id": "20",
+      "label": "Stump20",
+      "bpid": "Stump",
+      "initScript": `prop x setTo 226.08
+prop y setTo -359.92`
+    },
+    {
+      "id": "21",
+      "label": "DropArea",
+      "bpid": "DropArea",
+      "initScript": `prop x setTo -352.87
+prop y setTo 318.78`
     }
   ]
 }
