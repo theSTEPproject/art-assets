@@ -553,7 +553,7 @@ addProp speedOfWater string 'fast'
 # PROGRAM UPDATE
 
 every 0.5 [[
-  // only the water above the dam changes
+  //  the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damBuildLevel
     propPop Water.buildLevel
@@ -561,6 +561,18 @@ every 0.5 [[
     propPop Water.tempWidth
     prop Water.tempWidth mul 30
     prop Water.tempWidth add 170
+    propPush Water.tempWidth
+    featPropPop Water.Costume.width
+  ]]
+
+  // the dam causes the water below it to shrink
+  ifProp Water.location notEqual 'aboveDam' [[
+    propPush global.damBuildLevel
+    propPop Water.buildLevel
+    propPush Water.buildLevel
+    propPop Water.tempWidth
+    prop Water.tempWidth mul -10
+    prop Water.tempWidth add 210
     propPush Water.tempWidth
     featPropPop Water.Costume.width
   ]]
@@ -578,6 +590,25 @@ every 0.5 [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "StreamBed",
+      "scriptText": `# BLUEPRINT StreamBed
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp StreamBed.Costume.costumeName setTo 'GEN_square.json'
+featProp StreamBed.Costume.width setTo 200
+featProp StreamBed.Costume.height setTo 400
+featCall StreamBed.Costume setColorizeHSV 0.1 0.9 0.7
+prop StreamBed.zIndex setTo -300
+
+# PROGRAM UPDATE`
     },
     {
       "name": "Predator",
@@ -930,7 +961,15 @@ prop y setTo -44.98
       "label": "WaterPlant 6",
       "bpid": "WaterPlant",
       "initScript": `prop x setTo 191.07
-prop y setTo -93.94\n`
+prop y setTo -93.94
+`
+    },
+    {
+      "id": "27",
+      "label": "StreamBed",
+      "bpid": "StreamBed",
+      "initScript": `prop x setTo 0
+prop y setTo 199`
     }
   ]
 }
