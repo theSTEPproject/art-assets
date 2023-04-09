@@ -794,6 +794,62 @@ featCall DropArea.Costume setColorizeHSV 0.3 0.3 0.3
 featProp DropArea.Graphing.text setTo 'Drop here'
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "CarbonCaptureRateGraph",
+      "scriptText": `# BLUEPRINT CarbonCaptureRateGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addProp carbonCaptureRate number 0
+
+
+featProp CarbonCaptureRateGraph.Costume.costumeName setTo 'GEN_onexone.json'
+featProp CarbonCaptureRateGraph.Graphing.isLargeGraphic setTo true
+featProp CarbonCaptureRateGraph.Graphing.graphProp setTo 'carbonCaptureRate'
+featProp CarbonCaptureRateGraph.Graphing.graphMinY setTo 0
+featProp CarbonCaptureRateGraph.Graphing.graphMaxY setTo 100
+featProp CarbonCaptureRateGraph.Graphing.text setTo 'Carbon Capture Rate'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.carbonCaptureRate
+  propPop CarbonCaptureRateGraph.carbonCaptureRate
+]]
+
+`
+    },
+    {
+      "name": "PollutionGraph",
+      "scriptText": `# BLUEPRINT PollutionGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addProp pollutionInWater number 0
+
+
+featProp PollutionGraph.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PollutionGraph.Graphing.isLargeGraphic setTo true
+featProp PollutionGraph.Graphing.graphProp setTo 'pollutionInWater'
+featProp PollutionGraph.Graphing.graphMinY setTo 0
+featProp PollutionGraph.Graphing.graphMaxY setTo 100
+featProp PollutionGraph.Graphing.text setTo 'Pollution in the Water'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.pollutionInWater
+  propPop PollutionGraph.pollutionInWater
+]]
+
+`
     }
   ],
   "instances": [
@@ -1005,6 +1061,20 @@ prop y setTo -93.94
       "bpid": "StreamBed",
       "initScript": `prop x setTo 0
 prop y setTo 199`
+    },
+    {
+      "id": "28",
+      "label": "CarbonCaptureRateGraph",
+      "bpid": "CarbonCaptureRateGraph",
+      "initScript": `prop x setTo 490.00
+prop y setTo 311.83`
+    },
+    {
+      "id": "29",
+      "label": "PollutionGraph",
+      "bpid": "PollutionGraph",
+      "initScript": `prop x setTo 490
+prop y setTo 131.94`
     }
   ]
 }
