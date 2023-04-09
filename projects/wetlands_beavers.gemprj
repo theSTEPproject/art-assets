@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -35,16 +38,29 @@
 // ✏️ body
 
 // TODO
-// pollution, carbon
-// graphs
-// inspector
+// inspector - make more generic? make sure works with multiple beavers
+// clean up global so that the round-type variables are more obvious and
+// all in one place with good comments
 // breaker
+// make predator AI
 
 # PROGRAM INIT
 // 🔎 WHAT DOES MODEL DO?
 // 🔎 TODO: Add a description of this beaver model.
 
 addFeature IU
+
+// ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
+// ✏️ Should we show an info panel when the beaver
+// ✏️ moves over a water plant?
+addProp showInfo boolean true
+// ✏️ Also consider adding / removing
+// ✏️ The carbon capture graph
+// ✏️ The pollution graph
+// ✏️ The carbon capture graph
+// ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
+
+
 
 prop global.visible setTo false
 
@@ -71,11 +87,14 @@ addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
 
+// so we know if the panel should be open or not
+addProp showingInfo boolean false
+
 // required directive
 # PROGRAM UPDATE
 
 every 1 [[
-  
+
   // update the captured carbon rate and pollution levels
   // multiply the waterPlantCount by a number to scale its impact
   // currently this is 1
@@ -170,7 +189,7 @@ featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
 featCall Beaver.Touches monitor 'Stump' b2b
 featCall Beaver.Touches monitor 'DropArea' b2b
-
+featCall Beaver.Touches monitor 'WaterPlant' b2b
 
 addProp displayText string ''
 propPush Beaver.trackerId
@@ -270,7 +289,6 @@ when Beaver touches Dam [[
   ]]
 ]]
 
-// TODO - if the lodge is above a build level 5, protect the beaver when firstTouches and undo on lasttouches
 when Beaver firsttouches Lodge [[
   ifProp Lodge.buildLevel greaterThanOrEqual 3 [[
     prop Beaver.protected setTo true
@@ -346,6 +364,22 @@ when Beaver touches Stump [[
   ]]
 ]]
 
+when Beaver firsttouches WaterPlant [[
+  ifProp WaterPlant.visible equal true [[
+    ifProp global.showInfo equal true [[
+      prop global.showingInfo setTo true
+    ]]
+  ]]
+]]
+
+when Beaver lasttouches WaterPlant [[
+  ifProp WaterPlant.visible equal true [[
+    ifProp global.showInfo equal true [[
+      prop global.showingInfo setTo false
+      ]]
+    ]]
+  ]]
+  
 every 1 [[
 
   ifProp Beaver.beaverLosesEnergy equal true [[
@@ -850,6 +884,26 @@ every 1 runAtStart [[
 ]]
 
 `
+    },
+    {
+      "name": "PlantInfoPanel",
+      "scriptText": `# BLUEPRINT PlantInfoPanel
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp PlantInfoPanel.Costume.costumeName setTo 'WL_plant_info.png'
+prop PlantInfoPanel.visible setTo false
+featProp PlantInfoPanel.Costume.scale setTo 0.7
+
+# PROGRAM UPDATE
+every 0.1 [[
+  propPush global.showingInfo
+  propPop PlantInfoPanel.visible
+]]
+`
     }
   ],
   "instances": [
@@ -1066,15 +1120,22 @@ prop y setTo 199`
       "id": "28",
       "label": "CarbonCaptureRateGraph",
       "bpid": "CarbonCaptureRateGraph",
-      "initScript": `prop x setTo 490.00
+      "initScript": `prop x setTo 495.00
 prop y setTo 311.83`
     },
     {
       "id": "29",
       "label": "PollutionGraph",
       "bpid": "PollutionGraph",
-      "initScript": `prop x setTo 490
+      "initScript": `prop x setTo 495.00
 prop y setTo 131.94`
+    },
+    {
+      "id": "30",
+      "label": "PlantInfoPanel",
+      "bpid": "PlantInfoPanel",
+      "initScript": `prop x setTo -495.36
+prop y setTo -249.44`
     }
   ]
 }
