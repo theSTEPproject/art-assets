@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": 505,
     "roundsCanLoop": true,
@@ -37,6 +34,12 @@
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body
 
+// TODO
+// pollution, carbon
+// graphs
+// inspector
+// breaker
+
 # PROGRAM INIT
 // 🔎 WHAT DOES MODEL DO?
 // 🔎 TODO: Add a description of this beaver model.
@@ -59,14 +62,46 @@ addProp waterPlantCount number 0
 // to make it easier to place then hide the plants
 addProp showWaterPlantsToPlace boolean false
 
+// variables for helping the environment
+addProp carbonCaptureRate number 10
+addProp pollutionInWater number 60
+
+addProp initialCarbonCaptureRate number 10
+addProp initialPollutionInWater number 60
+
+addProp tempNum number 0
+
 // required directive
 # PROGRAM UPDATE
 
+every 1 [[
+  
+  // update the captured carbon rate and pollution levels
+  // multiply the waterPlantCount by a number to scale its impact
+  // currently this is 1
+  // then add that to the total captured
+  propPush global.waterPlantCount
+  prop global.tempNum setTo 5
+  propPush global.tempNum
+  stackMul
+  propPush global.initialCarbonCaptureRate
+  stackAdd
+  propPop global.carbonCaptureRate
 
+  // now do the same for pollution, but subtract instead of add
+  propPush global.waterPlantCount
+  prop global.tempNum setTo 5
+  propPush global.tempNum
+  stackMul
+  propPush global.initialPollutionInWater
+  stackSub
+  propPop global.pollutionInWater
 
-// TODO: add a check to see if the lodge can't be build, so if it flips
-// we can log it.
+]]
+
 every 0.5 [[
+  // Check to see if the lodge can be built based on dam size
+  // also log the shift once it can
   ifProp global.damBuildLevel greaterThan 5 [[
     // so we know it is about to flip
     ifProp global.canBuildLodge equal false [[
