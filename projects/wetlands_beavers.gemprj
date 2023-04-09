@@ -31,11 +31,23 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
+// 🔎 WHAT DOES THIS MODEL DO?
+// 🔎 This is a model of how Beavers interact with and create a wetland ecosystem
+//    - We expect that learners will control beavers, moving around and trying to survive
+//    - Researchers will control the GestureHelper, and for now the Predator (if we want one)
+//    - As the Beavers add materials (twigs, mud, rocks) to the Dam, it grows, causing the water to pool above it
+//    - To add something, they need to pick it up, go to the Dam (or Lodge) and gesture that they are building
+//    --- Once they are gesturing, the researcher will place the GestureHelper over them
+//    --- Once it is there for 1 second, the materials will disappear and the Dam / Lodge will grow
+//    - Once the pond is deep / slow enough, the Beavers can build a lodge
+//    --- When the water is deep enough, water plants will also appear
+//    --- The plants impact carbon capture, and pollution
+// 🔎 Note: we can remove / turn off or on the following:
+//    - Predators (by using the character controller)
+//    - Whether Beavers lose energy and thus need to eat by going to stumps (a beaver property)
+//    - Carbon and pollution graphs (by using setup)
+//    - The info panels (by changing a property in global)
+
 
 // TODO
 // inspector - make more generic? make sure works with multiple beavers
@@ -45,8 +57,7 @@
 // make predator AI
 
 # PROGRAM INIT
-// 🔎 WHAT DOES MODEL DO?
-// 🔎 TODO: Add a description of this beaver model.
+
 
 addFeature IU
 
