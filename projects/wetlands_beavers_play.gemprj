@@ -1,0 +1,292 @@
+{
+  "id": "wetlands_beavers_play",
+  "label": "Wetlands: Beavers Play",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [false, false],
+    "bounce": true,
+    "bgcolor": "0x8A9A5B",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Beaver",
+      "scriptText": `# BLUEPRINT Beaver
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+featProp Beaver.Costume.scale setTo 0.15
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
+featProp Predator.Costume.scale setTo 0.3
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Water",
+      "scriptText": `# BLUEPRINT Water
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Water.Costume.costumeName setTo 'GEN_square.json'
+featProp Water.Costume.width setTo 200
+featProp Water.Costume.height setTo 400
+featCall Water.Costume setColorize 51 170 255
+prop Water.zIndex setTo -200
+
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Dam",
+      "scriptText": `# BLUEPRINT Dam
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Dam.Costume.costumeName setTo 'GEN_square.json'
+featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.height setTo 40
+featCall Dam.Costume setColorizeHSV 0.1 0.2 0.8
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Twig",
+      "scriptText": `# BLUEPRINT Twig
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Twig.Costume.costumeName setTo 'WL_twig.png'
+featProp Twig.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Rock",
+      "scriptText": `# BLUEPRINT Rock
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Rock.Costume.costumeName setTo 'WL_rock.png'
+featProp Rock.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Mud",
+      "scriptText": `# BLUEPRINT Mud
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Mud.Costume.costumeName setTo 'WL_mud.png'
+featProp Mud.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Stump",
+      "scriptText": `# BLUEPRINT Stump
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Stump.Costume.costumeName setTo 'WL_stump.png'
+featProp Stump.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "WaterPlant",
+      "scriptText": `# BLUEPRINT WaterPlant
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
+featProp WaterPlant.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Water",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo -200`
+    },
+    {
+      "id": "1",
+      "label": "Water",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo 200`
+    },
+    {
+      "id": "2",
+      "label": "Mud2",
+      "bpid": "Mud",
+      "initScript": `prop x setTo -299.93
+prop y setTo -217.20`
+    },
+    {
+      "id": "3",
+      "label": "Rock3",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -300.05
+prop y setTo -156.05`
+    },
+    {
+      "id": "4",
+      "label": "Twig4",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -296.13
+prop y setTo -278.73`
+    },
+    {
+      "id": "5",
+      "label": "WaterPlant5",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -294.96
+prop y setTo -85.96`
+    },
+    {
+      "id": "6",
+      "label": "Stump6",
+      "bpid": "Stump",
+      "initScript": `prop x setTo -301.19
+prop y setTo 18.98`
+    },
+    {
+      "id": "7",
+      "label": "Dam7",
+      "bpid": "Dam",
+      "initScript": `prop x setTo -297.43
+prop y setTo 114.79`
+    },
+    {
+      "id": "8",
+      "label": "Predator8",
+      "bpid": "Predator",
+      "initScript": `prop x setTo 229.51
+prop y setTo -329.70`
+    }
+  ]
+}
