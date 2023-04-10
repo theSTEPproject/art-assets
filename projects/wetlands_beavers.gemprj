@@ -1,5 +1,5 @@
 {
-  "id": "wetlands_beavers_interactions",
+  "id": "wetlands_beavers",
   "label": "Wetlands: Beavers Interactions",
   "metadata": {
     "top": -400,
@@ -30,20 +30,21 @@
 
 // 🔎 WHAT DOES THIS MODEL DO?
 // 🔎 This is a model of how Beavers interact with and create a wetland ecosystem
-//    - We expect that learners will control beavers, moving around and trying to survive
-//    - Researchers will control the GestureHelper, and for now the Predator (if we want one)
-//    - As the Beavers add materials (twigs, mud, rocks) to the Dam, it grows, causing the water to pool above it
-//    - To add something, they need to pick it up, go to the Dam (or Lodge) and gesture that they are building
-//    --- Once they are gesturing, the researcher will place the GestureHelper over them
-//    --- Once it is there for 1 second, the materials will disappear and the Dam / Lodge will grow
-//    - Once the pond is deep / slow enough, the Beavers can build a lodge
-//    --- When the water is deep enough, water plants will also appear
-//    --- The plants impact carbon capture, and pollution
+// - We expect that learners will control beavers, moving around and trying to survive
+// - Researchers will control the GestureHelper, and for now the Predator (if we want one)
+// - As the Beavers add materials (twigs, mud, rocks) to the Dam, it grows, causing the water to pool above it
+// - To add something, they need to pick it up, go to the Dam (or Lodge) and gesture that they are building
+// --- Once they are gesturing, the researcher will place the GestureHelper over them
+// --- Once it is there for 1 second, the materials will disappear and the Dam / Lodge will grow
+// - Once the pond is deep / slow enough, the Beavers can build a lodge
+// --- When the water is deep enough, water plants will also appear
+// --- The plants impact carbon capture, and pollution
 // 🔎 Note: we can remove / turn off or on the following:
-//    - Predators (by using the character controller)
-//    - Whether Beavers lose energy and thus need to eat by going to stumps (a beaver property)
-//    - Carbon and pollution graphs (by using setup)
-//    - The info panels (by changing a property in global)
+// - Predators (by using the character controller)
+// - Whether Beavers lose energy and thus need to eat by going to trees (a beaver property)
+// - Carbon and pollution graphs (by using setup)
+// - The info panels (by changing a property in global)
+// - Fish can be removed simply by deleting them (they can be added later)
 
 
 // TODO
@@ -61,7 +62,9 @@ addFeature IU
 // ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
 // ✏️ Should we show an info panel when the beaver
 // ✏️ moves over a water plant?
-addProp showInfo boolean true
+addProp showWaterPlantInfo boolean true
+addProp showFishInfo boolean true
+
 // ✏️ Also consider adding / removing
 // ✏️ The carbon capture graph
 // ✏️ The pollution graph
@@ -82,9 +85,12 @@ addProp canBuildLodge boolean false
 // count of currently alive water plants
 // the plants themselves update the count in the touches script
 addProp waterPlantCount number 0
+// track the fish too, just in case
+addProp fishCount number 0
 
-// to make it easier to place then hide the plants
+// to make it easier to place then hide the plants and fish
 addProp showWaterPlantsToPlace boolean false
+addProp showFishToPlace boolean false
 
 // variables for helping the environment
 addProp carbonCaptureRate number 10
@@ -95,8 +101,11 @@ addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
 
-// so we know if the panel should be open or not
-addProp showingInfo boolean false
+// so we know if the panels should be open or not
+// temporarily set these to true to move the panels
+// around as well
+addProp showingWaterPlantInfo boolean false
+addProp showingFishInfo boolean false
 
 // required directive
 # PROGRAM UPDATE
@@ -195,9 +204,10 @@ featCall Beaver.Touches monitor 'Mud' b2b
 featCall Beaver.Touches monitor 'Water' b2b
 featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
-featCall Beaver.Touches monitor 'Stump' b2b
+featCall Beaver.Touches monitor 'Tree' b2b
 featCall Beaver.Touches monitor 'DropArea' b2b
 featCall Beaver.Touches monitor 'WaterPlant' b2b
+featCall Beaver.Touches monitor 'Fish' b2b
 
 addProp displayText string ''
 propPush Beaver.trackerId
@@ -365,29 +375,45 @@ when Beaver touches DropArea [[
   prop Beaver.carrying setTo 'nothing'
 ]]
 
-when Beaver touches Stump [[
+when Beaver touches Tree [[
   every 1 [[
-    featCall Beaver.IU logString 'Beaver ate some wood at a stump'
+    featCall Beaver.IU logString 'Beaver ate some wood at a tree'
     prop Beaver.energyLevel add 20
   ]]
 ]]
 
 when Beaver firsttouches WaterPlant [[
   ifProp WaterPlant.visible equal true [[
-    ifProp global.showInfo equal true [[
-      prop global.showingInfo setTo true
+    ifProp global.showWaterPlantInfo equal true [[
+      prop global.showingWaterPlantInfo setTo true
     ]]
   ]]
 ]]
 
 when Beaver lasttouches WaterPlant [[
   ifProp WaterPlant.visible equal true [[
-    ifProp global.showInfo equal true [[
-      prop global.showingInfo setTo false
-      ]]
+    ifProp global.showWaterPlantInfo equal true [[
+      prop global.showingWaterPlantInfo setTo false
     ]]
   ]]
-  
+]]
+
+when Beaver firsttouches Fish [[
+  ifProp Fish.visible equal true [[
+    ifProp global.showFishInfo equal true [[
+      prop global.showingFishInfo setTo true
+    ]]
+  ]]
+]]
+
+when Beaver lasttouches Fish [[
+  ifProp Fish.visible equal true [[
+    ifProp global.showFishInfo equal true [[
+      prop global.showingFishInfo setTo false
+    ]]
+  ]]
+]]
+
 every 1 [[
 
   ifProp Beaver.beaverLosesEnergy equal true [[
@@ -799,8 +825,67 @@ when WaterPlant centertouches Water [[
 ]]`
     },
     {
-      "name": "Stump",
-      "scriptText": `# BLUEPRINT Stump
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature IU
+
+featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
+featProp Fish.Costume.scale setTo 0.15
+
+featCall Fish.Touches monitor 'Water' c2b
+
+addProp alive boolean false
+prop Fish.visible setTo false
+propPush global.showFishToPlace
+propPop Fish.visible
+
+# PROGRAM UPDATE
+
+// if the plant is suddenly under water, and the water is slow enough
+// let's have it appear / grow
+when Fish centertouches Water [[
+  // if the water is slow enough, become alive
+  ifProp Fish.alive equal false [[
+    ifProp Water.speedOfWater equal 'slow' [[
+      prop global.fishCount add 1
+      featCall Fish.IU logString 'A new fish is in the pond because of the slow water'
+      prop Fish.alive setTo true
+      prop Fish.visible setTo true
+    ]]
+  ]]
+
+  // if the water is suddenly too fast, dissapear
+  ifProp Fish.alive equal true [[
+    ifProp Water.speedOfWater notEqual 'slow' [[
+      prop global.fishCount sub 1
+      featCall Fish.IU logString 'A fish moves away because the water is too fast'
+      prop Fish.alive setTo false
+      prop Fish.visible setTo false
+    ]]
+  ]]
+]]
+
+// if the water recedes, remove the plant
+when Fish centerlasttouches Water [[
+  ifProp Fish.alive equal true [[
+    prop Fish.alive setTo false
+    prop global.fishCount sub 1
+    featCall Fish.IU logString 'A fish dies off because the water receded'
+    prop Fish.visible setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "Tree",
+      "scriptText": `# BLUEPRINT Tree
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -810,8 +895,8 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-featProp Stump.Costume.costumeName setTo 'WL_stump.png'
-featProp Stump.Costume.scale setTo 0.25
+featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+featProp Tree.Costume.scale setTo 0.25
 
 # PROGRAM UPDATE`
     },
@@ -908,10 +993,29 @@ featProp PlantInfoPanel.Costume.scale setTo 0.7
 
 # PROGRAM UPDATE
 every 0.1 [[
-  propPush global.showingInfo
+  propPush global.showingWaterPlantInfo
   propPop PlantInfoPanel.visible
 ]]
 `
+    },
+    {
+      "name": "FishInfoPanel",
+      "scriptText": `# BLUEPRINT FishInfoPanel
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp FishInfoPanel.Costume.costumeName setTo 'WL_fish_info.png'
+prop FishInfoPanel.visible setTo false
+featProp FishInfoPanel.Costume.scale setTo 0.7
+
+# PROGRAM UPDATE
+every 0.1 [[
+  propPush global.showingFishInfo
+  propPop FishInfoPanel.visible
+]]`
     }
   ],
   "instances": [
@@ -988,8 +1092,8 @@ prop y setTo -167.77`
       "id": "9",
       "label": "Twig 6",
       "bpid": "Twig",
-      "initScript": `prop x setTo 319.17
-prop y setTo -197.40`
+      "initScript": `prop x setTo 311.16
+prop y setTo -203.12`
     },
     {
       "id": "10",
@@ -1009,8 +1113,8 @@ prop y setTo 21.75`
       "id": "12",
       "label": "Rock12",
       "bpid": "Rock",
-      "initScript": `prop x setTo 313.35
-prop y setTo -309.91`
+      "initScript": `prop x setTo 319.34
+prop y setTo -113.62`
     },
     {
       "id": "13",
@@ -1051,24 +1155,24 @@ prop y setTo -301.81
     },
     {
       "id": "18",
-      "label": "Stump18",
-      "bpid": "Stump",
-      "initScript": `prop x setTo 322.11
-prop y setTo 224.4`
+      "label": "Tree18",
+      "bpid": "Tree",
+      "initScript": `prop x setTo 136.30
+prop y setTo 215.07`
     },
     {
       "id": "19",
-      "label": "Stump19",
-      "bpid": "Stump",
-      "initScript": `prop x setTo -316.54
-prop y setTo -331.01`
+      "label": "Tree19",
+      "bpid": "Tree",
+      "initScript": `prop x setTo -318.46
+prop y setTo -296.17`
     },
     {
       "id": "20",
-      "label": "Stump20",
-      "bpid": "Stump",
-      "initScript": `prop x setTo 226.08
-prop y setTo -359.92`
+      "label": "Tree20",
+      "bpid": "Tree",
+      "initScript": `prop x setTo 319.10
+prop y setTo -324.79`
     },
     {
       "id": "21",
@@ -1142,8 +1246,29 @@ prop y setTo 131.94`
       "id": "30",
       "label": "PlantInfoPanel",
       "bpid": "PlantInfoPanel",
-      "initScript": `prop x setTo -495.36
-prop y setTo -249.44`
+      "initScript": `prop x setTo -494.91
+prop y setTo -231.28`
+    },
+    {
+      "id": "31",
+      "label": "Fish",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -10.14
+prop y setTo -68.97`
+    },
+    {
+      "id": "32",
+      "label": "Fish",
+      "bpid": "Fish",
+      "initScript": `prop x setTo -113.14
+prop y setTo -254.56`
+    },
+    {
+      "id": "33",
+      "label": "FishInfoPanel",
+      "bpid": "FishInfoPanel",
+      "initScript": `prop x setTo 498.98
+prop y setTo -235.98`
     }
   ]
 }

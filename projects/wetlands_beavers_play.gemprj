@@ -188,8 +188,8 @@ featProp Mud.Costume.scale setTo 0.2
 # PROGRAM UPDATE`
     },
     {
-      "name": "Stump",
-      "scriptText": `# BLUEPRINT Stump
+      "name": "Tree",
+      "scriptText": `# BLUEPRINT Tree
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
@@ -200,8 +200,8 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-featProp Stump.Costume.costumeName setTo 'WL_stump.png'
-featProp Stump.Costume.scale setTo 0.2
+featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+featProp Tree.Costume.scale setTo 0.2
 
 # PROGRAM UPDATE`
     },
@@ -269,8 +269,8 @@ prop y setTo -85.96`
     },
     {
       "id": "6",
-      "label": "Stump6",
-      "bpid": "Stump",
+      "label": "Tree6",
+      "bpid": "Tree",
       "initScript": `prop x setTo -301.19
 prop y setTo 18.98`
     },
