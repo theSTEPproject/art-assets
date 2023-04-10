@@ -218,7 +218,7 @@ featProp Beaver.Graphing.meterColor setTo 65280
 
 // ✏️ LETS CHANGE THIS: Does the beaver lose energy?
 // ✏️ This helps us explore the model without worrying about food
-addProp beaverLosesEnergy boolean false
+addProp beaverLosesEnergy boolean true
 
 // log the value of beaverLosesEnergy
 ifProp Beaver.beaverLosesEnergy equal true [[
@@ -418,7 +418,7 @@ every 1 [[
 
   ifProp Beaver.beaverLosesEnergy equal true [[
     // lower energyLevel because living takes energy
-    prop Beaver.energyLevel sub 5
+    prop Beaver.energyLevel sub 2
   ]]
 
   // check if the beaver is ok
