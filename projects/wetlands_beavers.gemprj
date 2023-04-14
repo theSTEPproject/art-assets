@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -1191,13 +1194,6 @@ prop y setTo -296.17`
       "bpid": "Tree",
       "initScript": `prop x setTo 319.10
 prop y setTo -324.79`
-    },
-    {
-      "id": "21",
-      "label": "DropArea",
-      "bpid": "DropArea",
-      "initScript": `prop x setTo -352.87
-prop y setTo 318.78`
     },
     {
       "id": "22",
