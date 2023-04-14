@@ -1020,17 +1020,16 @@ prop y setTo -256
     {
       "name": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM INIT
 useFeature Costume
-featProp Background.Costume.costumeName setTo'HB_background (filter).png' 0
+featProp Background.Costume.costumeName setTo 'HB_background (filter).png' 0
 // TODO: CONVERT
 featProp Background.Costume.scale setTo 0.8
 
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -1038,7 +1037,7 @@ featProp Background.Costume.scale setTo 0.8
       "id": "0",
       "label": "Background",
       "bpid": "Background",
-      "initScript": `prop x setTo 3.30
+      "initScript": `prop x setTo 3.3
 prop y setTo 0.12`
     },
     {
