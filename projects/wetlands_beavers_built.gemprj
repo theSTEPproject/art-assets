@@ -1,15 +1,12 @@
 {
-  "id": "wetlands_beavers",
-  "label": "Wetlands: Beavers Interactions",
+  "id": "wetlands_beavers_built",
+  "label": "Wetlands: Beavers Built",
   "metadata": {
     "top": -400,
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -80,10 +77,10 @@ prop global.visible setTo false
 
 // to help us keep track in the water
 // the dam needs to update this
-addProp damBuildLevel number 1
+addProp damBuildLevel number 5
 
 // change this to true once the water is a certain size
-addProp canBuildLodge boolean false
+addProp canBuildLodge boolean true
 
 // count of currently alive water plants
 // the plants themselves update the count in the touches script
@@ -568,7 +565,7 @@ featProp Lodge.Costume.width setTo 100
 featProp Lodge.Costume.height setTo 40
 featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
 
-addProp buildLevel number 1
+addProp buildLevel number 5
 prop Lodge.buildLevel setMin 1
 prop Lodge.buildLevel setMax 10
 
@@ -608,7 +605,7 @@ featProp Dam.Costume.width setTo 100
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
 
-addProp buildLevel number 1
+addProp buildLevel number 5
 prop Dam.buildLevel setMin 1
 prop Dam.buildLevel setMax 10
 
@@ -1052,18 +1049,14 @@ prop y setTo -164.14`
       "label": "Lodge",
       "bpid": "Lodge",
       "initScript": `prop x setTo 0
-prop y setTo -225
-prop Lodge.buildLevel setTo 1
-`
+prop y setTo -225`
     },
     {
       "id": "2",
       "label": "Dam",
       "bpid": "Dam",
       "initScript": `prop x setTo 0
-prop y setTo 0
-prop Dam.buildLevel setTo 1
-`
+prop y setTo 0`
     },
     {
       "id": "3",
@@ -1241,20 +1234,6 @@ prop y setTo -93.94
       "bpid": "StreamBed",
       "initScript": `prop x setTo 0
 prop y setTo 199`
-    },
-    {
-      "id": "28",
-      "label": "CarbonCaptureRateGraph",
-      "bpid": "CarbonCaptureRateGraph",
-      "initScript": `prop x setTo 495.00
-prop y setTo 311.83`
-    },
-    {
-      "id": "29",
-      "label": "PollutionGraph",
-      "bpid": "PollutionGraph",
-      "initScript": `prop x setTo 495.00
-prop y setTo 131.94`
     },
     {
       "id": "30",

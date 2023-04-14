@@ -1,12 +1,15 @@
 {
-  "id": "wetlands_beavers_play",
-  "label": "Wetlands: Beavers Play",
+  "id": "wetlands_beavers_story",
+  "label": "Wetlands: Beavers Story",
   "metadata": {
     "top": -400,
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -222,6 +225,22 @@ featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.2
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "GreatSpotForDam",
+      "scriptText": `# BLUEPRINT GreatSpotForDam
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp GreatSpotForDam.Costume.costumeName setTo 'WL_dam_bg.png'
+featProp GreatSpotForDam.Costume.scale setTo 0.5
+prop GreatSpotForDam.zIndex setTo -200
+
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -287,6 +306,13 @@ prop y setTo 114.79`
       "bpid": "Predator",
       "initScript": `prop x setTo 229.51
 prop y setTo -329.70`
+    },
+    {
+      "id": "9",
+      "label": "GreatSpotForDam9",
+      "bpid": "GreatSpotForDam",
+      "initScript": `prop x setTo 2.69
+prop y setTo 29.94`
     }
   ]
 }
