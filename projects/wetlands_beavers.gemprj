@@ -525,6 +525,8 @@ addFeature Touches
 featProp GestureHelper.Costume.costumeName setTo 'GEN_circle.json'
 featProp GestureHelper.Costume.scale setTo 0.1
 prop GestureHelper.alpha setTo 0.5
+prop GestureHelper.zIndex setTo 500
+
 featCall GestureHelper.Touches monitor 'Beaver' b2b
 
 # PROGRAM UPDATE
@@ -1016,6 +1018,22 @@ every 0.1 [[
   propPush global.showingFishInfo
   propPop FishInfoPanel.visible
 ]]`
+    },
+    {
+      "name": "GreatSpotForDam",
+      "scriptText": `# BLUEPRINT GreatSpotForDam
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp GreatSpotForDam.Costume.costumeName setTo 'WL_dam_bg.png'
+featProp GreatSpotForDam.Costume.scale setTo 0.5
+prop GreatSpotForDam.zIndex setTo -200
+
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -1269,6 +1287,13 @@ prop y setTo -254.56`
       "bpid": "FishInfoPanel",
       "initScript": `prop x setTo 498.98
 prop y setTo -235.98`
+    },
+    {
+      "id": "34",
+      "label": "GreatSpotForDam34",
+      "bpid": "GreatSpotForDam",
+      "initScript": `prop x setTo -2.48
+prop y setTo 5.28`
     }
   ]
 }
