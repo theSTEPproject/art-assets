@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -152,7 +149,12 @@ every 0.5 [[
   ifProp global.damBuildLevel lessThan 5 [[
     prop global.canBuildLodge setTo false
   ]]
-]]`
+]]
+
+onEvent START [[
+  featCall global.IU logString 'Starting model run'
+]]
+`
     },
     {
       "name": "Beaver",

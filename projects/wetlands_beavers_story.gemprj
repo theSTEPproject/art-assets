@@ -33,10 +33,17 @@
 
 # PROGRAM INIT
 
+addFeature IU
+
 prop global.visible setTo false
 
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+onEvent START [[
+  featCall global.IU logString 'Starting model run'
+]]
+`
     },
     {
       "name": "Beaver",
@@ -62,7 +69,9 @@ addFeature Physics
 addFeature Touches
 
 # PROGRAM UPDATE
-
+onEvent START [[
+  featCall global.IU logString 'Starting model run'
+]]
 `
     },
     {
