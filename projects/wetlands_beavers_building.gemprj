@@ -19,7 +19,16 @@
     "mirrorX": false,
     "mirrorY": false
   },
-  "rounds": [],
+  "rounds": [
+    {
+      "initScript": ``,
+      "endScript": `
+      featProp global.Graphing.messageStringToShow setTo 'Nice work! How do you think that went?'
+      featCall global.Graphing showMessageProp
+      featCall global.IU logString 'Ending model run'
+`
+    }
+  ],
   "blueprints": [
     {
       "name": "global",
@@ -58,7 +67,7 @@
 
 
 addFeature IU
-
+addFeature Graphing
 // ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
 // ✏️ Should we show an info panel when the beaver
 // ✏️ moves over a water plant?
@@ -153,9 +162,7 @@ every 0.5 [[
 
 onEvent START [[
   featCall global.IU logString 'Starting model run'
-]]
-
-`
+]]`
     },
     {
       "name": "Beaver",
@@ -1265,20 +1272,6 @@ prop y setTo -93.94
       "bpid": "StreamBed",
       "initScript": `prop x setTo 0
 prop y setTo 199`
-    },
-    {
-      "id": "28",
-      "label": "CarbonCaptureRateGraph",
-      "bpid": "CarbonCaptureRateGraph",
-      "initScript": `prop x setTo 495.00
-prop y setTo 311.83`
-    },
-    {
-      "id": "29",
-      "label": "PollutionGraph",
-      "bpid": "PollutionGraph",
-      "initScript": `prop x setTo 495.00
-prop y setTo 131.94`
     },
     {
       "id": "30",
