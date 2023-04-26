@@ -1069,7 +1069,6 @@ every 0.1 [[
 addFeature Costume
 featProp GreatSpotForDam.Costume.costumeName setTo 'WL_dam_bg.png'
 featProp GreatSpotForDam.Costume.scale setTo 0.5
-prop GreatSpotForDam.zIndex setTo -200
 
 
 # PROGRAM UPDATE`
@@ -1130,9 +1129,8 @@ ifProp WaterSpeed.location equal 'belowDam' [[
       prop WaterSpeed.alpha setTo 1
   ]]
   ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
-      // fast and shallow
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
-      prop WaterSpeed.alpha setTo 1
+      // medium and shallow
+      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
   ]]
 
 ]]
@@ -1375,8 +1373,7 @@ prop y setTo -235.98`
       "bpid": "GreatSpotForDam",
       "initScript": `prop x setTo 1.21
 prop y setTo 2.01
-prop zIndex setTo 50
-`
+prop zIndex setTo 50`
     },
     {
       "id": "35",
