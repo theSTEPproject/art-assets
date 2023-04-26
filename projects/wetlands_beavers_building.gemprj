@@ -1149,42 +1149,42 @@ prop y setTo 314.78`
     },
     {
       "id": "11",
-      "label": "Mud11",
+      "label": "Mud 1",
       "bpid": "Mud",
       "initScript": `prop x setTo 282.14
 prop y setTo 21.75`
     },
     {
       "id": "12",
-      "label": "Rock12",
+      "label": "Rock 1",
       "bpid": "Rock",
       "initScript": `prop x setTo 319.34
 prop y setTo -113.62`
     },
     {
       "id": "13",
-      "label": "Rock13",
+      "label": "Rock 2",
       "bpid": "Rock",
       "initScript": `prop x setTo -303.54
 prop y setTo 165.14`
     },
     {
       "id": "14",
-      "label": "Mud14",
+      "label": "Mud 3",
       "bpid": "Mud",
       "initScript": `prop x setTo 309.95
 prop y setTo 66.96`
     },
     {
       "id": "15",
-      "label": "Mud15",
+      "label": "Mud 2",
       "bpid": "Mud",
       "initScript": `prop x setTo 277.77
 prop y setTo 47.90`
     },
     {
       "id": "16",
-      "label": "Rock16",
+      "label": "Rock 3",
       "bpid": "Rock",
       "initScript": `prop x setTo -361.11
 prop y setTo 180.27`
@@ -1314,6 +1314,69 @@ prop y setTo -235.98`
       "bpid": "GreatSpotForDam",
       "initScript": `prop x setTo -2.48
 prop y setTo 5.28`
+    },
+    {
+      "id": "35",
+      "label": "Mud 4",
+      "bpid": "Mud",
+      "initScript": `prop x setTo -311.83
+prop y setTo 208.01`
+    },
+    {
+      "id": "36",
+      "label": "Rock 4",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -341.73
+prop y setTo 324.96`
+    },
+    {
+      "id": "37",
+      "label": "Mud 5",
+      "bpid": "Mud",
+      "initScript": `prop x setTo 336.39
+prop y setTo 42.35`
+    },
+    {
+      "id": "38",
+      "label": "Twig 8",
+      "bpid": "Twig",
+      "initScript": `prop x setTo 325.18
+prop y setTo -184.35`
+    },
+    {
+      "id": "39",
+      "label": "Rock 5",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 348.90
+prop y setTo -106.61`
+    },
+    {
+      "id": "40",
+      "label": "Rock 6",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -341.33
+prop y setTo 154.86`
+    },
+    {
+      "id": "41",
+      "label": "Mud ",
+      "bpid": "Mud",
+      "initScript": `prop x setTo -332.42
+prop y setTo 222.62`
+    },
+    {
+      "id": "42",
+      "label": "Twig 9",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -349.77
+prop y setTo -127.91`
+    },
+    {
+      "id": "43",
+      "label": "Twig 10",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -341.43
+prop y setTo -94.20`
     }
   ]
 }
