@@ -1,15 +1,12 @@
 {
-  "id": "wetlands_beavers_empty",
-  "label": "Wetlands: Beavers Empty 1",
+  "id": "wetlands_beavers_building",
+  "label": "Wetlands: Beavers Building",
   "metadata": {
     "top": -400,
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -157,6 +154,7 @@ every 0.5 [[
 onEvent START [[
   featCall global.IU logString 'Starting model run'
 ]]
+
 `
     },
     {
@@ -579,6 +577,7 @@ prop Lodge.buildLevel setMax 10
 
 // to be used in re-scaling the width
 addProp tempWidth number 0
+prop Lodge.alpha setTo 0.2
 
 # PROGRAM UPDATE
 
@@ -594,6 +593,7 @@ every 0.5 [[
   ifProp global.canBuildLodge equal true [[
     // make it clear we can now build
     featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
+    prop Lodge.alpha setTo 1
   ]]
 ]]`
     },
@@ -676,6 +676,23 @@ every 0.5 [[
     prop Water.tempWidth add 170
     propPush Water.tempWidth
     featPropPop Water.Costume.width
+
+      // change the water speed based on the size of this water, assuming
+      // it moves faster when it is narrower, and slows down as it pools
+      ifProp Water.buildLevel lessThanOrEqual 3 [[
+        prop Water.speedOfWater setTo 'fast'
+        featCall Water.Costume setColorize 51 170 255
+      ]]
+      ifProp Water.buildLevel greaterThan 3 [[
+        prop Water.speedOfWater setTo 'medium'
+        featCall Water.Costume setColorize 0 118 198
+
+      ]]
+      ifProp Water.buildLevel greaterThanOrEqual 5 [[
+        prop Water.speedOfWater setTo 'slow'
+        featCall Water.Costume setColorize 0 71 143
+      ]]
+
   ]]
 
   // the dam causes the water below it to shrink
@@ -688,18 +705,22 @@ every 0.5 [[
     prop Water.tempWidth add 210
     propPush Water.tempWidth
     featPropPop Water.Costume.width
-  ]]
 
-  // change the water speed based on the size of this water, assuming
-  // it moves faster when it is narrower, and slows down as it pools
-  ifProp Water.buildLevel lessThanOrEqual 3 [[
-    prop Water.speedOfWater setTo 'fast'
-  ]]
-  ifProp Water.buildLevel greaterThan 3 [[
-    prop Water.speedOfWater setTo 'medium'
-  ]]
-  ifProp Water.buildLevel greaterThanOrEqual 5 [[
-    prop Water.speedOfWater setTo 'slow'
+      // change the water speed based on the size of this water, assuming
+      // it moves faster when it is narrower, and slows down as it pools
+      ifProp Water.buildLevel lessThanOrEqual 3 [[
+        prop Water.speedOfWater setTo 'slow'
+        featCall Water.Costume setColorize 51 170 255
+      ]]
+      ifProp Water.buildLevel greaterThan 3 [[
+        prop Water.speedOfWater setTo 'medium'
+        featCall Water.Costume setColorize 93 197 255
+      ]]
+      ifProp Water.buildLevel greaterThanOrEqual 5 [[
+        prop Water.speedOfWater setTo 'fast'
+        featCall Water.Costume setColorize 128 225 255
+      ]]
+
   ]]
 
 ]]`
@@ -1057,9 +1078,7 @@ prop y setTo -164.14`
       "label": "Lodge",
       "bpid": "Lodge",
       "initScript": `prop x setTo 0
-prop y setTo -225
-prop Lodge.buildLevel setTo 1
-`
+prop y setTo -225`
     },
     {
       "id": "2",
@@ -1246,6 +1265,20 @@ prop y setTo -93.94
       "bpid": "StreamBed",
       "initScript": `prop x setTo 0
 prop y setTo 199`
+    },
+    {
+      "id": "28",
+      "label": "CarbonCaptureRateGraph",
+      "bpid": "CarbonCaptureRateGraph",
+      "initScript": `prop x setTo 495.00
+prop y setTo 311.83`
+    },
+    {
+      "id": "29",
+      "label": "PollutionGraph",
+      "bpid": "PollutionGraph",
+      "initScript": `prop x setTo 495.00
+prop y setTo 131.94`
     },
     {
       "id": "30",
