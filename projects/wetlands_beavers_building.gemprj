@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -1070,6 +1073,71 @@ prop GreatSpotForDam.zIndex setTo -200
 
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "WaterSpeed",
+      "scriptText": `# BLUEPRINT WaterSpeed
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
+featProp WaterSpeed.Costume.scale setTo 0.5
+prop WaterSpeed.zIndex setTo 100
+
+// can be above or below the dam
+// we only do certain things if it is above
+addProp location string 'belowDam'
+addProp buildLevel number 1
+
+# PROGRAM UPDATE
+
+propPush global.damBuildLevel
+propPop WaterSpeed.buildLevel
+
+    // change the water speed based on the size of this water, assuming
+    // it moves faster when it is narrower, and slows down as it pools
+
+ifProp WaterSpeed.location equal 'aboveDam' [[
+    ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
+        // medium
+        featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
+        prop WaterSpeed.alpha setTo 1
+    ]]
+    ifProp WaterSpeed.buildLevel greaterThan 3 [[
+        // slow
+        prop WaterSpeed.alpha setTo 0
+    ]]
+    ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
+        // slow and deep
+        //featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
+        prop WaterSpeed.alpha setTo 0
+    ]]
+
+]]
+
+ifProp WaterSpeed.location equal 'belowDam' [[
+  ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
+      // medium
+      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
+      prop WaterSpeed.alpha setTo 1
+  ]]
+  ifProp WaterSpeed.buildLevel greaterThan 3 [[
+      // fast
+      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
+      prop WaterSpeed.alpha setTo 1
+  ]]
+  ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
+      // fast and shallow
+      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
+      prop WaterSpeed.alpha setTo 1
+  ]]
+
+]]
+
+`
     }
   ],
   "instances": [
@@ -1305,8 +1373,10 @@ prop y setTo -235.98`
       "id": "34",
       "label": "GreatSpotForDam34",
       "bpid": "GreatSpotForDam",
-      "initScript": `prop x setTo -2.48
-prop y setTo 5.28`
+      "initScript": `prop x setTo 1.21
+prop y setTo 2.01
+prop zIndex setTo 50
+`
     },
     {
       "id": "35",
@@ -1370,6 +1440,22 @@ prop y setTo -127.91`
       "bpid": "Twig",
       "initScript": `prop x setTo -341.43
 prop y setTo -94.20`
+    },
+    {
+      "id": "44",
+      "label": "WaterSpeedBottom",
+      "bpid": "WaterSpeed",
+      "initScript": `prop x setTo 2.90
+prop y setTo 196.10
+prop location setTo 'belowDam'`
+    },
+    {
+      "id": "45",
+      "label": "WaterSpeedTop",
+      "bpid": "WaterSpeed",
+      "initScript": `prop x setTo -1.18
+prop y setTo -163.69
+prop location setTo 'aboveDam'`
     }
   ]
 }
