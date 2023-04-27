@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -645,123 +648,6 @@ featProp Tree.Costume.scale setTo 0.25
 # PROGRAM UPDATE`
     },
     {
-      "name": "DropArea",
-      "scriptText": `# BLUEPRINT DropArea
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Graphing
-
-featProp DropArea.Costume.costumeName setTo 'GEN_square.json'
-featProp DropArea.Costume.width setTo 50
-featProp DropArea.Costume.height setTo 50
-featCall DropArea.Costume setColorizeHSV 0.3 0.3 0.3
-
-featProp DropArea.Graphing.text setTo 'Drop here'
-
-# PROGRAM UPDATE`
-    },
-    {
-      "name": "CarbonCaptureRateGraph",
-      "scriptText": `# BLUEPRINT CarbonCaptureRateGraph
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-addProp carbonCaptureRate number 0
-
-
-featProp CarbonCaptureRateGraph.Costume.costumeName setTo 'GEN_onexone.json'
-featProp CarbonCaptureRateGraph.Graphing.isLargeGraphic setTo true
-featProp CarbonCaptureRateGraph.Graphing.graphProp setTo 'carbonCaptureRate'
-featProp CarbonCaptureRateGraph.Graphing.graphMinY setTo 0
-featProp CarbonCaptureRateGraph.Graphing.graphMaxY setTo 100
-featProp CarbonCaptureRateGraph.Graphing.text setTo 'Carbon Capture Rate'
-
-# PROGRAM UPDATE
-every 1 runAtStart [[
-  propPush global.carbonCaptureRate
-  propPop CarbonCaptureRateGraph.carbonCaptureRate
-]]
-
-`
-    },
-    {
-      "name": "PollutionGraph",
-      "scriptText": `# BLUEPRINT PollutionGraph
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-addProp pollutionInWater number 0
-
-
-featProp PollutionGraph.Costume.costumeName setTo 'GEN_onexone.json'
-featProp PollutionGraph.Graphing.isLargeGraphic setTo true
-featProp PollutionGraph.Graphing.graphProp setTo 'pollutionInWater'
-featProp PollutionGraph.Graphing.graphMinY setTo 0
-featProp PollutionGraph.Graphing.graphMaxY setTo 100
-featProp PollutionGraph.Graphing.text setTo 'Pollution in the Water'
-
-# PROGRAM UPDATE
-every 1 runAtStart [[
-  propPush global.pollutionInWater
-  propPop PollutionGraph.pollutionInWater
-]]
-
-`
-    },
-    {
-      "name": "PlantInfoPanel",
-      "scriptText": `# BLUEPRINT PlantInfoPanel
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp PlantInfoPanel.Costume.costumeName setTo 'WL_plant_info.png'
-prop PlantInfoPanel.visible setTo false
-featProp PlantInfoPanel.Costume.scale setTo 0.7
-
-# PROGRAM UPDATE
-every 0.1 [[
-  propPush global.showingWaterPlantInfo
-  propPop PlantInfoPanel.visible
-]]
-`
-    },
-    {
-      "name": "FishInfoPanel",
-      "scriptText": `# BLUEPRINT FishInfoPanel
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp FishInfoPanel.Costume.costumeName setTo 'WL_fish_info.png'
-prop FishInfoPanel.visible setTo false
-featProp FishInfoPanel.Costume.scale setTo 0.7
-
-# PROGRAM UPDATE
-every 0.1 [[
-  propPush global.showingFishInfo
-  propPop FishInfoPanel.visible
-]]`
-    },
-    {
       "name": "GreatSpotForDam",
       "scriptText": `# BLUEPRINT GreatSpotForDam
 # TAG isCharControllable false
@@ -1067,13 +953,6 @@ prop y setTo -93.94
 prop y setTo 199`
     },
     {
-      "id": "30",
-      "label": "PlantInfoPanel",
-      "bpid": "PlantInfoPanel",
-      "initScript": `prop x setTo -494.91
-prop y setTo -231.28`
-    },
-    {
       "id": "31",
       "label": "Fish",
       "bpid": "Fish",
@@ -1086,13 +965,6 @@ prop y setTo -68.97`
       "bpid": "Fish",
       "initScript": `prop x setTo -113.14
 prop y setTo -254.56`
-    },
-    {
-      "id": "33",
-      "label": "FishInfoPanel",
-      "bpid": "FishInfoPanel",
-      "initScript": `prop x setTo 498.98
-prop y setTo -235.98`
     },
     {
       "id": "34",
