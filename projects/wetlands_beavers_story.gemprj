@@ -92,14 +92,12 @@ onEvent START [[
 
 addFeature Costume
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
-featProp Predator.Costume.scale setTo 0.3
+featProp Predator.Costume.scale setTo 0.2
 
 addFeature Physics
 addFeature Touches
 
-# PROGRAM UPDATE
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "Water",
@@ -141,6 +139,27 @@ featProp Dam.Costume.costumeName setTo 'GEN_square.json'
 featProp Dam.Costume.width setTo 100
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.2 0.8
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Lodge",
+      "scriptText": `# BLUEPRINT Lodge
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Lodge.Costume.costumeName setTo 'GEN_square.json'
+featProp Lodge.Costume.width setTo 100
+featProp Lodge.Costume.height setTo 40
+featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
 
 
 # PROGRAM UPDATE`
@@ -195,7 +214,7 @@ addFeature Physics
 addFeature Touches
 
 featProp Mud.Costume.costumeName setTo 'WL_mud.png'
-featProp Mud.Costume.scale setTo 0.2
+featProp Mud.Costume.scale setTo 0.1
 
 # PROGRAM UPDATE`
     },
@@ -269,59 +288,66 @@ prop y setTo 200`
     },
     {
       "id": "2",
-      "label": "Mud2",
+      "label": "Mud 1",
       "bpid": "Mud",
       "initScript": `prop x setTo -299.93
-prop y setTo -217.20`
+prop y setTo -217.2`
     },
     {
       "id": "3",
-      "label": "Rock3",
+      "label": "Rock 1",
       "bpid": "Rock",
       "initScript": `prop x setTo -300.05
 prop y setTo -156.05`
     },
     {
       "id": "4",
-      "label": "Twig4",
+      "label": "Twig 1",
       "bpid": "Twig",
       "initScript": `prop x setTo -296.13
 prop y setTo -278.73`
     },
     {
       "id": "5",
-      "label": "WaterPlant5",
+      "label": "WaterPlant 1",
       "bpid": "WaterPlant",
       "initScript": `prop x setTo -294.96
 prop y setTo -85.96`
     },
     {
       "id": "6",
-      "label": "Tree6",
+      "label": "Tree 1",
       "bpid": "Tree",
       "initScript": `prop x setTo -301.19
 prop y setTo 18.98`
     },
     {
       "id": "7",
-      "label": "Dam7",
+      "label": "Dam",
       "bpid": "Dam",
-      "initScript": `prop x setTo -297.43
-prop y setTo 114.79`
+      "initScript": `prop x setTo 6.50
+prop y setTo 28.54`
     },
     {
       "id": "8",
-      "label": "Predator8",
+      "label": "Predator 1",
       "bpid": "Predator",
       "initScript": `prop x setTo 229.51
-prop y setTo -329.70`
+prop y setTo -329.7`
     },
     {
       "id": "9",
-      "label": "GreatSpotForDam9",
+      "label": "GreatSpotForDam",
       "bpid": "GreatSpotForDam",
       "initScript": `prop x setTo 2.69
 prop y setTo 29.94`
+    },
+    {
+      "id": "10",
+      "label": "Lodge",
+      "bpid": "Lodge",
+      "initScript": `prop x setTo -1.78
+prop y setTo -214.43`
     }
   ]
 }

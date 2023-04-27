@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -789,7 +792,7 @@ addFeature Touches
 addFeature Movement
 
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
-featProp Predator.Costume.scale setTo 0.3
+featProp Predator.Costume.scale setTo 0.2
 
 featCall Predator.Touches monitor 'Beaver' b2b
 
