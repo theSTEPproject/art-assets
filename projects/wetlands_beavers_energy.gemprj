@@ -1,5 +1,5 @@
 {
-  "id": "wetlands_beavers_building",
+  "id": "wetlands_beavers_energy",
   "label": "Wetlands: Beavers Building",
   "metadata": {
     "top": -400,
@@ -27,19 +27,7 @@
       // prep the message, but display later in case we want to add to it
       featProp global.Graphing.messageStringToShow setTo 'Nice work! How do you think that went? '
 
-      // display infoPanels if there are enough plants / fish to possibly have seen them
-      ifProp global.waterPlantCount greaterThan 0 [[
-        featProp global.Graphing.messageStringToShow add 'Did you notice the plants appearing? '
-        featCall global.Population charactersForEach PlantInfoPanel [[
-          prop PlantInfoPanel.visible setTo 1
-        ]]
-      ]]
-      ifProp global.fishCount greaterThan 0 [[
-        featProp global.Graphing.messageStringToShow add 'Did you notice the fish appearing? '
-        featCall global.Population charactersForEach FishInfoPanel [[
-          prop FishInfoPanel.visible setTo 1
-        ]]
-      ]]
+      // change other things and / or add to the message here 
 
       // display message
       featCall global.Graphing showMessageProp
@@ -58,26 +46,7 @@
 # TAG IsPtrackControllable false
 
 // 🔎 WHAT DOES THIS MODEL DO?
-// 🔎 This is a model of how Beavers interact with and create a wetland ecosystem
-// - We expect that learners will control beavers, moving around and trying to survive
-// - Researchers will control the GestureHelper, and for now the Predator (if we want one)
-// - As the Beavers add materials (twigs, mud, rocks) to the Dam, it grows, causing the water to pool above it
-// - To add something, they need to pick it up, go to the Dam (or Lodge) and gesture that they are building
-// --- Once they are gesturing, the researcher will place the GestureHelper over them
-// --- Once it is there for 1 second, the materials will disappear and the Dam / Lodge will grow
-// - Once the pond is deep / slow enough, the Beavers can build a lodge
-// --- When the water is deep enough, water plants will also appear
-// --- The plants impact carbon capture, and pollution
-// 🔎 Note: we can remove / turn off or on the following:
-// - Predators (by using the character controller)
-// - Whether Beavers lose energy and thus need to eat by going to trees (a beaver property)
-// - Carbon and pollution graphs (by using setup)
-// - The info panels (by changing a property in global)
-// - Fish can be removed simply by deleting them (they can be added later)
 
-
-// TODO
-// breaker
 
 # PROGRAM INIT
 
@@ -85,12 +54,6 @@
 addFeature IU
 addFeature Graphing
 addFeature Population
-
-// ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
-// ✏️ Should we show an info panel when the beaver
-// ✏️ moves over a water plant?
-addProp showWaterPlantInfo boolean true
-addProp showFishInfo boolean true
 
 // ✏️ LETS CHANGE THIS: consider adding / removing
 // ✏️ The carbon capture graph
@@ -125,12 +88,6 @@ addProp initialCarbonCaptureRate number 10
 addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
-
-// so we know if the panels should be open or not
-// temporarily set these to true to move the panels
-// around as well
-addProp showingWaterPlantInfo boolean false
-addProp showingFishInfo boolean false
 
 // to be used by the noticing wizard
 addProp noticingString string '...'
@@ -187,8 +144,8 @@ onEvent START [[
     {
       "name": "Beaver",
       "scriptText": `# BLUEPRINT Beaver
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -206,41 +163,18 @@ addFeature IU
 addFeature Graphing
 addFeature Movement
 
-
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.15
 prop Beaver.zIndex setTo 200
 
-// the beaver can carry nothing, twig, rock, or mud
-addProp carrying string 'nothing'
-
-// if the GestureHelper is touching the beaver, set to true
-// if it moves off, set to false
-addProp gesturing boolean false
-addProp gestureTimer number 0
-
 // For logging more elaborate ideas
 addProp tempString string ''
 
-// for predator handling - true if hidden
-addProp protected boolean false
 
 addProp energyLevel number 100
 prop Beaver.energyLevel setMin 0
 prop Beaver.energyLevel setMax 100
-
-// setup to see if the beaver is touching anything it might pick up
-featCall Beaver.Touches monitor 'Twig' b2b
-featCall Beaver.Touches monitor 'Rock' b2b
-featCall Beaver.Touches monitor 'Mud' b2b
-featCall Beaver.Touches monitor 'Water' b2b
-featCall Beaver.Touches monitor 'Lodge' b2b
-featCall Beaver.Touches monitor 'Dam' b2b
-featCall Beaver.Touches monitor 'Tree' b2b
-featCall Beaver.Touches monitor 'DropArea' b2b
-featCall Beaver.Touches monitor 'WaterPlant' b2b
-featCall Beaver.Touches monitor 'Fish' b2b
 
 addProp displayText string ''
 propPush Beaver.trackerId
@@ -253,199 +187,8 @@ featProp Beaver.Graphing.meterColor setTo 65280
 // ✏️ This helps us explore the model without worrying about food
 addProp beaverLosesEnergy boolean true
 
-// log the value of beaverLosesEnergy
-ifProp Beaver.beaverLosesEnergy equal true [[
-  featCall Beaver.IU logString 'Beaver started with beaverLosesEnergy set to true'
-]]
-ifProp Beaver.beaverLosesEnergy equal false [[
-  featCall Beaver.IU logString 'Beaver started with beaverLosesEnergy set to false'
-]]
-
-featCall Beaver.IU logString 'The beaver started off carrying nothing'
-
-
 # PROGRAM UPDATE
 
-// Flip the artwork to point left or right depending on the direction the character is moving
-ifFeatProp Beaver.Movement.compassDirection equal 'E' [[
-  featProp Beaver.Costume.flipX setTo false
-]]
-ifFeatProp Beaver.Movement.compassDirection equal 'W' [[
-  featProp Beaver.Costume.flipX setTo true
-]]
-
-when Beaver firsttouches Twig [[
-  // If the beaver isn't carrying anything yet, pick up the twig
-  ifProp Beaver.carrying equal 'nothing' [[
-    featCall Beaver.IU logString 'Beaver picked up a twig'
-    prop Beaver.carrying setTo 'twig'
-    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_twig.png'
-    featCall Twig.Population removeCharacter
-  ]]
-]]
-
-when Beaver firsttouches Rock [[
-  // If the beaver isn't carrying anything yet, pick up the rock
-  ifProp Beaver.carrying equal 'nothing' [[
-    featCall Beaver.IU logString 'Beaver picked up a rock'
-    prop Beaver.carrying setTo 'rock'
-    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_rock.png'
-    featCall Rock.Population removeCharacter
-  ]]
-]]
-
-when Beaver firsttouches Mud [[
-  // If the beaver isn't carrying anything yet, pick up the mud
-  ifProp Beaver.carrying equal 'nothing' [[
-    featCall Beaver.IU logString 'Beaver picked up some mud'
-    prop Beaver.carrying setTo 'mud'
-    featProp Beaver.Costume.costumeName setTo 'WL_beaver_carrying_mud.png'
-    featCall Mud.Population removeCharacter
-  ]]
-]]
-
-when Beaver touches Dam [[
-  every 1 [[
-
-    // We are carrying a rock, mud, or twig
-    ifProp Beaver.carrying notEqual 'nothing' [[
-      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
-
-        // Depending on what we were carrying, log it
-        // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
-        prop Beaver.tempString setTo 'The beaver added a '
-        ifProp Beaver.carrying equal 'twig' [[
-          prop Beaver.tempString add 'twig '
-        ]]
-        ifProp Beaver.carrying equal 'rock' [[
-          prop Beaver.tempString add 'rock '
-        ]]
-        ifProp Beaver.carrying equal 'mud' [[
-          prop Beaver.tempString add 'mud '
-        ]]
-        prop Beaver.tempString add 'to the dam.'
-        propPush Beaver.tempString
-        featPropPop Beaver.IU.logStringText
-
-        featCall Beaver.IU logProperty
-
-        // Show we dropped what we were carrying and update the dam
-        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-        prop Beaver.carrying setTo 'nothing'
-        prop Dam.buildLevel add 1
-        propPush Dam.buildLevel
-        propPop global.damBuildLevel
-      ]]
-    ]]
-  ]]
-]]
-
-when Beaver firsttouches Lodge [[
-  ifProp Lodge.buildLevel greaterThanOrEqual 3 [[
-    prop Beaver.protected setTo true
-    featCall Beaver.IU logString 'Beaver is protected in the lodge'
-
-    prop Beaver.displayText add ' 🛡'
-  ]]
-  ifProp Lodge.buildLevel lessThan 3 [[
-    featCall Beaver.IU logString 'Beaver is near the lodge, but the lodge is not big enough to protect it'
-  ]]
-]]
-when Beaver lasttouches Lodge [[
-  ifProp Beaver.protected equal true [[
-    prop Beaver.protected setTo false
-    featCall Beaver.IU logString 'Beaver left the lodge so is no-longer protected'
-
-    propPush Beaver.trackerId
-    propPop Beaver.displayText
-
-  ]]
-]]
-
-when Beaver touches Lodge [[
-  every 1 [[
-    ifProp Beaver.carrying notEqual 'nothing' [[
-      ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
-        ifProp global.canBuildLodge equal true [[
-
-          // Depending on what we were carrying, log it
-          // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
-          prop Beaver.tempString setTo 'The beaver added a '
-          ifProp Beaver.carrying equal 'twig' [[
-            prop Beaver.tempString add 'twig '
-          ]]
-          ifProp Beaver.carrying equal 'rock' [[
-            prop Beaver.tempString add 'rock '
-          ]]
-          ifProp Beaver.carrying equal 'mud' [[
-            prop Beaver.tempString add 'mud '
-          ]]
-          prop Beaver.tempString add 'to the lodge.'
-          propPush Beaver.tempString
-          featPropPop Beaver.IU.logStringText
-
-          featCall Beaver.IU logProperty
-
-          // update the beave so we know it isn't carrying anything any more
-          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-          prop Beaver.carrying setTo 'nothing'
-          prop Lodge.buildLevel add 1
-        ]]
-        ifProp global.canBuildLodge equal false [[
-          featCall Beaver.IU logString 'Beaver drops what it was carrying but the lodge cannot be built yet so it disappears'
-          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-          prop Beaver.carrying setTo 'nothing'
-        ]]
-      ]]
-    ]]
-  ]]
-]]
-
-when Beaver touches DropArea [[
-  // update the beave so we know it isn't carrying anything any more
-  featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
-  featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-  prop Beaver.carrying setTo 'nothing'
-]]
-
-when Beaver touches Tree [[
-  every 1 [[
-    featCall Beaver.IU logString 'Beaver ate some wood at a tree'
-    prop Beaver.energyLevel add 20
-  ]]
-]]
-
-when Beaver firsttouches WaterPlant [[
-  ifProp WaterPlant.visible equal true [[
-    ifProp global.showWaterPlantInfo equal true [[
-      prop global.showingWaterPlantInfo setTo true
-    ]]
-  ]]
-]]
-
-when Beaver lasttouches WaterPlant [[
-  ifProp WaterPlant.visible equal true [[
-    ifProp global.showWaterPlantInfo equal true [[
-      prop global.showingWaterPlantInfo setTo false
-    ]]
-  ]]
-]]
-
-when Beaver firsttouches Fish [[
-  ifProp Fish.visible equal true [[
-    ifProp global.showFishInfo equal true [[
-      prop global.showingFishInfo setTo true
-    ]]
-  ]]
-]]
-
-when Beaver lasttouches Fish [[
-  ifProp Fish.visible equal true [[
-    ifProp global.showFishInfo equal true [[
-      prop global.showingFishInfo setTo false
-    ]]
-  ]]
-]]
 
 every 1 [[
 
@@ -465,13 +208,6 @@ every 1 [[
     ]]
   ]]
 
-  // check if gesturing, and then handle that inside the when touches above
-  ifProp Beaver.gesturing equal true [[
-    prop Beaver.gestureTimer add 1
-  ]]
-  ifProp Beaver.gesturing equal false [[
-    prop Beaver.gestureTimer setTo 0
-  ]]
 ]]`
     },
     {
@@ -538,49 +274,6 @@ featProp Mud.Costume.costumeName setTo 'WL_mud.png'
 featProp Mud.Costume.scale setTo 0.1
 
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "GestureHelper",
-      "scriptText": `# BLUEPRINT GestureHelper
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-// 🔎 WHAT DOES the GestureHelper DO?
-// 🔎 This is a character so that lets a helper tell GEM-STEP when
-// 🔎 the person pretending to be a beaver is doing the right gesture
-// 🔎 to put down what it is carrying (either helping build something or dropping it)
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-featProp GestureHelper.Costume.costumeName setTo 'GEN_circle.json'
-featProp GestureHelper.Costume.scale setTo 0.1
-prop GestureHelper.alpha setTo 0.5
-prop GestureHelper.zIndex setTo 500
-
-featCall GestureHelper.Touches monitor 'Beaver' b2b
-
-# PROGRAM UPDATE
-
-
-when GestureHelper firsttouches Beaver [[
-  prop Beaver.gesturing setTo true
-  featCall Beaver.IU logString 'Player acting as a beaver started gesturing'
-]]
-
-when GestureHelper lasttouches Beaver [[
-  prop Beaver.gesturing setTo false
-  featCall Beaver.IU logString 'Player acting as a beaver stopped gesturing'
-
-]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
     },
     {
       "name": "Lodge",
@@ -812,16 +505,7 @@ when Predator firsttouches Beaver [[
   ]]
 
 ]]
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "WaterPlant",
@@ -1503,6 +1187,13 @@ prop location setTo 'aboveDam'`
       "bpid": "Noticing",
       "initScript": `prop x setTo -469.41
 prop y setTo 112.08`
+    },
+    {
+      "id": "47",
+      "label": "Beaver 1",
+      "bpid": "Beaver",
+      "initScript": `prop x setTo -165.85
+prop y setTo -119.27`
     }
   ]
 }
