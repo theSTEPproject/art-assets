@@ -115,7 +115,7 @@ addProp showingWaterPlantInfo boolean false
 addProp showingFishInfo boolean false
 
 // to be used by the noticing wizard
-addProp noticingString string ''
+addProp noticingString string '...'
 
 // required directive
 # PROGRAM UPDATE
@@ -840,6 +840,7 @@ when WaterPlant centertouches Water [[
       featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
       prop WaterPlant.alive setTo true
       prop WaterPlant.visible setTo true
+      prop global.noticingString setTo 'Check out the new plants!'
     ]]
   ]]
 
@@ -896,9 +897,10 @@ when Fish centertouches Water [[
   ifProp Fish.alive equal false [[
     ifProp Water.speedOfWater equal 'slow' [[
       prop global.fishCount add 1
-      featCall Fish.IU logString 'A new fish is in the pond because of the slow water'
       prop Fish.alive setTo true
       prop Fish.visible setTo true
+      featCall Fish.IU logString 'A new fish is in the pond because of the slow water'
+      prop global.noticingString setTo 'Check out the new fish!'
     ]]
   ]]
 
@@ -906,9 +908,9 @@ when Fish centertouches Water [[
   ifProp Fish.alive equal true [[
     ifProp Water.speedOfWater notEqual 'slow' [[
       prop global.fishCount sub 1
-      featCall Fish.IU logString 'A fish moves away because the water is too fast'
       prop Fish.alive setTo false
       prop Fish.visible setTo false
+      featCall Fish.IU logString 'A fish moves away because the water is too fast'
     ]]
   ]]
 ]]
@@ -1154,7 +1156,7 @@ featProp Noticing.Graphing.text setTo 'Things to notice will appear here'
 every 1 [[
   
   propPush global.noticingString
-  featPropPop Noticing.Graphing.text 
+  featPropPop Noticing.Graphing.text
 
 ]]
 
