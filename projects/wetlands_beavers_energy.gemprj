@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -50,6 +47,11 @@
 
 // 🔎 WHAT DOES THIS MODEL DO?
 
+// TODO:
+// Cut some more stuff as needed
+// Write a function to pre-set the build level in both models
+// Add sun
+// Add energy reps
 
 # PROGRAM INIT
 
@@ -169,7 +171,6 @@ addFeature Movement
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.15
-prop Beaver.zIndex setTo 200
 
 // For logging more elaborate ideas
 addProp tempString string ''
@@ -749,6 +750,73 @@ every 1 [[
 ]]
 
   `
+    },
+    {
+      "name": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+addFeature Costume
+featProp Sun.Costume.costumeName setTo 'GEN_sun-corner.png'
+// featCall Sun.Costume setColorize 255 215 0
+prop Sun.zIndex setTo 0
+
+addFeature Physics
+
+featProp Sun.Costume.scale setTo 1.3
+
+// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
+addProp energyType string 'source'
+
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+// Start off looking like a magnifying lense so we know that you need to go look at the other characters.
+// Later this will change to different types of energy as the students move over the other characters.
+featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
+featProp EnergyRepresentation.Costume.scale setTo 0.5
+prop EnergyRepresentation.alpha setTo 0.8
+prop EnergyRepresentation.zIndex setTo 200
+
+// Setup energy properties
+addProp energyLevel number 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
+
+// Setup energy type so that we know what we can give it to
+// start with none beause we have not picked up energy yet.
+addProp energyType string 'none'
+
+// Setup the touch moniitoring so that we check when the
+// EnergyRepresentation characters touch the Sun, Algae, or Fish
+// The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
+// featCall EnergyRepresentation.Touches monitor 'Sun' b2b
+// featCall EnergyRepresentation.Touches monitor 'Algae' b2b
+// featCall EnergyRepresentation.Touches monitor 'Fish' b2b
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -895,8 +963,8 @@ prop y setTo 215.07`
       "id": "19",
       "label": "Tree19",
       "bpid": "Tree",
-      "initScript": `prop x setTo -318.46
-prop y setTo -296.17`
+      "initScript": `prop x setTo -241.61
+prop y setTo 31.91`
     },
     {
       "id": "20",
@@ -1066,6 +1134,13 @@ prop y setTo 112.08`
       "bpid": "Beaver",
       "initScript": `prop x setTo -165.85
 prop y setTo -119.27`
+    },
+    {
+      "id": "48",
+      "label": "Sun48",
+      "bpid": "Sun",
+      "initScript": `prop x setTo -261.05
+prop y setTo -361.04`
     }
   ]
 }
