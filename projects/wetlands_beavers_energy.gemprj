@@ -810,11 +810,12 @@ prop EnergyRepresentation.energyLevel setMin 0
 addProp energyType string 'none'
 
 // Setup the touch moniitoring so that we check when the
-// EnergyRepresentation characters touch the Sun, Algae, or Fish
+// EnergyRepresentation characters touch the Sun, Beaver, Tree, or Predator
 // The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
-// featCall EnergyRepresentation.Touches monitor 'Sun' b2b
-// featCall EnergyRepresentation.Touches monitor 'Algae' b2b
-// featCall EnergyRepresentation.Touches monitor 'Fish' b2b
+featCall EnergyRepresentation.Touches monitor 'Sun' b2b
+featCall EnergyRepresentation.Touches monitor 'Tree' b2b
+featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
+featCall EnergyRepresentation.Touches monitor 'Predator' b2b
 
 # PROGRAM UPDATE`
     }
@@ -1132,8 +1133,8 @@ prop y setTo 112.08`
       "id": "47",
       "label": "Beaver 1",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -165.85
-prop y setTo -119.27`
+      "initScript": `prop x setTo -165.45
+prop y setTo -161.75`
     },
     {
       "id": "48",
