@@ -23,8 +23,28 @@
     {
       "initScript": ``,
       "endScript": `
-      featProp global.Graphing.messageStringToShow setTo 'Nice work! How do you think that went?'
+     
+      // prep the message, but display later in case we want to add to it
+      featProp global.Graphing.messageStringToShow setTo 'Nice work! How do you think that went? '
+
+      // display infoPanels if there are enough plants / fish to possibly have seen them
+      ifProp global.waterPlantCount greaterThan 0 [[
+        featProp global.Graphing.messageStringToShow add 'Did you notice the plants appearing? '
+        featCall global.Population charactersForEach PlantInfoPanel [[
+          prop PlantInfoPanel.visible setTo 1
+        ]]
+      ]]
+      ifProp global.fishCount greaterThan 0 [[
+        featProp global.Graphing.messageStringToShow add 'Did you notice the fish appearing? '
+        featCall global.Population charactersForEach FishInfoPanel [[
+          prop FishInfoPanel.visible setTo 1
+        ]]
+      ]]
+
+      // display message
       featCall global.Graphing showMessageProp
+
+      // log that we are done
       featCall global.IU logString 'Ending model run'
 `
     }
@@ -65,9 +85,11 @@
 
 # PROGRAM INIT
 
-
+// add features
 addFeature IU
 addFeature Graphing
+addFeature Population
+
 // ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
 // ✏️ Should we show an info panel when the beaver
 // ✏️ moves over a water plant?
