@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -77,12 +74,10 @@ addFeature Graphing
 addProp showWaterPlantInfo boolean true
 addProp showFishInfo boolean true
 
-// ✏️ Also consider adding / removing
+// ✏️ LETS CHANGE THIS: consider adding / removing
 // ✏️ The carbon capture graph
 // ✏️ The pollution graph
-// ✏️ The carbon capture graph
 // ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
-
 
 
 prop global.visible setTo false
@@ -118,6 +113,9 @@ addProp tempNum number 0
 // around as well
 addProp showingWaterPlantInfo boolean false
 addProp showingFishInfo boolean false
+
+// to be used by the noticing wizard
+addProp noticingString string ''
 
 // required directive
 # PROGRAM UPDATE
@@ -156,6 +154,7 @@ every 0.5 [[
       featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
       featCall global.IU logProperty
       prop global.canBuildLodge setTo true
+      prop global.noticingString setTo 'Look how slow and deep the water above the dam is'
     ]]
   ]]
   ifProp global.damBuildLevel lessThan 5 [[
@@ -1136,6 +1135,30 @@ ifProp WaterSpeed.location equal 'belowDam' [[
 ]]
 
 `
+    },
+    {
+      "name": "Noticing",
+      "scriptText": `# BLUEPRINT Noticing
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Noticing.Graphing.text setTo 'Things to notice will appear here'
+
+# PROGRAM UPDATE
+
+every 1 [[
+  
+  propPush global.noticingString
+  featPropPop Noticing.Graphing.text 
+
+]]
+
+  `
     }
   ],
   "instances": [
@@ -1453,6 +1476,13 @@ prop location setTo 'belowDam'`
       "initScript": `prop x setTo -1.18
 prop y setTo -163.69
 prop location setTo 'aboveDam'`
+    },
+    {
+      "id": "46",
+      "label": "Noticing46",
+      "bpid": "Noticing",
+      "initScript": `prop x setTo -469.41
+prop y setTo 112.08`
     }
   ]
 }
