@@ -596,8 +596,8 @@ prop y setTo 107.39`
       "id": "7",
       "label": "Dam",
       "bpid": "Dam",
-      "initScript": `prop x setTo 6.50
-prop y setTo 28.54
+      "initScript": `prop x setTo 0
+prop y setTo 9.46
 featProp Dam.Costume.width setTo 100
 featProp Dam.Costume.height setTo 40
 `
@@ -613,14 +613,14 @@ prop y setTo 259.08`
       "id": "9",
       "label": "GreatSpotForDam",
       "bpid": "GreatSpotForDam",
-      "initScript": `prop x setTo 2.69
-prop y setTo 29.94`
+      "initScript": `prop x setTo 0
+prop y setTo 7.71`
     },
     {
       "id": "10",
       "label": "Lodge",
       "bpid": "Lodge",
-      "initScript": `prop x setTo -1.78
+      "initScript": `prop x setTo 0
 prop y setTo -214.43
 featProp Lodge.Costume.width setTo 100
 featProp Lodge.Costume.height setTo 40
