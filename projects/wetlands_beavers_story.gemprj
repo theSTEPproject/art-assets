@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -32,6 +35,9 @@
 
 addFeature IU
 
+addProp tempString string ''
+addProp tempNum number 0
+
 prop global.visible setTo false
 
 // required directive
@@ -41,6 +47,103 @@ onEvent START [[
   featCall global.IU logString 'Starting model run'
 ]]
 `
+    },
+    {
+      "name": "Player",
+      "scriptText": `# BLUEPRINT Player
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature Movement
+
+
+featProp Player.Costume.costumeName setTo 'KB_meeple_idle.png'
+featProp Player.Costume.scale setTo 0.3
+prop Player.zIndex setTo 200
+
+featCall Player.Touches monitor 'Beaver' b2b
+featCall Player.Touches monitor 'Twig' b2b
+featCall Player.Touches monitor 'Mud' b2b
+featCall Player.Touches monitor 'Rock' b2b
+featCall Player.Touches monitor 'Predator' b2b
+featCall Player.Touches monitor 'Tree' b2b
+featCall Player.Touches monitor 'WaterPlant' b2b
+
+
+# PROGRAM UPDATE
+
+// Flip around
+ifFeatProp Player.Movement.compassDirection equal 'E' [[
+  featProp Player.Costume.flipX setTo false
+]]
+ifFeatProp Player.Movement.compassDirection equal 'W' [[
+  featProp Player.Costume.flipX setTo true
+]]
+
+// When you touch one of the other characters
+// take on its artwork
+
+when Player firsttouches Beaver [[
+  featPropPush Beaver.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Beaver.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Twig [[
+  featPropPush Twig.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Twig.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Mud [[
+  featPropPush Mud.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Mud.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Rock [[
+  featPropPush Rock.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Rock.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Predator [[
+  featPropPush Predator.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Predator.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Tree [[
+  featPropPush Tree.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Tree.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Predator [[
+  featPropPush Predator.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Predator.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches WaterPlant [[
+  featPropPush WaterPlant.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush WaterPlant.Costume.scale
+  featPropPop Player.Costume.scale
+]]`
     },
     {
       "name": "Beaver",
@@ -270,114 +373,170 @@ prop GreatSpotForDam.zIndex setTo -200
 # PROGRAM UPDATE`
     },
     {
-      "name": "Player",
-      "scriptText": `# BLUEPRINT Player
+      "name": "PropTwig",
+      "scriptText": `# BLUEPRINT PropTwig
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp PropTwig.Costume.costumeName setTo 'WL_twig.png'
+featProp PropTwig.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "PropRock",
+      "scriptText": `# BLUEPRINT PropRock
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp PropRock.Costume.costumeName setTo 'WL_rock.png'
+featProp PropRock.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "PropMud",
+      "scriptText": `# BLUEPRINT PropMud
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp PropMud.Costume.costumeName setTo 'WL_mud.png'
+featProp PropMud.Costume.scale setTo 0.1
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "PropTree",
+      "scriptText": `# BLUEPRINT PropTree
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp PropTree.Costume.costumeName setTo 'WL_tree.png'
+featProp PropTree.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "PropWaterPlant",
+      "scriptText": `# BLUEPRINT PropWaterPlant
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp PropWaterPlant.Costume.costumeName setTo 'WL_plant.png'
+featProp PropWaterPlant.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "ResizeWater",
+      "scriptText": `# BLUEPRINT ResizeWater
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// Setup the features
+addFeature Graphing
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+// Setup the appearance
+featProp ResizeWater.Costume.costumeName setTo 'GEN_arrow.png'
+featProp ResizeWater.Costume.scale setTo 0.2
+
+featCall ResizeWater.Touches monitor 'Supporter' b2b
+
+addProp resizeId string 'Water Above'
+addProp resizeAmount number 10
+
+# PROGRAM UPDATE
+
+when ResizeWater firsttouches Supporter [[
+
+        propPush ResizeWater.resizeId
+        propPop global.tempString
+
+        propPush ResizeWater.resizeAmount
+        propPop global.tempNum
+
+        featCall ResizeWater.Population charactersForEach Water [[
+         ifExpr {{global.getProp('tempString').value == Water.getProp('trackerId').value}}  [[
+              featPropPush Water.Costume.width
+              propPush global.tempNum
+              stackAdd
+              featPropPop Water.Costume.width
+          ]]
+        ]]
+]]`
+    },
+    {
+      "name": "Supporter",
+      "scriptText": `# BLUEPRINT Supporter
 # TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
 addFeature Costume
 addFeature Physics
-addFeature Touches
-addFeature Graphing
-addFeature Movement
+
+featProp Supporter.Costume.costumeName setTo 'GEN_circle.json'
+featProp Supporter.Costume.scale setTo 0.15
+featCall Supporter.Costume setColorizeHSV 0 0 0.5
 
 
-featProp Player.Costume.costumeName setTo 'KB_meeple_idle.png'
-featProp Player.Costume.scale setTo 0.3
-
-featCall Player.Touches monitor 'Beaver' b2b
-featCall Player.Touches monitor 'Twig' b2b
-featCall Player.Touches monitor 'Mud' b2b
-featCall Player.Touches monitor 'Rock' b2b
-featCall Player.Touches monitor 'Predator' b2b
-featCall Player.Touches monitor 'Tree' b2b
-featCall Player.Touches monitor 'WaterPlant' b2b
-
-
-# PROGRAM UPDATE
-
-// Flip around 
-ifFeatProp Player.Movement.compassDirection equal 'E' [[
-  featProp Player.Costume.flipX setTo false
-]]
-ifFeatProp Player.Movement.compassDirection equal 'W' [[
-  featProp Player.Costume.flipX setTo true
-]]
-
-// When you touch one of the other characters
-// take on its artwork 
-
-when Player firsttouches Beaver [[
-  featPropPush Beaver.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Beaver.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Twig [[
-  featPropPush Twig.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Twig.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Mud [[
-  featPropPush Mud.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Mud.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Rock [[
-  featPropPush Rock.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Rock.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Predator [[
-  featPropPush Predator.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Predator.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Tree [[
-  featPropPush Tree.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Tree.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches Predator [[
-  featPropPush Predator.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Predator.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-
-when Player firsttouches WaterPlant [[
-  featPropPush WaterPlant.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush WaterPlant.Costume.scale
-  featPropPop Player.Costume.scale
-]]
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
     {
       "id": "0",
-      "label": "Water",
+      "label": "Water Above",
       "bpid": "Water",
       "initScript": `prop x setTo 0
-prop y setTo -200`
+prop y setTo -200
+`
     },
     {
       "id": "1",
-      "label": "Water",
+      "label": "Water Below",
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo 200`
@@ -447,10 +606,50 @@ prop y setTo -214.43`
     },
     {
       "id": "11",
-      "label": "Beaver11",
+      "label": "Beaver",
       "bpid": "Beaver",
       "initScript": `prop x setTo -439.28
 prop y setTo -325.95`
+    },
+    {
+      "id": "12",
+      "label": "Water Width",
+      "bpid": "ResizeWater",
+      "initScript": `prop x setTo 458
+prop y setTo -354.41
+prop ResizeWater.resizeId setTo 'Water Above'
+prop ResizeWater.resizeAmount setTo 20
+`
+    },
+    {
+      "id": "13",
+      "label": "Water Width",
+      "bpid": "ResizeWater",
+      "initScript": `prop x setTo 458
+prop y setTo -231.66
+prop ResizeWater.resizeId setTo 'Water Above'
+prop ResizeWater.resizeAmount setTo -20
+featProp ResizeWater.Costume.flipY setTo true`
+    },
+    {
+      "id": "14",
+      "label": "Water Width",
+      "bpid": "ResizeWater",
+      "initScript": `prop x setTo 458.00
+prop y setTo 84.95
+prop ResizeWater.resizeId setTo 'Water Below'
+prop ResizeWater.resizeAmount setTo 20
+`
+    },
+    {
+      "id": "15",
+      "label": "Water Width",
+      "bpid": "ResizeWater",
+      "initScript": `prop x setTo 458
+prop y setTo 200
+prop ResizeWater.resizeId setTo 'Water Below'
+prop ResizeWater.resizeAmount setTo -20
+featProp ResizeWater.Costume.flipY setTo true`
     }
   ]
 }
