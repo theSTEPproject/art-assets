@@ -6,10 +6,7 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [
-      false,
-      false
-    ],
+    "wrap": [false, false],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -48,9 +45,10 @@ onEvent START [[
     {
       "name": "Beaver",
       "scriptText": `# BLUEPRINT Beaver
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -62,6 +60,7 @@ onEvent START [[
 // This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
+
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.15
 
@@ -77,8 +76,8 @@ onEvent START [[
     {
       "name": "Predator",
       "scriptText": `# BLUEPRINT Predator
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -102,8 +101,8 @@ addFeature Touches
     {
       "name": "Water",
       "scriptText": `# BLUEPRINT Water
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -125,8 +124,8 @@ prop Water.zIndex setTo -200
     {
       "name": "Dam",
       "scriptText": `# BLUEPRINT Dam
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -146,8 +145,8 @@ featCall Dam.Costume setColorizeHSV 0.1 0.2 0.8
     {
       "name": "Lodge",
       "scriptText": `# BLUEPRINT Lodge
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -167,8 +166,8 @@ featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
     {
       "name": "Twig",
       "scriptText": `# BLUEPRINT Twig
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -185,8 +184,8 @@ featProp Twig.Costume.scale setTo 0.2
     {
       "name": "Rock",
       "scriptText": `# BLUEPRINT Rock
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -203,8 +202,8 @@ featProp Rock.Costume.scale setTo 0.2
     {
       "name": "Mud",
       "scriptText": `# BLUEPRINT Mud
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -221,8 +220,8 @@ featProp Mud.Costume.scale setTo 0.1
     {
       "name": "Tree",
       "scriptText": `# BLUEPRINT Tree
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -239,8 +238,8 @@ featProp Tree.Costume.scale setTo 0.2
     {
       "name": "WaterPlant",
       "scriptText": `# BLUEPRINT WaterPlant
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -269,6 +268,93 @@ prop GreatSpotForDam.zIndex setTo -200
 
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Player",
+      "scriptText": `# BLUEPRINT Player
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+featProp Player.Costume.costumeName setTo 'KB_meeple_idle.png'
+featProp Player.Costume.scale setTo 0.3
+
+featCall Player.Touches monitor 'Beaver' b2b
+featCall Player.Touches monitor 'Twig' b2b
+featCall Player.Touches monitor 'Mud' b2b
+featCall Player.Touches monitor 'Rock' b2b
+featCall Player.Touches monitor 'Predator' b2b
+featCall Player.Touches monitor 'Tree' b2b
+featCall Player.Touches monitor 'WaterPlant' b2b
+
+
+# PROGRAM UPDATE
+
+// When you touch one of the other characters
+// take on its artwork 
+
+when Player firsttouches Beaver [[
+  featPropPush Beaver.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Beaver.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Twig [[
+  featPropPush Twig.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Twig.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Mud [[
+  featPropPush Mud.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Mud.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Rock [[
+  featPropPush Rock.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Rock.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Predator [[
+  featPropPush Predator.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Predator.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Tree [[
+  featPropPush Tree.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Tree.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches Predator [[
+  featPropPush Predator.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush Predator.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+
+when Player firsttouches WaterPlant [[
+  featPropPush WaterPlant.Costume.costumeName
+  featPropPop Player.Costume.costumeName
+  featPropPush WaterPlant.Costume.scale
+  featPropPop Player.Costume.scale
+]]
+`
     }
   ],
   "instances": [
@@ -288,38 +374,38 @@ prop y setTo 200`
     },
     {
       "id": "2",
-      "label": "Mud 1",
+      "label": "Mud",
       "bpid": "Mud",
-      "initScript": `prop x setTo -299.93
-prop y setTo -217.2`
+      "initScript": `prop x setTo -431.39
+prop y setTo -170.99`
     },
     {
       "id": "3",
-      "label": "Rock 1",
+      "label": "Rock",
       "bpid": "Rock",
-      "initScript": `prop x setTo -300.05
-prop y setTo -156.05`
+      "initScript": `prop x setTo -432.25
+prop y setTo -102.74`
     },
     {
       "id": "4",
-      "label": "Twig 1",
+      "label": "Twig",
       "bpid": "Twig",
-      "initScript": `prop x setTo -296.13
-prop y setTo -278.73`
+      "initScript": `prop x setTo -450.90
+prop y setTo -238.96`
     },
     {
       "id": "5",
-      "label": "WaterPlant 1",
+      "label": "WaterPlant",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo -294.96
-prop y setTo -85.96`
+      "initScript": `prop x setTo -428.36
+prop y setTo -14.17`
     },
     {
       "id": "6",
-      "label": "Tree 1",
+      "label": "Tree",
       "bpid": "Tree",
-      "initScript": `prop x setTo -301.19
-prop y setTo 18.98`
+      "initScript": `prop x setTo -451.75
+prop y setTo 107.39`
     },
     {
       "id": "7",
@@ -330,10 +416,10 @@ prop y setTo 28.54`
     },
     {
       "id": "8",
-      "label": "Predator 1",
+      "label": "Predator",
       "bpid": "Predator",
-      "initScript": `prop x setTo 229.51
-prop y setTo -329.7`
+      "initScript": `prop x setTo -459.12
+prop y setTo 259.08`
     },
     {
       "id": "9",
@@ -348,6 +434,13 @@ prop y setTo 29.94`
       "bpid": "Lodge",
       "initScript": `prop x setTo -1.78
 prop y setTo -214.43`
+    },
+    {
+      "id": "11",
+      "label": "Beaver11",
+      "bpid": "Beaver",
+      "initScript": `prop x setTo -439.28
+prop y setTo -325.95`
     }
   ]
 }
