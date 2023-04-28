@@ -558,6 +558,10 @@ every 0.1 [[
     ifProp global.stepInStory equal 2 [[
       featProp Noticing.Graphing.text setTo 'End'
     ]]
+    ifProp global.stepInStory greaterThan 2 [[
+      // too high, so re-set to 2
+      prop global.stepInStory setTo 2
+    ]]
 
     // make buttons visible or invisible
     // need to update the top side depending on steps listed above
@@ -622,7 +626,7 @@ when StoryButton firsttouches Supporter [[
         prop StoryButton.alpha setTo 1
       ]]
       ifProp global.increaseVisible equal false [[
-        prop StoryButton.alpha setTo 0
+        prop StoryButton.alpha setTo 0.2
       ]]
     ]]
 
@@ -631,7 +635,7 @@ when StoryButton firsttouches Supporter [[
         prop StoryButton.alpha setTo 1
       ]]
       ifProp global.decreaseVisible equal false [[
-        prop StoryButton.alpha setTo 0
+        prop StoryButton.alpha setTo 0.2
       ]]
     ]] 
   ]]
