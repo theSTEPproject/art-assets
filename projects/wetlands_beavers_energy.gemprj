@@ -118,10 +118,6 @@ addProp energyLevel number 100
 prop Beaver.energyLevel setMin 0
 prop Beaver.energyLevel setMax 100
 
-addProp displayText string ''
-propPush Beaver.trackerId
-propPop Beaver.displayText
-featProp Beaver.Graphing.textProp setTo 'displayText'
 featProp Beaver.Graphing.meterProp setTo 'energyLevel'
 featProp Beaver.Graphing.meterColor setTo 65280
 
@@ -368,6 +364,10 @@ featProp WaterPlant.Costume.scale setTo 0.15
 
 featCall WaterPlant.Touches monitor 'Water' c2b
 
+addProp energyLevel number 100
+prop WaterPlant.energyLevel setMin 0
+prop WaterPlant.energyLevel setMax 100
+
 addProp energyType string 'producer'
 
 # PROGRAM UPDATE
@@ -408,12 +408,19 @@ featCall Fish.Touches monitor 'Water' c2b
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Graphing
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
 featProp Tree.Costume.scale setTo 0.25
 
-addProp energyType string 'producer'
+addProp energyLevel number 100
+prop Tree.energyLevel setMin 0
+prop Tree.energyLevel setMax 100
 
+featProp Tree.Graphing.meterProp setTo 'energyLevel'
+featProp Tree.Graphing.meterColor setTo 65280
+
+addProp energyType string 'producer'
 
 # PROGRAM UPDATE`
     },
