@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -70,10 +73,10 @@ prop global.visible setTo false
 
 // to help us keep track in the water
 // the dam needs to update this
-addProp damBuildLevel number 1
+addProp damBuildLevel number 9
 
 // change this to true once the water is a certain size
-addProp canBuildLodge boolean false
+addProp canBuildLodge boolean true
 
 // count of currently alive water plants
 // the plants themselves update the count in the touches script
@@ -82,8 +85,8 @@ addProp waterPlantCount number 0
 addProp fishCount number 0
 
 // to make it easier to place then hide the plants and fish
-addProp showWaterPlantsToPlace boolean false
-addProp showFishToPlace boolean false
+addProp showWaterPlantsToPlace boolean true
+addProp showFishToPlace boolean true
 
 // variables for helping the environment
 addProp carbonCaptureRate number 10
@@ -589,8 +592,8 @@ featProp Fish.Costume.scale setTo 0.15
 
 featCall Fish.Touches monitor 'Water' c2b
 
-addProp alive boolean false
-prop Fish.visible setTo false
+addProp alive boolean true
+prop Fish.visible setTo true
 propPush global.showFishToPlace
 propPop Fish.visible
 
@@ -846,19 +849,28 @@ prop Dam.buildLevel setTo 1
     },
     {
       "id": "3",
-      "label": "Water 1",
+      "label": "Water Above Dam",
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo -200
-prop location setTo 'aboveDam'`
+prop location setTo 'aboveDam'
+prop Water.speedOfWater setTo 'slow'
+featCall Water.Costume setColorize 0 71 143
+featProp Water.Costume.width setTo 470
+`
     },
     {
       "id": "4",
-      "label": "Water 2",
+      "label": "Water Below Dam",
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo 199
-prop location setTo 'belowDam'`
+prop location setTo 'belowDam'
+prop Water.speedOfWater setTo 'slow'
+featCall Water.Costume setColorize 128 225 255
+featProp Water.Costume.width setTo 110
+
+`
     },
     {
       "id": "5",
@@ -1120,7 +1132,9 @@ prop location setTo 'belowDam'`
       "bpid": "WaterSpeed",
       "initScript": `prop x setTo -1.18
 prop y setTo -163.69
-prop location setTo 'aboveDam'`
+prop location setTo 'aboveDam'
+prop visible setTo false
+`
     },
     {
       "id": "46",
