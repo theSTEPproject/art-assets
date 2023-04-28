@@ -38,6 +38,13 @@ addFeature IU
 addProp tempString string ''
 addProp tempNum number 0
 
+// to display story text where steps are like pages
+addProp stepInStory number 0
+// this is for the story buttons
+addProp decreaseVisible boolean false
+addProp increaseVisible boolean false 
+
+prop global.stepInStory setMin 0
 prop global.visible setTo false
 
 // required directive
@@ -45,8 +52,7 @@ prop global.visible setTo false
 
 onEvent START [[
   featCall global.IU logString 'Starting model run'
-]]
-`
+]]`
     },
     {
       "name": "Player",
@@ -523,6 +529,113 @@ featCall Supporter.Costume setColorizeHSV 0 0 0.5
 
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Noticing",
+      "scriptText": `# BLUEPRINT Noticing
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Noticing.Graphing.text setTo ''
+
+
+# PROGRAM UPDATE
+
+every 0.1 [[
+
+    // ✏️ LETS CHANGE THIS: What text should we display as the story moves forward? 
+    ifProp global.stepInStory equal 0 [[
+      featProp Noticing.Graphing.text setTo 'Start'
+    ]]
+    ifProp global.stepInStory equal 1 [[
+      featProp Noticing.Graphing.text setTo 'Middle'
+    ]]
+    ifProp global.stepInStory equal 2 [[
+      featProp Noticing.Graphing.text setTo 'End'
+    ]]
+
+    // make buttons visible or invisible
+    // need to update the top side depending on steps listed above
+    ifProp global.stepInStory greaterThan 0 [[
+      prop global.decreaseVisible setTo true
+    ]]
+    ifProp global.stepInStory equal 0 [[
+      prop global.decreaseVisible setTo false
+    ]]
+    // update to reflect above! 
+    ifProp global.stepInStory equal 2 [[
+      prop global.increaseVisible setTo false
+    ]]
+    // update to reflect above! 
+    ifProp global.stepInStory lessThan 2 [[
+      prop global.increaseVisible setTo true
+    ]]
+
+
+]]
+
+  `
+    },
+    {
+      "name": "StoryButton",
+      "scriptText": `# BLUEPRINT StoryButton
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// Setup the features
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+// Setup the appearance
+featProp StoryButton.Costume.costumeName setTo 'GEN_arrow.png'
+featProp StoryButton.Costume.scale setTo 0.2
+
+featCall StoryButton.Touches monitor 'Supporter' b2b
+
+addProp advanceStory boolean true
+
+# PROGRAM UPDATE
+
+when StoryButton firsttouches Supporter [[
+  ifProp StoryButton.advanceStory equal true [[
+    prop global.stepInStory add 1
+  ]]
+  ifProp StoryButton.advanceStory equal false [[
+    prop global.stepInStory sub 1
+  ]]
+]]
+
+  // if we are on the first page and this is the go back arrow,
+  // then hide it since nowhere to go. Same with last and go forward.
+  every 0.1 [[
+    ifProp StoryButton.advanceStory equal true [[
+      ifProp global.increaseVisible equal true [[
+        prop StoryButton.alpha setTo 1
+      ]]
+      ifProp global.increaseVisible equal false [[
+        prop StoryButton.alpha setTo 0
+      ]]
+    ]]
+
+    ifProp StoryButton.advanceStory equal false [[      
+      ifProp global.decreaseVisible equal true [[
+        prop StoryButton.alpha setTo 1
+      ]]
+      ifProp global.decreaseVisible equal false [[
+        prop StoryButton.alpha setTo 0
+      ]]
+    ]] 
+  ]]
+`
     }
   ],
   "instances": [
@@ -672,6 +785,34 @@ prop y setTo 200
 prop ResizeWater.resizeId setTo 'Water Below'
 prop ResizeWater.resizeAmount setTo -20
 featProp ResizeWater.Costume.flipY setTo true`
+    },
+    {
+      "id": "16",
+      "label": "Noticing",
+      "bpid": "Noticing",
+      "initScript": `prop x setTo 248.10
+prop y setTo 281.39
+featProp Noticing.Graphing.text setTo 'Edit story words'
+`
+    },
+    {
+      "id": "17",
+      "label": "Forward",
+      "bpid": "StoryButton",
+      "initScript": `prop x setTo 352.51
+prop y setTo 313.67
+prop StoryButton.advanceStory setTo true
+
+`
+    },
+    {
+      "id": "18",
+      "label": "Back",
+      "bpid": "StoryButton",
+      "initScript": `prop x setTo 162.97
+prop y setTo 314.90
+prop StoryButton.advanceStory setTo false
+featProp StoryButton.Costume.flipY setTo true`
     }
   ]
 }
