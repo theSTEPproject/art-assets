@@ -1,6 +1,6 @@
 {
   "id": "wetlands_beavers_energy",
-  "label": "Wetlands: Beavers Building",
+  "label": "Wetlands: Beavers Energy",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -63,37 +63,11 @@ addFeature IU
 addFeature Graphing
 addFeature Population
 
-// ✏️ LETS CHANGE THIS: consider adding / removing
-// ✏️ The carbon capture graph
-// ✏️ The pollution graph
-// ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
-
-
 prop global.visible setTo false
 
 // to help us keep track in the water
 // the dam needs to update this
 addProp damBuildLevel number 9
-
-// change this to true once the water is a certain size
-addProp canBuildLodge boolean true
-
-// count of currently alive water plants
-// the plants themselves update the count in the touches script
-addProp waterPlantCount number 0
-// track the fish too, just in case
-addProp fishCount number 0
-
-// to make it easier to place then hide the plants and fish
-addProp showWaterPlantsToPlace boolean true
-addProp showFishToPlace boolean true
-
-// variables for helping the environment
-addProp carbonCaptureRate number 10
-addProp pollutionInWater number 60
-
-addProp initialCarbonCaptureRate number 10
-addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
 
@@ -103,47 +77,7 @@ addProp noticingString string '...'
 // required directive
 # PROGRAM UPDATE
 
-every 1 [[
 
-  // update the captured carbon rate and pollution levels
-  // multiply the waterPlantCount by a number to scale its impact
-  // currently this is 1
-  // then add that to the total captured
-  propPush global.waterPlantCount
-  prop global.tempNum setTo 5
-  propPush global.tempNum
-  stackMul
-  propPush global.initialCarbonCaptureRate
-  stackAdd
-  propPop global.carbonCaptureRate
-
-  // now do the same for pollution, but subtract instead of add
-  propPush global.waterPlantCount
-  prop global.tempNum setTo 5
-  propPush global.tempNum
-  stackMul
-  propPush global.initialPollutionInWater
-  stackSub
-  propPop global.pollutionInWater
-
-]]
-
-every 0.5 [[
-  // Check to see if the lodge can be built based on dam size
-  // also log the shift once it can
-  ifProp global.damBuildLevel greaterThan 5 [[
-    // so we know it is about to flip
-    ifProp global.canBuildLodge equal false [[
-      featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
-      featCall global.IU logProperty
-      prop global.canBuildLodge setTo true
-      prop global.noticingString setTo 'Look how slow and deep the water above the dam is'
-    ]]
-  ]]
-  ifProp global.damBuildLevel lessThan 5 [[
-    prop global.canBuildLodge setTo false
-  ]]
-]]
 
 onEvent START [[
   featCall global.IU logString 'Starting model run'
@@ -178,6 +112,7 @@ featProp Beaver.Costume.scale setTo 0.15
 // For logging more elaborate ideas
 addProp tempString string ''
 
+addProp energyType string 'consumer'
 
 addProp energyLevel number 100
 prop Beaver.energyLevel setMin 0
@@ -294,35 +229,13 @@ addFeature Costume
 addFeature Physics
 
 featProp Lodge.Costume.costumeName setTo 'GEN_square.json'
-featProp Lodge.Costume.width setTo 100
+featProp Lodge.Costume.width setTo 120
 featProp Lodge.Costume.height setTo 40
-featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
+featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
 
-addProp buildLevel number 1
-prop Lodge.buildLevel setMin 1
-prop Lodge.buildLevel setMax 10
-
-// to be used in re-scaling the width
-addProp tempWidth number 0
-prop Lodge.alpha setTo 0.2
 
 # PROGRAM UPDATE
-
-every 0.5 [[
-  // re-scale based on the buildLevel
-  propPush Lodge.buildLevel
-  propPop Lodge.tempWidth
-  prop Lodge.tempWidth mul 20
-  prop Lodge.tempWidth add 80
-  propPush Lodge.tempWidth
-  featPropPop Lodge.Costume.width
-
-  ifProp global.canBuildLodge equal true [[
-    // make it clear we can now build
-    featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
-    prop Lodge.alpha setTo 1
-  ]]
-]]`
+`
     },
     {
       "name": "Dam",
@@ -336,28 +249,13 @@ addFeature Costume
 addFeature Physics
 
 featProp Dam.Costume.costumeName setTo 'GEN_square.json'
-featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.width setTo 150
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
 
-addProp buildLevel number 1
-prop Dam.buildLevel setMin 1
-prop Dam.buildLevel setMax 10
-
-// to be used in re-scaling the width
-addProp tempWidth number 0
 
 # PROGRAM UPDATE
-
-every 0.5 [[
-  // re-scale based on the buildLevel
-  propPush Dam.buildLevel
-  propPop Dam.tempWidth
-  prop Dam.tempWidth mul 20
-  prop Dam.tempWidth add 80
-  propPush Dam.tempWidth
-  featPropPop Dam.Costume.width
-]]`
+`
     },
     {
       "name": "Water",
@@ -376,12 +274,6 @@ featProp Water.Costume.height setTo 400
 featCall Water.Costume setColorize 51 170 255
 prop Water.zIndex setTo -200
 
-addProp buildLevel number 1
-prop Water.buildLevel setMin 1
-prop Water.buildLevel setMax 10
-
-// used in calculating the width to match build level
-addProp tempWidth number 0
 
 // can be above or below the dam
 // we only do certain things if it is above
@@ -391,66 +283,7 @@ addProp location string 'belowDam'
 addProp speedOfWater string 'fast'
 
 # PROGRAM UPDATE
-
-every 0.5 [[
-  //  the water above the dam grows as the dam makes it pool
-  ifProp Water.location equal 'aboveDam' [[
-    propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
-    propPop Water.tempWidth
-    prop Water.tempWidth mul 30
-    prop Water.tempWidth add 170
-    propPush Water.tempWidth
-    featPropPop Water.Costume.width
-
-      // change the water speed based on the size of this water, assuming
-      // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'fast'
-        featCall Water.Costume setColorize 51 170 255
-      ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
-        featCall Water.Costume setColorize 0 118 198
-
-      ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'slow'
-        featCall Water.Costume setColorize 0 71 143
-      ]]
-
-  ]]
-
-  // the dam causes the water below it to shrink
-  ifProp Water.location notEqual 'aboveDam' [[
-    propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
-    propPop Water.tempWidth
-    prop Water.tempWidth mul -10
-    prop Water.tempWidth add 210
-    propPush Water.tempWidth
-    featPropPop Water.Costume.width
-
-      // change the water speed based on the size of this water, assuming
-      // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'slow'
-        featCall Water.Costume setColorize 51 170 255
-      ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
-        featCall Water.Costume setColorize 93 197 255
-      ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'fast'
-        featCall Water.Costume setColorize 128 225 255
-      ]]
-
-  ]]
-
-]]`
+`
     },
     {
       "name": "StreamBed",
@@ -488,6 +321,9 @@ featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.2
 
 featCall Predator.Touches monitor 'Beaver' b2b
+
+addProp energyType string 'predator'
+
 
 # PROGRAM UPDATE
 
@@ -532,47 +368,11 @@ featProp WaterPlant.Costume.scale setTo 0.15
 
 featCall WaterPlant.Touches monitor 'Water' c2b
 
-addProp alive boolean false
-prop WaterPlant.visible setTo false
-propPush global.showWaterPlantsToPlace
-propPop WaterPlant.visible
+addProp energyType string 'producer'
 
 # PROGRAM UPDATE
 
-// if the plant is suddenly under water, and the water is slow enough
-// let's have it appear / grow
-when WaterPlant centertouches Water [[
-  // if the water is slow enough, become alive
-  ifProp WaterPlant.alive equal false [[
-    ifProp Water.speedOfWater notEqual 'fast' [[
-      prop global.waterPlantCount add 1
-      featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
-      prop WaterPlant.alive setTo true
-      prop WaterPlant.visible setTo true
-      prop global.noticingString setTo 'Check out the new plants!'
-    ]]
-  ]]
-
-  // if the water is suddenly too fast, dissapear
-  ifProp WaterPlant.alive equal true [[
-    ifProp Water.speedOfWater equal 'fast' [[
-      prop global.waterPlantCount sub 1
-      featCall WaterPlant.IU logString 'A water plant dies off because the water is too fast'
-      prop WaterPlant.alive setTo false
-      prop WaterPlant.visible setTo false
-    ]]
-  ]]
-]]
-
-  // if the water recedes, remove the plant
-  when WaterPlant centerlasttouches Water [[
-    ifProp WaterPlant.alive equal true [[
-        prop WaterPlant.alive setTo false
-        prop global.waterPlantCount sub 1
-        featCall WaterPlant.IU logString 'A water plant dies off because the water receded'
-        prop WaterPlant.visible setTo false
-    ]]
-]]`
+`
     },
     {
       "name": "Fish",
@@ -592,47 +392,10 @@ featProp Fish.Costume.scale setTo 0.15
 
 featCall Fish.Touches monitor 'Water' c2b
 
-addProp alive boolean true
-prop Fish.visible setTo true
-propPush global.showFishToPlace
-propPop Fish.visible
 
 # PROGRAM UPDATE
 
-// if the plant is suddenly under water, and the water is slow enough
-// let's have it appear / grow
-when Fish centertouches Water [[
-  // if the water is slow enough, become alive
-  ifProp Fish.alive equal false [[
-    ifProp Water.speedOfWater equal 'slow' [[
-      prop global.fishCount add 1
-      prop Fish.alive setTo true
-      prop Fish.visible setTo true
-      featCall Fish.IU logString 'A new fish is in the pond because of the slow water'
-      prop global.noticingString setTo 'Check out the new fish!'
-    ]]
-  ]]
-
-  // if the water is suddenly too fast, dissapear
-  ifProp Fish.alive equal true [[
-    ifProp Water.speedOfWater notEqual 'slow' [[
-      prop global.fishCount sub 1
-      prop Fish.alive setTo false
-      prop Fish.visible setTo false
-      featCall Fish.IU logString 'A fish moves away because the water is too fast'
-    ]]
-  ]]
-]]
-
-// if the water recedes, remove the plant
-when Fish centerlasttouches Water [[
-  ifProp Fish.alive equal true [[
-    prop Fish.alive setTo false
-    prop global.fishCount sub 1
-    featCall Fish.IU logString 'A fish dies off because the water receded'
-    prop Fish.visible setTo false
-  ]]
-]]`
+`
     },
     {
       "name": "Tree",
@@ -648,6 +411,9 @@ addFeature Touches
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
 featProp Tree.Costume.scale setTo 0.25
+
+addProp energyType string 'producer'
+
 
 # PROGRAM UPDATE`
     },
@@ -682,51 +448,8 @@ prop WaterSpeed.zIndex setTo 100
 // can be above or below the dam
 // we only do certain things if it is above
 addProp location string 'belowDam'
-addProp buildLevel number 1
 
 # PROGRAM UPDATE
-
-propPush global.damBuildLevel
-propPop WaterSpeed.buildLevel
-
-    // change the water speed based on the size of this water, assuming
-    // it moves faster when it is narrower, and slows down as it pools
-
-ifProp WaterSpeed.location equal 'aboveDam' [[
-    ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
-        // medium
-        featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
-        prop WaterSpeed.alpha setTo 1
-    ]]
-    ifProp WaterSpeed.buildLevel greaterThan 3 [[
-        // slow
-        prop WaterSpeed.alpha setTo 0
-    ]]
-    ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
-        // slow and deep
-        //featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
-        prop WaterSpeed.alpha setTo 0
-    ]]
-
-]]
-
-ifProp WaterSpeed.location equal 'belowDam' [[
-  ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
-      // medium
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
-      prop WaterSpeed.alpha setTo 1
-  ]]
-  ifProp WaterSpeed.buildLevel greaterThan 3 [[
-      // fast
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
-      prop WaterSpeed.alpha setTo 1
-  ]]
-  ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
-      // medium and shallow
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
-  ]]
-
-]]
 
 `
     },
@@ -828,8 +551,8 @@ featCall EnergyRepresentation.Touches monitor 'Predator' b2b
       "id": "0",
       "label": "Twig 1",
       "bpid": "Twig",
-      "initScript": `prop x setTo -331.63
-prop y setTo -164.14`
+      "initScript": `prop x setTo -313.19
+prop y setTo 92.31`
     },
     {
       "id": "1",
@@ -844,7 +567,6 @@ prop y setTo -225`
       "bpid": "Dam",
       "initScript": `prop x setTo 0
 prop y setTo 0
-prop Dam.buildLevel setTo 1
 `
     },
     {
@@ -873,53 +595,11 @@ featProp Water.Costume.width setTo 110
 `
     },
     {
-      "id": "5",
+      "id": "9",
       "label": "Twig 2",
       "bpid": "Twig",
-      "initScript": `prop x setTo -317.10
-prop y setTo -134.30`
-    },
-    {
-      "id": "6",
-      "label": "Twig 3",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -336.43
-prop y setTo -73.87`
-    },
-    {
-      "id": "7",
-      "label": "Twig 4",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -316.76
-prop y setTo -106.20`
-    },
-    {
-      "id": "8",
-      "label": "Twig 5",
-      "bpid": "Twig",
-      "initScript": `prop x setTo 293.36
-prop y setTo -167.77`
-    },
-    {
-      "id": "9",
-      "label": "Twig 6",
-      "bpid": "Twig",
-      "initScript": `prop x setTo 311.16
-prop y setTo -203.12`
-    },
-    {
-      "id": "10",
-      "label": "Twig 7",
-      "bpid": "Twig",
-      "initScript": `prop x setTo 233.44
-prop y setTo 314.78`
-    },
-    {
-      "id": "11",
-      "label": "Mud 1",
-      "bpid": "Mud",
-      "initScript": `prop x setTo 282.14
-prop y setTo 21.75`
+      "initScript": `prop x setTo 336.47
+prop y setTo -242.63`
     },
     {
       "id": "12",
@@ -927,34 +607,6 @@ prop y setTo 21.75`
       "bpid": "Rock",
       "initScript": `prop x setTo 319.34
 prop y setTo -113.62`
-    },
-    {
-      "id": "13",
-      "label": "Rock 2",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -303.54
-prop y setTo 165.14`
-    },
-    {
-      "id": "14",
-      "label": "Mud 3",
-      "bpid": "Mud",
-      "initScript": `prop x setTo 309.95
-prop y setTo 66.96`
-    },
-    {
-      "id": "15",
-      "label": "Mud 2",
-      "bpid": "Mud",
-      "initScript": `prop x setTo 277.77
-prop y setTo 47.90`
-    },
-    {
-      "id": "16",
-      "label": "Rock 3",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -361.11
-prop y setTo 180.27`
     },
     {
       "id": "17",
@@ -967,23 +619,23 @@ prop y setTo -301.81
     },
     {
       "id": "18",
-      "label": "Tree18",
+      "label": "Tree 3",
       "bpid": "Tree",
-      "initScript": `prop x setTo 136.30
-prop y setTo 215.07`
+      "initScript": `prop x setTo 300.85
+prop y setTo 286.16`
     },
     {
       "id": "19",
-      "label": "Tree19",
+      "label": "Tree 1",
       "bpid": "Tree",
-      "initScript": `prop x setTo -241.61
-prop y setTo 31.91`
+      "initScript": `prop x setTo -335.41
+prop y setTo 6.42`
     },
     {
       "id": "20",
-      "label": "Tree20",
+      "label": "Tree 2",
       "bpid": "Tree",
-      "initScript": `prop x setTo 319.10
+      "initScript": `prop x setTo 336.30
 prop y setTo -324.79`
     },
     {
@@ -1056,69 +708,6 @@ prop y setTo 2.01
 prop zIndex setTo 50`
     },
     {
-      "id": "35",
-      "label": "Mud 4",
-      "bpid": "Mud",
-      "initScript": `prop x setTo -311.83
-prop y setTo 208.01`
-    },
-    {
-      "id": "36",
-      "label": "Rock 4",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -341.73
-prop y setTo 324.96`
-    },
-    {
-      "id": "37",
-      "label": "Mud 5",
-      "bpid": "Mud",
-      "initScript": `prop x setTo 336.39
-prop y setTo 42.35`
-    },
-    {
-      "id": "38",
-      "label": "Twig 8",
-      "bpid": "Twig",
-      "initScript": `prop x setTo 325.18
-prop y setTo -184.35`
-    },
-    {
-      "id": "39",
-      "label": "Rock 5",
-      "bpid": "Rock",
-      "initScript": `prop x setTo 348.90
-prop y setTo -106.61`
-    },
-    {
-      "id": "40",
-      "label": "Rock 6",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -341.33
-prop y setTo 154.86`
-    },
-    {
-      "id": "41",
-      "label": "Mud ",
-      "bpid": "Mud",
-      "initScript": `prop x setTo -332.42
-prop y setTo 222.62`
-    },
-    {
-      "id": "42",
-      "label": "Twig 9",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -349.77
-prop y setTo -127.91`
-    },
-    {
-      "id": "43",
-      "label": "Twig 10",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -341.43
-prop y setTo -94.20`
-    },
-    {
       "id": "44",
       "label": "WaterSpeedBottom",
       "bpid": "WaterSpeed",
@@ -1152,7 +741,7 @@ prop y setTo -161.75`
     },
     {
       "id": "48",
-      "label": "Sun48",
+      "label": "Sun",
       "bpid": "Sun",
       "initScript": `prop x setTo -261.05
 prop y setTo -361.04`
