@@ -533,6 +533,12 @@ featCall Supporter.Costume setColorizeHSV 0 0 0.5
       "initScript": `prop x setTo 0
 prop y setTo -200
 featProp Water.Costume.width setTo 200
+// Dark blue
+// featCall Water.Costume setColorize 0 118 198
+// Medium blue
+// featCall Water.Costume setColorize 0 71 143
+// Light blue
+ featCall Water.Costume setColorize 51 170 255
 
 `
     },
@@ -543,6 +549,12 @@ featProp Water.Costume.width setTo 200
       "initScript": `prop x setTo 0
 prop y setTo 200
 featProp Water.Costume.width setTo 200
+// Dark blue
+// featCall Water.Costume setColorize 0 118 198
+// Medium blue
+// featCall Water.Costume setColorize 0 71 143
+// Light blue
+ featCall Water.Costume setColorize 51 170 255
 `
     },
     {
