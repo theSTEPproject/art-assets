@@ -532,6 +532,8 @@ featCall Supporter.Costume setColorizeHSV 0 0 0.5
       "bpid": "Water",
       "initScript": `prop x setTo 0
 prop y setTo -200
+featProp Water.Costume.width setTo 200
+
 `
     },
     {
@@ -539,7 +541,9 @@ prop y setTo -200
       "label": "Water Below",
       "bpid": "Water",
       "initScript": `prop x setTo 0
-prop y setTo 200`
+prop y setTo 200
+featProp Water.Costume.width setTo 200
+`
     },
     {
       "id": "2",
@@ -581,7 +585,10 @@ prop y setTo 107.39`
       "label": "Dam",
       "bpid": "Dam",
       "initScript": `prop x setTo 6.50
-prop y setTo 28.54`
+prop y setTo 28.54
+featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.height setTo 40
+`
     },
     {
       "id": "8",
@@ -602,7 +609,10 @@ prop y setTo 29.94`
       "label": "Lodge",
       "bpid": "Lodge",
       "initScript": `prop x setTo -1.78
-prop y setTo -214.43`
+prop y setTo -214.43
+featProp Lodge.Costume.width setTo 100
+featProp Lodge.Costume.height setTo 40
+`
     },
     {
       "id": "11",
