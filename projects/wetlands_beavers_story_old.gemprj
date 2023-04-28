@@ -1,0 +1,353 @@
+{
+  "id": "wetlands_beavers_story_old",
+  "label": "Wetlands: Beavers Story Old",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x8A9A5B",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+addFeature IU
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE
+
+onEvent START [[
+  featCall global.IU logString 'Starting model run'
+]]
+`
+    },
+    {
+      "name": "Beaver",
+      "scriptText": `# BLUEPRINT Beaver
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
+featProp Beaver.Costume.scale setTo 0.15
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+onEvent START [[
+  featCall global.IU logString 'Starting model run'
+]]
+`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
+featProp Predator.Costume.scale setTo 0.2
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Water",
+      "scriptText": `# BLUEPRINT Water
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Water.Costume.costumeName setTo 'GEN_square.json'
+featProp Water.Costume.width setTo 200
+featProp Water.Costume.height setTo 400
+featCall Water.Costume setColorize 51 170 255
+prop Water.zIndex setTo -200
+
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Dam",
+      "scriptText": `# BLUEPRINT Dam
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Dam.Costume.costumeName setTo 'GEN_square.json'
+featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.height setTo 40
+featCall Dam.Costume setColorizeHSV 0.1 0.2 0.8
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Lodge",
+      "scriptText": `# BLUEPRINT Lodge
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Lodge.Costume.costumeName setTo 'GEN_square.json'
+featProp Lodge.Costume.width setTo 100
+featProp Lodge.Costume.height setTo 40
+featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
+
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Twig",
+      "scriptText": `# BLUEPRINT Twig
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Twig.Costume.costumeName setTo 'WL_twig.png'
+featProp Twig.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Rock",
+      "scriptText": `# BLUEPRINT Rock
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Rock.Costume.costumeName setTo 'WL_rock.png'
+featProp Rock.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Mud",
+      "scriptText": `# BLUEPRINT Mud
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Mud.Costume.costumeName setTo 'WL_mud.png'
+featProp Mud.Costume.scale setTo 0.1
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Tree",
+      "scriptText": `# BLUEPRINT Tree
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+featProp Tree.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "WaterPlant",
+      "scriptText": `# BLUEPRINT WaterPlant
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
+featProp WaterPlant.Costume.scale setTo 0.2
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "GreatSpotForDam",
+      "scriptText": `# BLUEPRINT GreatSpotForDam
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp GreatSpotForDam.Costume.costumeName setTo 'WL_dam_bg.png'
+featProp GreatSpotForDam.Costume.scale setTo 0.5
+prop GreatSpotForDam.zIndex setTo -200
+
+
+# PROGRAM UPDATE`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Water",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo -200`
+    },
+    {
+      "id": "1",
+      "label": "Water",
+      "bpid": "Water",
+      "initScript": `prop x setTo 0
+prop y setTo 200`
+    },
+    {
+      "id": "2",
+      "label": "Mud 1",
+      "bpid": "Mud",
+      "initScript": `prop x setTo -299.93
+prop y setTo -217.2`
+    },
+    {
+      "id": "3",
+      "label": "Rock 1",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -300.05
+prop y setTo -156.05`
+    },
+    {
+      "id": "4",
+      "label": "Twig 1",
+      "bpid": "Twig",
+      "initScript": `prop x setTo -296.13
+prop y setTo -278.73`
+    },
+    {
+      "id": "5",
+      "label": "WaterPlant 1",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -294.96
+prop y setTo -85.96`
+    },
+    {
+      "id": "6",
+      "label": "Tree 1",
+      "bpid": "Tree",
+      "initScript": `prop x setTo -301.19
+prop y setTo 18.98`
+    },
+    {
+      "id": "7",
+      "label": "Dam",
+      "bpid": "Dam",
+      "initScript": `prop x setTo 6.50
+prop y setTo 28.54`
+    },
+    {
+      "id": "8",
+      "label": "Predator 1",
+      "bpid": "Predator",
+      "initScript": `prop x setTo 229.51
+prop y setTo -329.7`
+    },
+    {
+      "id": "9",
+      "label": "GreatSpotForDam",
+      "bpid": "GreatSpotForDam",
+      "initScript": `prop x setTo 2.69
+prop y setTo 29.94`
+    },
+    {
+      "id": "10",
+      "label": "Lodge",
+      "bpid": "Lodge",
+      "initScript": `prop x setTo -1.78
+prop y setTo -214.43`
+    }
+  ]
+}
