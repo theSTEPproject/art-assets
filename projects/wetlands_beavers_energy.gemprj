@@ -489,10 +489,10 @@ featCall Predator.Touches monitor 'Beaver' b2b
 # PROGRAM UPDATE
 
 // Flip the artwork to point left or right depending on the direction the character is moving
-ifFeatProp Predator.Movement.compassDirection equal 'W' [[
+ifFeatProp Predator.Movement.compassDirection equal 'E' [[
   featProp Predator.Costume.flipX setTo false
 ]]
-ifFeatProp Predator.Movement.compassDirection equal 'E' [[
+ifFeatProp Predator.Movement.compassDirection equal 'W' [[
   featProp Predator.Costume.flipX setTo true
 ]]
 
