@@ -84,6 +84,94 @@ onEvent START [[
 ]]`
     },
     {
+      "name": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+
+// Start off looking like a magnifying lense so we know that you need to go look at the other characters.
+// Later this will change to different types of energy as the students move over the other characters.
+featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+featProp EnergyRepresentation.Costume.scale setTo 0.5
+prop EnergyRepresentation.alpha setTo 0.8
+prop EnergyRepresentation.zIndex setTo 200
+
+// Setup energy properties
+addProp energyLevel number 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
+
+// Setup energy type so that we know what we can give it to
+// start with none beause we have not picked up energy yet.
+addProp energyType string 'none'
+
+// Setup the touch moniitoring so that we check when the
+// EnergyRepresentation characters touch the Sun, Beaver, Tree, or Predator
+// The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
+featCall EnergyRepresentation.Touches monitor 'Sun' b2b
+featCall EnergyRepresentation.Touches monitor 'Tree' b2b
+featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
+featCall EnergyRepresentation.Touches monitor 'Predator' b2b
+
+# PROGRAM UPDATE
+
+// TODO:
+  // Add other types
+  // Add logging
+  // Give and take energy
+  // heat
+  // change color on meters
+
+// Any time you touch the sun, take on sun energy
+// Note that the sun is effectively infinite
+when EnergyRepresentation firsttouches Sun [[
+  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun.png'
+  prop EnergyRepresentation.energyType setTo 'source'
+  // prop EnergyRepresentation.energyLevel setTo 100
+]]
+
+when EnergyRepresentation firsttouches Tree [[
+  ifProp EnergyRepresentation.energyType equal 'source' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+    prop EnergyRepresentation.energyType setTo 'photosynthesis'
+    // prop EnergyRepresentation.energyLevel setTo 50
+    prop Tree.energyLevel add 20
+  ]]
+]]
+
+when EnergyRepresentation lasttouches Tree [[
+  ifProp EnergyRepresentation.energyType equal 'photosynthesis' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
+    prop EnergyRepresentation.energyType setTo 'producer'
+  ]]
+]]
+
+when EnergyRepresentation firsttouches Beaver [[
+  ifProp EnergyRepresentation.energyType equal 'producer' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
+    prop EnergyRepresentation.energyType setTo 'digestion'
+    // prop EnergyRepresentation.energyLevel setTo 0
+    prop Beaver.energyLevel add 10
+  ]]
+]]
+
+when EnergyRepresentation lasttouches Beaver [[
+  ifProp EnergyRepresentation.energyType equal 'digestion' [[
+  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+  prop EnergyRepresentation.energyType setTo 'none'
+
+  ]]
+]]
+
+`
+    },
+    {
       "name": "Beaver",
       "scriptText": `# BLUEPRINT Beaver
 # TAG isPozyxControllable false
@@ -121,22 +209,15 @@ prop Beaver.energyLevel setMax 100
 featProp Beaver.Graphing.meterProp setTo 'energyLevel'
 featProp Beaver.Graphing.meterColor setTo 65280
 
-// ✏️ LETS CHANGE THIS: Does the beaver lose energy?
-// ✏️ This helps us explore the model without worrying about food
-addProp beaverLosesEnergy boolean true
-
 # PROGRAM UPDATE
 
 
 every 1 [[
-
-  ifProp Beaver.beaverLosesEnergy equal true [[
     // lower energyLevel because living takes energy
     prop Beaver.energyLevel sub 2
-  ]]
 
   // check if the beaver is ok
-  // but only if it hasn't already been killed by a predator
+  // but only if it has not already been killed by a predator
   ifProp Beaver.isInert equal false [[
     ifProp Beaver.energyLevel equal 0 [[
       featCall Beaver.IU logString 'Beaver died from starvation'
@@ -422,7 +503,13 @@ featProp Tree.Graphing.meterColor setTo 65280
 
 addProp energyType string 'producer'
 
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+every 1 [[
+    // lower energyLevel because living takes energy
+    prop Tree.energyLevel sub 2
+]]
+
+  `
     },
     {
       "name": "GreatSpotForDam",
@@ -507,49 +594,15 @@ addFeature Physics
 
 featProp Sun.Costume.scale setTo 1.3
 
-// types to use for energy transfer: source, producer, consumer, decomposer, waste, soil (we might add more later or improve the last few labels)
+// types to use for energy transfer include the type of energy
+  // source, producer, consumer
+  // as well as the mechanism for transfer
+  // photosynthesis, digesting
+
 addProp energyType string 'source'
 
 
 // required directive
-# PROGRAM UPDATE`
-    },
-    {
-      "name": "EnergyRepresentation",
-      "scriptText": `# BLUEPRINT EnergyRepresentation
-# TAG isCharControllable true
-# TAG isPozyxControllable true
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-
-// Start off looking like a magnifying lense so we know that you need to go look at the other characters.
-// Later this will change to different types of energy as the students move over the other characters.
-featProp EnergyRepresentation.Costume.costumeName setTo 'AQ_energy_empty.png'
-featProp EnergyRepresentation.Costume.scale setTo 0.5
-prop EnergyRepresentation.alpha setTo 0.8
-prop EnergyRepresentation.zIndex setTo 200
-
-// Setup energy properties
-addProp energyLevel number 0
-prop EnergyRepresentation.energyLevel setMax 100
-prop EnergyRepresentation.energyLevel setMin 0
-
-// Setup energy type so that we know what we can give it to
-// start with none beause we have not picked up energy yet.
-addProp energyType string 'none'
-
-// Setup the touch moniitoring so that we check when the
-// EnergyRepresentation characters touch the Sun, Beaver, Tree, or Predator
-// The scripts for when they do touch are within Update (e.g., when EnergyRepresentation touches Sun etc.)
-featCall EnergyRepresentation.Touches monitor 'Sun' b2b
-featCall EnergyRepresentation.Touches monitor 'Tree' b2b
-featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
-featCall EnergyRepresentation.Touches monitor 'Predator' b2b
-
 # PROGRAM UPDATE`
     }
   ],
@@ -558,8 +611,8 @@ featCall EnergyRepresentation.Touches monitor 'Predator' b2b
       "id": "0",
       "label": "Twig 1",
       "bpid": "Twig",
-      "initScript": `prop x setTo -313.19
-prop y setTo 92.31`
+      "initScript": `prop x setTo -313.17
+prop y setTo 127.86`
     },
     {
       "id": "1",
@@ -605,8 +658,8 @@ featProp Water.Costume.width setTo 110
       "id": "9",
       "label": "Twig 2",
       "bpid": "Twig",
-      "initScript": `prop x setTo 336.47
-prop y setTo -242.63`
+      "initScript": `prop x setTo 336.74
+prop y setTo -226.82`
     },
     {
       "id": "12",
@@ -635,8 +688,8 @@ prop y setTo 286.16`
       "id": "19",
       "label": "Tree 1",
       "bpid": "Tree",
-      "initScript": `prop x setTo -335.41
-prop y setTo 6.42`
+      "initScript": `prop x setTo -306.76
+prop y setTo 20.23`
     },
     {
       "id": "20",
