@@ -114,7 +114,6 @@ addProp energyType string 'none'
 featCall EnergyRepresentation.Touches monitor 'Sun' b2b
 featCall EnergyRepresentation.Touches monitor 'Tree' b2b
 featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
-featCall EnergyRepresentation.Touches monitor 'Predator' b2b
 
 # PROGRAM UPDATE
 
@@ -122,8 +121,6 @@ featCall EnergyRepresentation.Touches monitor 'Predator' b2b
   // Add other types
   // Add logging
   // heat
-  // change color on meters
-  // predator
 
 // Any time you touch the sun, take on sun energy
 // Note that the sun is effectively infinite
@@ -236,7 +233,7 @@ every 1 [[
   prop Beaver.energyLevel sub 5
 
   // check if the beaver is ok
-  // but only if it has not already been killed by a predator
+  // but only if it has not already died
   ifProp Beaver.isInert equal false [[
     ifProp Beaver.energyLevel equal 0 [[
       featCall Beaver.IU logString 'Beaver died from starvation'
@@ -412,52 +409,6 @@ featCall StreamBed.Costume setColorizeHSV 0.1 0.9 0.7
 prop StreamBed.zIndex setTo -300
 
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "Predator",
-      "scriptText": `# BLUEPRINT Predator
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Movement
-
-featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
-featProp Predator.Costume.scale setTo 0.2
-
-featCall Predator.Touches monitor 'Beaver' b2b
-
-addProp energyType string 'predator'
-
-
-# PROGRAM UPDATE
-
-// Flip the artwork to point left or right depending on the direction the character is moving
-ifFeatProp Predator.Movement.compassDirection equal 'E' [[
-  featProp Predator.Costume.flipX setTo false
-]]
-ifFeatProp Predator.Movement.compassDirection equal 'W' [[
-  featProp Predator.Costume.flipX setTo true
-]]
-
-when Predator firsttouches Beaver [[
-  ifProp Beaver.protected equal false [[
-    // the beaver is killed by the predator
-    featCall Beaver.IU logString 'Beaver was killed by a predator because it was not protected'
-    prop Beaver.alpha setTo 0.5
-    prop Beaver.isInert setTo true
-    prop Beaver.energyLevel setTo 0
-  ]]
-  ifProp Beaver.protected equal true [[
-    featCall Beaver.IU logString 'The predator tried to attack the beaver but it was protected!'
-  ]]
-
-]]
-`
     },
     {
       "name": "WaterPlant",
@@ -709,8 +660,8 @@ prop y setTo -226.82`
       "id": "12",
       "label": "Rock 1",
       "bpid": "Rock",
-      "initScript": `prop x setTo 319.34
-prop y setTo -113.62`
+      "initScript": `prop x setTo -349.95
+prop y setTo 345.27`
     },
     {
       "id": "17",
