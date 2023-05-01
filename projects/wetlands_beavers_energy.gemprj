@@ -94,6 +94,7 @@ onEvent START [[
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature IU
 
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
@@ -124,9 +125,9 @@ featCall EnergyRepresentation.Touches monitor 'Predator' b2b
 // TODO:
   // Add other types
   // Add logging
-  // Give and take energy
   // heat
   // change color on meters
+  // predator
 
 // Any time you touch the sun, take on sun energy
 // Note that the sun is effectively infinite
@@ -134,6 +135,10 @@ when EnergyRepresentation firsttouches Sun [[
   featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun.png'
   prop EnergyRepresentation.energyType setTo 'source'
   // prop EnergyRepresentation.energyLevel setTo 100
+
+  featCall EnergyRepresentation.IU logString 'An energy representation picked up energy from the sun.'
+  // prop global.noticingString setTo ''
+
 ]]
 
 when EnergyRepresentation firsttouches Tree [[
@@ -142,6 +147,9 @@ when EnergyRepresentation firsttouches Tree [[
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
     // prop EnergyRepresentation.energyLevel setTo 50
     prop Tree.energyLevel add 20
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+    // prop global.noticingString setTo ''
   ]]
 ]]
 
@@ -158,6 +166,9 @@ when EnergyRepresentation firsttouches Beaver [[
     prop EnergyRepresentation.energyType setTo 'digestion'
     // prop EnergyRepresentation.energyLevel setTo 0
     prop Beaver.energyLevel add 10
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+    // prop global.noticingString setTo ''
   ]]
 ]]
 
