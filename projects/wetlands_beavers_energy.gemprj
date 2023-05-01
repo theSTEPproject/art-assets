@@ -114,13 +114,15 @@ addProp energyType string 'none'
 featCall EnergyRepresentation.Touches monitor 'Sun' b2b
 featCall EnergyRepresentation.Touches monitor 'Tree' b2b
 featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
+featCall EnergyRepresentation.Touches monitor 'Predator' b2b
 
 # PROGRAM UPDATE
 
 // TODO:
-  // Add other types
-  // Add logging
+  // Add other types (water plants and fish?)
+  // Extend logging and add noticing
   // heat
+  // predator to get energy?
 
 // Any time you touch the sun, take on sun energy
 // Note that the sun is effectively infinite
@@ -186,6 +188,25 @@ when EnergyRepresentation lasttouches Beaver [[
   ]]
 ]]
 
+// not done yet 
+when EnergyRepresentation firsttouches Predator [[
+// if you are not carrying energy, show the digestion but do not change energy levels 
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
+    prop EnergyRepresentation.energyType setTo 'digestion'
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the coyote (a consumer, also a predator) gets energy by digesting a beaver.'
+  ]]
+]]
+
+when EnergyRepresentation lasttouches Predator [[
+  ifProp EnergyRepresentation.energyType equal 'digestion' [[
+  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+  prop EnergyRepresentation.energyType setTo 'none'
+
+  ]]
+]]
+
 `
     },
     {
@@ -233,7 +254,7 @@ every 1 [[
   prop Beaver.energyLevel sub 5
 
   // check if the beaver is ok
-  // but only if it has not already died
+  // but only if it has not already been killed by a predator
   ifProp Beaver.isInert equal false [[
     ifProp Beaver.energyLevel equal 0 [[
       featCall Beaver.IU logString 'Beaver died from starvation'
@@ -409,6 +430,54 @@ featCall StreamBed.Costume setColorizeHSV 0.1 0.9 0.7
 prop StreamBed.zIndex setTo -300
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+
+featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
+featProp Predator.Costume.scale setTo 0.2
+
+addProp energyType string 'predator'
+
+addProp energyLevel number 50
+prop Predator.energyLevel setMin 0
+prop Predator.energyLevel setMax 100
+
+featProp Predator.Graphing.meterProp setTo 'energyLevel'
+
+
+# PROGRAM UPDATE
+
+
+
+every 1 [[
+    // disable this for the predator to make it run longer
+    // lower energyLevel because living takes energy
+    // prop Predator.energyLevel sub 2
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp Predator.energyLevel greaterThanOrEqual 60 [[
+      featProp Predator.Graphing.meterColor setTo 65280
+    ]]
+    ifProp Predator.energyLevel lessThan 60 [[
+      featProp Predator.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp Predator.energyLevel lessThan 30 [[
+      featProp Predator.Graphing.meterColor setTo 16711680
+    ]]
+]]
+
+`
     },
     {
       "name": "WaterPlant",
@@ -660,8 +729,8 @@ prop y setTo -226.82`
       "id": "12",
       "label": "Rock 1",
       "bpid": "Rock",
-      "initScript": `prop x setTo -349.95
-prop y setTo 345.27`
+      "initScript": `prop x setTo 319.34
+prop y setTo -113.62`
     },
     {
       "id": "17",
