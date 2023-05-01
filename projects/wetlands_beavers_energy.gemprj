@@ -222,10 +222,9 @@ featProp Beaver.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 
-
 every 1 [[
-    // lower energyLevel because living takes energy
-    prop Beaver.energyLevel sub 2
+  // lower energyLevel because living takes energy
+  prop Beaver.energyLevel sub 5
 
   // check if the beaver is ok
   // but only if it has not already been killed by a predator
@@ -238,7 +237,20 @@ every 1 [[
     ]]
   ]]
 
-]]`
+  // Set the color of the energy meter depending on the amount of energy that the character has
+  // These are green orange, and red in order
+  ifProp Beaver.energyLevel greaterThanOrEqual 60 [[
+    featProp Beaver.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Beaver.energyLevel lessThan 60 [[
+    featProp Beaver.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Beaver.energyLevel lessThan 30 [[
+    featProp Beaver.Graphing.meterColor setTo 16711680
+  ]]
+
+]]
+`
     },
     {
       "name": "Twig",
@@ -518,6 +530,18 @@ addProp energyType string 'producer'
 every 1 [[
     // lower energyLevel because living takes energy
     prop Tree.energyLevel sub 2
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp Tree.energyLevel greaterThanOrEqual 60 [[
+      featProp Tree.Graphing.meterColor setTo 65280
+    ]]
+    ifProp Tree.energyLevel lessThan 60 [[
+      featProp Tree.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp Tree.energyLevel lessThan 30 [[
+      featProp Tree.Graphing.meterColor setTo 16711680
+    ]]
 ]]
 
   `
@@ -828,7 +852,7 @@ prop y setTo 127.98`
       "id": "50",
       "label": "Beaver 3",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 235.80
+      "initScript": `prop x setTo 235.8
 prop y setTo 186.94`
     },
     {
