@@ -805,6 +805,27 @@ prop y setTo -161.75`
       "bpid": "Sun",
       "initScript": `prop x setTo -261.05
 prop y setTo -361.04`
+    },
+    {
+      "id": "49",
+      "label": "Beaver 2",
+      "bpid": "Beaver",
+      "initScript": `prop x setTo -182.79
+prop y setTo 127.98`
+    },
+    {
+      "id": "50",
+      "label": "Beaver 3",
+      "bpid": "Beaver",
+      "initScript": `prop x setTo 235.80
+prop y setTo 186.94`
+    },
+    {
+      "id": "51",
+      "label": "Beaver 4",
+      "bpid": "Beaver",
+      "initScript": `prop x setTo -24.25
+prop y setTo -268.55`
     }
   ]
 }
