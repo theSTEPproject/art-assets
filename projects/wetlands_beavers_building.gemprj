@@ -402,7 +402,7 @@ when Beaver touches Lodge [[
 ]]
 
 when Beaver touches DropArea [[
-  // update the beave so we know it isn't carrying anything any more
+  // update the beave so we know it is not carrying anything any more
   featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
   featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
   prop Beaver.carrying setTo 'nothing'
@@ -452,10 +452,23 @@ every 1 [[
   ifProp Beaver.beaverLosesEnergy equal true [[
     // lower energyLevel because living takes energy
     prop Beaver.energyLevel sub 2
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp Beaver.energyLevel greaterThanOrEqual 60 [[
+      featProp Beaver.Graphing.meterColor setTo 65280
+    ]]
+    ifProp Beaver.energyLevel lessThan 60 [[
+      featProp Beaver.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp Beaver.energyLevel lessThan 30 [[
+      featProp Beaver.Graphing.meterColor setTo 16711680
+    ]]
+
   ]]
 
   // check if the beaver is ok
-  // but only if it hasn't already been killed by a predator
+  // but only if it has not already been killed by a predator
   ifProp Beaver.isInert equal false [[
     ifProp Beaver.energyLevel equal 0 [[
       featCall Beaver.IU logString 'Beaver died from starvation'
