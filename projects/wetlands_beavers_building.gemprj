@@ -6,7 +6,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
@@ -1512,7 +1515,7 @@ prop location setTo 'aboveDam'`
     },
     {
       "id": "46",
-      "label": "Noticing46",
+      "label": "Noticing",
       "bpid": "Noticing",
       "initScript": `prop x setTo -469.41
 prop y setTo 112.08`
