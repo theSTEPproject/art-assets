@@ -70,7 +70,15 @@ addProp tempNum number 0
 // to be used by the noticing wizard
 addProp noticingString string '...'
 
-// required directive
+// ✏️ LETS CHANGE THIS: which things do we want eating which others?
+// ✏️ Change some or all of these to true to see how they impact the system
+addProp beaversEatWaterPlants boolean false
+addProp waterPlantsUseEnergy boolean false 
+addProp fishEatWaterPlants boolean false
+addProp fishUseEnergy boolean false 
+addProp predatorsEatBeavers boolean false
+addProp predatorsUseEnergy boolean true 
+
 # PROGRAM UPDATE
 
 
@@ -115,6 +123,8 @@ featCall EnergyRepresentation.Touches monitor 'Sun' b2b
 featCall EnergyRepresentation.Touches monitor 'Tree' b2b
 featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
 featCall EnergyRepresentation.Touches monitor 'Predator' b2b
+featCall EnergyRepresentation.Touches monitor 'WaterPlant' b2b
+featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 
 # PROGRAM UPDATE
 
@@ -161,6 +171,32 @@ when EnergyRepresentation lasttouches Tree [[
   ]]
 ]]
 
+when EnergyRepresentation firsttouches WaterPlant [[
+  ifProp EnergyRepresentation.energyType equal 'source' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+    prop EnergyRepresentation.energyType setTo 'photosynthesis'
+    prop WaterPlant.energyLevel add 30
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+    // prop global.noticingString setTo ''
+  ]]
+
+  // if you are carrying nothing, show the process, but do not gain energy
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+    prop EnergyRepresentation.energyType setTo 'photosynthesis'
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+  ]]
+]]
+
+when EnergyRepresentation lasttouches WaterPlant [[
+  ifProp EnergyRepresentation.energyType equal 'photosynthesis' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
+    prop EnergyRepresentation.energyType setTo 'producer'
+  ]]
+]]
+
 when EnergyRepresentation firsttouches Beaver [[
   ifProp EnergyRepresentation.energyType equal 'producer' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
@@ -177,23 +213,56 @@ when EnergyRepresentation firsttouches Beaver [[
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
   ]]
-
 ]]
 
 when EnergyRepresentation lasttouches Beaver [[
   ifProp EnergyRepresentation.energyType equal 'digestion' [[
-  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
-  prop EnergyRepresentation.energyType setTo 'none'
+  
+      ifProp global.predatorsEatBeavers equal false [[
+        prop EnergyRepresentation.energyType setTo 'none'
+        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+      ]]
 
+    ifProp global.predatorsEatBeavers equal true [[
+        prop EnergyRepresentation.energyType setTo 'consumer'
+        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver.png'
+    ]]
   ]]
 ]]
 
-// not done yet 
+when EnergyRepresentation firsttouches Fish [[
+  ifProp EnergyRepresentation.energyType equal 'producer' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
+    prop EnergyRepresentation.energyType setTo 'digestion'
+    prop Fish.energyLevel add 20
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+  ]]
+
+  // if you are not carrying energy, show the digestion but do not change energy levels 
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
+    prop EnergyRepresentation.energyType setTo 'digestion'
+
+    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+  ]]
+
+]]
+
+when EnergyRepresentation lasttouches Fish [[
+  ifProp EnergyRepresentation.energyType equal 'digestion' [[
+      prop EnergyRepresentation.energyType setTo 'none'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+  ]]
+]]
+
 when EnergyRepresentation firsttouches Predator [[
 // if you are not carrying energy, show the digestion but do not change energy levels 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
+  ifProp EnergyRepresentation.energyType equal 'consumer' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
+
+    prop Predator.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the coyote (a consumer, also a predator) gets energy by digesting a beaver.'
   ]]
@@ -457,12 +526,12 @@ featProp Predator.Graphing.meterProp setTo 'energyLevel'
 
 # PROGRAM UPDATE
 
-
-
 every 1 [[
     // disable this for the predator to make it run longer
-    // lower energyLevel because living takes energy
-    // prop Predator.energyLevel sub 2
+    ifProp global.predatorsUseEnergy equal true [[
+      // lower energyLevel because living takes energy
+      prop Predator.energyLevel sub 2
+    ]]
 
     // Set the color of the energy meter depending on the amount of energy that the character has
     // These are green orange, and red in order
@@ -490,12 +559,11 @@ every 1 [[
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Graphing
 addFeature IU
 
 featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
-
-featCall WaterPlant.Touches monitor 'Water' c2b
 
 addProp energyLevel number 100
 prop WaterPlant.energyLevel setMin 0
@@ -503,7 +571,35 @@ prop WaterPlant.energyLevel setMax 100
 
 addProp energyType string 'producer'
 
+ifProp global.beaversEatWaterPlants equal true [[
+  featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
+  featProp WaterPlant.Graphing.meterColor setTo 65280
+]]
+
+  featProp WaterPlant.Graphing.text setTo ''
+
 # PROGRAM UPDATE
+every 1 [[
+  ifProp global.beaversEatWaterPlants equal true [[
+
+    ifProp global.waterPlantsUseEnergy equal true [[
+        // lower energyLevel because living takes energy
+        prop WaterPlant.energyLevel sub 2
+    ]]
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp WaterPlant.energyLevel greaterThanOrEqual 60 [[
+      featProp WaterPlant.Graphing.meterColor setTo 65280
+    ]]
+    ifProp WaterPlant.energyLevel lessThan 60 [[
+      featProp WaterPlant.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp WaterPlant.energyLevel lessThan 30 [[
+      featProp WaterPlant.Graphing.meterColor setTo 16711680
+    ]]
+  ]]
+]]
 
 `
     },
@@ -518,16 +614,49 @@ addProp energyType string 'producer'
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Graphing
 addFeature IU
 
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.15
 
-featCall Fish.Touches monitor 'Water' c2b
+addProp energyLevel number 100
+prop Fish.energyLevel setMin 0
+prop Fish.energyLevel setMax 100
 
+addProp energyType string 'producer'
+
+ifProp global.fishEatWaterPlants equal true [[
+  featProp Fish.Graphing.meterProp setTo 'energyLevel'
+  featProp Fish.Graphing.meterColor setTo 65280
+]]
+
+  featProp Fish.Graphing.text setTo ''
 
 # PROGRAM UPDATE
 
+# PROGRAM UPDATE
+every 1 [[
+  ifProp global.fishEatWaterPlants equal true [[
+
+    ifProp global.fishUseEnergy equal true [[
+        // lower energyLevel because living takes energy
+        prop Fish.energyLevel sub 2
+    ]]
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp Fish.energyLevel greaterThanOrEqual 60 [[
+      featProp Fish.Graphing.meterColor setTo 65280
+    ]]
+    ifProp Fish.energyLevel lessThan 60 [[
+      featProp Fish.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp Fish.energyLevel lessThan 30 [[
+      featProp Fish.Graphing.meterColor setTo 16711680
+    ]]
+  ]]
+]]
 `
     },
     {
@@ -733,15 +862,6 @@ prop y setTo -226.82`
 prop y setTo -113.62`
     },
     {
-      "id": "17",
-      "label": "WaterPlant",
-      "bpid": "WaterPlant",
-      "initScript": `prop x setTo 68.07
-prop y setTo -301.81
-
-`
-    },
-    {
       "id": "18",
       "label": "Tree 3",
       "bpid": "Tree",
@@ -763,43 +883,11 @@ prop y setTo 20.23`
 prop y setTo -324.79`
     },
     {
-      "id": "22",
-      "label": "WaterPlant 2",
-      "bpid": "WaterPlant",
-      "initScript": `prop x setTo -52.01
-prop y setTo -372.58
-`
-    },
-    {
-      "id": "23",
-      "label": "WaterPlant 3",
-      "bpid": "WaterPlant",
-      "initScript": `prop x setTo 181.57
-prop y setTo -249.59
-`
-    },
-    {
-      "id": "24",
-      "label": "WaterPlant 4",
-      "bpid": "WaterPlant",
-      "initScript": `prop x setTo -209.94
-prop y setTo -274.44
-`
-    },
-    {
-      "id": "25",
-      "label": "WaterPlant 5",
-      "bpid": "WaterPlant",
-      "initScript": `prop x setTo -93.72
-prop y setTo -44.98
-`
-    },
-    {
       "id": "26",
-      "label": "WaterPlant 6",
+      "label": "WaterPlant 1",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo 191.07
-prop y setTo -93.94
+      "initScript": `prop x setTo 180.43
+prop y setTo -114.58
 `
     },
     {
@@ -811,21 +899,14 @@ prop y setTo 199`
     },
     {
       "id": "31",
-      "label": "Fish",
+      "label": "Fish 1",
       "bpid": "Fish",
-      "initScript": `prop x setTo -10.14
-prop y setTo -68.97`
-    },
-    {
-      "id": "32",
-      "label": "Fish",
-      "bpid": "Fish",
-      "initScript": `prop x setTo -113.14
-prop y setTo -254.56`
+      "initScript": `prop x setTo 178.44
+prop y setTo -51.24`
     },
     {
       "id": "34",
-      "label": "GreatSpotForDam34",
+      "label": "GreatSpotForDam",
       "bpid": "GreatSpotForDam",
       "initScript": `prop x setTo 1.21
 prop y setTo 2.01
@@ -851,7 +932,7 @@ prop visible setTo false
     },
     {
       "id": "46",
-      "label": "Noticing46",
+      "label": "Noticing",
       "bpid": "Noticing",
       "initScript": `prop x setTo -469.41
 prop y setTo 112.08`
@@ -860,8 +941,8 @@ prop y setTo 112.08`
       "id": "47",
       "label": "Beaver 1",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -165.45
-prop y setTo -161.75`
+      "initScript": `prop x setTo -135.13
+prop y setTo -123.54`
     },
     {
       "id": "48",
@@ -888,8 +969,15 @@ prop y setTo 130.94`
       "id": "51",
       "label": "Beaver 4",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -24.25
-prop y setTo -268.55`
+      "initScript": `prop x setTo 29.30
+prop y setTo -267.85`
+    },
+    {
+      "id": "52",
+      "label": "Predator 1",
+      "bpid": "Predator",
+      "initScript": `prop x setTo -322.42
+prop y setTo 310.86`
     }
   ]
 }
