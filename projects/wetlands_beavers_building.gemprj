@@ -1195,6 +1195,31 @@ every 1 [[
 ]]
 
   `
+    },
+    {
+      "name": "NoticingImage",
+      "scriptText": `# BLUEPRINT NoticingImage
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp NoticingImage.Costume.costumeName setTo 'WL_beaver_noticing.png'
+featProp NoticingImage.Costume.scale setTo 0.7
+prop NoticingImage.zIndex setTo -200
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1517,8 +1542,15 @@ prop location setTo 'aboveDam'`
       "id": "46",
       "label": "Noticing",
       "bpid": "Noticing",
-      "initScript": `prop x setTo -469.41
-prop y setTo 112.08`
+      "initScript": `prop x setTo -503.68
+prop y setTo 34.36`
+    },
+    {
+      "id": "47",
+      "label": "NoticingImage47",
+      "bpid": "NoticingImage",
+      "initScript": `prop x setTo -519.81
+prop y setTo 204.27`
     }
   ]
 }
