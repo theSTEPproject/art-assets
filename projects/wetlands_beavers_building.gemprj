@@ -1183,7 +1183,7 @@ ifProp WaterSpeed.location equal 'belowDam' [[
 addFeature Costume
 addFeature Graphing
 featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
-featProp Noticing.Graphing.text setTo 'Things to notice will appear here'
+featProp Noticing.Graphing.text setTo 'I will try and point out some interesting things!'
 
 # PROGRAM UPDATE
 
