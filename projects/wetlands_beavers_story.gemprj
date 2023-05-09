@@ -67,7 +67,7 @@ addFeature Physics
 addFeature Touches
 addFeature Graphing
 addFeature Movement
-
+addFeature Population
 
 featProp Player.Costume.costumeName setTo 'KB_meeple_idle.png'
 featProp Player.Costume.scale setTo 0.3
@@ -109,10 +109,12 @@ when Player firsttouches Player [[
         featPropPop agent.Graphing.text
 
          // ✏️ Add something to the label 
-          featProp agent.Graphing.text add ' (ate)'
+         //featProp agent.Graphing.text add ' (ate)'
 
          // ✏️ Make a popup
-         // TBD
+         featCall Player.Population createCharacter PopupEffect [[
+          prop PopupEffect.textToUse setTo 'Beaver ate some wood!'
+        ]]
 
          // ✏️ Do something with the meter
          // TBD
@@ -670,6 +672,52 @@ when StoryButton firsttouches Supporter [[
       ]]
     ]] 
   ]]
+`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+addFeature Population
+
+featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PopupEffect.Graphing.text setTo ''
+prop PopupEffect.zIndex setTo 500
+
+addProp costumeToUse string ''
+addProp textToUse string 'TEST'
+addProp countDown Number 2
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp PopupEffect.costumeToUse notEqual '' [[
+    propPush PopupEffect.costumeToUse
+    featPropPop PopupEffect.Costume.costumeName
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
+
+  ifProp PopupEffect.textToUse notEqual '' [[
+    propPush PopupEffect.textToUse
+    featPropPop PopupEffect.Graphing.text
+    prop PopupEffect.textToUse setTo ''
+  ]]
+]]
+every 1 runAtStart [[
+
+  prop PopupEffect.countDown sub 1
+  ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+    featCall PopupEffect.Population removeCharacter
+  ]]
+]]
 `
     }
   ],
