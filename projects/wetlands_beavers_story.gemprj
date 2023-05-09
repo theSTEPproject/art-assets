@@ -80,7 +80,7 @@ featCall Player.Touches monitor 'Rock' b2b
 featCall Player.Touches monitor 'Predator' b2b
 featCall Player.Touches monitor 'Tree' b2b
 featCall Player.Touches monitor 'WaterPlant' b2b
-
+featCall Player.Touches monitor 'Player' b2b
 
 # PROGRAM UPDATE
 
@@ -90,6 +90,37 @@ ifFeatProp Player.Movement.compassDirection equal 'E' [[
 ]]
 ifFeatProp Player.Movement.compassDirection equal 'W' [[
   featProp Player.Costume.flipX setTo true
+]]
+
+// when you touch another player ... do something maybe?
+
+when Player firsttouches Player [[
+  // weird bug that means we need to make sure we are not bumping into ourself
+   ifExpr {{ agent.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
+    
+    // ✏️ LETS CHANGE THIS: what do specific kinds of costumes do when they bump into specific other costumes
+    // ✏️ This example triggers when someone pretending to be a beaver bumps into a tree
+    // ✏️ You can change the two costumes to be something else and then set what happens 
+    ifFeatProp agent.Costume.costumeName equal 'WL_beaver.png' [[
+      ifFeatProp Player.Costume.costumeName equal 'WL_tree.png' [[
+        propPush agent.trackerId
+        featPropPop agent.Graphing.text
+
+         // ✏️ Add something to the label 
+          featProp agent.Graphing.text add ' (ate)'
+
+         // ✏️ Make a popup
+         // TBD
+
+         // ✏️ Do something with the meter
+         // TBD
+      ]]
+    ]]
+   ]]
+]]
+
+when Player lasttouches Player [[
+
 ]]
 
 // When you touch one of the other characters
