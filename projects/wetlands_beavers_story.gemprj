@@ -108,16 +108,18 @@ when Player firsttouches Player [[
         propPush agent.trackerId
         featPropPop agent.Graphing.text
 
-         // ✏️ Add something to the label 
-         //featProp agent.Graphing.text add ' (ate)'
-
          // ✏️ Make a popup
          featCall Player.Population createCharacter PopupEffect [[
           prop PopupEffect.textToUse setTo 'Beaver ate some wood!'
-        ]]
+          prop PopupEffect.costumeToUse setTo ''
+         ]]
+
+         // ✏️ Add something to the label 
+         //featProp agent.Graphing.text add ' (ate)'
 
          // ✏️ Do something with the meter
          // TBD
+         
       ]]
     ]]
    ]]
@@ -585,6 +587,7 @@ featProp StoryText.Graphing.text setTo ''
 every 0.1 [[
 
   // ✏️ LETS CHANGE THIS: What text should we display as the story moves forward?
+  // ✏️ Switch out the text for each part of the story, and you can also add or remove steps
   ifProp global.stepInStory equal 0 [[
     featProp StoryText.Graphing.text setTo 'Start'
   ]]
