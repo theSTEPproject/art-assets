@@ -82,6 +82,8 @@ featCall Player.Touches monitor 'Tree' b2b
 featCall Player.Touches monitor 'WaterPlant' b2b
 featCall Player.Touches monitor 'Player' b2b
 
+addProp costumeType string 'none'
+
 # PROGRAM UPDATE
 
 // Flip around
@@ -101,8 +103,8 @@ when Player firsttouches Player [[
     // ✏️ LETS CHANGE THIS: what do specific kinds of costumes do when they bump into specific other costumes
     // ✏️ This example triggers when someone pretending to be a beaver bumps into a tree
     // ✏️ You can change the two costumes to be something else and then set what happens 
-    ifFeatProp agent.Costume.costumeName equal 'WL_beaver.png' [[
-      ifFeatProp Player.Costume.costumeName equal 'WL_tree.png' [[
+    ifProp agent.costumeType equal 'Beaver' [[
+      ifProp Player.costumeType equal 'Tree' [[
         propPush agent.trackerId
         featPropPop agent.Graphing.text
 
@@ -129,6 +131,7 @@ when Player lasttouches Player [[
 when Player firsttouches Beaver [[
   featPropPush Beaver.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Beaver'
   featPropPush Beaver.Costume.scale
   featPropPop Player.Costume.scale
 ]]
@@ -136,6 +139,7 @@ when Player firsttouches Beaver [[
 when Player firsttouches Twig [[
   featPropPush Twig.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Twig'
   featPropPush Twig.Costume.scale
   featPropPop Player.Costume.scale
 ]]
@@ -143,6 +147,7 @@ when Player firsttouches Twig [[
 when Player firsttouches Mud [[
   featPropPush Mud.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Mud'
   featPropPush Mud.Costume.scale
   featPropPop Player.Costume.scale
 ]]
@@ -150,6 +155,7 @@ when Player firsttouches Mud [[
 when Player firsttouches Rock [[
   featPropPush Rock.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Rock'
   featPropPush Rock.Costume.scale
   featPropPop Player.Costume.scale
 ]]
@@ -157,6 +163,7 @@ when Player firsttouches Rock [[
 when Player firsttouches Predator [[
   featPropPush Predator.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Predator'
   featPropPush Predator.Costume.scale
   featPropPop Player.Costume.scale
 ]]
@@ -164,20 +171,16 @@ when Player firsttouches Predator [[
 when Player firsttouches Tree [[
   featPropPush Tree.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'Tree'
   featPropPush Tree.Costume.scale
   featPropPop Player.Costume.scale
 ]]
 
-when Player firsttouches Predator [[
-  featPropPush Predator.Costume.costumeName
-  featPropPop Player.Costume.costumeName
-  featPropPush Predator.Costume.scale
-  featPropPop Player.Costume.scale
-]]
 
 when Player firsttouches WaterPlant [[
   featPropPush WaterPlant.Costume.costumeName
   featPropPop Player.Costume.costumeName
+  prop Player.costumeType setTo 'WaterPlant'
   featPropPush WaterPlant.Costume.scale
   featPropPop Player.Costume.scale
 ]]`
