@@ -98,31 +98,31 @@ ifFeatProp Player.Movement.compassDirection equal 'W' [[
 
 when Player firsttouches Player [[
   // weird bug that means we need to make sure we are not bumping into ourself
-   ifExpr {{ agent.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
-    
+  ifExpr {{ agent.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
+
     // ✏️ LETS CHANGE THIS: what do specific kinds of costumes do when they bump into specific other costumes
     // ✏️ This example triggers when someone pretending to be a beaver bumps into a tree
-    // ✏️ You can change the two costumes to be something else and then set what happens 
+    // ✏️ You can change the two costumes to be something else and then set what happens
     ifProp agent.costumeType equal 'Beaver' [[
       ifProp Player.costumeType equal 'Tree' [[
         propPush agent.trackerId
         featPropPop agent.Graphing.text
 
-         // ✏️ Make a popup
-         featCall Player.Population createCharacter PopupEffect [[
-          prop PopupEffect.textToUse setTo 'Beaver ate some wood!'
+        // ✏️ Make a popup
+        featCall Player.Population createCharacter PopupEffect [[
+          prop PopupEffect.textToUse setTo 'Ooh, yum yum!'
           prop PopupEffect.costumeToUse setTo ''
-         ]]
+        ]]
 
-         // ✏️ Add something to the label 
-         //featProp agent.Graphing.text add ' (ate)'
+        // ✏️ Add something to the label
+        // featProp agent.Graphing.text add ' (ate)'
 
-         // ✏️ Do something with the meter
-         // TBD
-         
+        // ✏️ Do something with the meter
+        // TBD
+
       ]]
     ]]
-   ]]
+  ]]
 ]]
 
 when Player lasttouches Player [[
