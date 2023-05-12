@@ -84,6 +84,17 @@ featCall Player.Touches monitor 'Player' b2b
 
 addProp costumeType string 'none'
 
+// Testing out tag setting to identity
+ifProp Player.trackerId equal '1' [[
+    prop Player.costumeType setTo 'Beaver'
+    featProp Player.Costume.costumeName setTo 'WL_beaver.png'
+]]
+
+ifProp Player.trackerId equal '2' [[
+    prop Player.costumeType setTo 'Predator'
+    featProp Player.Costume.costumeName setTo 'WL_coyote.png'
+]]
+
 # PROGRAM UPDATE
 
 // Flip around
