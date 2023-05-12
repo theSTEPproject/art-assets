@@ -84,17 +84,6 @@ featCall Player.Touches monitor 'Player' b2b
 
 addProp costumeType string 'none'
 
-// Testing out tag setting to identity
-ifProp Player.trackerId equal '1' [[
-    prop Player.costumeType setTo 'Beaver'
-    featProp Player.Costume.costumeName setTo 'WL_beaver.png'
-]]
-
-ifProp Player.trackerId equal '2' [[
-    prop Player.costumeType setTo 'Predator'
-    featProp Player.Costume.costumeName setTo 'WL_coyote.png'
-]]
-
 # PROGRAM UPDATE
 
 // Flip around
@@ -518,8 +507,8 @@ featProp PropWaterPlant.Costume.scale setTo 0.2
 # PROGRAM UPDATE`
     },
     {
-      "name": "ResizeWater",
-      "scriptText": `# BLUEPRINT ResizeWater
+      "name": "ResizeCharacter",
+      "scriptText": `# BLUEPRINT ResizeCharacter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -533,25 +522,47 @@ addFeature Touches
 addFeature Population
 
 // Setup the appearance
-featProp ResizeWater.Costume.costumeName setTo 'GEN_arrow.png'
-featProp ResizeWater.Costume.scale setTo 0.2
+featProp ResizeCharacter.Costume.costumeName setTo 'GEN_arrow.png'
+featProp ResizeCharacter.Costume.scale setTo 0.2
 
-featCall ResizeWater.Touches monitor 'Supporter' b2b
+// Have this work for both supporters and players for now 
+// If you want to disable Player support, simply comment this line
+featCall ResizeCharacter.Touches monitor 'Player' b2b
+featCall ResizeCharacter.Touches monitor 'Supporter' b2b
+
 
 addProp resizeId string 'Water Above'
 addProp resizeAmount number 10
 
 # PROGRAM UPDATE
 
-when ResizeWater firsttouches Supporter [[
+when ResizeCharacter firsttouches Player [[
 
-        propPush ResizeWater.resizeId
+        propPush ResizeCharacter.resizeId
         propPop global.tempString
 
-        propPush ResizeWater.resizeAmount
+        propPush ResizeCharacter.resizeAmount
         propPop global.tempNum
 
-        featCall ResizeWater.Population charactersForEach Water [[
+        featCall ResizeCharacter.Population charactersForEach Water [[
+         ifExpr {{global.getProp('tempString').value == Water.getProp('trackerId').value}}  [[
+              featPropPush Water.Costume.width
+              propPush global.tempNum
+              stackAdd
+              featPropPop Water.Costume.width
+          ]]
+        ]]
+]]
+
+when ResizeCharacter firsttouches Supporter [[
+
+        propPush ResizeCharacter.resizeId
+        propPop global.tempString
+
+        propPush ResizeCharacter.resizeAmount
+        propPop global.tempNum
+
+        featCall ResizeCharacter.Population charactersForEach Water [[
          ifExpr {{global.getProp('tempString').value == Water.getProp('trackerId').value}}  [[
               featPropPush Water.Costume.width
               propPush global.tempNum
@@ -578,115 +589,6 @@ featCall Supporter.Costume setColorizeHSV 0 0 0.5
 
 
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "StoryText",
-      "scriptText": `# BLUEPRINT StoryText
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-featProp StoryText.Costume.costumeName setTo 'GEN_onexone.json'
-featProp StoryText.Graphing.text setTo ''
-
-
-# PROGRAM UPDATE
-
-every 0.1 [[
-
-  // ✏️ LETS CHANGE THIS: What text should we display as the story moves forward?
-  // ✏️ Switch out the text for each part of the story, and you can also add or remove steps
-  ifProp global.stepInStory equal 0 [[
-    featProp StoryText.Graphing.text setTo 'Start'
-  ]]
-  ifProp global.stepInStory equal 1 [[
-    featProp StoryText.Graphing.text setTo 'Middle'
-  ]]
-  ifProp global.stepInStory equal 2 [[
-    featProp StoryText.Graphing.text setTo 'End'
-  ]]
-  ifProp global.stepInStory greaterThan 2 [[
-    // too high, so re-set to 2
-    prop global.stepInStory setTo 2
-  ]]
-
-  // make buttons visible or invisible
-  // need to update the top side depending on steps listed above
-  ifProp global.stepInStory greaterThan 0 [[
-    prop global.decreaseVisible setTo true
-  ]]
-  ifProp global.stepInStory equal 0 [[
-    prop global.decreaseVisible setTo false
-  ]]
-  // update to reflect above!
-  ifProp global.stepInStory equal 2 [[
-    prop global.increaseVisible setTo false
-  ]]
-  ifProp global.stepInStory lessThan 2 [[
-    prop global.increaseVisible setTo true
-  ]]
-
-
-]]`
-    },
-    {
-      "name": "StoryButton",
-      "scriptText": `# BLUEPRINT StoryButton
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// Setup the features
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Population
-
-// Setup the appearance
-featProp StoryButton.Costume.costumeName setTo 'GEN_arrow.png'
-featProp StoryButton.Costume.scale setTo 0.2
-
-featCall StoryButton.Touches monitor 'Supporter' b2b
-
-addProp advanceStory boolean true
-
-# PROGRAM UPDATE
-
-when StoryButton firsttouches Supporter [[
-  ifProp StoryButton.advanceStory equal true [[
-    prop global.stepInStory add 1
-  ]]
-  ifProp StoryButton.advanceStory equal false [[
-    prop global.stepInStory sub 1
-  ]]
-]]
-
-  // if we are on the first page and this is the go back arrow,
-  // then hide it since nowhere to go. Same with last and go forward.
-  every 0.1 [[
-    ifProp StoryButton.advanceStory equal true [[
-      ifProp global.increaseVisible equal true [[
-        prop StoryButton.alpha setTo 1
-      ]]
-      ifProp global.increaseVisible equal false [[
-        prop StoryButton.alpha setTo 0.2
-      ]]
-    ]]
-
-    ifProp StoryButton.advanceStory equal false [[      
-      ifProp global.decreaseVisible equal true [[
-        prop StoryButton.alpha setTo 1
-      ]]
-      ifProp global.decreaseVisible equal false [[
-        prop StoryButton.alpha setTo 0.2
-      ]]
-    ]] 
-  ]]
-`
     },
     {
       "name": "PopupEffect",
@@ -846,69 +748,56 @@ prop y setTo -325.95`
     {
       "id": "12",
       "label": "Water Width",
-      "bpid": "ResizeWater",
-      "initScript": `prop x setTo 458
-prop y setTo -354.41
-prop ResizeWater.resizeId setTo 'Water Above'
-prop ResizeWater.resizeAmount setTo 20
+      "bpid": "ResizeCharacter",
+      "initScript": `prop x setTo 467.49
+prop y setTo -183.73
+prop ResizeCharacter.resizeId setTo 'Water Above'
+prop ResizeCharacter.resizeAmount setTo 20
 `
     },
     {
       "id": "13",
       "label": "Water Width",
-      "bpid": "ResizeWater",
-      "initScript": `prop x setTo 458
-prop y setTo -231.66
-prop ResizeWater.resizeId setTo 'Water Above'
-prop ResizeWater.resizeAmount setTo -20
-featProp ResizeWater.Costume.flipY setTo true`
+      "bpid": "ResizeCharacter",
+      "initScript": `prop x setTo 468.21
+prop y setTo -69.87
+prop ResizeCharacter.resizeId setTo 'Water Above'
+prop ResizeCharacter.resizeAmount setTo -20
+featProp ResizeCharacter.Costume.flipY setTo true`
     },
     {
       "id": "14",
       "label": "Water Width",
-      "bpid": "ResizeWater",
-      "initScript": `prop x setTo 458.00
-prop y setTo 84.95
-prop ResizeWater.resizeId setTo 'Water Below'
-prop ResizeWater.resizeAmount setTo 20
+      "bpid": "ResizeCharacter",
+      "initScript": `prop x setTo 461.00
+prop y setTo 213.39
+prop ResizeCharacter.resizeId setTo 'Water Below'
+prop ResizeCharacter.resizeAmount setTo 20
 `
     },
     {
       "id": "15",
       "label": "Water Width",
-      "bpid": "ResizeWater",
-      "initScript": `prop x setTo 458
-prop y setTo 200
-prop ResizeWater.resizeId setTo 'Water Below'
-prop ResizeWater.resizeAmount setTo -20
-featProp ResizeWater.Costume.flipY setTo true`
+      "bpid": "ResizeCharacter",
+      "initScript": `prop x setTo 462.21
+prop y setTo 314.16
+prop ResizeCharacter.resizeId setTo 'Water Below'
+prop ResizeCharacter.resizeAmount setTo -20
+featProp ResizeCharacter.Costume.flipY setTo true`
     },
     {
       "id": "16",
-      "label": "Story Text",
-      "bpid": "StoryText",
-      "initScript": `prop x setTo 248.1
-prop y setTo 281.39
-featProp StoryText.Graphing.text setTo 'Edit story words'`
+      "label": "Supporter16",
+      "bpid": "Supporter",
+      "initScript": `prop x setTo 549.01
+prop y setTo 170.08`
     },
     {
       "id": "17",
-      "label": "Forward",
-      "bpid": "StoryButton",
-      "initScript": `prop x setTo 352.51
-prop y setTo 313.67
-prop StoryButton.advanceStory setTo true
-
-`
-    },
-    {
-      "id": "18",
-      "label": "Back",
-      "bpid": "StoryButton",
-      "initScript": `prop x setTo 162.97
-prop y setTo 314.90
-prop StoryButton.advanceStory setTo false
-featProp StoryButton.Costume.flipY setTo true`
+      "label": "Supporter17",
+      "bpid": "Supporter",
+      "initScript": `prop x setTo 548.95
+prop y setTo -275.09`
     }
   ]
 }
