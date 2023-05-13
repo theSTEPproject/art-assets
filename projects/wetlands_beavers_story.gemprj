@@ -636,6 +636,25 @@ every 1 runAtStart [[
   ]]
 ]]
 `
+    },
+    {
+      "name": "StreamBed",
+      "scriptText": `# BLUEPRINT StreamBed
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp StreamBed.Costume.costumeName setTo 'GEN_square.json'
+featProp StreamBed.Costume.width setTo 204
+featProp StreamBed.Costume.height setTo 800
+featCall StreamBed.Costume setColorizeHSV 0.1 0.9 0.7
+prop StreamBed.zIndex setTo -300
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -674,36 +693,36 @@ featProp Water.Costume.width setTo 200
       "id": "2",
       "label": "Mud",
       "bpid": "Mud",
-      "initScript": `prop x setTo -431.39
-prop y setTo -170.99`
+      "initScript": `prop x setTo -434.38
+prop y setTo -154.39`
     },
     {
       "id": "3",
       "label": "Rock",
       "bpid": "Rock",
-      "initScript": `prop x setTo -432.25
-prop y setTo -102.74`
+      "initScript": `prop x setTo -436.50
+prop y setTo -54.48`
     },
     {
       "id": "4",
       "label": "Twig",
       "bpid": "Twig",
-      "initScript": `prop x setTo -450.90
-prop y setTo -238.96`
+      "initScript": `prop x setTo -454.70
+prop y setTo -224.29`
     },
     {
       "id": "5",
       "label": "WaterPlant",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo -428.36
-prop y setTo -14.17`
+      "initScript": `prop x setTo -439.87
+prop y setTo 47.65`
     },
     {
       "id": "6",
       "label": "Tree",
       "bpid": "Tree",
-      "initScript": `prop x setTo -451.75
-prop y setTo 107.39`
+      "initScript": `prop x setTo -446.55
+prop y setTo 177.29`
     },
     {
       "id": "7",
@@ -719,8 +738,8 @@ featProp Dam.Costume.height setTo 40
       "id": "8",
       "label": "Predator",
       "bpid": "Predator",
-      "initScript": `prop x setTo -459.12
-prop y setTo 259.08`
+      "initScript": `prop x setTo -464.04
+prop y setTo 315.97`
     },
     {
       "id": "9",
@@ -743,8 +762,8 @@ featProp Lodge.Costume.height setTo 40
       "id": "11",
       "label": "Beaver",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -439.28
-prop y setTo -325.95`
+      "initScript": `prop x setTo -444.90
+prop y setTo -322.44`
     },
     {
       "id": "12",
@@ -796,14 +815,14 @@ featCall agent.Costume setColorize 51 170 255
     },
     {
       "id": "16",
-      "label": "Supporter16",
+      "label": "Supporter",
       "bpid": "Supporter",
       "initScript": `prop x setTo 549.01
 prop y setTo 170.08`
     },
     {
       "id": "17",
-      "label": "Supporter17",
+      "label": "Supporter",
       "bpid": "Supporter",
       "initScript": `prop x setTo 548.95
 prop y setTo -275.09`
@@ -855,6 +874,13 @@ prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
 featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
 `
+    },
+    {
+      "id": "22",
+      "label": "Stream Bed",
+      "bpid": "StreamBed",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
     }
   ]
 }
