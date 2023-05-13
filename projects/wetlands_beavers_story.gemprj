@@ -832,7 +832,7 @@ prop y setTo -275.09`
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
       "initScript": `prop x setTo 469.00
-prop y setTo -376.54
+prop y setTo -366.54
 prop ResizeCharacter.resizeId setTo 'Lodge'
 prop ResizeCharacter.resizeAmount setTo 20
 featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
@@ -844,7 +844,7 @@ featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
       "initScript": `prop x setTo 469.00
-prop y setTo -276.76
+prop y setTo -269.52
 prop ResizeCharacter.resizeId setTo 'Lodge'
 prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
