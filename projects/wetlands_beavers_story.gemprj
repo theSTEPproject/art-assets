@@ -546,11 +546,11 @@ when ResizeCharacter firsttouches Player [[
         
 
         featCall ResizeCharacter.Population tellAllCharacters [[
-            ifExpr {{global.getProp('tempString').value == character.getProp('trackerId').value }} [[
-              featPropPush character.Costume.width
+            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
+              featPropPush agent.Costume.width
               propPush global.tempNum
               stackAdd
-              featPropPop character.Costume.width
+              featPropPop agent.Costume.width
             ]]
         ]]
 ]]
@@ -564,11 +564,11 @@ when ResizeCharacter firsttouches Supporter [[
         propPop global.tempNum
 
         featCall ResizeCharacter.Population tellAllCharacters [[
-            ifExpr {{global.getProp('tempString').value == character.getProp('trackerId').value }} [[
-              featPropPush character.Costume.width
+            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
+              featPropPush agent.Costume.width
               propPush global.tempNum
               stackAdd
-              featPropPop character.Costume.width
+              featPropPop agent.Costume.width
             ]]
         ]]
 ]]`
