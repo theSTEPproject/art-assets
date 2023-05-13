@@ -817,15 +817,15 @@ featCall agent.Costume setColorize 51 170 255
       "id": "16",
       "label": "Supporter",
       "bpid": "Supporter",
-      "initScript": `prop x setTo 549.01
-prop y setTo 170.08`
+      "initScript": `prop x setTo 560.62
+prop y setTo 96.40`
     },
     {
       "id": "17",
       "label": "Supporter",
       "bpid": "Supporter",
-      "initScript": `prop x setTo 548.95
-prop y setTo -275.09`
+      "initScript": `prop x setTo 560.55
+prop y setTo -293.56`
     },
     {
       "id": "18",
