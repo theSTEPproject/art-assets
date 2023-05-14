@@ -524,12 +524,15 @@ addFeature Touches
 addFeature Population
 addFeature IU
 
-
+featCall ResizeCharacter.IU setupFunction 'testFunction' [[
+  dbgOut 'Do something cool here.'
+  // insert code here
+]]
 // Setup the appearance
 featProp ResizeCharacter.Costume.costumeName setTo 'GEN_arrow.png'
 featProp ResizeCharacter.Costume.scale setTo 0.2
 
-// Have this work for both supporters and players for now 
+// Have this work for both supporters and players for now
 // If you want to disable Player support, simply comment this line
 featCall ResizeCharacter.Touches monitor 'Player' b2b
 featCall ResizeCharacter.Touches monitor 'Supporter' b2b
@@ -538,61 +541,37 @@ featCall ResizeCharacter.Touches monitor 'Supporter' b2b
 addProp resizeId string 'Water Above'
 addProp resizeAmount number 10
 
+featCall ResizeCharacter.IU setupFunction 'changeSize' [[
+
+  propPush ResizeCharacter.resizeId
+  propPop global.tempString
+
+  propPush ResizeCharacter.resizeAmount
+  propPop global.tempNum
+
+
+  featCall ResizeCharacter.Population tellAllCharacters [[
+    ifExpr {{ global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
+      featPropPush agent.Costume.width
+      propPush global.tempNum
+      stackAdd
+      featPropPop agent.Costume.width
+    ]]
+  ]]
+]]
+
 featCall ResizeCharacter.IU handleClick [[
-        propPush ResizeCharacter.resizeId
-        propPop global.tempString
-
-        propPush ResizeCharacter.resizeAmount
-        propPop global.tempNum
-        
-
-        featCall ResizeCharacter.Population tellAllCharacters [[
-            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
-              featPropPush agent.Costume.width
-              propPush global.tempNum
-              stackAdd
-              featPropPop agent.Costume.width
-            ]]
-        ]]
-      ]]
+  featCall ResizeCharacter.IU callFunction 'changeSize'
+]]
 
 # PROGRAM UPDATE
 
 when ResizeCharacter firsttouches Player [[
-
-        propPush ResizeCharacter.resizeId
-        propPop global.tempString
-
-        propPush ResizeCharacter.resizeAmount
-        propPop global.tempNum
-        
-
-        featCall ResizeCharacter.Population tellAllCharacters [[
-            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
-              featPropPush agent.Costume.width
-              propPush global.tempNum
-              stackAdd
-              featPropPop agent.Costume.width
-            ]]
-        ]]
+  featCall ResizeCharacter.IU callFunction 'changeSize'
 ]]
 
 when ResizeCharacter firsttouches Supporter [[
-
-        propPush ResizeCharacter.resizeId
-        propPop global.tempString
-
-        propPush ResizeCharacter.resizeAmount
-        propPop global.tempNum
-
-        featCall ResizeCharacter.Population tellAllCharacters [[
-            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
-              featPropPush agent.Costume.width
-              propPush global.tempNum
-              stackAdd
-              featPropPop agent.Costume.width
-            ]]
-        ]]
+  featCall ResizeCharacter.IU callFunction 'changeSize'
 ]]`
     },
     {
@@ -791,97 +770,69 @@ prop y setTo -322.44`
       "id": "12",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo -175.46
-prop ResizeCharacter.resizeId setTo 'Water Above'
-prop ResizeCharacter.resizeAmount setTo 20
-featCall agent.Costume setColorize 51 170 255
-
-`
+featCall agent.Costume setColorize 51 170 255`
     },
     {
       "id": "13",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo -76.76
-prop ResizeCharacter.resizeId setTo 'Water Above'
-prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorize 51 170 255
-`
+featCall agent.Costume setColorize 51 170 255`
     },
     {
       "id": "14",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
-prop y setTo 223.80
-prop ResizeCharacter.resizeId setTo 'Water Below'
-prop ResizeCharacter.resizeAmount setTo 20
-featCall agent.Costume setColorize 51 170 255
-
-`
+      "initScript": `prop x setTo 469
+prop y setTo 223.8
+featCall agent.Costume setColorize 51 170 255`
     },
     {
       "id": "15",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo 315.45
-prop ResizeCharacter.resizeId setTo 'Water Below'
-prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorize 51 170 255
-`
+featCall agent.Costume setColorize 51 170 255`
     },
     {
       "id": "18",
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo -366.54
-prop ResizeCharacter.resizeId setTo 'Lodge'
-prop ResizeCharacter.resizeAmount setTo 20
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
-
-`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
     },
     {
       "id": "19",
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo -269.52
-prop ResizeCharacter.resizeId setTo 'Lodge'
-prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
-`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
     },
     {
       "id": "20",
       "label": "Dam Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo 27.23
-prop ResizeCharacter.resizeId setTo 'Dam'
-prop ResizeCharacter.resizeAmount setTo 20
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
-
-`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
     },
     {
       "id": "21",
       "label": "Dam Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469.00
+      "initScript": `prop x setTo 469
 prop y setTo 128.48
-prop ResizeCharacter.resizeId setTo 'Dam'
-prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
-`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
     },
     {
       "id": "22",
