@@ -84,6 +84,8 @@ featCall Player.Touches monitor 'Player' b2b
 
 addProp costumeType string 'none'
 
+
+
 # PROGRAM UPDATE
 
 // Flip around
@@ -520,6 +522,8 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Population
+addFeature IU
+
 
 // Setup the appearance
 featProp ResizeCharacter.Costume.costumeName setTo 'GEN_arrow.png'
@@ -533,6 +537,24 @@ featCall ResizeCharacter.Touches monitor 'Supporter' b2b
 
 addProp resizeId string 'Water Above'
 addProp resizeAmount number 10
+
+featCall ResizeCharacter.IU handleClick [[
+        propPush ResizeCharacter.resizeId
+        propPop global.tempString
+
+        propPush ResizeCharacter.resizeAmount
+        propPop global.tempNum
+        
+
+        featCall ResizeCharacter.Population tellAllCharacters [[
+            ifExpr {{global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
+              featPropPush agent.Costume.width
+              propPush global.tempNum
+              stackAdd
+              featPropPop agent.Costume.width
+            ]]
+        ]]
+      ]]
 
 # PROGRAM UPDATE
 
@@ -812,20 +834,6 @@ prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
 featCall agent.Costume setColorize 51 170 255
 `
-    },
-    {
-      "id": "16",
-      "label": "Supporter",
-      "bpid": "Supporter",
-      "initScript": `prop x setTo 560.62
-prop y setTo 96.40`
-    },
-    {
-      "id": "17",
-      "label": "Supporter",
-      "bpid": "Supporter",
-      "initScript": `prop x setTo 560.55
-prop y setTo -293.56`
     },
     {
       "id": "18",
