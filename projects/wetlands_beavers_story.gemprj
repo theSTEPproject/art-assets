@@ -761,73 +761,100 @@ featProp Lodge.Costume.height setTo 40
       "initScript": `prop x setTo -444.90
 prop y setTo -322.44`
     },
-    {
+     {
       "id": "12",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo -175.46
-featCall agent.Costume setColorize 51 170 255`
+prop ResizeCharacter.resizeId setTo 'Water Above'
+prop ResizeCharacter.resizeAmount setTo 20
+featCall agent.Costume setColorize 51 170 255
+
+`
     },
     {
       "id": "13",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo -76.76
+prop ResizeCharacter.resizeId setTo 'Water Above'
+prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorize 51 170 255`
+featCall agent.Costume setColorize 51 170 255
+`
     },
     {
       "id": "14",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
-prop y setTo 223.8
-featCall agent.Costume setColorize 51 170 255`
+      "initScript": `prop x setTo 469.00
+prop y setTo 223.80
+prop ResizeCharacter.resizeId setTo 'Water Below'
+prop ResizeCharacter.resizeAmount setTo 20
+featCall agent.Costume setColorize 51 170 255
+`
     },
     {
       "id": "15",
       "label": "Water Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo 315.45
+prop ResizeCharacter.resizeId setTo 'Water Below'
+prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorize 51 170 255`
+featCall agent.Costume setColorize 51 170 255
+`
     },
     {
       "id": "18",
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo -366.54
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
+prop ResizeCharacter.resizeId setTo 'Lodge'
+prop ResizeCharacter.resizeAmount setTo 20
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
+
+`
     },
     {
       "id": "19",
       "label": "Lodge Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo -269.52
+prop ResizeCharacter.resizeId setTo 'Lodge'
+prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
+`
     },
     {
       "id": "20",
       "label": "Dam Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo 27.23
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
+prop ResizeCharacter.resizeId setTo 'Dam'
+prop ResizeCharacter.resizeAmount setTo 20
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
+
+`
     },
     {
       "id": "21",
       "label": "Dam Width",
       "bpid": "ResizeCharacter",
-      "initScript": `prop x setTo 469
+      "initScript": `prop x setTo 469.00
 prop y setTo 128.48
+prop ResizeCharacter.resizeId setTo 'Dam'
+prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall agent.Costume setColorizeHSV 0.1 0.2 0.8`
+featCall agent.Costume setColorizeHSV 0.1 0.2 0.8
+`
     },
     {
       "id": "22",
