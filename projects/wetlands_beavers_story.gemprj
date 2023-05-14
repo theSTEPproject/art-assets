@@ -524,10 +524,6 @@ addFeature Touches
 addFeature Population
 addFeature IU
 
-featCall ResizeCharacter.IU setupFunction 'testFunction' [[
-  dbgOut 'Do something cool here.'
-  // insert code here
-]]
 // Setup the appearance
 featProp ResizeCharacter.Costume.costumeName setTo 'GEN_arrow.png'
 featProp ResizeCharacter.Costume.scale setTo 0.2
@@ -542,7 +538,6 @@ addProp resizeId string 'Water Above'
 addProp resizeAmount number 10
 
 featCall ResizeCharacter.IU setupFunction 'changeSize' [[
-
   propPush ResizeCharacter.resizeId
   propPop global.tempString
 
