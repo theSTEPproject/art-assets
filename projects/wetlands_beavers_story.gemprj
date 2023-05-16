@@ -602,8 +602,11 @@ addFeature Graphing
 addFeature Population
 
 featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
-featProp PopupEffect.Graphing.text setTo ''
 prop PopupEffect.zIndex setTo 500
+
+featProp PopupEffect.Graphing.wordWrapWidth setTo 300
+featProp PopupEffect.Graphing.fontSize setTo 36
+featProp PopupEffect.Graphing.text setTo ''
 
 addProp costumeToUse string ''
 addProp textToUse string 'TEST'
