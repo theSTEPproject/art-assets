@@ -99,6 +99,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature IU
+addFeature Graphing
 
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
