@@ -73,14 +73,13 @@ addProp noticingString string '...'
 // ✏️ LETS CHANGE THIS: which things do we want eating which others?
 // ✏️ Change some or all of these to true to see how they impact the system
 addProp beaversEatWaterPlants boolean false
-addProp waterPlantsUseEnergy boolean false 
+addProp waterPlantsUseEnergy boolean false
 addProp fishEatWaterPlants boolean false
-addProp fishUseEnergy boolean false 
+addProp fishUseEnergy boolean false
 addProp predatorsEatBeavers boolean false
-addProp predatorsUseEnergy boolean true 
+addProp predatorsUseEnergy boolean true
 
 # PROGRAM UPDATE
-
 
 
 onEvent START [[
@@ -321,7 +320,7 @@ featProp Beaver.Graphing.meterColor setTo 65280
 
 every 1 [[
   // lower energyLevel because living takes energy
-  prop Beaver.energyLevel sub 5
+  prop Beaver.energyLevel sub 4
 
   // check if the beaver is ok
   // but only if it has not already been killed by a predator
@@ -346,8 +345,7 @@ every 1 [[
     featProp Beaver.Graphing.meterColor setTo 16711680
   ]]
 
-]]
-`
+]]`
     },
     {
       "name": "Twig",
@@ -970,7 +968,7 @@ prop y setTo 130.94`
       "id": "51",
       "label": "Beaver 4",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 29.30
+      "initScript": `prop x setTo 29.3
 prop y setTo -267.85`
     },
     {
