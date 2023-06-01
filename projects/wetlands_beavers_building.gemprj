@@ -395,6 +395,8 @@ when Beaver touches Lodge [[
           prop Lodge.buildLevel add 1
         ]]
         ifProp global.canBuildLodge equal false [[
+          
+          // ✏️ LETS CHANGE THIS: The next line helps to report what happens when a beaver drops something.
           featCall Beaver.IU logString 'Beaver drops what it was carrying but the lodge cannot be built yet so it disappears'
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
