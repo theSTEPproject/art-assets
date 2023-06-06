@@ -160,6 +160,15 @@ prop EnergyRepresentation.energyLevel setMin 0
 // start with none
 addProp energyType String 'none'
 
+// setup nutrients properties
+addProp nutrientsLevel Number 0
+prop EnergyRepresentation.nutrientsLevel setMax 100
+prop EnergyRepresentation.nutrientsLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp nutrientsType String 'none'
+
 addFeature Touches
 featCall EnergyRepresentation.Touches monitor 'Sun' c2b
 featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
@@ -172,13 +181,14 @@ featCall EnergyRepresentation.Touches monitor 'Mouse' c2b
 featCall EnergyRepresentation.Touches monitor 'Robin' c2b
 featCall EnergyRepresentation.Touches monitor 'Snake' c2b
 featCall EnergyRepresentation.Touches monitor 'Hawk' c2b
+featCall EnergyRepresentation.Touches monitor 'Worm' c2b
 
 
 # PROGRAM UPDATE
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
 // cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
+// snailToRobin, snakeToHawk, mouseToSnake, worm, wormToVeggie, wormToClover
 
 // ---updating sun energy---
 
@@ -221,6 +231,21 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun_to_veggieGarden.png'
 
     featProp VeggieGarden.Costume.glow setTo 1
+  ]]
+
+  // if you have nutrients from the worm, then give some nutrients to the vaggie garden
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
+    prop EnergyRepresentation.energyType setTo 'wormToVeggie'
+
+    // STUDENTS_MAY_CHANGE to alter how much nutrients the VeggieGarden gets from the worm
+    prop EnergyRepresentation.nutrientsLevel setTo 0
+    prop VeggieGarden.nutrientsLevel add 26
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_worm_to_veggie.png'
+    featProp EnergyRepresentation.Costume.scale setTo 0.3
+
+
+    featProp VeggieGarden.Costume.glow setTo 1
 
   ]]
 ]]
@@ -247,6 +272,21 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
+
+  // -------------
+
+  // if you have no nutrients type, take some nutrients from the VeggieGarden
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToVeggie' && VeggieGarden.getProp('nutrientsLevel').value > 25 }} [[
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop VeggieGarden.nutrientsLevel sub 10
+  ]]
+
+  // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
+  prop EnergyRepresentation.nutrientsType setTo 'none'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
+  featProp EnergyRepresentation.Costume.scale setTo 0.06
+
 ]]
 
 // ---updating Clover energy---
@@ -843,6 +883,27 @@ when EnergyRepresentation centerLastTouches Hawk [[
 
 ]]
 
+// ---updating Worm energy and nutriants---
+
+when EnergyRepresentation centerFirstTouches Worm [[
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'none' }} [[
+    prop EnergyRepresentation.nutrientsType setTo 'worm'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_worm_energy.png'
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Worm [[
+
+  // STUDENTS_MAY_CHANGE to alter how much energy the Worm gives to a animal
+  // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+  prop Worm.nutrientsLevel sub 10
+  prop EnergyRepresentation.nutrientsLevel add 25
+
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_worm_energy.png'
+]]
+
+
+
 // required directive
 # PROGRAM INIT`
     },
@@ -1078,6 +1139,17 @@ prop VeggieGarden.energyLevel setMin 0
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
 addProp energyUse number 1
 
+// setup to track nutrients and begin at 1/2 way
+addProp nutrientsLevel number 50
+prop VeggieGarden.nutrientsLevel setMax 100
+prop VeggieGarden.nutrientsLevel setMin 0
+
+// featCall Sky.Costume setColorize 53 81 92
+
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose nutrients faster (or slower)
+addProp nutrientsUse number 1
+
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
 featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
@@ -1155,8 +1227,16 @@ addProp energyLevel Number 50
 prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+// STUDENTS_MAY_CHANGE to make Clover lose energy faster (or slower)
 addProp energyUse Number 1
+
+// setup to track nutrients and begin at 1/2 way
+addProp nutrientsLevel Number 50
+prop Clover.nutrientsLevel setMax 100
+prop Clover.nutrientsLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make clover lose nutrients faster (or slower)
+addProp nutrientsUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1861,6 +1941,111 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT`
+    },
+    {
+      "name": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The Worm is one of the characters that gives only nutrients, It does not get any energy from anyone and does not give energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
+addFeature Costume
+featProp Worm.Costume.costumeName setTo 'FWE_worm.png'
+
+addFeature Physics
+featProp Worm.Costume.scale setTo 0.09
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
+// snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'worm'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Worm lose energy faster (or slower)
+addProp energyUse Number 1
+
+// setup to track nutrients and begin at 1/2 way
+addProp nutrientsLevel Number 50
+prop Worm.nutrientsLevel setMax 100
+prop Worm.nutrientsLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Worm lose nutrients faster (or slower)
+addProp nutrientsUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Worm.Graphing.meterProp setTo 'energyLevel'
+
+featProp Worm.Graphing.meterColor setTo 65280
+
+featProp Worm.Graphing.meterProp setTo 'nutrientsLevel'
+
+featProp Worm.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+   // foodLevel goes down every n seconds
+  exprPush {{ Gopher.getProp('energyLevel').value - Gopher.getProp('energyUse').value }}
+  propPop Gopher.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Gopher is
+  // sated
+  ifExpr {{ Gopher.getProp('energyLevel').value > 50 }} [[
+    featProp Gopher.Costume.currentFrame setTo 0
+    // Green
+    featProp Gopher.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Gopher.getProp('energyLevel').value < 50 }} [[
+    featProp Gopher.Costume.currentFrame setTo 1
+    // Orange
+    featProp Gopher.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Gopher.getProp('energyLevel').value < 20 }} [[
+    featProp Gopher.Costume.currentFrame setTo 1
+    // Red
+    featProp Gopher.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Gopher.getProp('energyLevel').value < 1 }} [[
+    featProp Gopher.Costume.currentFrame setTo 2
+    prop Gopher.alpha setTo 0.3
+    prop Gopher.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Gopher.Graphing.meterProp setTo 'energyLevel'
+  
+  // nutrients level goes down every n seconds
+  exprPush {{ Worm.getProp('nutrientsLevel').value - Worm.getProp('nutrientsUse').value }}
+  propPop Worm.energyLevel
+
+]]
+
+// required directive
+# PROGRAM INIT
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1961,6 +2146,13 @@ prop y setTo 96.28`
       "bpid": "Hawk",
       "initScript": `prop x setTo 175.65
 prop y setTo -342.68`
+    },
+    {
+      "id": "20",
+      "label": "Worm20",
+      "bpid": "Worm",
+      "initScript": `prop x setTo -112.05
+prop y setTo -23.36`
     }
   ]
 }
