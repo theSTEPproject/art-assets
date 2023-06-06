@@ -235,7 +235,7 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
 
   // if you have nutrients from the worm, then give some nutrients to the vaggie garden
   ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
-    prop EnergyRepresentation.energyType setTo 'wormToVeggie'
+    prop EnergyRepresentation.nutrientsType setTo 'wormToVeggie'
 
     // STUDENTS_MAY_CHANGE to alter how much nutrients the VeggieGarden gets from the worm
     prop EnergyRepresentation.nutrientsLevel setTo 0
@@ -1120,6 +1120,10 @@ featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
 
 addFeature Costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
+// featCall VeggieGarden.Costume setColorizeHSV 0.0083 0.29 0.50
+// featCall VeggieGarden.Costume setColorizeHSV 0.133 0.93 0.53
+// featCall VeggieGarden.Costume setColorizeHSV 0.183 0.89 0.67
+
 
 addFeature Physics
 featProp VeggieGarden.Costume.scale setTo 0.4
@@ -1139,13 +1143,11 @@ prop VeggieGarden.energyLevel setMin 0
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
 addProp energyUse number 1
 
+addProp nutrientsType String 'vaggieGarden'
 // setup to track nutrients and begin at 1/2 way
-addProp nutrientsLevel number 50
+addProp nutrientsLevel number 75
 prop VeggieGarden.nutrientsLevel setMax 100
 prop VeggieGarden.nutrientsLevel setMin 0
-
-// featCall Sky.Costume setColorize 53 81 92
-
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose nutrients faster (or slower)
 addProp nutrientsUse number 1
@@ -1192,6 +1194,35 @@ every 1 runAtStart [[
     // avoid getting too small
     exprPush {{ 0.3 }}
     featPropPop VeggieGarden.Costume.scale
+
+  ]]
+
+  // decrease nutrients each tick, using the nutrientsUse varable to determine how much
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value > 0 }} [[
+    exprPush {{ VeggieGarden.getProp('nutrientsLevel').value - VeggieGarden.getProp('nutrientsUse').value }}
+    propPop VeggieGarden.energyLevel
+  ]]
+
+  // this code sets the color of the veggie garden based on how much nutrients the VeggieGarden has
+  // perfect shape
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value > 80 }} [[
+    // natural
+    featCall VeggieGarden.Costume resetColorize
+  ]]
+  // doing good
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 60 }} [[
+    // Yellowish
+    featCall VeggieGarden.Costume setColorizeHSV 0.183 0.89 0.67
+  ]]
+  // needs some energy
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 40 }} [[
+    // brownish
+    featCall VeggieGarden.Costume setColorizeHSV 0.133 0.93 0.53
+  ]]
+  // in trouble
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 20 }} [[
+    // blackish
+    featCall VeggieGarden.Costume setColorizeHSV 0.0083 0.29 0.5
 
   ]]
 ]]`
