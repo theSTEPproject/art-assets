@@ -232,6 +232,8 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
 
     featProp VeggieGarden.Costume.glow setTo 1
   ]]
+  
+  //----
 
   // if you have nutrients from the worm, then give some nutrients to the vaggie garden
   ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
@@ -252,6 +254,20 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
 
 when EnergyRepresentation centerLastTouches VeggieGarden [[
 
+   // if you have no nutrients type, take some nutrients from the VeggieGarden
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToVeggie' && VeggieGarden.getProp('nutrientsLevel').value > 25 }} [[
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop VeggieGarden.nutrientsLevel sub 10
+    
+    // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
+  \tprop EnergyRepresentation.nutrientsType setTo 'none'
+  \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+  \tfeatProp EnergyRepresentation.Costume.scale setTo 0.06
+  ]]
+  
+  //-------
+  
   // if you have no energy type, take some energy from the VeggieGarden
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' && VeggieGarden.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
@@ -272,20 +288,6 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
-
-  // -------------
-
-  // if you have no nutrients type, take some nutrients from the VeggieGarden
-  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToVeggie' && VeggieGarden.getProp('nutrientsLevel').value > 25 }} [[
-    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
-    prop VeggieGarden.nutrientsLevel sub 10
-  ]]
-
-  // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
-  prop EnergyRepresentation.nutrientsType setTo 'none'
-  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
-  featProp EnergyRepresentation.Costume.scale setTo 0.06
 
 ]]
 
@@ -314,10 +316,43 @@ when EnergyRepresentation centerFirstTouches Clover [[
     featProp Clover.Costume.glow setTo 1
 
   ]]
+  
+  //----
+
+  // if you have nutrients from the worm, then give some nutrients to the Clover
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
+    prop EnergyRepresentation.nutrientsType setTo 'wormToClover'
+
+    // STUDENTS_MAY_CHANGE to alter how much nutrients the Clover gets from the worm
+    prop EnergyRepresentation.nutrientsLevel setTo 0
+    prop Clover.nutrientsLevel add 26
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_worm_to_clover.png'
+    featProp EnergyRepresentation.Costume.scale setTo 0.3
+
+
+    featProp VeggieGarden.Costume.glow setTo 1
+
+  ]]
 ]]
 
 when EnergyRepresentation centerLastTouches Clover [[
 
+    // if you have no nutrients type, take some nutrients from the Clover
+  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToClover' && Clover.getProp('nutrientsLevel').value > 25 }} [[
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Clover.nutrientsLevel sub 10
+    
+    // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
+  \tprop EnergyRepresentation.nutrientsType setTo 'none'
+  \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+  \tfeatProp EnergyRepresentation.Costume.scale setTo 0.06
+  ]]
+  
+  
+  //-------
+  
   // if you have no energy type, take some energy from the Clover
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToClover' && Clover.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'clover'
@@ -338,6 +373,7 @@ when EnergyRepresentation centerLastTouches Clover [[
     prop EnergyRepresentation.energyType setTo 'clover'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
   ]]
+    
 ]]
 
 // ---updating Gopher energy---
@@ -1210,7 +1246,7 @@ every 1 runAtStart [[
     featCall VeggieGarden.Costume resetColorize
   ]]
   // doing good
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 60 }} [[
+  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 80 }} [[
     // Yellowish
     featCall VeggieGarden.Costume setColorizeHSV 0.183 0.89 0.67
   ]]
@@ -1261,13 +1297,15 @@ prop Clover.energyLevel setMin 0
 // STUDENTS_MAY_CHANGE to make Clover lose energy faster (or slower)
 addProp energyUse Number 1
 
+addProp nutrientsType String 'clover'
 // setup to track nutrients and begin at 1/2 way
-addProp nutrientsLevel Number 50
+addProp nutrientsLevel number 75
 prop Clover.nutrientsLevel setMax 100
 prop Clover.nutrientsLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make clover lose nutrients faster (or slower)
-addProp nutrientsUse Number 1
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose nutrients faster (or slower)
+addProp nutrientsUse number 1
+
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -1311,6 +1349,35 @@ every 1 runAtStart [[
     // avoid getting too
     exprPush {{ .15 }}
     featPropPop Clover.Costume.scale
+
+  ]]
+  
+   // decrease nutrients each tick, using the nutrientsUse varable to determine how much
+  ifExpr {{ Clover.getProp('nutrientsLevel').value > 0 }} [[
+    exprPush {{ Clover.getProp('nutrientsLevel').value - Clover.getProp('nutrientsUse').value }}
+    propPop Clover.nutrientsLevel
+  ]]
+
+  // this code sets the color of the veggie garden based on how much nutrients the VeggieGarden has
+  // perfect shape
+  ifExpr {{ Clover.getProp('nutrientsLevel').value > 80 }} [[
+    // natural
+    featCall Clover.Costume resetColorize
+  ]]
+  // doing good
+  ifExpr {{ Clover.getProp('nutrientsLevel').value < 80 }} [[
+    // Yellowish
+    featCall Clover.Costume setColorizeHSV 0.183 0.89 0.67
+  ]]
+  // needs some energy
+  ifExpr {{ Clover.getProp('nutrientsLevel').value < 60 }} [[
+    // brownish
+    featCall Clover.Costume setColorizeHSV 0.133 0.93 0.53
+  ]]
+  // in trouble
+  ifExpr {{ Clover.getProp('nutrientsLevel').value < 35 }} [[
+    // blackish
+    featCall Clover.Costume setColorizeHSV 0.0083 0.29 0.5
 
   ]]
 ]]`
