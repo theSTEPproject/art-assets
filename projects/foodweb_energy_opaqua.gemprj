@@ -50,24 +50,24 @@ addProp energyReleasedAsHeat number 0
 # TAG isPTrackControllable false
 
 // ----------------------------------------------------------------------------------------------------------------
-// This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
-// ---------------------------------------------------------------------------------------------------------------- 
+// 🔎 WHAT DOES THIS DO? This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
+// ----------------------------------------------------------------------------------------------------------------
 
-// The goal of this model is to let students explore the energy in the foodweb system by being a 
-// representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
-// character using either pozyx or charController 
+// 🔎 The goal of this model is to let students explore the energy in the foodweb system by being a
+// 🔎 representaiton of that energy rather than a character. Therefore they will be the EenergyRepresentation
+// 🔎 character using either pozyx or charController
 
-// The system is intended to mirror the foodweb model in that energy is meant to go from the sun to (add description). 
-// To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't 
-// hurry and give it to them
+// 🔎 The system is intended to mirror the foodweb model in that energy is meant to go from the sun to (add description).
+// 🔎 To help movivate the students, the algae and fish lose energy over time, so they will die if the users don't
+// 🔎 hurry and give it to them
 
-// The main chaaracter is therefore the EnergyRepresentation, which stuents can use to look around. As they touch
-// an energy source, they will pick up / become that kind of energy
-// So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around 
+// 🔎 The main chaaracter is therefore the EnergyRepresentation, which stuents can use to look around. As they touch
+// 🔎 an energy source, they will pick up / become that kind of energy
+// 🔎 So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around
 
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'onexone.json' 0
+featProp agent.Costume.costumeName setTo 'onexone.json'
 featProp agent.Costume.scale setTo 1
 
 # PROGRAM UPDATE
@@ -190,17 +190,17 @@ featCall EnergyRepresentation.Touches monitor 'Worm' c2b
 // cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
 // snailToRobin, snakeToHawk, mouseToSnake, worm, wormToVeggie, wormToClover
 
-// ---updating sun energy---
+// 🔎 WHAT DOES THIS DO? Updating Sun energy
 
 when EnergyRepresentation centerFirstTouches Sun [[
 
-  // when touching, show an annotation about how the sun produces energy
+  // 🔎 when touching, show an annotation about how the sun produces energy
   featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
 ]]
 
 when EnergyRepresentation centerLastTouches Sun [[
 
-  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
+  // 🔎 when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
   prop EnergyRepresentation.energyType setTo 'sun'
   prop EnergyRepresentation.energyLevel setTo 100
 
@@ -208,20 +208,20 @@ when EnergyRepresentation centerLastTouches Sun [[
 ]]
 
 
-// ---updating VeggieGarden energy---
+// 🔎 WHAT DOES THIS DO? Updating VeggieGarden energy & nutrients
 
 when EnergyRepresentation centerFirstTouches VeggieGarden [[
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
 
-  // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
-  // as heat or lost in other ways
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+  // 🔎 if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
+  // 🔎 as heat or lost in other ways
+  ifProp EnergyRepresentation.energyType equal 'sun' [[
     prop EnergyRepresentation.energyType setTo 'sunToVaggie'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gets from the sun
+    // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop VeggieGarden.energyLevel add 50
     // we are losing 50 of the hundred, so not that in the global
@@ -232,14 +232,14 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
 
     featProp VeggieGarden.Costume.glow setTo 1
   ]]
-  
-  //----
 
-  // if you have nutrients from the worm, then give some nutrients to the vaggie garden
-  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
+  // 🔎 Updating the nutrients levels
+
+  // 🔎 if you have nutrients from the worm, then give some nutrients to the vaggie garden
+  ifProp EnergyRepresentation.nutrientsType equal 'worm' [[
     prop EnergyRepresentation.nutrientsType setTo 'wormToVeggie'
 
-    // STUDENTS_MAY_CHANGE to alter how much nutrients the VeggieGarden gets from the worm
+    // ✏️ LETS CHANGE THIS: alter how much nutrients the VeggieGarden gets from the worm
     prop EnergyRepresentation.nutrientsLevel setTo 0
     prop VeggieGarden.nutrientsLevel add 26
 
@@ -254,36 +254,38 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
 
 when EnergyRepresentation centerLastTouches VeggieGarden [[
 
-   // if you have no nutrients type, take some nutrients from the VeggieGarden
-  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToVeggie' && VeggieGarden.getProp('nutrientsLevel').value > 25 }} [[
-    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
-    prop VeggieGarden.nutrientsLevel sub 10
-    
-    // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
-  \tprop EnergyRepresentation.nutrientsType setTo 'none'
-  \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
-  \tfeatProp EnergyRepresentation.Costume.scale setTo 0.06
+  // 🔎 if you have no nutrients type, take some nutrients from the VeggieGarden
+  ifProp EnergyRepresentation.nutrientsType equal 'wormToVeggie' [[
+    ifProp VeggieGarden.nutrientsLevel greaterThan 25 [[
+      // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gives to a animal
+      // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop VeggieGarden.nutrientsLevel sub 10
+
+      // 🔎 when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
+      prop EnergyRepresentation.nutrientsType setTo 'none'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+      featProp EnergyRepresentation.Costume.scale setTo 0.06
+    ]]
   ]]
-  
-  //-------
-  
+
+  // 🔎 Updating the nutrients levels
+
   // if you have no energy type, take some energy from the VeggieGarden
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' && VeggieGarden.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop VeggieGarden.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieGarden'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
@@ -291,23 +293,23 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
 
 ]]
 
-// ---updating Clover energy---
+// 🔎  WHAT DOES THIS DO? Updating Clover energy & nutrients
 
 when EnergyRepresentation centerFirstTouches Clover [[
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'clover'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
   ]]
 
-  // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
-  // as heat or lost in other ways
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+  // 🔎 if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
+  // 🔎 as heat or lost in other ways
+  ifProp EnergyRepresentation.energyType equal 'sun' [[
     prop EnergyRepresentation.energyType setTo 'sunToClover'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Clover gets from the sun
+    // ✏️ LETS CHANGE THIS: alter how much energy the Clover gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
     prop Clover.energyLevel add 50
-    // we are losing 50 of the hundred, so note that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 50
 
 
@@ -316,14 +318,14 @@ when EnergyRepresentation centerFirstTouches Clover [[
     featProp Clover.Costume.glow setTo 1
 
   ]]
-  
-  //----
+
+  // 🔎 Updating the nutrients levels
 
   // if you have nutrients from the worm, then give some nutrients to the Clover
-  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'worm' }} [[
+  ifProp EnergyRepresentation.nutrientsType equal 'worm' [[
     prop EnergyRepresentation.nutrientsType setTo 'wormToClover'
 
-    // STUDENTS_MAY_CHANGE to alter how much nutrients the Clover gets from the worm
+    // ✏️ LETS CHANGE THIS: alter how much nutrients the Clover gets from the worm
     prop EnergyRepresentation.nutrientsLevel setTo 0
     prop Clover.nutrientsLevel add 26
 
@@ -338,30 +340,30 @@ when EnergyRepresentation centerFirstTouches Clover [[
 
 when EnergyRepresentation centerLastTouches Clover [[
 
-    // if you have no nutrients type, take some nutrients from the Clover
+  // 🔎 if you have no nutrients type, take some nutrients from the Clover
   ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'wormToClover' && Clover.getProp('nutrientsLevel').value > 25 }} [[
-    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Clover.nutrientsLevel sub 10
-    
-    // when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
-  \tprop EnergyRepresentation.nutrientsType setTo 'none'
-  \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
-  \tfeatProp EnergyRepresentation.Costume.scale setTo 0.06
+
+    // 🔎 when leaving (after arriving with relevent nutrientsType type) make sure to leave with vaggiegarden nutrients type
+    prop EnergyRepresentation.nutrientsType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+    featProp EnergyRepresentation.Costume.scale setTo 0.06
   ]]
-  
-  
-  //-------
-  
+
+
+  // 🔎 Updating the nutrients levels
+
   // if you have no energy type, take some energy from the Clover
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToClover' && Clover.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'clover'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Clover gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Clover gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Clover.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
@@ -373,23 +375,23 @@ when EnergyRepresentation centerLastTouches Clover [[
     prop EnergyRepresentation.energyType setTo 'clover'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
   ]]
-    
+
 ]]
 
-// ---updating Gopher energy---
+// 🔎 WHAT DOES THIS DO? Updating Gopher energy
 
 when EnergyRepresentation centerFirstTouches Gopher [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'gopher'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_energy.png'
   ]]
 
-  // when touch gopher, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
+  // 🔎 when touch gopher, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Gopher.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToGopher'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Gopher.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
@@ -399,14 +401,14 @@ when EnergyRepresentation centerFirstTouches Gopher [[
     featProp Gopher.Costume.glow setTo 1
   ]]
 
-  // when touch gopher and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
+  // 🔎 when touch gopher and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Gopher.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'cloverToGopher'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the gopher gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Gopher.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_cclover_to_gopher.png'
@@ -417,15 +419,15 @@ when EnergyRepresentation centerFirstTouches Gopher [[
 
 when EnergyRepresentation centerLastTouches Gopher [[
 
-  // if you have no gopher energy type, take some energy from the gopher to the energy
+  // 🔎 if you have no gopher energy type, take some energy from the gopher to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'vaggieToGopher' || EnergyRepresentation.getProp('energyType').value == 'cloverToGopher') && Gopher.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'gopher'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Gopher gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Gopher gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Gopher.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_energy.png'
@@ -440,20 +442,20 @@ when EnergyRepresentation centerLastTouches Gopher [[
 
 ]]
 
-// ---updating Snail energy---
+// 🔎  WHAT DOES THIS DO? Updating Snail energy
 
 when EnergyRepresentation centerFirstTouches Snail [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'snail'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_energy.png'
   ]]
 
-  // when touch snail, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToSnail
+  // 🔎 when touch snail, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToSnail
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Snail.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToSnail'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the snail gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the snail gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snail.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
@@ -463,14 +465,14 @@ when EnergyRepresentation centerFirstTouches Snail [[
     featProp Snail.Costume.glow setTo 1
   ]]
 
-  // when touch snail and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToSnail
+  // 🔎 when touch snail and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToSnail
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Snail.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'cloverToSnail'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snail.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_to_snail.png'
@@ -481,12 +483,12 @@ when EnergyRepresentation centerFirstTouches Snail [[
 
 when EnergyRepresentation centerLastTouches Snail [[
 
-  // if you have no Snail energy type, take some energy from the Snail to the energy
+  // 🔎 if you have no Snail energy type, take some energy from the Snail to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'vaggieToSnail' || EnergyRepresentation.getProp('energyType').value == 'cloverToSnail') && Snail.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'snail'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snail gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snail gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Snail.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
@@ -496,7 +498,7 @@ when EnergyRepresentation centerLastTouches Snail [[
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with snail energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with snail energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToSnail' || EnergyRepresentation.getProp('energyType').value == 'cloverToSnail' }} [[
     prop EnergyRepresentation.energyType setTo 'snail'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_energy.png'
@@ -504,23 +506,23 @@ when EnergyRepresentation centerLastTouches Snail [[
 
 ]]
 
-// ---updating Caterpillar energy---
+// 🔎 WHAT DOES THIS DO? Updating Caterpillar energy
 
 when EnergyRepresentation centerFirstTouches Caterpillar [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'caterpillar'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
   ]]
 
-  // when touch Caterpillar, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToCaterpillar
+  // 🔎 when touch Caterpillar, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToCaterpillar
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Caterpillar.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToCaterpillar'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Caterpillar gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Caterpillar gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Caterpillar.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_caterpillar.png'
@@ -531,22 +533,22 @@ when EnergyRepresentation centerFirstTouches Caterpillar [[
 
 when EnergyRepresentation centerLastTouches Caterpillar [[
 
-  // if you have no Caterpillar energy type, take some energy from the Caterpillar to the energy
+  // 🔎 if you have no Caterpillar energy type, take some energy from the Caterpillar to the energy
   ifExpr {{ ( EnergyRepresentation.getProp('energyType').value == 'vaggieToCaterpillar') && Caterpillar.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillar'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Caterpillar gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Caterpillar gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Caterpillar.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with Caterpillar energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Caterpillar energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToCaterpillar' }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillar'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
@@ -554,37 +556,37 @@ when EnergyRepresentation centerLastTouches Caterpillar [[
 
 ]]
 
-// ---updating Beetle energy---
+// 🔎 WHAT DOES THIS DO?  Updating Beetle energy
 
 when EnergyRepresentation centerFirstTouches Beetle [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'beetle'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
   ]]
 
-  // when touch Beetle, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToBeetle
+  // 🔎 when touch Beetle, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToBeetle
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Beetle.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillarToBeetle'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Beetle gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Beetle gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Beetle.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_caterpillar_to_beetle.png'
     featProp Beetle.Costume.glow setTo 1
   ]]
 
-  // when touch Beetle and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToBeetle
+  // 🔎 when touch Beetle and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToBeetle
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' && Beetle.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snailToBeetle'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Beetle.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snail_to_beetle.png'
@@ -595,22 +597,22 @@ when EnergyRepresentation centerFirstTouches Beetle [[
 
 when EnergyRepresentation centerLastTouches Beetle [[
 
-  // if you have no Beetle energy type, take some energy from the Beetle to the energy
+  // 🔎 if you have no Beetle energy type, take some energy from the Beetle to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'caterpillarToBeetle' || EnergyRepresentation.getProp('energyType').value == 'snailToBeetle') && Beetle.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'beetle'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Beetle gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Beetle gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Beetle.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with Beetle energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Beetle energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToBeetle' || EnergyRepresentation.getProp('energyType').value == 'snailToBeetle' }} [[
     prop EnergyRepresentation.energyType setTo 'beetle'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_energy.png'
@@ -618,37 +620,37 @@ when EnergyRepresentation centerLastTouches Beetle [[
 
 ]]
 
-// ---updating Mouse energy---
+// 🔎 WHAT DOES THIS DO?  Updating Mouse energy
 
 when EnergyRepresentation centerFirstTouches Mouse [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'mouse'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
   ]]
 
-  // when touch Mouse, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToMouse
+  // 🔎 when touch Mouse, and energy type is from vaggieGarden and energy isn't 0, get energy, change meter color to orange, change type to vaggieToMouse
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'vaggieGarden' && Mouse.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'vaggieToMouse'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Mouse.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
     featProp Mouse.Costume.glow setTo 1
   ]]
 
-  // when touch mouse and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToMouse
+  // 🔎 when touch mouse and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToMouse
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Mouse.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToMouse'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snial gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Mouse.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_beetle_to_mouse.png'
@@ -659,22 +661,22 @@ when EnergyRepresentation centerFirstTouches Mouse [[
 
 when EnergyRepresentation centerLastTouches Mouse [[
 
-  // if you have no Mouse energy type, take some energy from the Mouse to the energy
+  // 🔎 if you have no Mouse energy type, take some energy from the Mouse to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'vaggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'beetleToMouse') && Mouse.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Mouse gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Mouse.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with Mouse energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Mouse energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'vaggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'beetleToMouse' }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
@@ -682,34 +684,34 @@ when EnergyRepresentation centerLastTouches Mouse [[
 
 ]]
 
-// ---updating Robin energy---
+// 🔎 WHAT DOES THIS DO?  Updating Robin energy
 
 when EnergyRepresentation centerFirstTouches Robin [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'robin'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
   ]]
 
-  // when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
+  // 🔎 when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillarToRobin'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Robin gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Robin gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_caterpillar_to_robin.png'
     featProp Robin.Costume.glow setTo 1
   ]]
 
-  // when touch Robin and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToRobin
+  // 🔎 when touch Robin and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToRobin
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToRobin'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the beetle, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snial gets from the beetle, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
@@ -719,11 +721,11 @@ when EnergyRepresentation centerFirstTouches Robin [[
     featProp Robin.Costume.glow setTo 1
   ]]
 
-  // when touch Robin and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToRobin
+  // 🔎 when touch Robin and energy type is from snail and energy isn't 0, get energy, change meter color to orange, change type to snailToRobin
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snail' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snailToRobin'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snial gets from the snail, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snial gets from the snail, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Robin.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
@@ -737,22 +739,22 @@ when EnergyRepresentation centerFirstTouches Robin [[
 
 when EnergyRepresentation centerLastTouches Robin [[
 
-  // if you have no Robin energy type, take some energy from the Robin to the energy
+  // 🔎 if you have no Robin energy type, take some energy from the Robin to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'beetleToRobin' || EnergyRepresentation.getProp('energyType').value == 'snailToRobin') && Robin.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Robin gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Robin gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Robin.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with Robin energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Robin energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'beetleToRobin' || EnergyRepresentation.getProp('energyType').value == 'snailToRobin' }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
@@ -760,20 +762,20 @@ when EnergyRepresentation centerLastTouches Robin [[
 
 ]]
 
-// ---updating Snake energy---
+// 🔎 WHAT DOES THIS DO?  Updating Snake energy
 
 when EnergyRepresentation centerFirstTouches Snake [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'snake'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
   ]]
 
-  // when touch Snake, and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToSnake
+  // 🔎 when touch Snake, and energy type is from beetle and energy isn't 0, get energy, change meter color to orange, change type to beetleToSnake
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'beetle' && Snake.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'beetleToSnake'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snake gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snake gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snake.energyLevel add 10
     // we are losing 50 of the hundred, so not that in the global
@@ -783,14 +785,14 @@ when EnergyRepresentation centerFirstTouches Snake [[
     featProp Snake.Costume.glow setTo 1
   ]]
 
-  // when touch snake and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToSnake
+  // 🔎 when touch snake and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToSnake
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Snake.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'mouseToSnake'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the snake gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the snake gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Snake.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_snake.png'
@@ -801,15 +803,15 @@ when EnergyRepresentation centerFirstTouches Snake [[
 
 when EnergyRepresentation centerLastTouches Snake [[
 
-  // if you have no Snake energy type, take some energy from the Snake to the energy
+  // 🔎 if you have no Snake energy type, take some energy from the Snake to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'beetleToSnake' || EnergyRepresentation.getProp('energyType').value == 'mouseToSnake') && Snake.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'snake'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Snake gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snake gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Snake.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
@@ -824,65 +826,65 @@ when EnergyRepresentation centerLastTouches Snake [[
 
 ]]
 
-// ---updating Hawk energy---
+// 🔎 WHAT DOES THIS DO?  Updating Hawk energy
 
 when EnergyRepresentation centerFirstTouches Hawk [[
 
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.energyType setTo 'hawk'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Hawk_energy.png'
   ]]
 
-  // when touch Hawk, and energy type is from gopher and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
+  // 🔎 when touch Hawk, and energy type is from gopher and energy isn't 0, get energy, change meter color to orange, change type to vaggieToGopher
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'gopher' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'gopherToHawk'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Hawk.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_gopher_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
-  // when touch Hawk and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToHawk
+  // 🔎 when touch Hawk and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToHawk
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'mouseToHawk'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Hawk.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
-  // when touch Hawk and energy type is from robin and energy isn't 0, get energy, change meter color to orange, change type to robinToHawk
+  // 🔎 when touch Hawk and energy type is from robin and energy isn't 0, get energy, change meter color to orange, change type to robinToHawk
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'robin' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'robinToHawk'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Hawk.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_to_hawk.png'
     featProp Hawk.Costume.glow setTo 1
   ]]
 
-  // when touch Hawk and energy type is from snake and energy isn't 0, get energy, change meter color to orange, change type to snakeToHawk
+  // 🔎 when touch Hawk and energy type is from snake and energy isn't 0, get energy, change meter color to orange, change type to snakeToHawk
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snake' && Hawk.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'snakeToHawk'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the VeggieGarden, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Hawk.energyLevel add 10
-    // we are losing 50 of the hundred, so not that in the global
+    // 🔎  we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_to_hawk.png'
@@ -893,21 +895,21 @@ when EnergyRepresentation centerFirstTouches Hawk [[
 
 when EnergyRepresentation centerLastTouches Hawk [[
 
-  // if you have no Hawk energy type, take some energy from the Hawk to the energy
+  // 🔎 if you have no Hawk energy type, take some energy from the Hawk to the energy
   ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'gopherToHawk' || EnergyRepresentation.getProp('energyType').value == 'mouseToHawk' || EnergyRepresentation.getProp('energyType').value == 'robinToHawk' || EnergyRepresentation.getProp('energyType').value == 'snakeToHawk') && Hawk.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'none'
 
-    // STUDENTS_MAY_CHANGE to alter how much energy the Hawk gives to a animal
-    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
     prop Hawk.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
-    // we are losing 25 of the hundred, so not that in the global
+    // 🔎 we are losing 25 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 25
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
 
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with Hawk energy type
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Hawk energy type
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'hawk' || EnergyRepresentation.getProp('energyType').value == 'gopherToHawk' || EnergyRepresentation.getProp('energyType').value == 'mouseToHawk' || EnergyRepresentation.getProp('energyType').value == 'robinToHawk' || EnergyRepresentation.getProp('energyType').value == 'snakeToHawk' }} [[
     prop EnergyRepresentation.energyType setTo 'none'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
@@ -919,10 +921,10 @@ when EnergyRepresentation centerLastTouches Hawk [[
 
 ]]
 
-// ---updating Worm energy and nutriants---
+// 🔎 WHAT DOES THIS DO? Updating Worm nutriants level
 
 when EnergyRepresentation centerFirstTouches Worm [[
-  ifExpr {{ EnergyRepresentation.getProp('nutrientsType').value == 'none' }} [[
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
     prop EnergyRepresentation.nutrientsType setTo 'worm'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_worm_energy.png'
   ]]
@@ -930,8 +932,8 @@ when EnergyRepresentation centerFirstTouches Worm [[
 
 when EnergyRepresentation centerLastTouches Worm [[
 
-  // STUDENTS_MAY_CHANGE to alter how much energy the Worm gives to a animal
-  // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+  // ✏️ LETS CHANGE THIS: alter how much energy the Worm gives to a animal
+  // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
   prop Worm.nutrientsLevel sub 10
   prop EnergyRepresentation.nutrientsLevel add 25
 
@@ -1176,7 +1178,7 @@ addProp energyLevel number 50
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make VeggieGarden lose energy faster (or slower)
 addProp energyUse number 1
 
 addProp nutrientsType String 'vaggieGarden'
@@ -1185,7 +1187,7 @@ addProp nutrientsLevel number 75
 prop VeggieGarden.nutrientsLevel setMax 100
 prop VeggieGarden.nutrientsLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose nutrients faster (or slower)
+// ✏️ LETS CHANGE THIS: make VeggieGarden lose nutrients faster (or slower)
 addProp nutrientsUse number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1198,13 +1200,13 @@ featProp VeggieGarden.Graphing.meterColor setTo 65280
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
+  ifProp VeggieGarden.energyLevel greaterThan 0 [[
     exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
     propPop VeggieGarden.energyLevel
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 30 }} [[
+  ifProp VeggieGarden.energyLevel greaterThan 30 [[
     exprPush {{ VeggieGarden.getProp('energyLevel').value / 100 }}
     featPropPop VeggieGarden.Costume.scale
   ]]
@@ -1212,17 +1214,17 @@ every 1 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the VeggieGarden is
   // set VeggieGarden energy meter color
   // doing great
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
+  ifProp VeggieGarden.energyLevel greaterThanOrEqual 60 [[
     // Green
     featProp VeggieGarden.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
+  ifProp VeggieGarden.energyLevel lessThan 60 [[
     // Orange
     featProp VeggieGarden.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
+  ifProp VeggieGarden.energyLevel lessThan 30 [[
     // Red
     featProp VeggieGarden.Graphing.meterColor setTo 16711680
 
@@ -1234,29 +1236,29 @@ every 1 runAtStart [[
   ]]
 
   // decrease nutrients each tick, using the nutrientsUse varable to determine how much
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value > 0 }} [[
+  ifProp VeggieGarden.nutrientsLevel greaterThan 0 [[
     exprPush {{ VeggieGarden.getProp('nutrientsLevel').value - VeggieGarden.getProp('nutrientsUse').value }}
     propPop VeggieGarden.nutrientsLevel
   ]]
 
   // this code sets the color of the veggie garden based on how much nutrients the VeggieGarden has
   // perfect shape
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value > 80 }} [[
+  ifProp VeggieGarden.nutrientsLevel greaterThanOrEqual 80 [[
     // natural
     featCall VeggieGarden.Costume resetColorize
   ]]
   // doing good
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 80 }} [[
+  ifProp VeggieGarden.nutrientsLevel lessThan 80 [[
     // Yellowish
     featCall VeggieGarden.Costume setColorizeHSV 0.183 0.89 0.67
   ]]
   // needs some energy
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 60 }} [[
+  ifProp VeggieGarden.nutrientsLevel lessThan 60 [[
     // brownish
     featCall VeggieGarden.Costume setColorizeHSV 0.133 0.93 0.53
   ]]
   // in trouble
-  ifExpr {{ VeggieGarden.getProp('nutrientsLevel').value < 35 }} [[
+  ifProp VeggieGarden.nutrientsLevel lessThan 35 [[
     // blackish
     featCall VeggieGarden.Costume setColorizeHSV 0.0083 0.29 0.5
 
@@ -1294,7 +1296,7 @@ addProp energyLevel Number 50
 prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Clover lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Clover lose energy faster (or slower)
 addProp energyUse Number 1
 
 addProp nutrientsType String 'clover'
@@ -1303,7 +1305,7 @@ addProp nutrientsLevel number 75
 prop Clover.nutrientsLevel setMax 100
 prop Clover.nutrientsLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose nutrients faster (or slower)
+// ✏️ LETS CHANGE THIS:o make VeggieGarden lose nutrients faster (or slower)
 addProp nutrientsUse number 1
 
 
@@ -1317,13 +1319,13 @@ featProp Clover.Graphing.meterColor setTo 65280
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
+  ifProp Clover.energyLevel greaterThan 0 [[
     exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
     propPop Clover.energyLevel
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  ifExpr {{ Clover.getProp('energyLevel').value > 30 }} [[
+  ifProp Clover.energyLevel greaterThan 30 [[
     // insert code here
   ]]
   exprPush {{ Clover.getProp('energyLevel').value / 200 }}
@@ -1332,17 +1334,17 @@ every 1 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the clover is
   // set clover energy meter color
   // doing great
-  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
+  ifProp Clover.energyLevel greaterThan 60 [[
     // Green
     featProp Clover.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
+  ifProp Clover.energyLevel lessThan 60 [[
     // Orange
     featProp Clover.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
+  ifProp Clover.energyLevel lessThan 30 [[
     // Red
     featProp Clover.Graphing.meterColor setTo 16711680
 
@@ -1351,31 +1353,31 @@ every 1 runAtStart [[
     featPropPop Clover.Costume.scale
 
   ]]
-  
-   // decrease nutrients each tick, using the nutrientsUse varable to determine how much
-  ifExpr {{ Clover.getProp('nutrientsLevel').value > 0 }} [[
+
+  // decrease nutrients each tick, using the nutrientsUse varable to determine how much
+  ifProp Clover.nutrientsLevel greaterThan 0 [[
     exprPush {{ Clover.getProp('nutrientsLevel').value - Clover.getProp('nutrientsUse').value }}
     propPop Clover.nutrientsLevel
   ]]
 
   // this code sets the color of the veggie garden based on how much nutrients the VeggieGarden has
   // perfect shape
-  ifExpr {{ Clover.getProp('nutrientsLevel').value > 80 }} [[
+  ifProp Clover.nutrientsLevel greaterThanOrEqual 80 [[
     // natural
     featCall Clover.Costume resetColorize
   ]]
   // doing good
-  ifExpr {{ Clover.getProp('nutrientsLevel').value < 80 }} [[
+  ifProp Clover.nutrientsLevel lessThan 80 [[
     // Yellowish
     featCall Clover.Costume setColorizeHSV 0.183 0.89 0.67
   ]]
   // needs some energy
-  ifExpr {{ Clover.getProp('nutrientsLevel').value < 60 }} [[
+  ifProp Clover.nutrientsLevel lessThan 60 [[
     // brownish
     featCall Clover.Costume setColorizeHSV 0.133 0.93 0.53
   ]]
   // in trouble
-  ifExpr {{ Clover.getProp('nutrientsLevel').value < 35 }} [[
+  ifProp Clover.nutrientsLevel lessThan 35 [[
     // blackish
     featCall Clover.Costume setColorizeHSV 0.0083 0.29 0.5
 
@@ -1414,7 +1416,7 @@ addProp energyLevel Number 50
 prop Gopher.energyLevel setMax 100
 prop Gopher.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Gopher lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Gopher lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1432,25 +1434,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Gopher is
   // sated
-  ifExpr {{ Gopher.getProp('energyLevel').value > 50 }} [[
+  ifProp Gopher.energyLevel greaterThanOrEqual 50 [[
     featProp Gopher.Costume.currentFrame setTo 0
     // Green
     featProp Gopher.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Gopher.getProp('energyLevel').value < 50 }} [[
+  ifProp Gopher.energyLevel lessThan 50 [[
     featProp Gopher.Costume.currentFrame setTo 1
     // Orange
     featProp Gopher.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Gopher.getProp('energyLevel').value < 20 }} [[
+  ifProp Gopher.energyLevel lessThan 20 [[
     featProp Gopher.Costume.currentFrame setTo 1
     // Red
     featProp Gopher.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Gopher.getProp('energyLevel').value < 1 }} [[
+  ifProp Gopher.energyLevel lessThan 1 [[
     featProp Gopher.Costume.currentFrame setTo 2
     prop Gopher.alpha setTo 0.3
     prop Gopher.isInert setTo true
@@ -1496,7 +1498,7 @@ addProp energyLevel Number 50
 prop Snail.energyLevel setMax 100
 prop Snail.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Snail lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Snail lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1515,25 +1517,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Snail is
   // sated
-  ifExpr {{ Snail.getProp('energyLevel').value > 50 }} [[
+  ifProp Snail.energyLevel greaterThanOrEqual 50 [[
     featProp Snail.Costume.currentFrame setTo 0
     // Green
     featProp Snail.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Snail.getProp('energyLevel').value < 50 }} [[
+  ifProp Snail.energyLevel lessThan 50 [[
     featProp Snail.Costume.currentFrame setTo 1
     // Orange
     featProp Snail.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Snail.getProp('energyLevel').value < 20 }} [[
+  ifProp Snail.energyLevel lessThan 20 [[
     featProp Snail.Costume.currentFrame setTo 1
     // Red
     featProp Snail.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Snail.getProp('energyLevel').value < 1 }} [[
+  ifProp Snail.energyLevel lessThan 1 [[
     featProp Snail.Costume.currentFrame setTo 2
     prop Snail.alpha setTo 0.3
     prop Snail.isInert setTo true
@@ -1579,7 +1581,7 @@ addProp energyLevel Number 50
 prop Caterpillar.energyLevel setMax 100
 prop Caterpillar.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Caterpillar lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Caterpillar lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1598,25 +1600,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Caterpillar is
   // sated
-  ifExpr {{ Caterpillar.getProp('energyLevel').value > 50 }} [[
+  ifProp Caterpillar.energyLevel greaterThanOrEqual 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 0
     // Green
     featProp Caterpillar.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 50 }} [[
+  ifProp Caterpillar.energyLevel lessThan 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
     // Orange
     featProp Caterpillar.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 20 }} [[
+  ifProp Caterpillar.energyLevel lessThan 20 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
     // Red
     featProp Caterpillar.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 1 }} [[
+  ifProp Caterpillar.energyLevel lessThan 1 [[
     featProp Caterpillar.Costume.currentFrame setTo 2
     prop Caterpillar.alpha setTo 0.3
     prop Caterpillar.isInert setTo true
@@ -1662,7 +1664,7 @@ addProp energyLevel Number 50
 prop Beetle.energyLevel setMax 100
 prop Beetle.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Beetle lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Beetle lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1680,25 +1682,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Beetle is
   // sated
-  ifExpr {{ Beetle.getProp('energyLevel').value > 50 }} [[
+  ifProp Beetle.energyLevel greaterThanOrEqual 50 [[
     featProp Beetle.Costume.currentFrame setTo 0
     // Green
     featProp Beetle.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Beetle.getProp('energyLevel').value < 50 }} [[
+  ifProp Beetle.energyLevel lessThan 50 [[
     featProp Beetle.Costume.currentFrame setTo 1
     // Orange
     featProp Beetle.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Beetle.getProp('energyLevel').value < 20 }} [[
+  ifProp Beetle.energyLevel lessThan 20 [[
     featProp Beetle.Costume.currentFrame setTo 1
     // Red
     featProp Beetle.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Beetle.getProp('energyLevel').value < 1 }} [[
+  ifProp Beetle.energyLevel lessThan 1 [[
     featProp Beetle.Costume.currentFrame setTo 2
     prop Beetle.alpha setTo 0.3
     prop Beetle.isInert setTo true
@@ -1744,7 +1746,7 @@ addProp energyLevel Number 50
 prop Mouse.energyLevel setMax 100
 prop Mouse.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Mouse lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Mouse lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1762,25 +1764,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Mouse is
   // sated
-  ifExpr {{ Mouse.getProp('energyLevel').value > 50 }} [[
+  ifProp Mouse.energyLevel greaterThanOrEqual 50 [[
     featProp Mouse.Costume.currentFrame setTo 0
     // Green
     featProp Mouse.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Mouse.getProp('energyLevel').value < 50 }} [[
+  ifProp Mouse.energyLevel lessThan 50 [[
     featProp Mouse.Costume.currentFrame setTo 1
     // Orange
     featProp Mouse.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Mouse.getProp('energyLevel').value < 20 }} [[
+  ifProp Mouse.energyLevel lessThan 20 [[
     featProp Mouse.Costume.currentFrame setTo 1
     // Red
     featProp Mouse.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Mouse.getProp('energyLevel').value < 1 }} [[
+  ifProp Mouse.energyLevel lessThan 1 [[
     featProp Mouse.Costume.currentFrame setTo 2
     prop Mouse.alpha setTo 0.3
     prop Mouse.isInert setTo true
@@ -1826,7 +1828,7 @@ addProp energyLevel Number 50
 prop Robin.energyLevel setMax 100
 prop Robin.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Robin lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Robin lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1844,25 +1846,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Robin is
   // sated
-  ifExpr {{ Robin.getProp('energyLevel').value > 50 }} [[
+  ifProp Robin.energyLevel greaterThanOrEqual 50 [[
     featProp Robin.Costume.currentFrame setTo 0
     // Green
     featProp Robin.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Robin.getProp('energyLevel').value < 50 }} [[
+  ifProp Robin.energyLevel lessThan 50 [[
     featProp Robin.Costume.currentFrame setTo 1
     // Orange
     featProp Robin.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Robin.getProp('energyLevel').value < 20 }} [[
+  ifProp Robin.energyLevel lessThan 20 [[
     featProp Robin.Costume.currentFrame setTo 1
     // Red
     featProp Robin.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Robin.getProp('energyLevel').value < 1 }} [[
+  ifProp Robin.energyLevel lessThan 1 [[
     featProp Robin.Costume.currentFrame setTo 2
     prop Robin.alpha setTo 0.3
     prop Robin.isInert setTo true
@@ -1908,7 +1910,7 @@ addProp energyLevel Number 50
 prop Snake.energyLevel setMax 100
 prop Snake.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Snake lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -1926,25 +1928,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Snake is
   // sated
-  ifExpr {{ Snake.getProp('energyLevel').value > 50 }} [[
+  ifProp Snake.energyLevel greaterThanOrEqual 50 [[
     featProp Snake.Costume.currentFrame setTo 0
     // Green
     featProp Snake.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Snake.getProp('energyLevel').value < 50 }} [[
+  ifProp Snake.energyLevel lessThan 50 [[
     featProp Snake.Costume.currentFrame setTo 1
     // Orange
     featProp Snake.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Snake.getProp('energyLevel').value < 20 }} [[
+  ifProp Snake.energyLevel lessThan 20 [[
     featProp Snake.Costume.currentFrame setTo 1
     // Red
     featProp Snake.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
+  ifProp Snake.energyLevel lessThan 1 [[
     featProp Snake.Costume.currentFrame setTo 2
     prop Snake.alpha setTo 0.3
     prop Snake.isInert setTo true
@@ -1990,7 +1992,7 @@ addProp energyLevel Number 50
 prop Hawk.energyLevel setMax 100
 prop Hawk.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Hawk lose energy faster (or slower)
 addProp energyUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -2008,25 +2010,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Hawk is
   // sated
-  ifExpr {{ Hawk.getProp('energyLevel').value > 50 }} [[
+  ifProp Hawk.energyLevel greaterThanOrEqual 50 [[
     featProp Hawk.Costume.currentFrame setTo 0
     // Green
     featProp Hawk.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Hawk.getProp('energyLevel').value < 50 }} [[
+  ifProp Hawk.energyLevel lessThan 50 [[
     featProp Hawk.Costume.currentFrame setTo 1
     // Orange
     featProp Hawk.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Hawk.getProp('energyLevel').value < 20 }} [[
+  ifProp Hawk.energyLevel lessThan 20 [[
     featProp Hawk.Costume.currentFrame setTo 1
     // Red
     featProp Hawk.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Hawk.getProp('energyLevel').value < 1 }} [[
+  ifProp Hawk.energyLevel lessThan 1 [[
     featProp Hawk.Costume.currentFrame setTo 2
     prop Hawk.alpha setTo 0.3
     prop Hawk.isInert setTo true
@@ -2072,7 +2074,7 @@ addProp energyLevel Number 50
 prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Worm lose energy faster (or slower)
+// ✏️ LETS CHANGE THIS: make Worm lose energy faster (or slower)
 addProp energyUse Number 1
 
 // setup to track nutrients and begin at 1/2 way
@@ -2080,7 +2082,7 @@ addProp nutrientsLevel Number 50
 prop Worm.nutrientsLevel setMax 100
 prop Worm.nutrientsLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Worm lose nutrients faster (or slower)
+// ✏️ LETS CHANGE THIS: make Worm lose nutrients faster (or slower)
 addProp nutrientsUse Number 1
 
 // use a widget to depict the current energy, and color it green (maybe change later)
@@ -2098,25 +2100,25 @@ every 2 runAtStart [[
 
   // this code sets the color of the energy bar based on how hungry the Worm is
   // sated
-  ifExpr {{ Worm.getProp('energyLevel').value > 50 }} [[
+  ifProp Worm.energyLevel greaterThanOrEqual 50 [[
     featProp Worm.Costume.currentFrame setTo 0
     // Green
     featProp Worm.Graphing.meterColor setTo 65280
   ]]
   // could eat
-  ifExpr {{ Worm.getProp('energyLevel').value < 50 }} [[
+  ifProp Worm.energyLevel lessThan 50 [[
     featProp Worm.Costume.currentFrame setTo 1
     // Orange
     featProp Worm.Graphing.meterColor setTo 16737792
   ]]
   // hungry
-  ifExpr {{ Worm.getProp('energyLevel').value < 20 }} [[
+  ifProp Worm.energyLevel lessThan 20 [[
     featProp Worm.Costume.currentFrame setTo 1
     // Red
     featProp Worm.Graphing.meterColor setTo 16711680
   ]]
   // dead
-  ifExpr {{ Worm.getProp('energyLevel').value < 1 }} [[
+  ifProp Worm.energyLevel lessThan 1 [[
     featProp Worm.Costume.currentFrame setTo 2
     prop Worm.alpha setTo 0.3
     prop Worm.isInert setTo true
