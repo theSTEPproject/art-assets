@@ -183,7 +183,7 @@ featCall EnergyRepresentation.Touches monitor 'Snake' c2b
 featCall EnergyRepresentation.Touches monitor 'Hawk' c2b
 featCall EnergyRepresentation.Touches monitor 'Worm' c2b
 
-
+addFeature IU
 # PROGRAM UPDATE
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -220,6 +220,8 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
   // 🔎 as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'sun' [[
     prop EnergyRepresentation.energyType setTo 'sunToVaggie'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from sun to veggie'
+    featCall EnergyRepresentation.IU logProperty
 
     // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
@@ -238,6 +240,8 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
   // 🔎 if you have nutrients from the worm, then give some nutrients to the vaggie garden
   ifProp EnergyRepresentation.nutrientsType equal 'worm' [[
     prop EnergyRepresentation.nutrientsType setTo 'wormToVeggie'
+    featCall EnergyRepresentation.IU logString 'Nutrients transfer from worm to veggie'
+    featCall EnergyRepresentation.IU logProperty
 
     // ✏️ LETS CHANGE THIS: alter how much nutrients the VeggieGarden gets from the worm
     prop EnergyRepresentation.nutrientsLevel setTo 0
