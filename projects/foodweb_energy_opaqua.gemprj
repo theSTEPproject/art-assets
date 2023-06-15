@@ -83,9 +83,9 @@ featProp agent.Costume.scale setTo 1
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 # PROGRAM INIT
-// The sun is one of the characters that produces energy
-// Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
-// simple, and just needs the variables for the EnergyRepresentation to read
+// 🔎 The sun is one of the characters that produces energy
+// 🔎 Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// 🔎 simple, and just needs the variables for the EnergyRepresentation to read
 
 
 addFeature Costume
@@ -1003,9 +1003,9 @@ when EnergyRepresentation centerLastTouches Worm [[
 
 // required directive
 # PROGRAM INIT
-// This is a graph of energy lost to heat from all charaacters
-// since there are lots of characters, rather than sume them up one type
-// at a time, use a global variabe to track that excess heat
+// 🔎 This is a graph of energy lost to heat from all charaacters
+// 🔎 since there are lots of characters, rather than sume them up one type
+// 🔎 at a time, use a global variabe to track that excess heat
 
 // hide the actual art since we just want the text to displaay
 addFeature Costume
@@ -1180,10 +1180,10 @@ onEvent Tick [[
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-// The VeggieGarden is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The VeggieGarden is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 addFeature Costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
@@ -1302,10 +1302,10 @@ every 1 runAtStart [[
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-// The Clover is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Clover is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 addFeature Costume
 featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
@@ -1423,10 +1423,10 @@ every 1 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Gopher is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Gopher is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1505,10 +1505,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Snail is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Snail is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1587,10 +1587,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Caterpillar is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Caterpillar is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1669,10 +1669,11 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Beetle is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Beetle is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
 
 addFeature Costume
 featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
@@ -1748,10 +1749,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Mouse is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Mouse is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1830,10 +1831,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Robin is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Robin is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1912,10 +1913,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Snake is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Snake is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -1994,10 +1995,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Hawk is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Hawk is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
@@ -2076,10 +2077,10 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT
-// The Worm is one of the characters that gives only nutrients, It does not get any energy from anyone and does not give energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
+// 🔎 The Worm is one of the characters that gives only nutrients, It does not get any energy from anyone and does not give energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
 
 
 addFeature Costume
