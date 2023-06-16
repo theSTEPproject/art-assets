@@ -1278,7 +1278,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Rabbit.Costume.costumeName setTo 'web_brown-rabbit.png'
+featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
 
 // add other features
 addFeature Physics
@@ -1704,22 +1704,24 @@ every 1 runAtStart [[
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-      # PROGRAM INIT
-      addFeature Graphing
-      addFeature Costume
-      featProp Timer.Costume.costumeName setTo 'onexone.json'
-      addProp time number 0
-      prop Timer.zIndex setTo 500
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+addProp time number 0
+prop Timer.zIndex setTo 500
 
-      featProp Timer.Graphing.text setTo 'Time: 0'
+featProp Timer.Graphing.text setTo 'Time: 0'
 
-      # PROGRAM UPDATE
-  every 1 runAtStart [[
-        prop Timer.time add 1
-        exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop Timer.Graphing.text
-      ]]
-`
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
     },
     {
       "name": "RabbitPopulation",
@@ -1729,7 +1731,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp RabbitPopulation.Costume.costumeName setTo 'onexone.json'
+featProp RabbitPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1779,7 +1781,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp GopherPopulation.Costume.costumeName setTo 'onexone.json'
+featProp GopherPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1819,8 +1821,7 @@ onEvent Tick [[
 ]]
 
 // required directive
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "RobinPopulation",
@@ -1830,7 +1831,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp RobinPopulation.Costume.costumeName setTo 'onexone.json'
+featProp RobinPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1930,7 +1931,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp MousePopulation.Costume.costumeName setTo 'onexone.json'
+featProp MousePopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1980,7 +1981,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp BeetlePopulation.Costume.costumeName setTo 'onexone.json'
+featProp BeetlePopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2030,7 +2031,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp SnailPopulation.Costume.costumeName setTo 'onexone.json'
+featProp SnailPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2080,7 +2081,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp CaterpillarPopulation.Costume.costumeName setTo 'onexone.json'
+featProp CaterpillarPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2130,7 +2131,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp VeggieGardenPopulation.Costume.costumeName setTo 'onexone.json'
+featProp VeggieGardenPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2180,7 +2181,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp CloverPopulation.Costume.costumeName setTo 'onexone.json'
+featProp CloverPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2230,7 +2231,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp WeedsPopulation.Costume.costumeName setTo 'onexone.json'
+featProp WeedsPopulation.Costume.costumeName setTo 'GEN_onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2270,8 +2271,7 @@ onEvent Tick [[
 ]]
 
 // required directive
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2476,7 +2476,7 @@ prop y setTo -271.47`
       "label": "GopherPopulation81",
       "bpid": "GopherPopulation",
       "initScript": `prop x setTo -512.53
-prop y setTo -101.90`
+prop y setTo -101.9`
     },
     {
       "id": "82",
