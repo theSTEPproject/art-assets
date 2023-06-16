@@ -1,5 +1,5 @@
 {
-  "id": "food_web_tinkering_Sarah",
+  "id": "unity-food-web_Sarah",
   "label": "Food Web",
   "metadata": {
     "top": -400,
@@ -285,7 +285,7 @@ featProp agent.Costume.scale setTo 0.4
 
 # PROGRAM INIT
 addFeature Costume
-featProp Background.Costume.costumeName setTo 'food-web_background1.png'
+featProp Background.Costume.costumeName setTo 'AQ_background_aquatic.png'
 featProp Background.Costume.size setTo 800
 propPush global.alphaSettingForAll
 propPop Background.alpha
@@ -2533,6 +2533,13 @@ prop y setTo -43.06`
       "bpid": "CloverPopulation",
       "initScript": `prop x setTo 632.31
 prop y setTo 128.49`
+    },
+    {
+      "id": "90",
+      "label": "Background90",
+      "bpid": "Background",
+      "initScript": `prop x setTo -0.18
+prop y setTo 2.22`
     }
   ]
 }
