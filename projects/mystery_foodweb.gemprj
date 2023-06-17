@@ -261,12 +261,6 @@ every 2 runAtStart [[
     propPop character1.energyLevel
   ]]
 
-  // re-scale the character1 based on its energy level
-  ifProp character1.energyLevel greaterThan 30 [[
-    exprPush {{ character1.getProp('energyLevel').value / 100 }}
-    featPropPop character1.Costume.scale
-  ]]
-
   // this code sets the color of the energy bar based on how hungry the character is
   // set character1 energy meter color
   // doing great
@@ -283,11 +277,6 @@ every 2 runAtStart [[
   ifProp character1.energyLevel lessThan 30 [[
     // Red
     featProp character1.Graphing.meterColor setTo 16711680
-
-
-    // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop character1.Costume.scale
 
   ]]
 
@@ -319,8 +308,7 @@ every 2 runAtStart [[
     featCall character1.Costume setColorizeHSV 0.0083 0.29 0.5
 
   ]]
-]]
-`
+]]`
     },
     {
       "name": "character2",
@@ -381,12 +369,6 @@ every 2 runAtStart [[
     propPop character2.energyLevel
   ]]
 
-  // re-scale the character2 based on its energy level
-  ifProp character2.energyLevel greaterThan 30 [[
-    exprPush {{ character2.getProp('energyLevel').value / 100 }}
-    featPropPop character2.Costume.scale
-  ]]
-
   // this code sets the color of the energy bar based on how hungry the character is
   // set character2 energy meter color
   // doing great
@@ -403,11 +385,6 @@ every 2 runAtStart [[
   ifProp character2.energyLevel lessThan 30 [[
     // Red
     featProp character2.Graphing.meterColor setTo 16711680
-
-
-    // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop character2.Costume.scale
 
   ]]
 
@@ -1853,7 +1830,10 @@ when EnergyRepresentation centerFirstTouches character9 [[
       featProp character9.Costume.glow setTo 1
     ]]
   ]]
-
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    prop EnergyRepresentation.nutrientsType setTo 'decomposer'
+    featCall EnergyRepresentation.IU logString 'Nutrients transfer from none to decomposer'
+  ]]
 ]]
 
 when EnergyRepresentation centerLastTouches character9 [[
@@ -1898,6 +1878,12 @@ when EnergyRepresentation centerLastTouches character9 [[
     prop EnergyRepresentation.energyType setTo 'decomposer'
     featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
   ]]
+  
+  // ✏️ LETS CHANGE THIS: alter how much energy the character gives to another character
+  // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+  prop character9.nutrientsLevel sub 10
+  prop EnergyRepresentation.nutrientsLevel add 25
+
 ]]
 `
     }
@@ -1935,22 +1921,22 @@ prop y setTo 317.49`
       "id": "8",
       "label": "character18",
       "bpid": "character1",
-      "initScript": `prop x setTo 146.47
-prop y setTo 192.91`
+      "initScript": `prop x setTo 221.65
+prop y setTo 238.59`
     },
     {
       "id": "9",
       "label": "character29",
       "bpid": "character2",
-      "initScript": `prop x setTo -217.98
-prop y setTo 190.02`
+      "initScript": `prop x setTo -265.39
+prop y setTo 251.91`
     },
     {
       "id": "10",
       "label": "character310",
       "bpid": "character3",
-      "initScript": `prop x setTo 148.88
-prop y setTo -150.87`
+      "initScript": `prop x setTo 229.89
+prop y setTo -203.56`
     },
     {
       "id": "11",
@@ -1958,6 +1944,41 @@ prop y setTo -150.87`
       "bpid": "character4",
       "initScript": `prop x setTo -215.44
 prop y setTo -134.7`
+    },
+    {
+      "id": "12",
+      "label": "character512",
+      "bpid": "character5",
+      "initScript": `prop x setTo 229.60
+prop y setTo -3.99`
+    },
+    {
+      "id": "13",
+      "label": "character613",
+      "bpid": "character6",
+      "initScript": `prop x setTo -36.83
+prop y setTo -25.93`
+    },
+    {
+      "id": "14",
+      "label": "character714",
+      "bpid": "character7",
+      "initScript": `prop x setTo -47.26
+prop y setTo 197.44`
+    },
+    {
+      "id": "15",
+      "label": "character815",
+      "bpid": "character8",
+      "initScript": `prop x setTo 46.51
+prop y setTo -264.95`
+    },
+    {
+      "id": "16",
+      "label": "character916",
+      "bpid": "character9",
+      "initScript": `prop x setTo -274.16
+prop y setTo 33.83`
     }
   ]
 }

@@ -1078,6 +1078,7 @@ addProp totalSnailEnergy Number 0
 addProp totalBeetleEnergy Number 0
 addProp totalHawkEnergy Number 0
 addProp totaSnakeEnergy Number 0
+addProp totaWormEnergy Number 0
 
 
 featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
@@ -1163,8 +1164,15 @@ onEvent Tick [[
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
   propPop EnergyInSystem.totaSnakeEnergy
 
+  // count up the Worm
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Worm'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Worm' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totaWormEnergy
+  
   // graph the sum
-  exprPush {{ EnergyInSystem.getProp('totalVeggieGardenEnergy').value + agent.getProp('totalCloverEnergy').value + agent.getProp('totalGopherEnergy').value + agent.getProp('totalRobinEnergy').value + agent.getProp('totalCaterpillarEnergy').value + agent.getProp('totalMouseEnergy').value + agent.getProp('totalSnailEnergy').value + agent.getProp('totalBeetleEnergy').value + agent.getProp('totalHawkEnergy').value + agent.getProp('totaSnakeEnergy').value }}
+  exprPush {{ EnergyInSystem.getProp('totalVeggieGardenEnergy').value + agent.getProp('totalCloverEnergy').value + agent.getProp('totalGopherEnergy').value + agent.getProp('totalRobinEnergy').value + agent.getProp('totalCaterpillarEnergy').value + agent.getProp('totalMouseEnergy').value + agent.getProp('totalSnailEnergy').value + agent.getProp('totalBeetleEnergy').value + agent.getProp('totalHawkEnergy').value + agent.getProp('totaSnakeEnergy').value + agent.getProp('totaWormEnergy').value }}
   propPop EnergyInSystem.totalEnergy
 
 
