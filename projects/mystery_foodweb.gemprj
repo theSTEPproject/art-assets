@@ -119,6 +119,7 @@ addProp energyType string 'solar'
 // Note: this character doesn't do anyhting - it is just for show since there is no
 // other easy way to add background art
 addFeature Costume
+// ✏️ LETS CHANGE THIS: replace the current image with a new habitat of your chioce
 featProp Sky.Costume.costumeName setTo 'MFW_Temp_Background.png'
 // featCall Sky.Costume setColorize 53 81 92
 
@@ -224,7 +225,8 @@ featProp character1.Costume.costumeName setTo 'MFW_Character1.png'
 addFeature Physics
 featProp character1.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
+
 
 // these are referenced by EnergyRepresentation
 addProp energyType String 'producer'
@@ -332,7 +334,7 @@ featProp character2.Costume.costumeName setTo 'MFW_Character2.png'
 addFeature Physics
 featProp character2.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
 addProp energyType String 'producer'
@@ -440,10 +442,10 @@ featProp character3.Costume.costumeName setTo 'MFW_Character3.png'
 addFeature Physics
 featProp character3.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'primaryConsumer'
+addProp energyType String 'herbivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -519,10 +521,10 @@ featProp character4.Costume.costumeName setTo 'MFW_Character4.png'
 addFeature Physics
 featProp character4.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'primaryConsumer'
+addProp energyType String 'herbivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -718,10 +720,10 @@ featProp character5.Costume.costumeName setTo 'MFW_Character5.png'
 addFeature Physics
 featProp character5.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'secondaryConsumer'
+addProp energyType String 'omnivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -797,10 +799,10 @@ featProp character6.Costume.costumeName setTo 'MFW_Character6.png'
 addFeature Physics
 featProp character6.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'secondaryConsumer'
+addProp energyType String 'omnivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -877,10 +879,10 @@ featProp character7.Costume.costumeName setTo 'MFW_Character7.png'
 addFeature Physics
 featProp character7.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'secondaryConsumer'
+addProp energyType String 'omnivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -956,10 +958,10 @@ featProp character8.Costume.costumeName setTo 'MFW_Character8.png'
 addFeature Physics
 featProp character8.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
-addProp energyType String 'tertieryConsumer'
+addProp energyType String 'carnivoreConsumer'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -1035,7 +1037,7 @@ featProp character9.Costume.costumeName setTo 'MFW_Character9.png'
 addFeature Physics
 featProp character9.Costume.scale setTo 0.1
 
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
 
 // these are referenced by EnergyRepresentation
 addProp energyType String 'decomposer'
@@ -1154,8 +1156,9 @@ featCall EnergyRepresentation.Touches monitor 'character9' c2b
 addFeature IU
 
 # PROGRAM UPDATE
-// types to use for energy transfer: producer, primaryConsumer, secondaryConsumer, tertieryConsumer, decomposer, solar
-// During transfer types: solarToProducer, producerToPrimary, primaryToSecondary, secondaryToSecondary, secondaryToDecomposer, secondaryToTertiery, tertieryToDcomposer, decomposerToProducer
+
+// types to use for energy transfer: producer, herbivoreConsumer, omnivoreConsumer, carnivoreConsumer, decomposer, solar
+// During transfer types: solarToProducer, producerToHerbivore, producerToOmnivore, HerbivoreToOmnivore, OmnivoreToOmnivore, OmnivoreToDecomposer, OmnivoreToCarnivore, CarnivoreToDcomposer, decomposerToProducer
 
 // 🔎 WHAT DOES THIS DO? Updating Sun energy
 
@@ -1179,46 +1182,49 @@ when EnergyRepresentation centerLastTouches Sun [[
 
 when EnergyRepresentation centerFirstTouches character1 [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'producer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Producer.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to character1'
+    ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'producer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Producer.png'
+    \tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to character1'
+  \t]]
   ]]
 
   // 🔎 if you have energy from the sun, then give some energy to the character1 , but not all of it because some is released into the environment
   // 🔎 as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'solar' [[
-    prop EnergyRepresentation.energyType setTo 'solarToProducer'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from sun to character1'
+  \tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'solarToProducer'
+    \tfeatCall EnergyRepresentation.IU logString 'Energy transfer from sun to character1'
+\t
+   \t\t// ✏️ LETS CHANGE THIS: alter how much energy the character1 gets from the sun
+   \t\tprop EnergyRepresentation.energyLevel setTo 0
+    \tprop character1.energyLevel add 50
+    \t// 🔎 we are losing 50 of the hundred, so note that in the global
+    \tprop global.energyReleasedAsHeat add 50
 
-    // ✏️ LETS CHANGE THIS: alter how much energy the character1 gets from the sun
-    prop EnergyRepresentation.energyLevel setTo 0
-    prop character1.energyLevel add 50
-    // 🔎 we are losing 50 of the hundred, so note that in the global
-    prop global.energyReleasedAsHeat add 50
 
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-
-    featProp character1.Costume.glow setTo 1
+    \tfeatProp character1.Costume.glow setTo 1
+   \t]]
   ]]
 
   // 🔎 Updating the nutrients levels
 
   // 🔎 if you have nutrients from the character9, then give some nutrients to the character1
   ifProp EnergyRepresentation.nutrientsType equal 'decomposer' [[
-    prop EnergyRepresentation.nutrientsType setTo 'decomposerToProducer'
-    featCall EnergyRepresentation.IU logString 'Nutrients transfer from decomposer to character1'
+  \t  ifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.nutrientsType setTo 'decomposerToProducer'
+    \tfeatCall EnergyRepresentation.IU logString 'Nutrients transfer from decomposer to character1'
 
-    // ✏️ LETS CHANGE THIS: alter how much nutrients character1 gets from the decomposer
-    prop EnergyRepresentation.nutrientsLevel setTo 0
-    prop character1.nutrientsLevel add 26
+    \t// ✏️ LETS CHANGE THIS: alter how much nutrients character1 gets from the decomposer
+    \tprop EnergyRepresentation.nutrientsLevel setTo 0
+    \tprop character1.nutrientsLevel add 26
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-    featProp EnergyRepresentation.Costume.scale setTo 0.3
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
 
-
-    featProp character1.Costume.glow setTo 1
-
+    \tfeatProp character1.Costume.glow setTo 1
+  \t]]
   ]]
 ]]
 
@@ -1234,8 +1240,6 @@ when EnergyRepresentation centerLastTouches character1 [[
       // 🔎 when leaving (after arriving with relevent nutrientsType type) make sure to leave with character1 nutrients type
       prop EnergyRepresentation.nutrientsType setTo 'none'
       featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_empty_energy.png'
-      featProp EnergyRepresentation.Costume.scale setTo 0.06
-
     ]]
   ]]
 
@@ -1271,46 +1275,50 @@ when EnergyRepresentation centerLastTouches character1 [[
 
 when EnergyRepresentation centerFirstTouches character2 [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'producer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Producer.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to character2'
+  \tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'producer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Producer.png'
+    \tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to character2'
+  \t]]
   ]]
 
   // 🔎 if you have energy from the sun, then give some energy to the character2 , but not all of it because some is released into the environment
   // 🔎 as heat or lost in other ways
   ifProp EnergyRepresentation.energyType equal 'solar' [[
-    prop EnergyRepresentation.energyType setTo 'solarToProducer'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from sun to character2'
+  \tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'solarToProducer'
+    \tfeatCall EnergyRepresentation.IU logString 'Energy transfer from sun to character2'
+\t
+    \t// ✏️ LETS CHANGE THIS: alter how much energy the character2 gets from the sun
+    \tprop EnergyRepresentation.energyLevel setTo 0
+    \tprop character2.energyLevel add 50
+    \t// 🔎 we are losing 50 of the hundred, so note that in the global
+    \tprop global.energyReleasedAsHeat add 50
 
-    // ✏️ LETS CHANGE THIS: alter how much energy the character2 gets from the sun
-    prop EnergyRepresentation.energyLevel setTo 0
-    prop character2.energyLevel add 50
-    // 🔎 we are losing 50 of the hundred, so note that in the global
-    prop global.energyReleasedAsHeat add 50
 
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-
-    featProp character2.Costume.glow setTo 1
+    \tfeatProp character2.Costume.glow setTo 1
+  \t]]
   ]]
 
   // 🔎 Updating the nutrients levels
 
   // 🔎 if you have nutrients from the character9, then give some nutrients to the character2
-  ifProp EnergyRepresentation.nutrientsType equal 'decomposer' [[
-    prop EnergyRepresentation.nutrientsType setTo 'decomposerToProducer'
-    featCall EnergyRepresentation.IU logString 'Nutrients transfer from decomposer to character2'
+  ifProp EnergyRepresentation.nutrientsType equal 'decomposer' [[ 
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.nutrientsType setTo 'decomposerToProducer'
+    \tfeatCall EnergyRepresentation.IU logString 'Nutrients transfer from decomposer to character2'
 
-    // ✏️ LETS CHANGE THIS: alter how much nutrients character2 gets from the decomposer
-    prop EnergyRepresentation.nutrientsLevel setTo 0
-    prop character2.nutrientsLevel add 26
+    \t// ✏️ LETS CHANGE THIS: alter how much nutrients character2 gets from the decomposer
+    \tprop EnergyRepresentation.nutrientsLevel setTo 0
+    \tprop character2.nutrientsLevel add 26
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-    featProp EnergyRepresentation.Costume.scale setTo 0.3
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
 
 
-    featProp character2.Costume.glow setTo 1
-
+    \tfeatProp character2.Costume.glow setTo 1
+\t]]
   ]]
 ]]
 
@@ -1326,7 +1334,6 @@ when EnergyRepresentation centerLastTouches character2 [[
       // 🔎 when leaving (after arriving with relevent nutrientsType type) make sure to leave with character2 nutrients type
       prop EnergyRepresentation.nutrientsType setTo 'none'
       featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_empty_energy.png'
-      featProp EnergyRepresentation.Costume.scale setTo 0.06
 
     ]]
   ]]
@@ -1361,37 +1368,38 @@ when EnergyRepresentation centerLastTouches character2 [[
 // 🔎 WHAT DOES THIS DO? Updating character3 energy
 
 when EnergyRepresentation centerFirstTouches character3 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
+    \tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to herbivoreConsumer'
+  \t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to primaryConsumer'
-  ]]
+  \t// 🔎 when touch character3, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to producerToHerbivore
+  \tifProp EnergyRepresentation.energyType equal 'producer' [[
+    \tifProp character3.energyLevel greaterThan 2 [[
+      \t\tprop EnergyRepresentation.energyType setTo 'producerToHerbivore'
+      \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from producer to Herbivore'
+\t
+      \t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
+      \t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\tprop character3.energyLevel add 10
+      \t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\tprop global.energyReleasedAsHeat add 15
 
-  // 🔎 when touch character3, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to producerToPrimary
-  ifProp EnergyRepresentation.energyType equal 'producer' [[
-    ifProp character3.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'producerToPrimary'
-
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character3.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character3.Costume.glow setTo 1
-    ]]
-  ]]
-
+      \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\tfeatProp character3.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
+ \t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character3 [[
-
-  // 🔎 if you have no primaryConsumer energy type, take some energy from the character3 to the energy
-  ifProp EnergyRepresentation.energyType equal 'producerToPrimary' [[
+\t
+  // 🔎 if you have no herbivoreConsumer energy type, take some energy from the character3 to the energy
+  ifProp EnergyRepresentation.energyType equal 'producerToHerbivore' [[
     ifProp character3.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'primaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character3 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1400,54 +1408,56 @@ when EnergyRepresentation centerLastTouches character3 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
+    prop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with character3 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
-  ]]
-
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
+ \t ]]
+\t]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character4 energy
 
 when EnergyRepresentation centerFirstTouches character4 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \t\tprop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
+    \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to herbivoreConsumer'
+  \t\t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to primaryConsumer'
-  ]]
+  \t\t// 🔎 when touch character4, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to producerToHerbivore
+  \t\tifProp EnergyRepresentation.energyType equal 'producer' [[
+    \t\tifProp character4.energyLevel greaterThan 2 [[
+      \t\tprop EnergyRepresentation.energyType setTo 'producerToHerbivore'
+      \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from producer to Herbivore'
+\t\t
+      \t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
+      \t\tprop EnergyRepresentation.energyLevel setTo 0
+     \t\tprop character4.energyLevel add 10
+      \t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\tprop global.energyReleasedAsHeat add 15
 
-  // 🔎 when touch character4, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to producerToPrimary
-  ifProp EnergyRepresentation.energyType equal 'producer' [[
-    ifProp character4.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'producerToPrimary'
-
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character4.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character4.Costume.glow setTo 1
-    ]]
-  ]]
-
+      \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\tfeatProp character4.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
+\t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character4 [[
 
-  // 🔎 if you have no primaryConsumer energy type, take some energy from the character4 to the energy
-  ifProp EnergyRepresentation.energyType equal 'producerToPrimary' [[
+  // 🔎 if you have no herbivoreConsumer energy type, take some energy from the character4 to the energy
+  ifProp EnergyRepresentation.energyType equal 'producerToHerbivore' [[
     ifProp character4.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'primaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character4 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1456,69 +1466,90 @@ when EnergyRepresentation centerLastTouches character4 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
+    prop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with character4 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'primaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Primary_Consumers.png'
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'herbivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_herbivore_consumer.png'
+  \t]]
   ]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character5 energy
 
 when EnergyRepresentation centerFirstTouches character5 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \t\tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to omnivoreConsumer'
+  \t\t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to secondaryConsumer'
-  ]]
+  \t\t// 🔎 when touch character5, and energy type is from herbivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to HerbivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'herbivoreConsumer' [[
+    \t\tifProp character5.energyLevel greaterThan 2 [[
+      \t\tprop EnergyRepresentation.energyType setTo 'HerbivoreToOmnivore'
+      \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Herbivore to Omnivore'
 
-  // 🔎 when touch character5, and energy type is from primaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to primaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'primaryConsumer' [[
-    ifProp character5.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'primaryToSecondary'
+      \t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the herbivoreConsumer, and what it does to the energy character
+      \t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\tprop character5.energyLevel add 10
+      \t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the primaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character5.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\tfeatProp character5.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character5.Costume.glow setTo 1
-    ]]
-  ]]
+  \t\t// 🔎 when touch character5, and energy type is from omnivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'omnivoreConsumer' [[
+    \t\tifProp character5.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'OmnivoreToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Omnivore to Omnivore'
 
-  // 🔎 when touch character5, and energy type is from secondaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to secondaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'secondaryConsumer' [[
-    ifProp character5.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryToSecondary'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the omnivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character5.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the secondaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character5.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character5.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
+  
+  \t\t// 🔎 when touch character5, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'producer' [[
+    \t\tifProp character5.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'producerToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from producer to Omnivore'
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character5.Costume.glow setTo 1
-    ]]
-  ]]
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
+     \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character5.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+     \t\t\tfeatProp character5.Costume.glow setTo 1
+    \t\t\t]]
+  \t\t]]
+\t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character5 [[
 
-  // 🔎 if you have no secondaryConsumer energy type, take some energy from the character5 to the energy
-  ifProp EnergyRepresentation.energyType equal 'primaryToSecondary' [[
+  // 🔎 if you have no omnivoreConsumer energy type, take some energy from the character5 to the energy
+  ifProp EnergyRepresentation.energyType equal 'HerbivoreToOmnivore' [[
     ifProp character5.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character5 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1527,15 +1558,15 @@ when EnergyRepresentation centerLastTouches character5 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
-  ifProp EnergyRepresentation.energyType equal 'secondaryToSecondary' [[
+  ifProp EnergyRepresentation.energyType equal 'OmnivoreToOmnivore' [[
     ifProp character5.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character5 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1544,69 +1575,107 @@ when EnergyRepresentation centerLastTouches character5 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+  ]]
+  
+  ifProp EnergyRepresentation.energyType equal 'producerToOmnivore' [[
+    ifProp character5.energyLevel greaterThan 25 [[
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+
+      // ✏️ LETS CHANGE THIS: alter how much energy the character5 gives to a animal
+      // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop character5.energyLevel sub 10
+      prop EnergyRepresentation.energyLevel add 25
+      // 🔎 we are losing 25 of the hundred, so note that in the global
+      prop global.energyReleasedAsHeat add 25
+
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    ]]
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with character5 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+  \t]]
   ]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character6 energy
 
 when EnergyRepresentation centerFirstTouches character6 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \t\tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to omnivoreConsumer'
+  \t\t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to secondaryConsumer'
-  ]]
+  \t\t// 🔎 when touch character6, and energy type is from herbivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to HerbivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'herbivoreConsumer' [[
+    \t\tifProp character6.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'HerbivoreToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Herbivore to Omnivore'
 
-  // 🔎 when touch character6, and energy type is from primaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to primaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'primaryConsumer' [[
-    ifProp character6.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'primaryToSecondary'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the herbivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character6.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the primaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character6.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character6.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character6.Costume.glow setTo 1
-    ]]
-  ]]
+  \t\t\t// 🔎 when touch character6, and energy type is from OmnivoreToOmnivore and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\t\tifProp EnergyRepresentation.energyType equal 'omnivoreConsumer' [[
+    \t\t\tifProp character6.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'OmnivoreToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Omnivore to Omnivore'
 
-  // 🔎 when touch character6, and energy type is from secondaryToSecondary and energy isn't 0, get energy, change meter color to orange, change type to secondaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'secondaryConsumer' [[
-    ifProp character6.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryToSecondary'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the omnivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character6.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the secondaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character6.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character6.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
+  
+  \t\t// 🔎 when touch character6, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'producer' [[
+    \t\tifProp character6.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'producerToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Producer to Omnivore'
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character6.Costume.glow setTo 1
-    ]]
-  ]]
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character6.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character6.Costume.glow setTo 1
+    \t\t]]
+ \t\t]]
+\t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character6 [[
 
-  // 🔎 if you have no secondaryConsumer energy type, take some energy from the character6 to the energy
-  ifProp EnergyRepresentation.energyType equal 'primaryToSecondary' [[
+  // 🔎 if you have no omnivoreConsumer energy type, take some energy from the character6 to the energy
+  ifProp EnergyRepresentation.energyType equal 'HerbivoreToOmnivore' [[
     ifProp character6.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character6 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1615,15 +1684,15 @@ when EnergyRepresentation centerLastTouches character6 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
-  ifProp EnergyRepresentation.energyType equal 'secondaryToSecondary' [[
+  ifProp EnergyRepresentation.energyType equal 'OmnivoreToOmnivore' [[
     ifProp character6.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character6 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1632,69 +1701,107 @@ when EnergyRepresentation centerLastTouches character6 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+  ]]
+  
+  ifProp EnergyRepresentation.energyType equal 'producerToOmnivore' [[
+    ifProp character6.energyLevel greaterThan 25 [[
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+
+      // ✏️ LETS CHANGE THIS: alter how much energy the character6 gives to a animal
+      // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop character6.energyLevel sub 10
+      prop EnergyRepresentation.energyLevel add 25
+      // 🔎 we are losing 25 of the hundred, so note that in the global
+      prop global.energyReleasedAsHeat add 25
+
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    ]]
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with character6 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    ]]
   ]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character7 energy
 
 when EnergyRepresentation centerFirstTouches character7 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \t\tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to omnivoreConsumer'
+ \t\t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to secondaryConsumer'
-  ]]
+  \t\t// 🔎 when touch character7, and energy type is from herbivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to HerbivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'herbivoreConsumer' [[
+    \t\tifProp character7.energyLevel greaterThan 2 [[
+      \t\t\tprop EnergyRepresentation.energyType setTo 'HerbivoreToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Herbivore to Omnivore'
 
-  // 🔎 when touch character7, and energy type is from primaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to primaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'primaryConsumer' [[
-    ifProp character7.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'primaryToSecondary'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the herbivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character7.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the primaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character7.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character7.Costume.glow setTo 1
+    \t\t\t]]
+  \t\t\t]]
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character7.Costume.glow setTo 1
-    ]]
-  ]]
+  \t\t// 🔎 when touch character7, and energy type is from omnivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'omnivoreConsumer' [[
+    \t\tifProp character7.energyLevel greaterThan 2 [[
+     \t\t\tprop EnergyRepresentation.energyType setTo 'OmnivoreToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Omnivore to Omnivore'
 
-  // 🔎 when touch character7, and energy type is from secondaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to secondaryToSecondary
-  ifProp EnergyRepresentation.energyType equal 'secondaryConsumer' [[
-    ifProp character7.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryToSecondary'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the omnivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character7.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the secondaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character7.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character7.Costume.glow setTo 1
+    \t\t]]
+ \t\t ]]
+  
+  \t\t// 🔎 when touch character7, and energy type is from producer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToOmnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'producer' [[
+    \t\tifProp character7.energyLevel greaterThan 2 [[
+     \t\t\tprop EnergyRepresentation.energyType setTo 'producerToOmnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Producer to Omnivore'
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character7.Costume.glow setTo 1
-    ]]
-  ]]
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the producer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character7.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character7.Costume.glow setTo 1
+   \t\t\t ]]
+ \t\t ]]
+\t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character7 [[
 
-  // 🔎 if you have no secondaryConsumer energy type, take some energy from the character7 to the energy
-  ifProp EnergyRepresentation.energyType equal 'primaryToSecondary' [[
+  // 🔎 if you have no omnivoreConsumer energy type, take some energy from the character7 to the energy
+  ifProp EnergyRepresentation.energyType equal 'HerbivoreToOmnivore' [[
     ifProp character7.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character7 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1703,15 +1810,15 @@ when EnergyRepresentation centerLastTouches character7 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
-  ifProp EnergyRepresentation.energyType equal 'secondaryToSecondary' [[
+  ifProp EnergyRepresentation.energyType equal 'OmnivoreToOmnivore' [[
     ifProp character7.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character7 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1720,53 +1827,73 @@ when EnergyRepresentation centerLastTouches character7 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
   ]]
 
+  ifProp EnergyRepresentation.energyType equal 'producerToOmnivore' [[
+    ifProp character7.energyLevel greaterThan 25 [[
+      prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+
+      // ✏️ LETS CHANGE THIS: alter how much energy the character7 gives to a animal
+      // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop character7.energyLevel sub 10
+      prop EnergyRepresentation.energyLevel add 25
+      // 🔎 we are losing 25 of the hundred, so note that in the global
+      prop global.energyReleasedAsHeat add 25
+
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+    ]]
+    prop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+  ]]
+  
   // when leaving (after arriving with relevent energy type) make sure to leave with character7 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'secondaryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Secondary_consumers.png'
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'omnivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_omnivore_consumer.png'
+  \t]]
   ]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character8 energy
 
 when EnergyRepresentation centerFirstTouches character8 [[
+\tifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \t\tifProp EnergyRepresentation.energyType equal 'none' [[
+    \t\tprop EnergyRepresentation.energyType setTo 'carnivoreConsumer'
+    \t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_carnivore_consumer.png'
+    \t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from none to carnivoreConsumer'
+  \t\t]]
 
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'tertieryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Tertiary_consumers.png'
-    featCall EnergyRepresentation.IU logString 'Energy transfer from none to tertieryConsumer'
-  ]]
+  \t\t// 🔎 when touch character8, and energy type is from omnivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToCarnivore
+  \t\tifProp EnergyRepresentation.energyType equal 'omnivoreConsumer' [[
+    \t\tifProp character8.energyLevel greaterThan 2 [[
+     \t\t\tprop EnergyRepresentation.energyType setTo 'OmnivoreToCarnivore'
+      \t\t\tfeatCall EnergyRepresentation.IU logString 'Energy transfer from Omnivore to Carnivore'
 
-  // 🔎 when touch character8, and energy type is from secondaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to secondaryToTertiery
-  ifProp EnergyRepresentation.energyType equal 'secondaryConsumer' [[
-    ifProp character8.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryToTertiery'
+      \t\t\t// ✏️ LETS CHANGE THIS: alter how much energy the character gets from the omnivoreConsumer, and what it does to the energy character
+      \t\t\tprop EnergyRepresentation.energyLevel setTo 0
+      \t\t\tprop character8.energyLevel add 10
+      \t\t\t// 🔎 we are losing 50 of the hundred, so note that in the global
+      \t\t\tprop global.energyReleasedAsHeat add 15
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the secondaryConsumer, and what it does to the energy character
-      prop EnergyRepresentation.energyLevel setTo 0
-      prop character8.energyLevel add 10
-      // 🔎 we are losing 50 of the hundred, so note that in the global
-      prop global.energyReleasedAsHeat add 15
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
-      featProp character8.Costume.glow setTo 1
-    ]]
-  ]]
-
+      \t\t\tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_energy_transfer.png'
+      \t\t\tfeatProp character8.Costume.glow setTo 1
+    \t\t]]
+  \t\t]]
+\t]]
 ]]
 
 when EnergyRepresentation centerLastTouches character8 [[
 
-  // 🔎 if you have no tertieryConsumer energy type, take some energy from the character8 to the energy
-  ifProp EnergyRepresentation.energyType equal 'secondaryToTertiery' [[
+  // 🔎 if you have no carnivoreConsumer energy type, take some energy from the character8 to the energy
+  ifProp EnergyRepresentation.energyType equal 'OmnivoreToCarnivore' [[
     ifProp character8.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'tertieryConsumer'
+      prop EnergyRepresentation.energyType setTo 'carnivoreConsumer'
 
       // ✏️ LETS CHANGE THIS: alter how much energy the character8 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -1775,18 +1902,19 @@ when EnergyRepresentation centerLastTouches character8 [[
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Tertiary_consumers.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_carnivore_consumer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'tertieryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Tertiary_consumers.png'
+    prop EnergyRepresentation.energyType setTo 'carnivoreConsumer'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_carnivore_consumer.png'
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with character8 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'tertieryConsumer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Tertiary_consumers.png'
-  ]]
-
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+  \tifProp EnergyRepresentation.energyType equal 'none' [[
+    \tprop EnergyRepresentation.energyType setTo 'carnivoreConsumer'
+    \tfeatProp EnergyRepresentation.Costume.costumeName setTo 'MFW_carnivore_consumer.png'
+ \t\t]]
+\t]]
 ]]
 
 // 🔎 WHAT DOES THIS DO? Updating character9 energy
@@ -1799,12 +1927,13 @@ when EnergyRepresentation centerFirstTouches character9 [[
     featCall EnergyRepresentation.IU logString 'Energy transfer from none to decomposer'
   ]]
 
-  // 🔎 when touch character9, and energy type is from secondaryConsumer and energy isn't 0, get energy, change meter color to orange, change type to secondaryToDecomposer
-  ifProp EnergyRepresentation.energyType equal 'secondaryConsumer' [[
+  // 🔎 when touch character9, and energy type is from omnivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to OmnivoreToDecomposer
+  ifProp EnergyRepresentation.energyType equal 'omnivoreConsumer' [[
     ifProp character9.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'secondaryToDecomposer'
+      prop EnergyRepresentation.energyType setTo 'OmnivoreToDecomposer'
+      featCall EnergyRepresentation.IU logString 'Energy transfer from Omnivore to decomposer'
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the primaryConsumer, and what it does to the energy character
+      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the herbivoreConsumer, and what it does to the energy character
       prop EnergyRepresentation.energyLevel setTo 0
       prop character9.energyLevel add 10
       // 🔎 we are losing 50 of the hundred, so note that in the global
@@ -1815,12 +1944,13 @@ when EnergyRepresentation centerFirstTouches character9 [[
     ]]
   ]]
 
-  // 🔎 when touch character9, and energy type is from tertieryConsumer and energy isn't 0, get energy, change meter color to orange, change type to tertieryToDcomposer
-  ifProp EnergyRepresentation.energyType equal 'tertieryConsumer' [[
+  // 🔎 when touch character9, and energy type is from carnivoreConsumer and energy isn't 0, get energy, change meter color to orange, change type to CarnivoreToDcomposer
+  ifProp EnergyRepresentation.energyType equal 'carnivoreConsumer' [[
     ifProp character9.energyLevel greaterThan 2 [[
-      prop EnergyRepresentation.energyType setTo 'tertieryToDcomposer'
+      prop EnergyRepresentation.energyType setTo 'CarnivoreToDcomposer'
+      featCall EnergyRepresentation.IU logString 'Energy transfer from Carnivore to decomposer'
 
-      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the tertieryConsumer, and what it does to the energy character
+      // ✏️ LETS CHANGE THIS: alter how much energy the character gets from the carnivoreConsumer, and what it does to the energy character
       prop EnergyRepresentation.energyLevel setTo 0
       prop character9.energyLevel add 10
       // 🔎 we are losing 50 of the hundred, so note that in the global
@@ -1839,43 +1969,41 @@ when EnergyRepresentation centerFirstTouches character9 [[
 when EnergyRepresentation centerLastTouches character9 [[
 
   // 🔎 if you have no decomposer energy type, take some energy from the character9 to the energy
-  ifProp EnergyRepresentation.energyType equal 'secondaryToDecomposer' [[
+  ifProp EnergyRepresentation.energyType equal 'OmnivoreToDecomposer' [[
     ifProp character9.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'decomposer'
-
       // ✏️ LETS CHANGE THIS: alter how much energy the character9 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
       prop character9.energyLevel sub 10
       prop EnergyRepresentation.energyLevel add 25
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'decomposer'
+    prop EnergyRepresentation.energyType setTo 'none'
     featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
   ]]
 
-  ifProp EnergyRepresentation.energyType equal 'tertieryToDcomposer' [[
+  ifProp EnergyRepresentation.energyType equal 'CarnivoreToDcomposer' [[
     ifProp character9.energyLevel greaterThan 25 [[
-      prop EnergyRepresentation.energyType setTo 'decomposer'
-
       // ✏️ LETS CHANGE THIS: alter how much energy the character9 gives to a animal
       // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
       prop character9.energyLevel sub 10
       prop EnergyRepresentation.energyLevel add 25
       // 🔎 we are losing 25 of the hundred, so note that in the global
       prop global.energyReleasedAsHeat add 25
-
-      featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
     ]]
-    prop EnergyRepresentation.energyType setTo 'decomposer'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_empty_energy.png'
+  ]]
+  
+  // when leaving (after arriving with relevent energy type) make sure to leave with none energy type
+  ifProp EnergyRepresentation.energyType equal 'decomposer' [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_empty_energy.png'
   ]]
 
-  // when leaving (after arriving with relevent energy type) make sure to leave with character9 energy type
-  ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.energyType setTo 'decomposer'
+  // when leaving (after arriving with relevent energy type) make sure to leave with decomposer nutrients type
+  ifProp EnergyRepresentation.nutrientsType equal 'none' [[
+    prop EnergyRepresentation.nutrientsType setTo 'decomposer'
     featProp EnergyRepresentation.Costume.costumeName setTo 'MFW_Decomposer.png'
   ]]
   
@@ -1921,8 +2049,8 @@ prop y setTo 317.49`
       "id": "8",
       "label": "character18",
       "bpid": "character1",
-      "initScript": `prop x setTo 221.65
-prop y setTo 238.59`
+      "initScript": `prop x setTo 8.97
+prop y setTo -241.01`
     },
     {
       "id": "9",
@@ -1949,7 +2077,7 @@ prop y setTo -134.7`
       "id": "12",
       "label": "character512",
       "bpid": "character5",
-      "initScript": `prop x setTo 229.60
+      "initScript": `prop x setTo 229.6
 prop y setTo -3.99`
     },
     {
@@ -1970,8 +2098,8 @@ prop y setTo 197.44`
       "id": "15",
       "label": "character815",
       "bpid": "character8",
-      "initScript": `prop x setTo 46.51
-prop y setTo -264.95`
+      "initScript": `prop x setTo 145.91
+prop y setTo 197.09`
     },
     {
       "id": "16",
