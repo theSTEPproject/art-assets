@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_energy_opaqua",
+  "id": "carnivorousplants_foodweb_energy",
   "label": "Food Web",
   "metadata": {
     "top": -400,
@@ -162,23 +162,13 @@ addProp energyType String 'none'
 
 addFeature Touches
 featCall EnergyRepresentation.Touches monitor 'Sun' c2b
-featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
-featCall EnergyRepresentation.Touches monitor 'Clover' c2b
-featCall EnergyRepresentation.Touches monitor 'Gopher' c2b
-featCall EnergyRepresentation.Touches monitor 'Snail' c2b
-featCall EnergyRepresentation.Touches monitor 'Caterpillar' c2b
-featCall EnergyRepresentation.Touches monitor 'Beetle' c2b
-featCall EnergyRepresentation.Touches monitor 'Mouse' c2b
-featCall EnergyRepresentation.Touches monitor 'Robin' c2b
-featCall EnergyRepresentation.Touches monitor 'Snake' c2b
-featCall EnergyRepresentation.Touches monitor 'Hawk' c2b
+featCall EnergyRepresentation.Touches monitor 'Grass' c2b
 
 
 # PROGRAM UPDATE
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
+// types to use for energy transfer: sun, grass, squash, venusflytrap, squirrel, fly,
+// sunToGrass, sunToSquash, sunTovenusflytrap, grassToSquirrel, squashToSquirrel, squashTofly, squirrelTofly, flyToVenusflytrap
+
 
 // ---updating sun energy---
 
@@ -198,22 +188,22 @@ when EnergyRepresentation centerLastTouches Sun [[
 ]]
 
 
-// ---updating VeggieGarden energy---
+// ---updating Grass energy---
 
 when EnergyRepresentation centerFirstTouches VeggieGarden [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
-    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+    prop EnergyRepresentation.energyType setTo 'grass'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
 
-  // if you have energy from the sun, then give some energy to the vaggie garden, but not all of it because some is released into the environment
+  // if you have energy from the sun, then give some energy to the sun, but not all of it because some is released into the environment
   // as heat or lost in other ways
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
-    prop EnergyRepresentation.energyType setTo 'sunToVaggie'
+    prop EnergyRepresentation.energyType setTo 'sunToGrass'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
-    prop VeggieGarden.energyLevel add 50
+    prop Grass.energyLevel add 50
     // we are losing 50 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 50
 
@@ -225,15 +215,15 @@ when EnergyRepresentation centerFirstTouches VeggieGarden [[
   ]]
 ]]
 
-when EnergyRepresentation centerLastTouches VeggieGarden [[
+when EnergyRepresentation centerLastTouches Grass [[
 
   // if you have no energy type, take some energy from the VeggieGarden
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' && VeggieGarden.getProp('energyLevel').value > 25 }} [[
-    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToGrass' && Grass.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'grass'
 
     // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
     // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
-    prop VeggieGarden.energyLevel sub 10
+    prop Grass.energyLevel sub 10
     prop EnergyRepresentation.energyLevel add 25
     // we are losing 25 of the hundred, so not that in the global
     prop global.energyReleasedAsHeat add 25
@@ -243,8 +233,8 @@ when EnergyRepresentation centerLastTouches VeggieGarden [[
   ]]
 
   // when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVaggie' }} [[
-    prop EnergyRepresentation.energyType setTo 'vaggieGarden'
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToGrass' }} [[
+    prop EnergyRepresentation.energyType setTo 'grass'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_vaggiegarden_energy.png'
   ]]
 ]]
@@ -1861,6 +1851,86 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT`
+    },
+    {
+      "name": "Grass",
+      "scriptText": `# BLUEPRINT Grass
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// The Grass is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp Grass.Costume.costumeName setTo 'CP_grass.png'
+
+addFeature Physics
+featProp Grass.Costume.scale setTo 0.4
+
+// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
+// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
+// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
+// snailToRobin, snakeToHawk, mouseToSnake
+// these are referenced by EnergyRepresentation
+addProp energyType String 'Grass'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop Grass.energyLevel setMax 100
+prop Grass.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Grass.Graphing.meterProp setTo 'energyLevel'
+
+featProp Grass.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Grass.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Grass.getProp('energyLevel').value - Grass.getProp('energyUse').value }}
+    propPop Grass.energyLevel
+  ]]
+
+  // re-scale the VeggieGarden based on its energy level
+  ifExpr {{ Grass.getProp('energyLevel').value > 30 }} [[
+    exprPush {{ Grass.getProp('energyLevel').value / 100 }}
+    featPropPop Grass.Costume.scale
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifExpr {{ Grass.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Grass.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Grass.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Grass.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Grass.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Grass.Graphing.meterColor setTo 16711680
+
+
+    // avoid getting too small
+    exprPush {{ 0.3 }}
+    featPropPop Grass.Costume.scale
+
+  ]]
+]]`
     }
   ],
   "instances": [
@@ -1891,13 +1961,6 @@ prop y setTo -22.06`
       "bpid": "GraphLostEnergy",
       "initScript": `prop x setTo 505.35
 prop y setTo 317.49`
-    },
-    {
-      "id": "9",
-      "label": "VeggieGarden9",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -234.94
-prop y setTo 259.67`
     },
     {
       "id": "10",
@@ -1961,6 +2024,13 @@ prop y setTo 96.28`
       "bpid": "Hawk",
       "initScript": `prop x setTo 175.65
 prop y setTo -342.68`
+    },
+    {
+      "id": "20",
+      "label": "Grass20",
+      "bpid": "Grass",
+      "initScript": `prop x setTo -136.49
+prop y setTo 4.91`
     }
   ]
 }
