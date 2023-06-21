@@ -73,8 +73,18 @@ addFeature Touches
 
 featProp Entity.Costume.costumeName setTo 'GEN_square.json'
 featProp Entity.Costume.scale setTo 0.25
+featCall Entity.Touches monitor 'Process' b2b
 
 # PROGRAM UPDATE
+when Entity touches Process [[
+  featProp Entity.Costume.glow setTo 1
+  // insert code here
+]]
+
+when Entity lastTouches Process [[
+  featProp Entity.Costume.glow setTo 0
+  // insert code here
+]]
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish`
@@ -128,7 +138,7 @@ addFeature Costume
 addFeature Population
 
 featProp Trace.Costume.costumeName setTo 'GEN_circle.json'
-featProp Trace.Costume.scale setTo 0.1
+featProp Trace.Costume.scale setTo 0.05
 featCall Trace.Costume setColorizeHSV 21 78 94
 addProp removeCountdown number 10
 prop Trace.alpha setTo 0.5
