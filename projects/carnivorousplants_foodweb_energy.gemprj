@@ -215,7 +215,7 @@ onEvent Tick [[
 # PROGRAM DEFINE
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featProp EnergyInSystem.Costume.costumeName setTo 'onexone.json'
+featProp EnergyInSystem.Costume.costumeName setTo 'GEN_onexone.json'
 featProp EnergyInSystem.Costume.scale setTo 1
 
 addFeature Graphing
@@ -229,16 +229,11 @@ prop EnergyInSystem.totalEnergy setMin 0
 
 // to store the current values of all animals and vaggies separately
 // I could just add them up below, but this way we can see them in the inspector
-addProp totalVeggieGardenEnergy Number 0
-addProp totalCloverEnergy Number 0
-addProp totalGopherEnergy Number 0
-addProp totalRobinEnergy Number 0
-addProp totalCaterpillarEnergy Number 0
-addProp totalMouseEnergy Number 0
-addProp totalSnailEnergy Number 0
-addProp totalBeetleEnergy Number 0
-addProp totalHawkEnergy Number 0
-addProp totaSnakeEnergy Number 0
+addProp totalGrassEnergy Number 0
+addProp totalSquashEnergy Number 0
+addProp totalVenusflytrapEnergy Number 0
+addProp totalFlyEnergy Number 0
+addProp totalSquirrelEnergy Number 0
 
 
 featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
@@ -247,78 +242,43 @@ featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
 
 onEvent Tick [[
 
-  // count up the VaggieGarden
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'VeggieGarden'
+  // count up the Grass
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Grass'
   featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'VeggieGarden' 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Grass' 'energyLevel'
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalVeggieGardenEnergy
+  propPop EnergyInSystem.totalGrassEnergy
 
-  // count up the Clover
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Clover'
+  // count up the Squash
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Squash'
   featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Clover' 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Squash' 'energyLevel'
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalCloverEnergy
+  propPop EnergyInSystem.totalSquashEnergy
 
-  // count up the Gopher
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Gopher'
+  // count up the Venusflytrap
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Venusflytrap'
   featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Gopher' 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Venusflytrap' 'energyLevel'
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalGopherEnergy
+  propPop EnergyInSystem.totalVenusflytrapEnergy
 
-  // count up the Robin
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Robin'
+  // count up the Fly
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Fly'
   featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Robin' 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Fly' 'energyLevel'
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalRobinEnergy
+  propPop EnergyInSystem.totalFlyEnergy
 
-  // count up the Caterpillar
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Caterpillar'
+  // count up the Squirrel
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Squirrel'
   featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Caterpillar' 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Squirrel' 'energyLevel'
   exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalCaterpillarEnergy
-
-  // count up the Mouse
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Mouse'
-  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Mouse' 'energyLevel'
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalMouseEnergy
-
-  // count up the Snail
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Snail'
-  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Snail' 'energyLevel'
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalSnailEnergy
-
-  // count up the Beetle
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Beetle'
-  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Beetle' 'energyLevel'
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalBeetleEnergy
-
-  // count up the Hawk
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Hawk'
-  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Hawk' 'energyLevel'
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totalHawkEnergy
-
-  // count up the Snake
-  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Snake'
-  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
-  featCall EnergyInSystem.Population countCharacterProp 'Snake' 'energyLevel'
-  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
-  propPop EnergyInSystem.totaSnakeEnergy
+  propPop EnergyInSystem.totalSquirrelEnergy
 
   // graph the sum
-  exprPush {{ EnergyInSystem.getProp('totalVeggieGardenEnergy').value + agent.getProp('totalCloverEnergy').value + agent.getProp('totalGopherEnergy').value + agent.getProp('totalRobinEnergy').value + agent.getProp('totalCaterpillarEnergy').value + agent.getProp('totalMouseEnergy').value + agent.getProp('totalSnailEnergy').value + agent.getProp('totalBeetleEnergy').value + agent.getProp('totalHawkEnergy').value + agent.getProp('totaSnakeEnergy').value }}
+  exprPush {{ EnergyInSystem.getProp('totalGrassEnergy').value + agent.getProp('totalSquashEnergy').value + agent.getProp('totalVenusflytrapEnergy').value + agent.getProp('totalFlyEnergy').value + agent.getProp('totalSquirrelEnergy').value }}
   propPop EnergyInSystem.totalEnergy
 
 
@@ -331,744 +291,7 @@ prop EnergyInSystem.x setTo 495
 prop EnergyInSystem.y setTo 187
 prop EnergyInSystem.zIndex setTo 300
 
-featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
-`
-    },
-    {
-      "name": "VeggieGarden",
-      "scriptText": `# BLUEPRINT VeggieGarden
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// The VeggieGarden is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-addFeature Costume
-featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
-
-addFeature Physics
-featProp VeggieGarden.Costume.scale setTo 0.4
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'vaggieGarden'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel number 50
-prop VeggieGarden.energyLevel setMax 100
-prop VeggieGarden.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
-
-featProp VeggieGarden.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
-    propPop VeggieGarden.energyLevel
-  ]]
-
-  // re-scale the VeggieGarden based on its energy level
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 30 }} [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value / 100 }}
-    featPropPop VeggieGarden.Costume.scale
-  ]]
-
-  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
-  // set VeggieGarden energy meter color
-  // doing great
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
-    // Green
-    featProp VeggieGarden.Graphing.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
-    // Orange
-    featProp VeggieGarden.Graphing.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
-    // Red
-    featProp VeggieGarden.Graphing.meterColor setTo 16711680
-
-
-    // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop VeggieGarden.Costume.scale
-
-  ]]
-]]`
-    },
-    {
-      "name": "Clover",
-      "scriptText": `# BLUEPRINT Clover
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// The Clover is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-addFeature Costume
-featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
-
-addFeature Physics
-featProp Clover.Costume.scale setTo 0.15
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'clover'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Clover.energyLevel setMax 100
-prop Clover.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Clover.Graphing.meterProp setTo 'energyLevel'
-
-featProp Clover.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
-    propPop Clover.energyLevel
-  ]]
-
-  // re-scale the VeggieGarden based on its energy level
-  ifExpr {{ Clover.getProp('energyLevel').value > 30 }} [[
-    // insert code here
-  ]]
-  exprPush {{ Clover.getProp('energyLevel').value / 200 }}
-  featPropPop Clover.Costume.scale
-
-  // this code sets the color of the energy bar based on how hungry the clover is
-  // set clover energy meter color
-  // doing great
-  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
-    // Green
-    featProp Clover.Graphing.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
-    // Orange
-    featProp Clover.Graphing.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
-    // Red
-    featProp Clover.Graphing.meterColor setTo 16711680
-
-    // avoid getting too
-    exprPush {{ .15 }}
-    featPropPop Clover.Costume.scale
-
-  ]]
-]]`
-    },
-    {
-      "name": "Gopher",
-      "scriptText": `# BLUEPRINT Gopher
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Gopher is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Gopher.Costume.costumeName setTo 'FWE_gopher.png'
-
-addFeature Physics
-featProp Gopher.Costume.scale setTo 0.15
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'gopher'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Gopher.energyLevel setMax 100
-prop Gopher.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Gopher lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Gopher.Graphing.meterProp setTo 'energyLevel'
-
-featProp Gopher.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Gopher.getProp('energyLevel').value - Gopher.getProp('energyUse').value }}
-  propPop Gopher.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Gopher is
-  // sated
-  ifExpr {{ Gopher.getProp('energyLevel').value > 50 }} [[
-    featProp Gopher.Costume.currentFrame setTo 0
-    // Green
-    featProp Gopher.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Gopher.getProp('energyLevel').value < 50 }} [[
-    featProp Gopher.Costume.currentFrame setTo 1
-    // Orange
-    featProp Gopher.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Gopher.getProp('energyLevel').value < 20 }} [[
-    featProp Gopher.Costume.currentFrame setTo 1
-    // Red
-    featProp Gopher.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Gopher.getProp('energyLevel').value < 1 }} [[
-    featProp Gopher.Costume.currentFrame setTo 2
-    prop Gopher.alpha setTo 0.3
-    prop Gopher.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Gopher.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Snail",
-      "scriptText": `# BLUEPRINT Snail
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Snail is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Snail.Costume.costumeName setTo 'FWE_snail.png'
-
-addFeature Physics
-featProp Snail.Costume.scale setTo 0.35
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'snail'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Snail.energyLevel setMax 100
-prop Snail.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Snail lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Snail.Graphing.meterProp setTo 'energyLevel'
-
-featProp Snail.Graphing.meterColor setTo 65280
-
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Snail.getProp('energyLevel').value - Snail.getProp('energyUse').value }}
-  propPop Snail.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Snail is
-  // sated
-  ifExpr {{ Snail.getProp('energyLevel').value > 50 }} [[
-    featProp Snail.Costume.currentFrame setTo 0
-    // Green
-    featProp Snail.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Snail.getProp('energyLevel').value < 50 }} [[
-    featProp Snail.Costume.currentFrame setTo 1
-    // Orange
-    featProp Snail.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Snail.getProp('energyLevel').value < 20 }} [[
-    featProp Snail.Costume.currentFrame setTo 1
-    // Red
-    featProp Snail.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Snail.getProp('energyLevel').value < 1 }} [[
-    featProp Snail.Costume.currentFrame setTo 2
-    prop Snail.alpha setTo 0.3
-    prop Snail.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Snail.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Caterpillar",
-      "scriptText": `# BLUEPRINT Caterpillar
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Caterpillar is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
-
-addFeature Physics
-featProp Caterpillar.Costume.scale setTo 0.15
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'caterpillar'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Caterpillar.energyLevel setMax 100
-prop Caterpillar.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Caterpillar lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
-
-featProp Caterpillar.Graphing.meterColor setTo 65280
-
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Caterpillar.getProp('energyLevel').value - Caterpillar.getProp('energyUse').value }}
-  propPop Caterpillar.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Caterpillar is
-  // sated
-  ifExpr {{ Caterpillar.getProp('energyLevel').value > 50 }} [[
-    featProp Caterpillar.Costume.currentFrame setTo 0
-    // Green
-    featProp Caterpillar.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 50 }} [[
-    featProp Caterpillar.Costume.currentFrame setTo 1
-    // Orange
-    featProp Caterpillar.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 20 }} [[
-    featProp Caterpillar.Costume.currentFrame setTo 1
-    // Red
-    featProp Caterpillar.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 1 }} [[
-    featProp Caterpillar.Costume.currentFrame setTo 2
-    prop Caterpillar.alpha setTo 0.3
-    prop Caterpillar.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Beetle",
-      "scriptText": `# BLUEPRINT Beetle
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Beetle is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
-
-addFeature Physics
-featProp Beetle.Costume.scale setTo 0.35
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'beetle'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Beetle.energyLevel setMax 100
-prop Beetle.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Beetle lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Beetle.Graphing.meterProp setTo 'energyLevel'
-
-featProp Beetle.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Beetle.getProp('energyLevel').value - Beetle.getProp('energyUse').value }}
-  propPop Beetle.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Beetle is
-  // sated
-  ifExpr {{ Beetle.getProp('energyLevel').value > 50 }} [[
-    featProp Beetle.Costume.currentFrame setTo 0
-    // Green
-    featProp Beetle.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Beetle.getProp('energyLevel').value < 50 }} [[
-    featProp Beetle.Costume.currentFrame setTo 1
-    // Orange
-    featProp Beetle.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Beetle.getProp('energyLevel').value < 20 }} [[
-    featProp Beetle.Costume.currentFrame setTo 1
-    // Red
-    featProp Beetle.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Beetle.getProp('energyLevel').value < 1 }} [[
-    featProp Beetle.Costume.currentFrame setTo 2
-    prop Beetle.alpha setTo 0.3
-    prop Beetle.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Beetle.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Mouse",
-      "scriptText": `# BLUEPRINT Mouse
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Mouse is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
-
-addFeature Physics
-featProp Mouse.Costume.scale setTo 0.35
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'mouse'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Mouse.energyLevel setMax 100
-prop Mouse.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Mouse lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Mouse.Graphing.meterProp setTo 'energyLevel'
-
-featProp Mouse.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Mouse.getProp('energyLevel').value - Mouse.getProp('energyUse').value }}
-  propPop Mouse.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Mouse is
-  // sated
-  ifExpr {{ Mouse.getProp('energyLevel').value > 50 }} [[
-    featProp Mouse.Costume.currentFrame setTo 0
-    // Green
-    featProp Mouse.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Mouse.getProp('energyLevel').value < 50 }} [[
-    featProp Mouse.Costume.currentFrame setTo 1
-    // Orange
-    featProp Mouse.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Mouse.getProp('energyLevel').value < 20 }} [[
-    featProp Mouse.Costume.currentFrame setTo 1
-    // Red
-    featProp Mouse.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Mouse.getProp('energyLevel').value < 1 }} [[
-    featProp Mouse.Costume.currentFrame setTo 2
-    prop Mouse.alpha setTo 0.3
-    prop Mouse.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Robin",
-      "scriptText": `# BLUEPRINT Robin
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Robin is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
-
-addFeature Physics
-featProp Robin.Costume.scale setTo 0.15
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'robin'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Robin.energyLevel setMax 100
-prop Robin.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Robin lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Robin.Graphing.meterProp setTo 'energyLevel'
-
-featProp Robin.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Robin.getProp('energyLevel').value - Robin.getProp('energyUse').value }}
-  propPop Robin.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Robin is
-  // sated
-  ifExpr {{ Robin.getProp('energyLevel').value > 50 }} [[
-    featProp Robin.Costume.currentFrame setTo 0
-    // Green
-    featProp Robin.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Robin.getProp('energyLevel').value < 50 }} [[
-    featProp Robin.Costume.currentFrame setTo 1
-    // Orange
-    featProp Robin.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Robin.getProp('energyLevel').value < 20 }} [[
-    featProp Robin.Costume.currentFrame setTo 1
-    // Red
-    featProp Robin.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Robin.getProp('energyLevel').value < 1 }} [[
-    featProp Robin.Costume.currentFrame setTo 2
-    prop Robin.alpha setTo 0.3
-    prop Robin.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Robin.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
-      "name": "Hawk",
-      "scriptText": `# BLUEPRINT Hawk
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Hawk is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
-
-addFeature Physics
-featProp Hawk.Costume.scale setTo 0.07
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'hawk'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Hawk.energyLevel setMax 100
-prop Hawk.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Hawk.Graphing.meterProp setTo 'energyLevel'
-
-featProp Hawk.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Hawk.getProp('energyLevel').value - Hawk.getProp('energyUse').value }}
-  propPop Hawk.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Hawk is
-  // sated
-  ifExpr {{ Hawk.getProp('energyLevel').value > 50 }} [[
-    featProp Hawk.Costume.currentFrame setTo 0
-    // Green
-    featProp Hawk.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Hawk.getProp('energyLevel').value < 50 }} [[
-    featProp Hawk.Costume.currentFrame setTo 1
-    // Orange
-    featProp Hawk.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Hawk.getProp('energyLevel').value < 20 }} [[
-    featProp Hawk.Costume.currentFrame setTo 1
-    // Red
-    featProp Hawk.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Hawk.getProp('energyLevel').value < 1 }} [[
-    featProp Hawk.Costume.currentFrame setTo 2
-    prop Hawk.alpha setTo 0.3
-    prop Hawk.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Hawk.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
+featProp EnergyInSystem.Graphing.text setTo 'Energy in System'`
     },
     {
       "name": "Grass",
@@ -1458,6 +681,166 @@ every 2 runAtStart [[
 
 // required directive
 # PROGRAM INIT`
+    },
+    {
+      "name": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+
+addFeature Costume
+featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+
+addFeature Physics
+featProp EnergyRepresentation.Costume.scale setTo 0.06
+
+// setup energy properties
+addProp energyLevel Number 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp energyType String 'none'
+
+addFeature Touches
+featCall EnergyRepresentation.Touches monitor 'Sun' c2b
+featCall EnergyRepresentation.Touches monitor 'Grass' c2b
+featCall EnergyRepresentation.Touches monitor 'Squash' c2b
+featCall EnergyRepresentation.Touches monitor 'Venusflytrap' c2b
+featCall EnergyRepresentation.Touches monitor 'Fly' c2b
+featCall EnergyRepresentation.Touches monitor 'Squirrel' c2b
+
+
+# PROGRAM UPDATE
+// types to use for energy transfer: sun, grass, squash, venusflytrap, fly, squirrel
+// sunToGrass, sunToSquash, sunToVenus, sunToFly, sunToSquirrel
+
+// ---updating sun energy---
+
+when EnergyRepresentation centerFirstTouches Sun [[
+
+  // when touching, show an annotation about how the sun produces energy
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
+]]
+
+when EnergyRepresentation centerLastTouches Sun [[
+
+  // when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
+  prop EnergyRepresentation.energyType setTo 'sun'
+  prop EnergyRepresentation.energyLevel setTo 100
+
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
+]]
+
+
+// ---updating Grass energy---
+
+when EnergyRepresentation centerFirstTouches Grass [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'grass'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_grass_energy.png'
+  ]]
+
+  // if you have energy from the sun, then give some energy to the grass, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+    prop EnergyRepresentation.energyType setTo 'sunToGrass'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Grass.energyLevel add 50
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 50
+
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_sun_to_grass.png'
+
+    featProp Grass.Costume.glow setTo 1
+
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Grass [[
+
+  // if you have no energy type, take some energy from the Grass
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToGrass' && Grass.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'grass'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the VeggieGarden gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Grass.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_grass_energy.png'
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with vaggiegarden energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToGrass' }} [[
+    prop EnergyRepresentation.energyType setTo 'grass'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_grass_energy.png'
+  ]]
+]]
+
+// ---updating Squash energy---
+
+when EnergyRepresentation centerFirstTouches Squash [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'squash'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squash_energy.png'
+  ]]
+
+  // if you have energy from the sun, then give some energy to the squash, but not all of it because some is released into the environment
+  // as heat or lost in other ways
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' }} [[
+    prop EnergyRepresentation.energyType setTo 'sunToSquash'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Grass gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Squash.energyLevel add 50
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 50
+
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_sun_to_squash.png'
+    featProp Squash.Costume.scale setTo 0.4
+
+    featProp Squash.Costume.glow setTo 1
+
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Squash [[
+
+  // if you have no energy type, take some energy from the Grass
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToSquash' && Squash.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'squash'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Grass gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Squash.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squash_energy.png'
+    featProp EnergyRepresentation.Costume.scale setTo 0.06
+
+  ]]
+
+  // when leaving (after arriving with relevant energy type) make sure to leave with squash energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToSquash' }} [[
+    prop EnergyRepresentation.energyType setTo 'squash'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squash_energy.png'
+  ]]
+]]
+
+// required directive
+# PROGRAM INIT`
     }
   ],
   "instances": [
@@ -1481,13 +864,6 @@ prop y setTo -394.62`
       "bpid": "Sky",
       "initScript": `prop x setTo 2.36
 prop y setTo -22.06`
-    },
-    {
-      "id": "7",
-      "label": "Lost Energy Graph",
-      "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 505.35
-prop y setTo 317.49`
     },
     {
       "id": "21",
@@ -1525,11 +901,11 @@ prop y setTo -5`
 prop y setTo -21.77`
     },
     {
-      "id": "26",
-      "label": "EnergyRepresentation26",
-      "bpid": "EnergyRepresentation",
-      "initScript": `prop x setTo -219.11
-prop y setTo -218.76`
+      "id": "27",
+      "label": "EnergyInSystem27",
+      "bpid": "EnergyInSystem",
+      "initScript": `prop x setTo 490.42
+prop y setTo 291.36`
     }
   ]
 }
