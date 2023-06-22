@@ -839,6 +839,196 @@ when EnergyRepresentation centerLastTouches Squash [[
   ]]
 ]]
 
+// ---updating Squirrel energy---
+
+when EnergyRepresentation centerFirstTouches Squirrel [[
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'squirrel'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squirrel_energy.png'
+  ]]
+
+  // when touch Squirrel, and energy type is from Grass and energy isn't 0, get energy, change meter color to orange, change type to grassToSquirrel
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'grass' && Squirrel.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'grassToSquirrel'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Squirrel gets from the Grass, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Squirrel.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_grass_to_squirrel.png'
+    featProp Squirrel.Costume.glow setTo 1
+  ]]
+
+  // when touch Squirrel and energy type is from squash and energy isn't 0, get energy, change meter color to orange, change type to squashToSquirrel
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'squash' && Squirrel.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'squashToSquirrel'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Squirrel gets from the Squash, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Squirrel.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squash_to_squirrel.png'
+    featProp Squirrel.Costume.glow setTo 1
+  ]]
+
+]]
+
+when EnergyRepresentation centerLastTouches Squirrel [[
+
+  // if you have no Squirrel energy type, take some energy from the Squirrel to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'grassToSquirrel' || EnergyRepresentation.getProp('energyType').value == 'squashToSquirrel') && Squirrel.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'squirrel'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Squirrel gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Squirrel.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squirrel_energy.png'
+
+  ]]
+
+  // when leaving (after arriving with relevant energy type) make sure to leave with Squirrel energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'grassToSquirrel' || EnergyRepresentation.getProp('energyType').value == 'squashToSquirrel' }} [[
+    prop EnergyRepresentation.energyType setTo 'squirrel'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squirrel_energy.png'
+  ]]
+
+]]
+
+// ---updating Fly energy---
+
+when EnergyRepresentation centerFirstTouches Fly [[
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'fly'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_fly_energy.png'
+  ]]
+
+  // when touch Fly, and energy type is from squash and energy isn't 0, get energy, change meter color to orange, change type to squashToFly
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'squash' && Fly.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'squashToFly'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Fly gets from the Squash, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Fly.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squash_to_fly.png'
+    featProp Fly.Costume.glow setTo 1
+  ]]
+
+  // when touch snake and energy type is from squirrel and energy isn't 0, get energy, change meter color to orange, change type to squirrelToFly
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'squirrel' && Fly.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'squirrelToFly'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the fly gets from the squirrel, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Fly.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_squirrel_to_fly.png'
+    featProp Fly.Costume.glow setTo 1
+  ]]
+
+]]
+
+when EnergyRepresentation centerLastTouches Fly [[
+
+  // if you have no Fly energy type, take some energy from the Fly to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'squashToFly' || EnergyRepresentation.getProp('energyType').value == 'squirrelToFly') && Fly.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'fly'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Fly gives to a animal
+    // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Fly.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_fly_energy.png'
+
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with Fly energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'squashToFly' || EnergyRepresentation.getProp('energyType').value == 'squirrelToFly' }} [[
+    prop EnergyRepresentation.energyType setTo 'fly'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_fly_energy.png'
+  ]]
+
+]]
+
+// ---updating Venusflytrap energy---
+
+when EnergyRepresentation centerFirstTouches Venusflytrap [[
+
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' }} [[
+    prop EnergyRepresentation.energyType setTo 'venusflytrap'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_venusflytrap_energy.png'
+  ]]
+
+  // when touch Venusflytrap, and energy type is from sun and energy isn't 0, get energy, change meter color to orange, change type to sunToVenusflytrap
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sun' && Venusflytrap.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'sunToVenusflytrap'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Venusflytrap gets from the Sun, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Venusflytrap.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_sun_to_venusflytrap.png'
+    featProp Venusflytrap.Costume.glow setTo 1
+  ]]
+
+  // when touch Venusflytrap and energy type is from fly and energy isn't 0, get energy, change meter color to orange, change type to flyToVenusflytrap
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'fly' && Venusflytrap.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'flyToVenusflytrap'
+
+    // STUDENTS_MAY_CHANGE to alter how much energy the Venusflytrap gets from the Fly, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Venusflytrap.energyLevel add 10
+    // we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+
+    featProp EnergyRepresentation.Costume.costumeName setTo 'CP_fly_to_venusflytrap.png'
+    featProp Venusflytrap.Costume.glow setTo 1
+  ]]
+
+  when EnergyRepresentation centerLastTouches Venusflytrap [[
+
+    // if you have no Squirrel energy type, take some energy from the Squirrel to the energy
+    ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'sunToVenusflytrap' || EnergyRepresentation.getProp('energyType').value == 'flyToVenusflytrap') && Venusflytrap.getProp('energyLevel').value > 25 }} [[
+      prop EnergyRepresentation.energyType setTo 'venusflytrap'
+
+      // STUDENTS_MAY_CHANGE to alter how much energy the Squirrel gives to a animal
+      // note - it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+      prop Venusflytrap.energyLevel sub 10
+      prop EnergyRepresentation.energyLevel add 25
+      // we are losing 25 of the hundred, so not that in the global
+      prop global.energyReleasedAsHeat add 25
+
+      featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+
+    ]]
+
+    // when leaving (after arriving with relevant energy type) make sure to leave with Squirrel energy type
+    ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVenusflytrap' || EnergyRepresentation.getProp('energyType').value == 'flyToVenusflytrap' }} [[
+      prop EnergyRepresentation.energyType setTo 'venusflytrap'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+    ]]
+
+  ]]
+]]
 // required directive
 # PROGRAM INIT`
     }
@@ -869,36 +1059,36 @@ prop y setTo -22.06`
       "id": "21",
       "label": "Squash21",
       "bpid": "Squash",
-      "initScript": `prop x setTo -2.34
-prop y setTo 256.85`
+      "initScript": `prop x setTo -238.73
+prop y setTo 9.76`
     },
     {
       "id": "22",
       "label": "Venusflytrap22",
       "bpid": "Venusflytrap",
-      "initScript": `prop x setTo 255.51
-prop y setTo 253.73`
+      "initScript": `prop x setTo 76.90
+prop y setTo 19.26`
     },
     {
       "id": "23",
       "label": "Grass23",
       "bpid": "Grass",
-      "initScript": `prop x setTo -274.34
-prop y setTo 259.30`
+      "initScript": `prop x setTo 12.64
+prop y setTo 284.80`
     },
     {
       "id": "24",
       "label": "Squirrel24",
       "bpid": "Squirrel",
-      "initScript": `prop x setTo -14
-prop y setTo -5`
+      "initScript": `prop x setTo -31.83
+prop y setTo -192.07`
     },
     {
       "id": "25",
       "label": "Fly25",
       "bpid": "Fly",
-      "initScript": `prop x setTo 204.71
-prop y setTo -21.77`
+      "initScript": `prop x setTo 267.70
+prop y setTo -113.70`
     },
     {
       "id": "27",
