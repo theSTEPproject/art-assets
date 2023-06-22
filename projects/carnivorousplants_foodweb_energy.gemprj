@@ -839,22 +839,24 @@ when EnergyRepresentation centerLastTouches Hawk [[
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-      # PROGRAM INIT
-      addFeature Graphing
-      addFeature Costume
-      featProp Timer.Costume.costumeName setTo 'onexone.json'
-      addProp time number 0
-      prop Timer.zIndex setTo 500
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+addProp time number 0
+prop Timer.zIndex setTo 500
 
-      featProp Timer.Graphing.text setTo 'Time: 0'
+featProp Timer.Graphing.text setTo 'Time: 0'
 
-      # PROGRAM UPDATE
-  every 1 runAtStart [[
-        prop Timer.time add 1
-        exprPush {{ 'Time: ' + agent.getProp('time').value }}
-        featPropPop Timer.Graphing.text
-      ]]
-`
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
     },
     {
       "name": "GraphLostEnergy",
@@ -870,7 +872,7 @@ when EnergyRepresentation centerLastTouches Hawk [[
 
 // hide the actual art since we just want the text to displaay
 addFeature Costume
-featProp GraphLostEnergy.Costume.costumeName setTo 'onexone.json'
+featProp GraphLostEnergy.Costume.costumeName setTo 'GEN_onexone.json'
 featProp GraphLostEnergy.Costume.scale setTo 1
 
 addFeature Graphing
@@ -1689,88 +1691,6 @@ every 2 runAtStart [[
 # PROGRAM INIT`
     },
     {
-      "name": "Snake",
-      "scriptText": `# BLUEPRINT Snake
-# TAG isCharControllable true
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM DEFINE
-// The Snake is one of the characters that takes / produces energy
-// Note that it mostly just stores properties that the EnergyRepresentation will check / change
-// The other main functionality (under update) is that it will update its meter color depending on
-// how much energy it has
-
-
-addFeature Costume
-featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
-
-addFeature Physics
-featProp Snake.Costume.scale setTo 0.25
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'snake'
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Snake.energyLevel setMax 100
-prop Snake.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Snake.Graphing.meterProp setTo 'energyLevel'
-
-featProp Snake.Graphing.meterColor setTo 65280
-
-# PROGRAM UPDATE
-every 2 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Snake.getProp('energyLevel').value - Snake.getProp('energyUse').value }}
-  propPop Snake.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Snake is
-  // sated
-  ifExpr {{ Snake.getProp('energyLevel').value > 50 }} [[
-    featProp Snake.Costume.currentFrame setTo 0
-    // Green
-    featProp Snake.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Snake.getProp('energyLevel').value < 50 }} [[
-    featProp Snake.Costume.currentFrame setTo 1
-    // Orange
-    featProp Snake.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Snake.getProp('energyLevel').value < 20 }} [[
-    featProp Snake.Costume.currentFrame setTo 1
-    // Red
-    featProp Snake.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
-    featProp Snake.Costume.currentFrame setTo 2
-    prop Snake.alpha setTo 0.3
-    prop Snake.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Snake.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-// required directive
-# PROGRAM INIT`
-    },
-    {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
 # TAG isCharControllable true
@@ -1931,6 +1851,315 @@ every 1 runAtStart [[
 
   ]]
 ]]`
+    },
+    {
+      "name": "Squash",
+      "scriptText": `# BLUEPRINT Squash
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// The Squash is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp Squash.Costume.costumeName setTo 'CP_squash.png'
+
+addFeature Physics
+featProp Squash.Costume.scale setTo 0.4
+
+// types to use for energy transfer:
+// these are referenced by EnergyRepresentation
+addProp energyType String 'squash'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Squash.energyLevel setMax 100
+prop Squash.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Squash.Graphing.meterProp setTo 'energyLevel'
+
+featProp Squash.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Squash.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Squash.getProp('energyLevel').value - Squash.getProp('energyUse').value }}
+    propPop Squash.energyLevel
+  ]]
+
+  // re-scale the VeggieGarden based on its energy level
+  ifExpr {{ Squash.getProp('energyLevel').value > 30 }} [[
+    // insert code here
+  ]]
+  exprPush {{ Squash.getProp('energyLevel').value / 200 }}
+  featPropPop Squash.Costume.scale
+
+  // this code sets the color of the energy bar based on how hungry the squash is
+  // set squash energy meter color
+  // doing great
+  ifExpr {{ Squash.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Squash.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Squash.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Squash.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Squash.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Squash.Graphing.meterColor setTo 16711680
+
+    // avoid getting too
+    exprPush {{ .15 }}
+    featPropPop Squash.Costume.scale
+
+  ]]
+]]`
+    },
+    {
+      "name": "Venusflytrap",
+      "scriptText": `# BLUEPRINT Venusflytrap
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// The Venusflytrap is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+addFeature Costume
+featProp Venusflytrap.Costume.costumeName setTo 'CP_venusflytrap.png'
+
+addFeature Physics
+featProp Venusflytrap.Costume.scale setTo 0.4
+
+// types to use for energy transfer:
+addProp energyType String 'venusflytrap'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Venusflytrap.energyLevel setMax 100
+prop Venusflytrap.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Venusflytrap.Graphing.meterProp setTo 'energyLevel'
+
+featProp Venusflytrap.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Venusflytrap.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Venusflytrap.getProp('energyLevel').value - Venusflytrap.getProp('energyUse').value }}
+    propPop Venusflytrap.energyLevel
+  ]]
+
+  // re-scale the VeggieGarden based on its energy level
+  ifExpr {{ Venusflytrap.getProp('energyLevel').value > 30 }} [[
+    // insert code here
+  ]]
+  exprPush {{ Venusflytrap.getProp('energyLevel').value / 200 }}
+  featPropPop Venusflytrap.Costume.scale
+
+  // this code sets the color of the energy bar based on how hungry the venusflytrp is
+  // set venusflytrap energy meter color
+  // doing great
+  ifExpr {{ Venusflytrap.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Venusflytrap.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Venusflytrap.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Venusflytrap.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Venusflytrap.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Venusflytrap.Graphing.meterColor setTo 16711680
+
+    // avoid getting too
+    exprPush {{ .15 }}
+    featPropPop Venusflytrap.Costume.scale
+
+  ]]
+]]`
+    },
+    {
+      "name": "Squirrel",
+      "scriptText": `# BLUEPRINT Squirrel
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The Squirrel is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
+addFeature Costume
+featProp Squirrel.Costume.costumeName setTo 'CP_squirrel.png'
+
+addFeature Physics
+featProp Squirrel.Costume.scale setTo 0.35
+
+// types to use for energy transfer: 
+addProp energyType String 'squirrel'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Squirrel.energyLevel setMax 100
+prop Squirrel.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Squirrel lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Squirrel.Graphing.meterProp setTo 'energyLevel'
+
+featProp Squirrel.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Squirrel.getProp('energyLevel').value - Squirrel.getProp('energyUse').value }}
+  propPop Squirrel.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Squirrel is
+  // sated
+  ifExpr {{ Squirrel.getProp('energyLevel').value > 50 }} [[
+    featProp Squirrel.Costume.currentFrame setTo 0
+    // Green
+    featProp Squirrel.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Squirrel.getProp('energyLevel').value < 50 }} [[
+    featProp Squirrel.Costume.currentFrame setTo 1
+    // Orange
+    featProp Squirrel.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Squirrel.getProp('energyLevel').value < 20 }} [[
+    featProp Squirrel.Costume.currentFrame setTo 1
+    // Red
+    featProp Squirrel.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Squirrel.getProp('energyLevel').value < 1 }} [[
+    featProp Squirrel.Costume.currentFrame setTo 2
+    prop Squirrel.alpha setTo 0.3
+    prop Squirrel.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Squirrel.Graphing.meterProp setTo 'energyLevel'
+
+]]
+
+// required directive
+# PROGRAM INIT`
+    },
+    {
+      "name": "Fly",
+      "scriptText": `# BLUEPRINT Fly
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM DEFINE
+// The Fly is one of the characters that takes / produces energy
+// Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// The other main functionality (under update) is that it will update its meter color depending on
+// how much energy it has
+
+
+addFeature Costume
+featProp Fly.Costume.costumeName setTo 'CP_fly.png'
+
+addFeature Physics
+featProp Fly.Costume.scale setTo 0.4
+
+// types to use for energy transfer:
+addProp energyType String 'fly'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Fly.energyLevel setMax 100
+prop Fly.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Fly lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Fly.Graphing.meterProp setTo 'energyLevel'
+
+featProp Fly.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Fly.getProp('energyLevel').value - Fly.getProp('energyUse').value }}
+  propPop Fly.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Fly is
+  // sated
+  ifExpr {{ Fly.getProp('energyLevel').value > 50 }} [[
+    featProp Fly.Costume.currentFrame setTo 0
+    // Green
+    featProp Fly.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Fly.getProp('energyLevel').value < 50 }} [[
+    featProp Fly.Costume.currentFrame setTo 1
+    // Orange
+    featProp Fly.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Fly.getProp('energyLevel').value < 20 }} [[
+    featProp Fly.Costume.currentFrame setTo 1
+    // Red
+    featProp Fly.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Fly.getProp('energyLevel').value < 1 }} [[
+    featProp Fly.Costume.currentFrame setTo 2
+    prop Fly.alpha setTo 0.3
+    prop Fly.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Fly.Graphing.meterProp setTo 'energyLevel'
+
+]]
+
+// required directive
+# PROGRAM INIT`
     }
   ],
   "instances": [
@@ -1963,74 +2192,46 @@ prop y setTo -22.06`
 prop y setTo 317.49`
     },
     {
-      "id": "10",
-      "label": "Clover10",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 340.1
-prop y setTo 126.81`
+      "id": "21",
+      "label": "Squash21",
+      "bpid": "Squash",
+      "initScript": `prop x setTo -2.34
+prop y setTo 256.85`
     },
     {
-      "id": "11",
-      "label": "Caterpillar11",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo 191
-prop y setTo -40.51`
+      "id": "22",
+      "label": "Venusflytrap22",
+      "bpid": "Venusflytrap",
+      "initScript": `prop x setTo 255.51
+prop y setTo 253.73`
     },
     {
-      "id": "13",
-      "label": "Gopher13",
-      "bpid": "Gopher",
-      "initScript": `prop x setTo 352.28
-prop y setTo -203.4`
-    },
-    {
-      "id": "14",
-      "label": "Snail14",
-      "bpid": "Snail",
-      "initScript": `prop x setTo -318.32
-prop y setTo -161.05`
-    },
-    {
-      "id": "15",
-      "label": "Beetle15",
-      "bpid": "Beetle",
-      "initScript": `prop x setTo -5.25
-prop y setTo -178.21`
-    },
-    {
-      "id": "16",
-      "label": "Mouse16",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo -281.62
-prop y setTo 72.55`
-    },
-    {
-      "id": "17",
-      "label": "Robin17",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 181.25
-prop y setTo 307.22`
-    },
-    {
-      "id": "18",
-      "label": "Snake18",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 19.94
-prop y setTo 96.28`
-    },
-    {
-      "id": "19",
-      "label": "Hawk19",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo 175.65
-prop y setTo -342.68`
-    },
-    {
-      "id": "20",
-      "label": "Grass20",
+      "id": "23",
+      "label": "Grass23",
       "bpid": "Grass",
-      "initScript": `prop x setTo -136.49
-prop y setTo 4.91`
+      "initScript": `prop x setTo -274.34
+prop y setTo 259.30`
+    },
+    {
+      "id": "24",
+      "label": "Squirrel24",
+      "bpid": "Squirrel",
+      "initScript": `prop x setTo -14
+prop y setTo -5`
+    },
+    {
+      "id": "25",
+      "label": "Fly25",
+      "bpid": "Fly",
+      "initScript": `prop x setTo 204.71
+prop y setTo -21.77`
+    },
+    {
+      "id": "26",
+      "label": "EnergyRepresentation26",
+      "bpid": "EnergyRepresentation",
+      "initScript": `prop x setTo -219.11
+prop y setTo -218.76`
     }
   ]
 }
