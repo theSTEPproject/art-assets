@@ -181,6 +181,13 @@ prop y setTo 155.23`
       "bpid": "Entity",
       "initScript": `prop x setTo 68.23
 prop y setTo 144.91`
+    },
+    {
+      "id": "4",
+      "label": "Predator",
+      "bpid": "Entity",
+      "initScript": `prop x setTo 222.83
+prop y setTo -101.07`
     }
   ]
 }
