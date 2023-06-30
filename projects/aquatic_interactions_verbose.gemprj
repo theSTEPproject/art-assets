@@ -7,7 +7,10 @@
     "right": 400,
     "bottom": 400,
     "left": -400,
-    "wrap": [false, false],
+    "wrap": [
+      false,
+      false
+    ],
     "bounce": true,
     "bgcolor": 102,
     "roundsCanLoop": true,
@@ -1363,15 +1366,15 @@ featProp Rock.Costume.flipX setTo true`
       "id": "1715",
       "label": "Algae 3",
       "bpid": "Algae",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
+      "initScript": `prop x setTo 327.32
+prop y setTo -334.51`
     },
     {
       "id": "1716",
       "label": "Algae 4",
       "bpid": "Algae",
-      "initScript": `prop x setTo -135.86
-prop y setTo -35.95`
+      "initScript": `prop x setTo -193.41
+prop y setTo -5.25`
     },
     {
       "id": "1720",
@@ -1412,6 +1415,41 @@ prop y setTo 261.99`
       "bpid": "GraphFishEnergy",
       "initScript": `prop x setTo 498.13
 prop y setTo 75.57`
+    },
+    {
+      "id": "1903",
+      "label": "Algae1903",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 303.79
+prop y setTo -180.56`
+    },
+    {
+      "id": "1904",
+      "label": "Algae1904",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -37
+prop y setTo 6`
+    },
+    {
+      "id": "1905",
+      "label": "Algae1905",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 203.36
+prop y setTo 3.35`
+    },
+    {
+      "id": "1906",
+      "label": "Algae1906",
+      "bpid": "Algae",
+      "initScript": `prop x setTo -208.76
+prop y setTo -341.00`
+    },
+    {
+      "id": "1907",
+      "label": "Algae1907",
+      "bpid": "Algae",
+      "initScript": `prop x setTo 143.37
+prop y setTo -259.91`
     }
   ]
 }

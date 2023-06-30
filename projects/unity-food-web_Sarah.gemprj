@@ -978,7 +978,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
+featProp Robin.Costume.costumeName setTo '13.png'
 
 // add other features
 addFeature Physics
