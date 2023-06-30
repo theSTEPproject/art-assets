@@ -2533,6 +2533,13 @@ prop y setTo -43.06`
       "bpid": "CloverPopulation",
       "initScript": `prop x setTo 632.31
 prop y setTo 128.49`
+    },
+    {
+      "id": "90",
+      "label": "Pesticide90",
+      "bpid": "Pesticide",
+      "initScript": `prop x setTo 60.04
+prop y setTo -95.04`
     }
   ]
 }
