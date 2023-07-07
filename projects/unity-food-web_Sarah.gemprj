@@ -38,13 +38,13 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
+featProp Mouse.Costume.costumeName setTo '18.png'
 
 // add other features
 addFeature Physics
 addFeature Touches
 
-featProp agent.Costume.scale setTo 0.2
+featProp agent.Costume.scale setTo 0.1
 
 featProp Mouse.Movement.compassDirection setTo 'W'
 featProp Mouse.Movement.movementType setTo 'wander'
@@ -146,13 +146,13 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
+featProp Snake.Costume.costumeName setTo '15.png'
 
 // add other features
 addFeature Physics
 addFeature Touches
 
-featProp Snake.Costume.scale setTo 0.2
+featProp Snake.Costume.scale setTo 0.1
 
 featProp Snake.Movement.movementType setTo 'wander'
 featProp Snake.Movement.compassDirection setTo 'S'
@@ -296,100 +296,6 @@ propPop Background.alpha
 // onEvent Tick [[ ]]`
     },
     {
-      "name": "VeggieGarden",
-      "scriptText": `# BLUEPRINT VeggieGarden
-# TAG isPozyxControllable false
-# TAG isCharControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-
-// set the costume
-featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp VeggieGarden.Costume.scale setTo 0.3
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall VeggieGarden.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 3/4 way
-addProp energyLevel number 75
-prop VeggieGarden.energyLevel setMax 100
-prop VeggieGarden.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
-
-featProp VeggieGarden.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-
-
-every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
-    propPop VeggieGarden.energyLevel
-  ]]
-
-  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
-  // set VeggieGarden energy meter color
-  // doing great
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
-    // Green
-    featProp VeggieGarden.Graphing.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
-    // Orange
-    featProp VeggieGarden.Graphing.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
-    // Red
-    featProp VeggieGarden.Graphing.meterColor setTo 16711680
-    // dead
-    ifExpr {{ VeggieGarden.getProp('energyLevel').value < 1 }} [[
-      featProp VeggieGarden.Costume.currentFrame setTo 2
-      prop VeggieGarden.alpha setTo 0.3
-      prop VeggieGarden.alive setTo false
-    ]]
-
-    // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop VeggieGarden.Costume.scale
-
-  ]]
-]]
-every 25 [[
-  ifProp VeggieGarden.energyLevel lessThan 1 [[
-    featProp VeggieGarden.Costume.glow setTo 1
-    prop VeggieGarden.alpha setTo 1
-    prop VeggieGarden.energyLevel setTo 55
-    prop VeggieGarden.alive setTo true
-  ]]
-]]
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
-    },
-    {
       "name": "Clover",
       "scriptText": `# BLUEPRINT Clover
 # TAG isPozyxControllable false
@@ -402,13 +308,13 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
+featProp Clover.Costume.costumeName setTo '16.png'
 
 // add other features
 addFeature Physics
 addFeature Touches
 
-featProp Clover.Costume.scale setTo 0.2
+featProp Clover.Costume.scale setTo 0.1
 
 addProp alive Boolean true
 
@@ -506,13 +412,13 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Snail.Costume.costumeName setTo 'FWE_snail.png'
+featProp Snail.Costume.costumeName setTo '19.png'
 
 // add other features
 addFeature Physics
 addFeature Touches
 
-featProp agent.Costume.scale setTo 0.2
+featProp agent.Costume.scale setTo 0.1
 
 featProp Snail.Movement.movementType setTo 'wander'
 featProp Snail.Movement.compassDirection setTo 'W'
@@ -611,124 +517,6 @@ when Snail touches VeggieGarden [[
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
-      "name": "Gopher",
-      "scriptText": `# BLUEPRINT Gopher
-# TAG isPozyxControllable false
-# TAG isCharControllable true
-# TAG isPTrackControllable true
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-addFeature Cursor
-
-// set the costume
-featProp Gopher.Costume.costumeName setTo 'FW1_gopher.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp agent.Costume.scale setTo 0.2
-
-featProp Gopher.Movement.movementType setTo 'wander'
-featProp Gopher.Movement.compassDirection setTo 'W'
-featProp Gopher.Movement.distance setTo 4
-featProp Gopher.Movement.targetY setMax 0.7
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Gopher.Touches monitor 'VeggieGarden' b2b
-featCall Gopher.Touches monitor 'Clover' b2b
-featCall Gopher.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Gopher.energyLevel setMax 100
-prop Gopher.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Gopher lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Gopher.Graphing.meterProp setTo 'energyLevel'
-
-featProp Gopher.Graphing.meterColor setTo 65280
-# PROGRAM EVENT
-every 1 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Gopher.getProp('energyLevel').value - Gopher.getProp('energyUse').value }}
-  propPop Gopher.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Gopher is
-  // sated
-  ifExpr {{ Gopher.getProp('energyLevel').value > 50 }} [[
-    featProp Gopher.Costume.currentFrame setTo 0
-    // Green
-    featProp Gopher.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Gopher.getProp('energyLevel').value < 50 }} [[
-    featProp Gopher.Costume.currentFrame setTo 1
-    // Orange
-    featProp Gopher.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Gopher.getProp('energyLevel').value < 20 }} [[
-    featProp Gopher.Costume.currentFrame setTo 1
-    // Red
-    featProp Gopher.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Gopher.getProp('energyLevel').value < 1 }} [[
-    featProp Gopher.Costume.currentFrame setTo 2
-    prop Gopher.alpha setTo 0.3
-    featProp Gopher.Movement.movementType setTo 'stop'
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Gopher.Graphing.meterProp setTo 'energyLevel'
-
-]]
-when Gopher touches VeggieGarden [[
-  every 1 [[
-    ifExpr {{ Gopher.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
-      featProp Gopher.Costume.glow setTo 1
-      prop Gopher.energyLevel add 10
-      prop VeggieGarden.energyLevel sub 10
-    ]]
-  ]]
-
-  when Gopher touches Clover [[
-    every 1 runAtStart [[
-      ifExpr {{ Gopher.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
-        featProp Gopher.Costume.glow setTo 1
-        prop Gopher.energyLevel add 10
-        prop Clover.energyLevel sub 10
-      ]]
-    ]]
-  ]]
-
-  when Gopher touches Reincarnator [[
-    ifExpr {{ Gopher.getProp('alive').value == false }} [[
-      featProp Gopher.Costume.glow setTo 1
-      prop Gopher.alive setTo true
-      prop Gopher.alpha setTo 1
-      prop Gopher.energyLevel setTo 50
-    ]]
-  ]]
-
-]]
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
-    },
-    {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
 # TAG isPozyxControllable false
@@ -741,7 +529,7 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
+featProp Caterpillar.Costume.costumeName setTo '20.png'
 
 // add other features
 addFeature Physics
@@ -837,134 +625,6 @@ when Caterpillar touches VeggieGarden [[
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
-      "name": "Beetle",
-      "scriptText": `# BLUEPRINT Beetle
-# TAG isPozyxControllable false
-# TAG isCharControllable true
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-
-addFeature Movement
-addFeature Costume
-
-// set the costume
-featProp Beetle.Costume.costumeName setTo 'FWE_beetle.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp agent.Costume.scale setTo 0.3
-
-featProp Beetle.Movement.compassDirection setTo 'north'
-featProp Beetle.Movement.movementType setTo 'wander'
-featProp Beetle.Movement.distance setTo 3
-featProp Beetle.Movement.targetY setMax 0.7
-
-addProp alive Boolean true
-
-
-// make sure we track interactions with the other creatures
-featCall Beetle.Touches monitor 'Caterpillar' b2b
-featCall Beetle.Touches monitor 'Snail' b2b
-featCall Beetle.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Beetle.energyLevel setMax 100
-prop Beetle.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Beetle lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Beetle.Graphing.meterProp setTo 'energyLevel'
-
-featProp Beetle.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-every 1 runAtStart [[
-  when Beetle touches Reincarnator [[
-    ifExpr {{ Beetle.getProp('alive').value == false }} [[
-      featProp Beetle.Costume.glow setTo 1
-      prop Beetle.alive setTo true
-      prop Beetle.alpha setTo 1
-      prop Beetle.energyLevel setTo 50
-    ]]
-  ]]
-]]
-
-when Beetle touches Caterpillar [[
-  every 1 [[
-    ifExpr {{ Beetle.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
-      featProp Beetle.Costume.glow setTo 1
-      prop Beetle.energyLevel add 10
-      prop Caterpillar.alive setTo false
-      prop Caterpillar.alpha setTo 0.3
-      prop Caterpillar.energyLevel setTo 0
-    ]]
-  ]]
-]]
-
-when Beetle touches Snail [[
-  every 1 [[
-    ifExpr {{ Beetle.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
-      featProp Beetle.Costume.glow setTo 1
-      prop Snail.alive setTo false
-      prop Snail.alpha setTo 0.3
-      prop Beetle.energyLevel add 10
-      prop Snail.energyLevel setTo 0
-    ]]
-  ]]
-]]
-
-
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-every 1 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Beetle.getProp('energyLevel').value - Beetle.getProp('energyUse').value }}
-  propPop Beetle.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Beetle is
-  // sated
-  ifExpr {{ Beetle.getProp('energyLevel').value > 50 }} [[
-    featProp Beetle.Costume.currentFrame setTo 0
-    // Green
-    featProp Beetle.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Beetle.getProp('energyLevel').value < 50 }} [[
-    featProp Beetle.Costume.currentFrame setTo 1
-    // Orange
-    featProp Beetle.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Beetle.getProp('energyLevel').value < 20 }} [[
-    featProp Beetle.Costume.currentFrame setTo 1
-    // Red
-    featProp Beetle.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Beetle.getProp('energyLevel').value < 1 }} [[
-    featProp Beetle.Costume.currentFrame setTo 2
-    prop Beetle.alpha setTo 0.3
-    prop Beetle.alive setTo false
-    featProp Beetle.Movement.movementType setTo 'stop'
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Beetle.Graphing.meterProp setTo 'energyLevel'
-
-]]`
-    },
-    {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
 # TAG isPozyxControllable false
@@ -984,7 +644,7 @@ featProp Robin.Costume.costumeName setTo '13.png'
 addFeature Physics
 addFeature Touches
 
-featProp Robin.Costume.scale setTo 0.2
+featProp Robin.Costume.scale setTo 0.1
 
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
@@ -1116,13 +776,13 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
+featProp Hawk.Costume.costumeName setTo '17.png'
 
 // add other features
 addFeature Physics
 addFeature Touches
 
-featProp Hawk.Costume.scale setTo 0.15
+featProp Hawk.Costume.scale setTo 0.1
 
 featProp Hawk.Movement.compassDirection setTo 'west'
 featProp Hawk.Movement.movementType setTo 'wander'
@@ -1265,126 +925,6 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "name": "Rabbit",
-      "scriptText": `# BLUEPRINT Rabbit
-# TAG isPozyxControllable false
-# TAG isCharControllable true
-# TAG isPTrackControllable true
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-addFeature Cursor
-
-// set the costume
-featProp Rabbit.Costume.costumeName setTo 'web_brown-rabbit.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp agent.Costume.scale setTo 0.2
-
-featProp Rabbit.Movement.movementType setTo 'wander'
-featProp Rabbit.Movement.compassDirection setTo 'W'
-featProp Rabbit.Movement.distance setTo 4
-featProp Rabbit.Movement.targetY setMax 0.7
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Rabbit.Touches monitor 'VeggieGarden' b2b
-featCall Rabbit.Touches monitor 'Clover' b2b
-featCall Rabbit.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Rabbit.energyLevel setMax 100
-prop Rabbit.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Rabbit lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
-
-featProp Rabbit.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-every 1 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Rabbit.getProp('energyLevel').value - Rabbit.getProp('energyUse').value }}
-  propPop Rabbit.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Rabbit is
-  // sated
-  ifExpr {{ Rabbit.getProp('energyLevel').value > 50 }} [[
-    featProp Rabbit.Costume.currentFrame setTo 0
-    // Green
-    featProp Rabbit.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Rabbit.getProp('energyLevel').value < 50 }} [[
-    featProp Rabbit.Costume.currentFrame setTo 1
-    // Orange
-    featProp Rabbit.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Rabbit.getProp('energyLevel').value < 20 }} [[
-    featProp Rabbit.Costume.currentFrame setTo 1
-    // Red
-    featProp Rabbit.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Rabbit.getProp('energyLevel').value < 1 }} [[
-    featProp Rabbit.Costume.currentFrame setTo 2
-    prop Rabbit.alpha setTo 0.3
-    featProp Rabbit.Movement.movementType setTo 'stop'
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
-
-]]
-when Rabbit touches VeggieGarden [[
-  every 1 [[
-    ifExpr {{ Rabbit.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
-      featProp Rabbit.Costume.glow setTo 1
-      prop Rabbit.energyLevel add 10
-      prop VeggieGarden.energyLevel sub 10
-    ]]
-  ]]
-
-  when Rabbit touches Clover [[
-    every 1 runAtStart [[
-      ifExpr {{ Rabbit.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
-        featProp Rabbit.Costume.glow setTo 1
-        prop Rabbit.energyLevel add 10
-        prop Clover.energyLevel sub 10
-      ]]
-    ]]
-  ]]
-
-  when Rabbit touches Reincarnator [[
-    ifExpr {{ Rabbit.getProp('alive').value == false }} [[
-      featProp Rabbit.Costume.glow setTo 1
-      prop Rabbit.alive setTo true
-      prop Rabbit.alpha setTo 1
-      prop Rabbit.energyLevel setTo 50
-    ]]
-  ]]
-
-]]
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
-    },
-    {
       "name": "global",
       "scriptText": `# BLUEPRINT global
 # TAG IsCharControllable false
@@ -1397,100 +937,6 @@ addProp alphaSettingForAll number 0.5
 
 // required directive
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "Weeds",
-      "scriptText": `# BLUEPRINT Weeds
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-
-// set the costume
-featProp Weeds.Costume.costumeName setTo 'weeds.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp Weeds.Costume.scale setTo 0.1
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Weeds.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 3/4 way
-addProp energyLevel number 75
-prop Weeds.energyLevel setMax 100
-prop Weeds.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Weeds lose energy faster (or slower)
-addProp energyUse number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Weeds.Graphing.meterProp setTo 'energyLevel'
-
-featProp Weeds.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-
-
-every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Weeds.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Weeds.getProp('energyLevel').value - Weeds.getProp('energyUse').value }}
-    propPop Weeds.energyLevel
-  ]]
-
-  // this code sets the color of the energy bar based on how hungry the Weeds is
-  // set Weeds energy meter color
-  // doing great
-  ifExpr {{ Weeds.getProp('energyLevel').value > 60 }} [[
-    // Green
-    featProp Weeds.Graphing.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ Weeds.getProp('energyLevel').value < 60 }} [[
-    // Orange
-    featProp Weeds.Graphing.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ Weeds.getProp('energyLevel').value < 30 }} [[
-    // Red
-    featProp Weeds.Graphing.meterColor setTo 16711680
-    // dead
-    ifExpr {{ Weeds.getProp('energyLevel').value < 1 }} [[
-      featProp Weeds.Costume.currentFrame setTo 2
-      prop Weeds.alpha setTo 0.3
-      prop Weeds.alive setTo false
-    ]]
-
-    // avoid getting too small
-    exprPush {{ 0.1 }}
-    featPropPop Weeds.Costume.scale
-
-  ]]
-]]
-every 10 [[
-  ifProp Weeds.energyLevel lessThan 1 [[
-    featProp Weeds.Costume.glow setTo 1
-    prop Weeds.alpha setTo 1
-    prop Weeds.energyLevel setTo 55
-    prop Weeds.alive setTo true
-  ]]
-]]
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
       "name": "Pesticide",
@@ -2123,56 +1569,6 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "VeggieGardenPopulation",
-      "scriptText": `# BLUEPRINT VeggieGardenPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp VeggieGardenPopulation.Costume.costumeName setTo 'onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp VeggieGardenPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of VeggieGardens
-addProp totalVeggieGardenPop number 4
-
-
-featProp VeggieGardenPopulation.Graphing.graphProp setTo 'totalVeggieGardenPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop VeggieGardenPopulation.x setTo 495
-prop VeggieGardenPopulation.y setTo 187
-prop VeggieGardenPopulation.zIndex setTo 300
-
-featProp VeggieGardenPopulation.Graphing.text setTo 'VeggieGarden Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the VeggieGarden
-  featProp VeggieGardenPopulation.Population.monitoredCharacter setTo 'VeggieGarden'
-  featProp VeggieGardenPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall VeggieGardenPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop VeggieGardenPopulation.totalVeggieGardenPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalVeggieGardenPop').value }}
-  propPop VeggieGardenPopulation.totalVeggieGardenPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "CloverPopulation",
       "scriptText": `# BLUEPRINT CloverPopulation
 # TAG IsCharControllable false
@@ -2223,55 +1619,514 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "WeedsPopulation",
-      "scriptText": `# BLUEPRINT WeedsPopulation
+      "name": "Turlugafish",
+      "scriptText": `# BLUEPRINT Turlugafish
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Turlugafish.Costume.costumeName setTo '13.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Turlugafish.Movement.movementType setTo 'wander'
+featProp Turlugafish.Movement.compassDirection setTo 'W'
+featProp Turlugafish.Movement.distance setTo 4
+featProp Turlugafish.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Turlugafish.Touches monitor 'VeggieGarden' b2b
+featCall Turlugafish.Touches monitor 'Clover' b2b
+featCall Turlugafish.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Turlugafish.energyLevel setMax 100
+prop Turlugafish.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Turlugafish lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Turlugafish.Graphing.meterProp setTo 'energyLevel'
+
+featProp Turlugafish.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Turlugafish.getProp('energyLevel').value - Turlugafish.getProp('energyUse').value }}
+  propPop Turlugafish.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Turlugafish is
+  // sated
+  ifExpr {{ Turlugafish.getProp('energyLevel').value > 50 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 0
+    // Green
+    featProp Turlugafish.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 50 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 1
+    // Orange
+    featProp Turlugafish.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 20 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 1
+    // Red
+    featProp Turlugafish.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 1 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 2
+    prop Turlugafish.alpha setTo 0.3
+    featProp Turlugafish.Movement.movementType setTo 'stop'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Turlugafish.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Turlugafish touches VeggieGarden [[
+  every 1 [[
+    ifExpr {{ Turlugafish.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
+      featProp Turlugafish.Costume.glow setTo 1
+      prop Turlugafish.energyLevel add 10
+      prop VeggieGarden.energyLevel sub 10
+    ]]
+  ]]
+
+  when Turlugafish touches Clover [[
+    every 1 runAtStart [[
+      ifExpr {{ Turlugafish.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
+        featProp Turlugafish.Costume.glow setTo 1
+        prop Turlugafish.energyLevel add 10
+        prop Clover.energyLevel sub 10
+      ]]
+    ]]
+  ]]
+
+  when Turlugafish touches Reincarnator [[
+    ifExpr {{ Turlugafish.getProp('alive').value == false }} [[
+      featProp Turlugafish.Costume.glow setTo 1
+      prop Turlugafish.alive setTo true
+      prop Turlugafish.alpha setTo 1
+      prop Turlugafish.energyLevel setTo 50
+    ]]
+  ]]
+
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first timeTurlugafish`
+    },
+    {
+      "name": "Shurp",
+      "scriptText": `# BLUEPRINT Shurp
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Shurp.Costume.costumeName setTo '14.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Shurp.Movement.movementType setTo 'wander'
+featProp Shurp.Movement.compassDirection setTo 'W'
+featProp Shurp.Movement.distance setTo 4
+featProp Shurp.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Shurp.Touches monitor 'VeggieGarden' b2b
+featCall Shurp.Touches monitor 'Clover' b2b
+featCall Shurp.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Shurp.energyLevel setMax 100
+prop Shurp.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Shurp lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Shurp.Graphing.meterProp setTo 'energyLevel'
+
+featProp Shurp.Graphing.meterColor setTo 65280
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Shurp.getProp('energyLevel').value - Shurp.getProp('energyUse').value }}
+  propPop Shurp.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Shurp is
+  // sated
+  ifExpr {{ Shurp.getProp('energyLevel').value > 50 }} [[
+    featProp Shurp.Costume.currentFrame setTo 0
+    // Green
+    featProp Shurp.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Shurp.getProp('energyLevel').value < 50 }} [[
+    featProp Shurp.Costume.currentFrame setTo 1
+    // Orange
+    featProp Shurp.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Shurp.getProp('energyLevel').value < 20 }} [[
+    featProp Shurp.Costume.currentFrame setTo 1
+    // Red
+    featProp Shurp.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Shurp.getProp('energyLevel').value < 1 }} [[
+    featProp Shurp.Costume.currentFrame setTo 2
+    prop Shurp.alpha setTo 0.3
+    featProp Shurp.Movement.movementType setTo 'stop'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Shurp.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Shurp touches VeggieGarden [[
+  every 1 [[
+    ifExpr {{ Shurp.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
+      featProp Shurp.Costume.glow setTo 1
+      prop Shurp.energyLevel add 10
+      prop VeggieGarden.energyLevel sub 10
+    ]]
+  ]]
+
+  when Shurp touches Clover [[
+    every 1 runAtStart [[
+      ifExpr {{ Shurp.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
+        featProp Shurp.Costume.glow setTo 1
+        prop Shurp.energyLevel add 10
+        prop Clover.energyLevel sub 10
+      ]]
+    ]]
+  ]]
+
+  when Shurp touches Reincarnator [[
+    ifExpr {{ Shurp.getProp('alive').value == false }} [[
+      featProp Shurp.Costume.glow setTo 1
+      prop Shurp.alive setTo true
+      prop Shurp.alpha setTo 1
+      prop Shurp.energyLevel setTo 50
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "ThreeBottom",
+      "scriptText": `# BLUEPRINT ThreeBottom
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+// set the costume
+featProp ThreeBottom.Costume.costumeName setTo '18.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp ThreeBottom.Costume.scale setTo 0.1
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall ThreeBottom.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel number 75
+prop ThreeBottom.energyLevel setMax 100
+prop ThreeBottom.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make ThreeBottom lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp ThreeBottom.Graphing.meterProp setTo 'energyLevel'
+
+featProp ThreeBottom.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ ThreeBottom.getProp('energyLevel').value - ThreeBottom.getProp('energyUse').value }}
+    propPop ThreeBottom.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the ThreeBottom is
+  // set ThreeBottom energy meter color
+  // doing great
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp ThreeBottom.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp ThreeBottom.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp ThreeBottom.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ ThreeBottom.getProp('energyLevel').value < 1 }} [[
+      featProp ThreeBottom.Costume.currentFrame setTo 2
+      prop ThreeBottom.alpha setTo 0.3
+      prop ThreeBottom.alive setTo false
+    ]]
+
+    // avoid getting too small
+    exprPush {{ 0.3 }}
+    featPropPop ThreeBottom.Costume.scale
+
+  ]]
+]]
+every 25 [[
+  ifProp ThreeBottom.energyLevel lessThan 1 [[
+    featProp ThreeBottom.Costume.glow setTo 1
+    prop ThreeBottom.alpha setTo 1
+    prop ThreeBottom.energyLevel setTo 55
+    prop ThreeBottom.alive setTo true
+  ]]
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "BelugaMan",
+      "scriptText": `# BLUEPRINT BelugaMan
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Movement
+addFeature Costume
+
+// set the costume
+featProp BelugaMan.Costume.costumeName setTo '21.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp BelugaMan.Movement.compassDirection setTo 'north'
+featProp BelugaMan.Movement.movementType setTo 'wander'
+featProp BelugaMan.Movement.distance setTo 3
+featProp BelugaMan.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+
+// make sure we track interactions with the other creatures
+featCall BelugaMan.Touches monitor 'BillyFish' b2b
+featCall BelugaMan.Touches monitor 'DorkADon' b2b
+featCall BelugaMan.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop BelugaMan.energyLevel setMax 100
+prop BelugaMan.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make BelugaMan lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp BelugaMan.Graphing.meterProp setTo 'energyLevel'
+
+featProp BelugaMan.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+  when BelugaMan touches Reincarnator [[
+    ifExpr {{ BelugaMan.getProp('alive').value == false }} [[
+      featProp BelugaMan.Costume.glow setTo 1
+      prop BelugaMan.alive setTo true
+      prop BelugaMan.alpha setTo 1
+      prop BelugaMan.energyLevel setTo 50
+    ]]
+  ]]
+]]
+
+when BelugaMan touches BillyFish [[
+  every 1 [[
+    ifExpr {{ BelugaMan.getProp('alive').value == true &&  BillyFish.getProp('alive').value == true }} [[
+      featProp BelugaMan.Costume.glow setTo 1
+      prop BelugaMan.energyLevel add 10
+      prop BillyFish.alive setTo false
+      prop BillyFish.alpha setTo 0.3
+      prop BillyFish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when BelugaMan touches DorkADon [[
+  every 1 [[
+    ifExpr {{ BelugaMan.getProp('alive').value == true &&  DorkADon.getProp('alive').value == true }} [[
+      featProp BelugaMan.Costume.glow setTo 1
+      prop DorkADon.alive setTo false
+      prop DorkADon.alpha setTo 0.3
+      prop BelugaMan.energyLevel add 10
+      prop DorkADon.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ BelugaMan.getProp('energyLevel').value - BelugaMan.getProp('energyUse').value }}
+  propPop BelugaMan.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the BelugaMan is
+  // sated
+  ifExpr {{ BelugaMan.getProp('energyLevel').value > 50 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 0
+    // Green
+    featProp BelugaMan.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 50 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 1
+    // Orange
+    featProp BelugaMan.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 20 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 1
+    // Red
+    featProp BelugaMan.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 1 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 2
+    prop BelugaMan.alpha setTo 0.3
+    prop BelugaMan.alive setTo false
+    featProp BelugaMan.Movement.movementType setTo 'stop'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp BelugaMan.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "ThreeBottomPopulation",
+      "scriptText": `# BLUEPRINT ThreeBottomPopulation
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp WeedsPopulation.Costume.costumeName setTo 'onexone.json'
+featProp ThreeBottomPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
-featProp WeedsPopulation.Graphing.isLargeGraphic setTo true
+featProp ThreeBottomPopulation.Graphing.isLargeGraphic setTo true
 
-// set y axis to starting # of Weeds
-addProp totalWeedsPop number 3
+// set y axis to starting # of ThreeBottoms
+addProp totalThreeBottomPop number 4
 
 
-featProp WeedsPopulation.Graphing.graphProp setTo 'totalWeedsPop'
+featProp ThreeBottomPopulation.Graphing.graphProp setTo 'totalThreeBottomPop'
 
 # PROGRAM INIT
 // make sure something displays with some initial text, on bottom right at first
-prop WeedsPopulation.x setTo 495
-prop WeedsPopulation.y setTo 187
-prop WeedsPopulation.zIndex setTo 300
+prop ThreeBottomPopulation.x setTo 495
+prop ThreeBottomPopulation.y setTo 187
+prop ThreeBottomPopulation.zIndex setTo 300
 
-featProp WeedsPopulation.Graphing.text setTo 'Weeds Population'
+featProp ThreeBottomPopulation.Graphing.text setTo 'ThreeBottom Population'
 
 # PROGRAM EVENT
 
 onEvent Tick [[
 
 
-  // count up the Weeds
-  featProp WeedsPopulation.Population.monitoredCharacter setTo 'Weeds'
-  featProp WeedsPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall WeedsPopulation.Population countCharacterProp
+  // count up the ThreeBottom
+  featProp ThreeBottomPopulation.Population.monitoredCharacter setTo 'ThreeBottom'
+  featProp ThreeBottomPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall ThreeBottomPopulation.Population countCharacterProp
   exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop WeedsPopulation.totalWeedsPop
+  propPop ThreeBottomPopulation.totalThreeBottomPop
 
   // graph the sum
-  exprPush {{ agent.getProp('totalWeedsPop').value }}
-  propPop WeedsPopulation.totalWeedsPop
+  exprPush {{ agent.getProp('totalThreeBottomPop').value }}
+  propPop ThreeBottomPopulation.totalThreeBottomPop
 
 
 ]]
 
 // required directive
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2283,179 +2138,32 @@ onEvent Tick [[
 prop y setTo -3.57`
     },
     {
-      "id": "17",
-      "label": "VeggieGarden17",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -302.86
-prop y setTo 287.8`
-    },
-    {
-      "id": "18",
-      "label": "VeggieGarden18",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -96.09
-prop y setTo 284.1`
-    },
-    {
-      "id": "19",
-      "label": "VeggieGarden19",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 316.68
-prop y setTo 278.08`
-    },
-    {
-      "id": "20",
-      "label": "VeggieGarden20",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 133.04
-prop y setTo 270.88`
-    },
-    {
-      "id": "24",
-      "label": "Clover24",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -311.18
-prop y setTo -149.03`
-    },
-    {
-      "id": "25",
-      "label": "Clover25",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -58.76
-prop y setTo -78.75`
-    },
-    {
-      "id": "41",
-      "label": "Beetle41",
-      "bpid": "Beetle",
-      "initScript": `prop x setTo 353.35
-prop y setTo 100.35`
-    },
-    {
-      "id": "42",
-      "label": "Beetle42",
-      "bpid": "Beetle",
-      "initScript": `prop x setTo 132.47
-prop y setTo 98.95`
-    },
-    {
       "id": "45",
       "label": "Hawk45",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 332.40
-prop y setTo -157.90`
-    },
-    {
-      "id": "51",
-      "label": "Mouse51",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo -179.98
-prop y setTo -65.97`
-    },
-    {
-      "id": "52",
-      "label": "Mouse52",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo 4.63
-prop y setTo 68.91`
-    },
-    {
-      "id": "54",
-      "label": "Gopher54",
-      "bpid": "Gopher",
-      "initScript": `prop x setTo 61.17
-prop y setTo -331.20`
+      "initScript": `prop x setTo -258.24
+prop y setTo -31.73`
     },
     {
       "id": "55",
       "label": "Snail55",
       "bpid": "Snail",
-      "initScript": `prop x setTo 7.39
-prop y setTo 213.02`
+      "initScript": `prop x setTo 53.14
+prop y setTo -7.43`
     },
     {
       "id": "60",
       "label": "Caterpillar60",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo -224.45
-prop y setTo 214.73`
-    },
-    {
-      "id": "61",
-      "label": "Rabbit61",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -321.12
-prop y setTo -320.86`
-    },
-    {
-      "id": "62",
-      "label": "Robin62",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 217.12
-prop y setTo -326.51`
-    },
-    {
-      "id": "63",
-      "label": "Snake63",
-      "bpid": "Snake",
-      "initScript": `prop x setTo -277.82
-prop y setTo 80.62`
-    },
-    {
-      "id": "69",
-      "label": "Caterpillar69",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo 130.37
-prop y setTo 209.94`
-    },
-    {
-      "id": "70",
-      "label": "Snail70",
-      "bpid": "Snail",
-      "initScript": `prop x setTo -341.15
-prop y setTo 202.97`
-    },
-    {
-      "id": "71",
-      "label": "Gopher71",
-      "bpid": "Gopher",
-      "initScript": `prop x setTo -31.12
-prop y setTo -327.53`
-    },
-    {
-      "id": "73",
-      "label": "Rabbit73",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -191.53
-prop y setTo -323.27`
+      "initScript": `prop x setTo 188.72
+prop y setTo -20.98`
     },
     {
       "id": "74",
-      "label": "Snake74",
+      "label": "Jell Jell",
       "bpid": "Snake",
-      "initScript": `prop x setTo 353.18
-prop y setTo -329.19`
-    },
-    {
-      "id": "75",
-      "label": "Robin75",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 232.97
-prop y setTo 8.01`
-    },
-    {
-      "id": "76",
-      "label": "Gopher76",
-      "bpid": "Gopher",
-      "initScript": `prop x setTo -105.57
-prop y setTo 134.9`
-    },
-    {
-      "id": "77",
-      "label": "Rabbit77",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 245.63
-prop y setTo 198.19`
+      "initScript": `prop x setTo 150.75
+prop y setTo -280.66`
     },
     {
       "id": "79",
@@ -2521,13 +2229,6 @@ prop y setTo 69.22`
 prop y setTo 243.24`
     },
     {
-      "id": "88",
-      "label": "VeggieGardenPopulation88",
-      "bpid": "VeggieGardenPopulation",
-      "initScript": `prop x setTo 630.38
-prop y setTo -43.06`
-    },
-    {
       "id": "89",
       "label": "CloverPopulation89",
       "bpid": "CloverPopulation",
@@ -2540,6 +2241,55 @@ prop y setTo 128.49`
       "bpid": "Background",
       "initScript": `prop x setTo -0.18
 prop y setTo 2.22`
+    },
+    {
+      "id": "93",
+      "label": "Turlugafish93",
+      "bpid": "Turlugafish",
+      "initScript": `prop x setTo -275.34
+prop y setTo -257.25`
+    },
+    {
+      "id": "94",
+      "label": "Clover94",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -41
+prop y setTo -29`
+    },
+    {
+      "id": "95",
+      "label": "ThreeBottom95",
+      "bpid": "ThreeBottom",
+      "initScript": `prop x setTo -54.21
+prop y setTo 201.59`
+    },
+    {
+      "id": "96",
+      "label": "ThreeBottom96",
+      "bpid": "ThreeBottom",
+      "initScript": `prop x setTo -244.63
+prop y setTo 205.52`
+    },
+    {
+      "id": "97",
+      "label": "ThreeBottom97",
+      "bpid": "ThreeBottom",
+      "initScript": `prop x setTo 117.74
+prop y setTo 196.20`
+    },
+    {
+      "id": "98",
+      "label": "BelugaMan98",
+      "bpid": "BelugaMan",
+      "initScript": `prop x setTo -54.26
+prop y setTo -261.25`
+    },
+    {
+      "id": "99",
+      "label": "Shurp99",
+      "bpid": "Shurp",
+      "initScript": `prop x setTo 331.51
+prop y setTo -122.26`
     }
   ]
 }
