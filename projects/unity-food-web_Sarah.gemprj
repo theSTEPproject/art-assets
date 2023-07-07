@@ -956,56 +956,6 @@ every 1 runAtStart [[
 `
     },
     {
-      "name": "RabbitPopulation",
-      "scriptText": `# BLUEPRINT RabbitPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp RabbitPopulation.Costume.costumeName setTo 'onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp RabbitPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Rabbits
-addProp totalRabbitPop number 3
-
-
-featProp RabbitPopulation.Graphing.graphProp setTo 'totalRabbitPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop RabbitPopulation.x setTo 495
-prop RabbitPopulation.y setTo 187
-prop RabbitPopulation.zIndex setTo 300
-
-featProp RabbitPopulation.Graphing.text setTo 'Rabbit Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Bunny
-  featProp RabbitPopulation.Population.monitoredCharacter setTo 'Rabbit'
-  featProp RabbitPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall RabbitPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop RabbitPopulation.totalRabbitPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalRabbitPop').value }}
-  propPop RabbitPopulation.totalRabbitPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "GopherPopulation",
       "scriptText": `# BLUEPRINT GopherPopulation
 # TAG IsCharControllable false
@@ -1909,13 +1859,6 @@ prop y setTo -280.66`
       "bpid": "Timer",
       "initScript": `prop x setTo -360.57
 prop y setTo -398.91`
-    },
-    {
-      "id": "80",
-      "label": "RabbitPopulation80",
-      "bpid": "RabbitPopulation",
-      "initScript": `prop x setTo -510.94
-prop y setTo -271.47`
     },
     {
       "id": "81",
