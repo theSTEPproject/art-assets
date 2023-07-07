@@ -25,114 +25,6 @@
   "rounds": [],
   "blueprints": [
     {
-      "name": "Mouse",
-      "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable false
-# TAG isCharControllable true
-# TAG isPTrackControllable false
-
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-
-// set the costume
-featProp Mouse.Costume.costumeName setTo '18.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp agent.Costume.scale setTo 0.1
-
-featProp Mouse.Movement.compassDirection setTo 'W'
-featProp Mouse.Movement.movementType setTo 'wander'
-featProp Mouse.Movement.distance setTo 3
-featProp Mouse.Movement.targetY setMax 0.6
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Mouse.Touches monitor 'VeggieGarden' b2b
-featCall Mouse.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 1/2 way
-addProp energyLevel Number 50
-prop Mouse.energyLevel setMax 100
-prop Mouse.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make Mouse lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Mouse.Graphing.meterProp setTo 'energyLevel'
-
-featProp Mouse.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-every 1 runAtStart [[
-
-  // foodLevel goes down every n seconds
-  exprPush {{ Mouse.getProp('energyLevel').value - Mouse.getProp('energyUse').value }}
-  propPop Mouse.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Mouse is
-  // sated
-  ifExpr {{ Mouse.getProp('energyLevel').value > 50 }} [[
-    featProp Mouse.Costume.currentFrame setTo 0
-    // Green
-    featProp Mouse.Graphing.meterColor setTo 65280
-  ]]
-  // could eat
-  ifExpr {{ Mouse.getProp('energyLevel').value < 50 }} [[
-    featProp Mouse.Costume.currentFrame setTo 1
-    // Orange
-    featProp Mouse.Graphing.meterColor setTo 16737792
-  ]]
-  // hungry
-  ifExpr {{ Mouse.getProp('energyLevel').value < 20 }} [[
-    featProp Mouse.Costume.currentFrame setTo 1
-    // Red
-    featProp Mouse.Graphing.meterColor setTo 16711680
-  ]]
-  // dead
-  ifExpr {{ Mouse.getProp('energyLevel').value < 1 }} [[
-    featProp Mouse.Costume.currentFrame setTo 2
-    prop Mouse.alpha setTo 0.3
-    prop Mouse.isInert setTo true
-  ]]
-
-  // set meter to mirror energyLevel
-  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
-
-]]
-
-when Mouse touches VeggieGarden [[
-  every 1 [[
-    ifExpr {{ Mouse.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
-      featProp Mouse.Costume.glow setTo 1
-      prop Mouse.energyLevel add 10
-      prop VeggieGarden.energyLevel sub 10
-    ]]
-  ]]
-
-  when Mouse touches Reincarnator [[
-    ifExpr {{ Mouse.getProp('alive').value == false }} [[
-      featProp Mouse.Costume.glow setTo 1
-      prop Mouse.alive setTo true
-      prop Mouse.alpha setTo 1
-    ]]
-  ]]
-
-]]
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
-    },
-    {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
 # TAG isPozyxControllable false
@@ -294,110 +186,6 @@ propPop Background.alpha
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]`
-    },
-    {
-      "name": "Clover",
-      "scriptText": `# BLUEPRINT Clover
-# TAG isPozyxControllable false
-# TAG isCharControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Movement
-addFeature Costume
-
-// set the costume
-featProp Clover.Costume.costumeName setTo '16.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
-featProp Clover.Costume.scale setTo 0.1
-
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Clover.Touches monitor 'Reincarnator' b2b
-
-// setup to track energy and begin at 3/4 way
-addProp energyLevel Number 70
-prop Clover.energyLevel setMax 100
-prop Clover.energyLevel setMin 0
-
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Clover.Graphing.meterProp setTo 'energyLevel'
-
-featProp Clover.Graphing.meterColor setTo 65280
-
-# PROGRAM EVENT
-every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
-    propPop Clover.energyLevel
-  ]]
-
-  // this code sets the color of the energy bar based on how hungry the clover is
-  // set clover energy meter color
-  // doing great
-  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
-    // Green
-    featProp Clover.Graphing.meterColor setTo 65280
-  ]]
-  // needs some energy
-  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
-    // Orange
-    featProp Clover.Graphing.meterColor setTo 16737792
-  ]]
-  // in trouble
-  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
-    // Red
-    featProp Clover.Graphing.meterColor setTo 16711680
-    // dead
-    ifExpr {{ Clover.getProp('energyLevel').value < 1 }} [[
-      featProp Clover.Costume.currentFrame setTo 2
-      prop Clover.alpha setTo 0.3
-      prop Clover.alive setTo false
-    ]]
-
-
-    // avoid getting too
-    exprPush {{ .15 }}
-    featPropPop Clover.Costume.scale
-
-  ]]
-]]
-
-every 1 [[
-
-  when Clover touches Reincarnator [[
-    ifExpr {{ Clover.getProp('alive').value == false }} [[
-      featProp Clover.Costume.glow setTo 1
-      prop Clover.alive setTo true
-      prop Clover.alpha setTo 1
-    ]]
-  ]]
-
-]]
-
-every 10 [[
-  ifProp Clover.energyLevel lessThan 1 [[
-    featProp Clover.Costume.glow setTo 1
-    prop Clover.alpha setTo 1
-    prop Clover.energyLevel setTo 55
-    prop Clover.alive setTo true
-  ]]
-]]
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
     {
       "name": "Snail",
@@ -1569,56 +1357,6 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "CloverPopulation",
-      "scriptText": `# BLUEPRINT CloverPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp CloverPopulation.Costume.costumeName setTo 'onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp CloverPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Clovers
-addProp totalCloverPop number 2
-
-
-featProp CloverPopulation.Graphing.graphProp setTo 'totalCloverPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop CloverPopulation.x setTo 495
-prop CloverPopulation.y setTo 187
-prop CloverPopulation.zIndex setTo 300
-
-featProp CloverPopulation.Graphing.text setTo 'Clover Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Clover
-  featProp CloverPopulation.Population.monitoredCharacter setTo 'Clover'
-  featProp CloverPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall CloverPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop CloverPopulation.totalCloverPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalCloverPop').value }}
-  propPop CloverPopulation.totalCloverPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "Turlugafish",
       "scriptText": `# BLUEPRINT Turlugafish
 # TAG isPozyxControllable false
@@ -2229,13 +1967,6 @@ prop y setTo 69.22`
 prop y setTo 243.24`
     },
     {
-      "id": "89",
-      "label": "CloverPopulation89",
-      "bpid": "CloverPopulation",
-      "initScript": `prop x setTo 632.31
-prop y setTo 128.49`
-    },
-    {
       "id": "90",
       "label": "Background90",
       "bpid": "Background",
@@ -2248,13 +1979,6 @@ prop y setTo 2.22`
       "bpid": "Turlugafish",
       "initScript": `prop x setTo -275.34
 prop y setTo -257.25`
-    },
-    {
-      "id": "94",
-      "label": "Clover94",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -41
-prop y setTo -29`
     },
     {
       "id": "95",
