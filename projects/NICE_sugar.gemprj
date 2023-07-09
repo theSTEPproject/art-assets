@@ -53,7 +53,7 @@ prop global.visible setTo false
     {
       "name": "Background",
       "scriptText": `# BLUEPRINT Background
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -75,10 +75,411 @@ featProp Background.Costume.scale setTo 1.6
 // ✏️ body`
     },
     {
+      "name": "Kid1",
+      "scriptText": `# BLUEPRINT Kid1
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Kid1.Costume.costumeName setTo 'NS_kid1_healthy.png'
+featProp Kid1.Costume.scale setTo 0.4
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Kid1.Movement.movementType setTo 'wander'
+featProp Kid1.Movement.compassDirection setTo 'W'
+featProp Kid1.Movement.distance setTo 4
+featProp Kid1.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Kid1.Touches monitor 'Soda' b2b
+featCall Kid1.Touches monitor 'Hospital' b2b
+featCall Kid1.Touches monitor 'Cookie' b2b
+featCall Kid1.Touches monitor 'IceCream' b2b
+featCall Kid1.Touches monitor 'Apple' b2b
+featCall Kid1.Touches monitor 'Watermelon' b2b
+featCall Kid1.Touches monitor 'Orange' b2b
+featCall Kid1.Touches monitor 'Strawberries' b2b
+featCall Kid1.Touches monitor 'Carrot' b2b
+featCall Kid1.Touches monitor 'Tomato' b2b
+featCall Kid1.Touches monitor 'Cucumber' b2b
+
+
+
+
+// setup to track sugar and begin at 0
+addProp sugarLevel Number 0
+prop Kid1.sugarLevel setMax 30
+prop Kid1.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it magenta (maybe change later)
+addFeature Graphing
+featProp Kid1.Graphing.meterProp setTo 'sugarLevel'
+featProp Kid1.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // this code sets the color of the energy bar based on how hungry the Kid1 is
+  // sick
+  ifExpr {{ Kid1.getProp('sugarLevel').value > 25 }} [[
+    featProp Kid1.Costume.costumeName setTo 'NS_kid1_sick.png'
+    // Red
+    featProp Kid1.Graphing.meterColor setTo 16711680
+  ]]
+  // healthy
+  ifExpr {{ Kid1.getProp('sugarLevel').value < 25 }} [[
+    featProp Kid1.Costume.currentFrame setTo 1
+    // Magenta
+    featProp Kid1.Graphing.meterColor setTo 16711824
+  ]]
+  // set meter to mirror energyLevel
+  featProp Kid1.Graphing.meterProp setTo 'sugarLevel'
+
+
+  when Kid1 touches Soda [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Soda.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 2
+        prop Soda.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid1 touches IceCream [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  IceCream.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 2
+        prop IceCream.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid1 touches Cookie [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Cookie.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 2
+        prop Cookie.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid1 touches Apple [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Apple.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Apple.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid1 touches Orange [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Orange.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Orange.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid1 touches Strawberries [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Strawberries.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Strawberries.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid1 touches Watermelon [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Watermelon.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Watermelon.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+   when Kid1 touches Carrot [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Carrot.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Carrot.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid1 touches Cucumber [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Cucumber.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Cucumber.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid1 touches Tomato [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Tomato.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 1
+        prop Tomato.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+
+  when Kid1 touches Hospital [[
+    ifExpr {{ Kid1.getProp('sugarLevel').value > 25 }} [[
+      featProp Kid1.Costume.glow setTo 1
+      featProp Kid1.Costume.costumeName setTo 'NS_kid1_healthy.png'
+      prop Kid1.sugarLevel setTo 0
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Soda",
+      "scriptText": `# BLUEPRINT Soda
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Soda.Costume.costumeName setTo 'NS_soda.png'
+featProp Soda.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Soda.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (12 oz soda has 39g of sugar)
+addProp sugarLevel number 39
+prop Soda.sugarLevel setMax 39
+prop Soda.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it green (maybe change later)
+addFeature Graphing
+featProp Soda.Graphing.meterProp setTo 'sugarLevel'
+featProp Soda.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Soda.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Soda.getProp('sugarLevel').value < 1 }} [[
+    featProp Soda.Costume.currentFrame setTo 2
+    prop Soda.alpha setTo 0.3
+    prop Soda.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Cookie",
+      "scriptText": `# BLUEPRINT Cookie
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Cookie.Costume.costumeName setTo 'NS_cookie.png'
+featProp Cookie.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Cookie.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one cookie ~ 11g of sugar)
+addProp sugarLevel number 11
+prop Cookie.sugarLevel setMax 11
+prop Cookie.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Cookie.Graphing.meterProp setTo 'sugarLevel'
+featProp Cookie.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Cookie.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Cookie.getProp('sugarLevel').value < 1 }} [[
+    featProp Cookie.Costume.currentFrame setTo 2
+    prop Cookie.alpha setTo 0.3
+    prop Cookie.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "IceCream",
+      "scriptText": `# BLUEPRINT IceCream
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp IceCream.Costume.costumeName setTo 'NS_icecream.png'
+featProp IceCream.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall IceCream.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one IceCream ~ 14g of sugar)
+addProp sugarLevel number 14
+prop IceCream.sugarLevel setMax 14
+prop IceCream.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp IceCream.Graphing.meterProp setTo 'sugarLevel'
+featProp IceCream.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp IceCream.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ IceCream.getProp('sugarLevel').value < 1 }} [[
+    featProp IceCream.Costume.currentFrame setTo 2
+    prop IceCream.alpha setTo 0.3
+    prop IceCream.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "IceCreamTruck",
+      "scriptText": `# BLUEPRINT IceCreamTruck
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp IceCreamTruck.Costume.costumeName setTo 'NS_icecreamtruck.png'
+featProp IceCreamTruck.Costume.scale setTo 0.3
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
       "name": "SweetShop",
       "scriptText": `# BLUEPRINT SweetShop
 # TAG isPozyxControllable false
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -104,10 +505,10 @@ addFeature Touches
 // This is also where you can handle touches between characters such as When Algae touches Fish`
     },
     {
-      "name": "Kid1",
-      "scriptText": `# BLUEPRINT Kid1
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+      "name": "ProduceMarket",
+      "scriptText": `# BLUEPRINT ProduceMarket
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // COMMENT KEY
@@ -118,11 +519,10 @@ addFeature Touches
 
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
-addFeature Movement
-addFeature Cursor
+
 addFeature Costume
-featProp Kid1.Costume.costumeName setTo 'NS_kid1_healthy.png'
-featProp Kid1.Costume.scale setTo 0.4
+featProp ProduceMarket.Costume.costumeName setTo 'NS_produce-market.png'
+featProp ProduceMarket.Costume.scale setTo 0.3
 
 addFeature Physics
 addFeature Touches
@@ -134,28 +534,863 @@ addFeature Touches
 // This is also where you can handle touches between characters such as When Algae touches Fish`
     },
     {
-      "name": "Soda",
-      "scriptText": `# BLUEPRINT Soda
-# TAG isCharControllable true
+      "name": "Strawberries",
+      "scriptText": `# BLUEPRINT Strawberries
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
 addFeature Costume
-featProp Soda.Costume.costumeName setTo 'NS_soda.png'
-featProp Soda.Costume.scale setTo 0.2
+
+featProp Strawberries.Costume.costumeName setTo 'NS_strawberries.png'
+featProp Strawberries.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Strawberries.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one serving strawberries ~ 2g of sugar)
+addProp sugarLevel number 10
+prop Strawberries.sugarLevel setMax 10
+prop Strawberries.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Strawberries.Graphing.meterProp setTo 'sugarLevel'
+featProp Strawberries.Graphing.meterColor setTo 16711824
 
 # PROGRAM UPDATE
 // code to run every frame
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Strawberries.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Strawberries.getProp('sugarLevel').value < 1 }} [[
+    featProp Strawberries.Costume.currentFrame setTo 2
+    prop Strawberries.alpha setTo 0.3
+    prop Strawberries.alive setTo false
+  ]]
+]]
+
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "Watermelon",
+      "scriptText": `# BLUEPRINT Watermelon
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Watermelon.Costume.costumeName setTo 'NS_watermelon.png'
+featProp Watermelon.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Watermelon.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Watermelon ~ 9g of sugar)
+addProp sugarLevel number 9
+prop Watermelon.sugarLevel setMax 9
+prop Watermelon.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Watermelon.Graphing.meterProp setTo 'sugarLevel'
+featProp Watermelon.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Watermelon.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Watermelon.getProp('sugarLevel').value < 1 }} [[
+    featProp Watermelon.Costume.currentFrame setTo 2
+    prop Watermelon.alpha setTo 0.3
+    prop Watermelon.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Orange",
+      "scriptText": `# BLUEPRINT Orange
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Orange.Costume.costumeName setTo 'NS_orange.png'
+featProp Orange.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Orange.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Orange ~ 12g of sugar)
+addProp sugarLevel number 12
+prop Orange.sugarLevel setMax 12
+prop Orange.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Orange.Graphing.meterProp setTo 'sugarLevel'
+featProp Orange.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Orange.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Orange.getProp('sugarLevel').value < 1 }} [[
+    featProp Orange.Costume.currentFrame setTo 2
+    prop Orange.alpha setTo 0.3
+    prop Orange.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Apple",
+      "scriptText": `# BLUEPRINT Apple
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Apple.Costume.costumeName setTo 'NS_apple.png'
+featProp Apple.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Apple.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Apple ~ 9g of sugar)
+addProp sugarLevel number 9
+prop Apple.sugarLevel setMax 9
+prop Apple.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Apple.Graphing.meterProp setTo 'sugarLevel'
+featProp Apple.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Apple.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Apple.getProp('sugarLevel').value < 1 }} [[
+    featProp Apple.Costume.currentFrame setTo 2
+    prop Apple.alpha setTo 0.3
+    prop Apple.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "VeggieGarden",
+      "scriptText": `# BLUEPRINT VeggieGarden
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
+featProp VeggieGarden.Costume.scale setTo 0.3
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Carrot",
+      "scriptText": `# BLUEPRINT Carrot
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Carrot.Costume.costumeName setTo 'NS_carrot.png'
+featProp Carrot.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Carrot.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Carrot ~ 5g of sugar)
+addProp sugarLevel number 5
+prop Carrot.sugarLevel setMax 5
+prop Carrot.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Carrot.Graphing.meterProp setTo 'sugarLevel'
+featProp Carrot.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Carrot.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Carrot.getProp('sugarLevel').value < 1 }} [[
+    featProp Carrot.Costume.currentFrame setTo 2
+    prop Carrot.alpha setTo 0.3
+    prop Carrot.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Cucumber",
+      "scriptText": `# BLUEPRINT Cucumber
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Cucumber.Costume.costumeName setTo 'NS_cucumber.png'
+featProp Cucumber.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Cucumber.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Cucumber ~ 2g of sugar)
+addProp sugarLevel number 2
+prop Cucumber.sugarLevel setMax 2
+prop Cucumber.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Cucumber.Graphing.meterProp setTo 'sugarLevel'
+featProp Cucumber.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Cucumber.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Cucumber.getProp('sugarLevel').value < 1 }} [[
+    featProp Cucumber.Costume.currentFrame setTo 2
+    prop Cucumber.alpha setTo 0.3
+    prop Cucumber.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Tomato.Costume.costumeName setTo 'NS_tomato.png'
+featProp Tomato.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Tomato.Touches monitor 'Kid1' b2b
+
+// setup to track sugar and begin at full (one Tomato ~ 2g of sugar)
+addProp sugarLevel number 2
+prop Tomato.sugarLevel setMax 2
+prop Tomato.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Tomato.Graphing.meterProp setTo 'sugarLevel'
+featProp Tomato.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Tomato.Graphing.meterProp setTo 'sugarLevel'
+
+  ifExpr {{ Tomato.getProp('sugarLevel').value < 1 }} [[
+    featProp Tomato.Costume.currentFrame setTo 2
+    prop Tomato.alpha setTo 0.3
+    prop Tomato.alive setTo false
+  ]]
+]]
+
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Hospital",
+      "scriptText": `# BLUEPRINT Hospital
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Hospital.Costume.costumeName setTo 'NS_hospital.png'
+featProp Hospital.Costume.scale setTo 0.3
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Kid2",
+      "scriptText": `# BLUEPRINT Kid2
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Kid2.Costume.costumeName setTo 'NS_kid2_healthy.png'
+featProp Kid2.Costume.scale setTo 0.4
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Kid2.Movement.movementType setTo 'wander'
+featProp Kid2.Movement.compassDirection setTo 'W'
+featProp Kid2.Movement.distance setTo 4
+featProp Kid2.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Kid2.Touches monitor 'Soda' b2b
+featCall Kid2.Touches monitor 'Hospital' b2b
+featCall Kid2.Touches monitor 'Cookie' b2b
+featCall Kid2.Touches monitor 'IceCream' b2b
+featCall Kid2.Touches monitor 'Apple' b2b
+featCall Kid2.Touches monitor 'Watermelon' b2b
+featCall Kid2.Touches monitor 'Orange' b2b
+featCall Kid2.Touches monitor 'Strawberries' b2b
+featCall Kid2.Touches monitor 'Carrot' b2b
+featCall Kid2.Touches monitor 'Tomato' b2b
+featCall Kid2.Touches monitor 'Cucumber' b2b
+
+
+
+
+// setup to track sugar and begin at 0
+addProp sugarLevel Number 0
+prop Kid2.sugarLevel setMax 30
+prop Kid2.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it magenta (maybe change later)
+addFeature Graphing
+featProp Kid2.Graphing.meterProp setTo 'sugarLevel'
+featProp Kid2.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // this code sets the color of the energy bar based on how hungry the Kid2 is
+  // sick
+  ifExpr {{ Kid2.getProp('sugarLevel').value > 25 }} [[
+    featProp Kid2.Costume.costumeName setTo 'NS_kid2_sick.png'
+    // Red
+    featProp Kid2.Graphing.meterColor setTo 16711680
+  ]]
+  // healthy
+  ifExpr {{ Kid2.getProp('sugarLevel').value < 25 }} [[
+    featProp Kid2.Costume.currentFrame setTo 1
+    // Magenta
+    featProp Kid2.Graphing.meterColor setTo 16711824
+  ]]
+  // set meter to mirror energyLevel
+  featProp Kid2.Graphing.meterProp setTo 'sugarLevel'
+
+
+  when Kid2 touches Soda [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Soda.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 2
+        prop Soda.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid2 touches IceCream [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  IceCream.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 2
+        prop IceCream.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid2 touches Cookie [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Cookie.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 2
+        prop Cookie.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid2 touches Apple [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Apple.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Apple.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid2 touches Orange [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Orange.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Orange.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid2 touches Strawberries [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Strawberries.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Strawberries.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid2 touches Watermelon [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Watermelon.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Watermelon.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+   when Kid2 touches Carrot [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Carrot.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Carrot.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid2 touches Cucumber [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Cucumber.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Cucumber.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid2 touches Tomato [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Tomato.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 1
+        prop Tomato.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+
+  when Kid2 touches Hospital [[
+    ifExpr {{ Kid2.getProp('sugarLevel').value > 25 }} [[
+      featProp Kid2.Costume.glow setTo 1
+      featProp Kid2.Costume.costumeName setTo 'NS_kid2_healthy.png'
+      prop Kid2.sugarLevel setTo 0
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Kid3",
+      "scriptText": `# BLUEPRINT Kid3
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Kid3.Costume.costumeName setTo 'NS_kid3_healthy.png'
+featProp Kid3.Costume.scale setTo 0.4
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Kid3.Movement.movementType setTo 'wander'
+featProp Kid3.Movement.compassDirection setTo 'W'
+featProp Kid3.Movement.distance setTo 4
+featProp Kid3.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Kid3.Touches monitor 'Soda' b2b
+featCall Kid3.Touches monitor 'Hospital' b2b
+featCall Kid3.Touches monitor 'Cookie' b2b
+featCall Kid3.Touches monitor 'IceCream' b2b
+featCall Kid3.Touches monitor 'Apple' b2b
+featCall Kid3.Touches monitor 'Watermelon' b2b
+featCall Kid3.Touches monitor 'Orange' b2b
+featCall Kid3.Touches monitor 'Strawberries' b2b
+featCall Kid3.Touches monitor 'Carrot' b2b
+featCall Kid3.Touches monitor 'Tomato' b2b
+featCall Kid3.Touches monitor 'Cucumber' b2b
+
+
+
+
+// setup to track sugar and begin at 0
+addProp sugarLevel Number 0
+prop Kid3.sugarLevel setMax 30
+prop Kid3.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it magenta (maybe change later)
+addFeature Graphing
+featProp Kid3.Graphing.meterProp setTo 'sugarLevel'
+featProp Kid3.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // this code sets the color of the energy bar based on how hungry the Kid3 is
+  // sick
+  ifExpr {{ Kid3.getProp('sugarLevel').value > 25 }} [[
+    featProp Kid3.Costume.costumeName setTo 'NS_kid3_sick.png'
+    // Red
+    featProp Kid3.Graphing.meterColor setTo 16711680
+  ]]
+  // healthy
+  ifExpr {{ Kid3.getProp('sugarLevel').value < 25 }} [[
+    featProp Kid3.Costume.currentFrame setTo 1
+    // Magenta
+    featProp Kid3.Graphing.meterColor setTo 16711824
+  ]]
+  // set meter to mirror energyLevel
+  featProp Kid3.Graphing.meterProp setTo 'sugarLevel'
+
+
+  when Kid3 touches Soda [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Soda.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 2
+        prop Soda.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid3 touches IceCream [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  IceCream.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 2
+        prop IceCream.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+
+  when Kid3 touches Cookie [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Cookie.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 2
+        prop Cookie.sugarLevel sub 2
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid3 touches Apple [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Apple.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Apple.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid3 touches Orange [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Orange.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Orange.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid3 touches Strawberries [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Strawberries.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Strawberries.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+    when Kid3 touches Watermelon [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Watermelon.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Watermelon.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+   when Kid3 touches Carrot [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Carrot.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Carrot.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid3 touches Cucumber [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Cucumber.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Cucumber.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+  
+  when Kid3 touches Tomato [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Tomato.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 1
+        prop Tomato.sugarLevel sub 1
+
+      ]]
+    ]]
+  ]]
+
+  when Kid3 touches Hospital [[
+    ifExpr {{ Kid3.getProp('sugarLevel').value > 25 }} [[
+      featProp Kid3.Costume.glow setTo 1
+      featProp Kid3.Costume.costumeName setTo 'NS_kid3_healthy.png'
+      prop Kid3.sugarLevel setTo 0
+    ]]
+  ]]
+]]`
     }
   ],
   "instances": [
@@ -163,29 +1398,113 @@ featProp Soda.Costume.scale setTo 0.2
       "id": "0",
       "label": "Background0",
       "bpid": "Background",
-      "initScript": `prop x setTo 2.60
-prop y setTo 1.50`
-    },
-    {
-      "id": "1",
-      "label": "SweetShop1",
-      "bpid": "SweetShop",
-      "initScript": `prop x setTo -210.95
-prop y setTo 135.73`
-    },
-    {
-      "id": "2",
-      "label": "Kid12",
-      "bpid": "Kid1",
-      "initScript": `prop x setTo -23
-prop y setTo 45`
+      "initScript": `prop x setTo 2.6
+prop y setTo 1.5`
     },
     {
       "id": "3",
       "label": "Soda3",
       "bpid": "Soda",
-      "initScript": `prop x setTo -327.08
-prop y setTo 63.63`
+      "initScript": `prop x setTo -172.37
+prop y setTo -78.75`
+    },
+    {
+      "id": "4",
+      "label": "Cookie4",
+      "bpid": "Cookie",
+      "initScript": `prop x setTo -287.52
+prop y setTo 67.58`
+    },
+    {
+      "id": "6",
+      "label": "IceCreamTruck6",
+      "bpid": "IceCreamTruck",
+      "initScript": `prop x setTo -242.52
+prop y setTo -314.67`
+    },
+    {
+      "id": "7",
+      "label": "SweetShop7",
+      "bpid": "SweetShop",
+      "initScript": `prop x setTo -305.47
+prop y setTo -69.47`
+    },
+    {
+      "id": "9",
+      "label": "ProduceMarket9",
+      "bpid": "ProduceMarket",
+      "initScript": `prop x setTo 237.34
+prop y setTo 208.23`
+    },
+    {
+      "id": "10",
+      "label": "Strawberries10",
+      "bpid": "Strawberries",
+      "initScript": `prop x setTo 334.04
+prop y setTo 73.33`
+    },
+    {
+      "id": "11",
+      "label": "Watermelon11",
+      "bpid": "Watermelon",
+      "initScript": `prop x setTo 138.22
+prop y setTo 90.97`
+    },
+    {
+      "id": "12",
+      "label": "Orange12",
+      "bpid": "Orange",
+      "initScript": `prop x setTo 327.93
+prop y setTo 277.67`
+    },
+    {
+      "id": "14",
+      "label": "Apple14",
+      "bpid": "Apple",
+      "initScript": `prop x setTo 136.06
+prop y setTo 283.83`
+    },
+    {
+      "id": "15",
+      "label": "VeggieGarden15",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 232.37
+prop y setTo -257.18`
+    },
+    {
+      "id": "16",
+      "label": "Carrot16",
+      "bpid": "Carrot",
+      "initScript": `prop x setTo 345.53
+prop y setTo -333.12`
+    },
+    {
+      "id": "17",
+      "label": "Cucumber17",
+      "bpid": "Cucumber",
+      "initScript": `prop x setTo 332.84
+prop y setTo -175.24`
+    },
+    {
+      "id": "18",
+      "label": "Tomato18",
+      "bpid": "Tomato",
+      "initScript": `prop x setTo 120.36
+prop y setTo -330.42`
+    },
+    {
+      "id": "19",
+      "label": "Hospital19",
+      "bpid": "Hospital",
+      "initScript": `prop x setTo -172.34
+prop y setTo 302.03`
+    },
+    {
+      "id": "20",
+      "label": "IceCream20",
+      "bpid": "IceCream",
+      "initScript": `prop x setTo -246.02
+prop y setTo -275.94`
     }
   ]
 }
