@@ -1427,34 +1427,6 @@ every 1 runAtStart [[
 prop y setTo -3.57`
     },
     {
-      "id": "45",
-      "label": "Hawk45",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -258.24
-prop y setTo -31.73`
-    },
-    {
-      "id": "55",
-      "label": "Snail55",
-      "bpid": "Snail",
-      "initScript": `prop x setTo 53.14
-prop y setTo -7.43`
-    },
-    {
-      "id": "60",
-      "label": "Caterpillar60",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo 188.72
-prop y setTo -20.98`
-    },
-    {
-      "id": "74",
-      "label": "Jell Jell",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 150.75
-prop y setTo -280.66`
-    },
-    {
       "id": "79",
       "label": "Timer79",
       "bpid": "Timer",
@@ -1462,53 +1434,11 @@ prop y setTo -280.66`
 prop y setTo -398.91`
     },
     {
-      "id": "90",
-      "label": "Background90",
-      "bpid": "Background",
-      "initScript": `prop x setTo -0.18
-prop y setTo 2.22`
-    },
-    {
-      "id": "93",
-      "label": "Turlugafish93",
-      "bpid": "Turlugafish",
-      "initScript": `prop x setTo -275.34
-prop y setTo -257.25`
-    },
-    {
-      "id": "95",
-      "label": "ThreeBottom95",
-      "bpid": "ThreeBottom",
-      "initScript": `prop x setTo -54.21
-prop y setTo 201.59`
-    },
-    {
-      "id": "96",
-      "label": "ThreeBottom96",
-      "bpid": "ThreeBottom",
-      "initScript": `prop x setTo -244.63
-prop y setTo 205.52`
-    },
-    {
-      "id": "97",
-      "label": "ThreeBottom97",
-      "bpid": "ThreeBottom",
-      "initScript": `prop x setTo 117.74
-prop y setTo 196.20`
-    },
-    {
-      "id": "98",
-      "label": "BelugaMan98",
-      "bpid": "BelugaMan",
-      "initScript": `prop x setTo -54.26
-prop y setTo -261.25`
-    },
-    {
       "id": "99",
-      "label": "Shurp99",
-      "bpid": "Shurp",
-      "initScript": `prop x setTo 331.51
-prop y setTo -122.26`
+      "label": "Background99",
+      "bpid": "Background",
+      "initScript": `prop x setTo -14
+prop y setTo -5`
     }
   ]
 }

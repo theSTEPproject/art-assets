@@ -1,0 +1,1454 @@
+{
+  "id": "UnityAquaticFoodWeb",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// 🔎 WHAT DOES MODEL DO?
+// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// 🔎 and one that is not though you can use character controller with the second
+// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'AQ_background_aquatic.png'
+featProp Background.Costume.size setTo 800
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    },
+    {
+      "name": "ThreeBottom",
+      "scriptText": `# BLUEPRINT ThreeBottom
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+// set the costume
+featProp ThreeBottom.Costume.costumeName setTo 'UA_ThreeBottom.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp ThreeBottom.Costume.scale setTo 0.1
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall ThreeBottom.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel number 75
+prop ThreeBottom.energyLevel setMax 100
+prop ThreeBottom.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make ThreeBottom lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp ThreeBottom.Graphing.meterProp setTo 'energyLevel'
+
+featProp ThreeBottom.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ ThreeBottom.getProp('energyLevel').value - ThreeBottom.getProp('energyUse').value }}
+    propPop ThreeBottom.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the ThreeBottom is
+  // set ThreeBottom energy meter color
+  // doing great
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp ThreeBottom.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp ThreeBottom.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ ThreeBottom.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp ThreeBottom.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ ThreeBottom.getProp('energyLevel').value < 1 }} [[
+      featProp ThreeBottom.Costume.currentFrame setTo 2
+      prop ThreeBottom.alpha setTo 0.3
+      prop ThreeBottom.alive setTo false
+    ]]
+
+  ]]
+]]
+when ThreeBottom touches Reincarnator [[
+  ifExpr {{ ThreeBottom.getProp('alive').value == false }} [[
+    featProp ThreeBottom.Costume.glow setTo 1
+    prop ThreeBottom.alive setTo true
+    prop ThreeBottom.alpha setTo 1
+    prop ThreeBottom.energyLevel setTo 50
+  ]]
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+addProp time number 0
+prop Timer.zIndex setTo 500
+
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "Dorkadon",
+      "scriptText": `# BLUEPRINT Dorkadon
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Dorkadon.Costume.costumeName setTo 'UA_Dorkadon.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Dorkadon.Movement.movementType setTo 'wander'
+featProp Dorkadon.Movement.compassDirection setTo 'W'
+featProp Dorkadon.Movement.distance setTo 4
+featProp Dorkadon.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Dorkadon.Touches monitor 'ThreeBottom' b2b
+featCall Dorkadon.Touches monitor 'Crabshark' b2b
+featCall Dorkadon.Touches monitor 'Reincarnator' b2b
+
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop Dorkadon.energyLevel setMax 100
+prop Dorkadon.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Dorkadon lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Dorkadon.Graphing.meterProp setTo 'energyLevel'
+
+featProp Dorkadon.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Dorkadon.getProp('energyLevel').value - Dorkadon.getProp('energyUse').value }}
+  propPop Dorkadon.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Dorkadon is
+  // sated
+  ifExpr {{ Dorkadon.getProp('energyLevel').value > 50 }} [[
+    featProp Dorkadon.Costume.currentFrame setTo 0
+    // Green
+    featProp Dorkadon.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Dorkadon.getProp('energyLevel').value < 50 }} [[
+    featProp Dorkadon.Costume.currentFrame setTo 1
+    // Orange
+    featProp Dorkadon.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Dorkadon.getProp('energyLevel').value < 20 }} [[
+    featProp Dorkadon.Costume.currentFrame setTo 1
+    // Red
+    featProp Dorkadon.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Dorkadon.getProp('energyLevel').value < 1 }} [[
+    featProp Dorkadon.Costume.currentFrame setTo 2
+    prop Dorkadon.alpha setTo 0.3
+    featProp Dorkadon.Movement.movementType setTo 'stop'
+    prop Dorkadon.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Dorkadon.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Dorkadon touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ Dorkadon.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp Dorkadon.Costume.glow setTo 1
+      prop Dorkadon.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Dorkadon touches Crabshark [[
+  every 1 [[
+    ifExpr {{ Dorkadon.getProp('alive').value == true &&  Crabshark.getProp('alive').value == true }} [[
+      featProp Dorkadon.Costume.glow setTo 1
+      prop Dorkadon.energyLevel add 10
+      prop Crabshark.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+
+when Dorkadon touches Reincarnator [[
+  ifExpr {{ Dorkadon.getProp('alive').value == false }} [[
+    featProp Dorkadon.Costume.glow setTo 1
+    prop Dorkadon.alive setTo true
+    prop Dorkadon.alpha setTo 1
+    prop Dorkadon.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Reincarnator",
+      "scriptText": `# BLUEPRINT Reincarnator
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Reincarnator.Costume.costumeName setTo 'GEN_square.json'
+
+featProp agent.Costume.scale setTo 0.4
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    },
+    {
+      "name": "Crabshark",
+      "scriptText": `# BLUEPRINT Crabshark
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Crabshark.Costume.costumeName setTo 'UA_Crabshark.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Crabshark.Movement.movementType setTo 'wander'
+featProp Crabshark.Movement.compassDirection setTo 'W'
+featProp Crabshark.Movement.distance setTo 4
+featProp Crabshark.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Crabshark.Touches monitor 'ThreeBottom' b2b
+featCall Crabshark.Touches monitor 'Reincarnator' b2b
+featCall Crabshark.Touches monitor 'Billyfish' b2b
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop Crabshark.energyLevel setMax 100
+prop Crabshark.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Crabshark lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Crabshark.Graphing.meterProp setTo 'energyLevel'
+
+featProp Crabshark.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Crabshark.getProp('energyLevel').value - Crabshark.getProp('energyUse').value }}
+  propPop Crabshark.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Crabshark is
+  // sated
+  ifExpr {{ Crabshark.getProp('energyLevel').value > 50 }} [[
+    featProp Crabshark.Costume.currentFrame setTo 0
+    // Green
+    featProp Crabshark.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Crabshark.getProp('energyLevel').value < 50 }} [[
+    featProp Crabshark.Costume.currentFrame setTo 1
+    // Orange
+    featProp Crabshark.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Crabshark.getProp('energyLevel').value < 20 }} [[
+    featProp Crabshark.Costume.currentFrame setTo 1
+    // Red
+    featProp Crabshark.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Crabshark.getProp('energyLevel').value < 1 }} [[
+    featProp Crabshark.Costume.currentFrame setTo 2
+    prop Crabshark.alpha setTo 0.3
+    featProp Crabshark.Movement.movementType setTo 'stop'
+    prop Crabshark.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Crabshark.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Crabshark touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ Crabshark.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp Crabshark.Costume.glow setTo 1
+      prop Crabshark.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Crabshark touches Billyfish [[
+  every 1 [[
+    ifExpr {{ Crabshark.getProp('alive').value == true &&  Billyfish.getProp('alive').value == true }} [[
+      featProp Crabshark.Costume.glow setTo 1
+      prop Crabshark.energyLevel add 10
+      prop Billyfish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Crabshark touches Reincarnator [[
+  ifExpr {{ Crabshark.getProp('alive').value == false }} [[
+    featProp Crabshark.Costume.glow setTo 1
+    prop Crabshark.alive setTo true
+    prop Crabshark.alpha setTo 1
+    prop Crabshark.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Seacrabman",
+      "scriptText": `# BLUEPRINT Seacrabman
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Seacrabman.Costume.costumeName setTo 'UA_Seacrabman.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Seacrabman.Movement.movementType setTo 'wander'
+featProp Seacrabman.Movement.compassDirection setTo 'W'
+featProp Seacrabman.Movement.distance setTo 4
+featProp Seacrabman.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Seacrabman.Touches monitor 'ThreeBottom' b2b
+featCall Seacrabman.Touches monitor 'Reincarnator' b2b
+featCall Seacrabman.Touches monitor 'Crabshark' b2b
+featCall Seacrabman.Touches monitor 'Dorkadon' b2b
+featCall Seacrabman.Touches monitor 'JellJell' b2b
+featCall Seacrabman.Touches monitor 'Billyfish' b2b
+featCall Seacrabman.Touches monitor 'Turlugafish' b2b
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop Seacrabman.energyLevel setMax 100
+prop Seacrabman.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Seacrabman lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Seacrabman.Graphing.meterProp setTo 'energyLevel'
+
+featProp Seacrabman.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Seacrabman.getProp('energyLevel').value - Seacrabman.getProp('energyUse').value }}
+  propPop Seacrabman.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Seacrabman is
+  // sated
+  ifExpr {{ Seacrabman.getProp('energyLevel').value > 50 }} [[
+    featProp Seacrabman.Costume.currentFrame setTo 0
+    // Green
+    featProp Seacrabman.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Seacrabman.getProp('energyLevel').value < 50 }} [[
+    featProp Seacrabman.Costume.currentFrame setTo 1
+    // Orange
+    featProp Seacrabman.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Seacrabman.getProp('energyLevel').value < 20 }} [[
+    featProp Seacrabman.Costume.currentFrame setTo 1
+    // Red
+    featProp Seacrabman.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Seacrabman.getProp('energyLevel').value < 1 }} [[
+    featProp Seacrabman.Costume.currentFrame setTo 2
+    prop Seacrabman.alpha setTo 0.3
+    featProp Seacrabman.Movement.movementType setTo 'stop'
+    prop Seacrabman.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Seacrabman.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Seacrabman touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Seacrabman touches Crabshark [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  Crabshark.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop Crabshark.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Seacrabman touches Dorkadon [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  Dorkadon.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop Dorkadon.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Seacrabman touches JellJell [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  JellJell.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop JellJell.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Seacrabman touches Turlugafish [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  Turlugafish.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop Turlugafish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Seacrabman touches Billyfish [[
+  every 1 [[
+    ifExpr {{ Seacrabman.getProp('alive').value == true &&  Billyfish.getProp('alive').value == true }} [[
+      featProp Seacrabman.Costume.glow setTo 1
+      prop Seacrabman.energyLevel add 10
+      prop Billyfish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+
+when Seacrabman touches Reincarnator [[
+  ifExpr {{ Seacrabman.getProp('alive').value == false }} [[
+    featProp Seacrabman.Costume.glow setTo 1
+    prop Seacrabman.alive setTo true
+    prop Seacrabman.alpha setTo 1
+    prop Seacrabman.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Turlugafish",
+      "scriptText": `# BLUEPRINT Turlugafish
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Turlugafish.Costume.costumeName setTo 'UA_Turlugafish.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Turlugafish.Movement.movementType setTo 'wander'
+featProp Turlugafish.Movement.compassDirection setTo 'W'
+featProp Turlugafish.Movement.distance setTo 4
+featProp Turlugafish.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Turlugafish.Touches monitor 'ThreeBottom' b2b
+featCall Turlugafish.Touches monitor 'Crabshark' b2b
+featCall Turlugafish.Touches monitor 'Reincarnator' b2b
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop Turlugafish.energyLevel setMax 100
+prop Turlugafish.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Turlugafish lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Turlugafish.Graphing.meterProp setTo 'energyLevel'
+
+featProp Turlugafish.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Turlugafish.getProp('energyLevel').value - Turlugafish.getProp('energyUse').value }}
+  propPop Turlugafish.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Turlugafish is
+  // sated
+  ifExpr {{ Turlugafish.getProp('energyLevel').value > 50 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 0
+    // Green
+    featProp Turlugafish.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 50 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 1
+    // Orange
+    featProp Turlugafish.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 20 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 1
+    // Red
+    featProp Turlugafish.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Turlugafish.getProp('energyLevel').value < 1 }} [[
+    featProp Turlugafish.Costume.currentFrame setTo 2
+    prop Turlugafish.alpha setTo 0.3
+    featProp Turlugafish.Movement.movementType setTo 'stop'
+    prop Turlugafish.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Turlugafish.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Turlugafish touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ Turlugafish.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp Turlugafish.Costume.glow setTo 1
+      prop Turlugafish.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Turlugafish touches Crabshark [[
+  every 1 [[
+    ifExpr {{ Turlugafish.getProp('alive').value == true &&  Crabshark.getProp('alive').value == true }} [[
+      featProp Turlugafish.Costume.glow setTo 1
+      prop Turlugafish.energyLevel add 10
+      prop Crabshark.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Turlugafish touches Reincarnator [[
+  ifExpr {{ Turlugafish.getProp('alive').value == false }} [[
+    featProp Turlugafish.Costume.glow setTo 1
+    prop Turlugafish.alive setTo true
+    prop Turlugafish.alpha setTo 1
+    prop Turlugafish.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "JellJell",
+      "scriptText": `# BLUEPRINT JellJell
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp JellJell.Costume.costumeName setTo 'UA_JellJell.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp JellJell.Movement.movementType setTo 'wander'
+featProp JellJell.Movement.compassDirection setTo 'W'
+featProp JellJell.Movement.distance setTo 4
+featProp JellJell.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall JellJell.Touches monitor 'ThreeBottom' b2b
+featCall JellJell.Touches monitor 'Reincarnator' b2b
+featCall JellJell.Touches monitor 'Turlugafish' b2b
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop JellJell.energyLevel setMax 100
+prop JellJell.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make JellJell lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp JellJell.Graphing.meterProp setTo 'energyLevel'
+
+featProp JellJell.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ JellJell.getProp('energyLevel').value - JellJell.getProp('energyUse').value }}
+  propPop JellJell.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the JellJell is
+  // sated
+  ifExpr {{ JellJell.getProp('energyLevel').value > 50 }} [[
+    featProp JellJell.Costume.currentFrame setTo 0
+    // Green
+    featProp JellJell.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ JellJell.getProp('energyLevel').value < 50 }} [[
+    featProp JellJell.Costume.currentFrame setTo 1
+    // Orange
+    featProp JellJell.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ JellJell.getProp('energyLevel').value < 20 }} [[
+    featProp JellJell.Costume.currentFrame setTo 1
+    // Red
+    featProp JellJell.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ JellJell.getProp('energyLevel').value < 1 }} [[
+    featProp JellJell.Costume.currentFrame setTo 2
+    prop JellJell.alpha setTo 0.3
+    featProp JellJell.Movement.movementType setTo 'stop'
+    prop JellJell.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp JellJell.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when JellJell touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ JellJell.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp JellJell.Costume.glow setTo 1
+      prop JellJell.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when JellJell touches Turlugafish [[
+  every 1 [[
+    ifExpr {{ JellJell.getProp('alive').value == true &&  Turlugafish.getProp('alive').value == true }} [[
+      featProp JellJell.Costume.glow setTo 1
+      prop JellJell.energyLevel add 10
+      prop Turlugafish.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when JellJell touches Reincarnator [[
+  ifExpr {{ JellJell.getProp('alive').value == false }} [[
+    featProp JellJell.Costume.glow setTo 1
+    prop JellJell.alive setTo true
+    prop JellJell.alpha setTo 1
+    prop JellJell.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Billyfish",
+      "scriptText": `# BLUEPRINT Billyfish
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp Billyfish.Costume.costumeName setTo 'UA_Billyfish.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp Billyfish.Movement.movementType setTo 'wander'
+featProp Billyfish.Movement.compassDirection setTo 'W'
+featProp Billyfish.Movement.distance setTo 4
+featProp Billyfish.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Billyfish.Touches monitor 'ThreeBottom' b2b
+featCall Billyfish.Touches monitor 'Reincarnator' b2b
+
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop Billyfish.energyLevel setMax 100
+prop Billyfish.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Billyfish lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Billyfish.Graphing.meterProp setTo 'energyLevel'
+
+featProp Billyfish.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Billyfish.getProp('energyLevel').value - Billyfish.getProp('energyUse').value }}
+  propPop Billyfish.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Billyfish is
+  // sated
+  ifExpr {{ Billyfish.getProp('energyLevel').value > 50 }} [[
+    featProp Billyfish.Costume.currentFrame setTo 0
+    // Green
+    featProp Billyfish.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Billyfish.getProp('energyLevel').value < 50 }} [[
+    featProp Billyfish.Costume.currentFrame setTo 1
+    // Orange
+    featProp Billyfish.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Billyfish.getProp('energyLevel').value < 20 }} [[
+    featProp Billyfish.Costume.currentFrame setTo 1
+    // Red
+    featProp Billyfish.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Billyfish.getProp('energyLevel').value < 1 }} [[
+    featProp Billyfish.Costume.currentFrame setTo 2
+    prop Billyfish.alpha setTo 0.3
+    featProp Billyfish.Movement.movementType setTo 'stop'
+    prop Billyfish.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Billyfish.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Billyfish touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ Billyfish.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp Billyfish.Costume.glow setTo 1
+      prop Billyfish.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when Billyfish touches Reincarnator [[
+  ifExpr {{ Billyfish.getProp('alive').value == false }} [[
+    featProp Billyfish.Costume.glow setTo 1
+    prop Billyfish.alive setTo true
+    prop Billyfish.alpha setTo 1
+    prop Billyfish.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "BelugaMan",
+      "scriptText": `# BLUEPRINT BelugaMan
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp BelugaMan.Costume.costumeName setTo 'UA_BelugaMan.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp BelugaMan.Movement.movementType setTo 'wander'
+featProp BelugaMan.Movement.compassDirection setTo 'W'
+featProp BelugaMan.Movement.distance setTo 4
+featProp BelugaMan.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall BelugaMan.Touches monitor 'ThreeBottom' b2b
+featCall BelugaMan.Touches monitor 'Reincarnator' b2b
+featCall BelugaMan.Touches monitor 'Seaweed' b2b
+
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop BelugaMan.energyLevel setMax 100
+prop BelugaMan.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make BelugaMan lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp BelugaMan.Graphing.meterProp setTo 'energyLevel'
+
+featProp BelugaMan.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ BelugaMan.getProp('energyLevel').value - BelugaMan.getProp('energyUse').value }}
+  propPop BelugaMan.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the BelugaMan is
+  // sated
+  ifExpr {{ BelugaMan.getProp('energyLevel').value > 50 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 0
+    // Green
+    featProp BelugaMan.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 50 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 1
+    // Orange
+    featProp BelugaMan.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 20 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 1
+    // Red
+    featProp BelugaMan.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ BelugaMan.getProp('energyLevel').value < 1 }} [[
+    featProp BelugaMan.Costume.currentFrame setTo 2
+    prop BelugaMan.alpha setTo 0.3
+    featProp BelugaMan.Movement.movementType setTo 'stop'
+    prop BelugaMan.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp BelugaMan.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when BelugaMan touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ BelugaMan.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp BelugaMan.Costume.glow setTo 1
+      prop BelugaMan.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when BelugaMan touches Seaweed [[
+  every 1 [[
+    ifExpr {{ BelugaMan.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp BelugaMan.Costume.glow setTo 1
+      prop BelugaMan.energyLevel add 10
+    ]]
+  ]]
+]]
+
+when BelugaMan touches Reincarnator [[
+  ifExpr {{ BelugaMan.getProp('alive').value == false }} [[
+    featProp BelugaMan.Costume.glow setTo 1
+    prop BelugaMan.alive setTo true
+    prop BelugaMan.alpha setTo 1
+    prop BelugaMan.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "ShurpShurp",
+      "scriptText": `# BLUEPRINT ShurpShurp
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp ShurpShurp.Costume.costumeName setTo 'UA_ShurpShurp.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp ShurpShurp.Movement.movementType setTo 'wander'
+featProp ShurpShurp.Movement.compassDirection setTo 'W'
+featProp ShurpShurp.Movement.distance setTo 4
+featProp ShurpShurp.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall ShurpShurp.Touches monitor 'ThreeBottom' b2b
+featCall ShurpShurp.Touches monitor 'Reincarnator' b2b
+featCall ShurpShurp.Touches monitor 'BelugaMan' b2b
+featCall ShurpShurp.Touches monitor 'JellJell' b2b
+
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 75
+prop ShurpShurp.energyLevel setMax 100
+prop ShurpShurp.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make ShurpShurp lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp ShurpShurp.Graphing.meterProp setTo 'energyLevel'
+
+featProp ShurpShurp.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ ShurpShurp.getProp('energyLevel').value - ShurpShurp.getProp('energyUse').value }}
+  propPop ShurpShurp.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the ShurpShurp is
+  // sated
+  ifExpr {{ ShurpShurp.getProp('energyLevel').value > 50 }} [[
+    featProp ShurpShurp.Costume.currentFrame setTo 0
+    // Green
+    featProp ShurpShurp.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ ShurpShurp.getProp('energyLevel').value < 50 }} [[
+    featProp ShurpShurp.Costume.currentFrame setTo 1
+    // Orange
+    featProp ShurpShurp.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ ShurpShurp.getProp('energyLevel').value < 20 }} [[
+    featProp ShurpShurp.Costume.currentFrame setTo 1
+    // Red
+    featProp ShurpShurp.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ ShurpShurp.getProp('energyLevel').value < 1 }} [[
+    featProp ShurpShurp.Costume.currentFrame setTo 2
+    prop ShurpShurp.alpha setTo 0.3
+    featProp ShurpShurp.Movement.movementType setTo 'stop'
+    prop ShurpShurp.alive setTo false
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp ShurpShurp.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when ShurpShurp touches ThreeBottom [[
+  every 1 [[
+    ifExpr {{ ShurpShurp.getProp('alive').value == true &&  ThreeBottom.getProp('alive').value == true }} [[
+      featProp ShurpShurp.Costume.glow setTo 1
+      prop ShurpShurp.energyLevel add 10
+      prop ThreeBottom.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when ShurpShurp touches BelugaMan [[
+  every 1 [[
+    ifExpr {{ ShurpShurp.getProp('alive').value == true &&  BelugaMan.getProp('alive').value == true }} [[
+      featProp ShurpShurp.Costume.glow setTo 1
+      prop ShurpShurp.energyLevel add 10
+      prop BelugaMan.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when ShurpShurp touches JellJell [[
+  every 1 [[
+    ifExpr {{ ShurpShurp.getProp('alive').value == true &&  JellJell.getProp('alive').value == true }} [[
+      featProp ShurpShurp.Costume.glow setTo 1
+      prop ShurpShurp.energyLevel add 10
+      prop JellJell.energyLevel setTo 0
+    ]]
+  ]]
+]]
+
+when ShurpShurp touches Reincarnator [[
+  ifExpr {{ ShurpShurp.getProp('alive').value == false }} [[
+    featProp ShurpShurp.Costume.glow setTo 1
+    prop ShurpShurp.alive setTo true
+    prop ShurpShurp.alpha setTo 1
+    prop ShurpShurp.energyLevel setTo 50
+  ]]
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Seaweed",
+      "scriptText": `# BLUEPRINT Seaweed
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Seaweed.Costume.costumeName setTo 'UA_seaweed.png'
+featProp Seaweed.Costume.scale setTo 0.05
+
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+addProp clean boolean true
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel number 75
+prop Seaweed.energyLevel setMax 100
+prop Seaweed.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make ThreeBottom lose energy faster (or slower)
+addProp energyUse number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Seaweed.Graphing.meterProp setTo 'energyLevel'
+
+featProp Seaweed.Graphing.meterColor setTo 65280
+
+// make sure we track interactions with the other creatures
+featCall Seaweed.Touches monitor 'BadHuman' b2b
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ Seaweed.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ Seaweed.getProp('energyLevel').value - Seaweed.getProp('energyUse').value }}
+    propPop Seaweed.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the ThreeBottom is
+  // set ThreeBottom energy meter color
+  // doing great
+  ifExpr {{ Seaweed.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp Seaweed.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ Seaweed.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp Seaweed.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ Seaweed.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp Seaweed.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ Seaweed.getProp('energyLevel').value < 1 }} [[
+      featProp Seaweed.Costume.currentFrame setTo 2
+      prop Seaweed.alpha setTo 0.3
+      prop Seaweed.alive setTo false
+    ]]
+
+  ]]
+]]
+when BadHuman touches Seaweed [[
+  every 1 [[
+    ifExpr {{ BadHuman.getProp('alive').value == true &&  Seaweed.getProp('clean').value == true }} [[
+      featProp BadHuman.Costume.glow setTo 1
+      featProp Seaweed.Costume.costumeName equal 'UA_seaweed_slime.png'
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "GoodHuman",
+      "scriptText": `# BLUEPRINT GoodHuman
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp GoodHuman.Costume.costumeName setTo 'UA_GoodHuman.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp GoodHuman.Movement.movementType setTo 'wander'
+featProp GoodHuman.Movement.compassDirection setTo 'W'
+featProp GoodHuman.Movement.distance setTo 4
+featProp GoodHuman.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall GoodHuman.Touches monitor 'Seaweed' b2b
+
+
+
+# PROGRAM EVENT
+
+when GoodHuman touches Seaweed [[
+  every 1 [[
+    ifExpr {{ GoodHuman.getProp('alive').value == true &&  Seaweed.getProp('clean').value == false }} [[
+      featProp GoodHuman.Costume.glow setTo 1
+      featProp Seaweed.Costume.costumeName setTo 'UA_seaweed.png'
+      prop Seaweed.clean setTo true
+
+
+    ]]
+  ]]
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "BadHuman",
+      "scriptText": `# BLUEPRINT BadHuman
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+// set the costume
+featProp BadHuman.Costume.costumeName setTo 'UA_BadHuman.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.1
+
+featProp BadHuman.Movement.movementType setTo 'wander'
+featProp BadHuman.Movement.compassDirection setTo 'W'
+featProp BadHuman.Movement.distance setTo 4
+featProp BadHuman.Movement.targetY setMax 0.9
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall BadHuman.Touches monitor 'Seaweed' b2b
+
+
+
+# PROGRAM EVENT
+
+when BadHuman touches Seaweed [[
+  every 1 [[
+    ifExpr {{ BadHuman.getProp('alive').value == true &&  Seaweed.getProp('clean').value == true }} [[
+      featProp BadHuman.Costume.glow setTo 1
+      featProp Seaweed.Costume.costumeName equal 'UA_seaweed_slime.png'
+      prop Seaweed.clean setTo false
+    ]]
+  ]]
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Background0",
+      "bpid": "Background",
+      "initScript": `prop x setTo 3.19
+prop y setTo 0.28`
+    },
+    {
+      "id": "2",
+      "label": "Timer2",
+      "bpid": "Timer",
+      "initScript": `prop x setTo -353.08
+prop y setTo -399.32`
+    },
+    {
+      "id": "3",
+      "label": "BelugaMan3",
+      "bpid": "BelugaMan",
+      "initScript": `prop x setTo -293.08
+prop y setTo -279.40`
+    },
+    {
+      "id": "4",
+      "label": "Billyfish4",
+      "bpid": "Billyfish",
+      "initScript": `prop x setTo 5.55
+prop y setTo -265.77`
+    },
+    {
+      "id": "5",
+      "label": "Crabshark5",
+      "bpid": "Crabshark",
+      "initScript": `prop x setTo 297.50
+prop y setTo -245.06`
+    },
+    {
+      "id": "6",
+      "label": "Dorkadon6",
+      "bpid": "Dorkadon",
+      "initScript": `prop x setTo -177.28
+prop y setTo 18.65`
+    },
+    {
+      "id": "7",
+      "label": "JellJell7",
+      "bpid": "JellJell",
+      "initScript": `prop x setTo 115.11
+prop y setTo 52.33`
+    }
+  ]
+}
