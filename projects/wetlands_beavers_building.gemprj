@@ -94,12 +94,13 @@ addFeature Population
 // ✏️ moves over a water plant?
 addProp showWaterPlantInfo boolean true
 addProp showFishInfo boolean true
+// if this is set to true, you can't drop twigs or rocks unless the gesture helper overlaps with the beaver
+addProp requireGestureHelper boolean false
 
 // ✏️ LETS CHANGE THIS: consider adding / removing
 // ✏️ The carbon capture graph
 // ✏️ The pollution graph
 // ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
-
 
 prop global.visible setTo false
 
@@ -312,6 +313,14 @@ when Beaver touches Dam [[
 
     // We are carrying a rock, mud, or twig
     ifProp Beaver.carrying notEqual 'nothing' [[
+
+    // if we don't need to track the gesture directly through touching the gestureHelper
+    // have a slight delay handled here so it's not too fast for users to notice what is happening
+      ifProp global.requireGestureHelper equal false [[
+            prop Beaver.gestureTimer add 1
+      ]]
+
+
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
         // Depending on what we were carrying, log it
@@ -338,6 +347,11 @@ when Beaver touches Dam [[
         prop Dam.buildLevel add 1
         propPush Dam.buildLevel
         propPop global.damBuildLevel
+
+        ifProp global.requireGestureHelper equal false [[
+            prop Beaver.gestureTimer setTo 0
+        ]]
+
       ]]
     ]]
   ]]
@@ -484,11 +498,13 @@ every 1 [[
   ]]
 
   // check if gesturing, and then handle that inside the when touches above
-  ifProp Beaver.gesturing equal true [[
-    prop Beaver.gestureTimer add 1
-  ]]
-  ifProp Beaver.gesturing equal false [[
-    prop Beaver.gestureTimer setTo 0
+  ifProp global.requireGestureHelper equal true [[
+    ifProp Beaver.gesturing equal true [[
+      prop Beaver.gestureTimer add 1
+    ]]
+    ifProp Beaver.gesturing equal false [[
+      prop Beaver.gestureTimer setTo 0
+    ]]
   ]]
 ]]`
     },
@@ -1236,8 +1252,8 @@ prop y setTo -164.14`
       "id": "1",
       "label": "Lodge",
       "bpid": "Lodge",
-      "initScript": `prop x setTo 0
-prop y setTo -225`
+      "initScript": `prop x setTo 0.00
+prop y setTo -225.00`
     },
     {
       "id": "2",
@@ -1536,8 +1552,9 @@ prop location setTo 'belowDam'`
       "id": "45",
       "label": "WaterSpeedTop",
       "bpid": "WaterSpeed",
-      "initScript": `prop x setTo -1.18
-prop y setTo -163.69
+      "initScript": `prop x setTo 2.42
+prop y setTo -159.67
+prop zIndex setTo -200
 prop location setTo 'aboveDam'`
     },
     {
