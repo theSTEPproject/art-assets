@@ -106,7 +106,8 @@ featProp Kid1.Movement.compassDirection setTo 'W'
 featProp Kid1.Movement.distance setTo 4
 featProp Kid1.Movement.targetY setMax 0.7
 
-addProp alive Boolean true
+addProp alive boolean true
+addProp healthy boolean true
 
 // make sure we track interactions with the other creatures
 featCall Kid1.Touches monitor 'Soda' b2b
@@ -143,12 +144,14 @@ every 1 runAtStart [[
   // sick
   ifExpr {{ Kid1.getProp('sugarLevel').value > 25 }} [[
     featProp Kid1.Costume.costumeName setTo 'NS_kid1_sick.png'
+    prop Kid1.healthy setTo false
     // Red
     featProp Kid1.Graphing.meterColor setTo 16711680
   ]]
   // healthy
   ifExpr {{ Kid1.getProp('sugarLevel').value < 25 }} [[
     featProp Kid1.Costume.currentFrame setTo 1
+    prop Kid1.healthy setTo true
     // Magenta
     featProp Kid1.Graphing.meterColor setTo 16711824
   ]]
@@ -188,8 +191,8 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
-    when Kid1 touches Apple [[
+
+  when Kid1 touches Apple [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Apple.getProp('alive').value == true }} [[
         featProp Kid1.Costume.glow setTo 1
@@ -199,7 +202,7 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
+
   when Kid1 touches Orange [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Orange.getProp('alive').value == true }} [[
@@ -210,7 +213,7 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
+
   when Kid1 touches Strawberries [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Strawberries.getProp('alive').value == true }} [[
@@ -221,8 +224,8 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
-    when Kid1 touches Watermelon [[
+
+  when Kid1 touches Watermelon [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Watermelon.getProp('alive').value == true }} [[
         featProp Kid1.Costume.glow setTo 1
@@ -232,8 +235,8 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
-   when Kid1 touches Carrot [[
+
+  when Kid1 touches Carrot [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Carrot.getProp('alive').value == true }} [[
         featProp Kid1.Costume.glow setTo 1
@@ -243,7 +246,7 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
+
   when Kid1 touches Cucumber [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Cucumber.getProp('alive').value == true }} [[
@@ -254,7 +257,7 @@ every 1 runAtStart [[
       ]]
     ]]
   ]]
-  
+
   when Kid1 touches Tomato [[
     every 1 [[
       ifExpr {{ Kid1.getProp('alive').value == true &&  Tomato.getProp('alive').value == true }} [[
@@ -270,6 +273,7 @@ every 1 runAtStart [[
     ifExpr {{ Kid1.getProp('sugarLevel').value > 25 }} [[
       featProp Kid1.Costume.glow setTo 1
       featProp Kid1.Costume.costumeName setTo 'NS_kid1_healthy.png'
+      prop Kid1.healthy setTo true
       prop Kid1.sugarLevel setTo 0
     ]]
   ]]
@@ -1408,6 +1412,7 @@ featProp HealthyKidsPopulation.Graphing.isLargeGraphic setTo true
 
 // set y axis to starting # of Healthy Kids
 addProp totalHealthyKids number 5
+addProp totalKid1Healthy number 1
 
 
 featProp HealthyKidsPopulation.Graphing.graphProp setTo 'totalHealthyKids'
@@ -1424,16 +1429,15 @@ featProp HealthyKidsPopulation.Graphing.text setTo 'Total Healthy Kids'
 
 onEvent Tick [[
 
-
   // count up the Kid1
   featProp HealthyKidsPopulation.Population.monitoredCharacter setTo 'Kid1'
   featProp HealthyKidsPopulation.Population.monitoredCharacterProp setTo 'healthy'
-  featCall HealthyKidsPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop HealthyKidsPopulation.totalHealthyKids
+  featCall HealthyKidsPopulation.Population countCharacterProp 
+  exprPush {{ HealthyKidsPopulation.getFeatProp('Population', 'sum').value }}
+  propPop HealthyKidsPopulation.totalKid1Healthy
 
   // graph the sum
-  exprPush {{ agent.getProp('totalHealthyKids').value }}
+  exprPush {{ agent.getProp('totalKid1Healthy').value }}
   propPop HealthyKidsPopulation.totalHealthyKids
 
 
@@ -1555,6 +1559,13 @@ prop y setTo 302.03`
       "bpid": "IceCream",
       "initScript": `prop x setTo -246.02
 prop y setTo -275.94`
+    },
+    {
+      "id": "23",
+      "label": "HealthyKidsPopulation23",
+      "bpid": "HealthyKidsPopulation",
+      "initScript": `prop x setTo 489.97
+prop y setTo 306.13`
     }
   ]
 }
