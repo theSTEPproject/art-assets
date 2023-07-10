@@ -1470,6 +1470,92 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Chicken",
+      "scriptText": `# BLUEPRINT Chicken
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+featProp Chicken.Costume.costumeName setTo 'NS_chicken.png'
+featProp Chicken.Costume.scale setTo 0.2
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Chicken.Touches monitor 'Kid1' b2b
+featCall Chicken.Touches monitor 'Kid2' b2b
+featCall Chicken.Touches monitor 'Kid3' b2b
+
+// setup to track sugar and begin at zero (one Chicken ~ 0g of sugar)
+addProp sugarLevel number 0
+prop Chicken.sugarLevel setMax 0
+prop Chicken.sugarLevel setMin 0
+
+// use a widget to depict the current sugar, and color it pink (maybe change later)
+addFeature Graphing
+featProp Chicken.Graphing.meterProp setTo 'sugarLevel'
+featProp Chicken.Graphing.meterColor setTo 16711824
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+every 1 runAtStart [[
+  // set meter to mirror energyLevel
+  featProp Chicken.Graphing.meterProp setTo 'sugarLevel'
+
+  ]]
+
+when Kid1 touches Chicken [[
+    every 1 [[
+      ifExpr {{ Kid1.getProp('alive').value == true &&  Chicken.getProp('alive').value == true }} [[
+        featProp Kid1.Costume.glow setTo 1
+        prop Kid1.sugarLevel add 0
+        prop Chicken.sugarLevel sub 0
+
+      ]]
+    ]]
+    ]]
+
+when Kid2 touches Chicken [[
+    every 1 [[
+      ifExpr {{ Kid2.getProp('alive').value == true &&  Chicken.getProp('alive').value == true }} [[
+        featProp Kid2.Costume.glow setTo 1
+        prop Kid2.sugarLevel add 0
+        prop Chicken.sugarLevel sub 0
+
+      ]]
+    ]]
+    ]]
+
+when Kid3 touches Chicken [[
+    every 1 [[
+      ifExpr {{ Kid3.getProp('alive').value == true &&  Chicken.getProp('alive').value == true }} [[
+        featProp Kid3.Costume.glow setTo 1
+        prop Kid3.sugarLevel add 0
+        prop Chicken.sugarLevel sub 0
+
+      ]]
+    ]]
+    ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1495,88 +1581,11 @@ prop y setTo -100.58`
 prop y setTo 2.64`
     },
     {
-      "id": "6",
-      "label": "IceCreamTruck6",
-      "bpid": "IceCreamTruck",
-      "initScript": `prop x setTo -312.59
-prop y setTo -325.94`
-    },
-    {
       "id": "7",
       "label": "SweetShop7",
       "bpid": "SweetShop",
-      "initScript": `prop x setTo -321.90
-prop y setTo -144.66`
-    },
-    {
-      "id": "9",
-      "label": "ProduceMarket9",
-      "bpid": "ProduceMarket",
-      "initScript": `prop x setTo 237.34
-prop y setTo 208.23`
-    },
-    {
-      "id": "10",
-      "label": "Strawberries10",
-      "bpid": "Strawberries",
-      "initScript": `prop x setTo 334.04
-prop y setTo 73.33`
-    },
-    {
-      "id": "11",
-      "label": "Watermelon11",
-      "bpid": "Watermelon",
-      "initScript": `prop x setTo 138.22
-prop y setTo 90.97`
-    },
-    {
-      "id": "12",
-      "label": "Orange12",
-      "bpid": "Orange",
-      "initScript": `prop x setTo 327.93
-prop y setTo 277.67`
-    },
-    {
-      "id": "14",
-      "label": "Apple14",
-      "bpid": "Apple",
-      "initScript": `prop x setTo 136.06
-prop y setTo 283.83`
-    },
-    {
-      "id": "15",
-      "label": "VeggieGarden15",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 249.24
-prop y setTo -229.73`
-    },
-    {
-      "id": "16",
-      "label": "Carrot16",
-      "bpid": "Carrot",
-      "initScript": `prop x setTo 345.53
-prop y setTo -333.12`
-    },
-    {
-      "id": "17",
-      "label": "Cucumber17",
-      "bpid": "Cucumber",
-      "initScript": `prop x setTo 332.84
-prop y setTo -175.24`
-    },
-    {
-      "id": "18",
-      "label": "Tomato18",
-      "bpid": "Tomato",
-      "initScript": `prop x setTo 164.20
-prop y setTo -330.60`
-    },
-    {
-      "id": "19",
-      "label": "Hospital19",
-      "bpid": "Hospital",
-      "initScript": `prop x setTo -172.34
-prop y setTo 302.03`
+      "initScript": `prop x setTo -318.65
+prop y setTo -147.57`
     },
     {
       "id": "20",
@@ -1612,6 +1621,76 @@ prop y setTo 4.90`
       "bpid": "Soda",
       "initScript": `prop x setTo -194.53
 prop y setTo -184.03`
+    },
+    {
+      "id": "30",
+      "label": "IceCreamTruck30",
+      "bpid": "IceCreamTruck",
+      "initScript": `prop x setTo -307.08
+prop y setTo -307.93`
+    },
+    {
+      "id": "31",
+      "label": "IceCreamTruck31",
+      "bpid": "IceCreamTruck",
+      "initScript": `prop x setTo 136.98
+prop y setTo 193.28`
+    },
+    {
+      "id": "32",
+      "label": "IceCream32",
+      "bpid": "IceCream",
+      "initScript": `prop x setTo 212.57
+prop y setTo 295.97`
+    },
+    {
+      "id": "33",
+      "label": "IceCream33",
+      "bpid": "IceCream",
+      "initScript": `prop x setTo 1.47
+prop y setTo 190.35`
+    },
+    {
+      "id": "34",
+      "label": "IceCream34",
+      "bpid": "IceCream",
+      "initScript": `prop x setTo 183.13
+prop y setTo 39.70`
+    },
+    {
+      "id": "35",
+      "label": "SweetShop35",
+      "bpid": "SweetShop",
+      "initScript": `prop x setTo 222.92
+prop y setTo -174.95`
+    },
+    {
+      "id": "36",
+      "label": "Cookie36",
+      "bpid": "Cookie",
+      "initScript": `prop x setTo 339.06
+prop y setTo -330.62`
+    },
+    {
+      "id": "37",
+      "label": "Cookie37",
+      "bpid": "Cookie",
+      "initScript": `prop x setTo 123.23
+prop y setTo -333.20`
+    },
+    {
+      "id": "38",
+      "label": "Soda38",
+      "bpid": "Soda",
+      "initScript": `prop x setTo 123.73
+prop y setTo -101.32`
+    },
+    {
+      "id": "39",
+      "label": "Soda39",
+      "bpid": "Soda",
+      "initScript": `prop x setTo 343.37
+prop y setTo -52.28`
     }
   ]
 }
