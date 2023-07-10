@@ -141,6 +141,10 @@ addProp numTwigsInDam number 0
 addProp numMudInDam number 0
 addProp numRocksInDam number 0
 
+addProp numTwigsInLodge number 0
+addProp numMudInLodge number 0
+addProp numRocksInLodge number 0
+
 // to be used by the noticing wizard
 addProp noticingString string '...'
 
@@ -335,7 +339,6 @@ when Beaver touches Dam [[
         prop Beaver.gestureTimer add 1
       ]]
 
-
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
         // 🔎 WHAT DOES THIS SECTION DO?
@@ -373,17 +376,22 @@ when Beaver touches Dam [[
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section is where we check if dropping something helps build the dam and how much 
         // 🔎 First we decide how much each thing adds, then we add it
+        // ✏️ LETS CHANGE THIS (CHANGE2)
+        // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the dam faster or slower
         ifProp Beaver.carrying equal 'twig' [[
+          // ✏️ This line sets how much each twig adds
           prop Dam.buildLevel add 1
           prop global.numTwigsInDam add 1
           featCall Beaver.IU logString 'Beaver added a twig to the dam.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
+          // ✏️ This line sets how much each rock adds
           prop Dam.buildLevel add 1
           prop global.numRocksInDam add 1
           featCall Beaver.IU logString 'Beaver added a rock to the dam.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
+          // ✏️ This line sets how much each bit of mud adds
           prop Dam.buildLevel add 1
           prop global.numMudInDam add 1
           featCall Beaver.IU logString 'Beaver added mud to the dam.'
@@ -429,49 +437,86 @@ when Beaver lasttouches Lodge [[
 
 when Beaver touches Lodge [[
   every 1 [[
+
+
+
+    // We are carrying a rock, mud, or twig
     ifProp Beaver.carrying notEqual 'nothing' [[
 
+      // if we don't need to track the gesture directly through touching the gestureHelper
+      // have a slight delay handled here so it's not too fast for users to notice what is happening
       ifProp global.requireGestureHelper equal false [[
         prop Beaver.gestureTimer add 1
       ]]
 
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
-        ifProp global.canBuildLodge equal true [[
 
-          // Depending on what we were carrying, log it
-          // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
-          prop Beaver.tempString setTo 'The beaver added a '
-          ifProp Beaver.carrying equal 'twig' [[
-            prop Beaver.tempString add 'twig '
+        // 🔎 WHAT DOES THIS SECTION DO?
+        // 🔎 This section checks if we are holding something that we can add to the lodge
+        // 🔎 If we already have too much of whatever it is, just drop it
+        // ✏️ LETS CHANGE THIS (CHANGE3)
+        // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
+        ifProp Beaver.carrying equal 'twig' [[
+          // ✏️ This line sets how many twigs the beaver can add to the lodge
+          ifProp global.numTwigsInLodge greaterThanOrEqual 8 [[
+            prop Beaver.carrying setTo 'nothing'
+            prop global.textForPopup setTo 'The lodge has enough twigs.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the twig becuase there were too many in the lodge.'
           ]]
-          ifProp Beaver.carrying equal 'rock' [[
-            prop Beaver.tempString add 'rock '
+        ]]
+        ifProp Beaver.carrying equal 'rock' [[
+           // ✏️ This line sets how many rocks the beaver can add to the lodge
+           ifProp global.numRocksInLodge greaterThanOrEqual 8 [[
+            prop Beaver.carrying setTo 'nothing'
+            prop global.textForPopup setTo 'The lodgen has enough mud.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the lodge.'
           ]]
-          ifProp Beaver.carrying equal 'mud' [[
-            prop Beaver.tempString add 'mud '
+        ]]
+        ifProp Beaver.carrying equal 'mud' [[
+          // ✏️ This line sets how much mud the beaver can add to the lodge
+           ifProp global.numMudInLodge greaterThanOrEqual 8 [[
+            prop global.textForPopup setTo 'The lodgen has enough rocks.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the lodge.'
           ]]
-          prop Beaver.tempString add 'to the lodge.'
-          propPush Beaver.tempString
-          featPropPop Beaver.IU.logStringText
+        ]]
 
-          featCall Beaver.IU logProperty
-
-          // update the beave so we know it isn't carrying anything any more
-          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-          prop Beaver.carrying setTo 'nothing'
+        // 🔎 WHAT DOES THIS SECTION DO?
+        // 🔎 This section is where we check if dropping something helps build the lodge and how much 
+        // 🔎 First we decide how much each thing adds, then we add it
+        // ✏️ LETS CHANGE THIS (CHANGE4)
+        // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the lodge faster or slower
+        ifProp Beaver.carrying equal 'twig' [[
+          // ✏️ This line sets how much each twig adds
           prop Lodge.buildLevel add 1
+          prop global.numTwigsInLodge add 1
+          featCall Beaver.IU logString 'Beaver added a twig to the lodge.'
         ]]
-        ifProp global.canBuildLodge equal false [[
+        ifProp Beaver.carrying equal 'rock' [[
+          // ✏️ This line sets how much each rock adds
+          prop Lodge.buildLevel add 1
+          prop global.numRocksInLodge add 1
+          featCall Beaver.IU logString 'Beaver added a rock to the lodge.'
+        ]]
+        ifProp Beaver.carrying equal 'mud' [[
+          // ✏️ This line sets how much each blob of mud adds
+          prop Lodge.buildLevel add 1
+          prop global.numMudInLodge add 1
+          featCall Beaver.IU logString 'Beaver added mud to the lodge.'
+        ]]
 
-          // ✏️ LETS CHANGE THIS: The next line helps to report what happens when a beaver drops something.
-          featCall Beaver.IU logString 'Beaver drops what it was carrying but the lodge cannot be built yet so it disappears'
-          featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-          prop Beaver.carrying setTo 'nothing'
-        ]]
+        propPush Lodge.buildLevel
+        propPop global.lodgeBuildLevel
+
+        prop Beaver.carrying setTo 'nothing'
+        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 
         ifProp global.requireGestureHelper equal false [[
           prop Beaver.gestureTimer setTo 0
         ]]
+
       ]]
     ]]
   ]]
