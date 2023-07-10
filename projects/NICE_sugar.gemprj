@@ -1391,6 +1391,56 @@ every 1 runAtStart [[
     ]]
   ]]
 ]]`
+    },
+    {
+      "name": "HealthyKidsPopulation",
+      "scriptText": `# BLUEPRINT HealthyKidsPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp HealthyKidsPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp HealthyKidsPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Healthy Kids
+addProp totalHealthyKids number 5
+
+
+featProp HealthyKidsPopulation.Graphing.graphProp setTo 'totalHealthyKids'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop HealthyKidsPopulation.x setTo 495
+prop HealthyKidsPopulation.y setTo 187
+prop HealthyKidsPopulation.zIndex setTo 300
+
+featProp HealthyKidsPopulation.Graphing.text setTo 'Total Healthy Kids'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Kid1
+  featProp HealthyKidsPopulation.Population.monitoredCharacter setTo 'Kid1'
+  featProp HealthyKidsPopulation.Population.monitoredCharacterProp setTo 'healthy'
+  featCall HealthyKidsPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop HealthyKidsPopulation.totalHealthyKids
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalHealthyKids').value }}
+  propPop HealthyKidsPopulation.totalHealthyKids
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
