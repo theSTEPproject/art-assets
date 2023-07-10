@@ -341,7 +341,10 @@ when Beaver touches Dam [[
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the dam
         // 🔎 If we already have too much of whatever it is, just drop it
+        // ✏️ LETS CHANGE THIS (CHANGE1)
+        // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
+          // ✏️ This line sets how many twigs the beaver can add to the dam
           ifProp global.numTwigsInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The dam has enough twigs.'
@@ -350,6 +353,7 @@ when Beaver touches Dam [[
           ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
+           // ✏️ This line sets how many rocks the beaver can add to the dam
            ifProp global.numRocksInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The damn has enough mud.'
@@ -358,6 +362,7 @@ when Beaver touches Dam [[
           ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
+          // ✏️ This line sets how much mud the beaver can add to the dam
            ifProp global.numMudInDam greaterThanOrEqual 8 [[
             prop global.textForPopup setTo 'The damn has enough rocks.'
             featCall global.IU callFunction 'popupMessage'
