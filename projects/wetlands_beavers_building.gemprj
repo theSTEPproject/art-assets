@@ -136,8 +136,24 @@ addProp tempNum number 0
 addProp showingWaterPlantInfo boolean false
 addProp showingFishInfo boolean false
 
+// props if we want to break out what this is made of
+addProp numTwigsInDam number 0
+addProp numMudInDam number 0
+addProp numRocksInDam number 0
+
 // to be used by the noticing wizard
 addProp noticingString string '...'
+
+addProp textForPopup string ''
+
+featCall global.IU setupFunction 'popupMessage' [[
+
+  featCall global.Population createCharacter PopupEffect [[
+      propPush global.textForPopup
+      propPop PopupEffect.textToUse
+      prop PopupEffect.costumeToUse setTo ''
+    ]]
+]]
 
 // required directive
 # PROGRAM UPDATE
@@ -322,30 +338,58 @@ when Beaver touches Dam [[
 
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
-        // Depending on what we were carrying, log it
-        // we could use the carrying to break this up, but use the if assuming we'll need to track this later.
-        prop Beaver.tempString setTo 'The beaver added a '
+        // 🔎 WHAT DOES THIS SECTION DO?
+        // 🔎 This section checks if we are holding something that we can add to the dam
+        // 🔎 If we already have too much of whatever it is, just drop it
         ifProp Beaver.carrying equal 'twig' [[
-          prop Beaver.tempString add 'twig '
+          ifProp global.numTwigsInDam greaterThanOrEqual 8 [[
+            prop Beaver.carrying setTo 'nothing'
+            prop global.textForPopup setTo 'The dam has enough twigs.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the twig becuase there were too many in the dam.'
+          ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          prop Beaver.tempString add 'rock '
+           ifProp global.numRocksInDam greaterThanOrEqual 8 [[
+            prop Beaver.carrying setTo 'nothing'
+            prop global.textForPopup setTo 'The damn has enough mud.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the dam.'
+          ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          prop Beaver.tempString add 'mud '
+           ifProp global.numMudInDam greaterThanOrEqual 8 [[
+            prop global.textForPopup setTo 'The damn has enough rocks.'
+            featCall global.IU callFunction 'popupMessage'
+            featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the dam.'
+          ]]
         ]]
-        prop Beaver.tempString add 'to the dam.'
-        propPush Beaver.tempString
-        featPropPop Beaver.IU.logStringText
 
-        featCall Beaver.IU logProperty
+        // 🔎 WHAT DOES THIS SECTION DO?
+        // 🔎 This section is where we check if dropping something helps build the dam and how much 
+        // 🔎 First we decide how much each thing adds, then we add it
+        ifProp Beaver.carrying equal 'twig' [[
+          prop Dam.buildLevel add 1
+          prop global.numTwigsInDam add 1
+          featCall Beaver.IU logString 'Beaver added a twig to the dam.'
+        ]]
+        ifProp Beaver.carrying equal 'rock' [[
+          prop Dam.buildLevel add 1
+          prop global.numRocksInDam add 1
+          featCall Beaver.IU logString 'Beaver added a rock to the dam.'
+        ]]
+        ifProp Beaver.carrying equal 'mud' [[
+          prop Dam.buildLevel add 1
+          prop global.numMudInDam add 1
+          featCall Beaver.IU logString 'Beaver added mud to the dam.'
+        ]]
 
-        // Show we dropped what we were carrying and update the dam
-        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-        prop Beaver.carrying setTo 'nothing'
-        prop Dam.buildLevel add 1
+
         propPush Dam.buildLevel
         propPop global.damBuildLevel
+
+        prop Beaver.carrying setTo 'nothing'
+        featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 
         ifProp global.requireGestureHelper equal false [[
           prop Beaver.gestureTimer setTo 0
@@ -1246,6 +1290,55 @@ prop NoticingImage.zIndex setTo -200
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+      # TAG isPozyxControllable false
+      # TAG isCharControllable false
+      # TAG isPTrackControllable false
+
+      # PROGRAM INIT
+
+      addFeature Costume
+      addFeature Physics
+      addFeature Graphing
+      addFeature Population
+
+      featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+      prop PopupEffect.zIndex setTo 500
+
+      featProp PopupEffect.Graphing.wordWrapWidth setTo 300
+      featProp PopupEffect.Graphing.fontSize setTo 36
+      featProp PopupEffect.Graphing.text setTo ''
+
+      addProp costumeToUse string ''
+      addProp textToUse string 'TEST'
+      addProp countDown Number 2
+
+      # PROGRAM UPDATE
+
+      every 0.1 runAtStart [[
+        ifProp PopupEffect.costumeToUse notEqual '' [[
+          propPush PopupEffect.costumeToUse
+          featPropPop PopupEffect.Costume.costumeName
+          prop PopupEffect.costumeToUse setTo ''
+        ]]
+
+        ifProp PopupEffect.textToUse notEqual '' [[
+          propPush PopupEffect.textToUse
+          featPropPop PopupEffect.Graphing.text
+          prop PopupEffect.textToUse setTo ''
+        ]]
+      ]]
+      every 1 runAtStart [[
+
+        prop PopupEffect.countDown sub 1
+        ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+          featCall PopupEffect.Population removeCharacter
+        ]]
+      ]]
+      `
     }
   ],
   "instances": [
