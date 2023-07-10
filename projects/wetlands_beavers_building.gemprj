@@ -267,7 +267,6 @@ ifProp Beaver.beaverLosesEnergy equal false [[
 
 featCall Beaver.IU logString 'The beaver started off carrying nothing'
 
-
 # PROGRAM UPDATE
 
 // Flip the artwork to point left or right depending on the direction the character is moving
@@ -314,10 +313,10 @@ when Beaver touches Dam [[
     // We are carrying a rock, mud, or twig
     ifProp Beaver.carrying notEqual 'nothing' [[
 
-    // if we don't need to track the gesture directly through touching the gestureHelper
-    // have a slight delay handled here so it's not too fast for users to notice what is happening
+      // if we don't need to track the gesture directly through touching the gestureHelper
+      // have a slight delay handled here so it's not too fast for users to notice what is happening
       ifProp global.requireGestureHelper equal false [[
-            prop Beaver.gestureTimer add 1
+        prop Beaver.gestureTimer add 1
       ]]
 
 
@@ -349,7 +348,7 @@ when Beaver touches Dam [[
         propPop global.damBuildLevel
 
         ifProp global.requireGestureHelper equal false [[
-            prop Beaver.gestureTimer setTo 0
+          prop Beaver.gestureTimer setTo 0
         ]]
 
       ]]
@@ -382,6 +381,11 @@ when Beaver lasttouches Lodge [[
 when Beaver touches Lodge [[
   every 1 [[
     ifProp Beaver.carrying notEqual 'nothing' [[
+
+      ifProp global.requireGestureHelper equal false [[
+        prop Beaver.gestureTimer add 1
+      ]]
+
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
         ifProp global.canBuildLodge equal true [[
 
@@ -409,11 +413,15 @@ when Beaver touches Lodge [[
           prop Lodge.buildLevel add 1
         ]]
         ifProp global.canBuildLodge equal false [[
-          
+
           // ✏️ LETS CHANGE THIS: The next line helps to report what happens when a beaver drops something.
           featCall Beaver.IU logString 'Beaver drops what it was carrying but the lodge cannot be built yet so it disappears'
           featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
           prop Beaver.carrying setTo 'nothing'
+        ]]
+
+        ifProp global.requireGestureHelper equal false [[
+          prop Beaver.gestureTimer setTo 0
         ]]
       ]]
     ]]
