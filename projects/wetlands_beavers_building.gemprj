@@ -127,8 +127,7 @@ addProp initialPollutionInWater number 60
 addProp tempNum number 0
 
 // so we know if the panels should be open or not
-// temporarily set these to true to move the panels
-// around as well
+// temporarily set these to true to move the panels around
 addProp showingWaterPlantInfo boolean false
 addProp showingFishInfo boolean false
 
