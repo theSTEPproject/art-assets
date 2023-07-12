@@ -148,10 +148,10 @@ addProp textForPopup string ''
 featCall global.IU setupFunction 'popupMessage' [[
 
   featCall global.Population createCharacter PopupEffect [[
-      propPush global.textForPopup
-      propPop PopupEffect.textToUse
-      prop PopupEffect.costumeToUse setTo ''
-    ]]
+    propPush global.textForPopup
+    propPop PopupEffect.textToUse
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
 ]]
 
 // required directive
@@ -807,9 +807,9 @@ featProp Water.Costume.height setTo 400
 featCall Water.Costume setColorize 51 170 255
 prop Water.zIndex setTo -200
 
-addProp buildLevel number 1
-prop Water.buildLevel setMin 1
-prop Water.buildLevel setMax 10
+addProp depth number 1
+prop Water.depth setMin 1
+prop Water.depth setMax 10
 
 // used in calculating the width to match build level
 addProp tempWidth number 0
@@ -819,7 +819,7 @@ addProp tempWidth number 0
 addProp location string 'belowDam'
 
 // this can be fast, medium, or slow
-addProp speedOfWater string 'fast'
+addProp speed string 'fast'
 
 # PROGRAM UPDATE
 
@@ -827,8 +827,8 @@ every 0.5 [[
   //  the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
+    propPop Water.depth
+    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul 30
     prop Water.tempWidth add 170
@@ -837,17 +837,17 @@ every 0.5 [[
 
       // change the water speed based on the size of this water, assuming
       // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'fast'
+      ifProp Water.depth lessThanOrEqual 3 [[
+        prop Water.speed setTo 'fast'
         featCall Water.Costume setColorize 51 170 255
       ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
+      ifProp Water.depth greaterThan 3 [[
+        prop Water.speed setTo 'medium'
         featCall Water.Costume setColorize 0 118 198
 
       ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'slow'
+      ifProp Water.depth greaterThanOrEqual 5 [[
+        prop Water.speed setTo 'slow'
         featCall Water.Costume setColorize 0 71 143
       ]]
 
@@ -856,8 +856,8 @@ every 0.5 [[
   // the dam causes the water below it to shrink
   ifProp Water.location notEqual 'aboveDam' [[
     propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
+    propPop Water.depth
+    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul -10
     prop Water.tempWidth add 210
@@ -866,16 +866,16 @@ every 0.5 [[
 
       // change the water speed based on the size of this water, assuming
       // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'slow'
+      ifProp Water.depth lessThanOrEqual 3 [[
+        prop Water.speed setTo 'slow'
         featCall Water.Costume setColorize 51 170 255
       ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
+      ifProp Water.depth greaterThan 3 [[
+        prop Water.speed setTo 'medium'
         featCall Water.Costume setColorize 93 197 255
       ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'fast'
+      ifProp Water.depth greaterThanOrEqual 5 [[
+        prop Water.speed setTo 'fast'
         featCall Water.Costume setColorize 128 225 255
       ]]
 
@@ -984,7 +984,7 @@ propPop WaterPlant.visible
 when WaterPlant centertouches Water [[
   // if the water is slow enough, become alive
   ifProp WaterPlant.alive equal false [[
-    ifProp Water.speedOfWater notEqual 'fast' [[
+    ifProp Water.speed notEqual 'fast' [[
       prop global.waterPlantCount add 1
       featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
       prop WaterPlant.alive setTo true
@@ -995,7 +995,7 @@ when WaterPlant centertouches Water [[
 
   // if the water is suddenly too fast, dissapear
   ifProp WaterPlant.alive equal true [[
-    ifProp Water.speedOfWater equal 'fast' [[
+    ifProp Water.speed equal 'fast' [[
       prop global.waterPlantCount sub 1
       featCall WaterPlant.IU logString 'A water plant dies off because the water is too fast'
       prop WaterPlant.alive setTo false
@@ -1044,7 +1044,7 @@ propPop Fish.visible
 when Fish centertouches Water [[
   // if the water is slow enough, become alive
   ifProp Fish.alive equal false [[
-    ifProp Water.speedOfWater equal 'slow' [[
+    ifProp Water.speed equal 'slow' [[
       prop global.fishCount add 1
       prop Fish.alive setTo true
       prop Fish.visible setTo true
@@ -1055,7 +1055,7 @@ when Fish centertouches Water [[
 
   // if the water is suddenly too fast, dissapear
   ifProp Fish.alive equal true [[
-    ifProp Water.speedOfWater notEqual 'slow' [[
+    ifProp Water.speed notEqual 'slow' [[
       prop global.fishCount sub 1
       prop Fish.alive setTo false
       prop Fish.visible setTo false
@@ -1064,7 +1064,7 @@ when Fish centertouches Water [[
   ]]
 ]]
 
-// if the water recedes, remove the plant
+// if the water recedes, remove the fish
 when Fish centerlasttouches Water [[
   ifProp Fish.alive equal true [[
     prop Fish.alive setTo false
