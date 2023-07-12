@@ -371,7 +371,6 @@ when Beaver touches Dam [[
 
         ifProp global.textForPopup notEqual '' [[
           featCall global.IU callFunction 'popupMessage'
-          prop global.textForPopup setTo ''
         ]]
         
         // 🔎 WHAT DOES THIS SECTION DO?
@@ -485,7 +484,6 @@ when Beaver touches Lodge [[
 
         ifProp global.textForPopup notEqual '' [[
           featCall global.IU callFunction 'popupMessage'
-          prop global.textForPopup setTo ''
         ]]
 
         // 🔎 WHAT DOES THIS SECTION DO?
