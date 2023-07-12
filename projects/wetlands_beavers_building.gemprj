@@ -368,6 +368,8 @@ when Beaver touches Dam [[
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the dam.'
           ]]
         ]]
+        // ✏️ LETS CHANGE THIS (END OF CHANGE1)
+
 
         ifProp global.textForPopup notEqual '' [[
           featCall global.IU callFunction 'popupMessage'
