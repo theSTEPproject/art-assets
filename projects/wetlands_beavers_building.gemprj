@@ -345,7 +345,7 @@ when Beaver touches Dam [[
         // ✏️ LETS CHANGE THIS (CHANGE1)
         // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how many twigs the beaver can add to the dam
+          // ✏️ This line limits how many twigs the beaver can add to the dam
           ifProp global.numTwigsInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The dam has enough twigs.'
@@ -353,7 +353,7 @@ when Beaver touches Dam [[
           ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          // ✏️ This line sets how many rocks the beaver can add to the dam
+          // ✏️ This line limits how many rocks the beaver can add to the dam
           ifProp global.numRocksInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The damn has enough mud.'
@@ -361,7 +361,7 @@ when Beaver touches Dam [[
           ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much mud the beaver can add to the dam
+          // ✏️ This line limits how much mud the beaver can add to the dam
           ifProp global.numMudInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The damn has enough rocks.'
@@ -452,36 +452,40 @@ when Beaver touches Lodge [[
 
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
+        prop global.textForPopup setTo ''
+
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the lodge
         // 🔎 If we already have too much of whatever it is, just drop it
         // ✏️ LETS CHANGE THIS (CHANGE3)
         // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how many twigs the beaver can add to the lodge
+          // ✏️ This line limits how many twigs the beaver can add to the lodge
           ifProp global.numTwigsInLodge greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The lodge has enough twigs.'
-            featCall global.IU callFunction 'popupMessage'
             featCall Beaver.IU logString 'Beaver dropped the twig becuase there were too many in the lodge.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          // ✏️ This line sets how many rocks the beaver can add to the lodge
+          // ✏️ This line limits how many rocks the beaver can add to the lodge
           ifProp global.numRocksInLodge greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
-            prop global.textForPopup setTo 'The lodgen has enough mud.'
-            featCall global.IU callFunction 'popupMessage'
+            prop global.textForPopup setTo 'The lodge has enough mud.'
             featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the lodge.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much mud the beaver can add to the lodge
+          // ✏️ This line limits how much mud the beaver can add to the lodge
           ifProp global.numMudInLodge greaterThanOrEqual 8 [[
-            prop global.textForPopup setTo 'The lodgen has enough rocks.'
-            featCall global.IU callFunction 'popupMessage'
+            prop global.textForPopup setTo 'The lodge has enough rocks.'
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the lodge.'
           ]]
+        ]]
+
+        ifProp global.textForPopup notEqual '' [[
+          featCall global.IU callFunction 'popupMessage'
+          prop global.textForPopup setTo ''
         ]]
 
         // 🔎 WHAT DOES THIS SECTION DO?
@@ -490,21 +494,21 @@ when Beaver touches Lodge [[
         // ✏️ LETS CHANGE THIS (CHANGE4)
         // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the lodge faster or slower
         ifProp Beaver.carrying equal 'twig' [[
+          prop global.numTwigsInLodge add 1
           // ✏️ This line sets how much each twig adds
           prop Lodge.size add 1
-          prop global.numTwigsInLodge add 1
           featCall Beaver.IU logString 'Beaver added a twig to the lodge.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
+          prop global.numRocksInLodge add 1
           // ✏️ This line sets how much each rock adds
           prop Lodge.size add 1
-          prop global.numRocksInLodge add 1
           featCall Beaver.IU logString 'Beaver added a rock to the lodge.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
+          prop global.numMudInLodge add 1
           // ✏️ This line sets how much each blob of mud adds
           prop Lodge.size add 1
-          prop global.numMudInLodge add 1
           featCall Beaver.IU logString 'Beaver added mud to the lodge.'
         ]]
 
