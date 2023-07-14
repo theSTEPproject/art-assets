@@ -2283,9 +2283,17 @@ onEvent Tick [[
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
 addFeature Costume
 featProp agent.Costume.costumeName setTo 'FW1_Flamingo.png'
 featProp Flamingo.Costume.scale setTo 0.3
+
+// add other features
+addFeature Physics
+addFeature Touches
 
 featProp Flamingo.Movement.movementType setTo 'wander'
 featProp Flamingo.Movement.compassDirection setTo 'W'
@@ -2354,7 +2362,6 @@ when Flamingo touches RedAlgae [[
     ifExpr {{ Flamingo.getProp('alive').value == true &&  RedAlgae.getProp('alive').value == true }} [[
       featProp Flamingo.Costume.glow setTo 1
       prop Flamingo.energyLevel add 10
-      prop RedAlgae.energyLevel sub 10
     ]]
   ]]
 
