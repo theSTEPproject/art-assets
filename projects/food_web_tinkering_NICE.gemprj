@@ -2284,7 +2284,6 @@ onEvent Tick [[
 
 # PROGRAM INIT
 addFeature Movement
-addFeature Costume
 addFeature Cursor
 
 addFeature Costume
@@ -2300,11 +2299,6 @@ featProp Flamingo.Movement.compassDirection setTo 'W'
 featProp Flamingo.Movement.distance setTo 4
 featProp Flamingo.Movement.targetY setMax 0.7
 
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
-featCall Flamingo.Touches monitor 'RedAlgae' b2b
-featCall Flamingo.Touches monitor 'Reincarnator' b2b
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -2356,24 +2350,6 @@ every 1 runAtStart [[
   // set meter to mirror energyLevel
   featProp Flamingo.Graphing.meterProp setTo 'energyLevel'
 
-]]
-when Flamingo touches RedAlgae [[
-  every 1 [[
-    ifExpr {{ Flamingo.getProp('alive').value == true &&  RedAlgae.getProp('alive').value == true }} [[
-      featProp Flamingo.Costume.glow setTo 1
-      prop Flamingo.energyLevel add 10
-    ]]
-  ]]
-
-
-  when Flamingo touches Reincarnator [[
-    ifExpr {{ Flamingo.getProp('alive').value == false }} [[
-      featProp Flamingo.Costume.glow setTo 1
-      prop Flamingo.alive setTo true
-      prop Flamingo.alpha setTo 1
-      prop Flamingo.energyLevel setTo 50
-    ]]
-  ]]
 
 ]]
 
@@ -2556,6 +2532,13 @@ prop y setTo 278.00`
       "bpid": "RedAlgae",
       "initScript": `prop x setTo -154.54
 prop y setTo 299.75`
+    },
+    {
+      "id": "94",
+      "label": "Flamingo94",
+      "bpid": "Flamingo",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
     }
   ]
 }
