@@ -1,5 +1,5 @@
 {
-  "id": "food_web_tinkering_Sarah",
+  "id": "food_web_tinkering_NICE",
   "label": "Food Web",
   "metadata": {
     "top": -400,
@@ -2274,6 +2274,153 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Flamingo",
+      "scriptText": `# BLUEPRINT Flamingo
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'FW1_Flamingo.png'
+featProp Flamingo.Costume.scale setTo 0.3
+
+featProp Flamingo.Movement.movementType setTo 'wander'
+featProp Flamingo.Movement.compassDirection setTo 'W'
+featProp Flamingo.Movement.distance setTo 4
+featProp Flamingo.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Flamingo.Touches monitor 'RedAlgae' b2b
+featCall Flamingo.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Flamingo.energyLevel setMax 100
+prop Flamingo.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Flamingo lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Flamingo.Graphing.meterProp setTo 'energyLevel'
+
+featProp Flamingo.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Flamingo.getProp('energyLevel').value - Flamingo.getProp('energyUse').value }}
+  propPop Flamingo.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Flamingo is
+  // sated
+  ifExpr {{ Flamingo.getProp('energyLevel').value > 50 }} [[
+    featProp Flamingo.Costume.currentFrame setTo 0
+    // Green
+    featProp Flamingo.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Flamingo.getProp('energyLevel').value < 50 }} [[
+    featProp Flamingo.Costume.currentFrame setTo 1
+    // Orange
+    featProp Flamingo.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Flamingo.getProp('energyLevel').value < 20 }} [[
+    featProp Flamingo.Costume.currentFrame setTo 1
+    // Red
+    featProp Flamingo.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Flamingo.getProp('energyLevel').value < 1 }} [[
+    featProp Flamingo.Costume.currentFrame setTo 2
+    prop Flamingo.alpha setTo 0.3
+    featProp Flamingo.Movement.movementType setTo 'stop'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Flamingo.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Flamingo touches RedAlgae [[
+  every 1 [[
+    ifExpr {{ Flamingo.getProp('alive').value == true &&  RedAlgae.getProp('alive').value == true }} [[
+      featProp Flamingo.Costume.glow setTo 1
+      prop Flamingo.energyLevel add 10
+      prop RedAlgae.energyLevel sub 10
+    ]]
+  ]]
+
+
+  when Flamingo touches Reincarnator [[
+    ifExpr {{ Flamingo.getProp('alive').value == false }} [[
+      featProp Flamingo.Costume.glow setTo 1
+      prop Flamingo.alive setTo true
+      prop Flamingo.alpha setTo 1
+      prop Flamingo.energyLevel setTo 50
+    ]]
+  ]]
+
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Pond",
+      "scriptText": `# BLUEPRINT Pond
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'FW1_Pond.png'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "RedAlgae",
+      "scriptText": `# BLUEPRINT RedAlgae
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'FW1_RedAlgae.png'
+featProp RedAlgae.Costume.scale setTo 0.3
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -2285,27 +2432,6 @@ onEvent Tick [[
 prop y setTo -3.57`
     },
     {
-      "id": "17",
-      "label": "VeggieGarden17",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -302.86
-prop y setTo 287.8`
-    },
-    {
-      "id": "18",
-      "label": "VeggieGarden18",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -96.09
-prop y setTo 284.1`
-    },
-    {
-      "id": "19",
-      "label": "VeggieGarden19",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 316.68
-prop y setTo 278.08`
-    },
-    {
       "id": "20",
       "label": "VeggieGarden20",
       "bpid": "VeggieGarden",
@@ -2313,137 +2439,74 @@ prop y setTo 278.08`
 prop y setTo 270.88`
     },
     {
-      "id": "24",
-      "label": "Clover24",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -311.18
-prop y setTo -149.03`
-    },
-    {
       "id": "25",
       "label": "Clover25",
       "bpid": "Clover",
-      "initScript": `prop x setTo -58.76
-prop y setTo -78.75`
-    },
-    {
-      "id": "41",
-      "label": "Beetle41",
-      "bpid": "Beetle",
-      "initScript": `prop x setTo 353.35
-prop y setTo 100.35`
+      "initScript": `prop x setTo 339.70
+prop y setTo 267.78`
     },
     {
       "id": "42",
       "label": "Beetle42",
       "bpid": "Beetle",
-      "initScript": `prop x setTo 132.47
-prop y setTo 98.95`
+      "initScript": `prop x setTo -271.59
+prop y setTo -178.79`
     },
     {
       "id": "45",
       "label": "Hawk45",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 332.40
-prop y setTo -157.90`
-    },
-    {
-      "id": "51",
-      "label": "Mouse51",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo -179.98
-prop y setTo -65.97`
+      "initScript": `prop x setTo 297.92
+prop y setTo -317.58`
     },
     {
       "id": "52",
       "label": "Mouse52",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 4.63
-prop y setTo 68.91`
+      "initScript": `prop x setTo 194.90
+prop y setTo 21.24`
     },
     {
       "id": "55",
       "label": "Snail55",
       "bpid": "Snail",
-      "initScript": `prop x setTo 7.39
-prop y setTo 213.02`
-    },
-    {
-      "id": "60",
-      "label": "Caterpillar60",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -224.45
-prop y setTo 214.73`
-    },
-    {
-      "id": "61",
-      "label": "Rabbit61",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -321.12
-prop y setTo -320.86`
-    },
-    {
-      "id": "62",
-      "label": "Robin62",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 217.12
-prop y setTo -326.51`
+      "initScript": `prop x setTo 0.14
+prop y setTo 33.49`
     },
     {
       "id": "63",
       "label": "Snake63",
       "bpid": "Snake",
-      "initScript": `prop x setTo -277.82
-prop y setTo 80.62`
+      "initScript": `prop x setTo -69.88
+prop y setTo -129.69`
     },
     {
       "id": "69",
       "label": "Caterpillar69",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo 130.37
-prop y setTo 209.94`
-    },
-    {
-      "id": "70",
-      "label": "Snail70",
-      "bpid": "Snail",
-      "initScript": `prop x setTo -341.15
-prop y setTo 202.97`
+      "initScript": `prop x setTo -302.32
+prop y setTo 10.76`
     },
     {
       "id": "71",
       "label": "Gopher71",
       "bpid": "Gopher",
-      "initScript": `prop x setTo -31.12
-prop y setTo -327.53`
-    },
-    {
-      "id": "74",
-      "label": "Snake74",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 353.18
-prop y setTo -329.19`
+      "initScript": `prop x setTo 134.74
+prop y setTo -163.66`
     },
     {
       "id": "75",
       "label": "Robin75",
       "bpid": "Robin",
-      "initScript": `prop x setTo 232.97
-prop y setTo 8.01`
-    },
-    {
-      "id": "76",
-      "label": "Gopher76",
-      "bpid": "Gopher",
-      "initScript": `prop x setTo -105.57
-prop y setTo 134.9`
+      "initScript": `prop x setTo -71.62
+prop y setTo -303.50`
     },
     {
       "id": "77",
       "label": "Rabbit77",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo 245.63
-prop y setTo 198.19`
+      "initScript": `prop x setTo 344.40
+prop y setTo -9.64`
     },
     {
       "id": "79",
@@ -2453,62 +2516,6 @@ prop y setTo 198.19`
 prop y setTo -398.91`
     },
     {
-      "id": "80",
-      "label": "RabbitPopulation80",
-      "bpid": "RabbitPopulation",
-      "initScript": `prop x setTo -510.94
-prop y setTo -271.47`
-    },
-    {
-      "id": "81",
-      "label": "GopherPopulation81",
-      "bpid": "GopherPopulation",
-      "initScript": `prop x setTo -512.53
-prop y setTo -101.9`
-    },
-    {
-      "id": "82",
-      "label": "RobinPopulation82",
-      "bpid": "RobinPopulation",
-      "initScript": `prop x setTo -512.14
-prop y setTo 75.03`
-    },
-    {
-      "id": "83",
-      "label": "SnakePopulation83",
-      "bpid": "SnakePopulation",
-      "initScript": `prop x setTo -509.27
-prop y setTo 250.8`
-    },
-    {
-      "id": "84",
-      "label": "MousePopulation84",
-      "bpid": "MousePopulation",
-      "initScript": `prop x setTo 486.86
-prop y setTo -285.37`
-    },
-    {
-      "id": "85",
-      "label": "BeetlePopulation85",
-      "bpid": "BeetlePopulation",
-      "initScript": `prop x setTo 482.22
-prop y setTo -114.13`
-    },
-    {
-      "id": "86",
-      "label": "SnailPopulation86",
-      "bpid": "SnailPopulation",
-      "initScript": `prop x setTo 487.58
-prop y setTo 69.22`
-    },
-    {
-      "id": "87",
-      "label": "CaterpillarPopulation87",
-      "bpid": "CaterpillarPopulation",
-      "initScript": `prop x setTo 490.54
-prop y setTo 243.24`
-    },
-    {
       "id": "88",
       "label": "VeggieGardenPopulation88",
       "bpid": "VeggieGardenPopulation",
@@ -2516,11 +2523,32 @@ prop y setTo 243.24`
 prop y setTo -43.06`
     },
     {
-      "id": "89",
-      "label": "CloverPopulation89",
-      "bpid": "CloverPopulation",
-      "initScript": `prop x setTo 632.31
-prop y setTo 128.49`
+      "id": "90",
+      "label": "Pond90",
+      "bpid": "Pond",
+      "initScript": `prop x setTo -305.59
+prop y setTo 293.26`
+    },
+    {
+      "id": "91",
+      "label": "Flamingo91",
+      "bpid": "Flamingo",
+      "initScript": `prop x setTo -140.73
+prop y setTo 63.4`
+    },
+    {
+      "id": "92",
+      "label": "RedAlgae92",
+      "bpid": "RedAlgae",
+      "initScript": `prop x setTo -340.65
+prop y setTo 278.00`
+    },
+    {
+      "id": "93",
+      "label": "RedAlgae93",
+      "bpid": "RedAlgae",
+      "initScript": `prop x setTo -154.54
+prop y setTo 299.75`
     }
   ]
 }
