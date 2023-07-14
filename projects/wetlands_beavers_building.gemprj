@@ -102,7 +102,8 @@ prop global.visible setTo false
 
 // to help us keep track in the water
 // the dam needs to update this
-addProp damBuildLevel number 1
+addProp damSize number 1
+addProp lodgeSize number 1
 
 // change this to true once the water is a certain size
 addProp canBuildLodge boolean false
@@ -127,8 +128,7 @@ addProp initialPollutionInWater number 60
 addProp tempNum number 0
 
 // so we know if the panels should be open or not
-// temporarily set these to true to move the panels
-// around as well
+// temporarily set these to true to move the panels around
 addProp showingWaterPlantInfo boolean false
 addProp showingFishInfo boolean false
 
@@ -149,10 +149,10 @@ addProp textForPopup string ''
 featCall global.IU setupFunction 'popupMessage' [[
 
   featCall global.Population createCharacter PopupEffect [[
-      propPush global.textForPopup
-      propPop PopupEffect.textToUse
-      prop PopupEffect.costumeToUse setTo ''
-    ]]
+    propPush global.textForPopup
+    propPop PopupEffect.textToUse
+    prop PopupEffect.costumeToUse setTo ''
+  ]]
 ]]
 
 // required directive
@@ -186,7 +186,7 @@ every 1 [[
 every 0.5 [[
   // Check to see if the lodge can be built based on dam size
   // also log the shift once it can
-  ifProp global.damBuildLevel greaterThan 5 [[
+  ifProp global.damSize greaterThan 5 [[
     // so we know it is about to flip
     ifProp global.canBuildLodge equal false [[
       featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
@@ -195,7 +195,7 @@ every 0.5 [[
       prop global.noticingString setTo 'Look how slow and deep the water above the dam is'
     ]]
   ]]
-  ifProp global.damBuildLevel lessThan 5 [[
+  ifProp global.damSize lessThan 5 [[
     prop global.canBuildLodge setTo false
   ]]
 ]]
@@ -337,65 +337,71 @@ when Beaver touches Dam [[
 
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
+        prop global.textForPopup setTo ''
+
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the dam
         // 🔎 If we already have too much of whatever it is, just drop it
         // ✏️ LETS CHANGE THIS (CHANGE1)
         // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how many twigs the beaver can add to the dam
+          // ✏️ This line limits how many twigs the beaver can add to the dam
           ifProp global.numTwigsInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The dam has enough twigs.'
-            featCall global.IU callFunction 'popupMessage'
             featCall Beaver.IU logString 'Beaver dropped the twig becuase there were too many in the dam.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-           // ✏️ This line sets how many rocks the beaver can add to the dam
-           ifProp global.numRocksInDam greaterThanOrEqual 8 [[
+          // ✏️ This line limits how many rocks the beaver can add to the dam
+          ifProp global.numRocksInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The damn has enough mud.'
-            featCall global.IU callFunction 'popupMessage'
             featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the dam.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much mud the beaver can add to the dam
-           ifProp global.numMudInDam greaterThanOrEqual 8 [[
+          // ✏️ This line limits how much mud the beaver can add to the dam
+          ifProp global.numMudInDam greaterThanOrEqual 8 [[
+            prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The damn has enough rocks.'
-            featCall global.IU callFunction 'popupMessage'
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the dam.'
           ]]
         ]]
+        // ✏️ LETS CHANGE THIS (END OF CHANGE1)
 
+
+        ifProp global.textForPopup notEqual '' [[
+          featCall global.IU callFunction 'popupMessage'
+        ]]
+        
         // 🔎 WHAT DOES THIS SECTION DO?
-        // 🔎 This section is where we check if dropping something helps build the dam and how much 
+        // 🔎 This section is where we check if dropping something helps build the dam and how much
         // 🔎 First we decide how much each thing adds, then we add it
         // ✏️ LETS CHANGE THIS (CHANGE2)
         // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the dam faster or slower
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how much each twig adds
-          prop Dam.buildLevel add 1
           prop global.numTwigsInDam add 1
+          // ✏️ This line sets how much each twig adds
+          prop Dam.size add 1
           featCall Beaver.IU logString 'Beaver added a twig to the dam.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          // ✏️ This line sets how much each rock adds
-          prop Dam.buildLevel add 1
           prop global.numRocksInDam add 1
+          // ✏️ This line sets how much each rock adds
+          prop Dam.size add 1
           featCall Beaver.IU logString 'Beaver added a rock to the dam.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much each bit of mud adds
-          prop Dam.buildLevel add 1
           prop global.numMudInDam add 1
+          // ✏️ This line sets how much each bit of mud adds
+          prop Dam.size add 1
           featCall Beaver.IU logString 'Beaver added mud to the dam.'
         ]]
 
 
-        propPush Dam.buildLevel
-        propPop global.damBuildLevel
+        propPush Dam.size
+        propPop global.damSize
 
         prop Beaver.carrying setTo 'nothing'
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
@@ -410,13 +416,13 @@ when Beaver touches Dam [[
 ]]
 
 when Beaver firsttouches Lodge [[
-  ifProp Lodge.buildLevel greaterThanOrEqual 3 [[
+  ifProp Lodge.size greaterThanOrEqual 3 [[
     prop Beaver.protected setTo true
     featCall Beaver.IU logString 'Beaver is protected in the lodge'
 
     prop Beaver.displayText add ' 🛡'
   ]]
-  ifProp Lodge.buildLevel lessThan 3 [[
+  ifProp Lodge.size lessThan 3 [[
     featCall Beaver.IU logString 'Beaver is near the lodge, but the lodge is not big enough to protect it'
   ]]
 ]]
@@ -447,64 +453,67 @@ when Beaver touches Lodge [[
 
       ifProp Beaver.gestureTimer greaterThanOrEqual 2 [[
 
+        prop global.textForPopup setTo ''
+
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the lodge
         // 🔎 If we already have too much of whatever it is, just drop it
         // ✏️ LETS CHANGE THIS (CHANGE3)
         // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how many twigs the beaver can add to the lodge
+          // ✏️ This line limits how many twigs the beaver can add to the lodge
           ifProp global.numTwigsInLodge greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
             prop global.textForPopup setTo 'The lodge has enough twigs.'
-            featCall global.IU callFunction 'popupMessage'
             featCall Beaver.IU logString 'Beaver dropped the twig becuase there were too many in the lodge.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-           // ✏️ This line sets how many rocks the beaver can add to the lodge
-           ifProp global.numRocksInLodge greaterThanOrEqual 8 [[
+          // ✏️ This line limits how many rocks the beaver can add to the lodge
+          ifProp global.numRocksInLodge greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
-            prop global.textForPopup setTo 'The lodgen has enough mud.'
-            featCall global.IU callFunction 'popupMessage'
+            prop global.textForPopup setTo 'The lodge has enough mud.'
             featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the lodge.'
           ]]
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much mud the beaver can add to the lodge
-           ifProp global.numMudInLodge greaterThanOrEqual 8 [[
-            prop global.textForPopup setTo 'The lodgen has enough rocks.'
-            featCall global.IU callFunction 'popupMessage'
+          // ✏️ This line limits how much mud the beaver can add to the lodge
+          ifProp global.numMudInLodge greaterThanOrEqual 8 [[
+            prop global.textForPopup setTo 'The lodge has enough rocks.'
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the lodge.'
           ]]
         ]]
 
+        ifProp global.textForPopup notEqual '' [[
+          featCall global.IU callFunction 'popupMessage'
+        ]]
+
         // 🔎 WHAT DOES THIS SECTION DO?
-        // 🔎 This section is where we check if dropping something helps build the lodge and how much 
+        // 🔎 This section is where we check if dropping something helps build the lodge and how much
         // 🔎 First we decide how much each thing adds, then we add it
         // ✏️ LETS CHANGE THIS (CHANGE4)
         // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the lodge faster or slower
         ifProp Beaver.carrying equal 'twig' [[
-          // ✏️ This line sets how much each twig adds
-          prop Lodge.buildLevel add 1
           prop global.numTwigsInLodge add 1
+          // ✏️ This line sets how much each twig adds
+          prop Lodge.size add 1
           featCall Beaver.IU logString 'Beaver added a twig to the lodge.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          // ✏️ This line sets how much each rock adds
-          prop Lodge.buildLevel add 1
           prop global.numRocksInLodge add 1
+          // ✏️ This line sets how much each rock adds
+          prop Lodge.size add 1
           featCall Beaver.IU logString 'Beaver added a rock to the lodge.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
-          // ✏️ This line sets how much each blob of mud adds
-          prop Lodge.buildLevel add 1
           prop global.numMudInLodge add 1
+          // ✏️ This line sets how much each blob of mud adds
+          prop Lodge.size add 1
           featCall Beaver.IU logString 'Beaver added mud to the lodge.'
         ]]
 
-        propPush Lodge.buildLevel
-        propPop global.lodgeBuildLevel
+        propPush Lodge.size
+        propPop global.lodgeSize
 
         prop Beaver.carrying setTo 'nothing'
         featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
@@ -730,9 +739,9 @@ featProp Lodge.Costume.width setTo 100
 featProp Lodge.Costume.height setTo 40
 featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
 
-addProp buildLevel number 1
-prop Lodge.buildLevel setMin 1
-prop Lodge.buildLevel setMax 10
+addProp size number 1
+prop Lodge.size setMin 1
+prop Lodge.size setMax 10
 
 // to be used in re-scaling the width
 addProp tempWidth number 0
@@ -741,8 +750,8 @@ prop Lodge.alpha setTo 0.2
 # PROGRAM UPDATE
 
 every 0.5 [[
-  // re-scale based on the buildLevel
-  propPush Lodge.buildLevel
+  // re-scale based on the size
+  propPush Lodge.size
   propPop Lodge.tempWidth
   prop Lodge.tempWidth mul 20
   prop Lodge.tempWidth add 80
@@ -772,9 +781,9 @@ featProp Dam.Costume.width setTo 100
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
 
-addProp buildLevel number 1
-prop Dam.buildLevel setMin 1
-prop Dam.buildLevel setMax 10
+addProp size number 1
+prop Dam.size setMin 1
+prop Dam.size setMax 10
 
 // to be used in re-scaling the width
 addProp tempWidth number 0
@@ -782,8 +791,8 @@ addProp tempWidth number 0
 # PROGRAM UPDATE
 
 every 0.5 [[
-  // re-scale based on the buildLevel
-  propPush Dam.buildLevel
+  // re-scale based on the size
+  propPush Dam.size
   propPop Dam.tempWidth
   prop Dam.tempWidth mul 20
   prop Dam.tempWidth add 80
@@ -808,9 +817,9 @@ featProp Water.Costume.height setTo 400
 featCall Water.Costume setColorize 51 170 255
 prop Water.zIndex setTo -200
 
-addProp buildLevel number 1
-prop Water.buildLevel setMin 1
-prop Water.buildLevel setMax 10
+addProp depth number 1
+prop Water.depth setMin 1
+prop Water.depth setMax 10
 
 // used in calculating the width to match build level
 addProp tempWidth number 0
@@ -820,16 +829,16 @@ addProp tempWidth number 0
 addProp location string 'belowDam'
 
 // this can be fast, medium, or slow
-addProp speedOfWater string 'fast'
+addProp speed string 'fast'
 
 # PROGRAM UPDATE
 
 every 0.5 [[
   //  the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
-    propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
+    propPush global.damSize
+    propPop Water.depth
+    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul 30
     prop Water.tempWidth add 170
@@ -838,17 +847,17 @@ every 0.5 [[
 
       // change the water speed based on the size of this water, assuming
       // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'fast'
+      ifProp Water.depth lessThanOrEqual 3 [[
+        prop Water.speed setTo 'fast'
         featCall Water.Costume setColorize 51 170 255
       ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
+      ifProp Water.depth greaterThan 3 [[
+        prop Water.speed setTo 'medium'
         featCall Water.Costume setColorize 0 118 198
 
       ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'slow'
+      ifProp Water.depth greaterThanOrEqual 5 [[
+        prop Water.speed setTo 'slow'
         featCall Water.Costume setColorize 0 71 143
       ]]
 
@@ -856,9 +865,9 @@ every 0.5 [[
 
   // the dam causes the water below it to shrink
   ifProp Water.location notEqual 'aboveDam' [[
-    propPush global.damBuildLevel
-    propPop Water.buildLevel
-    propPush Water.buildLevel
+    propPush global.damSize
+    propPop Water.depth
+    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul -10
     prop Water.tempWidth add 210
@@ -867,16 +876,16 @@ every 0.5 [[
 
       // change the water speed based on the size of this water, assuming
       // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.buildLevel lessThanOrEqual 3 [[
-        prop Water.speedOfWater setTo 'slow'
+      ifProp Water.depth lessThanOrEqual 3 [[
+        prop Water.speed setTo 'slow'
         featCall Water.Costume setColorize 51 170 255
       ]]
-      ifProp Water.buildLevel greaterThan 3 [[
-        prop Water.speedOfWater setTo 'medium'
+      ifProp Water.depth greaterThan 3 [[
+        prop Water.speed setTo 'medium'
         featCall Water.Costume setColorize 93 197 255
       ]]
-      ifProp Water.buildLevel greaterThanOrEqual 5 [[
-        prop Water.speedOfWater setTo 'fast'
+      ifProp Water.depth greaterThanOrEqual 5 [[
+        prop Water.speed setTo 'fast'
         featCall Water.Costume setColorize 128 225 255
       ]]
 
@@ -985,7 +994,7 @@ propPop WaterPlant.visible
 when WaterPlant centertouches Water [[
   // if the water is slow enough, become alive
   ifProp WaterPlant.alive equal false [[
-    ifProp Water.speedOfWater notEqual 'fast' [[
+    ifProp Water.speed notEqual 'fast' [[
       prop global.waterPlantCount add 1
       featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
       prop WaterPlant.alive setTo true
@@ -996,7 +1005,7 @@ when WaterPlant centertouches Water [[
 
   // if the water is suddenly too fast, dissapear
   ifProp WaterPlant.alive equal true [[
-    ifProp Water.speedOfWater equal 'fast' [[
+    ifProp Water.speed equal 'fast' [[
       prop global.waterPlantCount sub 1
       featCall WaterPlant.IU logString 'A water plant dies off because the water is too fast'
       prop WaterPlant.alive setTo false
@@ -1045,7 +1054,7 @@ propPop Fish.visible
 when Fish centertouches Water [[
   // if the water is slow enough, become alive
   ifProp Fish.alive equal false [[
-    ifProp Water.speedOfWater equal 'slow' [[
+    ifProp Water.speed equal 'slow' [[
       prop global.fishCount add 1
       prop Fish.alive setTo true
       prop Fish.visible setTo true
@@ -1056,7 +1065,7 @@ when Fish centertouches Water [[
 
   // if the water is suddenly too fast, dissapear
   ifProp Fish.alive equal true [[
-    ifProp Water.speedOfWater notEqual 'slow' [[
+    ifProp Water.speed notEqual 'slow' [[
       prop global.fishCount sub 1
       prop Fish.alive setTo false
       prop Fish.visible setTo false
@@ -1065,7 +1074,7 @@ when Fish centertouches Water [[
   ]]
 ]]
 
-// if the water recedes, remove the plant
+// if the water recedes, remove the fish
 when Fish centerlasttouches Water [[
   ifProp Fish.alive equal true [[
     prop Fish.alive setTo false
@@ -1239,27 +1248,27 @@ prop WaterSpeed.zIndex setTo 100
 // can be above or below the dam
 // we only do certain things if it is above
 addProp location string 'belowDam'
-addProp buildLevel number 1
+addProp size number 1
 
 # PROGRAM UPDATE
 
-propPush global.damBuildLevel
-propPop WaterSpeed.buildLevel
+propPush global.damSize
+propPop WaterSpeed.size
 
     // change the water speed based on the size of this water, assuming
     // it moves faster when it is narrower, and slows down as it pools
 
 ifProp WaterSpeed.location equal 'aboveDam' [[
-    ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
+    ifProp WaterSpeed.size lessThanOrEqual 3 [[
         // medium
         featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
         prop WaterSpeed.alpha setTo 1
     ]]
-    ifProp WaterSpeed.buildLevel greaterThan 3 [[
+    ifProp WaterSpeed.size greaterThan 3 [[
         // slow
         prop WaterSpeed.alpha setTo 0
     ]]
-    ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
+    ifProp WaterSpeed.size greaterThanOrEqual 5 [[
         // slow and deep
         //featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
         prop WaterSpeed.alpha setTo 0
@@ -1268,17 +1277,17 @@ ifProp WaterSpeed.location equal 'aboveDam' [[
 ]]
 
 ifProp WaterSpeed.location equal 'belowDam' [[
-  ifProp WaterSpeed.buildLevel lessThanOrEqual 3 [[
+  ifProp WaterSpeed.size lessThanOrEqual 3 [[
       // medium
       featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
       prop WaterSpeed.alpha setTo 1
   ]]
-  ifProp WaterSpeed.buildLevel greaterThan 3 [[
+  ifProp WaterSpeed.size greaterThan 3 [[
       // fast
       featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
       prop WaterSpeed.alpha setTo 1
   ]]
-  ifProp WaterSpeed.buildLevel greaterThanOrEqual 5 [[
+  ifProp WaterSpeed.size greaterThanOrEqual 5 [[
       // medium and shallow
       featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
   ]]
@@ -1407,7 +1416,7 @@ prop y setTo -225.00`
       "bpid": "Dam",
       "initScript": `prop x setTo 0
 prop y setTo 0
-prop Dam.buildLevel setTo 1
+prop Dam.size setTo 1
 `
     },
     {
