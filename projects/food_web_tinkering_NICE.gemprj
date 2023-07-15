@@ -2358,6 +2358,23 @@ every 1 runAtStart [[
 
 ]]
 
+when Flamingo touches Reincarnator [[
+  ifExpr {{ Flamingo.getProp('alive').value == false }} [[
+    featProp Flamingo.Costume.glow setTo 1
+    prop Flamingo.alive setTo true
+    prop Flamingo.alpha setTo 1
+    prop Flamingo.energyLevel setTo 50
+  ]]
+]]
+
+when Flamingo touches RedAlgae [[
+  every 1 runAtStart [[
+    ifExpr {{ Flamingo.getProp('alive').value == true &&  RedAlgae.getProp('alive').value == true }} [[
+      featProp Flamingo.Costume.glow setTo 1
+      prop Flamingo.energyLevel add 10
+    ]]
+  ]]
+]]
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -2401,6 +2418,22 @@ featProp RedAlgae.Costume.scale setTo 0.3
 // add other features
 addFeature Physics
 addFeature Touches
+
+addProp alive boolean true
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel Number 70
+prop RedAlgae.energyLevel setMax 100
+prop RedAlgae.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp RedAlgae.Graphing.meterProp setTo 'energyLevel'
+
+featProp RedAlgae.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // code to run every frame
