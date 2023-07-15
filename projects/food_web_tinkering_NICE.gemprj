@@ -622,8 +622,6 @@ when Snail touches VeggieGarden [[
 addFeature Movement
 addFeature Costume
 addFeature Cursor
-prop Gopher.trackerId setTo '60'
-prop Gopher.trackerId setTo '6921'
 
 // set the costume
 featProp Gopher.Costume.costumeName setTo 'FW1_gopher.png'
@@ -2479,6 +2477,302 @@ every 1 runAtStart [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "Kangaroo",
+      "scriptText": `# BLUEPRINT Kangaroo
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+
+
+// set the costume
+featProp Kangaroo.Costume.costumeName setTo 'FW1_Kangaroo.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp agent.Costume.scale setTo 0.3
+
+featProp Kangaroo.Movement.movementType setTo 'wander'
+featProp Kangaroo.Movement.compassDirection setTo 'W'
+featProp Kangaroo.Movement.distance setTo 4
+featProp Kangaroo.Movement.targetY setMax 0.7
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Kangaroo.Touches monitor 'VeggieGarden' b2b
+featCall Kangaroo.Touches monitor 'Clover' b2b
+featCall Kangaroo.Touches monitor 'Reincarnator' b2b
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Kangaroo.energyLevel setMax 100
+prop Kangaroo.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Kangaroo lose energy faster (or slower)
+addProp energyUse Number 1
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Kangaroo.Graphing.meterProp setTo 'energyLevel'
+
+featProp Kangaroo.Graphing.meterColor setTo 65280
+# PROGRAM EVENT
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Kangaroo.getProp('energyLevel').value - Kangaroo.getProp('energyUse').value }}
+  propPop Kangaroo.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Kangaroo is
+  // sated
+  ifExpr {{ Kangaroo.getProp('energyLevel').value > 50 }} [[
+    featProp Kangaroo.Costume.currentFrame setTo 0
+    // Green
+    featProp Kangaroo.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Kangaroo.getProp('energyLevel').value < 50 }} [[
+    featProp Kangaroo.Costume.currentFrame setTo 1
+    // Orange
+    featProp Kangaroo.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Kangaroo.getProp('energyLevel').value < 20 }} [[
+    featProp Kangaroo.Costume.currentFrame setTo 1
+    // Red
+    featProp Kangaroo.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Kangaroo.getProp('energyLevel').value < 1 }} [[
+    featProp Kangaroo.Costume.currentFrame setTo 2
+    prop Kangaroo.alpha setTo 0.3
+    featProp Kangaroo.Movement.movementType setTo 'stop'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Kangaroo.Graphing.meterProp setTo 'energyLevel'
+
+]]
+when Kangaroo touches VeggieGarden [[
+  every 1 [[
+    ifExpr {{ Kangaroo.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
+      featProp Kangaroo.Costume.glow setTo 1
+      prop Kangaroo.energyLevel add 10
+      prop VeggieGarden.energyLevel sub 10
+    ]]
+  ]]
+
+  when Kangaroo touches Clover [[
+    every 1 runAtStart [[
+      ifExpr {{ Kangaroo.getProp('alive').value == true &&  Clover.getProp('alive').value == true }} [[
+        featProp Kangaroo.Costume.glow setTo 1
+        prop Kangaroo.energyLevel add 10
+        prop Clover.energyLevel sub 10
+      ]]
+    ]]
+  ]]
+
+  when Kangaroo touches Reincarnator [[
+    ifExpr {{ Kangaroo.getProp('alive').value == false }} [[
+      featProp Kangaroo.Costume.glow setTo 1
+      prop Kangaroo.alive setTo true
+      prop Kangaroo.alpha setTo 1
+      prop Kangaroo.energyLevel setTo 50
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Fox",
+      "scriptText": `# BLUEPRINT Fox
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+
+// set the costume
+featProp Fox.Costume.costumeName setTo 'FW1_Fox.png'
+
+// add other features
+addFeature Physics
+addFeature Touches
+
+featProp Fox.Costume.scale setTo 0.3
+
+featProp Fox.Movement.compassDirection setTo 'west'
+featProp Fox.Movement.movementType setTo 'wander'
+featProp Fox.Movement.distance setTo 5
+featCall Fox.Movement setRandomDirection
+
+addProp alive Boolean true
+
+// make sure we track interactions with the other creatures
+featCall Fox.Touches monitor 'Snake' b2b
+featCall Fox.Touches monitor 'Robin' b2b
+featCall Fox.Touches monitor 'Mouse' b2b
+featCall Fox.Touches monitor 'Gopher' b2b
+featCall Fox.Touches monitor 'Rabbit' b2b
+featCall Fox.Touches monitor 'Reincarnator' b2b
+featCall Fox.Touches monitor 'Flamingo' b2b
+featCall Fox.Touches monitor 'Kangaroo' b2b
+
+
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Fox.energyLevel setMax 100
+prop Fox.energyLevel setMin 0
+
+// STUDENTS_MAY_CHANGE to make Fox lose energy faster (or slower)
+addProp energyUse Number 2
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Fox.Graphing.meterProp setTo 'energyLevel'
+
+featProp Fox.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+when Fox touches Snake [[
+  every 1 [[
+    ifExpr {{ Fox.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
+      featProp Fox.Costume.glow setTo 1
+      prop Snake.alive setTo false
+      prop Snake.alpha setTo 0.3
+      prop Fox.energyLevel add 10
+      prop Snake.energyLevel setTo 0
+    ]]
+  ]]
+
+  when Fox touches Robin [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Robin.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Robin.alive setTo false
+        prop Robin.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Robin.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+
+  when Fox touches Mouse [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Mouse.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+
+  when Fox touches Gopher [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Gopher.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Gopher.alive setTo false
+        prop Gopher.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Gopher.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+
+  when Fox touches Rabbit [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Rabbit.alive setTo false
+        prop Rabbit.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Rabbit.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+  
+  when Fox touches Flamingo [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Flamingo.alive setTo false
+        prop Flamingo.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Flamingo.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+
+  when Fox touches Reincarnator [[
+    ifExpr {{ Fox.getProp('alive').value == false }} [[
+      featProp Fox.Costume.glow setTo 1
+      prop Fox.alive setTo true
+      prop Fox.alpha setTo 1
+    ]]
+  ]]
+
+]]
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+every 1 runAtStart [[
+
+  // foodLevel goes down every n seconds
+  exprPush {{ Fox.getProp('energyLevel').value - Fox.getProp('energyUse').value }}
+  propPop Fox.energyLevel
+
+  // this code sets the color of the energy bar based on how hungry the Fox is
+  // sated
+  ifExpr {{ Fox.getProp('energyLevel').value > 50 }} [[
+    featProp Fox.Costume.currentFrame setTo 0
+    // Green
+    featProp Fox.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifExpr {{ Fox.getProp('energyLevel').value < 50 }} [[
+    featProp Fox.Costume.currentFrame setTo 1
+    // Orange
+    featProp Fox.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifExpr {{ Fox.getProp('energyLevel').value < 20 }} [[
+    featProp Fox.Costume.currentFrame setTo 1
+    // Red
+    featProp Fox.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifExpr {{ Fox.getProp('energyLevel').value < 1 }} [[
+    featProp Fox.Costume.currentFrame setTo 2
+    prop Fox.alpha setTo 0.3
+    prop Fox.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Fox.Graphing.meterProp setTo 'energyLevel'
+
+]]`
     }
   ],
   "instances": [
@@ -2507,36 +2801,36 @@ prop y setTo 267.78`
       "id": "42",
       "label": "Beetle42",
       "bpid": "Beetle",
-      "initScript": `prop x setTo -271.59
-prop y setTo -178.79`
+      "initScript": `prop x setTo -299.90
+prop y setTo -132.77`
     },
     {
       "id": "45",
       "label": "Hawk45",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 297.92
-prop y setTo -317.58`
+      "initScript": `prop x setTo 285.01
+prop y setTo -318.33`
     },
     {
       "id": "52",
       "label": "Mouse52",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 194.90
-prop y setTo 21.24`
+      "initScript": `prop x setTo 182.52
+prop y setTo 108.07`
     },
     {
       "id": "55",
       "label": "Snail55",
       "bpid": "Snail",
-      "initScript": `prop x setTo 0.14
-prop y setTo 33.49`
+      "initScript": `prop x setTo 19.36
+prop y setTo 92.80`
     },
     {
       "id": "63",
       "label": "Snake63",
       "bpid": "Snake",
-      "initScript": `prop x setTo -69.88
-prop y setTo -129.69`
+      "initScript": `prop x setTo 71.52
+prop y setTo -132.01`
     },
     {
       "id": "69",
@@ -2549,22 +2843,22 @@ prop y setTo 10.76`
       "id": "71",
       "label": "Gopher71",
       "bpid": "Gopher",
-      "initScript": `prop x setTo 134.74
-prop y setTo -163.66`
+      "initScript": `prop x setTo 215.36
+prop y setTo -93.31`
     },
     {
       "id": "75",
       "label": "Robin75",
       "bpid": "Robin",
-      "initScript": `prop x setTo -71.62
-prop y setTo -303.50`
+      "initScript": `prop x setTo -108.59
+prop y setTo -126.44`
     },
     {
       "id": "77",
       "label": "Rabbit77",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo 344.40
-prop y setTo -9.64`
+      "initScript": `prop x setTo 331.42
+prop y setTo 73.08`
     },
     {
       "id": "79",
@@ -2577,8 +2871,8 @@ prop y setTo -398.91`
       "id": "90",
       "label": "Pond90",
       "bpid": "Pond",
-      "initScript": `prop x setTo -305.59
-prop y setTo 293.26`
+      "initScript": `prop x setTo -289.34
+prop y setTo 420.02`
     },
     {
       "id": "91",
@@ -2591,15 +2885,29 @@ prop y setTo 63.4`
       "id": "92",
       "label": "RedAlgae92",
       "bpid": "RedAlgae",
-      "initScript": `prop x setTo -340.65
-prop y setTo 278`
+      "initScript": `prop x setTo -324.55
+prop y setTo 257.39`
     },
     {
       "id": "93",
       "label": "RedAlgae93",
       "bpid": "RedAlgae",
-      "initScript": `prop x setTo -154.54
-prop y setTo 299.75`
+      "initScript": `prop x setTo -150.94
+prop y setTo 255.49`
+    },
+    {
+      "id": "94",
+      "label": "Kangaroo94",
+      "bpid": "Kangaroo",
+      "initScript": `prop x setTo -18.79
+prop y setTo -318.45`
+    },
+    {
+      "id": "95",
+      "label": "Fox95",
+      "bpid": "Fox",
+      "initScript": `prop x setTo -277.96
+prop y setTo -322.63`
     }
   ]
 }
