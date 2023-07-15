@@ -327,7 +327,7 @@ prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 1
+addProp energyUse number 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -421,7 +421,7 @@ prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse Number 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -2372,6 +2372,7 @@ when Flamingo touches RedAlgae [[
     ifExpr {{ Flamingo.getProp('alive').value == true &&  RedAlgae.getProp('alive').value == true }} [[
       featProp Flamingo.Costume.glow setTo 1
       prop Flamingo.energyLevel add 10
+      prop RedAlgae.energyLevel sub 10
     ]]
   ]]
 ]]
@@ -2427,7 +2428,7 @@ prop RedAlgae.energyLevel setMax 100
 prop RedAlgae.energyLevel setMin 0
 
 // STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
+addProp energyUse Number 0
 
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
@@ -2440,6 +2441,38 @@ featProp RedAlgae.Graphing.meterColor setTo 65280
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifExpr {{ RedAlgae.getProp('energyLevel').value > 0 }} [[
+    exprPush {{ RedAlgae.getProp('energyLevel').value - RedAlgae.getProp('energyUse').value }}
+    propPop RedAlgae.energyLevel
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the RedAlgae is
+  // set RedAlgae energy meter color
+  // doing great
+  ifExpr {{ RedAlgae.getProp('energyLevel').value > 60 }} [[
+    // Green
+    featProp RedAlgae.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifExpr {{ RedAlgae.getProp('energyLevel').value < 60 }} [[
+    // Orange
+    featProp RedAlgae.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifExpr {{ RedAlgae.getProp('energyLevel').value < 30 }} [[
+    // Red
+    featProp RedAlgae.Graphing.meterColor setTo 16711680
+    // dead
+    ifExpr {{ RedAlgae.getProp('energyLevel').value < 1 }} [[
+      featProp RedAlgae.Costume.currentFrame setTo 2
+      prop RedAlgae.alpha setTo 0.3
+      prop RedAlgae.alive setTo false
+    ]]
+    ]]
+    ]]
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
@@ -2467,7 +2500,7 @@ prop y setTo 270.88`
       "id": "25",
       "label": "Clover25",
       "bpid": "Clover",
-      "initScript": `prop x setTo 339.70
+      "initScript": `prop x setTo 339.7
 prop y setTo 267.78`
     },
     {
