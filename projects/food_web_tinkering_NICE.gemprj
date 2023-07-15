@@ -2634,8 +2634,9 @@ featCall Fox.Touches monitor 'Rabbit' b2b
 featCall Fox.Touches monitor 'Reincarnator' b2b
 featCall Fox.Touches monitor 'Flamingo' b2b
 featCall Fox.Touches monitor 'Kangaroo' b2b
-
-
+featCall Fox.Touches monitor 'Beetle' b2b
+featCall Fox.Touches monitor 'Snail' b2b
+featCall Fox.Touches monitor 'Caterpillar' b2b
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel Number 50
@@ -2714,12 +2715,60 @@ when Fox touches Snake [[
   
   when Fox touches Flamingo [[
     every 1 [[
-      ifExpr {{ Fox.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Flamingo.getProp('alive').value == true }} [[
         featProp Fox.Costume.glow setTo 1
         prop Flamingo.alive setTo false
         prop Flamingo.alpha setTo 0.3
         prop Fox.energyLevel add 10
         prop Flamingo.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+  
+  when Fox touches Kangaroo [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Kangaroo.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Kangaroo.alive setTo false
+        prop Kangaroo.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Kangaroo.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+  
+  when Fox touches Beetle [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Beetle.alive setTo false
+        prop Beetle.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Beetle.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+  
+  when Fox touches Snail [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Snail.alive setTo false
+        prop Snail.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Snail.energyLevel setTo 0
+      ]]
+    ]]
+  ]]
+  
+  when Fox touches Caterpillar [[
+    every 1 [[
+      ifExpr {{ Fox.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
+        featProp Fox.Costume.glow setTo 1
+        prop Caterpillar.alive setTo false
+        prop Caterpillar.alpha setTo 0.3
+        prop Fox.energyLevel add 10
+        prop Caterpillar.energyLevel setTo 0
       ]]
     ]]
   ]]
@@ -2871,8 +2920,8 @@ prop y setTo -398.91`
       "id": "90",
       "label": "Pond90",
       "bpid": "Pond",
-      "initScript": `prop x setTo -289.34
-prop y setTo 420.02`
+      "initScript": `prop x setTo -458.55
+prop y setTo 414.59`
     },
     {
       "id": "91",
@@ -2889,13 +2938,6 @@ prop y setTo 63.4`
 prop y setTo 257.39`
     },
     {
-      "id": "93",
-      "label": "RedAlgae93",
-      "bpid": "RedAlgae",
-      "initScript": `prop x setTo -150.94
-prop y setTo 255.49`
-    },
-    {
       "id": "94",
       "label": "Kangaroo94",
       "bpid": "Kangaroo",
@@ -2908,6 +2950,13 @@ prop y setTo -318.45`
       "bpid": "Fox",
       "initScript": `prop x setTo -277.96
 prop y setTo -322.63`
+    },
+    {
+      "id": "96",
+      "label": "VeggieGarden96",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -78.15
+prop y setTo 269.69`
     }
   ]
 }
