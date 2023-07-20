@@ -216,6 +216,8 @@ featProp Beaver.Costume.scale setTo 0.15
 addFeature Physics
 addFeature Touches
 
+addProp costumePicker boolean true
+
 # PROGRAM UPDATE
 onEvent START [[
   featCall global.IU logString 'Starting model run'
@@ -868,108 +870,101 @@ prop y setTo 0`
     },
     {
       "id": "23",
-      "label": "Mud23",
-      "bpid": "Mud",
-      "initScript": `prop x setTo -329.95
-prop y setTo 356.36`
+      "label": "PropMud1",
+      "bpid": "PropMud",
+      "initScript": `prop x setTo -301.01
+prop y setTo 315.78`
     },
     {
       "id": "24",
-      "label": "Mud24",
-      "bpid": "Mud",
-      "initScript": `prop x setTo -314.10
-prop y setTo 363.13`
+      "label": "PropRock1",
+      "bpid": "PropRock",
+      "initScript": `prop x setTo -230.10
+prop y setTo 342.59`
     },
     {
       "id": "25",
-      "label": "Mud25",
-      "bpid": "Mud",
-      "initScript": `prop x setTo -353.16
-prop y setTo 361.84`
+      "label": "PropTwig1",
+      "bpid": "PropTwig",
+      "initScript": `prop x setTo -323.30
+prop y setTo 350.22`
     },
     {
       "id": "26",
-      "label": "Twig26",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -226.65
-prop y setTo 359.80`
+      "label": "PropWaterPlant1",
+      "bpid": "PropWaterPlant",
+      "initScript": `prop x setTo -159.28
+prop y setTo 338.68`
     },
     {
       "id": "27",
-      "label": "Twig27",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -205.99
-prop y setTo 361.63`
+      "label": "PropMud2",
+      "bpid": "PropMud",
+      "initScript": `prop x setTo -285.67
+prop y setTo 321.06`
     },
     {
       "id": "28",
-      "label": "Twig28",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -236.84
-prop y setTo 340.53`
+      "label": "PropRock2",
+      "bpid": "PropRock",
+      "initScript": `prop x setTo -217.14
+prop y setTo 337.20`
     },
     {
       "id": "29",
-      "label": "Twig29",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -209.18
-prop y setTo 361.42`
+      "label": "PropTwig2",
+      "bpid": "PropTwig",
+      "initScript": `prop x setTo -335.44
+prop y setTo 338.52`
     },
     {
       "id": "30",
-      "label": "Twig30",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -237.58
-prop y setTo 364.32`
+      "label": "PropWaterPlant2",
+      "bpid": "PropWaterPlant",
+      "initScript": `prop x setTo -147.86
+prop y setTo 347.98`
     },
     {
       "id": "31",
-      "label": "Twig31",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -214.88
-prop y setTo 352.44`
+      "label": "PropMud3",
+      "bpid": "PropMud",
+      "initScript": `prop x setTo -285.07
+prop y setTo 310.89`
     },
     {
       "id": "32",
-      "label": "Twig32",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -238.10
-prop y setTo 335.22`
+      "label": "PropRock3",
+      "bpid": "PropRock",
+      "initScript": `prop x setTo -216.86
+prop y setTo 349.97`
     },
     {
       "id": "33",
-      "label": "Rock33",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -129.40
-prop y setTo 351.55`
+      "label": "PropTwig3",
+      "bpid": "PropTwig",
+      "initScript": `prop x setTo -335.44
+prop y setTo 338.52`
     },
     {
       "id": "34",
-      "label": "Rock34",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -136.14
-prop y setTo 351.99`
+      "label": "PropWaterPlant3",
+      "bpid": "PropWaterPlant",
+      "initScript": `prop x setTo -144.90
+prop y setTo 335.19`
     },
     {
       "id": "35",
-      "label": "Rock35",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -136.50
-prop y setTo 345.29`
+      "label": "PropTwig4",
+      "bpid": "PropTwig",
+      "initScript": `prop x setTo -323.16
+prop y setTo 343.65`
     },
     {
       "id": "36",
-      "label": "Rock36",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -139.24
-prop y setTo 336.27`
-    },
-    {
-      "id": "37",
-      "label": "Rock37",
-      "bpid": "Rock",
-      "initScript": `prop x setTo -129.87
-prop y setTo 349.09`
+      "label": "PropTwig5",
+      "bpid": "PropTwig",
+      "initScript": `prop x setTo -342.35
+prop y setTo 354.37`
     }
   ]
 }
