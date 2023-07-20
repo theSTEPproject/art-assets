@@ -940,8 +940,8 @@ prop y setTo 112.08`
       "id": "47",
       "label": "Beaver 1",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -135.13
-prop y setTo -123.54`
+      "initScript": `prop x setTo -155.77
+prop y setTo -126.37`
     },
     {
       "id": "48",
@@ -951,25 +951,18 @@ prop y setTo -123.54`
 prop y setTo -361.04`
     },
     {
-      "id": "49",
-      "label": "Beaver 2",
-      "bpid": "Beaver",
-      "initScript": `prop x setTo -165.73
-prop y setTo 191.94`
-    },
-    {
       "id": "50",
       "label": "Beaver 3",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 200.98
-prop y setTo 130.94`
+      "initScript": `prop x setTo -159.85
+prop y setTo 295.82`
     },
     {
       "id": "51",
       "label": "Beaver 4",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 29.3
-prop y setTo -267.85`
+      "initScript": `prop x setTo 12.37
+prop y setTo -255.62`
     },
     {
       "id": "52",
