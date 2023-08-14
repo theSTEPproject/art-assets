@@ -1,5 +1,5 @@
 {
-  "id": "terrestrial_ecosystem_1_animal_interactions_1",
+  "id": "food_web_animal_interactions_1",
   "label": "Terrestrial Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -1319,6 +1319,7 @@ featCall Rabbit.Touches monitor 'Reincarnator' b2b
 // 🔎 how much does energy does each rabbit START with?
 // ✏️ LETS CHANGE THIS:
 addProp energyLevel Number 50
+
 // 🔎 what is the MOST/LEAST amount of energy a rabbit can have?
 prop Rabbit.energyLevel setMax 100
 prop Rabbit.energyLevel setMin 0
@@ -1327,6 +1328,58 @@ prop Rabbit.energyLevel setMin 0
 // use a widget to depict the current energy, and color it green (maybe change later)
 featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
 featProp Rabbit.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+
+
+// do this whenever a rabbit touches a clover
+when Rabbit touches Clover [[
+  every 1 runAtStart [[
+  // the rabbit and the clover must be alive
+    ifProp Rabbit.alive equal true [[
+      ifProp Clover.alive equal true [[
+      
+        featProp Rabbit.Costume.glow setTo 1
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => LOSE MORE ENERGY
+        prop Clover.energyLevel sub 10
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do RABBITS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Rabbit.energyLevel add 10
+      ]]
+    ]]
+  ]]
+]]
+
+when Rabbit touches VeggieGarden [[
+  every 1 runAtStart [[
+    ifProp Rabbit.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Rabbit.Costume.glow setTo 1
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => LOSE MORE ENERGY
+        prop VeggieGarden.energyLevel sub 10
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do RABBITS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Rabbit.energyLevel add 10
+        
+      ]]
+    ]]
+  ]]
+]]
 
 # PROGRAM UPDATE
 
@@ -1338,37 +1391,14 @@ ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
   featProp Rabbit.Costume.flipX setTo true
 ]]
 
-when Rabbit touches Clover [[
   every 1 runAtStart [[
-    ifProp Rabbit.alive equal true [[
-      ifProp Clover.alive equal true [[
-        featProp Rabbit.Costume.glow setTo 1
-        prop Rabbit.energyLevel add 10
-        prop Clover.energyLevel sub 10
-
-      ]]
-    ]]
-  ]]
-]]
-
-when Rabbit touches VeggieGarden [[
-  every 1 runAtStart [[
-    ifProp Rabbit.alive equal true [[
-      ifProp VeggieGarden.alive equal true [[
-        featProp Rabbit.Costume.glow setTo 1
-        prop Rabbit.energyLevel add 10
-        prop VeggieGarden.energyLevel sub 10
-      ]]
-    ]]
-  ]]
-
-  // 🔎 WHAT DOES THIS DO?
-  // 🔎 How much ENERGY do RABBITS LOSE when moving?
-  // ✏️ LETS CHANGE THIS:
-  // ✏️ HIGHER numbers => LOSE MORE ENERGY
-
-  every 1 runAtStart [[
-    prop Rabbit.energyLevel sub 10
+  
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 How much ENERGY do RABBITS LOSE when moving?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ HIGHER numbers => LOSE MORE ENERGY
+    prop Rabbit.energyLevel sub 3
+    
     // 🔎 WHAT DOES THIS DO?
     // This script changes the color of the Rabbit's meter depending on how much energy it has
     // We can change the numbers if we want the colors to appear at different levels
@@ -1403,7 +1433,7 @@ when Rabbit touches VeggieGarden [[
   ]]
 
 
-
+// when the rabbit touches the reincarnator 
   when Rabbit touches Reincarnator [[
     ifExpr {{ Rabbit.getProp('alive').value == false }} [[
       featProp Rabbit.Costume.glow setTo 1
@@ -1413,10 +1443,9 @@ when Rabbit touches VeggieGarden [[
     ]]
   ]]
 
-]]
 
 
-# PROGRAM UPDATE
+
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     },
@@ -1810,56 +1839,6 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "GopherPopulation",
-      "scriptText": `# BLUEPRINT GopherPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp GopherPopulation.Costume.costumeName setTo 'GEN_onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp GopherPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Gophers
-addProp totalGopherPop number 3
-
-
-featProp GopherPopulation.Graphing.graphProp setTo 'totalGopherPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop GopherPopulation.x setTo 495
-prop GopherPopulation.y setTo 187
-prop GopherPopulation.zIndex setTo 300
-
-featProp GopherPopulation.Graphing.text setTo 'Gopher Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the GopherGopherPopulation
-  featProp GopherPopulation.Population.monitoredCharacter setTo 'Gopher'
-  featProp GopherPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall GopherPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop GopherPopulation.totalGopherPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalGopherPop').value }}
-  propPop GopherPopulation.totalGopherPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "RobinPopulation",
       "scriptText": `# BLUEPRINT RobinPopulation
 # TAG IsCharControllable false
@@ -2002,56 +1981,6 @@ onEvent Tick [[
   // graph the sum
   exprPush {{ agent.getProp('totalMousePop').value }}
   propPop MousePopulation.totalMousePop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
-      "name": "BeetlePopulation",
-      "scriptText": `# BLUEPRINT BeetlePopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp BeetlePopulation.Costume.costumeName setTo 'GEN_onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp BeetlePopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Beetles
-addProp totalBeetlePop number 2
-
-
-featProp BeetlePopulation.Graphing.graphProp setTo 'totalBeetlePop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop BeetlePopulation.x setTo 495
-prop BeetlePopulation.y setTo 187
-prop BeetlePopulation.zIndex setTo 300
-
-featProp BeetlePopulation.Graphing.text setTo 'Beetle Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Beetle
-  featProp BeetlePopulation.Population.monitoredCharacter setTo 'Beetle'
-  featProp BeetlePopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall BeetlePopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop BeetlePopulation.totalBeetlePop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalBeetlePop').value }}
-  propPop BeetlePopulation.totalBeetlePop
 
 
 ]]
@@ -2364,8 +2293,29 @@ prop y setTo -80.68`
       "id": "94",
       "label": "VeggieGarden94",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -95.37
-prop y setTo 32.00`
+      "initScript": `prop x setTo 14.16
+prop y setTo 241.36`
+    },
+    {
+      "id": "95",
+      "label": "Hawk95",
+      "bpid": "Hawk",
+      "initScript": `prop x setTo -70.66
+prop y setTo -241.20`
+    },
+    {
+      "id": "96",
+      "label": "VeggieGarden96",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -253.20
+prop y setTo 239.90`
+    },
+    {
+      "id": "97",
+      "label": "VeggieGarden97",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 262.95
+prop y setTo 237.68`
     }
   ]
 }
