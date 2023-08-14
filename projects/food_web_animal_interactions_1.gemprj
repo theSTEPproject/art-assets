@@ -167,9 +167,9 @@ featProp Snake.Costume.scale setTo 0.2
 
 // This tells any sankes that are controlled by the computer instead of by a student how to move 
 featProp Snake.Movement.movementType setTo 'wander'
-featProp Snake.Movement.compassDirection setTo 'S'
+//featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
-featProp Snake.Movement.targetY setMax 0.7
+//featProp Snake.Movement.targetY setMax 0.7
 
 
 // check when snakes interact with rabbits 
@@ -214,6 +214,11 @@ when Snake touches Rabbit [[
     ]]
   ]]
 ]]  
+
+// After the snake eats a rabbit, it will stop glowing 
+when Snake lastTouches Rabbit [[
+  featProp Snake.Costume.glow setTo 0
+]]
 
 every 1 runAtStart [[
 
@@ -973,127 +978,116 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
+// 🔎 WHAT IS A ROBIN?
+// 🔎 ROBINS are ?????? who EAT ?????? to make ROBIN ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 # PROGRAM INIT
 // add the Caterpillar we are likely to use
 addFeature Movement
 addFeature Costume
 addFeature Cursor
-
-// set the costume
-featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
-
-// add other features
 addFeature Physics
 addFeature Touches
+addFeature Graphing
+addProp alive Boolean true
 
+// Set the fish artwork and make it smaller since it is really big
+featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
+
+// 🔎 WHAT SIZE IS THE ROBIN?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER ROBINS
 featProp Robin.Costume.scale setTo 0.2
 
+// This tells any robins that are controlled by the computer instead of by a student how to move 
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
+// This is the speed the robin moves at when it is not controlled by students 
 featProp Robin.Movement.distance setTo 3
 featProp Robin.Movement.targetY setMax 0.7
 
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
+// check with robins touch caterpillars
 featCall Robin.Touches monitor 'Caterpillar' b2b
-featCall Robin.Touches monitor 'Snail' b2b
-featCall Robin.Touches monitor 'Beetle' b2b
-featCall Robin.Touches monitor 'Reincarnator' b2b
 
-// setup to track energy and begin at 1/2 way
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do ROBINS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel Number 50
+// 🔎 What is the MOST/LEAST amount of energy a robin can have?
 prop Robin.energyLevel setMax 100
 prop Robin.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Robin lose energy faster (or slower)
-addProp energyUse Number 1
 
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
+// use a widget to depict the current energy, and color it green
 featProp Robin.Graphing.meterProp setTo 'energyLevel'
-
 featProp Robin.Graphing.meterColor setTo 65280
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
+// whenever a robin is touching a caterpillar 
 when Robin touches Caterpillar [[
-  every 1 [[
-    ifExpr {{ Robin.getProp('alive').value == true &&  Caterpillar.getProp('alive').value == true }} [[
-      featProp Robin.Costume.glow setTo 1
-      prop Caterpillar.alive setTo false
-      prop Caterpillar.alpha setTo 0.3
-      prop Robin.energyLevel add 10
-      prop Caterpillar.energyLevel setTo 0
-    ]]
-  ]]
-
-  when Robin touches Snail [[
-    every 1 [[
-      ifExpr {{ Robin.getProp('alive').value == true &&  Snail.getProp('alive').value == true }} [[
+  every 1 runAtStart [[
+  // when the robin and the caterpillar are alive 
+    ifProp Robin.alive equal true [[
+      ifProp Caterpillar.alive equal true [[
         featProp Robin.Costume.glow setTo 1
-        prop Snail.alive setTo false
-        prop Snail.alpha setTo 0.3
-        prop Robin.energyLevel add 10
-        prop Snail.energyLevel setTo 0
+        
+        // the caterpillar dies when touched by the robin
+        featProp Caterpillar.Movement.movementType setTo 'stop'
+        prop Caterpillar.alive setTo false
+        prop Caterpillar.energyLevel setTo 0
+        prop Caterpillar.alpha setTo 0.3
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do ROBIN GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Robin.energyLevel add 25
       ]]
     ]]
   ]]
-
-  when Robin touches Beetle [[
-    every 1 [[
-      ifExpr {{ Robin.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
-        featProp Robin.Costume.glow setTo 1
-        prop Beetle.alive setTo false
-        prop Beetle.alpha setTo 0.3
-        prop Robin.energyLevel add 10
-        prop Beetle.energyLevel setTo 0
-      ]]
-    ]]
-  ]]
-
-  when Robin touches Reincarnator [[
-    every 1 [[
-      ifExpr {{ Robin.getProp('alive').value == false }} [[
-        featProp Robin.Costume.glow setTo 1
-        prop Robin.alive setTo true
-        prop Robin.alpha setTo 1
-        prop Robin.energyLevel setTo 50
-      ]]
-    ]]
-  ]]
-
 ]]
 
-# PROGRAM UPDATE
+
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 every 1 runAtStart [[
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do ROBINS LOSE when flying?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Robin.energyLevel sub 3
 
-  // foodLevel goes down every n seconds
-  exprPush {{ Robin.getProp('energyLevel').value - Robin.getProp('energyUse').value }}
-  propPop Robin.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Robin is
-  // sated
-  ifExpr {{ Robin.getProp('energyLevel').value > 50 }} [[
+  // WHAT DOES THIS DO?
+  // This script changes the color of the robin's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  
+  // The robin is feeling good, so make the meter green if the robin has over 50 energy (out of 100)
+  ifProp Robin.energyLevel greaterThanOrEqual 50[[
     featProp Robin.Costume.currentFrame setTo 0
-    // Green
     featProp Robin.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Robin.getProp('energyLevel').value < 50 }} [[
+  
+  // The robin is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Robin.energyLevel lessThan 50 [[
     featProp Robin.Costume.currentFrame setTo 1
-    // Orange
     featProp Robin.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Robin.getProp('energyLevel').value < 20 }} [[
+  
+  // The robin is really hungry, so make the meter red if we are under 20
+  ifProp Robin.energyLevel lessThan 20 [[
     featProp Robin.Costume.currentFrame setTo 1
     // Red
     featProp Robin.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Robin.getProp('energyLevel').value < 1 }} [[
+  // The robin is dead if it has 0 energy
+  ifProp Robin.energyLevel equal 0 [[
     featProp Robin.Costume.currentFrame setTo 2
     prop Robin.alpha setTo 0.3
     prop Robin.alive setTo false
@@ -1189,6 +1183,11 @@ when Hawk touches Snake [[
   ]]
 ]]
 
+// After the hawk eats a snake, it will stop glowing 
+when Hawk lastTouches Snake [[
+  featProp Hawk.Costume.glow setTo 0
+]]
+
 // whenever the hawk is touching a robin
 when Hawk touches Robin [[
   every 1 runAtStart [[
@@ -1214,6 +1213,11 @@ when Hawk touches Robin [[
   ]]
 ]]
 
+// After the hawk eats a robin, it will stop glowing 
+when Hawk lastTouches Robin [[
+  featProp Hawk.Costume.glow setTo 0
+]]
+
 // whenever the hawk is touching a rabbit
 when Hawk touches Rabbit [[
   every 1 runAtStart [[
@@ -1235,6 +1239,11 @@ when Hawk touches Rabbit [[
       ]]
     ]]
   ]]
+]]
+
+// After the hawk eats a rabbit, it will stop glowing 
+when Hawk lastTouches Rabbit [[
+  featProp Hawk.Costume.glow setTo 0
 ]]
 
 every 1 runAtStart [[
@@ -1949,56 +1958,6 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "MousePopulation",
-      "scriptText": `# BLUEPRINT MousePopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp MousePopulation.Costume.costumeName setTo 'GEN_onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp MousePopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Mouses
-addProp totalMousePop number 2
-
-
-featProp MousePopulation.Graphing.graphProp setTo 'totalMousePop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop MousePopulation.x setTo 495
-prop MousePopulation.y setTo 187
-prop MousePopulation.zIndex setTo 300
-
-featProp MousePopulation.Graphing.text setTo 'Mouse Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Mouse
-  featProp MousePopulation.Population.monitoredCharacter setTo 'Mouse'
-  featProp MousePopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall MousePopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop MousePopulation.totalMousePop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalMousePop').value }}
-  propPop MousePopulation.totalMousePop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "CaterpillarPopulation",
       "scriptText": `# BLUEPRINT CaterpillarPopulation
 # TAG IsCharControllable false
@@ -2218,29 +2177,22 @@ prop y setTo -398.91`
       "id": "94",
       "label": "VeggieGarden94",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 14.16
-prop y setTo 241.36`
-    },
-    {
-      "id": "95",
-      "label": "Hawk95",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -70.66
-prop y setTo -241.2`
+      "initScript": `prop x setTo -169.45
+prop y setTo 281.80`
     },
     {
       "id": "96",
       "label": "VeggieGarden96",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -253.20
-prop y setTo 239.90`
+      "initScript": `prop x setTo -222.60
+prop y setTo -118.57`
     },
     {
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 262.95
-prop y setTo 237.68`
+      "initScript": `prop x setTo 161.31
+prop y setTo -34.45`
     },
     {
       "id": "98",
@@ -2281,29 +2233,50 @@ prop y setTo -44.96`
       "id": "103",
       "label": "Snake103",
       "bpid": "Snake",
-      "initScript": `prop x setTo 39
-prop y setTo 20`
+      "initScript": `prop x setTo 290.37
+prop y setTo -226.99`
     },
     {
       "id": "104",
       "label": "Snake104",
       "bpid": "Snake",
-      "initScript": `prop x setTo 27
-prop y setTo -22`
+      "initScript": `prop x setTo -166.44
+prop y setTo 152.86`
     },
     {
       "id": "105",
       "label": "Snake105",
       "bpid": "Snake",
-      "initScript": `prop x setTo -23
-prop y setTo -42`
+      "initScript": `prop x setTo 72.08
+prop y setTo 111.01`
     },
     {
       "id": "106",
       "label": "Snake106",
       "bpid": "Snake",
-      "initScript": `prop x setTo -39
-prop y setTo 33`
+      "initScript": `prop x setTo -315.50
+prop y setTo -216.18`
+    },
+    {
+      "id": "107",
+      "label": "Robin107",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -52.02
+prop y setTo 129.82`
+    },
+    {
+      "id": "108",
+      "label": "Robin108",
+      "bpid": "Robin",
+      "initScript": `prop x setTo 170.72
+prop y setTo 194.36`
+    },
+    {
+      "id": "109",
+      "label": "Hawk109",
+      "bpid": "Hawk",
+      "initScript": `prop x setTo 111.57
+prop y setTo -283.27`
     }
   ]
 }
