@@ -139,112 +139,112 @@ when Mouse touches VeggieGarden [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
+// 🔎 WHAT IS A SNAKE?
+// 🔎 SNAKES are ?????? who EAT ?????? to make SNAKE ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 # PROGRAM INIT
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
 addFeature Cursor
-
-// set the costume
-featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
-
-// add other features
 addFeature Physics
 addFeature Touches
+addFeature Graphing
+addProp alive Boolean true
 
+// Set the snake artwork and make it smaller since it is really big
+featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
+// 🔎 WHAT SIZE IS THE SNAKE?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.2
 
+// This tells any sankes that are controlled by the computer instead of by a student how to move 
 featProp Snake.Movement.movementType setTo 'wander'
 featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
 featProp Snake.Movement.targetY setMax 0.7
 
-addProp alive Boolean true
 
-// make sure we track interactions with the other creatures
-featCall Snake.Touches monitor 'Mouse' b2b
-featCall Snake.Touches monitor 'Beetle' b2b
-featCall Snake.Touches monitor 'Reincarnator' b2b
+// check when snakes interact with rabbits 
+featCall Snake.Touches monitor 'Rabbit' b2b
 
-// setup to track energy and begin at 1/2 way
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do SNAKES START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a snake can have?
 prop Snake.energyLevel setMax 100
 prop Snake.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Snake lose energy faster (or slower)
-addProp energyUse Number 1
 
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
+// use a widget to depict the current energy, and color it green 
 featProp Snake.Graphing.meterProp setTo 'energyLevel'
-
 featProp Snake.Graphing.meterColor setTo 65280
 
-# PROGRAM EVENT
-when Snake touches Mouse [[
-  every 1 [[
-    ifExpr {{ Snake.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
-      featProp Snake.Costume.glow setTo 1
-      prop Mouse.alive setTo false
-      prop Mouse.alpha setTo 0.3
-      prop Snake.energyLevel add 10
-      prop Mouse.energyLevel setTo 0
-    ]]
-  ]]
-
-  when Snake touches Beetle [[
-    every 1 [[
-      ifExpr {{ Snake.getProp('alive').value == true &&  Beetle.getProp('alive').value == true }} [[
+# PROGRAM UPDATE
+// whenever the snake is touching a rabbit
+when Snake touches Rabbit [[
+  every 1 runAtStart [[
+    ifProp Snake.alive equal true [[
+      ifProp Rabbit.alive equal true [[
         featProp Snake.Costume.glow setTo 1
-        prop Beetle.alive setTo false
-        prop Beetle.alpha setTo 0.3
-        prop Snake.energyLevel add 10
-        prop Beetle.energyLevel setTo 0
+        
+        // the rabbit dies when touched by a snake
+        featProp Rabbit.Movement.movementType setTo 'stop'
+        prop Rabbit.energyLevel setTo 0
+        prop Rabbit.alive setTo false
+        prop Rabbit.alpha setTo 0.3
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do SNAKE GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Snake.energyLevel add 25
       ]]
     ]]
   ]]
+]]  
 
-  when Snake touches Reincarnator [[
-    ifExpr {{ Snake.getProp('alive').value == false }} [[
-      featProp Snake.Costume.glow setTo 1
-      prop Snake.alive setTo true
-      prop Snake.alpha setTo 1
-      prop Snake.energyLevel setTo 50
-    ]]
-  ]]
-
-]]
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 every 1 runAtStart [[
 
-  // foodLevel goes down every n seconds
-  exprPush {{ Snake.getProp('energyLevel').value - Snake.getProp('energyUse').value }}
-  propPop Snake.energyLevel
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do SNAKES LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Snake.energyLevel sub 3
 
-  // this code sets the color of the energy bar based on how hungry the Snake is
-  // sated
-  ifExpr {{ Snake.getProp('energyLevel').value > 50 }} [[
+  // WHAT DOES THIS DO?
+  // This script changes the color of the snake's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  
+  // The snake is feeling good, so make the meter green if the snake has over 50 energy (out of 100)
+  ifProp Snake.energyLevel greaterThanOrEqual 50 [[
     featProp Snake.Costume.currentFrame setTo 0
-    // Green
     featProp Snake.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Snake.getProp('energyLevel').value < 50 }} [[
+  // The snake is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Snake.energyLevel lessThan 50 [[
     featProp Snake.Costume.currentFrame setTo 1
-    // Orange
     featProp Snake.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Snake.getProp('energyLevel').value < 20 }} [[
+  
+  // The snake is really hungry, so make the meter red if we are under 20
+  ifProp Snake.energyLevel lessThan 20 [[
     featProp Snake.Costume.currentFrame setTo 1
-    // Red
     featProp Snake.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Snake.getProp('energyLevel').value < 1 }} [[
+  // The snake is dead if it has 0 energy
+  ifProp Snake.energyLevel equal 0 [[
     featProp Snake.Costume.currentFrame setTo 2
     prop Snake.alpha setTo 0.3
     prop Snake.alive setTo false
@@ -1138,7 +1138,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // ✏️ HIGHER number => LARGER HAWKS
 featProp Hawk.Costume.scale setTo 0.15
 
-// This tells the hawks how to move 
+// This tells the hawks how to move
 featProp Hawk.Movement.compassDirection setTo 'west'
 featProp Hawk.Movement.movementType setTo 'wander'
 featProp Hawk.Movement.distance setTo 5
@@ -1165,19 +1165,20 @@ prop Hawk.energyLevel setMin 0
 featProp Hawk.Graphing.meterProp setTo 'energyLevel'
 featProp Hawk.Graphing.meterColor setTo 65280
 
-# PROGRAM EVENT
-// whenever the hawk is toucing a snake 
+# PROGRAM UPDATE
+// whenever the hawk is touching a snake
 when Hawk touches Snake [[
   every 1 runAtStart [[
-    //if the hawk and the snake are alive 
+    // if the hawk and the snake are alive
     ifProp Hawk.alive equal true [[
       ifProp Snake.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
-        // the snake dies when touched by the hawk 
+        // the snake dies when touched by the hawk
+        featProp Snake.Movement.movementType setTo 'stop'
         prop Snake.alive setTo false
         prop Snake.alpha setTo 0.3
         prop Snake.energyLevel setTo 0
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do HAWKS GAIN when eating a snake?
         // ✏️ LETS CHANGE THIS:
@@ -1195,34 +1196,37 @@ when Hawk touches Robin [[
     ifProp Hawk.alive equal true [[
       ifProp Robin.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
-        // the robin dies when touched by the hawk 
+        // the robin dies when touched by the hawk
+        featProp Robin.Movement.movementType setTo 'stop'
         prop Robin.alive setTo false
         prop Robin.alpha setTo 0.3
         prop Robin.energyLevel setTo 0
         
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do HAWKS GAIN when eating a robin?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-      
+
       ]]
     ]]
   ]]
 ]]
-  
-// whenever the hawk is touching a rabbit 
+
+// whenever the hawk is touching a rabbit
 when Hawk touches Rabbit [[
   every 1 runAtStart [[
     // if the hawk and the rabbit are alive
     ifProp Hawk.alive equal true [[
       ifProp Rabbit.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
-        // the rabbit dies when touched by the hawk 
+        // the rabbit dies when touched by the hawk
+        featProp Rabbit.Movement.movementType setTo 'stop'
         prop Rabbit.alive setTo false
         prop Rabbit.alpha setTo 0.3
         prop Rabbit.energyLevel setTo 0
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do HAWKS GAIN when eating a rabbit?
         // ✏️ LETS CHANGE THIS:
@@ -1233,9 +1237,6 @@ when Hawk touches Rabbit [[
   ]]
 ]]
 
-# PROGRAM UPDATE
-
-
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
@@ -1243,32 +1244,32 @@ every 1 runAtStart [[
   // ✏️ LETS CHANGE THIS:
   // ✏️ HIGHER numbers => LOSE MORE ENERGY
   prop Hawk.energyLevel sub 2
-  
+
   // WHAT DOES THIS DO?
   // This script changes the color of the hawk's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
-  
+
   // The hawk is feeling good, so make the meter green if the hawk has over 50 energy (out of 100)
   ifProp Hawk.energyLevel greaterThanOrEqual 50 [[
     featProp Hawk.Costume.currentFrame setTo 0
     featProp Hawk.Graphing.meterColor setTo 65280
   ]]
-  
+
   // The hawk is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
   ifProp Hawk.energyLevel lessThan 50 [[
     featProp Hawk.Costume.currentFrame setTo 1
     featProp Hawk.Graphing.meterColor setTo 16737792
   ]]
-  
+
   // The hawk is really hungry, so make the meter red if we are under 20
   ifProp Hawk.energyLevel lessThan 20 [[
     featProp Hawk.Costume.currentFrame setTo 1
     featProp Hawk.Graphing.meterColor setTo 16711680
   ]]
-  // The hawk dies if it has 0 energy 
+  // The hawk dies if it has 0 energy
   ifProp Hawk.energyLevel equal 0 [[
     prop Hawk.alive setTo false
-    // change the artwork to show it is dead 
+    // change the artwork to show it is dead
     featProp Hawk.Costume.currentFrame setTo 2
     prop Hawk.alpha setTo 0.3
     prop Hawk.isInert setTo true
@@ -1342,9 +1343,7 @@ prop Rabbit.energyLevel setMin 0
 featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
 featProp Rabbit.Graphing.meterColor setTo 65280
 
-# PROGRAM EVENT
-
-
+# PROGRAM UPDATE
 
 // do this whenever a rabbit touches a clover
 when Rabbit touches Clover [[
@@ -1387,14 +1386,12 @@ when Rabbit touches VeggieGarden [[
         // 🔎 How much ENERGY do RABBITS GAIN when eating?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => GAIN MORE ENERGY
-        prop Rabbit.energyLevel add 10
+        prop Rabbit.energyLevel add 20
         
       ]]
     ]]
   ]]
 ]]
-
-# PROGRAM UPDATE
 
 // This script flips the artwork depending on whether the rabbit is moving left or right
 ifFeatProp Rabbit.Movement.compassDirection equal 'E' [[
@@ -2279,6 +2276,34 @@ prop y setTo 77.55`
       "bpid": "Rabbit",
       "initScript": `prop x setTo -280.98
 prop y setTo -44.96`
+    },
+    {
+      "id": "103",
+      "label": "Snake103",
+      "bpid": "Snake",
+      "initScript": `prop x setTo 39
+prop y setTo 20`
+    },
+    {
+      "id": "104",
+      "label": "Snake104",
+      "bpid": "Snake",
+      "initScript": `prop x setTo 27
+prop y setTo -22`
+    },
+    {
+      "id": "105",
+      "label": "Snake105",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -23
+prop y setTo -42`
+    },
+    {
+      "id": "106",
+      "label": "Snake106",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -39
+prop y setTo 33`
     }
   ]
 }
