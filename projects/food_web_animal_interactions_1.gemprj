@@ -1112,150 +1112,163 @@ every 1 runAtStart [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
+// 🔎 WHAT IS A HAWK?
+// 🔎 HAWKS are CONSUMERS who EAT ??????? to make HAWK ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 # PROGRAM INIT
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-
-// set the costume
-featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
-
-// add other features
 addFeature Physics
 addFeature Touches
+addFeature Graphing
+addProp alive Boolean true
 
+// Set the hawk artwork and make it 1/2 size since it is really big
+featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
+
+// 🔎 WHAT SIZE IS THE HAWK?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER HAWKS
 featProp Hawk.Costume.scale setTo 0.15
 
+// This tells the hawks how to move 
 featProp Hawk.Movement.compassDirection setTo 'west'
 featProp Hawk.Movement.movementType setTo 'wander'
 featProp Hawk.Movement.distance setTo 5
 featCall Hawk.Movement setRandomDirection
 
-addProp alive Boolean true
-
-// make sure we track interactions with the other creatures
+// // Check when the hawk touches other organisms so it can eat it
 featCall Hawk.Touches monitor 'Snake' b2b
 featCall Hawk.Touches monitor 'Robin' b2b
-featCall Hawk.Touches monitor 'Mouse' b2b
-featCall Hawk.Touches monitor 'Gopher' b2b
 featCall Hawk.Touches monitor 'Rabbit' b2b
-featCall Hawk.Touches monitor 'Reincarnator' b2b
 
-// setup to track energy and begin at 1/2 way
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do HAWKS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy an hawk can have?
 prop Hawk.energyLevel setMax 100
 prop Hawk.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Hawk lose energy faster (or slower)
-addProp energyUse Number 2
-
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
-featProp Hawk.Graphing.meterProp setTo 'energyLevel'
 
+featProp Hawk.Graphing.meterProp setTo 'energyLevel'
 featProp Hawk.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-
+// whenever the hawk is toucing a snake 
 when Hawk touches Snake [[
-  every 1 [[
-    ifExpr {{ Hawk.getProp('alive').value == true &&  Snake.getProp('alive').value == true }} [[
-      featProp Hawk.Costume.glow setTo 1
-      prop Snake.alive setTo false
-      prop Snake.alpha setTo 0.3
-      prop Hawk.energyLevel add 10
-      prop Snake.energyLevel setTo 0
+  every 1 runAtStart [[
+    //if the hawk and the snake are alive 
+    ifProp Hawk.alive equal true [[
+      ifProp Snake.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // the snake dies when touched by the hawk 
+        prop Snake.alive setTo false
+        prop Snake.alpha setTo 0.3
+        prop Snake.energyLevel setTo 0
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a snake?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+      ]]
     ]]
   ]]
+]]
 
-  when Hawk touches Robin [[
-    every 1 [[
-      ifExpr {{ Hawk.getProp('alive').value == true &&  Robin.getProp('alive').value == true }} [[
+// whenever the hawk is touching a robin
+when Hawk touches Robin [[
+  every 1 runAtStart [[
+    // if the hawk and the snake are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Robin.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
+        // the robin dies when touched by the hawk 
         prop Robin.alive setTo false
         prop Robin.alpha setTo 0.3
-        prop Hawk.energyLevel add 10
         prop Robin.energyLevel setTo 0
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a robin?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+      
       ]]
     ]]
   ]]
-
-  when Hawk touches Mouse [[
-    every 1 [[
-      ifExpr {{ Hawk.getProp('alive').value == true &&  Mouse.getProp('alive').value == true }} [[
+]]
+  
+// whenever the hawk is touching a rabbit 
+when Hawk touches Rabbit [[
+  every 1 runAtStart [[
+    // if the hawk and the rabbit are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Rabbit.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
-        prop Mouse.alive setTo false
-        prop Mouse.alpha setTo 0.3
-        prop Hawk.energyLevel add 10
-        prop Mouse.energyLevel setTo 0
-      ]]
-    ]]
-  ]]
-
-  when Hawk touches Gopher [[
-    every 1 [[
-      ifExpr {{ Hawk.getProp('alive').value == true &&  Gopher.getProp('alive').value == true }} [[
-        featProp Hawk.Costume.glow setTo 1
-        prop Gopher.alive setTo false
-        prop Gopher.alpha setTo 0.3
-        prop Hawk.energyLevel add 10
-        prop Gopher.energyLevel setTo 0
-      ]]
-    ]]
-  ]]
-
-  when Hawk touches Rabbit [[
-    every 1 [[
-      ifExpr {{ Hawk.getProp('alive').value == true &&  Rabbit.getProp('alive').value == true }} [[
-        featProp Hawk.Costume.glow setTo 1
+        // the rabbit dies when touched by the hawk 
         prop Rabbit.alive setTo false
         prop Rabbit.alpha setTo 0.3
-        prop Hawk.energyLevel add 10
         prop Rabbit.energyLevel setTo 0
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a rabbit?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
       ]]
     ]]
   ]]
-
-  when Hawk touches Reincarnator [[
-    ifExpr {{ Hawk.getProp('alive').value == false }} [[
-      featProp Hawk.Costume.glow setTo 1
-      prop Hawk.alive setTo true
-      prop Hawk.alpha setTo 1
-    ]]
-  ]]
-
 ]]
 
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+
+
 every 1 runAtStart [[
 
-  // foodLevel goes down every n seconds
-  exprPush {{ Hawk.getProp('energyLevel').value - Hawk.getProp('energyUse').value }}
-  propPop Hawk.energyLevel
-
-  // this code sets the color of the energy bar based on how hungry the Hawk is
-  // sated
-  ifExpr {{ Hawk.getProp('energyLevel').value > 50 }} [[
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do HAWKS LOSE when flying?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Hawk.energyLevel sub 2
+  
+  // WHAT DOES THIS DO?
+  // This script changes the color of the hawk's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  
+  // The hawk is feeling good, so make the meter green if the hawk has over 50 energy (out of 100)
+  ifProp Hawk.energyLevel greaterThanOrEqual 50 [[
     featProp Hawk.Costume.currentFrame setTo 0
-    // Green
     featProp Hawk.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Hawk.getProp('energyLevel').value < 50 }} [[
+  
+  // The hawk is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Hawk.energyLevel lessThan 50 [[
     featProp Hawk.Costume.currentFrame setTo 1
-    // Orange
     featProp Hawk.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Hawk.getProp('energyLevel').value < 20 }} [[
+  
+  // The hawk is really hungry, so make the meter red if we are under 20
+  ifProp Hawk.energyLevel lessThan 20 [[
     featProp Hawk.Costume.currentFrame setTo 1
-    // Red
     featProp Hawk.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Hawk.getProp('energyLevel').value < 1 }} [[
+  // The hawk dies if it has 0 energy 
+  ifProp Hawk.energyLevel equal 0 [[
+    prop Hawk.alive setTo false
+    // change the artwork to show it is dead 
     featProp Hawk.Costume.currentFrame setTo 2
     prop Hawk.alpha setTo 0.3
     prop Hawk.isInert setTo true
@@ -1989,56 +2002,6 @@ onEvent Tick [[
 # PROGRAM UPDATE`
     },
     {
-      "name": "SnailPopulation",
-      "scriptText": `# BLUEPRINT SnailPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp SnailPopulation.Costume.costumeName setTo 'GEN_onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp SnailPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Snails
-addProp totalSnailPop number 2
-
-
-featProp SnailPopulation.Graphing.graphProp setTo 'totalSnailPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop SnailPopulation.x setTo 495
-prop SnailPopulation.y setTo 187
-prop SnailPopulation.zIndex setTo 300
-
-featProp SnailPopulation.Graphing.text setTo 'Snail Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Snail
-  featProp SnailPopulation.Population.monitoredCharacter setTo 'Snail'
-  featProp SnailPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall SnailPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop SnailPopulation.totalSnailPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalSnailPop').value }}
-  propPop SnailPopulation.totalSnailPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
-    },
-    {
       "name": "CaterpillarPopulation",
       "scriptText": `# BLUEPRINT CaterpillarPopulation
 # TAG IsCharControllable false
@@ -2248,46 +2211,11 @@ onEvent Tick [[
 prop y setTo -3.57`
     },
     {
-      "id": "61",
-      "label": "Rabbit61",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -225.12
-prop y setTo -8.54`
-    },
-    {
       "id": "79",
       "label": "Timer79",
       "bpid": "Timer",
       "initScript": `prop x setTo -360.57
 prop y setTo -398.91`
-    },
-    {
-      "id": "90",
-      "label": "Rabbit90",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 17.96
-prop y setTo 109`
-    },
-    {
-      "id": "91",
-      "label": "Rabbit91",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 26.84
-prop y setTo -39.24`
-    },
-    {
-      "id": "92",
-      "label": "Rabbit92",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 259.92
-prop y setTo 32.12`
-    },
-    {
-      "id": "93",
-      "label": "Rabbit93",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 178.12
-prop y setTo -80.68`
     },
     {
       "id": "94",
@@ -2301,7 +2229,7 @@ prop y setTo 241.36`
       "label": "Hawk95",
       "bpid": "Hawk",
       "initScript": `prop x setTo -70.66
-prop y setTo -241.20`
+prop y setTo -241.2`
     },
     {
       "id": "96",
@@ -2316,6 +2244,41 @@ prop y setTo 239.90`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 262.95
 prop y setTo 237.68`
+    },
+    {
+      "id": "98",
+      "label": "Rabbit98",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 0
+prop y setTo -20`
+    },
+    {
+      "id": "99",
+      "label": "Rabbit99",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -282.79
+prop y setTo 66.07`
+    },
+    {
+      "id": "100",
+      "label": "Rabbit100",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 245.88
+prop y setTo -101.87`
+    },
+    {
+      "id": "101",
+      "label": "Rabbit101",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 214.13
+prop y setTo 77.55`
+    },
+    {
+      "id": "102",
+      "label": "Rabbit102",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -280.98
+prop y setTo -44.96`
     }
   ]
 }
