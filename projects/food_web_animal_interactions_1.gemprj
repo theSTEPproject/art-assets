@@ -194,9 +194,9 @@ featProp Snake.Graphing.meterColor setTo 65280
 # PROGRAM UPDATE
 // whenever the snake is touching a rabbit
 when Snake touches Rabbit [[
-  every 1 runAtStart [[
-    ifProp Snake.alive equal true [[
-      ifProp Rabbit.alive equal true [[
+  ifProp Snake.alive equal true [[
+    ifProp Rabbit.alive equal true [[
+      every 1 runAtStart [[
         featProp Snake.Costume.glow setTo 1
         
         // the rabbit dies when touched by a snake
@@ -742,18 +742,29 @@ when Gopher touches VeggieGarden [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
+// 🔎 WHAT IS A CATERPILLAR?
+// 🔎 CATERPILLARS are ?????? who EAT ?????? to make CATERPILLAR ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 # PROGRAM INIT
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-
-// set the costume
-featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
-
-// add other features
 addFeature Physics
 addFeature Touches
+addFeature Graphing
+addProp alive Boolean true
 
+// Set the caterpillar artwork and make it smaller since it is really big
+featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
+// 🔎 WHAT SIZE IS THE CATERPILLAR?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER CATERPILLAR
 featProp agent.Costume.scale setTo 0.1
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
@@ -761,54 +772,80 @@ featProp Caterpillar.Movement.compassDirection setTo 'W'
 featProp Caterpillar.Movement.distance setTo 2
 featProp Caterpillar.Movement.targetY setMax 0.7
 
-addProp alive Boolean true
-
 // make sure we track interactions with the other creatures
 featCall Caterpillar.Touches monitor 'VeggieGarden' b2b
-featCall Caterpillar.Touches monitor 'Reincarnator' b2b
 
-// setup to track energy and begin at 1/2 way
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do CATERPILLARS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
 addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a caterpillar can have?
 prop Caterpillar.energyLevel setMax 100
 prop Caterpillar.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make Caterpillar lose energy faster (or slower)
-addProp energyUse Number 1
-
-// use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
+// use a widget to depict the current energy, and color it green
 featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
-
 featProp Caterpillar.Graphing.meterColor setTo 65280
 
-# PROGRAM EVENT
+# PROGRAM UPDATE
+
+// whenever a caterpillar touches a veggie garden
+when Caterpillar touches VeggieGarden [[
+  every 1 runAtStart [[
+    // if the caterpillar and veggie garden are alive 
+    ifProp Caterpillar.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Caterpillar.Costume.glow setTo 1
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => LOSE MORE ENERGY
+        prop VeggieGarden.energyLevel sub 10
+        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CATERPILLARS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Caterpillar.energyLevel add 20
+      ]]
+    ]]
+  ]]
+]]
+
 every 1 runAtStart [[
 
-  // foodLevel goes down every n seconds
-  exprPush {{ Caterpillar.getProp('energyLevel').value - Caterpillar.getProp('energyUse').value }}
-  propPop Caterpillar.energyLevel
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do CATERPILLARS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Caterpillar.energyLevel sub 3
 
-  // this code sets the color of the energy bar based on how hungry the Caterpillar is
-  // sated
-  ifExpr {{ Caterpillar.getProp('energyLevel').value > 50 }} [[
+  // WHAT DOES THIS DO?
+  // This script changes the color of the caterpillar's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+  
+  // The caterpillar is feeling good, so make the meter green if the caterpillar has over 50 energy (out of 100)
+  ifProp Caterpillar.energyLevel greaterThanOrEqual 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 0
-    // Green
     featProp Caterpillar.Graphing.meterColor setTo 65280
   ]]
-  // could eat
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 50 }} [[
+  
+  // The caterpillar is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Caterpillar.energyLevel lessThan 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
-    // Orange
     featProp Caterpillar.Graphing.meterColor setTo 16737792
   ]]
-  // hungry
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 20 }} [[
+  
+  // The caterpillar is really hungry, so make the meter red if we are under 20
+  ifProp Caterpillar.energyLevel lessThan 20 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
-    // Red
     featProp Caterpillar.Graphing.meterColor setTo 16711680
   ]]
-  // dead
-  ifExpr {{ Caterpillar.getProp('energyLevel').value < 1 }} [[
+  // The caterpillar is dead if it has 0 energy
+  ifProp Caterpillar.energyLevel equal 0 [[
     featProp Caterpillar.Costume.currentFrame setTo 2
     prop Caterpillar.alpha setTo 0.3
     featProp Caterpillar.Movement.movementType setTo 'string'
@@ -816,28 +853,8 @@ every 1 runAtStart [[
 
   // set meter to mirror energyLevel
   featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
-
 ]]
-when Caterpillar touches VeggieGarden [[
-  every 1 [[
-    ifExpr {{ Caterpillar.getProp('alive').value == true &&  VeggieGarden.getProp('alive').value == true }} [[
-      featProp Caterpillar.Costume.glow setTo 1
-      prop Caterpillar.energyLevel add 10
-      prop VeggieGarden.energyLevel sub 10
-    ]]
-  ]]
 
-
-  when Caterpillar touches Reincarnator [[
-    ifExpr {{ Caterpillar.getProp('alive').value == false }} [[
-      featProp Caterpillar.Costume.glow setTo 1
-      prop Caterpillar.alive setTo true
-      prop Caterpillar.alpha setTo 1
-      prop Caterpillar.energyLevel setTo 50
-    ]]
-  ]]
-
-]]
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -1032,10 +1049,10 @@ featProp Robin.Graphing.meterColor setTo 65280
 # PROGRAM UPDATE
 // whenever a robin is touching a caterpillar 
 when Robin touches Caterpillar [[
-  every 1 runAtStart [[
   // when the robin and the caterpillar are alive 
-    ifProp Robin.alive equal true [[
-      ifProp Caterpillar.alive equal true [[
+  ifProp Robin.alive equal true [[
+    ifProp Caterpillar.alive equal true [[
+      every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
         
         // the caterpillar dies when touched by the robin
@@ -1086,6 +1103,7 @@ every 1 runAtStart [[
     // Red
     featProp Robin.Graphing.meterColor setTo 16711680
   ]]
+  
   // The robin is dead if it has 0 energy
   ifProp Robin.energyLevel equal 0 [[
     featProp Robin.Costume.currentFrame setTo 2
@@ -2106,56 +2124,6 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
-    },
-    {
-      "name": "WeedsPopulation",
-      "scriptText": `# BLUEPRINT WeedsPopulation
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM DEFINE
-addFeature Costume
-featProp WeedsPopulation.Costume.costumeName setTo 'GEN_onexone.json'
-
-addFeature Graphing
-addFeature Population
-featProp WeedsPopulation.Graphing.isLargeGraphic setTo true
-
-// set y axis to starting # of Weeds
-addProp totalWeedsPop number 3
-
-
-featProp WeedsPopulation.Graphing.graphProp setTo 'totalWeedsPop'
-
-# PROGRAM INIT
-// make sure something displays with some initial text, on bottom right at first
-prop WeedsPopulation.x setTo 495
-prop WeedsPopulation.y setTo 187
-prop WeedsPopulation.zIndex setTo 300
-
-featProp WeedsPopulation.Graphing.text setTo 'Weeds Population'
-
-# PROGRAM EVENT
-
-onEvent Tick [[
-
-
-  // count up the Weeds
-  featProp WeedsPopulation.Population.monitoredCharacter setTo 'Weeds'
-  featProp WeedsPopulation.Population.monitoredCharacterProp setTo 'alive'
-  featCall WeedsPopulation.Population countCharacterProp
-  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
-  propPop WeedsPopulation.totalWeedsPop
-
-  // graph the sum
-  exprPush {{ agent.getProp('totalWeedsPop').value }}
-  propPop WeedsPopulation.totalWeedsPop
-
-
-]]
-
-// required directive
-# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -2254,7 +2222,7 @@ prop y setTo 111.01`
       "id": "106",
       "label": "Snake106",
       "bpid": "Snake",
-      "initScript": `prop x setTo -315.50
+      "initScript": `prop x setTo -315.5
 prop y setTo -216.18`
     },
     {
@@ -2277,6 +2245,27 @@ prop y setTo 194.36`
       "bpid": "Hawk",
       "initScript": `prop x setTo 111.57
 prop y setTo -283.27`
+    },
+    {
+      "id": "110",
+      "label": "Caterpillar110",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -14
+prop y setTo -5`
+    },
+    {
+      "id": "111",
+      "label": "Caterpillar111",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -2
+prop y setTo -8`
+    },
+    {
+      "id": "112",
+      "label": "Caterpillar112",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -32
+prop y setTo -9`
     }
   ]
 }
