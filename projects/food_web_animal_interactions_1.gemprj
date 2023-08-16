@@ -182,15 +182,45 @@ featProp agent.Costume.scale setTo 0.4
 
 # PROGRAM INIT
 addFeature Costume
-featProp Background.Costume.costumeName setTo 'FWE_background (Yellow filter).png'
+addFeature Physics
+
+
+featProp Background.Costume.costumeName setTo 'FW1_day.png'
 featProp Background.Costume.size setTo 800
 propPush global.alphaSettingForAll
 propPop Background.alpha
+prop Background.alpha setTo 0.6
+
+addProp state string 'daytime'
+prop global.skyState setTo 'daytime'
+addProp changed boolean false
+prop Background.changed setTo false
+
+
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]`
+every 5 [[
+  // insert code here
+  // ifExpr {{Sky.getProp('state').value == 'daytime'}} [[
+  ifProp Background.state equal 'daytime' [[
+    // insert code here
+    // featProp Sky.Costume.costumeName setTo 'dusk.png'
+    featProp Background.Costume.costumeName setTo 'FW1_night.png'
+    prop Background.state setTo 'nighttime'
+    prop global.skyState setTo 'nighttime'
+    prop Background.changed setTo true
+  ]]
+  ifExpr {{ Background.getProp('changed').value == false }} [[
+    // ifProp Sky.changed equal false [[
+    // insert code here
+    ifProp Background.state equal 'nighttime' [[
+      // insert code here
+      featProp Background.Costume.costumeName setTo 'FW1_day.png'
+      prop Background.state setTo 'daytime'
+      prop global.skyState setTo 'daytime'
+    ]]
+  ]]
+  prop Background.changed setTo false
+]]`
     },
     {
       "name": "VeggieGarden",
@@ -1023,7 +1053,7 @@ ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
 addFeature Population
 prop global.visible setTo false
 addProp alphaSettingForAll number 0.5
-
+addProp skyState string 'daytime'
 // required directive
 # PROGRAM UPDATE`
     },
