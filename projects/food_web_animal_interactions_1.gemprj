@@ -233,17 +233,13 @@ every 5 [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
+addFeature Physics
+addFeature Touches
+addProp alive Boolean true
 
 // set the costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
-
-// add other features
-addFeature Physics
-addFeature Touches
-
 featProp VeggieGarden.Costume.scale setTo 0.3
-
-addProp alive Boolean true
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Reincarnator' b2b
@@ -253,9 +249,6 @@ addProp energyLevel number 75
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 1
-
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
 featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
@@ -263,20 +256,25 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+ifProp global.skyState equal 'daytime' [[
+  every 1 [[
+    prop VeggieGarden.energyLevel add 5
+  ]]
+]]
 
+# PROGRAM UPDATE
 
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
-    propPop VeggieGarden.energyLevel
+  ifProp VeggieGarden.energyLevel greaterThan 0 [[
+    prop VeggieGarden.energyLevel sub 1
   ]]
 
   // this code sets the color of the energy bar based on how hungry the VeggieGarden is
   // set VeggieGarden energy meter color
   // doing great
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value > 60 }} [[
+  ifProp VeggieGarden.energyLevel greaterThan 60 [[
     // Green
     featProp VeggieGarden.Graphing.meterColor setTo 65280
   ]]
@@ -289,28 +287,20 @@ every 1 runAtStart [[
   ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
     // Red
     featProp VeggieGarden.Graphing.meterColor setTo 16711680
-    // dead
-    ifExpr {{ VeggieGarden.getProp('energyLevel').value < 1 }} [[
-      featProp VeggieGarden.Costume.currentFrame setTo 2
-      prop VeggieGarden.alpha setTo 0.3
-      prop VeggieGarden.alive setTo false
-    ]]
-
-    // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop VeggieGarden.Costume.scale
-
   ]]
-]]
-every 25 [[
-  ifProp VeggieGarden.energyLevel lessThan 1 [[
-    featProp VeggieGarden.Costume.glow setTo 1
-    prop VeggieGarden.alpha setTo 1
-    prop VeggieGarden.energyLevel setTo 55
-    prop VeggieGarden.alive setTo true
+  // dead
+  ifProp VeggieGarden.energyLevel equal 0 [[
+    featProp VeggieGarden.Costume.currentFrame setTo 2
+    prop VeggieGarden.alpha setTo 0.3
+    prop VeggieGarden.alive setTo false
+    prop VeggieGarden.isInert setTo true
   ]]
-]]
 
+  // avoid getting too small
+  exprPush {{ 0.3 }}
+  featPropPop VeggieGarden.Costume.scale
+
+]]
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -1049,11 +1039,14 @@ ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
 # TAG IsCharControllable false
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
+
 # PROGRAM INIT
 addFeature Population
 prop global.visible setTo false
 addProp alphaSettingForAll number 0.5
 addProp skyState string 'daytime'
+addProp day boolean true
+
 // required directive
 # PROGRAM UPDATE`
     },
@@ -1609,13 +1602,13 @@ prop y setTo -398.91`
       "label": "VeggieGarden94",
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo -169.45
-prop y setTo 281.80`
+prop y setTo 281.8`
     },
     {
       "id": "96",
       "label": "VeggieGarden96",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -222.60
+      "initScript": `prop x setTo -222.6
 prop y setTo -118.57`
     },
     {
