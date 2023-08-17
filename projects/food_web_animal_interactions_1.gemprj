@@ -274,17 +274,17 @@ every 1 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the VeggieGarden is
   // set VeggieGarden energy meter color
   // doing great
-  ifProp VeggieGarden.energyLevel greaterThan 60 [[
+  ifProp VeggieGarden.energyLevel greaterThanOrEqual 60 [[
     // Green
     featProp VeggieGarden.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 60 }} [[
+  ifProp VeggieGarden.energyLevel lessThan 60 [[
     // Orange
     featProp VeggieGarden.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ VeggieGarden.getProp('energyLevel').value < 30 }} [[
+  ifProp VeggieGarden.energyLevel lessThan 30 [[
     // Red
     featProp VeggieGarden.Graphing.meterColor setTo 16711680
   ]]
@@ -347,6 +347,13 @@ featProp Clover.Graphing.meterProp setTo 'energyLevel'
 featProp Clover.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+ifProp global.skyState equal 'daytime' [[
+  every 1 [[
+    prop Clover.energyLevel add 5
+  ]]
+]]
+
+# PROGRAM UPDATE
 every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
@@ -358,57 +365,36 @@ every 1 runAtStart [[
   // this code sets the color of the energy bar based on how hungry the clover is
   // set clover energy meter color
   // doing great
-  ifExpr {{ Clover.getProp('energyLevel').value > 60 }} [[
+  ifProp Clover.energyLevel greaterThanOrEqual 60 [[
     // Green
     featProp Clover.Graphing.meterColor setTo 65280
   ]]
   // needs some energy
-  ifExpr {{ Clover.getProp('energyLevel').value < 60 }} [[
+  ifProp Clover.energyLevel lessThan 60 [[
     // Orange
     featProp Clover.Graphing.meterColor setTo 16737792
   ]]
   // in trouble
-  ifExpr {{ Clover.getProp('energyLevel').value < 30 }} [[
+  ifProp Clover.energyLevel lessThan 30 [[
     // Red
     featProp Clover.Graphing.meterColor setTo 16711680
+  ]]
+    
     // dead
-    ifExpr {{ Clover.getProp('energyLevel').value < 1 }} [[
-      featProp Clover.Costume.currentFrame setTo 2
-      prop Clover.alpha setTo 0.3
-      prop Clover.alive setTo false
+  ifProp Clover.energyLevel equal 0 [[
+    featProp Clover.Costume.currentFrame setTo 2
+    prop Clover.alpha setTo 0.3
+    prop Clover.alive setTo false
+    prop Clover.isInert setTo true
     ]]
-
 
     // avoid getting too
     exprPush {{ .15 }}
     featPropPop Clover.Costume.scale
 
   ]]
-]]
 
-every 1 [[
-
-  when Clover touches Reincarnator [[
-    ifExpr {{ Clover.getProp('alive').value == false }} [[
-      featProp Clover.Costume.glow setTo 1
-      prop Clover.alive setTo true
-      prop Clover.alpha setTo 1
-    ]]
-  ]]
-
-]]
-
-every 10 [[
-  ifProp Clover.energyLevel lessThan 1 [[
-    featProp Clover.Costume.glow setTo 1
-    prop Clover.alpha setTo 1
-    prop Clover.energyLevel setTo 55
-    prop Clover.alive setTo true
-  ]]
-]]
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+`
     },
     {
       "name": "Caterpillar",
@@ -1588,7 +1574,7 @@ onEvent Tick [[
       "label": "Background13",
       "bpid": "Background",
       "initScript": `prop x setTo -0.99
-prop y setTo -3.57`
+prop y setTo -28.52`
     },
     {
       "id": "79",
@@ -1722,6 +1708,27 @@ prop y setTo -8`
       "bpid": "Caterpillar",
       "initScript": `prop x setTo -32
 prop y setTo -9`
+    },
+    {
+      "id": "113",
+      "label": "Clover113",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -21
+prop y setTo -32`
+    },
+    {
+      "id": "114",
+      "label": "Clover114",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 282.34
+prop y setTo 233.63`
+    },
+    {
+      "id": "115",
+      "label": "Clover115",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -95.07
+prop y setTo -260.54`
     }
   ]
 }
