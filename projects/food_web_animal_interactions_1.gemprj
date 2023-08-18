@@ -51,20 +51,20 @@ addFeature Graphing
 addProp alive Boolean true
 
 // Set the snake artwork and make it smaller since it is really big
-featProp Snake.Costume.costumeName setTo 'FWE_snake.png'
+featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER SNAKES
-featProp Snake.Costume.scale setTo 0.2
+featProp Snake.Costume.scale setTo 0.4
 
-// This tells any sankes that are controlled by the computer instead of by a student how to move 
+// This tells any sankes that are controlled by the computer instead of by a student how to move
 featProp Snake.Movement.movementType setTo 'wander'
-//featProp Snake.Movement.compassDirection setTo 'S'
+// featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
-//featProp Snake.Movement.targetY setMax 0.7
+// featProp Snake.Movement.targetY setMax 0.7
 
 
-// check when snakes interact with rabbits 
+// check when snakes interact with rabbits
 featCall Snake.Touches monitor 'Rabbit' b2b
 
 
@@ -79,7 +79,7 @@ prop Snake.energyLevel setMax 100
 prop Snake.energyLevel setMin 0
 
 
-// use a widget to depict the current energy, and color it green 
+// use a widget to depict the current energy, and color it green
 featProp Snake.Graphing.meterProp setTo 'energyLevel'
 featProp Snake.Graphing.meterColor setTo 65280
 
@@ -90,13 +90,13 @@ when Snake touches Rabbit [[
     ifProp Rabbit.alive equal true [[
       every 1 runAtStart [[
         featProp Snake.Costume.glow setTo 1
-        
+
         // the rabbit dies when touched by a snake
         featProp Rabbit.Movement.movementType setTo 'stop'
         prop Rabbit.energyLevel setTo 0
         prop Rabbit.alive setTo false
         prop Rabbit.alpha setTo 0.3
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do SNAKE GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -105,9 +105,9 @@ when Snake touches Rabbit [[
       ]]
     ]]
   ]]
-]]  
+]]
 
-// After the snake eats a rabbit, it will stop glowing 
+// After the snake eats a rabbit, it will stop glowing
 when Snake lastTouches Rabbit [[
   featProp Snake.Costume.glow setTo 0
 ]]
@@ -123,7 +123,7 @@ every 1 runAtStart [[
   // WHAT DOES THIS DO?
   // This script changes the color of the snake's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
-  
+
   // The snake is feeling good, so make the meter green if the snake has over 50 energy (out of 100)
   ifProp Snake.energyLevel greaterThanOrEqual 50 [[
     featProp Snake.Costume.currentFrame setTo 0
@@ -134,7 +134,7 @@ every 1 runAtStart [[
     featProp Snake.Costume.currentFrame setTo 1
     featProp Snake.Graphing.meterColor setTo 16737792
   ]]
-  
+
   // The snake is really hungry, so make the meter red if we are under 20
   ifProp Snake.energyLevel lessThan 20 [[
     featProp Snake.Costume.currentFrame setTo 1
@@ -190,6 +190,8 @@ featProp Background.Costume.size setTo 800
 propPush global.alphaSettingForAll
 propPop Background.alpha
 prop Background.alpha setTo 0.6
+prop Background.zIndex setTo -110
+
 
 addProp state string 'daytime'
 prop global.skyState setTo 'daytime'
@@ -198,7 +200,14 @@ prop Background.changed setTo false
 
 
 # PROGRAM UPDATE
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How long is it day/night?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => MORE time in days/nights
+
 every 5 [[
+
   // insert code here
   // ifExpr {{Sky.getProp('state').value == 'daytime'}} [[
   ifProp Background.state equal 'daytime' [[
@@ -256,6 +265,12 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+ifProp global.skyState notEqual 'daytime' [[
+  every 1 [[ 
+    prop VeggieGarden.energyLevel sub 3
+  ]]
+]]
+
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     prop VeggieGarden.energyLevel add 5
@@ -313,55 +328,74 @@ every 1 runAtStart [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 
+// 🔎 WHAT IS A CLOVER?
+// 🔎 CLOVERS are ?????? who USE ?????? and get EATEN by ??????
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
 # PROGRAM INIT
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
-
-// set the costume
-featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
-
-// add other features
 addFeature Physics
 addFeature Touches
-
-featProp Clover.Costume.scale setTo 0.2
-
+addFeature Graphing
 addProp alive Boolean true
+
+// This sets the art for the algae character and makes it smaller
+featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
+// 🔎 WHAT SIZE ARE CLOVER?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER CLOVER
+featProp Clover.Costume.scale setTo 0.5
+// moves the clover back so they appear behind other organisms
+prop Clover.zIndex setTo -10
 
 // make sure we track interactions with the other creatures
 featCall Clover.Touches monitor 'Reincarnator' b2b
 
-// setup to track energy and begin at 3/4 way
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each clover START with?
+// ✏️ LETS CHANGE THIS:
 addProp energyLevel Number 70
+// 🔎 what is the MOST/LEAST amount of energy a clover can have?
 prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
-// STUDENTS_MAY_CHANGE to make VeggieGarden lose energy faster (or slower)
-addProp energyUse Number 1
-
 // use a widget to depict the current energy, and color it green (maybe change later)
-addFeature Graphing
 featProp Clover.Graphing.meterProp setTo 'energyLevel'
-
 featProp Clover.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
+// The clover gain energy during the day
+ifProp global.skyState notEqual 'daytime' [[
+  every 1 [[
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how much energy do clover lose each second?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ Higher numbers => lose energy faster
+    prop Clover.energyLevel sub 3
+  ]]
+]]
+
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how much energy do clover get in the sunlight?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ Lower numbers => gain energy faster
     prop Clover.energyLevel add 5
   ]]
 ]]
 
+
+
 # PROGRAM UPDATE
 every 1 runAtStart [[
-
-  // decrease energy each tick, using the energyUse varable to determine how much
-  ifExpr {{ Clover.getProp('energyLevel').value > 0 }} [[
-    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
-    propPop Clover.energyLevel
-  ]]
-
   // this code sets the color of the energy bar based on how hungry the clover is
   // set clover energy meter color
   // doing great
@@ -379,22 +413,16 @@ every 1 runAtStart [[
     // Red
     featProp Clover.Graphing.meterColor setTo 16711680
   ]]
-    
-    // dead
+
+  // dead
   ifProp Clover.energyLevel equal 0 [[
     featProp Clover.Costume.currentFrame setTo 2
     prop Clover.alpha setTo 0.3
     prop Clover.alive setTo false
     prop Clover.isInert setTo true
-    ]]
-
-    // avoid getting too
-    exprPush {{ .15 }}
-    featPropPop Clover.Costume.scale
-
   ]]
 
-`
+]]`
     },
     {
       "name": "Caterpillar",
@@ -887,7 +915,7 @@ featProp Rabbit.Movement.distance setTo 4
 // make sure we track interactions with the other creatures
 featCall Rabbit.Touches monitor 'VeggieGarden' b2b
 featCall Rabbit.Touches monitor 'Clover' b2b
-featCall Rabbit.Touches monitor 'Reincarnator' b2b
+featCall Rabbit.Touches monitor 'Worm' b2b
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each rabbit START with?
@@ -1003,15 +1031,6 @@ ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
   ]]
 
 
-// when the rabbit touches the reincarnator 
-  when Rabbit touches Reincarnator [[
-    ifExpr {{ Rabbit.getProp('alive').value == false }} [[
-      featProp Rabbit.Costume.glow setTo 1
-      prop Rabbit.alive setTo true
-      prop Rabbit.alpha setTo 1
-      prop Rabbit.energyLevel setTo 50
-    ]]
-  ]]
 
 
 
@@ -1566,6 +1585,91 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A Worm?
+// 🔎 Worms are ?????? who EAT ??????
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Touches
+addFeature Physics
+addFeature Graphing
+addProp alive boolean true
+
+featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
+featProp Worm.Costume.scale setTo 0.5
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do WORMS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => START with MORE ENERGY
+addProp energyLevel number 30
+
+// 🔎 What is the MOST/LEAST amount of energy an algae can have?
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
+
+// check when the worm touches other organisms
+featCall Worm.Touches monitor 'Rabbit' b2b
+
+// use a widget to depict the current energy, and color it green
+featProp Worm.Graphing.meterProp setTo 'energyLevel'
+featProp Worm.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  ifProp Worm.energyLevel greaterThanOrEqual 50 [[
+    featProp Worm.Graphing.meterColor setTo 65280
+  ]]
+  // The fish is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Worm.energyLevel lessThan 50 [[
+    featProp Worm.Graphing.meterColor setTo 16737792
+  ]]
+  // The fish is really hungry, so make the meter red if we are under 20
+  ifProp Worm.energyLevel lessThan 20 [[
+    featProp Worm.Costume.costumeName setTo 'AQ_fish_hungry.png'
+    featProp Worm.Graphing.meterColor setTo 16711680
+  ]]
+  // The fish is dead if it has 0 energy
+  ifProp Worm.energyLevel equal 0 [[
+    prop Worm.alpha setTo 0.3
+    // this means that we wont test if this fish is touching anything anymore
+       
+    ]]
+  ]]
+
+when Worm touches Rabbit [[
+  ifProp Rabbit.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Rabbit.Costume.scale sub 0.1
+    ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
+    prop Rabbit.alpha setTo 0
+    prop Rabbit.isInert setTo true
+      ]]
+    ]]
+  ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1584,151 +1688,60 @@ prop y setTo -28.52`
 prop y setTo -398.91`
     },
     {
-      "id": "94",
-      "label": "VeggieGarden94",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -169.45
-prop y setTo 281.8`
-    },
-    {
-      "id": "96",
-      "label": "VeggieGarden96",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -222.6
-prop y setTo -118.57`
-    },
-    {
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 161.31
-prop y setTo -34.45`
-    },
-    {
-      "id": "98",
-      "label": "Rabbit98",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 0
-prop y setTo -20`
+      "initScript": `prop x setTo -269.89
+prop y setTo 256.71`
     },
     {
       "id": "99",
       "label": "Rabbit99",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo -282.79
-prop y setTo 66.07`
-    },
-    {
-      "id": "100",
-      "label": "Rabbit100",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 245.88
-prop y setTo -101.87`
-    },
-    {
-      "id": "101",
-      "label": "Rabbit101",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 214.13
-prop y setTo 77.55`
-    },
-    {
-      "id": "102",
-      "label": "Rabbit102",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -280.98
-prop y setTo -44.96`
-    },
-    {
-      "id": "103",
-      "label": "Snake103",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 290.37
-prop y setTo -226.99`
-    },
-    {
-      "id": "104",
-      "label": "Snake104",
-      "bpid": "Snake",
-      "initScript": `prop x setTo -166.44
-prop y setTo 152.86`
-    },
-    {
-      "id": "105",
-      "label": "Snake105",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 72.08
-prop y setTo 111.01`
-    },
-    {
-      "id": "106",
-      "label": "Snake106",
-      "bpid": "Snake",
-      "initScript": `prop x setTo -315.5
-prop y setTo -216.18`
-    },
-    {
-      "id": "107",
-      "label": "Robin107",
-      "bpid": "Robin",
-      "initScript": `prop x setTo -52.02
-prop y setTo 129.82`
-    },
-    {
-      "id": "108",
-      "label": "Robin108",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 170.72
-prop y setTo 194.36`
+      "initScript": `prop x setTo 183.06
+prop y setTo 6.45`
     },
     {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 111.57
-prop y setTo -283.27`
+      "initScript": `prop x setTo -13.21
+prop y setTo -316.55`
     },
     {
       "id": "110",
       "label": "Caterpillar110",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo -14
-prop y setTo -5`
+      "initScript": `prop x setTo -106.05
+prop y setTo 66.73`
     },
     {
       "id": "111",
-      "label": "Caterpillar111",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -2
-prop y setTo -8`
+      "label": "Clover111",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 270.41
+prop y setTo 255.32`
     },
     {
       "id": "112",
-      "label": "Caterpillar112",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -32
-prop y setTo -9`
+      "label": "Robin112",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -274.36
+prop y setTo -75.98`
     },
     {
       "id": "113",
-      "label": "Clover113",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -21
-prop y setTo -32`
+      "label": "Snake113",
+      "bpid": "Snake",
+      "initScript": `prop x setTo 289.77
+prop y setTo -164.70`
     },
     {
       "id": "114",
-      "label": "Clover114",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 282.34
-prop y setTo 233.63`
-    },
-    {
-      "id": "115",
-      "label": "Clover115",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -95.07
-prop y setTo -260.54`
+      "label": "Worm114",
+      "bpid": "Worm",
+      "initScript": `prop x setTo 4.09
+prop y setTo 262.14`
     }
   ]
 }
