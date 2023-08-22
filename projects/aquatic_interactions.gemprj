@@ -1,5 +1,5 @@
 {
-  "id": "aquatic_interactions_verbose",
+  "id": "aquatic_interactions",
   "label": "Ecosystems 1: Aquatic Interactions (Verbose)",
   "description": "Tweaks for later runs",
   "metadata": {
@@ -319,7 +319,7 @@ featProp Algae.Graphing.meterProp setTo 'energyLevel'
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each algae START with?
-// ✏️ LETS CHANGE THIS:
+// ✏️ CHANGE Energy Level
 addProp energyLevel number 75
 
 
@@ -1442,7 +1442,7 @@ prop y setTo 3.35`
       "label": "Algae1906",
       "bpid": "Algae",
       "initScript": `prop x setTo -208.76
-prop y setTo -341.00`
+prop y setTo -341`
     },
     {
       "id": "1907",
