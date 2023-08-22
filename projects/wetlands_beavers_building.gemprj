@@ -1101,28 +1101,6 @@ featProp Tree.Costume.scale setTo 0.25
 # PROGRAM UPDATE`
     },
     {
-      "name": "DropArea",
-      "scriptText": `# BLUEPRINT DropArea
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Graphing
-
-featProp DropArea.Costume.costumeName setTo 'GEN_square.json'
-featProp DropArea.Costume.width setTo 50
-featProp DropArea.Costume.height setTo 50
-featCall DropArea.Costume setColorizeHSV 0.3 0.3 0.3
-
-featProp DropArea.Graphing.text setTo 'Drop here'
-
-# PROGRAM UPDATE`
-    },
-    {
       "name": "CarbonCaptureRateGraph",
       "scriptText": `# BLUEPRINT CarbonCaptureRateGraph
 # TAG isCharControllable false
