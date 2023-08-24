@@ -356,7 +356,7 @@ when Beaver touches Dam [[
           // ✏️ This line limits how many rocks the beaver can add to the dam
           ifProp global.numRocksInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
-            prop global.textForPopup setTo 'The damn has enough mud.'
+            prop global.textForPopup setTo 'The damn has enough rocks.'
             featCall Beaver.IU logString 'Beaver dropped the rock becuase there were too many in the dam.'
           ]]
         ]]
@@ -364,7 +364,7 @@ when Beaver touches Dam [[
           // ✏️ This line limits how much mud the beaver can add to the dam
           ifProp global.numMudInDam greaterThanOrEqual 8 [[
             prop Beaver.carrying setTo 'nothing'
-            prop global.textForPopup setTo 'The damn has enough rocks.'
+            prop global.textForPopup setTo 'The damn has enough mud.'
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the dam.'
           ]]
         ]]
