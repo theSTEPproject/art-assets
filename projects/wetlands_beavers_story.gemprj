@@ -99,15 +99,15 @@ ifFeatProp Player.Movement.compassDirection equal 'W' [[
 
 when Player firsttouches Player [[
   // weird bug that means we need to make sure we are not bumping into ourself
-  ifExpr {{ character.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
+  ifExpr {{ agent.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
 
     // ✏️ LETS CHANGE THIS: what do specific kinds of costumes do when they bump into specific other costumes
     // ✏️ This example triggers when someone pretending to be a beaver bumps into a tree
     // ✏️ You can change the two costumes to be something else and then set what happens
-    ifProp character.costumeType equal 'Beaver' [[
+    ifProp agent.costumeType equal 'Beaver' [[
       ifProp Player.costumeType equal 'Tree' [[
-        propPush character.trackerId
-        featPropPop character.Graphing.text
+        propPush agent.trackerId
+        featPropPop agent.Graphing.text
 
         // ✏️ Make a popup
         featCall Player.Population createCharacter PopupEffect [[
@@ -116,7 +116,7 @@ when Player firsttouches Player [[
         ]]
 
         // ✏️ Add something to the label
-        // featProp character.Graphing.text add ' (ate)'
+        // featProp agent.Graphing.text add ' (ate)'
 
         // ✏️ Do something with the meter
         // TBD
@@ -547,11 +547,11 @@ featCall ResizeCharacter.IU setupFunction 'changeSize' [[
 
 
   featCall ResizeCharacter.Population tellAllCharacters [[
-    ifExpr {{ global.getProp('tempString').value == character.getProp('trackerId').value }} [[
-      featPropPush character.Costume.width
+    ifExpr {{ global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
+      featPropPush agent.Costume.width
       propPush global.tempNum
       stackAdd
-      featPropPop character.Costume.width
+      featPropPop agent.Costume.width
     ]]
   ]]
 ]]
@@ -773,7 +773,7 @@ prop y setTo -322.44`
 prop y setTo -175.46
 prop ResizeCharacter.resizeId setTo 'Water Above'
 prop ResizeCharacter.resizeAmount setTo 20
-featCall character.Costume setColorize 51 170 255
+featCall ResizeCharacter.Costume setColorize 51 170 255
 
 `
     },
@@ -786,7 +786,7 @@ prop y setTo -76.76
 prop ResizeCharacter.resizeId setTo 'Water Above'
 prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall character.Costume setColorize 51 170 255
+featCall ResizeCharacter.Costume setColorize 51 170 255
 `
     },
     {
@@ -797,7 +797,7 @@ featCall character.Costume setColorize 51 170 255
 prop y setTo 223.80
 prop ResizeCharacter.resizeId setTo 'Water Below'
 prop ResizeCharacter.resizeAmount setTo 20
-featCall character.Costume setColorize 51 170 255
+featCall ResizeCharacter.Costume setColorize 51 170 255
 `
     },
     {
@@ -809,7 +809,7 @@ prop y setTo 315.45
 prop ResizeCharacter.resizeId setTo 'Water Below'
 prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall character.Costume setColorize 51 170 255
+featCall ResizeCharacter.Costume setColorize 51 170 255
 `
     },
     {
@@ -820,7 +820,7 @@ featCall character.Costume setColorize 51 170 255
 prop y setTo -366.54
 prop ResizeCharacter.resizeId setTo 'Lodge'
 prop ResizeCharacter.resizeAmount setTo 20
-featCall character.Costume setColorizeHSV 0.1 0.2 0.8
+featCall ResizeCharacter.Costume setColorizeHSV 0.1 0.2 0.8
 
 `
     },
@@ -833,7 +833,7 @@ prop y setTo -269.52
 prop ResizeCharacter.resizeId setTo 'Lodge'
 prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall character.Costume setColorizeHSV 0.1 0.2 0.8
+featCall ResizeCharacter.Costume setColorizeHSV 0.1 0.2 0.8
 `
     },
     {
@@ -844,7 +844,7 @@ featCall character.Costume setColorizeHSV 0.1 0.2 0.8
 prop y setTo 27.23
 prop ResizeCharacter.resizeId setTo 'Dam'
 prop ResizeCharacter.resizeAmount setTo 20
-featCall character.Costume setColorizeHSV 0.1 0.2 0.8
+featCall ResizeCharacter.Costume setColorizeHSV 0.1 0.2 0.8
 
 `
     },
@@ -857,7 +857,7 @@ prop y setTo 128.48
 prop ResizeCharacter.resizeId setTo 'Dam'
 prop ResizeCharacter.resizeAmount setTo -20
 featProp ResizeCharacter.Costume.flipY setTo true
-featCall character.Costume setColorizeHSV 0.1 0.2 0.8
+featCall ResizeCharacter.Costume setColorizeHSV 0.1 0.2 0.8
 `
     },
     {
