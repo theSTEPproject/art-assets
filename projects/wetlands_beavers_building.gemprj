@@ -225,7 +225,7 @@ addFeature Costume
 addFeature IU
 addFeature Graphing
 addFeature Movement
-addFeature Feedback
+// addFeature Feedback
 
 // set initial costume and resize
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
