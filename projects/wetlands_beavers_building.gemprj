@@ -526,6 +526,7 @@ when Beaver touches Lodge [[
   ]]
 ]]
 
+
 when Beaver touches DropArea [[
   // update the beave so we know it is not carrying anything any more
   featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
@@ -1155,46 +1156,7 @@ every 1 runAtStart [[
 
 `
     },
-    {
-      "name": "PlantInfoPanel",
-      "scriptText": `# BLUEPRINT PlantInfoPanel
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp PlantInfoPanel.Costume.costumeName setTo 'WL_plant_info.png'
-prop PlantInfoPanel.visible setTo false
-featProp PlantInfoPanel.Costume.scale setTo 0.7
-
-# PROGRAM UPDATE
-every 0.1 [[
-  propPush global.showingWaterPlantInfo
-  propPop PlantInfoPanel.visible
-]]
-`
-    },
-    {
-      "name": "FishInfoPanel",
-      "scriptText": `# BLUEPRINT FishInfoPanel
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp FishInfoPanel.Costume.costumeName setTo 'WL_fish_info.png'
-prop FishInfoPanel.visible setTo false
-featProp FishInfoPanel.Costume.scale setTo 0.7
-
-# PROGRAM UPDATE
-every 0.1 [[
-  propPush global.showingFishInfo
-  propPop FishInfoPanel.visible
-]]`
-    },
-    {
+  {
       "name": "GreatSpotForDam",
       "scriptText": `# BLUEPRINT GreatSpotForDam
 # TAG isCharControllable false
@@ -1208,6 +1170,7 @@ featProp GreatSpotForDam.Costume.scale setTo 0.5
 
 
 # PROGRAM UPDATE`
+
     },
     {
       "name": "WaterSpeed",
@@ -1274,55 +1237,6 @@ ifProp WaterSpeed.location equal 'belowDam' [[
 `
     },
     {
-      "name": "Noticing",
-      "scriptText": `# BLUEPRINT Noticing
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
-featProp Noticing.Graphing.text setTo 'I will try and point out some interesting things!'
-
-# PROGRAM UPDATE
-
-every 1 [[
-  
-  propPush global.noticingString
-  featPropPop Noticing.Graphing.text
-
-]]
-
-  `
-    },
-    {
-      "name": "NoticingImage",
-      "scriptText": `# BLUEPRINT NoticingImage
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp NoticingImage.Costume.costumeName setTo 'WL_beaver_noticing.png'
-featProp NoticingImage.Costume.scale setTo 0.7
-prop NoticingImage.zIndex setTo -200
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
-    },
-    {
       "name": "PopupEffect",
       "scriptText": `# BLUEPRINT PopupEffect
       # TAG isPozyxControllable false
@@ -1370,6 +1284,31 @@ prop NoticingImage.zIndex setTo -200
         ]]
       ]]
       `
+    },
+    {
+      "name": "Noticing",
+      "scriptText": `# BLUEPRINT Noticing
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Noticing.Graphing.wordWrapWidth setTo 300
+featProp Noticing.Graphing.text setTo 'Important things to notice will be mentioned here.'
+
+# PROGRAM UPDATE
+
+every 1 [[
+  
+  propPush global.noticingString
+  featPropPop Noticing.Graphing.text
+
+]]
+
+  `
     }
   ],
   "instances": [
@@ -1377,8 +1316,8 @@ prop NoticingImage.zIndex setTo -200
       "id": "0",
       "label": "Twig 1",
       "bpid": "Twig",
-      "initScript": `prop x setTo -331.63
-prop y setTo -164.14`
+      "initScript": `prop x setTo -335.40
+prop y setTo -44.16`
     },
     {
       "id": "1",
@@ -1509,15 +1448,15 @@ prop y setTo -301.81
       "id": "18",
       "label": "Tree 3",
       "bpid": "Tree",
-      "initScript": `prop x setTo 136.30
-prop y setTo 215.07`
+      "initScript": `prop x setTo 329.12
+prop y setTo 216.84`
     },
     {
       "id": "19",
       "label": "Tree 1",
       "bpid": "Tree",
-      "initScript": `prop x setTo -318.46
-prop y setTo -296.17`
+      "initScript": `prop x setTo -328.12
+prop y setTo -262.91`
     },
     {
       "id": "20",
@@ -1574,13 +1513,6 @@ prop y setTo -93.94
 prop y setTo 0`
     },
     {
-      "id": "30",
-      "label": "PlantInfoPanel",
-      "bpid": "PlantInfoPanel",
-      "initScript": `prop x setTo -494.91
-prop y setTo -231.28`
-    },
-    {
       "id": "31",
       "label": "Fish",
       "bpid": "Fish",
@@ -1595,21 +1527,6 @@ prop y setTo -68.97`
 prop y setTo -254.56`
     },
     {
-      "id": "33",
-      "label": "FishInfoPanel",
-      "bpid": "FishInfoPanel",
-      "initScript": `prop x setTo 498.98
-prop y setTo -235.98`
-    },
-    {
-      "id": "34",
-      "label": "GreatSpotForDam34",
-      "bpid": "GreatSpotForDam",
-      "initScript": `prop x setTo 1.21
-prop y setTo 2.01
-prop zIndex setTo 50`
-    },
-    {
       "id": "35",
       "label": "Mud 4",
       "bpid": "Mud",
@@ -1620,8 +1537,8 @@ prop y setTo 208.01`
       "id": "36",
       "label": "Rock 4",
       "bpid": "Rock",
-      "initScript": `prop x setTo -341.73
-prop y setTo 324.96`
+      "initScript": `prop x setTo -361.33
+prop y setTo 286.15`
     },
     {
       "id": "37",
@@ -1691,17 +1608,10 @@ prop location setTo 'aboveDam'`
     },
     {
       "id": "46",
-      "label": "Noticing",
+      "label": "Noticing46",
       "bpid": "Noticing",
-      "initScript": `prop x setTo -503.68
-prop y setTo 34.36`
-    },
-    {
-      "id": "47",
-      "label": "NoticingImage47",
-      "bpid": "NoticingImage",
-      "initScript": `prop x setTo -519.81
-prop y setTo 204.27`
+      "initScript": `prop x setTo -246.11
+prop y setTo -403.17`
     }
   ]
 }
