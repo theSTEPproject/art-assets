@@ -252,6 +252,7 @@ featProp VeggieGarden.Costume.scale setTo 0.3
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Reincarnator' b2b
+featCall VeggieGarden.Touches monitor 'Robin' b2b
 
 // setup to track energy and begin at 3/4 way
 addProp energyLevel number 75
@@ -592,6 +593,7 @@ featProp Robin.Movement.targetY setMax 0.7
 
 // check with robins touch caterpillars
 featCall Robin.Touches monitor 'Caterpillar' b2b
+featCall Robin.Touches monitor 'VeggieGarden' b2b
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 How much ENERGY do ROBINS START with?
@@ -632,6 +634,23 @@ when Robin touches Caterpillar [[
   ]]
 ]]
 
+// whenever a robin is touching a veggie garden 
+when Robin touches VeggieGarden [[
+  // when the robin and the veggie garden are alive 
+  ifProp Robin.alive equal true [[
+    ifProp VeggieGarden.alive equal true [[
+      every 1 runAtStart [[
+        featProp Robin.Costume.glow setTo 1
+        prop VeggieGarden.energyLevel sub 15        
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do ROBIN GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Robin.energyLevel add 25
+      ]]
+    ]]
+  ]]
+]]
 
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
@@ -1742,6 +1761,20 @@ prop y setTo -164.70`
       "bpid": "Worm",
       "initScript": `prop x setTo 4.09
 prop y setTo 262.14`
+    },
+    {
+      "id": "115",
+      "label": "Caterpillar115",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -61.82
+prop y setTo -25.71`
+    },
+    {
+      "id": "117",
+      "label": "Robin117",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -265.47
+prop y setTo 246.36`
     }
   ]
 }
