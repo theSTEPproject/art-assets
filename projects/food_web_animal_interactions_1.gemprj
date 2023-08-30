@@ -952,21 +952,21 @@ featProp Rabbit.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 
-// do this whenever a rabbit touches a clover
+// whenever a rabbit touches a clover
 when Rabbit touches Clover [[
   every 1 runAtStart [[
-  // the rabbit and the clover must be alive
+    // the rabbit and the clover must be alive
     ifProp Rabbit.alive equal true [[
       ifProp Clover.alive equal true [[
-      
+
         featProp Rabbit.Costume.glow setTo 1
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do CLOVER LOSE when eaten?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => LOSE MORE ENERGY
         prop Clover.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do RABBITS GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -977,24 +977,25 @@ when Rabbit touches Clover [[
   ]]
 ]]
 
+// whenever a rabbit touches a veggie garden
 when Rabbit touches VeggieGarden [[
   every 1 runAtStart [[
     ifProp Rabbit.alive equal true [[
       ifProp VeggieGarden.alive equal true [[
         featProp Rabbit.Costume.glow setTo 1
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => LOSE MORE ENERGY
         prop VeggieGarden.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do RABBITS GAIN when eating?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => GAIN MORE ENERGY
-        prop Rabbit.energyLevel add 20
-        
+        prop Rabbit.energyLevel add 10
+
       ]]
     ]]
   ]]
@@ -1008,46 +1009,46 @@ ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
   featProp Rabbit.Costume.flipX setTo true
 ]]
 
-  every 1 runAtStart [[
-  
-    // 🔎 WHAT DOES THIS DO?
-    // 🔎 How much ENERGY do RABBITS LOSE when moving?
-    // ✏️ LETS CHANGE THIS:
-    // ✏️ HIGHER numbers => LOSE MORE ENERGY
-    prop Rabbit.energyLevel sub 3
-    
-    // 🔎 WHAT DOES THIS DO?
-    // This script changes the color of the Rabbit's meter depending on how much energy it has
-    // We can change the numbers if we want the colors to appear at different levels
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do RABBITS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Rabbit.energyLevel sub 3
+
+  // 🔎 WHAT DOES THIS DO?
+  // This script changes the color of the Rabbit's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
 
 
-    // The rabbit is feeling good, so make the meter green if the rabbit has over 50 energy (out of 100)
-    ifProp Rabbit.energyLevel greaterThanOrEqual 50 [[
-      featProp Rabbit.Costume.currentFrame setTo 0
-      featProp Rabbit.Graphing.meterColor setTo 65280
-    ]]
-
-    // The rabbit is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
-    ifProp Rabbit.energyLevel lessThan 50 [[
-      featProp Rabbit.Costume.currentFrame setTo 1
-      featProp Rabbit.Graphing.meterColor setTo 16737792
-    ]]
-
-    // The rabbit is really hungry, so make the meter red if we are under 20
-    ifProp Rabbit.energyLevel lessThan 20 [[
-      featProp Rabbit.Costume.currentFrame setTo 1
-      featProp Rabbit.Graphing.meterColor setTo 16711680
-    ]]
-
-    // The rabbit is dead if it has 0 energy
-    ifProp Rabbit.energyLevel equal 0 [[
-      featProp Rabbit.Costume.currentFrame setTo 2
-      prop Rabbit.alpha setTo 0.3
-      featProp Rabbit.Movement.movementType setTo 'stop'
-    ]]
-    // set meter to mirror energyLevel
-    featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
+  // The rabbit is feeling good, so make the meter green if the rabbit has over 50 energy (out of 100)
+  ifProp Rabbit.energyLevel greaterThanOrEqual 50 [[
+    featProp Rabbit.Costume.currentFrame setTo 0
+    featProp Rabbit.Graphing.meterColor setTo 65280
   ]]
+
+  // The rabbit is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Rabbit.energyLevel lessThan 50 [[
+    featProp Rabbit.Costume.currentFrame setTo 1
+    featProp Rabbit.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The rabbit is really hungry, so make the meter red if we are under 20
+  ifProp Rabbit.energyLevel lessThan 20 [[
+    featProp Rabbit.Costume.currentFrame setTo 1
+    featProp Rabbit.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The rabbit is dead if it has 0 energy
+  ifProp Rabbit.energyLevel equal 0 [[
+    featProp Rabbit.Costume.currentFrame setTo 2
+    prop Rabbit.alpha setTo 0.3
+    featProp Rabbit.Movement.movementType setTo 'stop'
+  ]]
+  // set meter to mirror energyLevel
+  featProp Rabbit.Graphing.meterProp setTo 'energyLevel'
+]]
 
 
 
@@ -1637,7 +1638,7 @@ featProp Worm.Costume.scale setTo 0.5
 // 🔎 How much ENERGY do WORMS START with?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER numbers => START with MORE ENERGY
-addProp energyLevel number 30
+addProp energyLevel number 40
 
 // 🔎 What is the MOST/LEAST amount of energy an algae can have?
 prop Worm.energyLevel setMax 100
@@ -1668,9 +1669,11 @@ every 1 runAtStart [[
   ifProp Worm.energyLevel equal 0 [[
     prop Worm.alpha setTo 0.3
     // this means that we wont test if this fish is touching anything anymore
-       
-    ]]
+
   ]]
+
+  featProp Worm.Graphing.meterProp setTo 'energyLevel'
+]]
 
 when Worm touches Rabbit [[
   ifProp Rabbit.alive equal false [[
@@ -1678,11 +1681,11 @@ when Worm touches Rabbit [[
     featProp Worm.Costume.glow setTo 1
     featProp Rabbit.Costume.scale sub 0.1
     ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
-    prop Rabbit.alpha setTo 0
-    prop Rabbit.isInert setTo true
-      ]]
+      prop Rabbit.alpha setTo 0
+      prop Rabbit.isInert setTo true
     ]]
   ]]
+]]
 
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
