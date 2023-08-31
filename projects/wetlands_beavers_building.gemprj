@@ -85,15 +85,10 @@ addFeature IU
 addFeature Graphing
 addFeature Population
 
-// ✏️ LETS CHANGE THIS: Properties of the system we can change to modify the model
-// ✏️ Should we show an info panel when the beaver
-// ✏️ moves over a water plant?
-addProp showWaterPlantInfo boolean true
-addProp showFishInfo boolean true
 // if this is set to true, you can't drop twigs or rocks unless the gesture helper overlaps with the beaver
 addProp requireGestureHelper boolean false
 
-// ✏️ LETS CHANGE THIS: consider adding / removing
+// ✏️ Consider adding / removing
 // ✏️ The carbon capture graph
 // ✏️ The pollution graph
 // ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
@@ -114,10 +109,6 @@ addProp waterPlantCount number 0
 // track the fish too, just in case
 addProp fishCount number 0
 
-// to make it easier to place then hide the plants and fish
-addProp showWaterPlantsToPlace boolean false
-addProp showFishToPlace boolean false
-
 // variables for helping the environment
 addProp carbonCaptureRate number 10
 addProp pollutionInWater number 60
@@ -126,11 +117,6 @@ addProp initialCarbonCaptureRate number 10
 addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
-
-// so we know if the panels should be open or not
-// temporarily set these to true to move the panels around
-addProp showingWaterPlantInfo boolean false
-addProp showingFishInfo boolean false
 
 // props if we want to break out what this is made of
 addProp numTwigsInDam number 0
@@ -211,12 +197,6 @@ onEvent START [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
 # PROGRAM INIT
 // setup features
 addFeature Physics
@@ -258,9 +238,6 @@ featCall Beaver.Touches monitor 'Water' b2b
 featCall Beaver.Touches monitor 'Lodge' b2b
 featCall Beaver.Touches monitor 'Dam' b2b
 featCall Beaver.Touches monitor 'Tree' b2b
-featCall Beaver.Touches monitor 'DropArea' b2b
-featCall Beaver.Touches monitor 'WaterPlant' b2b
-featCall Beaver.Touches monitor 'Fish' b2b
 
 addProp displayText string ''
 propPush Beaver.trackerId
@@ -270,7 +247,7 @@ featProp Beaver.Graphing.meterProp setTo 'energyLevel'
 featProp Beaver.Graphing.meterColor setTo 65280
 
 // ✏️ LETS CHANGE THIS: Does the beaver lose energy?
-// ✏️ This helps us explore the model without worrying about food
+// ✏️ If this is set to false, it helps us explore the model without worrying about food
 addProp beaverLosesEnergy boolean true
 
 // log the value of beaverLosesEnergy
@@ -342,8 +319,6 @@ when Beaver touches Dam [[
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the dam
         // 🔎 If we already have too much of whatever it is, just drop it
-        // ✏️ LETS CHANGE THIS (CHANGE1)
-        // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
         ifProp Beaver.carrying equal 'twig' [[
           // ✏️ This line limits how many twigs the beaver can add to the dam
           ifProp global.numTwigsInDam greaterThanOrEqual 8 [[
@@ -368,8 +343,6 @@ when Beaver touches Dam [[
             featCall Beaver.IU logString 'Beaver dropped the mud becuase there was too much in the dam.'
           ]]
         ]]
-        // ✏️ LETS CHANGE THIS (END OF CHANGE1)
-
 
         ifProp global.textForPopup notEqual '' [[
           featCall global.IU callFunction 'popupMessage'
@@ -378,8 +351,6 @@ when Beaver touches Dam [[
         // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section is where we check if dropping something helps build the dam and how much
         // 🔎 First we decide how much each thing adds, then we add it
-        // ✏️ LETS CHANGE THIS (CHANGE2)
-        // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the dam faster or slower
         ifProp Beaver.carrying equal 'twig' [[
           prop global.numTwigsInDam add 1
           // ✏️ This line sets how much each twig adds
@@ -457,8 +428,6 @@ when Beaver touches Lodge [[
           // 🔎 WHAT DOES THIS SECTION DO?
           // 🔎 This section checks if we are holding something that we can add to the lodge
           // 🔎 If we already have too much of whatever it is, just drop it
-          // ✏️ LETS CHANGE THIS (CHANGE3)
-          // ✏️ Change the numbers to make it so the Beavers need different amounts of twigs, mud, or rocks
           ifProp Beaver.carrying equal 'twig' [[
             // ✏️ This line limits how many twigs the beaver can add to the lodge
             ifProp global.numTwigsInLodge greaterThanOrEqual 8 [[
@@ -490,8 +459,6 @@ when Beaver touches Lodge [[
           // 🔎 WHAT DOES THIS SECTION DO?
           // 🔎 This section is where we check if dropping something helps build the lodge and how much
           // 🔎 First we decide how much each thing adds, then we add it
-          // ✏️ LETS CHANGE THIS (CHANGE4)
-          // ✏️ Change the numbers to make it so twigs, rocks, or mud might change the lodge faster or slower
           ifProp Beaver.carrying equal 'twig' [[
             prop global.numTwigsInLodge add 1
             // ✏️ This line sets how much each twig adds
@@ -526,50 +493,10 @@ when Beaver touches Lodge [[
   ]]
 ]]
 
-
-when Beaver touches DropArea [[
-  // update the beave so we know it is not carrying anything any more
-  featCall Beaver.IU logString 'Beaver dropped what it was carrying in the DropArea'
-  featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
-  prop Beaver.carrying setTo 'nothing'
-]]
-
 when Beaver touches Tree [[
   every 1 [[
     featCall Beaver.IU logString 'Beaver ate some wood at a tree'
     prop Beaver.energyLevel add 20
-  ]]
-]]
-
-when Beaver firsttouches WaterPlant [[
-  ifProp WaterPlant.visible equal true [[
-    ifProp global.showWaterPlantInfo equal true [[
-      prop global.showingWaterPlantInfo setTo true
-    ]]
-  ]]
-]]
-
-when Beaver lasttouches WaterPlant [[
-  ifProp WaterPlant.visible equal true [[
-    ifProp global.showWaterPlantInfo equal true [[
-      prop global.showingWaterPlantInfo setTo false
-    ]]
-  ]]
-]]
-
-when Beaver firsttouches Fish [[
-  ifProp Fish.visible equal true [[
-    ifProp global.showFishInfo equal true [[
-      prop global.showingFishInfo setTo true
-    ]]
-  ]]
-]]
-
-when Beaver lasttouches Fish [[
-  ifProp Fish.visible equal true [[
-    ifProp global.showFishInfo equal true [[
-      prop global.showingFishInfo setTo false
-    ]]
   ]]
 ]]
 
@@ -716,12 +643,7 @@ when GestureHelper lasttouches Beaver [[
   featCall Beaver.IU logString 'Player acting as a beaver stopped gesturing'
 
 ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "Lodge",
@@ -957,12 +879,7 @@ when Predator firsttouches Beaver [[
 // when xxx touches yyy [[ ]]
 // every 5 runAfter [[ ]]
 // onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "WaterPlant",
@@ -984,8 +901,6 @@ featCall WaterPlant.Touches monitor 'Water' c2b
 
 addProp alive boolean false
 prop WaterPlant.visible setTo false
-propPush global.showWaterPlantsToPlace
-propPop WaterPlant.visible
 
 # PROGRAM UPDATE
 
@@ -1025,8 +940,8 @@ when WaterPlant centertouches Water [[
 ]]`
     },
     {
-      "name": "Fish",
-      "scriptText": `# BLUEPRINT Fish
+      "name": "FishSpawnPoint",
+      "scriptText": `# BLUEPRINT FishSpawnPoint
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -1036,53 +951,56 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature IU
+addFeature Population
+
+featProp FishSpawnPoint.Costume.costumeName setTo 'GEN_square.json'
+featProp FishSpawnPoint.Costume.width setTo 30
+featProp FishSpawnPoint.Costume.height setTo 30
+featCall FishSpawnPoint.Costume setColorizeHSV 0.1 0.2 0.8
+
+featCall FishSpawnPoint.Touches monitor 'Water' c2b
+
+addProp spawnedFish boolean false
+
+prop FishSpawnPoint.visible setTo false
+
+# PROGRAM UPDATE
+
+// If this spot is under water, and the water is slow enough, fish might lay eggs
+when FishSpawnPoint centertouches Water [[
+  // Only lay eggs if the water is nice and slow
+  ifProp Water.speed equal 'slow' [[
+    // If a fish already laid eggs, don't add new ones
+    ifProp FishSpawnPoint.spawnedFish equal false [[
+      // make a new fish
+      featCall FishSpawnPoint.Population createCharacter Fish [[
+      ]]
+      // keep track of how many fish we have in case we want to graph it
+      prop FishSpawnPoint.spawnedFish setTo true
+      prop global.fishCount add 1
+
+      // tell the observers that we made fish, and log it
+      prop global.noticingString setTo 'Check out the new Fish!'
+      featCall FishSpawnPoint.IU logString 'A new fish is in the pond because of the slow water'
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Fish",
+      "scriptText": `# BLUEPRINT Fish
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
 
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.15
 
-featCall Fish.Touches monitor 'Water' c2b
-
-addProp alive boolean false
-prop Fish.visible setTo false
-propPush global.showFishToPlace
-propPop Fish.visible
-
 # PROGRAM UPDATE
-
-// if the plant is suddenly under water, and the water is slow enough
-// let's have it appear / grow
-when Fish centertouches Water [[
-  // if the water is slow enough, become alive
-  ifProp Fish.alive equal false [[
-    ifProp Water.speed equal 'slow' [[
-      prop global.fishCount add 1
-      prop Fish.alive setTo true
-      prop Fish.visible setTo true
-      featCall Fish.IU logString 'A new fish is in the pond because of the slow water'
-      prop global.noticingString setTo 'Check out the new fish!'
-    ]]
-  ]]
-
-  // if the water is suddenly too fast, dissapear
-  ifProp Fish.alive equal true [[
-    ifProp Water.speed notEqual 'slow' [[
-      prop global.fishCount sub 1
-      prop Fish.alive setTo false
-      prop Fish.visible setTo false
-      featCall Fish.IU logString 'A fish moves away because the water is too fast'
-    ]]
-  ]]
-]]
-
-// if the water recedes, remove the fish
-when Fish centerlasttouches Water [[
-  ifProp Fish.alive equal true [[
-    prop Fish.alive setTo false
-    prop global.fishCount sub 1
-    featCall Fish.IU logString 'A fish dies off because the water receded'
-    prop Fish.visible setTo false
-  ]]
-]]`
+`
     },
     {
       "name": "Tree",
@@ -1156,7 +1074,7 @@ every 1 runAtStart [[
 
 `
     },
-  {
+    {
       "name": "GreatSpotForDam",
       "scriptText": `# BLUEPRINT GreatSpotForDam
 # TAG isCharControllable false
@@ -1170,7 +1088,6 @@ featProp GreatSpotForDam.Costume.scale setTo 0.5
 
 
 # PROGRAM UPDATE`
-
     },
     {
       "name": "WaterSpeed",
@@ -1514,15 +1431,15 @@ prop y setTo 0`
     },
     {
       "id": "31",
-      "label": "Fish",
-      "bpid": "Fish",
+      "label": "FishSpawnPoint",
+      "bpid": "FishSpawnPoint",
       "initScript": `prop x setTo -10.14
 prop y setTo -68.97`
     },
     {
       "id": "32",
-      "label": "Fish",
-      "bpid": "Fish",
+      "label": "FishSpawnPoint",
+      "bpid": "FishSpawnPoint",
       "initScript": `prop x setTo -113.14
 prop y setTo -254.56`
     },
