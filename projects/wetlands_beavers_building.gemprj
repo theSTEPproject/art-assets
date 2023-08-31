@@ -882,6 +882,52 @@ when Predator firsttouches Beaver [[
 `
     },
     {
+      "name": "WaterPlantSpot",
+      "scriptText": `# BLUEPRINT WaterPlantSpot
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature IU
+addFeature Population
+
+featProp WaterPlantSpot.Costume.costumeName setTo 'GEN_square.json'
+featProp WaterPlantSpot.Costume.width setTo 30
+featProp WaterPlantSpot.Costume.height setTo 30
+featCall WaterPlantSpot.Costume setColorizeHSV 0.3 0.5 0.8
+
+featCall WaterPlantSpot.Touches monitor 'Water' c2b
+
+addProp spawnedPlant boolean false
+prop WaterPlantSpot.visible setTo false
+
+# PROGRAM UPDATE
+
+// If this spot is under water, and the water is slow enough, a plant might grow here
+when WaterPlantSpot centertouches Water [[
+  // Only lay eggs if the water is nice and slow
+  ifProp Water.speed notEqual 'fast' [[
+    // Only grow a new plant if one isn't here already
+    ifProp WaterPlantSpot.spawnedPlant equal false [[
+      // make a new plant
+      featCall WaterPlantSpot.Population createCharacter WaterPlant [[
+      ]]
+      // keep track of how many fish we have in case we want to graph it
+      prop WaterPlantSpot.spawnedPlant setTo true
+      prop global.waterPlantCount add 1
+
+      // tell the observers that we made fish, and log it
+      prop global.noticingString setTo 'Check out the new plants!'
+      featCall WaterPlantSpot.IU logString 'A new plant is in the pond because of the slow water'
+    ]]
+  ]]
+]]`
+    },
+    {
       "name": "WaterPlant",
       "scriptText": `# BLUEPRINT WaterPlant
 # TAG isCharControllable false
@@ -897,47 +943,9 @@ addFeature IU
 featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
 
-featCall WaterPlant.Touches monitor 'Water' c2b
-
-addProp alive boolean false
-prop WaterPlant.visible setTo false
-
 # PROGRAM UPDATE
 
-// if the plant is suddenly under water, and the water is slow enough
-// let's have it appear / grow
-when WaterPlant centertouches Water [[
-  // if the water is slow enough, become alive
-  ifProp WaterPlant.alive equal false [[
-    ifProp Water.speed notEqual 'fast' [[
-      prop global.waterPlantCount add 1
-      featCall WaterPlant.IU logString 'A new water plant grows because of enough deep, slow water'
-      prop WaterPlant.alive setTo true
-      prop WaterPlant.visible setTo true
-      prop global.noticingString setTo 'Check out the new plants!'
-    ]]
-  ]]
-
-  // if the water is suddenly too fast, dissapear
-  ifProp WaterPlant.alive equal true [[
-    ifProp Water.speed equal 'fast' [[
-      prop global.waterPlantCount sub 1
-      featCall WaterPlant.IU logString 'A water plant dies off because the water is too fast'
-      prop WaterPlant.alive setTo false
-      prop WaterPlant.visible setTo false
-    ]]
-  ]]
-]]
-
-  // if the water recedes, remove the plant
-  when WaterPlant centerlasttouches Water [[
-    ifProp WaterPlant.alive equal true [[
-        prop WaterPlant.alive setTo false
-        prop global.waterPlantCount sub 1
-        featCall WaterPlant.IU logString 'A water plant dies off because the water receded'
-        prop WaterPlant.visible setTo false
-    ]]
-]]`
+`
     },
     {
       "name": "FishSpawnPoint",
@@ -1354,8 +1362,8 @@ prop y setTo 180.27`
     },
     {
       "id": "17",
-      "label": "WaterPlant",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 1",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo 68.07
 prop y setTo -301.81
 
@@ -1384,40 +1392,40 @@ prop y setTo -324.79`
     },
     {
       "id": "22",
-      "label": "WaterPlant 2",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 2",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo -52.01
 prop y setTo -372.58
 `
     },
     {
       "id": "23",
-      "label": "WaterPlant 3",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 3",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo 181.57
 prop y setTo -249.59
 `
     },
     {
       "id": "24",
-      "label": "WaterPlant 4",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 4",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo -209.94
 prop y setTo -274.44
 `
     },
     {
       "id": "25",
-      "label": "WaterPlant 5",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 5",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo -93.72
 prop y setTo -44.98
 `
     },
     {
       "id": "26",
-      "label": "WaterPlant 6",
-      "bpid": "WaterPlant",
+      "label": "WaterPlantSpot 6",
+      "bpid": "WaterPlantSpot",
       "initScript": `prop x setTo 191.07
 prop y setTo -93.94
 `
@@ -1431,14 +1439,14 @@ prop y setTo 0`
     },
     {
       "id": "31",
-      "label": "FishSpawnPoint",
+      "label": "FishSpawnPoint 1",
       "bpid": "FishSpawnPoint",
       "initScript": `prop x setTo -10.14
 prop y setTo -68.97`
     },
     {
       "id": "32",
-      "label": "FishSpawnPoint",
+      "label": "FishSpawnPoint 2",
       "bpid": "FishSpawnPoint",
       "initScript": `prop x setTo -113.14
 prop y setTo -254.56`
