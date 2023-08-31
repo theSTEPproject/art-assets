@@ -1542,6 +1542,13 @@ prop location setTo 'aboveDam'`
       "bpid": "Noticing",
       "initScript": `prop x setTo -246.11
 prop y setTo -403.17`
+    },
+    {
+      "id": "47",
+      "label": "GreatSpotForDam47",
+      "bpid": "GreatSpotForDam",
+      "initScript": `prop x setTo 1.59
+prop y setTo -0.83`
     }
   ]
 }
