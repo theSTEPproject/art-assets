@@ -796,18 +796,19 @@ every 0.5 [[
     propPush Water.tempWidth
     featPropPop Water.Costume.width
 
-      // change the water speed based on the size of this water, assuming
-      // it moves faster when it is narrower, and slows down as it pools
       ifProp Water.depth lessThanOrEqual 3 [[
         prop Water.speed setTo 'slow'
+        // make the water dark blue so we know it is deep and slow
         featCall Water.Costume setColorize 51 170 255
       ]]
       ifProp Water.depth greaterThan 3 [[
         prop Water.speed setTo 'medium'
+        // make the medium  blue so we know it is medium deep and between slow and fast
         featCall Water.Costume setColorize 93 197 255
       ]]
       ifProp Water.depth greaterThanOrEqual 5 [[
         prop Water.speed setTo 'fast'
+        // make the light blue so we know it is shallow and fast
         featCall Water.Costume setColorize 128 225 255
       ]]
 
@@ -907,9 +908,10 @@ prop WaterPlantSpot.visible setTo false
 
 # PROGRAM UPDATE
 
+// ✏️ LETS CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when WaterPlantSpot centertouches Water [[
-  // Only lay eggs if the water is nice and slow
+  // Only grow if the water is nice and slow
   ifProp Water.speed notEqual 'fast' [[
     // Only grow a new plant if one isn't here already
     ifProp WaterPlantSpot.spawnedPlant equal false [[
@@ -974,6 +976,7 @@ prop FishSpawnPoint.visible setTo false
 
 # PROGRAM UPDATE
 
+// ✏️ LETS CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
 when FishSpawnPoint centertouches Water [[
   // Only lay eggs if the water is nice and slow
