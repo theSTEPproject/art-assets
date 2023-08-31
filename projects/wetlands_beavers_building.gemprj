@@ -756,7 +756,7 @@ addProp speed string 'fast'
 # PROGRAM UPDATE
 
 every 0.5 [[
-  //  the water above the dam grows as the dam makes it pool
+  // the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damSize
     propPop Water.depth
@@ -767,21 +767,23 @@ every 0.5 [[
     propPush Water.tempWidth
     featPropPop Water.Costume.width
 
-      // change the water speed based on the size of this water, assuming
-      // it moves faster when it is narrower, and slows down as it pools
-      ifProp Water.depth lessThanOrEqual 3 [[
-        prop Water.speed setTo 'fast'
-        featCall Water.Costume setColorize 51 170 255
-      ]]
-      ifProp Water.depth greaterThan 3 [[
-        prop Water.speed setTo 'medium'
-        featCall Water.Costume setColorize 0 118 198
-
-      ]]
-      ifProp Water.depth greaterThanOrEqual 5 [[
-        prop Water.speed setTo 'slow'
-        featCall Water.Costume setColorize 0 71 143
-      ]]
+    // ✏️ LETS CHANGE how the water depth effects the speed of the water
+    // it moves faster when it is narrower, and slows down as it pools
+    ifProp Water.depth lessThanOrEqual 3 [[
+      prop Water.speed setTo 'fast'
+      // make the light blue so we know it is shallow and fast
+      featCall Water.Costume setColorize 51 170 255
+    ]]
+    ifProp Water.depth greaterThan 3 [[
+      prop Water.speed setTo 'medium'
+      // make the medium  blue so we know it is medium deep and between slow and fast
+      featCall Water.Costume setColorize 0 118 198
+    ]]
+    ifProp Water.depth greaterThanOrEqual 5 [[
+      prop Water.speed setTo 'slow'
+      // make the water dark blue so we know it is deep and slow
+      featCall Water.Costume setColorize 0 71 143
+    ]]
 
   ]]
 
@@ -796,21 +798,21 @@ every 0.5 [[
     propPush Water.tempWidth
     featPropPop Water.Costume.width
 
-      ifProp Water.depth lessThanOrEqual 3 [[
-        prop Water.speed setTo 'slow'
-        // make the water dark blue so we know it is deep and slow
-        featCall Water.Costume setColorize 51 170 255
-      ]]
-      ifProp Water.depth greaterThan 3 [[
-        prop Water.speed setTo 'medium'
-        // make the medium  blue so we know it is medium deep and between slow and fast
-        featCall Water.Costume setColorize 93 197 255
-      ]]
-      ifProp Water.depth greaterThanOrEqual 5 [[
-        prop Water.speed setTo 'fast'
-        // make the light blue so we know it is shallow and fast
-        featCall Water.Costume setColorize 128 225 255
-      ]]
+    ifProp Water.depth lessThanOrEqual 3 [[
+      prop Water.speed setTo 'slow'
+      // make the water dark blue so we know it is deep and slow
+      featCall Water.Costume setColorize 51 170 255
+    ]]
+    ifProp Water.depth greaterThan 3 [[
+      prop Water.speed setTo 'medium'
+      // make the medium  blue so we know it is medium deep and between slow and fast
+      featCall Water.Costume setColorize 93 197 255
+    ]]
+    ifProp Water.depth greaterThanOrEqual 5 [[
+      prop Water.speed setTo 'fast'
+      // make the light blue so we know it is shallow and fast
+      featCall Water.Costume setColorize 128 225 255
+    ]]
 
   ]]
 
