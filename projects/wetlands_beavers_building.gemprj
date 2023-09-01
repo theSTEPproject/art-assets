@@ -779,7 +779,6 @@ every 0.5 [[
     featPropPop Water.Costume.width
   ]]
 
-
   // ✏️ LETS CHANGE how the width of the water effects the depth of the water
   // The water starts at 200 pixels wide and is adjusted by the dam
   // We cab imagine that each pixel is like an inch in this model
@@ -796,26 +795,28 @@ every 0.5 [[
     prop Water.depth setTo 5
   ]]
 
-    // ✏️ LETS CHANGE how the water depth effects the speed of the water
-    // it moves faster when it is narrower, and slows down as it pools
-    ifProp Water.depth lessThanOrEqual 3 [[
-      // the water is shallow, so it moves pretty fast
-      prop Water.speed setTo 'fast'
-      // make the light blue so we know it is shallow
-      featCall Water.Costume setColorize 51 170 255
-    ]]
-    ifProp Water.depth greaterThan 3 [[
-      // the water is medium deep, so it moves medium fast
-      prop Water.speed setTo 'medium'
-      // make the water medium  blue so we know it is medium deep
-      featCall Water.Costume setColorize 0 118 198
-    ]]
-    ifProp Water.depth greaterThanOrEqual 5 [[
-      // the water is deep, so it moves pretty slow
-      prop Water.speed setTo 'slow'
-      // make the water dark blue so we know it is deep
-      featCall Water.Costume setColorize 0 71 143
-    ]]
+  // ✏️ LETS CHANGE how the water depth effects the speed of the water
+  // it moves faster when it is narrower, and slows down as it becomes deeper
+  ifProp Water.depth lessThanOrEqual 3 [[
+    // the water is shallow, so it moves pretty fast
+    prop Water.speed setTo 'fast'
+    // make the light blue so we know it is shallow
+    featCall Water.Costume setColorize 51 170 255
+  ]]
+
+  ifProp Water.depth greaterThan 3 [[
+    // the water is medium deep, so it moves medium fast
+    prop Water.speed setTo 'medium'
+    // make the water medium  blue so we know it is medium deep
+    featCall Water.Costume setColorize 0 118 198
+  ]]
+
+  ifProp Water.depth greaterThanOrEqual 5 [[
+    // the water is deep, so it moves pretty slow
+    prop Water.speed setTo 'slow'
+    // make the water dark blue so we know it is deep
+    featCall Water.Costume setColorize 0 71 143
+  ]]
 
 ]]`
     },
@@ -879,10 +880,7 @@ when Predator firsttouches Beaver [[
   ]]
 
 ]]
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
+
 `
     },
     {
@@ -914,15 +912,16 @@ prop GoodWaterPlantSpot.visible setTo false
 // ✏️ LETS CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when GoodWaterPlantSpot centertouches Water [[
-  every 1 runAfterStart [[
+  every 1 runAfter [[
     // Only plants if the water is the right speed
     // The options are slow, medium, and fast
     ifProp Water.speed notEqual 'fast' [[
       // Only grow a new plant if one isn't here already
       ifProp GoodWaterPlantSpot.plantAlreadyGrewHere equal false [[
-        // make a new plant
+        // there are now plants here yet, so make a new plant
         featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
         ]]
+
         // keep track of how many water plants we have in case we want to graph it
         prop GoodWaterPlantSpot.plantAlreadyGrewHere setTo true
         prop global.waterPlantCount add 1
@@ -990,21 +989,24 @@ prop GoodFishSpawningSpot.visible setTo false
 // ✏️ LETS CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
 when GoodFishSpawningSpot centertouches Water [[
-  // Only lay eggs if the water is the right speed
-  // The options are slow, medium, and fast
-  ifProp Water.speed equal 'slow' [[
-    // If a fish already laid eggs, don't add new ones
-    ifProp GoodFishSpawningSpot.fishAlreadySpawnedHere equal false [[
-      // make a new fish
-      featCall GoodFishSpawningSpot.Population createCharacter Fish [[
-      ]]
-      // keep track of how many fish we have in case we want to graph the amount
-      prop GoodFishSpawningSpot.fishAlreadySpawnedHere setTo true
-      prop global.fishCount add 1
+  every 1 runAfter [[
+    // Only lay eggs if the water is the right speed
+    // The options are slow, medium, and fast
+    ifProp Water.speed equal 'slow' [[
+      // If a fish already laid eggs, don't add new ones
+      ifProp GoodFishSpawningSpot.fishAlreadySpawnedHere equal false [[
+        // there are no fish here yet, so make a new fish
+        featCall GoodFishSpawningSpot.Population createCharacter Fish [[
+        ]]
 
-      // tell the observers that some fish spawned, and log it
-      prop global.noticingString setTo 'Check out the new Fish!'
-      featCall GoodFishSpawningSpot.IU logString 'A new fish is in the pond because of the slow water'
+        // keep track of how many fish we have in case we want to graph the amount
+        prop GoodFishSpawningSpot.fishAlreadySpawnedHere setTo true
+        prop global.fishCount add 1
+
+        // tell the observers that some fish spawned, and log it
+        prop global.noticingString setTo 'Check out the new Fish!'
+        featCall GoodFishSpawningSpot.IU logString 'A new fish is in the pond because of the slow water'
+      ]]
     ]]
   ]]
 ]]`
