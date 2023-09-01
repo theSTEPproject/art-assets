@@ -178,7 +178,7 @@ every 0.5 [[
       featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
       featCall global.IU logProperty
       prop global.canBuildLodge setTo true
-      prop global.noticingString setTo 'Look how slow and deep the water above the dam is'
+      prop global.noticingString setTo 'Look how slow and deep the water above the dam is.'
     ]]
   ]]
   ifProp global.damSize lessThan 5 [[
