@@ -885,8 +885,8 @@ when Predator firsttouches Beaver [[
 `
     },
     {
-      "name": "WaterPlantSpot",
-      "scriptText": `# BLUEPRINT WaterPlantSpot
+      "name": "GoodWaterPlantSpot",
+      "scriptText": `# BLUEPRINT GoodWaterPlantSpot
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -898,35 +898,35 @@ addFeature Touches
 addFeature IU
 addFeature Population
 
-featProp WaterPlantSpot.Costume.costumeName setTo 'GEN_square.json'
-featProp WaterPlantSpot.Costume.width setTo 30
-featProp WaterPlantSpot.Costume.height setTo 30
-featCall WaterPlantSpot.Costume setColorizeHSV 0.3 0.5 0.8
+featProp GoodWaterPlantSpot.Costume.costumeName setTo 'GEN_square.json'
+featProp GoodWaterPlantSpot.Costume.width setTo 30
+featProp GoodWaterPlantSpot.Costume.height setTo 30
+featCall GoodWaterPlantSpot.Costume setColorizeHSV 0.3 0.5 0.8
 
-featCall WaterPlantSpot.Touches monitor 'Water' c2b
+featCall GoodWaterPlantSpot.Touches monitor 'Water' c2b
 
-addProp spawnedPlant boolean false
-prop WaterPlantSpot.visible setTo false
+addProp plantAlreadyGrewHere boolean false
+prop GoodWaterPlantSpot.visible setTo false
 
 # PROGRAM UPDATE
 
 // ✏️ LETS CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
-when WaterPlantSpot centertouches Water [[
+when GoodWaterPlantSpot centertouches Water [[
   // Only grow if the water is nice and slow
   ifProp Water.speed notEqual 'fast' [[
     // Only grow a new plant if one isn't here already
-    ifProp WaterPlantSpot.spawnedPlant equal false [[
+    ifProp GoodWaterPlantSpot.plantAlreadyGrewHere equal false [[
       // make a new plant
-      featCall WaterPlantSpot.Population createCharacter WaterPlant [[
+      featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
       ]]
-      // keep track of how many fish we have in case we want to graph it
-      prop WaterPlantSpot.spawnedPlant setTo true
+      // keep track of how many water plants we have in case we want to graph it
+      prop GoodWaterPlantSpot.plantAlreadyGrewHere setTo true
       prop global.waterPlantCount add 1
 
-      // tell the observers that we made fish, and log it
+      // tell the observers that a new water plant grew, and log it
       prop global.noticingString setTo 'Check out the new plants!'
-      featCall WaterPlantSpot.IU logString 'A new plant is in the pond because of the slow water'
+      featCall GoodWaterPlantSpot.IU logString 'A new plant is in the pond because of the slow water'
     ]]
   ]]
 ]]`
@@ -952,8 +952,8 @@ featProp WaterPlant.Costume.scale setTo 0.15
 `
     },
     {
-      "name": "FishSpawnPoint",
-      "scriptText": `# BLUEPRINT FishSpawnPoint
+      "name": "GoodSpawningSpot",
+      "scriptText": `# BLUEPRINT GoodSpawningSpot
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -965,36 +965,36 @@ addFeature Touches
 addFeature IU
 addFeature Population
 
-featProp FishSpawnPoint.Costume.costumeName setTo 'GEN_square.json'
-featProp FishSpawnPoint.Costume.width setTo 30
-featProp FishSpawnPoint.Costume.height setTo 30
-featCall FishSpawnPoint.Costume setColorizeHSV 0.1 0.2 0.8
+featProp GoodSpawningSpot.Costume.costumeName setTo 'GEN_square.json'
+featProp GoodSpawningSpot.Costume.width setTo 30
+featProp GoodSpawningSpot.Costume.height setTo 30
+featCall GoodSpawningSpot.Costume setColorizeHSV 0.1 0.2 0.8
 
-featCall FishSpawnPoint.Touches monitor 'Water' c2b
+featCall GoodSpawningSpot.Touches monitor 'Water' c2b
 
-addProp spawnedFish boolean false
+addProp fishAlreadySpawnedHere boolean false
 
-prop FishSpawnPoint.visible setTo false
+prop GoodSpawningSpot.visible setTo false
 
 # PROGRAM UPDATE
 
 // ✏️ LETS CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
-when FishSpawnPoint centertouches Water [[
+when GoodSpawningSpot centertouches Water [[
   // Only lay eggs if the water is nice and slow
   ifProp Water.speed equal 'slow' [[
     // If a fish already laid eggs, don't add new ones
-    ifProp FishSpawnPoint.spawnedFish equal false [[
+    ifProp GoodSpawningSpot.fishAlreadySpawnedHere equal false [[
       // make a new fish
-      featCall FishSpawnPoint.Population createCharacter Fish [[
+      featCall GoodSpawningSpot.Population createCharacter Fish [[
       ]]
-      // keep track of how many fish we have in case we want to graph it
-      prop FishSpawnPoint.spawnedFish setTo true
+      // keep track of how many fish we have in case we want to graph the amount
+      prop GoodSpawningSpot.fishAlreadySpawnedHere setTo true
       prop global.fishCount add 1
 
-      // tell the observers that we made fish, and log it
+      // tell the observers that some fish spawned, and log it
       prop global.noticingString setTo 'Check out the new Fish!'
-      featCall FishSpawnPoint.IU logString 'A new fish is in the pond because of the slow water'
+      featCall GoodSpawningSpot.IU logString 'A new fish is in the pond because of the slow water'
     ]]
   ]]
 ]]`
@@ -1367,8 +1367,8 @@ prop y setTo 180.27`
     },
     {
       "id": "17",
-      "label": "WaterPlantSpot 1",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 1",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo 68.07
 prop y setTo -301.81
 
@@ -1397,40 +1397,40 @@ prop y setTo -324.79`
     },
     {
       "id": "22",
-      "label": "WaterPlantSpot 2",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 2",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo -52.01
 prop y setTo -372.58
 `
     },
     {
       "id": "23",
-      "label": "WaterPlantSpot 3",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 3",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo 181.57
 prop y setTo -249.59
 `
     },
     {
       "id": "24",
-      "label": "WaterPlantSpot 4",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 4",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo -209.94
 prop y setTo -274.44
 `
     },
     {
       "id": "25",
-      "label": "WaterPlantSpot 5",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 5",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo -93.72
 prop y setTo -44.98
 `
     },
     {
       "id": "26",
-      "label": "WaterPlantSpot 6",
-      "bpid": "WaterPlantSpot",
+      "label": "GoodWaterPlantSpot 6",
+      "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo 191.07
 prop y setTo -93.94
 `
@@ -1444,15 +1444,15 @@ prop y setTo 0`
     },
     {
       "id": "31",
-      "label": "FishSpawnPoint 1",
-      "bpid": "FishSpawnPoint",
+      "label": "GoodSpawningSpot 1",
+      "bpid": "GoodSpawningSpot",
       "initScript": `prop x setTo -10.14
 prop y setTo -68.97`
     },
     {
       "id": "32",
-      "label": "FishSpawnPoint 2",
-      "bpid": "FishSpawnPoint",
+      "label": "GoodSpawningSpot 2",
+      "bpid": "GoodSpawningSpot",
       "initScript": `prop x setTo -113.14
 prop y setTo -254.56`
     },
