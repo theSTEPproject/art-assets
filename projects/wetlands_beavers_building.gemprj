@@ -751,70 +751,71 @@ addProp tempWidth number 0
 addProp location string 'belowDam'
 
 // this can be fast, medium, or slow
-addProp speed string 'fast'
+addProp speed string 'medium'
 
 # PROGRAM UPDATE
+
+
+// 1 - 200
+// 2 - 230, 190
+// 3 - 260, 180
 
 every 0.5 [[
   // the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damSize
-    propPop Water.depth
-    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul 30
     prop Water.tempWidth add 170
     propPush Water.tempWidth
     featPropPop Water.Costume.width
-
-    // ✏️ LETS CHANGE how the water depth effects the speed of the water
-    // it moves faster when it is narrower, and slows down as it pools
-    ifProp Water.depth lessThanOrEqual 3 [[
-      prop Water.speed setTo 'fast'
-      // make the light blue so we know it is shallow and fast
-      featCall Water.Costume setColorize 51 170 255
-    ]]
-    ifProp Water.depth greaterThan 3 [[
-      prop Water.speed setTo 'medium'
-      // make the medium  blue so we know it is medium deep and between slow and fast
-      featCall Water.Costume setColorize 0 118 198
-    ]]
-    ifProp Water.depth greaterThanOrEqual 5 [[
-      prop Water.speed setTo 'slow'
-      // make the water dark blue so we know it is deep and slow
-      featCall Water.Costume setColorize 0 71 143
-    ]]
-
   ]]
-
-  // the dam causes the water below it to shrink
   ifProp Water.location notEqual 'aboveDam' [[
     propPush global.damSize
-    propPop Water.depth
-    propPush Water.depth
     propPop Water.tempWidth
     prop Water.tempWidth mul -10
     prop Water.tempWidth add 210
     propPush Water.tempWidth
     featPropPop Water.Costume.width
+  ]]
 
+
+  // ✏️ LETS CHANGE how the width of the water effects the depth of the water
+  // The water starts at 200 pixels wide and is adjusted by the dam
+  // We cab imagine that each pixel is like an inch in this model
+  ifFeatProp Water.Costume.width lessThan 180 [[
+    prop Water.depth setTo 2
+  ]]
+  ifFeatProp Water.Costume.width greaterThanOrEqual 180 [[
+    prop Water.depth setTo 3
+  ]]
+  ifFeatProp Water.Costume.width greaterThanOrEqual 200 [[
+    prop Water.depth setTo 4
+  ]]
+  ifFeatProp Water.Costume.width greaterThanOrEqual 240 [[
+    prop Water.depth setTo 5
+  ]]
+
+    // ✏️ LETS CHANGE how the water depth effects the speed of the water
+    // it moves faster when it is narrower, and slows down as it pools
     ifProp Water.depth lessThanOrEqual 3 [[
-      prop Water.speed setTo 'slow'
-      // make the water dark blue so we know it is deep and slow
+      // the water is shallow, so it moves pretty fast
+      prop Water.speed setTo 'fast'
+      // make the light blue so we know it is shallow
       featCall Water.Costume setColorize 51 170 255
     ]]
     ifProp Water.depth greaterThan 3 [[
+      // the water is medium deep, so it moves medium fast
       prop Water.speed setTo 'medium'
-      // make the medium  blue so we know it is medium deep and between slow and fast
-      featCall Water.Costume setColorize 93 197 255
+      // make the water medium  blue so we know it is medium deep
+      featCall Water.Costume setColorize 0 118 198
     ]]
     ifProp Water.depth greaterThanOrEqual 5 [[
-      prop Water.speed setTo 'fast'
-      // make the light blue so we know it is shallow and fast
-      featCall Water.Costume setColorize 128 225 255
+      // the water is deep, so it moves pretty slow
+      prop Water.speed setTo 'slow'
+      // make the water dark blue so we know it is deep
+      featCall Water.Costume setColorize 0 71 143
     ]]
-
-  ]]
 
 ]]`
     },
@@ -913,21 +914,23 @@ prop GoodWaterPlantSpot.visible setTo false
 // ✏️ LETS CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when GoodWaterPlantSpot centertouches Water [[
-  // Only plants if the water is the right speed
-  // The options are slow, medium, and fast  
-  ifProp Water.speed notEqual 'fast' [[
-    // Only grow a new plant if one isn't here already
-    ifProp GoodWaterPlantSpot.plantAlreadyGrewHere equal false [[
-      // make a new plant
-      featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
-      ]]
-      // keep track of how many water plants we have in case we want to graph it
-      prop GoodWaterPlantSpot.plantAlreadyGrewHere setTo true
-      prop global.waterPlantCount add 1
+  every 1 runAfterStart [[
+    // Only plants if the water is the right speed
+    // The options are slow, medium, and fast
+    ifProp Water.speed notEqual 'fast' [[
+      // Only grow a new plant if one isn't here already
+      ifProp GoodWaterPlantSpot.plantAlreadyGrewHere equal false [[
+        // make a new plant
+        featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
+        ]]
+        // keep track of how many water plants we have in case we want to graph it
+        prop GoodWaterPlantSpot.plantAlreadyGrewHere setTo true
+        prop global.waterPlantCount add 1
 
-      // tell the observers that a new water plant grew, and log it
-      prop global.noticingString setTo 'Check out the new plants!'
-      featCall GoodWaterPlantSpot.IU logString 'A new plant is in the pond because of the slow water'
+        // tell the observers that a new water plant grew, and log it
+        prop global.noticingString setTo 'Check out the new plants!'
+        featCall GoodWaterPlantSpot.IU logString 'A new plant is in the pond because of the slow water'
+      ]]
     ]]
   ]]
 ]]`
@@ -943,14 +946,19 @@ when GoodWaterPlantSpot centertouches Water [[
 addFeature Costume
 addFeature Physics
 addFeature Touches
-addFeature IU
+addFeature Population
 
 featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
 
+featCall WaterPlant.Touches monitor 'Water' c2b
+
 # PROGRAM UPDATE
 
-`
+when WaterPlant centerlasttouches Water [[
+  // The plant can't survive out of the water, so it dies
+  featCall WaterPlant.Population removeCharacter
+]]`
     },
     {
       "name": "GoodFishSpawningSpot",
@@ -1010,12 +1018,21 @@ when GoodFishSpawningSpot centertouches Water [[
 
 # PROGRAM INIT
 addFeature Costume
+addFeature Population
+addFeature Physics
+addFeature Touches
 
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.15
 
+featCall Fish.Touches monitor 'Water' c2b
+
 # PROGRAM UPDATE
-`
+
+when WaterPlant centerlasttouches Water [[
+  // The Fish can't survive out of the water, so it dies
+  featCall Fish.Population removeCharacter
+]]`
     },
     {
       "name": "Tree",
@@ -1113,57 +1130,37 @@ featProp GreatSpotForDam.Costume.scale setTo 0.5
 
 # PROGRAM INIT
 addFeature Costume
+addFeature Physics
+addFeature Touches
+
 featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
 featProp WaterSpeed.Costume.scale setTo 0.5
 prop WaterSpeed.zIndex setTo 100
 
+featCall WaterSpeed.Touches monitor 'Water' b2b
+
 // can be above or below the dam
 // we only do certain things if it is above
 addProp location string 'belowDam'
-addProp size number 1
 
 # PROGRAM UPDATE
 
-propPush global.damSize
-propPop WaterSpeed.size
+when WaterSpeed touches Water [[
+  every 0.5 runAtStart [[
+      ifProp Water.speed equal 'fast' [[
+        featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
+        prop WaterSpeed.alpha setTo 1
+      ]]
 
-    // change the water speed based on the size of this water, assuming
-    // it moves faster when it is narrower, and slows down as it pools
-
-ifProp WaterSpeed.location equal 'aboveDam' [[
-    ifProp WaterSpeed.size lessThanOrEqual 3 [[
-        // medium
+      ifProp Water.speed equal 'medium' [[
         featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
         prop WaterSpeed.alpha setTo 1
-    ]]
-    ifProp WaterSpeed.size greaterThan 3 [[
-        // slow
+      ]]
+
+      ifProp Water.speed equal 'slow' [[
         prop WaterSpeed.alpha setTo 0
+      ]]
     ]]
-    ifProp WaterSpeed.size greaterThanOrEqual 5 [[
-        // slow and deep
-        //featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
-        prop WaterSpeed.alpha setTo 0
-    ]]
-
-]]
-
-ifProp WaterSpeed.location equal 'belowDam' [[
-  ifProp WaterSpeed.size lessThanOrEqual 3 [[
-      // medium
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
-      prop WaterSpeed.alpha setTo 1
-  ]]
-  ifProp WaterSpeed.size greaterThan 3 [[
-      // fast
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
-      prop WaterSpeed.alpha setTo 1
-  ]]
-  ifProp WaterSpeed.size greaterThanOrEqual 5 [[
-      // medium and shallow
-      featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_medium.png'
-  ]]
-
 ]]
 
 `
@@ -1371,10 +1368,8 @@ prop y setTo 180.27`
       "id": "17",
       "label": "GoodWaterPlantSpot 1",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 68.07
-prop y setTo -301.81
-
-`
+      "initScript": `prop x setTo 118.95
+prop y setTo -295.17`
     },
     {
       "id": "18",
@@ -1401,41 +1396,36 @@ prop y setTo -324.79`
       "id": "22",
       "label": "GoodWaterPlantSpot 2",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -52.01
-prop y setTo -372.58
-`
+      "initScript": `prop x setTo -74.02
+prop y setTo -366.53`
     },
     {
       "id": "23",
       "label": "GoodWaterPlantSpot 3",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 181.57
-prop y setTo -249.59
-`
+      "initScript": `prop x setTo -83.06
+prop y setTo 309.18`
     },
     {
       "id": "24",
       "label": "GoodWaterPlantSpot 4",
       "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo -209.94
-prop y setTo -274.44
-`
+prop y setTo -274.44`
     },
     {
       "id": "25",
       "label": "GoodWaterPlantSpot 5",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -93.72
-prop y setTo -44.98
-`
+      "initScript": `prop x setTo -118.26
+prop y setTo -44.24`
     },
     {
       "id": "26",
       "label": "GoodWaterPlantSpot 6",
       "bpid": "GoodWaterPlantSpot",
       "initScript": `prop x setTo 191.07
-prop y setTo -93.94
-`
+prop y setTo -93.94`
     },
     {
       "id": "27",
@@ -1525,8 +1515,8 @@ prop y setTo -94.20`
       "id": "44",
       "label": "WaterSpeedBottom",
       "bpid": "WaterSpeed",
-      "initScript": `prop x setTo 2.90
-prop y setTo 196.10
+      "initScript": `prop x setTo 2.9
+prop y setTo 196.1
 prop location setTo 'belowDam'`
     },
     {
