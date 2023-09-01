@@ -952,8 +952,8 @@ featProp WaterPlant.Costume.scale setTo 0.15
 `
     },
     {
-      "name": "GoodSpawningSpot",
-      "scriptText": `# BLUEPRINT GoodSpawningSpot
+      "name": "GoodFishSpawningSpot",
+      "scriptText": `# BLUEPRINT GoodFishSpawningSpot
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -965,36 +965,36 @@ addFeature Touches
 addFeature IU
 addFeature Population
 
-featProp GoodSpawningSpot.Costume.costumeName setTo 'GEN_square.json'
-featProp GoodSpawningSpot.Costume.width setTo 30
-featProp GoodSpawningSpot.Costume.height setTo 30
-featCall GoodSpawningSpot.Costume setColorizeHSV 0.1 0.2 0.8
+featProp GoodFishSpawningSpot.Costume.costumeName setTo 'GEN_square.json'
+featProp GoodFishSpawningSpot.Costume.width setTo 30
+featProp GoodFishSpawningSpot.Costume.height setTo 30
+featCall GoodFishSpawningSpot.Costume setColorizeHSV 0.1 0.2 0.8
 
-featCall GoodSpawningSpot.Touches monitor 'Water' c2b
+featCall GoodFishSpawningSpot.Touches monitor 'Water' c2b
 
 addProp fishAlreadySpawnedHere boolean false
 
-prop GoodSpawningSpot.visible setTo false
+prop GoodFishSpawningSpot.visible setTo false
 
 # PROGRAM UPDATE
 
 // ✏️ LETS CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
-when GoodSpawningSpot centertouches Water [[
+when GoodFishSpawningSpot centertouches Water [[
   // Only lay eggs if the water is nice and slow
   ifProp Water.speed equal 'slow' [[
     // If a fish already laid eggs, don't add new ones
-    ifProp GoodSpawningSpot.fishAlreadySpawnedHere equal false [[
+    ifProp GoodFishSpawningSpot.fishAlreadySpawnedHere equal false [[
       // make a new fish
-      featCall GoodSpawningSpot.Population createCharacter Fish [[
+      featCall GoodFishSpawningSpot.Population createCharacter Fish [[
       ]]
       // keep track of how many fish we have in case we want to graph the amount
-      prop GoodSpawningSpot.fishAlreadySpawnedHere setTo true
+      prop GoodFishSpawningSpot.fishAlreadySpawnedHere setTo true
       prop global.fishCount add 1
 
       // tell the observers that some fish spawned, and log it
       prop global.noticingString setTo 'Check out the new Fish!'
-      featCall GoodSpawningSpot.IU logString 'A new fish is in the pond because of the slow water'
+      featCall GoodFishSpawningSpot.IU logString 'A new fish is in the pond because of the slow water'
     ]]
   ]]
 ]]`
@@ -1444,15 +1444,15 @@ prop y setTo 0`
     },
     {
       "id": "31",
-      "label": "GoodSpawningSpot 1",
-      "bpid": "GoodSpawningSpot",
+      "label": "GoodFishSpawningSpot 1",
+      "bpid": "GoodFishSpawningSpot",
       "initScript": `prop x setTo -10.14
 prop y setTo -68.97`
     },
     {
       "id": "32",
-      "label": "GoodSpawningSpot 2",
-      "bpid": "GoodSpawningSpot",
+      "label": "GoodFishSpawningSpot 2",
+      "bpid": "GoodFishSpawningSpot",
       "initScript": `prop x setTo -113.14
 prop y setTo -254.56`
     },
