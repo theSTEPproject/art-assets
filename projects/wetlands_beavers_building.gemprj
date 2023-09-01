@@ -913,7 +913,8 @@ prop GoodWaterPlantSpot.visible setTo false
 // ✏️ LETS CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when GoodWaterPlantSpot centertouches Water [[
-  // Only grow if the water is nice and slow
+  // Only plants if the water is the right speed
+  // The options are slow, medium, and fast  
   ifProp Water.speed notEqual 'fast' [[
     // Only grow a new plant if one isn't here already
     ifProp GoodWaterPlantSpot.plantAlreadyGrewHere equal false [[
@@ -981,7 +982,8 @@ prop GoodFishSpawningSpot.visible setTo false
 // ✏️ LETS CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
 when GoodFishSpawningSpot centertouches Water [[
-  // Only lay eggs if the water is nice and slow
+  // Only lay eggs if the water is the right speed
+  // The options are slow, medium, and fast
   ifProp Water.speed equal 'slow' [[
     // If a fish already laid eggs, don't add new ones
     ifProp GoodFishSpawningSpot.fishAlreadySpawnedHere equal false [[
