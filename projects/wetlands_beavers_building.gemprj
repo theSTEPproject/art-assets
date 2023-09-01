@@ -1534,8 +1534,8 @@ prop location setTo 'aboveDam'`
       "id": "46",
       "label": "Noticing46",
       "bpid": "Noticing",
-      "initScript": `prop x setTo -246.11
-prop y setTo -403.17`
+      "initScript": `prop x setTo -251.93
+prop y setTo -402.63`
     },
     {
       "id": "47",
