@@ -755,11 +755,6 @@ addProp speed string 'medium'
 
 # PROGRAM UPDATE
 
-
-// 1 - 200
-// 2 - 230, 190
-// 3 - 260, 180
-
 every 0.5 [[
   // the water above the dam grows as the dam makes it pool
   ifProp Water.location equal 'aboveDam' [[
@@ -779,7 +774,7 @@ every 0.5 [[
     featPropPop Water.Costume.width
   ]]
 
-  // ✏️ LETS CHANGE how the width of the water effects the depth of the water
+  // ✏️ CHANGE how the width of the water effects the depth of the water
   // The water starts at 200 pixels wide and is adjusted by the dam
   // We cab imagine that each pixel is like an inch in this model
   ifFeatProp Water.Costume.width lessThan 180 [[
@@ -795,7 +790,7 @@ every 0.5 [[
     prop Water.depth setTo 5
   ]]
 
-  // ✏️ LETS CHANGE how the water depth effects the speed of the water
+  // ✏️ CHANGE  how the water depth effects the speed of the water
   // it moves faster when it is narrower, and slows down as it becomes deeper
   ifProp Water.depth lessThanOrEqual 3 [[
     // the water is shallow, so it moves pretty fast
@@ -909,7 +904,7 @@ prop GoodWaterPlantSpot.visible setTo false
 
 # PROGRAM UPDATE
 
-// ✏️ LETS CHANGE When the water plants appear in the model
+// ✏️ CHANGE When the water plants appear in the model
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when GoodWaterPlantSpot centertouches Water [[
   every 1 runAfter [[
@@ -986,7 +981,7 @@ prop GoodFishSpawningSpot.visible setTo false
 
 # PROGRAM UPDATE
 
-// ✏️ LETS CHANGE When the fish appear in the model
+// ✏️ CHANGE When the fish appear in the model
 // If this spot is under water, and the water is slow enough, fish might lay eggs
 when GoodFishSpawningSpot centertouches Water [[
   every 1 runAfter [[
