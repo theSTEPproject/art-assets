@@ -99,6 +99,24 @@ addFeature Physics
 addFeature Touches
 addFeature IU
 addFeature Graphing
+addFeature Data
+
+// Setup the sequence that describes how energy moves in this model
+featCall EnergyRepresentation.Data setProcessFlow 'Sun' 'Tree' 'Photosynthesis' 20
+featCall EnergyRepresentation.Data setProcessFlow 'Tree' 'Beaver' 'Digestion' 10
+
+// featCall EnergyRepresentation.Data getProcessFlowName 'Sun' 'Tree'
+// dbgOut {{'getProcessFlowProcess: ' + EnergyRepresentation.getFeatProp('Data', 'returnString').value}}
+ featCall EnergyRepresentation.Data getProcessFlowName 'Tree' 'Beaver'
+ dbgOut {{'getProcessFlowProcess: ' + EnergyRepresentation.getFeatProp('Data', 'returnString').value}}
+
+featCall EnergyRepresentation.Data setMappingToNumber 'one' 'aKey' 10
+featCall EnergyRepresentation.Data getMappingToNumber 'one' 'aKey'
+dbgOut {{'getMappingToString: ' + EnergyRepresentation.getFeatProp('Data', 'returnNumber').value}}
+
+// TODO:
+// Re-create entire sequence
+// Re-work the touch code to use the sequence
 
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
@@ -129,10 +147,10 @@ featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 # PROGRAM UPDATE
 
 // TODO:
-  // Add other types (water plants and fish?)
-  // Extend logging and add noticing
-  // heat
-  // predator to get energy?
+// Add other types (water plants and fish?)
+// Extend logging and add noticing
+// heat
+// predator to get energy?
 
 // Any time you touch the sun, take on sun energy
 // Note that the sun is effectively infinite
@@ -206,7 +224,7 @@ when EnergyRepresentation firsttouches Beaver [[
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
   ]]
 
-  // if you are not carrying energy, show the digestion but do not change energy levels 
+  // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'none' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
@@ -217,15 +235,15 @@ when EnergyRepresentation firsttouches Beaver [[
 
 when EnergyRepresentation lasttouches Beaver [[
   ifProp EnergyRepresentation.energyType equal 'digestion' [[
-  
-      ifProp global.predatorsEatBeavers equal false [[
-        prop EnergyRepresentation.energyType setTo 'none'
-        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
-      ]]
+
+    ifProp global.predatorsEatBeavers equal false [[
+      prop EnergyRepresentation.energyType setTo 'none'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ]]
 
     ifProp global.predatorsEatBeavers equal true [[
-        prop EnergyRepresentation.energyType setTo 'consumer'
-        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver.png'
+      prop EnergyRepresentation.energyType setTo 'consumer'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver.png'
     ]]
   ]]
 ]]
@@ -239,7 +257,7 @@ when EnergyRepresentation firsttouches Fish [[
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
   ]]
 
-  // if you are not carrying energy, show the digestion but do not change energy levels 
+  // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'none' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
@@ -251,13 +269,13 @@ when EnergyRepresentation firsttouches Fish [[
 
 when EnergyRepresentation lasttouches Fish [[
   ifProp EnergyRepresentation.energyType equal 'digestion' [[
-      prop EnergyRepresentation.energyType setTo 'none'
-      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
   ]]
 ]]
 
 when EnergyRepresentation firsttouches Predator [[
-// if you are not carrying energy, show the digestion but do not change energy levels 
+  // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'consumer' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
@@ -270,13 +288,11 @@ when EnergyRepresentation firsttouches Predator [[
 
 when EnergyRepresentation lasttouches Predator [[
   ifProp EnergyRepresentation.energyType equal 'digestion' [[
-  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
-  prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    prop EnergyRepresentation.energyType setTo 'none'
 
   ]]
-]]
-
-`
+]]`
     },
     {
       "name": "Beaver",

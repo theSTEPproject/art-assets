@@ -1,0 +1,55 @@
+# PREFERENCES
+#
+#   Preferences are site-wide settings that apply to all projets.
+#
+#   Current Preferences support:
+#     * Comment Types
+#
+# Comment Types
+#   Comment Types are used to define the visual display of comments
+#   in the ScriptEditor views.  You can define:
+#     * `matchString` -- the search string used to set the visual style
+#     * `cssClass` -- use a pre-defined css class (from `gem-ui.css`)
+#     * `color` / `backgroundColor` -- css colors to use inplace of cssClasses
+#     * `help` -- Short help blurb to display in the comment edit pane
+#     * `isBookmark` -- flag to mark the comment type as a bookmark, 
+#                       selectable from the ScriptEditor script lines view
+#
+#   To set the comment colors, use either:
+#     A.`cssClass` to one of the predefined styles, or...
+#        - commentKeyHeader
+#        - explanationCommentHeader
+#        - explanationCommentBody
+#        - changeCommentHeader
+#        - changeCommentBody
+#     B. 'color' and/or 'backgroundColor' to override the color
+#        You can use either 'color', or 'backgroundColor' or both.
+#        Any colors defined will override the cssClass style.
+#        Colors are defined as css values.  You can use:
+#        * hexadecimal "#rgb" "#rrggbb", e.g. "#f00" for red
+#        * rgb alpha "rgba(r,g,b,a)", e.g. "rgba(255,0,0,0.5)" for a transparent red
+# 
+#   You can override existing styles by adding them by using the
+#   same `matchString` in the COMMENTTYPEMAP defined in
+#   `gs_packages/gem-srv/src/modules/sim/script/tools/comment-utilities.ts`
+#
+
+[[commentTypes]]
+# new
+
+# matchString = '👀 TOML CSS'
+# cssClass = 'commentKeyHeader'
+# color = ''
+# backgroundColor = ''
+# help = 'Questions to consider'
+# isBookmark = true
+
+
+[[commentTypes]]
+# override existing
+matchString = '🔎 WHAT'
+cssClass = ''
+color = 'rgba(255,255,255,1)'
+backgroundColor = 'rgba(0,255,0,0.5)'
+help = 'Questions to consider'
+isBookmark = true
