@@ -560,8 +560,8 @@ when Beaver touches Tree [[
 every 1 [[
 
   ifProp Beaver.beaverLosesEnergy equal true [[
-    // lower energyLevel because living takes energy
-    prop Beaver.energyLevel sub 2
+    // ✏️ CHANGE How quickly the beaver loses energy
+    prop Beaver.energyLevel sub 4
 
     // Set the color of the energy meter depending on the amount of energy that the character has
     // These are green orange, and red in order
@@ -957,7 +957,7 @@ featCall GoodWaterPlantSpot.Costume setColorizeHSV 0.3 0.5 0.8
 featCall GoodWaterPlantSpot.Touches monitor 'Water' c2b
 
 addProp plantAlreadyGrewHere boolean false
-prop GoodWaterPlantSpot.visible setTo false
+prop GoodWaterPlantSpot.visible setTo true
 
 # PROGRAM UPDATE
 
@@ -965,7 +965,7 @@ prop GoodWaterPlantSpot.visible setTo false
 // If this spot is under water, and the water is slow enough, a plant might grow here
 when GoodWaterPlantSpot centertouches Water [[
   every 1 runAfter [[
-    // Only plants if the water is the right speed
+    // ✏️ Only plants if the water is the right speed
     // The options are slow, medium, and fast
     ifProp Water.speed notEqual 'fast' [[
       // Only grow a new plant if one isn't here already
@@ -1037,7 +1037,7 @@ featCall GoodFishSpawningSpot.Touches monitor 'Water' c2b
 
 addProp fishAlreadySpawnedHere boolean false
 
-prop GoodFishSpawningSpot.visible setTo false
+prop GoodFishSpawningSpot.visible setTo true
 
 # PROGRAM UPDATE
 
@@ -1722,6 +1722,13 @@ featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_2.png'
       "bpid": "TextLabel",
       "initScript": `prop x setTo 468.76
 prop y setTo -172.00`
+    },
+    {
+      "id": "51",
+      "label": "Predator51",
+      "bpid": "Predator",
+      "initScript": `prop x setTo 10
+prop y setTo 44`
     }
   ]
 }

@@ -72,11 +72,11 @@ addProp noticingString string '...'
 
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
-addProp beaversEatWaterPlants boolean false
+addProp beaversEatWaterPlants boolean true
 addProp waterPlantsUseEnergy boolean false
-addProp fishEatWaterPlants boolean false
+addProp fishEatWaterPlants boolean true
 addProp fishUseEnergy boolean false
-addProp predatorsEatBeavers boolean false
+addProp predatorsEatBeavers boolean true
 addProp predatorsUseEnergy boolean true
 
 # PROGRAM UPDATE
