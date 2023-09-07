@@ -114,6 +114,8 @@ addProp initialCarbonCaptureRate number 10
 addProp initialPollutionInWater number 60
 
 addProp tempNum number 0
+addProp tempString string ''
+
 
 // props if we want to break out what this is made of
 addProp numTwigsInDam number 0
@@ -1313,6 +1315,83 @@ featProp HealthGraphBar.Costume.height setTo 10
 
 # PROGRAM UPDATE
 `
+    },
+    {
+      "name": "GraphAnchor",
+      "scriptText": `# BLUEPRINT GraphAnchor
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+featProp GraphAnchor.Costume.costumeName setTo 'WL_Anchor_1.png'
+featProp GraphAnchor.Costume.scale setTo 0.5
+featCall GraphAnchor.Touches monitor 'Water' c2b
+
+
+# PROGRAM UPDATE
+when GraphAnchor centerfirsttouches Water [[
+
+  featPropPush GraphAnchor.Costume.costumeName
+  propPop global.tempString
+
+  featCall GraphAnchor.Population createCharacter GraphAnchor [[
+    dbgOut 'creating a new Graph Anchor to show the water hit this'
+
+    propPush global.tempString
+    featPropPop GraphAnchor.Costume.costumeName
+    featProp GraphAnchor.Costume.scale setTo 0.3
+
+    // setup the x based on graph variables 
+    // use 12 to represent the size of the graph bars + 2 for spacing
+    prop global.tempNum setTo 12
+    propPush global.tempNum
+    propPush global.healthGraphCounter
+    stackMul
+
+    propPush global.healthGraphStartingX
+    stackAdd
+    propPop GraphAnchor.x
+
+    prop global.tempNum setTo 10
+    propPush global.tempNum
+    propPush global.healthGraphStartingY
+    stackAdd
+    propPop GraphAnchor.y
+
+  ]]
+
+]]`
+    },
+    {
+      "name": "TextLabel",
+      "scriptText": `# BLUEPRINT TextLabel
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+
+featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
+featProp TextLabel.Graphing.text setTo 'Ecosystem Health'
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1478,15 +1557,15 @@ prop y setTo -366.53`
       "id": "23",
       "label": "GoodWaterPlantSpot 3",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -83.06
-prop y setTo 309.18`
+      "initScript": `prop x setTo -173.37
+prop y setTo 288.64`
     },
     {
       "id": "24",
       "label": "GoodWaterPlantSpot 4",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -209.94
-prop y setTo -274.44`
+      "initScript": `prop x setTo 175.72
+prop y setTo -232.11`
     },
     {
       "id": "25",
@@ -1499,8 +1578,8 @@ prop y setTo -44.24`
       "id": "26",
       "label": "GoodWaterPlantSpot 6",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 191.07
-prop y setTo -93.94`
+      "initScript": `prop x setTo 169.93
+prop y setTo -309.78`
     },
     {
       "id": "27",
@@ -1590,8 +1669,8 @@ prop y setTo -94.20`
       "id": "44",
       "label": "WaterSpeedBottom",
       "bpid": "WaterSpeed",
-      "initScript": `prop x setTo 2.9
-prop y setTo 196.1
+      "initScript": `prop x setTo 2.11
+prop y setTo 241.36
 prop location setTo 'belowDam'`
     },
     {
@@ -1616,6 +1695,33 @@ prop y setTo -402.63`
       "bpid": "GreatSpotForDam",
       "initScript": `prop x setTo 1.59
 prop y setTo -0.83`
+    },
+    {
+      "id": "48",
+      "label": "GraphAnchor 1",
+      "bpid": "GraphAnchor",
+      "initScript": `prop x setTo 120.8
+prop y setTo -385
+featProp GraphAnchor.Costume.costumeName setTo 'WL_Anchor_1.png'
+
+`
+    },
+    {
+      "id": "49",
+      "label": "GraphAnchor 2",
+      "bpid": "GraphAnchor",
+      "initScript": `prop x setTo 171.17
+prop y setTo -385
+featProp GraphAnchor.Costume.costumeName setTo 'WL_Anchor_2.png'
+
+`
+    },
+    {
+      "id": "50",
+      "label": "TextLabel50",
+      "bpid": "TextLabel",
+      "initScript": `prop x setTo 468.76
+prop y setTo -172.00`
     }
   ]
 }
