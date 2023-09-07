@@ -70,8 +70,8 @@ addProp tempNum number 0
 // to be used by the noticing wizard
 addProp noticingString string '...'
 
-// ✏️ LETS CHANGE THIS: which things do we want eating which others?
-// ✏️ Change some or all of these to true to see how they impact the system
+// ✏️ CHANGE these variables to have the model show different details about how energy
+// ✏️ is used in the system
 addProp beaversEatWaterPlants boolean false
 addProp waterPlantsUseEnergy boolean false
 addProp fishEatWaterPlants boolean false
@@ -99,24 +99,16 @@ addFeature Physics
 addFeature Touches
 addFeature IU
 addFeature Graphing
-addFeature Data
+//addFeature Data
+
+// Use these below to make it easier to say whether to include certain paths in the flow of energy
+addProp doThis boolean true
+addProp dontDoThis boolean false
 
 // Setup the sequence that describes how energy moves in this model
-featCall EnergyRepresentation.Data setProcessFlow 'Sun' 'Tree' 'Photosynthesis' 20
-featCall EnergyRepresentation.Data setProcessFlow 'Tree' 'Beaver' 'Digestion' 10
+// incorporate the booleans from above
 
-// featCall EnergyRepresentation.Data getProcessFlowName 'Sun' 'Tree'
-// dbgOut {{'getProcessFlowProcess: ' + EnergyRepresentation.getFeatProp('Data', 'returnString').value}}
- featCall EnergyRepresentation.Data getProcessFlowName 'Tree' 'Beaver'
- dbgOut {{'getProcessFlowProcess: ' + EnergyRepresentation.getFeatProp('Data', 'returnString').value}}
-
-featCall EnergyRepresentation.Data setMappingToNumber 'one' 'aKey' 10
-featCall EnergyRepresentation.Data getMappingToNumber 'one' 'aKey'
-dbgOut {{'getMappingToString: ' + EnergyRepresentation.getFeatProp('Data', 'returnNumber').value}}
-
-// TODO:
-// Re-create entire sequence
-// Re-work the touch code to use the sequence
+//featCall EnergyRepresentation.Data setProcessFlow 'sun' 'tree' 'photosynthesis' 30
 
 // Start off looking like a magnifying lense so we know that you need to go look at the other characters.
 // Later this will change to different types of energy as the students move over the other characters.
@@ -133,6 +125,11 @@ prop EnergyRepresentation.energyLevel setMin 0
 // Setup energy type so that we know what we can give it to
 // start with none beause we have not picked up energy yet.
 addProp energyType string 'none'
+// use this so that we have the type of energy that is being converted (if there is one)
+addProp oldEnergyType string 'none'
+
+// the character type of the last thing touched
+addProp characterType string 'none'
 
 // Setup the touch moniitoring so that we check when the
 // EnergyRepresentation characters touch the Sun, Beaver, Tree, or Predator
@@ -146,25 +143,28 @@ featCall EnergyRepresentation.Touches monitor 'Fish' b2b
 
 # PROGRAM UPDATE
 
-// TODO:
-// Add other types (water plants and fish?)
-// Extend logging and add noticing
-// heat
-// predator to get energy?
-
 // Any time you touch the sun, take on sun energy
-// Note that the sun is effectively infinite
+// Note that the sun has effectively infinite energy
+// Note this is also a special case where we never give energy
+// and where we always reset
 when EnergyRepresentation firsttouches Sun [[
-  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun.png'
+  // Save the old energy type in case we need to check if it changed
+  propPush EnergyRepresentation.energyType
+  propPop EnergyRepresentation.oldEnergyType
+
+  // set the new energy type
   prop EnergyRepresentation.energyType setTo 'source'
+  prop EnergyRepresentation.characterType setTo 'sun'
 
+  // set the new costume based on the energy type
+  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun.png'
+
+  // log what happened
   featCall EnergyRepresentation.IU logString 'An energy representation picked up energy from the sun.'
-  // prop global.noticingString setTo ''
-
 ]]
 
 when EnergyRepresentation firsttouches Tree [[
-  ifProp EnergyRepresentation.energyType equal 'source' [[
+ ifProp EnergyRepresentation.energyType equal 'source' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
     prop Tree.energyLevel add 30
@@ -301,12 +301,6 @@ when EnergyRepresentation lasttouches Predator [[
 # TAG isCharControllable false
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
 # PROGRAM INIT
 // setup features
 addFeature Physics
@@ -324,6 +318,7 @@ featProp Beaver.Costume.scale setTo 0.15
 addProp tempString string ''
 
 addProp energyType string 'consumer'
+addProp characterType string 'beaver'
 
 addProp energyLevel number 100
 prop Beaver.energyLevel setMin 0
@@ -531,6 +526,8 @@ featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.2
 
 addProp energyType string 'predator'
+addProp characterType string 'coyote'
+
 
 addProp energyLevel number 50
 prop Predator.energyLevel setMin 0
@@ -585,6 +582,7 @@ prop WaterPlant.energyLevel setMin 0
 prop WaterPlant.energyLevel setMax 100
 
 addProp energyType string 'producer'
+addProp characterType string 'plant'
 
 ifProp global.beaversEatWaterPlants equal true [[
   featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
@@ -639,7 +637,8 @@ addProp energyLevel number 100
 prop Fish.energyLevel setMin 0
 prop Fish.energyLevel setMax 100
 
-addProp energyType string 'producer'
+addProp energyType string 'consumer'
+addProp characterType string 'fish'
 
 ifProp global.fishEatWaterPlants equal true [[
   featProp Fish.Graphing.meterProp setTo 'energyLevel'
@@ -698,6 +697,7 @@ featProp Tree.Graphing.meterProp setTo 'energyLevel'
 featProp Tree.Graphing.meterColor setTo 65280
 
 addProp energyType string 'producer'
+addProp characterType string 'tree'
 
 # PROGRAM UPDATE
 every 1 [[
@@ -808,7 +808,7 @@ featProp Sun.Costume.scale setTo 1.3
   // photosynthesis, digesting
 
 addProp energyType string 'source'
-
+addProp characterType string 'sun'
 
 // required directive
 # PROGRAM UPDATE`

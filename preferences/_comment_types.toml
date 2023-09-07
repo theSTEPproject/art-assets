@@ -34,16 +34,6 @@
 #   `gs_packages/gem-srv/src/modules/sim/script/tools/comment-utilities.ts`
 #
 
-[[commentTypes]]
-# new
-
-# matchString = '👀 TOML CSS'
-# cssClass = 'commentKeyHeader'
-# color = ''
-# backgroundColor = ''
-# help = 'Questions to consider'
-# isBookmark = true
-
 
 [[commentTypes]]
 # override existing
@@ -52,4 +42,14 @@ cssClass = ''
 color = 'rgba(255,255,255,1)'
 backgroundColor = 'rgba(0,255,0,0.5)'
 help = 'Questions to consider'
+isBookmark = true
+
+[[commentTypes]]
+# new
+
+matchString = '🔎 HOW'
+cssClass = ''
+color = 'rgba(255,255,255,1)'
+backgroundColor = 'rgba(0,255,0,0.5)'
+help = 'Explanation fow how this works.'
 isBookmark = true

@@ -24,6 +24,7 @@
   },
   "rounds": [
     {
+      "time": 100,
       "initScript": ``,
       "endScript": `
      
@@ -72,11 +73,7 @@
 // - Predators (by using the character controller)
 // - Whether Beavers lose energy and thus need to eat by going to trees (a beaver property)
 // - Carbon and pollution graphs (by using setup)
-// - The info panels (by changing a property in global)
-// - Fish can be removed simply by deleting them (they can be added later)
 
-// TODO
-// breaker
 
 # PROGRAM INIT
 
@@ -141,8 +138,66 @@ featCall global.IU setupFunction 'popupMessage' [[
   ]]
 ]]
 
-// required directive
+// Properties for the ecoysystem health graph
+addProp ecosystemHealth number 3
+prop global.ecosystemHealth setMin 0
+prop global.ecosystemHealth setMax 10
+
+addProp healthGraphCounter number 0
+addProp healthGraphStartingX number 408
+addProp healthGraphStartingY number 0
+
 # PROGRAM UPDATE
+
+// 🔎 WHAT THIS CODE DOES: This is where we update the Ecosystem Health Graph
+every 10 runAtStart [[
+  featCall global.Population createCharacter HealthGraphBar [[
+    // setup the x
+    featPropPush HealthGraphBar.Costume.width
+    prop global.tempNum setTo 2
+    propPush global.tempNum
+    stackAdd
+
+    propPush global.healthGraphCounter
+    stackMul
+
+    propPush global.healthGraphStartingX
+    stackAdd
+    propPop HealthGraphBar.x
+
+    // set the height
+    propPush global.ecosystemHealth
+    featPropPush HealthGraphBar.Costume.height
+    stackMul
+    featPropPop HealthGraphBar.Costume.height
+
+    // setup the y and adjust based on height
+    featPropPush HealthGraphBar.Costume.height
+    propPop global.tempNum
+    prop global.tempNum div 2
+
+    propPush global.tempNum
+    propPush global.healthGraphStartingY
+    stackSub
+    propPop HealthGraphBar.y
+
+    // color it
+
+    ifProp global.ecosystemHealth greaterThanOrEqual 7 [[
+      featCall HealthGraphBar.Costume setColorize 0 200 0
+    ]]
+    ifProp global.ecosystemHealth lessThan 7 [[
+      featCall HealthGraphBar.Costume setColorize 255 165 0
+    ]]
+    ifProp global.ecosystemHealth lessThanOrEqual 3 [[
+      featCall HealthGraphBar.Costume setColorize 150 0 0
+    ]]
+
+   prop global.healthGraphCounter add 1
+
+  ]]
+
+]]
 
 every 1 [[
 
@@ -917,6 +972,9 @@ when GoodWaterPlantSpot centertouches Water [[
         featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
         ]]
 
+        // increase ecosystem health value because we have more plants
+        prop global.ecosystemHealth add 1
+
         // keep track of how many water plants we have in case we want to graph it
         prop GoodWaterPlantSpot.plantAlreadyGrewHere setTo true
         prop global.waterPlantCount add 1
@@ -993,6 +1051,9 @@ when GoodFishSpawningSpot centertouches Water [[
         // there are no fish here yet, so make a new fish
         featCall GoodFishSpawningSpot.Population createCharacter Fish [[
         ]]
+
+        // increase ecosystem health value because we have more fish
+        prop global.ecosystemHealth add 1
 
         // keep track of how many fish we have in case we want to graph the amount
         prop GoodFishSpawningSpot.fishAlreadySpawnedHere setTo true
@@ -1235,6 +1296,23 @@ every 1 [[
 ]]
 
   `
+    },
+    {
+      "name": "HealthGraphBar",
+      "scriptText": `# BLUEPRINT HealthGraphBar
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp HealthGraphBar.Costume.costumeName setTo 'GEN_square.json'
+featProp HealthGraphBar.Costume.width setTo 10
+featProp HealthGraphBar.Costume.height setTo 10
+
+
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
