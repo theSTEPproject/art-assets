@@ -99,15 +99,15 @@ ifFeatProp Player.Movement.compassDirection equal 'W' [[
 
 when Player firsttouches Player [[
   // weird bug that means we need to make sure we are not bumping into ourself
-  ifExpr {{ agent.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
+  ifExpr {{ character.getProp('trackerId').value !=  Player.getProp('trackerId').value }} [[
 
     // ✏️ LETS CHANGE THIS: what do specific kinds of costumes do when they bump into specific other costumes
     // ✏️ This example triggers when someone pretending to be a beaver bumps into a tree
     // ✏️ You can change the two costumes to be something else and then set what happens
-    ifProp agent.costumeType equal 'Beaver' [[
+    ifProp character.costumeType equal 'Beaver' [[
       ifProp Player.costumeType equal 'Tree' [[
-        propPush agent.trackerId
-        featPropPop agent.Graphing.text
+        propPush character.trackerId
+        featPropPop character.Graphing.text
 
         // ✏️ Make a popup
         featCall Player.Population createCharacter PopupEffect [[
@@ -116,7 +116,7 @@ when Player firsttouches Player [[
         ]]
 
         // ✏️ Add something to the label
-        // featProp agent.Graphing.text add ' (ate)'
+        // featProp character.Graphing.text add ' (ate)'
 
         // ✏️ Do something with the meter
         // TBD
@@ -547,11 +547,11 @@ featCall ResizeCharacter.IU setupFunction 'changeSize' [[
 
 
   featCall ResizeCharacter.Population tellAllCharacters [[
-    ifExpr {{ global.getProp('tempString').value == agent.getProp('trackerId').value }} [[
-      featPropPush agent.Costume.width
+    ifExpr {{ global.getProp('tempString').value == character.getProp('trackerId').value }} [[
+      featPropPush character.Costume.width
       propPush global.tempNum
       stackAdd
-      featPropPop agent.Costume.width
+      featPropPop character.Costume.width
     ]]
   ]]
 ]]
