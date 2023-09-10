@@ -450,6 +450,10 @@ when Beaver touches Dam [[
   ]]
 ]]
 
+when Beaver lasttouches Dam [[
+  featProp Beaver.Costume.glow setTo 0
+]]
+
 when Beaver firsttouches Lodge [[
   ifProp Lodge.size greaterThanOrEqual 3 [[
     prop Beaver.protected setTo true
@@ -462,6 +466,8 @@ when Beaver firsttouches Lodge [[
   ]]
 ]]
 when Beaver lasttouches Lodge [[
+  featProp Beaver.Costume.glow setTo 0
+
   ifProp Beaver.protected equal true [[
     prop Beaver.protected setTo false
     featCall Beaver.IU logString 'Beaver left the lodge so is no-longer protected'
@@ -473,6 +479,18 @@ when Beaver lasttouches Lodge [[
 ]]
 
 when Beaver touches Lodge [[
+    every 0.1 runAtStart [[
+      ifProp global.canBuildLodge equal true [[
+
+        ifProp Beaver.carrying notEqual 'nothing' [[
+            featProp Beaver.Costume.glow setTo 1
+        ]]
+        ifProp Beaver.carrying equal 'nothing' [[
+            featProp Beaver.Costume.glow setTo 0
+        ]]
+      ]]
+    ]]
+    
   every 1 [[
 
     // We are carrying a rock, mud, or twig
