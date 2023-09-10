@@ -576,10 +576,17 @@ when Beaver touches Lodge [[
 ]]
 
 when Beaver touches Tree [[
+  every 0.1 runAtStart [[
+        featProp Beaver.Costume.glow setTo 1
+  ]]
   every 1 [[
     featCall Beaver.IU logString 'Beaver ate some wood at a tree'
     prop Beaver.energyLevel add 20
   ]]
+]]
+
+when Beaver lasttouches Tree [[
+        featProp Beaver.Costume.glow setTo 0
 ]]
 
 every 1 [[
