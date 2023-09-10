@@ -1727,8 +1727,8 @@ prop y setTo -172.00`
       "id": "51",
       "label": "Predator51",
       "bpid": "Predator",
-      "initScript": `prop x setTo 10
-prop y setTo 44`
+      "initScript": `prop x setTo -298.02
+prop y setTo 323.44`
     }
   ]
 }
