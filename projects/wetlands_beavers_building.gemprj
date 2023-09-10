@@ -358,11 +358,18 @@ when Beaver firsttouches Mud [[
 ]]
 
 when Beaver touches Dam [[
+  every 0.1 runAtStart [[
+    ifProp Beaver.carrying notEqual 'nothing' [[
+        featProp Beaver.Costume.glow setTo 1
+    ]]
+    ifProp Beaver.carrying equal 'nothing' [[
+        featProp Beaver.Costume.glow setTo 0
+    ]]
+  ]]
   every 1 [[
 
     // We are carrying a rock, mud, or twig
-    ifProp Beaver.carrying notEqual 'nothing' [[
-
+    ifProp Beaver.carrying notEqual 'nothing' [[      
       // if we don't need to track the gesture directly through touching the gestureHelper
       // have a slight delay handled here so it's not too fast for users to notice what is happening
       ifProp global.requireGestureHelper equal false [[
