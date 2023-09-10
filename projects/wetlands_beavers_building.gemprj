@@ -973,10 +973,8 @@ addFeature Touches
 addFeature IU
 addFeature Population
 
-featProp GoodWaterPlantSpot.Costume.costumeName setTo 'GEN_square.json'
-featProp GoodWaterPlantSpot.Costume.width setTo 30
-featProp GoodWaterPlantSpot.Costume.height setTo 30
-featCall GoodWaterPlantSpot.Costume setColorizeHSV 0.3 0.5 0.8
+featProp GoodWaterPlantSpot.Costume.costumeName setTo 'WL_GoodWaterPlantSpawnSpot.png'
+featProp GoodWaterPlantSpot.Costume.scale setTo 0.1
 
 featCall GoodWaterPlantSpot.Touches monitor 'Water' c2b
 
@@ -1055,10 +1053,8 @@ addFeature Touches
 addFeature IU
 addFeature Population
 
-featProp GoodFishSpawningSpot.Costume.costumeName setTo 'GEN_square.json'
-featProp GoodFishSpawningSpot.Costume.width setTo 30
-featProp GoodFishSpawningSpot.Costume.height setTo 30
-featCall GoodFishSpawningSpot.Costume setColorizeHSV 0.1 0.2 0.8
+featProp GoodFishSpawningSpot.Costume.costumeName setTo 'WL_GoodFishSpawnSpot.png'
+featProp GoodFishSpawningSpot.Costume.scale setTo 0.1
 
 featCall GoodFishSpawningSpot.Touches monitor 'Water' c2b
 
