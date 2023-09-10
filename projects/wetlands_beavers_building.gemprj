@@ -663,10 +663,9 @@ addFeature Population
 
 // set the costume
 featProp Rock.Costume.costumeName setTo 'WL_rock.png'
-featProp Rock.Costume.scale setTo 0.2
+featProp Rock.Costume.scale setTo 0.07
 
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "Mud",
@@ -999,6 +998,9 @@ when GoodWaterPlantSpot centertouches Water [[
         featCall GoodWaterPlantSpot.Population createCharacter WaterPlant [[
         ]]
 
+        // hide the spawning point since we alreadt spawned
+        prop GoodWaterPlantSpot.alpha setTo 0
+
         // increase ecosystem health value because we have more plants
         prop global.ecosystemHealth add 1
 
@@ -1027,8 +1029,8 @@ addFeature Physics
 addFeature Touches
 addFeature Population
 
-featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
-featProp WaterPlant.Costume.scale setTo 0.15
+featProp WaterPlant.Costume.costumeName setTo 'WL_waterplant.png'
+featProp WaterPlant.Costume.scale setTo 0.1
 
 featCall WaterPlant.Touches monitor 'Water' c2b
 
@@ -1079,6 +1081,9 @@ when GoodFishSpawningSpot centertouches Water [[
         featCall GoodFishSpawningSpot.Population createCharacter Fish [[
         ]]
 
+        // hide the spawning point since we alreadt spawned
+        prop GoodFishSpawningSpot.alpha setTo 0
+
         // increase ecosystem health value because we have more fish
         prop global.ecosystemHealth add 1
 
@@ -1107,7 +1112,7 @@ addFeature Population
 addFeature Physics
 addFeature Touches
 
-featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
+featProp Fish.Costume.costumeName setTo 'WL_fish.png'
 featProp Fish.Costume.scale setTo 0.15
 
 featCall Fish.Touches monitor 'Water' c2b
@@ -1132,7 +1137,7 @@ addFeature Physics
 addFeature Touches
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
-featProp Tree.Costume.scale setTo 0.25
+featProp Tree.Costume.scale setTo 0.35
 
 # PROGRAM UPDATE`
     },
@@ -1491,8 +1496,8 @@ prop y setTo -167.77`
       "id": "9",
       "label": "Twig 6",
       "bpid": "Twig",
-      "initScript": `prop x setTo 311.16
-prop y setTo -203.12`
+      "initScript": `prop x setTo 295.69
+prop y setTo -145.54`
     },
     {
       "id": "10",
@@ -1568,8 +1573,8 @@ prop y setTo -262.91`
       "id": "20",
       "label": "Tree 2",
       "bpid": "Tree",
-      "initScript": `prop x setTo 319.10
-prop y setTo -324.79`
+      "initScript": `prop x setTo 327.76
+prop y setTo -306.24`
     },
     {
       "id": "22",
@@ -1659,7 +1664,7 @@ prop y setTo -184.35`
       "id": "39",
       "label": "Rock 5",
       "bpid": "Rock",
-      "initScript": `prop x setTo 348.90
+      "initScript": `prop x setTo 348.9
 prop y setTo -106.61`
     },
     {
