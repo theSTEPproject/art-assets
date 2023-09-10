@@ -1439,6 +1439,20 @@ featProp EcosystemHealthBackground.Costume.costumeName setTo 'WL_health_bg.png'
 featProp EcosystemHealthBackground.Costume.scale setTo 0.5
 prop EcosystemHealthBackground.zIndex setTo -500
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "WaterKey",
+      "scriptText": `# BLUEPRINT WaterKey
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp WaterKey.Costume.costumeName setTo 'WL_water_key.png'
+featProp WaterKey.Costume.scale setTo 0.5
+prop WaterKey.zIndex setTo -500
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -1770,8 +1784,15 @@ prop y setTo 323.44`
       "id": "52",
       "label": "EcosystemHealthBackground",
       "bpid": "EcosystemHealthBackground",
-      "initScript": `prop x setTo 489.62
+      "initScript": `prop x setTo 490
 prop y setTo -266.16`
+    },
+    {
+      "id": "53",
+      "label": "WaterKey53",
+      "bpid": "WaterKey",
+      "initScript": `prop x setTo 490
+prop y setTo -3.18`
     }
   ]
 }
