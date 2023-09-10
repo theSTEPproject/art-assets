@@ -152,7 +152,7 @@ addProp healthGraphStartingY number 0
 # PROGRAM UPDATE
 
 // 🔎 WHAT THIS CODE DOES: This is where we update the Ecosystem Health Graph
-every 10 runAtStart [[
+every 5 runAtStart [[
   featCall global.Population createCharacter HealthGraphBar [[
     // setup the x
     featPropPush HealthGraphBar.Costume.width
@@ -1342,8 +1342,8 @@ every 1 [[
 # PROGRAM INIT
 addFeature Costume
 featProp HealthGraphBar.Costume.costumeName setTo 'GEN_square.json'
-featProp HealthGraphBar.Costume.width setTo 10
-featProp HealthGraphBar.Costume.height setTo 10
+featProp HealthGraphBar.Costume.width setTo 5
+featProp HealthGraphBar.Costume.height setTo 5
 
 
 # PROGRAM UPDATE
@@ -1382,7 +1382,7 @@ when GraphFlag centerfirsttouches Water [[
 
     // setup the x based on graph variables
     // use 12 to represent the size of the graph bars + 2 for spacing
-    prop global.tempNum setTo 12
+    prop global.tempNum setTo 7
     propPush global.tempNum
     propPush global.healthGraphCounter
     stackMul
