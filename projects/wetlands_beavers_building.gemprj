@@ -1356,7 +1356,7 @@ addFeature Touches
 addFeature Population
 
 featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_1.png'
-featProp GraphFlag.Costume.scale setTo 0.5
+featProp GraphFlag.Costume.scale setTo 0.1
 featCall GraphFlag.Touches monitor 'Water' c2b
 
 
@@ -1371,9 +1371,9 @@ when GraphFlag centerfirsttouches Water [[
 
     propPush global.tempString
     featPropPop GraphFlag.Costume.costumeName
-    featProp GraphFlag.Costume.scale setTo 0.3
+    featProp GraphFlag.Costume.scale setTo 0.06
 
-    // setup the x based on graph variables 
+    // setup the x based on graph variables
     // use 12 to represent the size of the graph bars + 2 for spacing
     prop global.tempNum setTo 12
     propPush global.tempNum
@@ -1384,7 +1384,7 @@ when GraphFlag centerfirsttouches Water [[
     stackAdd
     propPop GraphFlag.x
 
-    prop global.tempNum setTo 10
+    prop global.tempNum setTo 22
     propPush global.tempNum
     propPush global.healthGraphStartingY
     stackAdd
@@ -1726,21 +1726,17 @@ prop y setTo -0.83`
       "id": "48",
       "label": "GraphFlag 1",
       "bpid": "GraphFlag",
-      "initScript": `prop x setTo 120.8
-prop y setTo -385
-featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_1.png'
-
-`
+      "initScript": `prop x setTo 125.53
+prop y setTo -369.54
+featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_1.png'`
     },
     {
       "id": "49",
       "label": "GraphFlag 2",
       "bpid": "GraphFlag",
-      "initScript": `prop x setTo 171.17
-prop y setTo -385
-featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_2.png'
-
-`
+      "initScript": `prop x setTo 181.05
+prop y setTo -369.37
+featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_2.png'`
     },
     {
       "id": "50",
