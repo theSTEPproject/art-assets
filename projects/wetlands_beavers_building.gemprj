@@ -1774,13 +1774,6 @@ prop y setTo -369.37
 featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_2.png'`
     },
     {
-      "id": "51",
-      "label": "Predator51",
-      "bpid": "Predator",
-      "initScript": `prop x setTo -298.02
-prop y setTo 323.44`
-    },
-    {
       "id": "52",
       "label": "EcosystemHealthBackground",
       "bpid": "EcosystemHealthBackground",

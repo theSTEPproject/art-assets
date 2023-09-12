@@ -45,7 +45,6 @@ help = 'Questions to consider'
 isBookmark = true
 
 [[commentTypes]]
-# new
 
 matchString = '🔎 HOW'
 cssClass = ''
