@@ -1453,6 +1453,31 @@ featProp WaterKey.Costume.costumeName setTo 'WL_water_key.png'
 featProp WaterKey.Costume.scale setTo 0.5
 prop WaterKey.zIndex setTo -500
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Ruler",
+      "scriptText": `# BLUEPRINT Ruler
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Ruler.Costume.costumeName setTo 'WL_Ruler.png'
+featProp Ruler.Costume.scale setTo 0.42
+prop Ruler.zIndex setTo -0.1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1786,6 +1811,13 @@ prop y setTo -266.16`
       "bpid": "WaterKey",
       "initScript": `prop x setTo 490
 prop y setTo -3.18`
+    },
+    {
+      "id": "54",
+      "label": "Ruler54",
+      "bpid": "Ruler",
+      "initScript": `prop x setTo 0.45
+prop y setTo 348.05`
     }
   ]
 }
