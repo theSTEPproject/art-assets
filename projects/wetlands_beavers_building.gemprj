@@ -1464,7 +1464,7 @@ prop WaterKey.zIndex setTo -500
 # PROGRAM INIT
 addFeature Costume
 featProp Ruler.Costume.costumeName setTo 'WL_Ruler_2.png'
-featProp Ruler.Costume.scale setTo 1
+featProp Ruler.Costume.scale setTo 0.25
 prop Ruler.zIndex setTo -0.1
 
 # PROGRAM UPDATE
@@ -1755,8 +1755,8 @@ prop y setTo -94.20`
       "id": "44",
       "label": "WaterSpeedBottom",
       "bpid": "WaterSpeed",
-      "initScript": `prop x setTo 5.95
-prop y setTo 223.35
+      "initScript": `prop x setTo 4.28
+prop y setTo 205.67
 prop location setTo 'belowDam'`
     },
     {
@@ -1816,8 +1816,8 @@ prop y setTo -3.18`
       "id": "54",
       "label": "Ruler54",
       "bpid": "Ruler",
-      "initScript": `prop x setTo 1.21
-prop y setTo 301.11`
+      "initScript": `prop x setTo 0.40
+prop y setTo 317.51`
     }
   ]
 }
