@@ -1464,7 +1464,7 @@ prop WaterKey.zIndex setTo -500
 # PROGRAM INIT
 addFeature Costume
 featProp Ruler.Costume.costumeName setTo 'WL_Ruler_2.png'
-featProp Ruler.Costume.scale setTo 0.25
+featProp Ruler.Costume.scale setTo 0.5
 prop Ruler.zIndex setTo -0.1
 
 # PROGRAM UPDATE
@@ -1814,10 +1814,10 @@ prop y setTo -3.18`
     },
     {
       "id": "54",
-      "label": "Ruler54",
+      "label": "Ruler",
       "bpid": "Ruler",
-      "initScript": `prop x setTo 0.40
-prop y setTo 317.51`
+      "initScript": `prop x setTo 0.0 
+prop y setTo 340.00`
     }
   ]
 }
