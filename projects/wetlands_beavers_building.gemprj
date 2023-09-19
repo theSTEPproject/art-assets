@@ -1812,8 +1812,8 @@ prop y setTo -3.18`
       "id": "54",
       "label": "Ruler",
       "bpid": "Ruler",
-      "initScript": `prop x setTo 0.0 
-prop y setTo 340.00`
+      "initScript": `prop x setTo 0
+prop y setTo 345`
     }
   ]
 }
