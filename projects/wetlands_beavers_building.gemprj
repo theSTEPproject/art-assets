@@ -360,16 +360,16 @@ when Beaver firsttouches Mud [[
 when Beaver touches Dam [[
   every 0.1 runAtStart [[
     ifProp Beaver.carrying notEqual 'nothing' [[
-        featProp Beaver.Costume.glow setTo 1
+      featProp Beaver.Costume.glow setTo 1
     ]]
     ifProp Beaver.carrying equal 'nothing' [[
-        featProp Beaver.Costume.glow setTo 0
+      featProp Beaver.Costume.glow setTo 0
     ]]
   ]]
   every 1 [[
 
     // We are carrying a rock, mud, or twig
-    ifProp Beaver.carrying notEqual 'nothing' [[      
+    ifProp Beaver.carrying notEqual 'nothing' [[
       // if we don't need to track the gesture directly through touching the gestureHelper
       // have a slight delay handled here so it's not too fast for users to notice what is happening
       ifProp global.requireGestureHelper equal false [[
@@ -380,7 +380,6 @@ when Beaver touches Dam [[
 
         prop global.textForPopup setTo ''
 
-        // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section checks if we are holding something that we can add to the dam
         // 🔎 If we already have too much of whatever it is, just drop it
         ifProp Beaver.carrying equal 'twig' [[
@@ -412,7 +411,6 @@ when Beaver touches Dam [[
           featCall global.IU callFunction 'popupMessage'
         ]]
 
-        // 🔎 WHAT DOES THIS SECTION DO?
         // 🔎 This section is where we check if dropping something helps build the dam and how much
         // 🔎 First we decide how much each thing adds, then we add it
         ifProp Beaver.carrying equal 'twig' [[
@@ -479,18 +477,18 @@ when Beaver lasttouches Lodge [[
 ]]
 
 when Beaver touches Lodge [[
-    every 0.1 runAtStart [[
-      ifProp global.canBuildLodge equal true [[
+  every 0.1 runAtStart [[
+    ifProp global.canBuildLodge equal true [[
 
-        ifProp Beaver.carrying notEqual 'nothing' [[
-            featProp Beaver.Costume.glow setTo 1
-        ]]
-        ifProp Beaver.carrying equal 'nothing' [[
-            featProp Beaver.Costume.glow setTo 0
-        ]]
+      ifProp Beaver.carrying notEqual 'nothing' [[
+        featProp Beaver.Costume.glow setTo 1
+      ]]
+      ifProp Beaver.carrying equal 'nothing' [[
+        featProp Beaver.Costume.glow setTo 0
       ]]
     ]]
-    
+  ]]
+
   every 1 [[
 
     // We are carrying a rock, mud, or twig
@@ -507,7 +505,6 @@ when Beaver touches Lodge [[
 
           prop global.textForPopup setTo ''
 
-          // 🔎 WHAT DOES THIS SECTION DO?
           // 🔎 This section checks if we are holding something that we can add to the lodge
           // 🔎 If we already have too much of whatever it is, just drop it
           ifProp Beaver.carrying equal 'twig' [[
@@ -538,7 +535,6 @@ when Beaver touches Lodge [[
             featCall global.IU callFunction 'popupMessage'
           ]]
 
-          // 🔎 WHAT DOES THIS SECTION DO?
           // 🔎 This section is where we check if dropping something helps build the lodge and how much
           // 🔎 First we decide how much each thing adds, then we add it
           ifProp Beaver.carrying equal 'twig' [[
@@ -577,7 +573,7 @@ when Beaver touches Lodge [[
 
 when Beaver touches Tree [[
   every 0.1 runAtStart [[
-        featProp Beaver.Costume.glow setTo 1
+    featProp Beaver.Costume.glow setTo 1
   ]]
   every 1 [[
     featCall Beaver.IU logString 'Beaver ate some wood at a tree'
@@ -586,7 +582,7 @@ when Beaver touches Tree [[
 ]]
 
 when Beaver lasttouches Tree [[
-        featProp Beaver.Costume.glow setTo 0
+  featProp Beaver.Costume.glow setTo 0
 ]]
 
 every 1 [[
@@ -1391,7 +1387,7 @@ when GraphFlag centerfirsttouches Water [[
     stackAdd
     propPop GraphFlag.x
 
-    prop global.tempNum setTo 22
+    prop global.tempNum setTo 16
     propPush global.tempNum
     propPush global.healthGraphStartingY
     stackAdd
