@@ -360,16 +360,16 @@ when Beaver firsttouches Mud [[
 when Beaver touches Dam [[
   every 0.1 runAtStart [[
     ifProp Beaver.carrying notEqual 'nothing' [[
-        featProp Beaver.Costume.glow setTo 1
+      featProp Beaver.Costume.glow setTo 1
     ]]
     ifProp Beaver.carrying equal 'nothing' [[
-        featProp Beaver.Costume.glow setTo 0
+      featProp Beaver.Costume.glow setTo 0
     ]]
   ]]
   every 1 [[
 
     // We are carrying a rock, mud, or twig
-    ifProp Beaver.carrying notEqual 'nothing' [[      
+    ifProp Beaver.carrying notEqual 'nothing' [[
       // if we don't need to track the gesture directly through touching the gestureHelper
       // have a slight delay handled here so it's not too fast for users to notice what is happening
       ifProp global.requireGestureHelper equal false [[
@@ -418,11 +418,11 @@ when Beaver touches Dam [[
         ifProp Beaver.carrying equal 'twig' [[
           prop global.numTwigsInDam add 1
           // ✏️ This line sets how much each twig adds
-          prop Dam.size add 1
+          prop Dam.size add 5
           featCall Beaver.IU logString 'Beaver added a twig to the dam.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
-          prop global.numRocksInDam add 1
+          prop global.numRocksInDam add 5
           // ✏️ This line sets how much each rock adds
           prop Dam.size add 1
           featCall Beaver.IU logString 'Beaver added a rock to the dam.'
@@ -479,18 +479,18 @@ when Beaver lasttouches Lodge [[
 ]]
 
 when Beaver touches Lodge [[
-    every 0.1 runAtStart [[
-      ifProp global.canBuildLodge equal true [[
+  every 0.1 runAtStart [[
+    ifProp global.canBuildLodge equal true [[
 
-        ifProp Beaver.carrying notEqual 'nothing' [[
-            featProp Beaver.Costume.glow setTo 1
-        ]]
-        ifProp Beaver.carrying equal 'nothing' [[
-            featProp Beaver.Costume.glow setTo 0
-        ]]
+      ifProp Beaver.carrying notEqual 'nothing' [[
+        featProp Beaver.Costume.glow setTo 1
+      ]]
+      ifProp Beaver.carrying equal 'nothing' [[
+        featProp Beaver.Costume.glow setTo 0
       ]]
     ]]
-    
+  ]]
+
   every 1 [[
 
     // We are carrying a rock, mud, or twig
@@ -577,7 +577,7 @@ when Beaver touches Lodge [[
 
 when Beaver touches Tree [[
   every 0.1 runAtStart [[
-        featProp Beaver.Costume.glow setTo 1
+    featProp Beaver.Costume.glow setTo 1
   ]]
   every 1 [[
     featCall Beaver.IU logString 'Beaver ate some wood at a tree'
@@ -586,7 +586,7 @@ when Beaver touches Tree [[
 ]]
 
 when Beaver lasttouches Tree [[
-        featProp Beaver.Costume.glow setTo 0
+  featProp Beaver.Costume.glow setTo 0
 ]]
 
 every 1 [[
@@ -1464,7 +1464,7 @@ prop WaterKey.zIndex setTo -500
 # PROGRAM INIT
 addFeature Costume
 featProp Ruler.Costume.costumeName setTo 'WL_Ruler_2.png'
-featProp Ruler.Costume.scale setTo 0.5
+featProp Ruler.Costume.scale setTo 0.25
 prop Ruler.zIndex setTo -0.1
 
 # PROGRAM UPDATE
@@ -1816,8 +1816,29 @@ prop y setTo -3.18`
       "id": "54",
       "label": "Ruler",
       "bpid": "Ruler",
-      "initScript": `prop x setTo 0.0 
-prop y setTo 340.00`
+      "initScript": `prop x setTo 0
+prop y setTo 340`
+    },
+    {
+      "id": "55",
+      "label": "Rock55",
+      "bpid": "Rock",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "56",
+      "label": "Rock56",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
+    },
+    {
+      "id": "57",
+      "label": "Rock57",
+      "bpid": "Rock",
+      "initScript": `prop x setTo -41
+prop y setTo -29`
     }
   ]
 }

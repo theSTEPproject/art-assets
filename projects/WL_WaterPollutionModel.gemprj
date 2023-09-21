@@ -1,0 +1,385 @@
+{
+  "id": "WL_WaterPollutionModel",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "WaterDroplet",
+      "scriptText": `# BLUEPRINT WaterDroplet
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// setup features
+addFeature Physics
+addFeature Touches
+addFeature Costume
+addFeature IU
+addFeature Graphing
+addFeature Movement
+// addFeature Feedback
+
+// set initial costume and resize
+featProp WaterDroplet.Costume.costumeName setTo 'WL_WaterDroplet.png'
+featProp WaterDroplet.Costume.scale setTo 0.15
+prop WaterDroplet.zIndex setTo 200
+
+// the WaterDroplet can carry nothing, twig, rock, or mud
+addProp carrying string 'nothing'
+
+
+// For logging more elaborate ideas
+addProp tempString string ''
+
+// for predator handling - true if hidden
+addProp protected boolean false
+
+
+// setup to see if the WaterDroplet is touching anything it might pick up
+//featCall WaterDroplet.Touches monitor 'Twig' b2b
+featCall WaterDroplet.Touches monitor 'Pollutant' b2b
+//featCall WaterDroplet.Touches monitor 'Mud' b2b
+featCall WaterDroplet.Touches monitor 'WaterPlant' b2b
+//featCall WaterDroplet.Touches monitor 'Lodge' b2b
+featCall WaterDroplet.Touches monitor 'Dam' b2b
+//featCall WaterDroplet.Touches monitor 'Tree' b2b
+
+addProp displayText string ''
+propPush WaterDroplet.trackerId
+propPop WaterDroplet.displayText
+//featProp WaterDroplet.Graphing.textProp setTo 'displayText'
+//featProp WaterDroplet.Graphing.meterProp setTo 'energyLevel'
+//featProp WaterDroplet.Graphing.meterColor setTo 65280
+
+// ✏️ LETS CHANGE THIS: Does the WaterDroplet lose energy?
+// ✏️ If this is set to false, it helps us explore the model without worrying about food
+//addProp WaterDropletLosesEnergy boolean false
+
+// log the value of WaterDropletLosesEnergy
+//ifProp WaterDroplet.WaterDropletLosesEnergy equal true [[
+//  featCall WaterDroplet.IU logString 'WaterDroplet started with WaterDropletLosesEnergy set to true'
+//]]
+//ifProp WaterDroplet.WaterDropletLosesEnergy equal false [[
+//  featCall WaterDroplet.IU logString 'WaterDroplet started with WaterDropletLosesEnergy set to false'
+//]]
+
+featCall WaterDroplet.IU logString 'The WaterDroplet started off carrying nothing'
+
+# PROGRAM UPDATE
+when WaterDroplet firsttouches Pollutant [[
+    //If the WaterDroplet isn't carrying anything yet, pick up the Pollutant
+    ifProp WaterDroplet.carrying equal 'nothing' [[
+        featCall WaterDroplet.IU logString 'WaterDroplet picked up a Pollutant'
+        prop WaterDroplet.carrying setTo 'Pollutant'
+        featProp WaterDroplet.Costume.costumeName setTo 'WL_WaterDroplet_carrying_Pollutant.png'
+        featCall Pollutant.Population removeCharacter
+    ]]
+]]
+
+when WaterDroplet touches Dam [[
+every 0.1 runAtStart [[
+    ifProp WaterDroplet.carrying notEqual 'nothing' [[
+        featProp WaterDroplet.Costume.glow setTo 1
+    ]]
+    ifProp WaterDroplet.carrying equal 'nothing' [[
+        featProp WaterDroplet.Costume.glow setTo 0
+    ]]
+    ifProp WaterDroplet.carrying equal 'Pollutant' [[
+    featCall WaterDroplet.IU logString 'WaterDroplet added a pollutant to the dam'
+    ]]
+    prop WaterDroplet.carrying setTo 'nothing'
+    featProp WaterDroplet.Costume.costumeName setTo 'WL_WaterDroplet.png'
+
+]]
+]]
+
+when WaterDroplet touches WaterPlant [[
+every 0.1 runAtStart [[
+    ifProp WaterDroplet.carrying notEqual 'nothing' [[
+        featProp WaterDroplet.Costume.glow setTo 1
+    ]]
+    ifProp WaterDroplet.carrying equal 'nothing' [[
+        featProp WaterDroplet.Costume.glow setTo 0
+    ]]
+    ifProp WaterDroplet.carrying equal 'Pollutant' [[
+    featCall WaterDroplet.IU logString 'WaterDroplet added a pollutant to the WaterPlant'
+    ]]
+    prop WaterDroplet.carrying setTo 'nothing'
+    featProp WaterDroplet.Costume.costumeName setTo 'WL_WaterDroplet.png'
+
+]]
+]]
+`
+    },
+    {
+      "name": "Water",
+      "scriptText": `# BLUEPRINT Water
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Water.Costume.costumeName setTo 'GEN_square.json'
+featProp Water.Costume.width setTo 100
+featProp Water.Costume.height setTo 300
+featCall Water.Costume setColorize 51 170 255
+prop Water.zIndex setTo -200
+
+addProp depth number 1
+prop Water.depth setMin 1
+prop Water.depth setMax 10
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# PROGRAM INIT
+addFeature Population
+prop global.visible setTo false`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'WL_background_Grass.png'
+featProp Background.Costume.scale setTo 1.6
+prop Background.zIndex setTo -999
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Dam",
+      "scriptText": `# BLUEPRINT Dam
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Dam.Costume.costumeName setTo 'GEN_square.json'
+featProp Dam.Costume.width setTo 100
+featProp Dam.Costume.height setTo 40
+featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
+
+addProp size number 1
+prop Dam.size setMin 1
+prop Dam.size setMax 10
+
+// to be used in re-scaling the width
+addProp tempWidth number 0
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "WaterPlant",
+      "scriptText": `# BLUEPRINT WaterPlant
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+
+featProp WaterPlant.Costume.costumeName setTo 'WL_waterplant.png'
+featProp WaterPlant.Costume.scale setTo 0.1
+
+featCall WaterPlant.Touches monitor 'Water' c2b
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Pollutant",
+      "scriptText": `# BLUEPRINT Pollutant
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Population
+featProp Pollutant.Costume.costumeName setTo 'WL_Pollutant.png'
+featProp Pollutant.Costume.scale setTo 0.1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    }
+  ],
+  "instances": [
+    {
+      "id": "2",
+      "label": "WaterBelow",
+      "bpid": "Water",
+      "initScript": `prop x setTo 26.73
+prop y setTo 249.95`
+    },
+    {
+      "id": "3",
+      "label": "WaterAbove",
+      "bpid": "Water",
+      "initScript": `prop x setTo 25
+prop y setTo -200
+featProp Water.Costume.width setTo 500
+featProp Water.Costume.height setTo 625`
+    },
+    {
+      "id": "5",
+      "label": "Background5",
+      "bpid": "Background",
+      "initScript": `prop x setTo 0
+prop y setTo 0`
+    },
+    {
+      "id": "6",
+      "label": "Dam",
+      "bpid": "Dam",
+      "initScript": `prop x setTo 25.39
+prop y setTo 135.09`
+    },
+    {
+      "id": "7",
+      "label": "WaterPlant7",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 228.56
+prop y setTo -55.19`
+    },
+    {
+      "id": "8",
+      "label": "WaterPlant8",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -188.48
+prop y setTo 56.04`
+    },
+    {
+      "id": "10",
+      "label": "WaterPlant10",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 228.25
+prop y setTo -164.78`
+    },
+    {
+      "id": "11",
+      "label": "WaterPlant11",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -188.99
+prop y setTo -172.67`
+    },
+    {
+      "id": "12",
+      "label": "WaterPlant12",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo -193.04
+prop y setTo -61.4`
+    },
+    {
+      "id": "13",
+      "label": "WaterPlant13",
+      "bpid": "WaterPlant",
+      "initScript": `prop x setTo 232.27
+prop y setTo 66.18`
+    },
+    {
+      "id": "15",
+      "label": "Pollutant1",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo 26.95
+prop y setTo -374.77`
+    },
+    {
+      "id": "16",
+      "label": "Pollutant16",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo 69.24
+prop y setTo -320.06`
+    },
+    {
+      "id": "17",
+      "label": "Pollutant17",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo -40.39
+prop y setTo -368.15`
+    },
+    {
+      "id": "18",
+      "label": "Pollutant18",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo -114.31
+prop y setTo -374.67`
+    },
+    {
+      "id": "19",
+      "label": "Pollutant19",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo 112.46
+prop y setTo -356.38`
+    },
+    {
+      "id": "20",
+      "label": "Pollutant20",
+      "bpid": "Pollutant",
+      "initScript": `prop x setTo 194.93
+prop y setTo -369.53`
+    }
+  ]
+}
