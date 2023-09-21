@@ -417,6 +417,7 @@ every 1 runAtStart [[
 
   // dead
   ifProp Clover.energyLevel equal 0 [[
+    prop Clover.alive setTo false
     featProp Clover.Costume.currentFrame setTo 2
     prop Clover.alpha setTo 0.3
     prop Clover.alive setTo false
@@ -455,7 +456,7 @@ featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 // 🔎 WHAT SIZE IS THE CATERPILLAR?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER CATERPILLAR
-featProp agent.Costume.scale setTo 0.1
+featProp Caterpillar.Costume.scale setTo 0.3
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
@@ -484,17 +485,17 @@ featProp Caterpillar.Graphing.meterColor setTo 65280
 // whenever a caterpillar touches a veggie garden
 when Caterpillar touches VeggieGarden [[
   every 1 runAtStart [[
-    // if the caterpillar and veggie garden are alive 
+    // if the caterpillar and veggie garden are alive
     ifProp Caterpillar.alive equal true [[
       ifProp VeggieGarden.alive equal true [[
         featProp Caterpillar.Costume.glow setTo 1
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => LOSE MORE ENERGY
         prop VeggieGarden.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do CATERPILLARS GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -516,19 +517,19 @@ every 1 runAtStart [[
   // WHAT DOES THIS DO?
   // This script changes the color of the caterpillar's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
-  
+
   // The caterpillar is feeling good, so make the meter green if the caterpillar has over 50 energy (out of 100)
   ifProp Caterpillar.energyLevel greaterThanOrEqual 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 0
     featProp Caterpillar.Graphing.meterColor setTo 65280
   ]]
-  
+
   // The caterpillar is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
   ifProp Caterpillar.energyLevel lessThan 50 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
     featProp Caterpillar.Graphing.meterColor setTo 16737792
   ]]
-  
+
   // The caterpillar is really hungry, so make the meter red if we are under 20
   ifProp Caterpillar.energyLevel lessThan 20 [[
     featProp Caterpillar.Costume.currentFrame setTo 1
@@ -536,6 +537,7 @@ every 1 runAtStart [[
   ]]
   // The caterpillar is dead if it has 0 energy
   ifProp Caterpillar.energyLevel equal 0 [[
+    prop Caterpillar.alive setTo false
     featProp Caterpillar.Costume.currentFrame setTo 2
     prop Caterpillar.alpha setTo 0.3
     featProp Caterpillar.Movement.movementType setTo 'string'
@@ -728,7 +730,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // 🔎 WHAT SIZE IS THE HAWK?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER HAWKS
-featProp Hawk.Costume.scale setTo 0.15
+featProp Hawk.Costume.scale setTo 0.5
 
 // This tells the hawks how to move
 featProp Hawk.Movement.compassDirection setTo 'west'
@@ -781,7 +783,7 @@ when Hawk touches Snake [[
   ]]
 ]]
 
-// After the hawk eats a snake, it will stop glowing 
+// After the hawk eats a snake, it will stop glowing
 when Hawk lastTouches Snake [[
   featProp Hawk.Costume.glow setTo 0
 ]]
@@ -798,7 +800,7 @@ when Hawk touches Robin [[
         prop Robin.alive setTo false
         prop Robin.alpha setTo 0.3
         prop Robin.energyLevel setTo 0
-        
+
 
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do HAWKS GAIN when eating a robin?
@@ -811,7 +813,7 @@ when Hawk touches Robin [[
   ]]
 ]]
 
-// After the hawk eats a robin, it will stop glowing 
+// After the hawk eats a robin, it will stop glowing
 when Hawk lastTouches Robin [[
   featProp Hawk.Costume.glow setTo 0
 ]]
@@ -839,7 +841,7 @@ when Hawk touches Rabbit [[
   ]]
 ]]
 
-// After the hawk eats a rabbit, it will stop glowing 
+// After the hawk eats a rabbit, it will stop glowing
 when Hawk lastTouches Rabbit [[
   featProp Hawk.Costume.glow setTo 0
 ]]
@@ -922,7 +924,7 @@ featProp Rabbit.Costume.costumeName setTo 'FW1_rabbit.png'
 // 🔎 WHAT SIZE IS THE RABBIT?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER RABBIT
-featProp agent.Costume.scale setTo 0.2
+featProp Rabbit.Costume.scale setTo 0.4
 
 // if the computer controls the rabbit, this tells the rabbit how to move and how quickly
 featProp Rabbit.Movement.movementType setTo 'wander'
@@ -1042,6 +1044,7 @@ every 1 runAtStart [[
 
   // The rabbit is dead if it has 0 energy
   ifProp Rabbit.energyLevel equal 0 [[
+    prop Rabbit.alive setTo false
     featProp Rabbit.Costume.currentFrame setTo 2
     prop Rabbit.alpha setTo 0.3
     featProp Rabbit.Movement.movementType setTo 'stop'
@@ -1630,8 +1633,8 @@ addFeature Physics
 addFeature Graphing
 addProp alive boolean true
 
-featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
-featProp Worm.Costume.scale setTo 0.5
+featProp Worm.Costume.costumeName setTo 'FW1_Worm.png'
+featProp Worm.Costume.scale setTo 0.4
 
 
 // 🔎 WHAT DOES THIS DO?
@@ -1699,107 +1702,107 @@ when Worm touches Rabbit [[
 
 when Worm touches Hawk [[
   every 1 [[
-  ifProp Hawk.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Hawk.Costume.scale sub 0.1
-    ifFeatProp Hawk.Costume.scale lessThan 0.1 [[
-      prop Hawk.visible setTo false
-      prop Hawk.alpha setTo 0
-      prop Hawk.isInert setTo true
+    ifProp Hawk.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Hawk.Costume.scale sub 0.1
+      ifFeatProp Hawk.Costume.scale lessThan 0.1 [[
+        prop Hawk.visible setTo false
+        prop Hawk.alpha setTo 0
+        prop Hawk.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches Snake [[
   every 1 [[
-  ifProp Snake.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Snake.Costume.scale sub 0.1
-    ifFeatProp Snake.Costume.scale lessThan 0.1 [[
-      prop Snake.visible setTo false
-      prop Snake.alpha setTo 0
-      prop Snake.isInert setTo true
+    ifProp Snake.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Snake.Costume.scale sub 0.1
+      ifFeatProp Snake.Costume.scale lessThan 0.1 [[
+        prop Snake.visible setTo false
+        prop Snake.alpha setTo 0
+        prop Snake.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches Rabbit [[
   every 1 [[
-  ifProp Rabbit.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Rabbit.Costume.scale sub 0.1
-    ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
-      prop Rabbit.visible setTo false
-      prop Rabbit.alpha setTo 0
-      prop Rabbit.isInert setTo true
+    ifProp Rabbit.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Rabbit.Costume.scale sub 0.1
+      ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
+        prop Rabbit.visible setTo false
+        prop Rabbit.alpha setTo 0
+        prop Rabbit.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches Robin [[
-    every 1 [[
-  ifProp Robin.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Robin.Costume.scale sub 0.1
-    ifFeatProp Robin.Costume.scale lessThan 0.1 [[
-      prop Robin.visible setTo false
-      prop Robin.alpha setTo 0
-      prop Robin.isInert setTo true
+  every 1 [[
+    ifProp Robin.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Robin.Costume.scale sub 0.1
+      ifFeatProp Robin.Costume.scale lessThan 0.1 [[
+        prop Robin.visible setTo false
+        prop Robin.alpha setTo 0
+        prop Robin.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches Caterpillar [[
-   every 1 [[
+  every 1 [[
     ifProp Caterpillar.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Caterpillar.Costume.scale sub 0.1
-    ifFeatProp Caterpillar.Costume.scale lessThan 0.1 [[
-      prop Caterpillar.visible setTo false
-      prop Caterpillar.alpha setTo 0
-      prop Caterpillar.isInert setTo true
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Caterpillar.Costume.scale sub 0.1
+      ifFeatProp Caterpillar.Costume.scale lessThan 0.1 [[
+        prop Caterpillar.visible setTo false
+        prop Caterpillar.alpha setTo 0
+        prop Caterpillar.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches VeggieGarden [[
-   every 1 [[
-  ifProp VeggieGarden.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp VeggieGarden.Costume.scale sub 0.1
-    ifFeatProp VeggieGarden.Costume.scale lessThan 0.1 [[
-      prop VeggieGarden.visible setTo false
-      prop VeggieGarden.alpha setTo 0
-      prop VeggieGarden.isInert setTo true
+  every 1 [[
+    ifProp VeggieGarden.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp VeggieGarden.Costume.scale sub 0.1
+      ifFeatProp VeggieGarden.Costume.scale lessThan 0.1 [[
+        prop VeggieGarden.visible setTo false
+        prop VeggieGarden.alpha setTo 0
+        prop VeggieGarden.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 
 when Worm touches Clover [[
-    every 1 [[
-  ifProp Clover.alive equal false [[
-    prop Worm.energyLevel add 5
-    featProp Worm.Costume.glow setTo 1
-    featProp Clover.Costume.scale sub 0.1
-    ifFeatProp Clover.Costume.scale lessThan 0.1 [[
-      prop Clover.visible setTo false
-      prop Clover.alpha setTo 0
-      prop Clover.isInert setTo true
+  every 1 [[
+    ifProp Clover.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Clover.Costume.scale sub 0.1
+      ifFeatProp Clover.Costume.scale lessThan 0.1 [[
+        prop Clover.visible setTo false
+        prop Clover.alpha setTo 0
+        prop Clover.isInert setTo true
+      ]]
     ]]
   ]]
-]]
 ]]
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
