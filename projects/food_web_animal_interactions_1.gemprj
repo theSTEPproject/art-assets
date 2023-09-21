@@ -1614,7 +1614,7 @@ onEvent Tick [[
 # TAG isPTrackControllable false
 
 
-// 🔎 WHAT IS A Worm?
+// 🔎 WHAT IS A WORM?
 // 🔎 Worms are ?????? who EAT ??????
 
 // 🔎 WHAT IS A PRODUCER?
@@ -1645,7 +1645,14 @@ prop Worm.energyLevel setMax 100
 prop Worm.energyLevel setMin 0
 
 // check when the worm touches other organisms
+featCall Worm.Touches monitor 'Hawk' b2b
+featCall Worm.Touches monitor 'Snake' b2b
 featCall Worm.Touches monitor 'Rabbit' b2b
+featCall Worm.Touches monitor 'Robin' b2b
+featCall Worm.Touches monitor 'Caterpillar' b2b
+featCall Worm.Touches monitor 'VeggieGarden' b2b
+featCall Worm.Touches monitor 'Clover' b2b
+
 
 // use a widget to depict the current energy, and color it green
 featProp Worm.Graphing.meterProp setTo 'energyLevel'
@@ -1676,17 +1683,124 @@ every 1 runAtStart [[
 ]]
 
 when Worm touches Rabbit [[
+  every 1 [[
+    ifProp Rabbit.alive equal false [[
+      prop Worm.energyLevel add 5
+      featProp Worm.Costume.glow setTo 1
+      featProp Rabbit.Costume.scale sub 0.1
+      ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
+        prop Rabbit.visible setTo false
+        prop Rabbit.alpha setTo 0
+        prop Rabbit.isInert setTo true
+      ]]
+    ]]
+  ]]
+]]
+
+when Worm touches Hawk [[
+  every 1 [[
+  ifProp Hawk.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Hawk.Costume.scale sub 0.1
+    ifFeatProp Hawk.Costume.scale lessThan 0.1 [[
+      prop Hawk.visible setTo false
+      prop Hawk.alpha setTo 0
+      prop Hawk.isInert setTo true
+    ]]
+  ]]
+]]
+]]
+
+when Worm touches Snake [[
+  every 1 [[
+  ifProp Snake.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Snake.Costume.scale sub 0.1
+    ifFeatProp Snake.Costume.scale lessThan 0.1 [[
+      prop Snake.visible setTo false
+      prop Snake.alpha setTo 0
+      prop Snake.isInert setTo true
+    ]]
+  ]]
+]]
+]]
+
+when Worm touches Rabbit [[
+  every 1 [[
   ifProp Rabbit.alive equal false [[
     prop Worm.energyLevel add 5
     featProp Worm.Costume.glow setTo 1
     featProp Rabbit.Costume.scale sub 0.1
     ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
+      prop Rabbit.visible setTo false
       prop Rabbit.alpha setTo 0
       prop Rabbit.isInert setTo true
     ]]
   ]]
 ]]
+]]
 
+when Worm touches Robin [[
+    every 1 [[
+  ifProp Robin.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Robin.Costume.scale sub 0.1
+    ifFeatProp Robin.Costume.scale lessThan 0.1 [[
+      prop Robin.visible setTo false
+      prop Robin.alpha setTo 0
+      prop Robin.isInert setTo true
+    ]]
+  ]]
+]]
+]]
+
+when Worm touches Caterpillar [[
+   every 1 [[
+    ifProp Caterpillar.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Caterpillar.Costume.scale sub 0.1
+    ifFeatProp Caterpillar.Costume.scale lessThan 0.1 [[
+      prop Caterpillar.visible setTo false
+      prop Caterpillar.alpha setTo 0
+      prop Caterpillar.isInert setTo true
+    ]]
+  ]]
+]]
+]]
+
+when Worm touches VeggieGarden [[
+   every 1 [[
+  ifProp VeggieGarden.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp VeggieGarden.Costume.scale sub 0.1
+    ifFeatProp VeggieGarden.Costume.scale lessThan 0.1 [[
+      prop VeggieGarden.visible setTo false
+      prop VeggieGarden.alpha setTo 0
+      prop VeggieGarden.isInert setTo true
+    ]]
+  ]]
+]]
+]]
+
+when Worm touches Clover [[
+    every 1 [[
+  ifProp Clover.alive equal false [[
+    prop Worm.energyLevel add 5
+    featProp Worm.Costume.glow setTo 1
+    featProp Clover.Costume.scale sub 0.1
+    ifFeatProp Clover.Costume.scale lessThan 0.1 [[
+      prop Clover.visible setTo false
+      prop Clover.alpha setTo 0
+      prop Clover.isInert setTo true
+    ]]
+  ]]
+]]
+]]
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
