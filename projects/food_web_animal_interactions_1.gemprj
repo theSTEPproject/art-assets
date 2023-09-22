@@ -881,7 +881,7 @@ every 1 runAtStart [[
     // change the artwork to show it is dead
     featProp Hawk.Costume.currentFrame setTo 2
     prop Hawk.alpha setTo 0.3
-    prop Hawk.isInert setTo true
+    featProp Hawk.Movement.movementType setTo 'stop'
   ]]
 
   // set meter to mirror energyLevel
@@ -1632,6 +1632,7 @@ addFeature Touches
 addFeature Physics
 addFeature Graphing
 addProp alive boolean true
+addProp hasNutrients boolean false
 
 featProp Worm.Costume.costumeName setTo 'FW1_Worm.png'
 featProp Worm.Costume.scale setTo 0.4
@@ -1663,6 +1664,13 @@ featProp Worm.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
+  prop Worm.energyLevel sub 1
+  ifProp Worm.hasNutrients equal true [[
+    featProp Worm.Costume.costumeName setTo 'FW1_Worm_Nutrients.png'
+  ]]
+    ifProp Worm.hasNutrients equal false [[
+    featProp Worm.Costume.costumeName setTo 'FW1_Worm.png'
+  ]]
   ifProp Worm.energyLevel greaterThanOrEqual 50 [[
     featProp Worm.Graphing.meterColor setTo 65280
   ]]
@@ -1672,7 +1680,6 @@ every 1 runAtStart [[
   ]]
   // The fish is really hungry, so make the meter red if we are under 20
   ifProp Worm.energyLevel lessThan 20 [[
-    featProp Worm.Costume.costumeName setTo 'AQ_fish_hungry.png'
     featProp Worm.Graphing.meterColor setTo 16711680
   ]]
   // The fish is dead if it has 0 energy
@@ -1695,6 +1702,7 @@ when Worm touches Rabbit [[
         prop Rabbit.visible setTo false
         prop Rabbit.alpha setTo 0
         prop Rabbit.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1710,6 +1718,7 @@ when Worm touches Hawk [[
         prop Hawk.visible setTo false
         prop Hawk.alpha setTo 0
         prop Hawk.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1725,6 +1734,7 @@ when Worm touches Snake [[
         prop Snake.visible setTo false
         prop Snake.alpha setTo 0
         prop Snake.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1740,6 +1750,7 @@ when Worm touches Rabbit [[
         prop Rabbit.visible setTo false
         prop Rabbit.alpha setTo 0
         prop Rabbit.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1755,6 +1766,7 @@ when Worm touches Robin [[
         prop Robin.visible setTo false
         prop Robin.alpha setTo 0
         prop Robin.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1770,6 +1782,7 @@ when Worm touches Caterpillar [[
         prop Caterpillar.visible setTo false
         prop Caterpillar.alpha setTo 0
         prop Caterpillar.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1785,6 +1798,7 @@ when Worm touches VeggieGarden [[
         prop VeggieGarden.visible setTo false
         prop VeggieGarden.alpha setTo 0
         prop VeggieGarden.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
@@ -1796,14 +1810,38 @@ when Worm touches Clover [[
       prop Worm.energyLevel add 5
       featProp Worm.Costume.glow setTo 1
       featProp Clover.Costume.scale sub 0.1
+
       ifFeatProp Clover.Costume.scale lessThan 0.1 [[
         prop Clover.visible setTo false
         prop Clover.alpha setTo 0
         prop Clover.isInert setTo true
+        prop Worm.hasNutrients setTo true
       ]]
     ]]
   ]]
 ]]
+
+when Worm touches Clover [[
+  ifProp Worm.hasNutrients equal true [[
+    ifProp Clover.alive equal true [[
+      // insert code here
+      prop Worm.hasNutrients setTo false
+      featProp Clover.Costume.glow setTo 1
+      featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy.png'
+    ]]
+  ]]
+]]
+when Worm touches VeggieGarden [[
+  ifProp Worm.hasNutrients equal true [[
+    ifProp VeggieGarden.alive equal true [[
+      // insert code here
+      prop Worm.hasNutrients setTo false
+      featProp VeggieGarden.Costume.glow setTo 1
+      featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggiegarden_healthy.png'
+    ]]
+  ]]
+]]
+
 // COMMENT KEY
 // 🔎 WHAT DOES THIS DO? heading
 // 🔎 body
