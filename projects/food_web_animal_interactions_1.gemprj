@@ -429,7 +429,7 @@ every 1 runAtStart [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -446,6 +446,7 @@ every 1 runAtStart [[
 // add the features we are likely to use
 addFeature Movement
 addFeature Costume
+addFeature Cursor
 addFeature Physics
 addFeature Touches
 addFeature Graphing
@@ -500,7 +501,7 @@ when Caterpillar touches VeggieGarden [[
         // 🔎 How much ENERGY do CATERPILLARS GAIN when eating?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => GAIN MORE ENERGY
-        prop Caterpillar.energyLevel add 20
+        prop Caterpillar.energyLevel add 10
       ]]
     ]]
   ]]
@@ -555,7 +556,7 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -586,10 +587,10 @@ featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 // ✏️ HIGHER number => LARGER ROBINS
 featProp Robin.Costume.scale setTo 0.2
 
-// This tells any robins that are controlled by the computer instead of by a student how to move 
+// This tells any robins that are controlled by the computer instead of by a student how to move
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
-// This is the speed the robin moves at when it is not controlled by students 
+// This is the speed the robin moves at when it is not controlled by students
 featProp Robin.Movement.distance setTo 3
 featProp Robin.Movement.targetY setMax 0.7
 
@@ -612,20 +613,20 @@ featProp Robin.Graphing.meterProp setTo 'energyLevel'
 featProp Robin.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
-// whenever a robin is touching a caterpillar 
+// whenever a robin is touching a caterpillar
 when Robin touches Caterpillar [[
-  // when the robin and the caterpillar are alive 
+  // when the robin and the caterpillar are alive
   ifProp Robin.alive equal true [[
     ifProp Caterpillar.alive equal true [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
-        
+
         // the caterpillar dies when touched by the robin
         featProp Caterpillar.Movement.movementType setTo 'stop'
         prop Caterpillar.alive setTo false
         prop Caterpillar.energyLevel setTo 0
         prop Caterpillar.alpha setTo 0.3
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -636,14 +637,14 @@ when Robin touches Caterpillar [[
   ]]
 ]]
 
-// whenever a robin is touching a veggie garden 
+// whenever a robin is touching a veggie garden
 when Robin touches VeggieGarden [[
-  // when the robin and the veggie garden are alive 
+  // when the robin and the veggie garden are alive
   ifProp Robin.alive equal true [[
     ifProp VeggieGarden.alive equal true [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
-        prop VeggieGarden.energyLevel sub 15        
+        prop VeggieGarden.energyLevel sub 15
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -666,26 +667,26 @@ every 1 runAtStart [[
   // WHAT DOES THIS DO?
   // This script changes the color of the robin's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
-  
+
   // The robin is feeling good, so make the meter green if the robin has over 50 energy (out of 100)
-  ifProp Robin.energyLevel greaterThanOrEqual 50[[
+  ifProp Robin.energyLevel greaterThanOrEqual 50 [[
     featProp Robin.Costume.currentFrame setTo 0
     featProp Robin.Graphing.meterColor setTo 65280
   ]]
-  
+
   // The robin is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
   ifProp Robin.energyLevel lessThan 50 [[
     featProp Robin.Costume.currentFrame setTo 1
     featProp Robin.Graphing.meterColor setTo 16737792
   ]]
-  
+
   // The robin is really hungry, so make the meter red if we are under 20
   ifProp Robin.energyLevel lessThan 20 [[
     featProp Robin.Costume.currentFrame setTo 1
     // Red
     featProp Robin.Graphing.meterColor setTo 16711680
   ]]
-  
+
   // The robin is dead if it has 0 energy
   ifProp Robin.energyLevel equal 0 [[
     featProp Robin.Costume.currentFrame setTo 2
@@ -1875,8 +1876,8 @@ prop y setTo 256.71`
       "id": "99",
       "label": "Rabbit99",
       "bpid": "Rabbit",
-      "initScript": `prop x setTo 183.06
-prop y setTo 6.45`
+      "initScript": `prop x setTo 18.85
+prop y setTo -68.50`
     },
     {
       "id": "109",
@@ -1886,53 +1887,46 @@ prop y setTo 6.45`
 prop y setTo -316.55`
     },
     {
-      "id": "110",
-      "label": "Caterpillar110",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -106.05
-prop y setTo 66.73`
+      "id": "118",
+      "label": "VeggieGarden118",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 271.58
+prop y setTo 103.89`
     },
     {
-      "id": "111",
-      "label": "Clover111",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 270.41
-prop y setTo 255.32`
+      "id": "119",
+      "label": "VeggieGarden119",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -264.00
+prop y setTo -121.11`
     },
     {
-      "id": "112",
-      "label": "Robin112",
-      "bpid": "Robin",
-      "initScript": `prop x setTo -274.36
-prop y setTo -75.98`
+      "id": "120",
+      "label": "Rabbit120",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 172.95
+prop y setTo 260.11`
     },
     {
-      "id": "113",
-      "label": "Snake113",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 289.77
-prop y setTo -164.70`
+      "id": "121",
+      "label": "Rabbit121",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo 291.05
+prop y setTo -209.37`
     },
     {
-      "id": "114",
-      "label": "Worm114",
-      "bpid": "Worm",
-      "initScript": `prop x setTo 4.09
-prop y setTo 262.14`
+      "id": "122",
+      "label": "Rabbit122",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -221.63
+prop y setTo 115.74`
     },
     {
-      "id": "115",
-      "label": "Caterpillar115",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -61.82
-prop y setTo -25.71`
-    },
-    {
-      "id": "117",
-      "label": "Robin117",
-      "bpid": "Robin",
-      "initScript": `prop x setTo -265.47
-prop y setTo 246.36`
+      "id": "123",
+      "label": "Rabbit123",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -11
+prop y setTo -31`
     }
   ]
 }
