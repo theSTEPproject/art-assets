@@ -622,8 +622,6 @@ when Snail touches VeggieGarden [[
 addFeature Movement
 addFeature Costume
 addFeature Cursor
-prop Gopher.trackerId setTo '60'
-prop Gopher.trackerId setTo '6921'
 
 // set the costume
 featProp Gopher.Costume.costumeName setTo 'FW1_gopher.png'
@@ -1280,7 +1278,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
+featProp Rabbit.Costume.costumeName setTo 'web_brown-rabbit.png'
 
 // add other features
 addFeature Physics
@@ -1413,7 +1411,7 @@ addFeature Movement
 addFeature Costume
 
 // set the costume
-featProp Weeds.Costume.costumeName setTo 'FW1_weeds.png'
+featProp Weeds.Costume.costumeName setTo 'weeds.png'
 
 // add other features
 addFeature Physics
@@ -1508,7 +1506,7 @@ addFeature Costume
 addFeature Cursor
 
 // set the costume
-featProp Pesticide.Costume.costumeName setTo 'FW1_pesticide.png'
+featProp Pesticide.Costume.costumeName setTo 'pesticide.png'
 
 // add other features
 addFeature Physics
@@ -1706,24 +1704,22 @@ every 1 runAtStart [[
     {
       "name": "Timer",
       "scriptText": `# BLUEPRINT Timer
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG IsPtrackControllable false
-# PROGRAM INIT
-addFeature Graphing
-addFeature Costume
-featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
-addProp time number 0
-prop Timer.zIndex setTo 500
+      # PROGRAM INIT
+      addFeature Graphing
+      addFeature Costume
+      featProp Timer.Costume.costumeName setTo 'onexone.json'
+      addProp time number 0
+      prop Timer.zIndex setTo 500
 
-featProp Timer.Graphing.text setTo 'Time: 0'
+      featProp Timer.Graphing.text setTo 'Time: 0'
 
-# PROGRAM UPDATE
-every 1 runAtStart [[
-  prop Timer.time add 1
-  exprPush {{ 'Time: ' + agent.getProp('time').value }}
-  featPropPop Timer.Graphing.text
-]]`
+      # PROGRAM UPDATE
+  every 1 runAtStart [[
+        prop Timer.time add 1
+        exprPush {{ 'Time: ' + agent.getProp('time').value }}
+        featPropPop Timer.Graphing.text
+      ]]
+`
     },
     {
       "name": "RabbitPopulation",
@@ -1733,7 +1729,7 @@ every 1 runAtStart [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp RabbitPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp RabbitPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1783,7 +1779,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp GopherPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp GopherPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1823,7 +1819,8 @@ onEvent Tick [[
 ]]
 
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+`
     },
     {
       "name": "RobinPopulation",
@@ -1833,7 +1830,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp RobinPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp RobinPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1933,7 +1930,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp MousePopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp MousePopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -1983,7 +1980,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp BeetlePopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp BeetlePopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2033,7 +2030,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp SnailPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp SnailPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2083,7 +2080,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp CaterpillarPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp CaterpillarPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2133,7 +2130,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp VeggieGardenPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp VeggieGardenPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2183,7 +2180,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp CloverPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp CloverPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2233,7 +2230,7 @@ onEvent Tick [[
 # TAG IsPtrackControllable false
 # PROGRAM DEFINE
 addFeature Costume
-featProp WeedsPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+featProp WeedsPopulation.Costume.costumeName setTo 'onexone.json'
 
 addFeature Graphing
 addFeature Population
@@ -2273,7 +2270,8 @@ onEvent Tick [[
 ]]
 
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
@@ -2362,6 +2360,13 @@ prop y setTo -65.97`
 prop y setTo 68.91`
     },
     {
+      "id": "54",
+      "label": "Gopher54",
+      "bpid": "Gopher",
+      "initScript": `prop x setTo 61.17
+prop y setTo -331.20`
+    },
+    {
       "id": "55",
       "label": "Snail55",
       "bpid": "Snail",
@@ -2418,6 +2423,13 @@ prop y setTo 202.97`
 prop y setTo -327.53`
     },
     {
+      "id": "73",
+      "label": "Rabbit73",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -191.53
+prop y setTo -323.27`
+    },
+    {
       "id": "74",
       "label": "Snake74",
       "bpid": "Snake",
@@ -2464,7 +2476,7 @@ prop y setTo -271.47`
       "label": "GopherPopulation81",
       "bpid": "GopherPopulation",
       "initScript": `prop x setTo -512.53
-prop y setTo -101.9`
+prop y setTo -101.90`
     },
     {
       "id": "82",

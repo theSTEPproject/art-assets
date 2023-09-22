@@ -1,0 +1,151 @@
+{
+  "id": "starter_model_855",
+  "label": "Photosynthesis Clumping Version",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Chloroplast",
+      "scriptText": `# BLUEPRINT Chloroplast
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featCall agent.Costume setCostume 'plant.json' 0
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+// required directive
+# PROGRAM DEFINE
+
+// required directive
+# PROGRAM EVENT`
+    },
+    {
+      "name": "CO2",
+      "scriptText": `# BLUEPRINT CO2
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featCall agent.Costume setCostume 'circle.json'
+featProp agent.Costume.colorValue setTo 500
+addFeature Physics
+addFeature Touches
+featProp agent.Physics.scale setTo 0.25
+featProp agent.Costume.colorValue setTo 500
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+// required directive
+# PROGRAM DEFINE
+
+// required directive
+# PROGRAM EVENT`
+    },
+    {
+      "name": "O2",
+      "scriptText": `# BLUEPRINT O2
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featCall agent.Costume setCostume 'circle.json' 0
+featCall agent.Costume setScale 1
+# PROGRAM EVENT
+// every 5 runAfter [[ ]]
+# PROGRAM UPDATE
+// when xxx touches yyy [[ ]]
+
+// required directive
+# PROGRAM INIT`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "InteractingCharacter10",
+      "bpid": "CO2",
+      "initScript": `prop x setTo 172.92
+prop y setTo -66.29`
+    },
+    {
+      "id": "1",
+      "label": "EmbodiedCharacter11",
+      "bpid": "Chloroplast",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
+    },
+    {
+      "id": "2",
+      "label": "CO22",
+      "bpid": "CO2",
+      "initScript": `prop x setTo 70.14
+prop y setTo -228.42`
+    },
+    {
+      "id": "3",
+      "label": "CO23",
+      "bpid": "CO2",
+      "initScript": `prop x setTo -127.01
+prop y setTo -265.13`
+    },
+    {
+      "id": "4",
+      "label": "O24",
+      "bpid": "O2",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
+    },
+    {
+      "id": "5",
+      "label": "O25",
+      "bpid": "O2",
+      "initScript": `prop x setTo -23
+prop y setTo 45`
+    },
+    {
+      "id": "6",
+      "label": "O26",
+      "bpid": "O2",
+      "initScript": `prop x setTo -41
+prop y setTo -29`
+    },
+    {
+      "id": "7",
+      "label": "O27",
+      "bpid": "O2",
+      "initScript": `prop x setTo -14
+prop y setTo -5`
+    }
+  ]
+}
