@@ -457,7 +457,7 @@ featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 // 🔎 WHAT SIZE IS THE CATERPILLAR?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER CATERPILLAR
-featProp Caterpillar.Costume.scale setTo 0.3
+featProp Caterpillar.Costume.scale setTo 0.1
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
@@ -556,7 +556,7 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable true
+# TAG isPozyxControllable false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -736,7 +736,7 @@ featProp Hawk.Costume.scale setTo 0.5
 // This tells the hawks how to move
 featProp Hawk.Movement.compassDirection setTo 'west'
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 1
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -893,8 +893,8 @@ every 1 runAtStart [[
     {
       "name": "Rabbit",
       "scriptText": `# BLUEPRINT Rabbit
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable true
 
 // 🔎 WHAT IS A RABBIT?
@@ -1877,7 +1877,7 @@ prop y setTo 256.71`
       "label": "Rabbit99",
       "bpid": "Rabbit",
       "initScript": `prop x setTo 18.85
-prop y setTo -68.50`
+prop y setTo -68.5`
     },
     {
       "id": "109",
@@ -1890,15 +1890,15 @@ prop y setTo -316.55`
       "id": "118",
       "label": "VeggieGarden118",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 271.58
-prop y setTo 103.89`
+      "initScript": `prop x setTo -298.52
+prop y setTo -207.69`
     },
     {
       "id": "119",
       "label": "VeggieGarden119",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -264.00
-prop y setTo -121.11`
+      "initScript": `prop x setTo 17.27
+prop y setTo 65.00`
     },
     {
       "id": "120",
@@ -1909,24 +1909,94 @@ prop y setTo 260.11`
     },
     {
       "id": "121",
-      "label": "Rabbit121",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 291.05
-prop y setTo -209.37`
+      "label": "VeggieGarden121",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 300.63
+prop y setTo 305.16`
     },
     {
       "id": "122",
-      "label": "Rabbit122",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -221.63
-prop y setTo 115.74`
+      "label": "VeggieGarden122",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 319.84
+prop y setTo -208.79`
     },
     {
       "id": "123",
-      "label": "Rabbit123",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo -11
-prop y setTo -31`
+      "label": "Snake123",
+      "bpid": "Snake",
+      "initScript": `prop x setTo 37.16
+prop y setTo 167.84`
+    },
+    {
+      "id": "124",
+      "label": "Snake124",
+      "bpid": "Snake",
+      "initScript": `prop x setTo 263.79
+prop y setTo -41.32`
+    },
+    {
+      "id": "126",
+      "label": "Caterpillar126",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -187.63
+prop y setTo 47.47`
+    },
+    {
+      "id": "127",
+      "label": "Caterpillar127",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo 177.53
+prop y setTo 131.63`
+    },
+    {
+      "id": "128",
+      "label": "Caterpillar128",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -157.58
+prop y setTo -167.05`
+    },
+    {
+      "id": "129",
+      "label": "Clover129",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 138.00
+prop y setTo -197.11`
+    },
+    {
+      "id": "130",
+      "label": "Clover130",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 1.58
+prop y setTo 227.42`
+    },
+    {
+      "id": "131",
+      "label": "Clover131",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -308.11
+prop y setTo -40.89`
+    },
+    {
+      "id": "132",
+      "label": "Robin132",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -252.79
+prop y setTo 90.00`
+    },
+    {
+      "id": "133",
+      "label": "Robin133",
+      "bpid": "Robin",
+      "initScript": `prop x setTo -35.79
+prop y setTo -166.68`
+    },
+    {
+      "id": "134",
+      "label": "Robin134",
+      "bpid": "Robin",
+      "initScript": `prop x setTo 328.58
+prop y setTo 112.79`
     }
   ]
 }

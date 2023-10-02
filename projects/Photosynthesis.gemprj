@@ -1,6 +1,6 @@
 {
-  "id": "Photosynthesis_TJ_opaque",
-  "label": "Terrestrial Ecosystem ",
+  "id": "Photosynthesis",
+  "label": "Terrestrial Ecosystem 3",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -745,8 +745,8 @@ prop y setTo 14.29`
       "id": "46",
       "label": "Chloroplast46",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 229.3
-prop y setTo -239.93`
+      "initScript": `prop x setTo 236.88
+prop y setTo -239.09`
     },
     {
       "id": "47",
