@@ -339,11 +339,24 @@ when EnergyRepresentation centerFirstTouches Mouse [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
     featProp Mouse.Costume.glow setTo 1
   ]]
+  
+    // 🔎 when touch Mouse, and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToMouse
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Mouse.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'cloverToMouse'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from clover to mouse'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Mouse.energyLevel add 10
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
+    featProp Mouse.Costume.glow setTo 1
+  ]]
 ]]
 
 when EnergyRepresentation centerLastTouches Mouse [[
   // 🔎 if you have no Mouse energy type, take some energy from the Mouse to the energy
-  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'veggieToMouse') && Mouse.getProp('energyLevel').value > 25 }} [[
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'veggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'cloverToMouse' ) && Mouse.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
     // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gives to a animal
     // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -355,7 +368,7 @@ when EnergyRepresentation centerLastTouches Mouse [[
   ]]
 
   // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Mouse energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'veggieToMouse' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'veggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'cloverToMouse' }} [[
     prop EnergyRepresentation.energyType setTo 'mouse'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
   ]]
@@ -370,6 +383,19 @@ when EnergyRepresentation centerFirstTouches Robin [[
     featCall EnergyRepresentation.IU logString 'Energy transfer from none to robin'
   ]]
 
+  // 🔎 when touch Mouse, and energy type is from veggieGarden and energy isn't 0, get energy, change meter color to orange, change type to veggieToRobin
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'veggieGarden' && Robin.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieToRobin'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from veggie to robin'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Robin.energyLevel add 10
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
+    featProp Robin.Costume.glow setTo 1
+  ]]
+  
   // 🔎 when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Robin.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'caterpillarToRobin'
@@ -386,7 +412,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
 
 when EnergyRepresentation centerLastTouches Robin [[
   // 🔎 if you have no Robin energy type, take some energy from the Robin to the energy
-  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin') && Robin.getProp('energyLevel').value > 25 }} [[
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'veggieToRobin' ) && Robin.getProp('energyLevel').value > 25 }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
     // ✏️ LETS CHANGE THIS: alter how much energy the Robin gives to a animal
     // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
@@ -398,7 +424,7 @@ when EnergyRepresentation centerLastTouches Robin [[
   ]]
 
   // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Robin energy type
-  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' }} [[
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'veggieToRobin'  }} [[
     prop EnergyRepresentation.energyType setTo 'robin'
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
   ]]

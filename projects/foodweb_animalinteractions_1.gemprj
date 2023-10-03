@@ -189,7 +189,7 @@ featProp Background.Costume.costumeName setTo 'FW1_day.png'
 featProp Background.Costume.size setTo 800
 propPush global.alphaSettingForAll
 propPop Background.alpha
-prop Background.alpha setTo 0.6
+prop Background.alpha setTo 1
 prop Background.zIndex setTo -110
 
 
@@ -457,7 +457,7 @@ featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 // 🔎 WHAT SIZE IS THE CATERPILLAR?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER CATERPILLAR
-featProp Caterpillar.Costume.scale setTo 0.1
+featProp Caterpillar.Costume.scale setTo 0.3
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
