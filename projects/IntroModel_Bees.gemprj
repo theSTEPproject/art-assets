@@ -1,0 +1,292 @@
+{
+  "id": "IntroModel_Bees",
+  "label": "IntroModel_Bees",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+
+
+prop global.visible setTo false
+addProp flowerString string ' '
+addProp nectar number 0
+
+// required directive
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Bee",
+      "scriptText": `# BLUEPRINT Bee
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Physics
+addFeature Touches
+addFeature Costume
+addFeature Graphing
+
+featProp Bee.Costume.costumeName setTo 'HB_bee.png'
+featProp Bee.Costume.scale setTo 0.3
+
+addProp nectar number 0
+prop Bee.nectar setMin 0
+prop Bee.nectar setMax 10
+featProp Bee.Graphing.meterProp setTo 'nectar'
+
+addProp visited boolean false
+addProp tempString string ''
+
+featCall Bee.Touches monitor 'Flower' b2b
+featCall Bee.Touches monitor 'Home' b2b
+featCall Bee.Touches monitor 'Hive' b2b
+
+
+# PROGRAM UPDATE
+when Bee firsttouches Flower [[
+  ifProp Bee.visited equal false [[
+    featProp Bee.Costume.glow setTo 1
+    prop Bee.visited setTo true
+    propPush Flower.nectar
+    propPop Bee.nectar
+    prop Flower.nectar setToRnd 1 10 true
+
+    propPush Flower.trackerId
+    propPop global.flowerString
+    propPush Flower.nectar
+    propPop global.nectar
+  ]]
+]]
+
+when Bee firsttouches Home [[
+  prop Bee.visited setTo false
+  prop Bee.nectar setTo 0
+  featProp Bee.Costume.glow setTo 1
+]]
+
+when Bee firsttouches Hive [[
+  ifProp Bee.nectar notEqual 0 [[
+  featProp Hive.Costume.glow setTo 1
+  propPush Bee.nectar
+  propPush Hive.nectar
+  stackAdd
+  propPop Hive.nectar
+
+  prop Bee.nectar setTo 0
+  ]]
+]]
+`
+    },
+    {
+      "name": "Flower",
+      "scriptText": `# BLUEPRINT Flower
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Physics
+addFeature Touches
+addFeature Costume
+
+featProp Flower.Costume.costumeName setTo 'HB_blueFlower.png'
+featProp Flower.Costume.scale setTo 0.5
+prop Flower.zIndex setTo -100
+
+addProp nectar number 5
+prop Flower.nectar setMin 0
+prop Flower.nectar setMax 10
+prop Flower.nectar setToRnd 1 10 true
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "FlowerText",
+      "scriptText": `# BLUEPRINT FlowerText
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp FlowerText.Costume.costumeName setTo 'GEN_onexone.json'
+featProp FlowerText.Graphing.wordWrapWidth setTo 300
+featProp FlowerText.Graphing.text setTo 'Flower: '
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+
+  propPush global.flowerString
+  featPropPop FlowerText.Graphing.text
+
+  ifProp global.flowerString notEqual ' ' [[
+    featProp FlowerText.Graphing.text add ': '
+  ]]
+
+  ifProp global.flowerString equal ' ' [[
+      featProp FlowerText.Graphing.text setTo 'Flower: '
+
+  ]]
+
+  prop global.flowerString setTo ' '
+
+]]`
+    },
+    {
+      "name": "NectarText",
+      "scriptText": `# BLUEPRINT NectarText
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp NectarText.Costume.costumeName setTo 'GEN_onexone.json'
+featProp NectarText.Graphing.wordWrapWidth setTo 300
+featProp NectarText.Graphing.text setTo '#'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+
+  propPush global.nectar
+  featPropPop NectarText.Graphing.text
+  ifProp global.nectar equal 0 [[
+      featProp NectarText.Graphing.text setTo '#'
+  ]]
+
+  prop global.nectar setTo 0
+
+]]`
+    },
+    {
+      "name": "Hive",
+      "scriptText": `# BLUEPRINT Hive
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Physics
+addFeature Costume
+addFeature Graphing
+
+featProp Hive.Costume.costumeName setTo 'HB_hiveNatural.png'
+featProp Hive.Costume.scale setTo 0.3
+
+addProp nectar number 0
+prop Hive.nectar setMin 0
+prop Hive.nectar setMax 150
+featProp Hive.Graphing.meterProp setTo 'nectar'
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Home",
+      "scriptText": `# BLUEPRINT Home
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Physics
+addFeature Costume
+addFeature Graphing
+featProp Home.Costume.costumeName setTo 'GEN_square.json'
+featProp Home.Costume.scale setTo 0.3
+# PROGRAM UPDATE
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Red Flower",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -30.41
+prop y setTo -172.58
+featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'`
+    },
+    {
+      "id": "1",
+      "label": "Blue Flower",
+      "bpid": "Flower",
+      "initScript": `prop x setTo 50.83
+prop y setTo -4.43
+featProp Flower.Costume.costumeName setTo 'HB_blueFlower.png'`
+    },
+    {
+      "id": "2",
+      "label": "Yellow Flower",
+      "bpid": "Flower",
+      "initScript": `prop x setTo -105.01
+prop y setTo 146.55
+featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'`
+    },
+    {
+      "id": "3",
+      "label": "FlowerText",
+      "bpid": "FlowerText",
+      "initScript": `prop x setTo -312
+prop y setTo 292.07`
+    },
+    {
+      "id": "4",
+      "label": "NectarText",
+      "bpid": "NectarText",
+      "initScript": `prop x setTo -312
+prop y setTo 314.70`
+    },
+    {
+      "id": "5",
+      "label": "Hive",
+      "bpid": "Hive",
+      "initScript": `prop x setTo 386.81
+prop y setTo -24.32`
+    },
+    {
+      "id": "6",
+      "label": "Start",
+      "bpid": "Home",
+      "initScript": `prop x setTo -365.45
+prop y setTo -23.79`
+    }
+  ]
+}
