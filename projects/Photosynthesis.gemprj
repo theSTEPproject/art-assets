@@ -1,6 +1,6 @@
 {
   "id": "Photosynthesis",
-  "label": "Terrestrial Ecosystem 3",
+  "label": "Garden Ecosystem 3",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -203,9 +203,9 @@ when Molecule lasttouches Chloroplast [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Rabbit.Costume.costumeName setTo 'PS_rabbit.png'
-
-//prop Rabbit.alpha setTo 0.5
+featProp Rabbit.Costume.costumeName setTo 'FWE_mouse.png'
+featProp Rabbit.Costume.flipX setTo true
+// prop Rabbit.alpha setTo 0.5
 
 addFeature Physics
 featProp Rabbit.Costume.scale setTo 0.5

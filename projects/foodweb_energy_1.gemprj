@@ -1,6 +1,6 @@
 {
   "id": "foodweb_energy_1",
-  "label": "Terrestrial Ecosystem 2",
+  "label": "Garden Ecosystem 2",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -954,10 +954,10 @@ every 2 runAtStart [[
 
 
 addFeature Costume
-featProp Mouse.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 
 addFeature Physics
-featProp Mouse.Costume.scale setTo 0.35
+featProp Mouse.Costume.scale setTo 0.25
 
 // types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
 // sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
@@ -1317,15 +1317,15 @@ prop y setTo -204.73`
       "id": "16",
       "label": "Mouse16",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 310.89
-prop y setTo 287.81`
+      "initScript": `prop x setTo 102.29
+prop y setTo -228.14`
     },
     {
       "id": "17",
       "label": "Robin17",
       "bpid": "Robin",
-      "initScript": `prop x setTo 153.81
-prop y setTo -333.71`
+      "initScript": `prop x setTo 57.28
+prop y setTo 2.49`
     },
     {
       "id": "18",
@@ -1338,8 +1338,8 @@ prop y setTo -3.27`
       "id": "19",
       "label": "Hawk19",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 69.13
-prop y setTo -9.81`
+      "initScript": `prop x setTo 304.91
+prop y setTo 209.55`
     }
   ]
 }
