@@ -65,7 +65,7 @@ featProp Snake.Movement.distance setTo 3
 
 
 // check when snakes interact with rabbits
-featCall Snake.Touches monitor 'Rabbit' b2b
+featCall Snake.Touches monitor 'Mouse' b2b
 
 
 // 🔎 WHAT DOES THIS DO?
@@ -84,18 +84,18 @@ featProp Snake.Graphing.meterProp setTo 'energyLevel'
 featProp Snake.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
-// whenever the snake is touching a rabbit
-when Snake touches Rabbit [[
+// whenever the snake is touching a mouse
+when Snake touches Mouse [[
   ifProp Snake.alive equal true [[
-    ifProp Rabbit.alive equal true [[
+    ifProp Mouse.alive equal true [[
       every 1 runAtStart [[
         featProp Snake.Costume.glow setTo 1
 
-        // the rabbit dies when touched by a snake
-        featProp Rabbit.Movement.movementType setTo 'stop'
-        prop Rabbit.energyLevel setTo 0
-        prop Rabbit.alive setTo false
-        prop Rabbit.alpha setTo 0.3
+        // the mouse dies when touched by a snake
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.energyLevel setTo 0
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
 
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do SNAKE GAIN when eating?
@@ -108,7 +108,7 @@ when Snake touches Rabbit [[
 ]]
 
 // After the snake eats a rabbit, it will stop glowing
-when Snake lastTouches Rabbit [[
+when Snake lastTouches Mouse [[
   featProp Snake.Costume.glow setTo 0
 ]]
 
@@ -736,13 +736,13 @@ featProp Hawk.Costume.scale setTo 0.5
 // This tells the hawks how to move
 featProp Hawk.Movement.compassDirection setTo 'west'
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 1
+featProp Hawk.Movement.distance setTo 5
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
 featCall Hawk.Touches monitor 'Snake' b2b
 featCall Hawk.Touches monitor 'Robin' b2b
-featCall Hawk.Touches monitor 'Rabbit' b2b
+featCall Hawk.Touches monitor 'Mouse' b2b
 
 
 // 🔎 WHAT DOES THIS DO?
@@ -819,21 +819,21 @@ when Hawk lastTouches Robin [[
   featProp Hawk.Costume.glow setTo 0
 ]]
 
-// whenever the hawk is touching a rabbit
-when Hawk touches Rabbit [[
+// whenever the hawk is touching a mouse
+when Hawk touches Mouse [[
   every 1 runAtStart [[
-    // if the hawk and the rabbit are alive
+    // if the hawk and the mouse are alive
     ifProp Hawk.alive equal true [[
-      ifProp Rabbit.alive equal true [[
+      ifProp Mouse.alive equal true [[
         featProp Hawk.Costume.glow setTo 1
-        // the rabbit dies when touched by the hawk
-        featProp Rabbit.Movement.movementType setTo 'stop'
-        prop Rabbit.alive setTo false
-        prop Rabbit.alpha setTo 0.3
-        prop Rabbit.energyLevel setTo 0
+        // the mouse dies when touched by the hawk
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Mouse.energyLevel setTo 0
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do HAWKS GAIN when eating a rabbit?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a mouse?
         // ✏️ LETS CHANGE THIS:
         // ✏️ HIGHER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
@@ -842,8 +842,8 @@ when Hawk touches Rabbit [[
   ]]
 ]]
 
-// After the hawk eats a rabbit, it will stop glowing
-when Hawk lastTouches Rabbit [[
+// After the hawk eats a mouse, it will stop glowing
+when Hawk lastTouches Mouse [[
   featProp Hawk.Costume.glow setTo 0
 ]]
 
@@ -1652,7 +1652,7 @@ prop Worm.energyLevel setMin 0
 // check when the worm touches other organisms
 featCall Worm.Touches monitor 'Hawk' b2b
 featCall Worm.Touches monitor 'Snake' b2b
-featCall Worm.Touches monitor 'Rabbit' b2b
+featCall Worm.Touches monitor 'Mouse' b2b
 featCall Worm.Touches monitor 'Robin' b2b
 featCall Worm.Touches monitor 'Caterpillar' b2b
 featCall Worm.Touches monitor 'VeggieGarden' b2b
@@ -1693,16 +1693,16 @@ every 1 runAtStart [[
   featProp Worm.Graphing.meterProp setTo 'energyLevel'
 ]]
 
-when Worm touches Rabbit [[
+when Worm touches Mouse [[
   every 1 [[
-    ifProp Rabbit.alive equal false [[
+    ifProp Mouse.alive equal false [[
       prop Worm.energyLevel add 5
       featProp Worm.Costume.glow setTo 1
-      featProp Rabbit.Costume.scale sub 0.1
-      ifFeatProp Rabbit.Costume.scale lessThan 0.1 [[
-        prop Rabbit.visible setTo false
-        prop Rabbit.alpha setTo 0
-        prop Rabbit.isInert setTo true
+      featProp Mouse.Costume.scale sub 0.1
+      ifFeatProp Mouse.Costume.scale lessThan 0.1 [[
+        prop Mouse.visible setTo false
+        prop Mouse.alpha setTo 0
+        prop Mouse.isInert setTo true
         prop Worm.hasNutrients setTo true
       ]]
     ]]
@@ -1848,6 +1848,227 @@ when Worm touches VeggieGarden [[
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "Mouse",
+      "scriptText": `# BLUEPRINT Mouse
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable true
+
+// 🔎 WHAT IS A MOUSE?
+// 🔎 MICE are ???????? who EAT ??????? to make MOUSE ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organism that cannot make its own food
+// 🔎 and must eat other plants or animals to get energy
+
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addProp alive Boolean true
+
+
+// set the Mouse artwork and make it smaller
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
+
+// 🔎 WHAT SIZE IS THE Mouse?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER number => LARGER Mouse
+featProp Mouse.Costume.scale setTo 0.4
+
+// if the computer controls the Mouse, this tells the Mouse how to move and how quickly
+featProp Mouse.Movement.movementType setTo 'wander'
+featProp Mouse.Movement.distance setTo 4
+// featProp Mouse.Movement.targetY setMax 0.7
+
+
+// make sure we track interactions with the other creatures
+featCall Mouse.Touches monitor 'VeggieGarden' b2b
+featCall Mouse.Touches monitor 'Clover' b2b
+featCall Mouse.Touches monitor 'Worm' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each Mouse START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 50
+
+// 🔎 what is the MOST/LEAST amount of energy a Mouse can have?
+prop Mouse.energyLevel setMax 100
+prop Mouse.energyLevel setMin 0
+
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+featProp Mouse.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+
+// whenever a Mouse touches a clover
+when Mouse touches Clover [[
+  every 1 runAtStart [[
+    // the Mouse and the clover must be alive
+    ifProp Mouse.alive equal true [[
+      ifProp Clover.alive equal true [[
+
+        featProp Mouse.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => LOSE MORE ENERGY
+        prop Clover.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do MouseS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Mouse.energyLevel add 10
+      ]]
+    ]]
+  ]]
+]]
+
+// whenever a Mouse touches a veggie garden
+when Mouse touches VeggieGarden [[
+  every 1 runAtStart [[
+    ifProp Mouse.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Mouse.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => LOSE MORE ENERGY
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do MouseS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ HIGHER numbers => GAIN MORE ENERGY
+        prop Mouse.energyLevel add 10
+
+      ]]
+    ]]
+  ]]
+]]
+
+// This script flips the artwork depending on whether the Mouse is moving left or right
+ifFeatProp Mouse.Movement.compassDirection equal 'E' [[
+  featProp Mouse.Costume.flipX setTo false
+]]
+ifFeatProp Mouse.Movement.compassDirection equal 'W' [[
+  featProp Mouse.Costume.flipX setTo true
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do MouseS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ HIGHER numbers => LOSE MORE ENERGY
+  prop Mouse.energyLevel sub 3
+
+  // 🔎 WHAT DOES THIS DO?
+  // This script changes the color of the Mouse's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+
+  // The Mouse is feeling good, so make the meter green if the Mouse has over 50 energy (out of 100)
+  ifProp Mouse.energyLevel greaterThanOrEqual 50 [[
+    featProp Mouse.Costume.currentFrame setTo 0
+    featProp Mouse.Graphing.meterColor setTo 65280
+  ]]
+
+  // The Mouse is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Mouse.energyLevel lessThan 50 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    featProp Mouse.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The Mouse is really hungry, so make the meter red if we are under 20
+  ifProp Mouse.energyLevel lessThan 20 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    featProp Mouse.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The Mouse is dead if it has 0 energy
+  ifProp Mouse.energyLevel equal 0 [[
+    prop Mouse.alive setTo false
+    featProp Mouse.Costume.currentFrame setTo 2
+    prop Mouse.alpha setTo 0.3
+    featProp Mouse.Movement.movementType setTo 'stop'
+  ]]
+  // set meter to mirror energyLevel
+  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+
+
+
+
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "MousePopulation",
+      "scriptText": `# BLUEPRINT MousePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp MousePopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp MousePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Mouses
+addProp totalMousePop number 3
+
+
+featProp MousePopulation.Graphing.graphProp setTo 'totalMousePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop MousePopulation.x setTo 495
+prop MousePopulation.y setTo 187
+prop MousePopulation.zIndex setTo 300
+
+featProp MousePopulation.Graphing.text setTo 'Mouse Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Bunny
+  featProp MousePopulation.Population.monitoredCharacter setTo 'Mouse'
+  featProp MousePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall MousePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop MousePopulation.totalMousePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalMousePop').value }}
+  propPop MousePopulation.totalMousePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -1873,13 +2094,6 @@ prop y setTo -398.91`
 prop y setTo 256.71`
     },
     {
-      "id": "99",
-      "label": "Rabbit99",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 18.85
-prop y setTo -68.5`
-    },
-    {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
@@ -1887,116 +2101,39 @@ prop y setTo -68.5`
 prop y setTo -316.55`
     },
     {
-      "id": "118",
-      "label": "VeggieGarden118",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -298.52
-prop y setTo -207.69`
-    },
-    {
-      "id": "119",
-      "label": "VeggieGarden119",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 17.27
-prop y setTo 65.00`
-    },
-    {
-      "id": "120",
-      "label": "Rabbit120",
-      "bpid": "Rabbit",
-      "initScript": `prop x setTo 172.95
-prop y setTo 260.11`
-    },
-    {
       "id": "121",
       "label": "VeggieGarden121",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 300.63
-prop y setTo 305.16`
+      "initScript": `prop x setTo 270.62
+prop y setTo 252.06`
     },
     {
       "id": "122",
-      "label": "VeggieGarden122",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 319.84
-prop y setTo -208.79`
+      "label": "Worm122",
+      "bpid": "Worm",
+      "initScript": `prop x setTo -12.61
+prop y setTo 253.95`
     },
     {
       "id": "123",
-      "label": "Snake123",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 37.16
-prop y setTo 167.84`
+      "label": "Mouse123",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 15
+prop y setTo 14`
     },
     {
       "id": "124",
-      "label": "Snake124",
-      "bpid": "Snake",
-      "initScript": `prop x setTo 263.79
-prop y setTo -41.32`
+      "label": "Mouse124",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo -146.77
+prop y setTo -81.42`
     },
     {
-      "id": "126",
-      "label": "Caterpillar126",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -187.63
-prop y setTo 47.47`
-    },
-    {
-      "id": "127",
-      "label": "Caterpillar127",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo 177.53
-prop y setTo 131.63`
-    },
-    {
-      "id": "128",
-      "label": "Caterpillar128",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -157.58
-prop y setTo -167.05`
-    },
-    {
-      "id": "129",
-      "label": "Clover129",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 138.00
-prop y setTo -197.11`
-    },
-    {
-      "id": "130",
-      "label": "Clover130",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 1.58
-prop y setTo 227.42`
-    },
-    {
-      "id": "131",
-      "label": "Clover131",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -308.11
-prop y setTo -40.89`
-    },
-    {
-      "id": "132",
-      "label": "Robin132",
-      "bpid": "Robin",
-      "initScript": `prop x setTo -252.79
-prop y setTo 90.00`
-    },
-    {
-      "id": "133",
-      "label": "Robin133",
-      "bpid": "Robin",
-      "initScript": `prop x setTo -35.79
-prop y setTo -166.68`
-    },
-    {
-      "id": "134",
-      "label": "Robin134",
-      "bpid": "Robin",
-      "initScript": `prop x setTo 328.58
-prop y setTo 112.79`
+      "id": "125",
+      "label": "Mouse125",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 251.28
+prop y setTo -81.44`
     }
   ]
 }
