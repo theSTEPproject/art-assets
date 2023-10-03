@@ -228,11 +228,9 @@ featProp Hive.Graphing.meterProp setTo 'nectar'
 addFeature Physics
 addFeature Costume
 addFeature Graphing
-featProp Home.Costume.costumeName setTo 'GEN_square.json'
+featProp Home.Costume.costumeName setTo 'KB_marker_home.png'
 featProp Home.Costume.scale setTo 0.3
-# PROGRAM UPDATE
-
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -278,8 +276,8 @@ prop y setTo 314.70`
       "id": "5",
       "label": "Hive",
       "bpid": "Hive",
-      "initScript": `prop x setTo 386.81
-prop y setTo -24.32`
+      "initScript": `prop x setTo 350.67
+prop y setTo -26.09`
     },
     {
       "id": "6",
