@@ -877,6 +877,7 @@ every 0.5 [[
 
   // ✏️ CHANGE  how the water depth effects the speed of the water
   // it moves faster when it is narrower, and slows down as it becomes deeper
+  // 🔎 Water depth is shallow
   ifProp Water.depth lessThanOrEqual 3 [[
     // the water is shallow, so it moves pretty fast
     prop Water.speed setTo 'fast'
@@ -884,6 +885,7 @@ every 0.5 [[
     featCall Water.Costume setColorize 51 170 255
   ]]
 
+  // 🔎 Water depth is medium
   ifProp Water.depth greaterThan 3 [[
     // the water is medium deep, so it moves medium fast
     prop Water.speed setTo 'medium'
@@ -891,6 +893,7 @@ every 0.5 [[
     featCall Water.Costume setColorize 0 118 198
   ]]
 
+  // 🔎 Water depth is deep
   ifProp Water.depth greaterThanOrEqual 5 [[
     // the water is deep, so it moves pretty slow
     prop Water.speed setTo 'slow'
