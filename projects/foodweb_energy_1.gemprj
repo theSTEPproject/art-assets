@@ -344,12 +344,12 @@ when EnergyRepresentation centerFirstTouches Mouse [[
   ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Mouse.getProp('energyLevel').value >2 }} [[
     prop EnergyRepresentation.energyType setTo 'cloverToMouse'
     featCall EnergyRepresentation.IU logString 'Energy transfer from clover to mouse'
-    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the clover, and what it does to the energy character
     prop EnergyRepresentation.energyLevel setTo 0
     prop Mouse.energyLevel add 10
     // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
-    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_to_mouse.png'
     featProp Mouse.Costume.glow setTo 1
   ]]
 ]]
@@ -392,7 +392,7 @@ when EnergyRepresentation centerFirstTouches Robin [[
     prop Robin.energyLevel add 10
     // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 15
-    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_robin.png'
     featProp Robin.Costume.glow setTo 1
   ]]
   
@@ -727,37 +727,20 @@ onEvent Tick [[
 
 addFeature Costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
-// featCall VeggieGarden.Costume setColorizeHSV 0.0083 0.29 0.50
-// featCall VeggieGarden.Costume setColorizeHSV 0.133 0.93 0.53
-// featCall VeggieGarden.Costume setColorizeHSV 0.183 0.89 0.67
-
 
 addFeature Physics
 featProp VeggieGarden.Costume.scale setTo 0.4
 
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
-addProp energyType String 'vaggieGarden'
+addProp energyType String 'veggieGarden'
 
 // setup to track energy and begin at 1/2 way
 addProp energyLevel number 50
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
-// ✏️ LETS CHANGE THIS: make VeggieGarden lose energy faster (or slower)
-addProp energyUse number 1
-
-
-// ✏️ LETS CHANGE THIS: make VeggieGarden lose nutrients faster (or slower)
-addProp nutrientsUse number 1
-
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
 featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
-
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
@@ -765,15 +748,15 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifProp VeggieGarden.energyLevel greaterThan 0 [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value - VeggieGarden.getProp('energyUse').value }}
-    propPop VeggieGarden.energyLevel
+  // ✏️ LETS CHANGE THIS: make VeggieGarden lose nutrients faster (or slower)
+    prop VeggieGarden.energyLevel sub 1
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  ifProp VeggieGarden.energyLevel greaterThan 30 [[
-    exprPush {{ VeggieGarden.getProp('energyLevel').value / 100 }}
-    featPropPop VeggieGarden.Costume.scale
-  ]]
+  //ifProp VeggieGarden.energyLevel greaterThan 30 [[
+    //exprPush {{ VeggieGarden.getProp('energyLevel').value / 100 }}
+    //featPropPop VeggieGarden.Costume.scale
+  //]]
 
   // this code sets the color of the energy bar based on how hungry the VeggieGarden is
   // set VeggieGarden energy meter color
@@ -794,12 +777,10 @@ every 1 runAtStart [[
 
 
     // avoid getting too small
-    exprPush {{ 0.3 }}
-    featPropPop VeggieGarden.Costume.scale
+    //exprPush {{ 0.3 }}
+    //featPropPop VeggieGarden.Costume.scale
   ]]
-]]
-
-`
+]]`
     },
     {
       "name": "Clover",
@@ -815,16 +796,10 @@ every 1 runAtStart [[
 // 🔎 how much energy it has
 
 addFeature Costume
-featProp Clover.Costume.costumeName setTo 'FWE_clover.png'
+featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
 
 addFeature Physics
-featProp Clover.Costume.scale setTo 0.15
-
-// types to use for energy transfer: sun, vaggieGarden, clover, beetle, caterpillar, robin, gopher, snail, mouse, snake, hawk,
-// sunToVaggie, sunToClover, beetleToMouse, beetleToRobin, beetleToSnake, caterpillarToBeetle, caterpillarToRobin, cloverToGopher
-// cloverToSnail, vaggieToGopher, vaggieToMouse, vaggieToSnail, vaggieToCaterpillar gopherToHawk, mouseToHawk, robinToHawk, snailToBeetle,
-// snailToRobin, snakeToHawk, mouseToSnake
-// these are referenced by EnergyRepresentation
+featProp Clover.Costume.scale setTo 0.4
 addProp energyType String 'clover'
 
 // setup to track energy and begin at 1/2 way
@@ -832,14 +807,9 @@ addProp energyLevel Number 50
 prop Clover.energyLevel setMax 100
 prop Clover.energyLevel setMin 0
 
-// ✏️ LETS CHANGE THIS: make Clover lose energy faster (or slower)
-addProp energyUse Number 1
-
-
 // use a widget to depict the current energy, and color it green (maybe change later)
 addFeature Graphing
 featProp Clover.Graphing.meterProp setTo 'energyLevel'
-
 featProp Clover.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
@@ -847,16 +817,14 @@ every 1 runAtStart [[
 
   // decrease energy each tick, using the energyUse varable to determine how much
   ifProp Clover.energyLevel greaterThan 0 [[
-    exprPush {{ Clover.getProp('energyLevel').value - Clover.getProp('energyUse').value }}
-    propPop Clover.energyLevel
+    prop Clover.energyLevel sub 1
   ]]
 
   // re-scale the VeggieGarden based on its energy level
-  ifProp Clover.energyLevel greaterThan 30 [[
-    // insert code here
-  ]]
-  exprPush {{ Clover.getProp('energyLevel').value / 200 }}
-  featPropPop Clover.Costume.scale
+  //ifProp Clover.energyLevel greaterThan 30 [[
+  \t//exprPush {{ Clover.getProp('energyLevel').value / 200 }}
+ \t//featPropPop Clover.Costume.scale
+   //]]
 
   // this code sets the color of the energy bar based on how hungry the clover is
   // set clover energy meter color
@@ -876,8 +844,8 @@ every 1 runAtStart [[
     featProp Clover.Graphing.meterColor setTo 16711680
 
     // avoid getting too
-    exprPush {{ .15 }}
-    featPropPop Clover.Costume.scale
+    //exprPush {{ .15 }}
+    //featPropPop Clover.Costume.scale
 
   ]]
 ]]`
@@ -1322,50 +1290,50 @@ prop y setTo 319.27`
       "id": "9",
       "label": "VeggieGarden9",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -105.12
-prop y setTo 261.89`
+      "initScript": `prop x setTo -167.46
+prop y setTo 271.13`
     },
     {
       "id": "10",
       "label": "Clover10",
       "bpid": "Clover",
-      "initScript": `prop x setTo 312.36
-prop y setTo -151.69`
+      "initScript": `prop x setTo -260.22
+prop y setTo 9.93`
     },
     {
       "id": "11",
       "label": "Caterpillar11",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo -237.29
-prop y setTo -204.73`
+      "initScript": `prop x setTo 55.93
+prop y setTo -210.50`
     },
     {
       "id": "16",
       "label": "Mouse16",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 102.29
-prop y setTo -228.14`
+      "initScript": `prop x setTo 315.85
+prop y setTo -226.99`
     },
     {
       "id": "17",
       "label": "Robin17",
       "bpid": "Robin",
-      "initScript": `prop x setTo 57.28
-prop y setTo 2.49`
+      "initScript": `prop x setTo 127.70
+prop y setTo 12.88`
     },
     {
       "id": "18",
       "label": "Snake18",
       "bpid": "Snake",
-      "initScript": `prop x setTo -292.27
-prop y setTo -3.27`
+      "initScript": `prop x setTo -289.96
+prop y setTo -170.66`
     },
     {
       "id": "19",
       "label": "Hawk19",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 304.91
-prop y setTo 209.55`
+      "initScript": `prop x setTo 276.05
+prop y setTo 240.72`
     }
   ]
 }
