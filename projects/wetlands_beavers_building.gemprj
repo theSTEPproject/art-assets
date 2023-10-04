@@ -83,7 +83,7 @@ addFeature Graphing
 addFeature Population
 
 // ✏️ CHANGE To show an ecosystem health graph and key
-addProp showEcosystemHealthGraph boolean false
+addProp showEcosystemHealthGraph boolean true
 
 
 // if this is set to true, you can't drop twigs or rocks unless the gesture helper overlaps with the beaver
@@ -1830,6 +1830,13 @@ prop y setTo -3.18`
       "bpid": "Ruler",
       "initScript": `prop x setTo 0
 prop y setTo 345`
+    },
+    {
+      "id": "55",
+      "label": "Predator55",
+      "bpid": "Predator",
+      "initScript": `prop x setTo -290.56
+prop y setTo 323.37`
     }
   ]
 }
