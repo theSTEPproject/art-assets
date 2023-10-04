@@ -1620,8 +1620,8 @@ prop y setTo 180.27`
       "id": "17",
       "label": "GoodWaterPlantSpot 1",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 118.95
-prop y setTo -295.17`
+      "initScript": `prop x setTo 143.13
+prop y setTo -209.79`
     },
     {
       "id": "18",
@@ -1662,22 +1662,22 @@ prop y setTo 288.64`
       "id": "24",
       "label": "GoodWaterPlantSpot 4",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 175.72
-prop y setTo -232.11`
+      "initScript": `prop x setTo 201.41
+prop y setTo -87.7`
     },
     {
       "id": "25",
       "label": "GoodWaterPlantSpot 5",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -118.26
-prop y setTo -44.24`
+      "initScript": `prop x setTo -141.18
+prop y setTo -51.77`
     },
     {
       "id": "26",
       "label": "GoodWaterPlantSpot 6",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 169.93
-prop y setTo -309.78`
+      "initScript": `prop x setTo 176.74
+prop y setTo -290.73`
     },
     {
       "id": "27",
@@ -1697,8 +1697,8 @@ prop y setTo -68.97`
       "id": "32",
       "label": "GoodFishSpawningSpot 2",
       "bpid": "GoodFishSpawningSpot",
-      "initScript": `prop x setTo -113.14
-prop y setTo -254.56`
+      "initScript": `prop x setTo -139.9
+prop y setTo -264.83`
     },
     {
       "id": "35",
