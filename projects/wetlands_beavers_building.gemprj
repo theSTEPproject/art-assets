@@ -82,13 +82,13 @@ addFeature IU
 addFeature Graphing
 addFeature Population
 
+// ✏️ CHANGE To show an ecosystem health graph and key
+addProp showEcosystemHealthGraph boolean false
+
+
 // if this is set to true, you can't drop twigs or rocks unless the gesture helper overlaps with the beaver
 addProp requireGestureHelper boolean false
 
-// ✏️ Consider adding / removing
-// ✏️ The carbon capture graph
-// ✏️ The pollution graph
-// ✏️ The Beaver property for losesEnergy to make it easier to try ideas out
 
 prop global.visible setTo false
 
@@ -153,52 +153,53 @@ addProp healthGraphStartingY number -250
 
 // 🔎 WHAT THIS CODE DOES: This is where we update the Ecosystem Health Graph
 every 5 runAtStart [[
-  featCall global.Population createCharacter HealthGraphBar [[
-    // setup the x
-    featPropPush HealthGraphBar.Costume.width
-    prop global.tempNum setTo 2
-    propPush global.tempNum
-    stackAdd
+  ifProp showEcosystemHealthGraph equal true [[
+    featCall global.Population createCharacter HealthGraphBar [[
+      // setup the x
+      featPropPush HealthGraphBar.Costume.width
+      prop global.tempNum setTo 2
+      propPush global.tempNum
+      stackAdd
 
-    propPush global.healthGraphCounter
-    stackMul
+      propPush global.healthGraphCounter
+      stackMul
 
-    propPush global.healthGraphStartingX
-    stackAdd
-    propPop HealthGraphBar.x
+      propPush global.healthGraphStartingX
+      stackAdd
+      propPop HealthGraphBar.x
 
-    // set the height
-    propPush global.ecosystemHealth
-    featPropPush HealthGraphBar.Costume.height
-    stackMul
-    featPropPop HealthGraphBar.Costume.height
+      // set the height
+      propPush global.ecosystemHealth
+      featPropPush HealthGraphBar.Costume.height
+      stackMul
+      featPropPop HealthGraphBar.Costume.height
 
-    // setup the y and adjust based on height
-    featPropPush HealthGraphBar.Costume.height
-    propPop global.tempNum
-    prop global.tempNum div 2
+      // setup the y and adjust based on height
+      featPropPush HealthGraphBar.Costume.height
+      propPop global.tempNum
+      prop global.tempNum div 2
 
-    propPush global.tempNum
-    propPush global.healthGraphStartingY
-    stackSub
-    propPop HealthGraphBar.y
+      propPush global.tempNum
+      propPush global.healthGraphStartingY
+      stackSub
+      propPop HealthGraphBar.y
 
-    // color it
+      // color it
 
-    ifProp global.ecosystemHealth greaterThanOrEqual 7 [[
-      featCall HealthGraphBar.Costume setColorize 0 200 0
+      ifProp global.ecosystemHealth greaterThanOrEqual 7 [[
+        featCall HealthGraphBar.Costume setColorize 0 200 0
+      ]]
+      ifProp global.ecosystemHealth lessThan 7 [[
+        featCall HealthGraphBar.Costume setColorize 255 165 0
+      ]]
+      ifProp global.ecosystemHealth lessThanOrEqual 3 [[
+        featCall HealthGraphBar.Costume setColorize 150 0 0
+      ]]
+
+      prop global.healthGraphCounter add 1
+
     ]]
-    ifProp global.ecosystemHealth lessThan 7 [[
-      featCall HealthGraphBar.Costume setColorize 255 165 0
-    ]]
-    ifProp global.ecosystemHealth lessThanOrEqual 3 [[
-      featCall HealthGraphBar.Costume setColorize 150 0 0
-    ]]
-
-    prop global.healthGraphCounter add 1
-
   ]]
-
 ]]
 
 every 1 [[
@@ -1439,6 +1440,11 @@ addFeature Costume
 featProp EcosystemHealthBackground.Costume.costumeName setTo 'WL_health_bg.png'
 featProp EcosystemHealthBackground.Costume.scale setTo 0.5
 prop EcosystemHealthBackground.zIndex setTo -500
+
+ifProp global.showEcosystemHealthGraph equal false [[
+  prop EcosystemHealthBackground.visible setTo false
+]]
+
 # PROGRAM UPDATE`
     },
     {
