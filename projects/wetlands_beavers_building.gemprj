@@ -982,7 +982,9 @@ featProp GoodWaterPlantSpot.Costume.scale setTo 0.1
 featCall GoodWaterPlantSpot.Touches monitor 'Water' c2b
 
 addProp plantAlreadyGrewHere boolean false
-prop GoodWaterPlantSpot.visible setTo true
+
+// ✏️ CHANGE to show spots where water plants might grow
+prop GoodWaterPlantSpot.visible setTo false
 
 # PROGRAM UPDATE
 
@@ -1063,7 +1065,8 @@ featCall GoodFishSpawningSpot.Touches monitor 'Water' c2b
 
 addProp fishAlreadySpawnedHere boolean false
 
-prop GoodFishSpawningSpot.visible setTo true
+// ✏️ CHANGE to show spots where fish might spawn
+prop GoodFishSpawningSpot.visible setTo false
 
 # PROGRAM UPDATE
 
@@ -1362,6 +1365,8 @@ featProp GraphFlag.Costume.costumeName setTo 'WL_Flag_1.png'
 featProp GraphFlag.Costume.scale setTo 0.1
 featCall GraphFlag.Touches monitor 'Water' c2b
 
+// CHANGE TO ADD FLAGS
+prop GraphFlag.visible setTo false
 
 # PROGRAM UPDATE
 when GraphFlag centerfirsttouches Water [[
