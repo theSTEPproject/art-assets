@@ -57,7 +57,7 @@ addFeature Physics
 addFeature Touches
 addFeature Costume
 addFeature Graphing
-
+addFeature Movement
 featProp Bee.Costume.costumeName setTo 'HB_bee.png'
 featProp Bee.Costume.scale setTo 0.3
 
@@ -75,6 +75,14 @@ featCall Bee.Touches monitor 'Hive' b2b
 
 
 # PROGRAM UPDATE
+
+ifFeatProp Bee.Movement.compassDirection equal 'E' [[
+  featProp Bee.Costume.flipX setTo false
+]]
+ifFeatProp Bee.Movement.compassDirection equal 'W' [[
+  featProp Bee.Costume.flipX setTo true
+]]
+
 when Bee firsttouches Flower [[
   ifProp Bee.visited equal false [[
     featProp Bee.Costume.glow setTo 1
@@ -98,16 +106,15 @@ when Bee firsttouches Home [[
 
 when Bee firsttouches Hive [[
   ifProp Bee.nectar notEqual 0 [[
-  featProp Hive.Costume.glow setTo 1
-  propPush Bee.nectar
-  propPush Hive.nectar
-  stackAdd
-  propPop Hive.nectar
+    featProp Hive.Costume.glow setTo 1
+    propPush Bee.nectar
+    propPush Hive.nectar
+    stackAdd
+    propPop Hive.nectar
 
-  prop Bee.nectar setTo 0
+    prop Bee.nectar setTo 0
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Flower",
