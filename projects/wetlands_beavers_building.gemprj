@@ -94,8 +94,8 @@ prop global.visible setTo false
 
 // to help us keep track in the water
 // the dam needs to update this
-addProp damSize number 1
-addProp lodgeSize number 1
+addProp damSize number 10
+addProp lodgeSize number 10
 
 // change this to true once the water is a certain size
 addProp canBuildLodge boolean false
@@ -230,7 +230,7 @@ every 1 [[
 every 0.5 [[
   // Check to see if the lodge can be built based on dam size
   // also log the shift once it can
-  ifProp global.damSize greaterThan 5 [[
+  ifProp global.damSize greaterThan 50 [[
     // so we know it is about to flip
     ifProp global.canBuildLodge equal false [[
       featProp global.IU.logStringText setTo 'The water is deep and slow enough to build the lodge now'
@@ -239,7 +239,7 @@ every 0.5 [[
       prop global.noticingString setTo 'Look how slow and deep the water above the dam is.'
     ]]
   ]]
-  ifProp global.damSize lessThan 5 [[
+  ifProp global.damSize lessThan 50 [[
     prop global.canBuildLodge setTo false
   ]]
 ]]
@@ -412,24 +412,24 @@ when Beaver touches Dam [[
           featCall global.IU callFunction 'popupMessage'
         ]]
 
-        // 🔎 This section is where we check if dropping something helps build the dam and how much
+        // 🔎 WHAT : This section is where we check if dropping something helps build the dam and how much
         // 🔎 First we decide how much each thing adds, then we add it
         ifProp Beaver.carrying equal 'twig' [[
           prop global.numTwigsInDam add 1
-          // ✏️ This line sets how much each twig adds
-          prop Dam.size add 1
+          // ✏️ CHANGE how much each twig adds to the dam
+          prop Dam.size add 10
           featCall Beaver.IU logString 'Beaver added a twig to the dam.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
           prop global.numRocksInDam add 1
-          // ✏️ This line sets how much each rock adds
-          prop Dam.size add 1
+          // ✏️ CHANGE how much how much each rock adds to the dam
+          prop Dam.size add 5
           featCall Beaver.IU logString 'Beaver added a rock to the dam.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
           prop global.numMudInDam add 1
-          // ✏️ This line sets how much each bit of mud adds
-          prop Dam.size add 1
+          // ✏️ CHANGE how much how much each bit of mud adds to the dam
+          prop Dam.size add 5
           featCall Beaver.IU logString 'Beaver added mud to the dam.'
         ]]
 
@@ -454,13 +454,13 @@ when Beaver lasttouches Dam [[
 ]]
 
 when Beaver firsttouches Lodge [[
-  ifProp Lodge.size greaterThanOrEqual 3 [[
+  ifProp Lodge.size greaterThanOrEqual 30 [[
     prop Beaver.protected setTo true
     featCall Beaver.IU logString 'Beaver is protected in the lodge'
 
     prop Beaver.displayText add ' 🛡'
   ]]
-  ifProp Lodge.size lessThan 3 [[
+  ifProp Lodge.size lessThan 30 [[
     featCall Beaver.IU logString 'Beaver is near the lodge, but the lodge is not big enough to protect it'
   ]]
 ]]
@@ -540,20 +540,20 @@ when Beaver touches Lodge [[
           // 🔎 First we decide how much each thing adds, then we add it
           ifProp Beaver.carrying equal 'twig' [[
             prop global.numTwigsInLodge add 1
-            // ✏️ This line sets how much each twig adds
-            prop Lodge.size add 1
+            // ✏️ CHANGE how much how much each twig adds to the lodge
+            prop Lodge.size add 10
             featCall Beaver.IU logString 'Beaver added a twig to the lodge.'
           ]]
           ifProp Beaver.carrying equal 'rock' [[
             prop global.numRocksInLodge add 1
-            // ✏️ This line sets how much each rock adds
-            prop Lodge.size add 1
+            // ✏️ CHANGE how much how much each rock adds to the lodge
+            prop Lodge.size add 5
             featCall Beaver.IU logString 'Beaver added a rock to the lodge.'
           ]]
           ifProp Beaver.carrying equal 'mud' [[
             prop global.numMudInLodge add 1
-            // ✏️ This line sets how much each blob of mud adds
-            prop Lodge.size add 1
+            // ✏️ CHANGE how much how much each blob of mud adds to the lodge
+            prop Lodge.size add 5
             featCall Beaver.IU logString 'Beaver added mud to the lodge.'
           ]]
 
@@ -746,9 +746,9 @@ featProp Lodge.Costume.width setTo 100
 featProp Lodge.Costume.height setTo 40
 featCall Lodge.Costume setColorizeHSV 0.1 0.2 0.8
 
-addProp size number 1
-prop Lodge.size setMin 1
-prop Lodge.size setMax 10
+addProp size number 10
+prop Lodge.size setMin 10
+prop Lodge.size setMax 100
 
 // to be used in re-scaling the width
 addProp tempWidth number 0
@@ -760,7 +760,7 @@ every 0.5 [[
   // re-scale based on the size
   propPush Lodge.size
   propPop Lodge.tempWidth
-  prop Lodge.tempWidth mul 20
+  prop Lodge.tempWidth mul 2
   prop Lodge.tempWidth add 80
   propPush Lodge.tempWidth
   featPropPop Lodge.Costume.width
@@ -788,9 +788,9 @@ featProp Dam.Costume.width setTo 100
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
 
-addProp size number 1
-prop Dam.size setMin 1
-prop Dam.size setMax 10
+addProp size number 10
+prop Dam.size setMin 10
+prop Dam.size setMax 100
 
 // to be used in re-scaling the width
 addProp tempWidth number 0
@@ -801,7 +801,7 @@ every 0.5 [[
   // re-scale based on the size
   propPush Dam.size
   propPop Dam.tempWidth
-  prop Dam.tempWidth mul 20
+  prop Dam.tempWidth mul 2
   prop Dam.tempWidth add 80
   propPush Dam.tempWidth
   featPropPop Dam.Costume.width
@@ -845,7 +845,7 @@ every 0.5 [[
   ifProp Water.location equal 'aboveDam' [[
     propPush global.damSize
     propPop Water.tempWidth
-    prop Water.tempWidth mul 30
+    prop Water.tempWidth mul 3
     prop Water.tempWidth add 170
     propPush Water.tempWidth
     featPropPop Water.Costume.width
@@ -853,7 +853,7 @@ every 0.5 [[
   ifProp Water.location notEqual 'aboveDam' [[
     propPush global.damSize
     propPop Water.tempWidth
-    prop Water.tempWidth mul -10
+    prop Water.tempWidth mul -1
     prop Water.tempWidth add 210
     propPush Water.tempWidth
     featPropPop Water.Costume.width
