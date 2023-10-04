@@ -862,6 +862,7 @@ every 0.5 [[
   // ✏️ CHANGE how the width of the water effects the depth of the water
   // The water starts at 200 pixels wide and is adjusted by the dam
   // We cab imagine that each pixel is like an inch in this model
+  // 🔎 Below 3 is shallow, 3 or 4 is medium, and above 5 is deep
   ifFeatProp Water.Costume.width lessThan 180 [[
     prop Water.depth setTo 2
   ]]
