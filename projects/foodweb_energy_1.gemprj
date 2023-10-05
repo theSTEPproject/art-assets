@@ -753,7 +753,10 @@ every 1 runAtStart [[
   ifProp VeggieGarden.energyLevel lessThan 30 [[
     // Red
     featProp VeggieGarden.Graphing.meterColor setTo 16711680
-    prop VeggieGarden.alpha setTo 0.3
+  ]]
+  //dead
+  ifProp VeggieGarden.energyLevel equal 0[[
+      prop VeggieGarden.alpha setTo 0.3
     prop VeggieGarden.isInert setTo true
   ]]
 
@@ -814,10 +817,11 @@ every 1 runAtStart [[
   ifProp Clover.energyLevel lessThan 30 [[
     // Red
     featProp Clover.Graphing.meterColor setTo 16711680
+  ]]
+  //dead
+  ifProp Clover.energyLevel equal 0 [[
     prop Clover.alpha setTo 0.3
     prop Clover.isInert setTo true
-
-
   ]]
   featProp Clover.Graphing.meterProp setTo 'energyLevel'
 ]]`
