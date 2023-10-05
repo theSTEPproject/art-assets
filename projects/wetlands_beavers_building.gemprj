@@ -700,8 +700,8 @@ featProp Mud.Costume.scale setTo 0.1
     {
       "name": "GestureHelper",
       "scriptText": `# BLUEPRINT GestureHelper
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT DOES the GestureHelper DO?
@@ -1361,8 +1361,8 @@ every 1 [[
     {
       "name": "HealthGraphBar",
       "scriptText": `# BLUEPRINT HealthGraphBar
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1378,8 +1378,8 @@ featProp HealthGraphBar.Costume.height setTo 5
     {
       "name": "GraphFlag",
       "scriptText": `# BLUEPRINT GraphFlag
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1433,8 +1433,8 @@ when GraphFlag centerfirsttouches Water [[
     {
       "name": "TextLabel",
       "scriptText": `# BLUEPRINT TextLabel
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1458,8 +1458,8 @@ featProp TextLabel.Graphing.text setTo 'Ecosystem Health'
     {
       "name": "EcosystemHealthBackground",
       "scriptText": `# BLUEPRINT EcosystemHealthBackground
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1477,8 +1477,8 @@ ifProp global.showEcosystemHealthGraph equal false [[
     {
       "name": "WaterKey",
       "scriptText": `# BLUEPRINT WaterKey
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -1491,8 +1491,8 @@ prop WaterKey.zIndex setTo -500
     {
       "name": "Ruler",
       "scriptText": `# BLUEPRINT Ruler
-# TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
