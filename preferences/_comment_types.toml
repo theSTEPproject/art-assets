@@ -52,3 +52,12 @@ color = 'rgba(255,255,255,1)'
 backgroundColor = 'rgba(0,255,0,0.5)'
 help = 'Explanation fow how this works.'
 isBookmark = true
+
+[[commentTypes]]
+
+matchString = '📖'
+cssClass = ''
+color = 'rgba(0,0,0,1)'
+backgroundColor = 'rgba(0,255,0,0.5)'
+help = 'Source of information for the model'
+isBookmark = false
