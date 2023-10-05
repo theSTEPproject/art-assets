@@ -39,7 +39,7 @@
 # override existing
 matchString = '🔎 WHAT'
 cssClass = ''
-color = 'rgba(255,255,255,1)'
+color = 'rgba(0,0,0,1)'
 backgroundColor = 'rgba(0,255,0,0.5)'
 help = 'Questions to consider'
 isBookmark = true

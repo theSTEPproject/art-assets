@@ -414,22 +414,24 @@ when Beaver touches Dam [[
         ]]
 
         // 🔎 WHAT : This section is where we check if dropping something helps build the dam and how much
-        // 🔎 First we decide how much each thing adds, then we add it
         ifProp Beaver.carrying equal 'twig' [[
           prop global.numTwigsInDam add 1
           // ✏️ CHANGE how much each twig adds to the dam
+          // 🔎 Mengxi found a book that said the twigs are important for the size of the dam
           prop Dam.size add 10
           featCall Beaver.IU logString 'Beaver added a twig to the dam.'
         ]]
         ifProp Beaver.carrying equal 'rock' [[
           prop global.numRocksInDam add 1
           // ✏️ CHANGE how much how much each rock adds to the dam
+          // 🔎 Selena found a book that said the rocks are important to keep the dam from washing away
           prop Dam.size add 5
           featCall Beaver.IU logString 'Beaver added a rock to the dam.'
         ]]
         ifProp Beaver.carrying equal 'mud' [[
           prop global.numMudInDam add 1
           // ✏️ CHANGE how much how much each bit of mud adds to the dam
+          // 🔎 Nitasha found a book that said the mud helps make the dam water tight
           prop Dam.size add 5
           featCall Beaver.IU logString 'Beaver added mud to the dam.'
         ]]
@@ -537,23 +539,25 @@ when Beaver touches Lodge [[
             featCall global.IU callFunction 'popupMessage'
           ]]
 
-          // 🔎 This section is where we check if dropping something helps build the lodge and how much
-          // 🔎 First we decide how much each thing adds, then we add it
+          // 🔎 WHAT : This section is where we check if dropping something helps build the lodge and how much
           ifProp Beaver.carrying equal 'twig' [[
             prop global.numTwigsInLodge add 1
             // ✏️ CHANGE how much how much each twig adds to the lodge
+            // 🔎 Mengxi found a book that said the twigs are important for the size of the lodge
             prop Lodge.size add 10
             featCall Beaver.IU logString 'Beaver added a twig to the lodge.'
           ]]
           ifProp Beaver.carrying equal 'rock' [[
             prop global.numRocksInLodge add 1
             // ✏️ CHANGE how much how much each rock adds to the lodge
+            // 🔎 Selena found a book that said the rocks are important to keep the dam from washing away
             prop Lodge.size add 5
             featCall Beaver.IU logString 'Beaver added a rock to the lodge.'
           ]]
           ifProp Beaver.carrying equal 'mud' [[
             prop global.numMudInLodge add 1
             // ✏️ CHANGE how much how much each blob of mud adds to the lodge
+            // 🔎 Nitasha found a book that said the mud helps make the dam water tight
             prop Lodge.size add 5
             featCall Beaver.IU logString 'Beaver added mud to the lodge.'
           ]]
@@ -862,7 +866,7 @@ every 0.5 [[
 
   // ✏️ CHANGE how the width of the water effects the depth of the water
   // The water starts at 200 pixels wide and is adjusted by the dam
-  // We cab imagine that each pixel is like an inch in this model
+  // We can imagine that each pixel is like an inch in this model
   // 🔎 Below 3 is shallow, 3 or 4 is medium, and above 5 is deep
   ifFeatProp Water.Costume.width lessThan 180 [[
     prop Water.depth setTo 2
@@ -1010,7 +1014,8 @@ prop GoodWaterPlantSpot.visible setTo false
 # PROGRAM UPDATE
 
 // ✏️ CHANGE When the water plants appear in the model
-// If this spot is under water, and the water is slow enough, a plant might grow here
+// 🔎 If this spot is under water, and the water is slow enough, a plant might grow here
+// 🔎 Xintian found a book that says that water plants won't grow if the water is too fast
 when GoodWaterPlantSpot centertouches Water [[
   every 1 runAfter [[
     // ✏️ Only plants if the water is the right speed
@@ -1092,7 +1097,8 @@ prop GoodFishSpawningSpot.visible setTo false
 # PROGRAM UPDATE
 
 // ✏️ CHANGE When the fish appear in the model
-// If this spot is under water, and the water is slow enough, fish might lay eggs
+// 🔎 If this spot is under water, and the water is slow enough, fish might lay eggs
+// 🔎 Joshua found a book that said that fish need slow water to lay their eggs
 when GoodFishSpawningSpot centertouches Water [[
   every 1 runAfter [[
     // Only lay eggs if the water is the right speed
