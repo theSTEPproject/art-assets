@@ -129,8 +129,8 @@ addProp numRocksInLodge number 0
 // to be used by the noticing wizard
 addProp noticingString string '...'
 
+// popup messages
 addProp textForPopup string ''
-
 featCall global.IU setupFunction 'popupMessage' [[
 
   featCall global.Population createCharacter PopupEffect [[
@@ -936,6 +936,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature Population
 
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.2
@@ -959,9 +960,23 @@ when Predator firsttouches Beaver [[
     prop Beaver.alpha setTo 0.5
     prop Beaver.isInert setTo true
     prop Beaver.energyLevel setTo 0
+
+
+    // ✏️ Make a popup to tell show users that this beaver was eaten!
+    featCall Predator.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Crunch!'
+      prop PopupEffect.costumeToUse setTo ''
+    ]]
   ]]
   ifProp Beaver.protected equal true [[
     featCall Beaver.IU logString 'The predator tried to attack the beaver but it was protected!'
+
+    // ✏️ Make a popup to tell show users that this beaver couldn't be eaten!
+    featCall Predator.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Safe!'
+      prop PopupEffect.costumeToUse setTo ''
+    ]]
+
   ]]
 
 ]]
