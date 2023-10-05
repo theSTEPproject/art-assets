@@ -1018,7 +1018,7 @@ prop GoodWaterPlantSpot.visible setTo false
 // 🔎 Xintian found a book that says that water plants won't grow if the water is too fast
 when GoodWaterPlantSpot centertouches Water [[
   every 1 runAfter [[
-    // ✏️ Only plants if the water is the right speed
+    // ✏️ Plants only grow if the water is the right speed
     // The options are slow, medium, and fast
     ifProp Water.speed notEqual 'fast' [[
       // Only grow a new plant if one isn't here already
