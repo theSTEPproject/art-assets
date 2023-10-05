@@ -140,7 +140,9 @@ featCall global.IU setupFunction 'popupMessage' [[
   ]]
 ]]
 
-// Properties for the ecoysystem health graph
+// 🔎 Ecosystem health ranges between 0 (dead!) and 10 (doing amazing)
+// 🔎 Start at 3, and hope it gets better! 
+// 🔎 This is based on different organisms being alive, so they change it in their code
 addProp ecosystemHealth number 3
 prop global.ecosystemHealth setMin 0
 prop global.ecosystemHealth setMax 10
@@ -153,7 +155,7 @@ addProp healthGraphStartingY number -250
 
 // 🔎 WHAT THIS CODE DOES: This is where we update the Ecosystem Health Graph
 every 5 runAtStart [[
-  ifProp showEcosystemHealthGraph equal true [[
+  ifProp global.showEcosystemHealthGraph equal true [[
     featCall global.Population createCharacter HealthGraphBar [[
       // setup the x
       featPropPush HealthGraphBar.Costume.width
@@ -184,8 +186,7 @@ every 5 runAtStart [[
       stackSub
       propPop HealthGraphBar.y
 
-      // color it
-
+      // color the ecosystemHealth graph
       ifProp global.ecosystemHealth greaterThanOrEqual 7 [[
         featCall HealthGraphBar.Costume setColorize 0 200 0
       ]]
@@ -1009,7 +1010,7 @@ when GoodWaterPlantSpot centertouches Water [[
         // hide the spawning point since we alreadt spawned
         prop GoodWaterPlantSpot.alpha setTo 0
 
-        // increase ecosystem health value because we have more plants
+        // 🔎 A new plant grows here, so increase the ecosystem health by 1
         prop global.ecosystemHealth add 1
 
         // keep track of how many water plants we have in case we want to graph it
@@ -1088,10 +1089,10 @@ when GoodFishSpawningSpot centertouches Water [[
         featCall GoodFishSpawningSpot.Population createCharacter Fish [[
         ]]
 
-        // hide the spawning point since we alreadt spawned
+        // hide the spawning point since we already spawned
         prop GoodFishSpawningSpot.alpha setTo 0
 
-        // increase ecosystem health value because we have more fish
+        // 🔎 A new fish is born here, so increase the ecosystem health by 1
         prop global.ecosystemHealth add 1
 
         // keep track of how many fish we have in case we want to graph the amount
@@ -1620,8 +1621,8 @@ prop y setTo 180.27`
       "id": "17",
       "label": "GoodWaterPlantSpot 1",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 143.13
-prop y setTo -209.79`
+      "initScript": `prop x setTo 206.01
+prop y setTo -214.38`
     },
     {
       "id": "18",
@@ -1648,8 +1649,8 @@ prop y setTo -306.24`
       "id": "22",
       "label": "GoodWaterPlantSpot 2",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -74.02
-prop y setTo -366.53`
+      "initScript": `prop x setTo -126.7
+prop y setTo -329.93`
     },
     {
       "id": "23",
@@ -1662,22 +1663,22 @@ prop y setTo 288.64`
       "id": "24",
       "label": "GoodWaterPlantSpot 4",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 201.41
-prop y setTo -87.7`
+      "initScript": `prop x setTo 171.11
+prop y setTo -80.77`
     },
     {
       "id": "25",
       "label": "GoodWaterPlantSpot 5",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo -141.18
-prop y setTo -51.77`
+      "initScript": `prop x setTo -168.28
+prop y setTo -47.99`
     },
     {
       "id": "26",
       "label": "GoodWaterPlantSpot 6",
       "bpid": "GoodWaterPlantSpot",
-      "initScript": `prop x setTo 176.74
-prop y setTo -290.73`
+      "initScript": `prop x setTo 204.76
+prop y setTo -287.3`
     },
     {
       "id": "27",
@@ -1697,8 +1698,8 @@ prop y setTo -68.97`
       "id": "32",
       "label": "GoodFishSpawningSpot 2",
       "bpid": "GoodFishSpawningSpot",
-      "initScript": `prop x setTo -139.9
-prop y setTo -264.83`
+      "initScript": `prop x setTo -158.39
+prop y setTo -251.79`
     },
     {
       "id": "35",
