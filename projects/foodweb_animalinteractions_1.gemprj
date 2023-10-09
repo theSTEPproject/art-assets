@@ -27,7 +27,7 @@
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -225,9 +225,10 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addProp alive Boolean true
+addProp hasNutrients boolean false
 
 // set the costume
-featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
+featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
 featProp VeggieGarden.Costume.scale setTo 0.3
 
 // make sure we track interactions with the other creatures
@@ -265,6 +266,16 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
+ifProp VeggieGarden.hasNutrients equal true [[
+  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy.png'
+  // insert code here
+]]
+
+ifProp VeggieGarden.hasNutrients equal false [[
+  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
+  // insert code here
+]]
+
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
@@ -300,6 +311,13 @@ every 1 runAtStart [[
   ]]
 
 ]]
+ifProp VeggieGarden.hasNutrients equal true [[
+  // insert code here
+  every 10 [[
+    // insert code here
+    prop VeggieGarden.hasNutrients setTo false
+  ]]
+]]
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -329,13 +347,14 @@ addFeature Physics
 addFeature Touches
 addFeature Graphing
 addProp alive Boolean true
+addProp hasNutrients boolean false
 
 // This sets the art for the algae character and makes it smaller
-featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
+featProp Clover.Costume.costumeName setTo 'FW1_clover_unhealthy.png'
 // 🔎 WHAT SIZE ARE CLOVER?
 // ✏️ LETS CHANGE THIS:
 // ✏️ HIGHER number => LARGER CLOVER
-featProp Clover.Costume.scale setTo 0.5
+featProp Clover.Costume.scale setTo 0.4
 // moves the clover back so they appear behind other organisms
 prop Clover.zIndex setTo -10
 
@@ -359,28 +378,36 @@ featProp Clover.Graphing.meterColor setTo 65280
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp Clover.alive equal true [[
-    // 🔎 WHAT DOES THIS DO?
-    // 🔎 how much energy do clover lose each second?
-    // ✏️ LETS CHANGE THIS:
-    // ✏️ Higher numbers => lose energy faster
-    prop Clover.energyLevel sub 3
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do clover lose each second?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Higher numbers => lose energy faster
+      prop Clover.energyLevel sub 3
     ]]
   ]]
 ]]
 
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
-   ifProp Clover.alive equal true [[
-    // 🔎 WHAT DOES THIS DO?
-    // 🔎 how much energy do clover get in the sunlight?
-    // ✏️ LETS CHANGE THIS:
-    // ✏️ Lower numbers => gain energy faster
-    prop Clover.energyLevel add 5
+    ifProp Clover.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do clover get in the sunlight?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Lower numbers => gain energy faster
+      prop Clover.energyLevel add 5
     ]]
   ]]
 ]]
 
+ifProp Clover.hasNutrients equal false [[
+  // insert code here
+  featProp Clover.Costume.costumeName setTo 'FW1_clover_unhealthy.png'
+]]
 
+ifProp Clover.hasNutrients equal true [[
+  // insert code here
+  featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy.png'
+]]
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
@@ -409,6 +436,14 @@ every 1 runAtStart [[
     prop Clover.alpha setTo 0.3
     prop Clover.alive setTo false
     prop Clover.isInert setTo true
+  ]]
+
+]]
+
+ifProp Clover.hasNutrients equal true [[
+  every 10 [[
+    // insert code here
+    prop Clover.hasNutrients setTo false
   ]]
 
 ]]`
@@ -543,7 +578,7 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -690,7 +725,7 @@ every 1 runAtStart [[
     {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -721,7 +756,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 featProp Hawk.Costume.scale setTo 0.5
 
 // This tells the hawks how to move
-//featProp Hawk.Movement.direction addRndInt 1 360
+// featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
 featProp Hawk.Movement.distance setTo 5
 featCall Hawk.Movement setRandomDirection
@@ -890,6 +925,8 @@ prop global.visible setTo false
 addProp alphaSettingForAll number 0.5
 addProp skyState string 'daytime'
 addProp day boolean true
+addFeature IU
+
 
 // required directive
 # PROGRAM UPDATE`
@@ -1379,7 +1416,7 @@ onEvent Tick [[
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 
@@ -1402,7 +1439,7 @@ addFeature Cursor
 addProp alive boolean true
 addProp hasNutrients boolean false
 
-featProp Worm.Costume.costumeName setTo 'FW1_Worm.png'
+featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
 featProp Worm.Costume.scale setTo 0.4
 
 featProp Worm.Movement.movementType setTo 'wander'
@@ -1441,7 +1478,7 @@ every 1 runAtStart [[
     featProp Worm.Costume.costumeName setTo 'FW1_Worm_Nutrients.png'
   ]]
   ifProp Worm.hasNutrients equal false [[
-    featProp Worm.Costume.costumeName setTo 'FW1_Worm.png'
+    featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
   ]]
   ifProp Worm.energyLevel greaterThanOrEqual 50 [[
     featProp Worm.Graphing.meterColor setTo 65280
@@ -1596,7 +1633,7 @@ when Worm touches Clover [[
       // insert code here
       prop Worm.hasNutrients setTo false
       featProp Clover.Costume.glow setTo 1
-      featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy.png'
+      prop Clover.hasNutrients setTo true
     ]]
   ]]
 ]]
@@ -1606,7 +1643,7 @@ when Worm touches VeggieGarden [[
       // insert code here
       prop Worm.hasNutrients setTo false
       featProp VeggieGarden.Costume.glow setTo 1
-      featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggiegarden_healthy.png'
+      prop VeggieGarden.hasNutrients setTo true
     ]]
   ]]
 ]]
@@ -1620,7 +1657,7 @@ when Worm touches VeggieGarden [[
     {
       "name": "Mouse",
       "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
@@ -1831,6 +1868,33 @@ onEvent Tick [[
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "teacher",
+      "scriptText": `# BLUEPRINT teacher
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp teacher.Costume.scale setTo 0.2
+prop teacher.alpha setTo 0.1
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1870,32 +1934,60 @@ prop y setTo -316.55`
 prop y setTo 252.06`
     },
     {
-      "id": "122",
-      "label": "Worm122",
-      "bpid": "Worm",
-      "initScript": `prop x setTo -12.61
-prop y setTo 253.95`
-    },
-    {
       "id": "123",
       "label": "Mouse123",
       "bpid": "Mouse",
-      "initScript": `prop x setTo -308.23
-prop y setTo 262.2`
+      "initScript": `prop x setTo -213.42
+prop y setTo -30.54`
     },
     {
       "id": "124",
       "label": "Mouse124",
       "bpid": "Mouse",
-      "initScript": `prop x setTo -307.23
-prop y setTo 284.53`
+      "initScript": `prop x setTo 10.40
+prop y setTo 118.60`
     },
     {
       "id": "125",
       "label": "Mouse125",
       "bpid": "Mouse",
-      "initScript": `prop x setTo -300.52
-prop y setTo 264.88`
+      "initScript": `prop x setTo 219.78
+prop y setTo -84.75`
+    },
+    {
+      "id": "126",
+      "label": "Clover126",
+      "bpid": "Clover",
+      "initScript": `prop x setTo 8
+prop y setTo 41`
+    },
+    {
+      "id": "127",
+      "label": "Clover127",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -217.48
+prop y setTo -150.33`
+    },
+    {
+      "id": "128",
+      "label": "Caterpillar128",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -7.68
+prop y setTo -103.53`
+    },
+    {
+      "id": "129",
+      "label": "Caterpillar129",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo 320.58
+prop y setTo 15.42`
+    },
+    {
+      "id": "130",
+      "label": "Caterpillar130",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo -320.89
+prop y setTo 98.11`
     }
   ]
 }
