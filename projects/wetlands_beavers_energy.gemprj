@@ -153,6 +153,7 @@ when EnergyRepresentation firsttouches Tree [[
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
+
     prop Tree.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
@@ -160,12 +161,16 @@ when EnergyRepresentation firsttouches Tree [[
 
   // if you are carrying nothing, gain energy
   ifProp EnergyRepresentation.energyType equal 'none' [[
-    prop EnergyRepresentation.gainEnergyThisVisit setTo true
+    ifProp Tree.freshGreenBitsForBeavers notEqual 0 [[
+      prop Tree.freshGreenBitsForBeavers sub 1
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
-    prop EnergyRepresentation.energyType setTo 'photosynthesis'
+      prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
-    featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+      prop EnergyRepresentation.energyType setTo 'photosynthesis'
+
+      featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+    ]]
   ]]
 ]]
 
@@ -174,6 +179,7 @@ when EnergyRepresentation lasttouches Tree [[
     ifProp EnergyRepresentation.energyType equal 'photosynthesis' [[
       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
       prop EnergyRepresentation.energyType setTo 'producer'
+      prop EnergyRepresentation.characterType setTo 'tree'
     ]]
   ]]
   ifProp EnergyRepresentation.gainEnergyThisVisit equal false [[
@@ -210,6 +216,8 @@ when EnergyRepresentation lasttouches WaterPlant [[
     ifProp EnergyRepresentation.energyType equal 'photosynthesis' [[
       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
       prop EnergyRepresentation.energyType setTo 'producer'
+      prop EnergyRepresentation.characterType setTo 'waterPlant'
+
     ]]
   ]]
   ifProp EnergyRepresentation.gainEnergyThisVisit equal false [[
@@ -252,6 +260,7 @@ when EnergyRepresentation lasttouches Beaver [[
 
       ifProp global.predatorsEatBeavers equal true [[
         prop EnergyRepresentation.energyType setTo 'consumer'
+        prop EnergyRepresentation.characterType setTo 'beaver'
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver.png'
       ]]
     ]]
@@ -264,14 +273,17 @@ when EnergyRepresentation lasttouches Beaver [[
 
 when EnergyRepresentation firsttouches Fish [[
   ifProp EnergyRepresentation.energyType equal 'producer' [[
-    // Do not gain energy because you are dropping some off
-    prop EnergyRepresentation.gainEnergyThisVisit setTo false 
+      ifProp   EnergyRepresentation.characterType equal 'waterPlant' [[
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
-    prop EnergyRepresentation.energyType setTo 'digestion'
-    prop Fish.energyLevel add 20
+      // Do not gain energy because you are dropping some off
+      prop EnergyRepresentation.gainEnergyThisVisit setTo false 
 
-    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
+      prop EnergyRepresentation.energyType setTo 'digestion'
+      prop Fish.energyLevel add 20
+
+      featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+    ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -611,7 +623,7 @@ prop WaterPlant.energyLevel setMin 0
 prop WaterPlant.energyLevel setMax 100
 
 addProp energyType string 'producer'
-addProp characterType string 'plant'
+addProp characterType string 'waterPlan'
 
 ifProp global.beaversEatWaterPlants equal true [[
   featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
@@ -725,13 +737,14 @@ prop Tree.energyLevel setMax 100
 featProp Tree.Graphing.meterProp setTo 'energyLevel'
 featProp Tree.Graphing.meterColor setTo 65280
 
+addProp freshGreenBitsForBeavers number 3
 addProp energyType string 'producer'
 addProp characterType string 'tree'
 
 # PROGRAM UPDATE
 every 1 [[
     // lower energyLevel because living takes energy
-    prop Tree.energyLevel sub 2
+    prop Tree.energyLevel sub 1
 
     // Set the color of the energy meter depending on the amount of energy that the character has
     // These are green orange, and red in order
@@ -743,6 +756,10 @@ every 1 [[
     ]]
     ifProp Tree.energyLevel lessThan 30 [[
       featProp Tree.Graphing.meterColor setTo 16711680
+    ]]
+
+    ifProp Tree.freshGreenBitsForBeavers equal 0 [[
+      featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
     ]]
 ]]
 
