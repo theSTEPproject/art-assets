@@ -24,8 +24,7 @@
   },
   "rounds": [
     {
-      "initScript": `
-            featCall global.IU logString 'Starting model round'
+      "initScript": `\n            featCall global.IU logString 'Starting model round'
       `,
       "endScript": `
      
@@ -78,9 +77,7 @@ addProp fishUseEnergy boolean false
 addProp predatorsEatBeavers boolean true
 addProp predatorsUseEnergy boolean true
 
-# PROGRAM UPDATE
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "EnergyRepresentation",
