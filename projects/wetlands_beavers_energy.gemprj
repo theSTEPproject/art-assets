@@ -70,12 +70,12 @@ addProp tempNum number 0
 
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
-addProp beaversEatWaterPlants boolean true
 addProp waterPlantsUseEnergy boolean false
-addProp fishEatWaterPlants boolean true
+addProp beaversEatWaterPlants boolean false
+addProp fishEatWaterPlants boolean false
 addProp fishUseEnergy boolean false
-addProp predatorsEatBeavers boolean true
-addProp predatorsUseEnergy boolean true
+addProp predatorsEatBeavers boolean false
+addProp predatorsUseEnergy boolean false
 
 # PROGRAM UPDATE`
     },
@@ -228,14 +228,30 @@ when EnergyRepresentation lasttouches WaterPlant [[
 
 when EnergyRepresentation firsttouches Beaver [[
   ifProp EnergyRepresentation.energyType equal 'producer' [[
-    // Do not gain energy because you are dropping some off
-    prop EnergyRepresentation.gainEnergyThisVisit setTo false 
+    ifProp EnergyRepresentation.characterType equal 'waterPlant' [[
+      ifProp global.beaversEatWaterPlants equal true [[ 
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
-    prop EnergyRepresentation.energyType setTo 'digestion'
-    prop Beaver.energyLevel add 20
+        // Do not gain energy because you are dropping some off
+        prop EnergyRepresentation.gainEnergyThisVisit setTo false 
 
-    featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
+        prop EnergyRepresentation.energyType setTo 'digestion'
+        prop Beaver.energyLevel add 20
+
+        featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a waterPlant.'
+      ]]
+    ]]
+    
+    ifProp EnergyRepresentation.characterType equal 'tree' [[
+        // Do not gain energy because you are dropping some off
+        prop EnergyRepresentation.gainEnergyThisVisit setTo false 
+
+        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
+        prop EnergyRepresentation.energyType setTo 'digestion'
+        prop Beaver.energyLevel add 20
+
+        featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a tree.'      
+    ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -274,15 +290,17 @@ when EnergyRepresentation lasttouches Beaver [[
 when EnergyRepresentation firsttouches Fish [[
   ifProp EnergyRepresentation.energyType equal 'producer' [[
       ifProp   EnergyRepresentation.characterType equal 'waterPlant' [[
+        ifProp global.fishEatWaterPlants equal true [[
 
-      // Do not gain energy because you are dropping some off
-      prop EnergyRepresentation.gainEnergyThisVisit setTo false 
+        // Do not gain energy because you are dropping some off
+        prop EnergyRepresentation.gainEnergyThisVisit setTo false 
 
-      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
-      prop EnergyRepresentation.energyType setTo 'digestion'
-      prop Fish.energyLevel add 20
+        featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
+        prop EnergyRepresentation.energyType setTo 'digestion'
+        prop Fish.energyLevel add 20
 
-      featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+        featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
+      ]]
     ]]
   ]]
 
@@ -625,7 +643,7 @@ prop WaterPlant.energyLevel setMax 100
 addProp energyType string 'producer'
 addProp characterType string 'waterPlan'
 
-ifProp global.beaversEatWaterPlants equal true [[
+ifProp global.waterPlantsUseEnergy equal true [[
   featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
   featProp WaterPlant.Graphing.meterColor setTo 65280
 ]]
@@ -634,24 +652,22 @@ ifProp global.beaversEatWaterPlants equal true [[
 
 # PROGRAM UPDATE
 every 1 [[
-  ifProp global.beaversEatWaterPlants equal true [[
 
-    ifProp global.waterPlantsUseEnergy equal true [[
-        // lower energyLevel because living takes energy
-        prop WaterPlant.energyLevel sub 2
-    ]]
+  ifProp global.waterPlantsUseEnergy equal true [[
+      // lower energyLevel because living takes energy
+      prop WaterPlant.energyLevel sub 2
+  ]]
 
-    // Set the color of the energy meter depending on the amount of energy that the character has
-    // These are green orange, and red in order
-    ifProp WaterPlant.energyLevel greaterThanOrEqual 60 [[
-      featProp WaterPlant.Graphing.meterColor setTo 65280
-    ]]
-    ifProp WaterPlant.energyLevel lessThan 60 [[
-      featProp WaterPlant.Graphing.meterColor setTo 16737792
-    ]]
-    ifProp WaterPlant.energyLevel lessThan 30 [[
-      featProp WaterPlant.Graphing.meterColor setTo 16711680
-    ]]
+  // Set the color of the energy meter depending on the amount of energy that the character has
+  // These are green orange, and red in order
+  ifProp WaterPlant.energyLevel greaterThanOrEqual 60 [[
+    featProp WaterPlant.Graphing.meterColor setTo 65280
+  ]]
+  ifProp WaterPlant.energyLevel lessThan 60 [[
+    featProp WaterPlant.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp WaterPlant.energyLevel lessThan 30 [[
+    featProp WaterPlant.Graphing.meterColor setTo 16711680
   ]]
 ]]
 
