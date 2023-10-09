@@ -67,9 +67,6 @@ addProp damBuildLevel number 9
 
 addProp tempNum number 0
 
-// to be used by the noticing wizard
-addProp noticingString string '...'
-
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
 addProp beaversEatWaterPlants boolean true
@@ -170,7 +167,6 @@ when EnergyRepresentation firsttouches Tree [[
     prop Tree.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
-    // prop global.noticingString setTo ''
   ]]
 
   // if you are carrying nothing, show the process, but do not gain energy
@@ -196,7 +192,6 @@ when EnergyRepresentation firsttouches WaterPlant [[
     prop WaterPlant.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
-    // prop global.noticingString setTo ''
   ]]
 
   // if you are carrying nothing, show the process, but do not gain energy
@@ -756,30 +751,6 @@ addProp location string 'belowDam'
 `
     },
     {
-      "name": "Noticing",
-      "scriptText": `# BLUEPRINT Noticing
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-addFeature Graphing
-featProp Noticing.Costume.costumeName setTo 'GEN_onexone.json'
-featProp Noticing.Graphing.text setTo 'Things to notice will appear here'
-
-# PROGRAM UPDATE
-
-every 1 [[
-  
-  propPush global.noticingString
-  featPropPop Noticing.Graphing.text
-
-]]
-
-  `
-    },
-    {
       "name": "Sun",
       "scriptText": `# BLUEPRINT Sun
 # TAG isCharControllable false
@@ -901,8 +872,8 @@ prop y setTo -324.79`
       "id": "26",
       "label": "WaterPlant 1",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo -173.83
-prop y setTo -45.37
+      "initScript": `prop x setTo -52.45
+prop y setTo -71.28
 `
     },
     {
@@ -944,13 +915,6 @@ prop y setTo -163.69
 prop location setTo 'aboveDam'
 prop visible setTo false
 `
-    },
-    {
-      "id": "46",
-      "label": "Noticing",
-      "bpid": "Noticing",
-      "initScript": `prop x setTo -469.41
-prop y setTo 112.08`
     },
     {
       "id": "47",
