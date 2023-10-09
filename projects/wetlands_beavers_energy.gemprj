@@ -878,8 +878,8 @@ addFeature Costume
 addFeature Graphing
 addFeature Physics
 
-featProp EnergyClear.Costume.costumeName setTo 'GEN_square.json'
-featProp EnergyClear.Costume.scale setTo 0.25
+featProp EnergyClear.Costume.costumeName setTo 'WL_clear_energy.png'
+featProp EnergyClear.Costume.scale setTo 0.15
 
 # PROGRAM UPDATE`
     }
@@ -1054,14 +1054,14 @@ prop y setTo 310.86`
     },
     {
       "id": "53",
-      "label": "Clear Energy",
+      "label": "Clear",
       "bpid": "EnergyClear",
       "initScript": `prop x setTo -420
 prop y setTo -118.73`
     },
     {
       "id": "54",
-      "label": "Clear Energy",
+      "label": "Clear",
       "bpid": "EnergyClear",
       "initScript": `prop x setTo 420
 prop y setTo -118.73`
