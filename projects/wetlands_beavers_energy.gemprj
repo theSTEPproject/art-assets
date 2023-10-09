@@ -24,7 +24,9 @@
   },
   "rounds": [
     {
-      "initScript": ``,
+      "initScript": `
+            featCall global.IU logString 'Starting model round'
+      `,
       "endScript": `
      
       // prep the message, but display later in case we want to add to it
@@ -36,7 +38,7 @@
       featCall global.Graphing showMessageProp
 
       // log that we are done
-      featCall global.IU logString 'Ending model run'
+      featCall global.IU logString 'Ending model round'
 `
     }
   ],
@@ -78,10 +80,7 @@ addProp predatorsUseEnergy boolean true
 
 # PROGRAM UPDATE
 
-
-onEvent START [[
-  featCall global.IU logString 'Starting model run'
-]]`
+`
     },
     {
       "name": "EnergyRepresentation",
@@ -757,11 +756,6 @@ addProp location string 'belowDam'
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
 
 # PROGRAM INIT
 addFeature Costume
