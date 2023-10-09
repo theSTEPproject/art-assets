@@ -727,7 +727,7 @@ addFeature Costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
 
 addFeature Physics
-featProp VeggieGarden.Costume.scale setTo 0.4
+featProp VeggieGarden.Costume.scale setTo 0.3
 
 addProp energyType String 'veggieGarden'
 
@@ -764,9 +764,9 @@ every 1 runAtStart [[
     // Red
     featProp VeggieGarden.Graphing.meterColor setTo 16711680
   ]]
-  //dead
-  ifProp VeggieGarden.energyLevel equal 0[[
-      prop VeggieGarden.alpha setTo 0.3
+  // dead
+  ifProp VeggieGarden.energyLevel equal 0 [[
+    prop VeggieGarden.alpha setTo 0.3
     prop VeggieGarden.isInert setTo true
   ]]
 
@@ -790,7 +790,7 @@ addFeature Costume
 featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
 
 addFeature Physics
-featProp Clover.Costume.scale setTo 0.4
+featProp Clover.Costume.scale setTo 0.3
 addProp energyType String 'clover'
 
 // setup to track energy and begin at 1/2 way
@@ -828,7 +828,7 @@ every 1 runAtStart [[
     // Red
     featProp Clover.Graphing.meterColor setTo 16711680
   ]]
-  //dead
+  // dead
   ifProp Clover.energyLevel equal 0 [[
     prop Clover.alpha setTo 0.3
     prop Clover.isInert setTo true
@@ -1201,8 +1201,9 @@ addFeature Touches
 addFeature Movement
 addFeature Physics
 
-featProp energyReset.Costume.costumeName setTo 'FWE_worm_energy.png'
-featProp energyReset.Costume.scale setTo 0.05
+featProp energyReset.Costume.costumeName setTo 'FWE_energy_reset.png'
+featProp energyReset.Costume.scale setTo 0.1
+prop energyReset.alpha setTo 0.5
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -1229,8 +1230,8 @@ prop y setTo -381.73`
       "id": "5",
       "label": "Timer",
       "bpid": "Timer",
-      "initScript": `prop x setTo 360.29
-prop y setTo -399.12`
+      "initScript": `prop x setTo 297.95
+prop y setTo -394.50`
     },
     {
       "id": "6",
@@ -1240,32 +1241,25 @@ prop y setTo -399.12`
 prop y setTo 0.80`
     },
     {
-      "id": "7",
-      "label": "Lost Energy Graph",
-      "bpid": "GraphLostEnergy",
-      "initScript": `prop x setTo 492.02
-prop y setTo 319.27`
-    },
-    {
       "id": "9",
       "label": "VeggieGarden9",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -136.29
-prop y setTo 234.19`
+      "initScript": `prop x setTo -56.64
+prop y setTo 280.37`
     },
     {
       "id": "10",
       "label": "Clover10",
       "bpid": "Clover",
-      "initScript": `prop x setTo -293.7
-prop y setTo 21.47`
+      "initScript": `prop x setTo -311.02
+prop y setTo 127.67`
     },
     {
       "id": "11",
       "label": "Caterpillar11",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo -13.33
-prop y setTo -198.95`
+      "initScript": `prop x setTo 1.68
+prop y setTo -174.71`
     },
     {
       "id": "16",
@@ -1278,15 +1272,15 @@ prop y setTo -226.99`
       "id": "17",
       "label": "Robin17",
       "bpid": "Robin",
-      "initScript": `prop x setTo 179.65
-prop y setTo -17.13`
+      "initScript": `prop x setTo 263.92
+prop y setTo -10.20`
     },
     {
       "id": "18",
       "label": "Snake18",
       "bpid": "Snake",
       "initScript": `prop x setTo -289.96
-prop y setTo -170.66`
+prop y setTo -162.58`
     },
     {
       "id": "19",
@@ -1299,8 +1293,8 @@ prop y setTo 240.72`
       "id": "20",
       "label": "energyReset20",
       "bpid": "energyReset",
-      "initScript": `prop x setTo 354.10
-prop y setTo -369.45`
+      "initScript": `prop x setTo 365.65
+prop y setTo -364.83`
     }
   ]
 }
