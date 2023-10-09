@@ -38,7 +38,8 @@
 prop global.visible setTo false
 
 addProp energyReleasedAsHeat number 0
-
+addFeature IU
+featCall global.IU logString 'Init GE energy transfer 1 model'
 // required directive
 # PROGRAM UPDATE`
     },
@@ -855,7 +856,7 @@ addFeature Costume
 featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 
 addFeature Physics
-featProp Caterpillar.Costume.scale setTo 0.15
+featProp Caterpillar.Costume.scale setTo 0.3
 addProp energyType String 'caterpillar'
 
 // setup to track energy and begin at 1/2 way
@@ -875,7 +876,7 @@ every 2 runAtStart [[
 
   // ✏️ LETS CHANGE THIS: make Caterpillar lose energy faster (or slower)
   ifProp Caterpillar.energyLevel greaterThan 0 [[
-   prop Caterpillar.energyLevel sub 1
+    prop Caterpillar.energyLevel sub 1
   ]]
 
   // this code sets the color of the energy bar based on how hungry the Caterpillar is
@@ -1216,6 +1217,31 @@ prop energyReset.alpha setTo 0.5
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "teacher",
+      "scriptText": `# BLUEPRINT teacher
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp teacher.Costume.scale setTo 0.2
+prop teacher.alpha setTo 0
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -1295,6 +1321,13 @@ prop y setTo 240.72`
       "bpid": "energyReset",
       "initScript": `prop x setTo 365.65
 prop y setTo -364.83`
+    },
+    {
+      "id": "21",
+      "label": "teacher21",
+      "bpid": "teacher",
+      "initScript": `prop x setTo 29
+prop y setTo 30`
     }
   ]
 }

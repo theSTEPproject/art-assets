@@ -926,6 +926,7 @@ addProp alphaSettingForAll number 0.5
 addProp skyState string 'daytime'
 addProp day boolean true
 addFeature IU
+featCall global.IU logString 'Init GE Animal interactions 1 model'
 
 
 // required directive
