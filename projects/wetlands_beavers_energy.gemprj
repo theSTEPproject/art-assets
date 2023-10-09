@@ -819,8 +819,8 @@ addProp characterType string 'sun'
       "id": "0",
       "label": "Twig 1",
       "bpid": "Twig",
-      "initScript": `prop x setTo -313.17
-prop y setTo 127.86`
+      "initScript": `prop x setTo -214.17
+prop y setTo 131.70`
     },
     {
       "id": "1",
@@ -885,14 +885,14 @@ prop y setTo 286.16`
     },
     {
       "id": "19",
-      "label": "Tree 1",
+      "label": "Tree 2",
       "bpid": "Tree",
       "initScript": `prop x setTo -306.76
 prop y setTo 20.23`
     },
     {
       "id": "20",
-      "label": "Tree 2",
+      "label": "Tree 1",
       "bpid": "Tree",
       "initScript": `prop x setTo 336.30
 prop y setTo -324.79`
@@ -901,8 +901,8 @@ prop y setTo -324.79`
       "id": "26",
       "label": "WaterPlant 1",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo 180.43
-prop y setTo -114.58
+      "initScript": `prop x setTo -173.83
+prop y setTo -45.37
 `
     },
     {
@@ -956,8 +956,8 @@ prop y setTo 112.08`
       "id": "47",
       "label": "Beaver 1",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -155.77
-prop y setTo -126.37`
+      "initScript": `prop x setTo 39.43
+prop y setTo -231.28`
     },
     {
       "id": "48",
@@ -970,19 +970,21 @@ prop y setTo -361.04`
       "id": "50",
       "label": "Beaver 3",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -159.85
-prop y setTo 295.82`
+      "initScript": `prop x setTo -156.04
+prop y setTo 121.20
+featProp Beaver.Costume.flipX setTo true
+`
     },
     {
       "id": "51",
-      "label": "Beaver 4",
+      "label": "Beaver 2",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 12.37
-prop y setTo -255.62`
+      "initScript": `prop x setTo 156.78
+prop y setTo -232.34`
     },
     {
       "id": "52",
-      "label": "Predator 1",
+      "label": "Predator",
       "bpid": "Predator",
       "initScript": `prop x setTo -322.42
 prop y setTo 310.86`
