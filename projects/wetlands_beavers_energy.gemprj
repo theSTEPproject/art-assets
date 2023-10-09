@@ -70,6 +70,9 @@ addProp tempNum number 0
 
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
+addProp showWaterPlants boolean false
+addProp showFish boolean false
+addProp showPredator boolean false
 addProp waterPlantsUseEnergy boolean false
 addProp beaversEatWaterPlants boolean false
 addProp fishEatWaterPlants boolean false
@@ -125,6 +128,8 @@ featCall EnergyRepresentation.Touches monitor 'Beaver' b2b
 featCall EnergyRepresentation.Touches monitor 'Predator' b2b
 featCall EnergyRepresentation.Touches monitor 'WaterPlant' b2b
 featCall EnergyRepresentation.Touches monitor 'Fish' b2b
+featCall EnergyRepresentation.Touches monitor 'EnergyClear' b2b
+
 
 # PROGRAM UPDATE
 
@@ -144,6 +149,11 @@ when EnergyRepresentation firsttouches Sun [[
 
   // log what happened
   featCall EnergyRepresentation.IU logString 'An energy representation picked up energy from the sun.'
+]]
+
+when EnergyRepresentation firsttouches EnergyClear [[
+   prop EnergyRepresentation.energyType setTo 'none'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
 ]]
 
 when EnergyRepresentation firsttouches Tree [[
@@ -583,7 +593,10 @@ addFeature Graphing
 
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.2
-
+ifProp global.showPredator equal false [[
+  prop Predator.visible setTo false
+  prop Predator.isInert setTo true
+]]
 addProp energyType string 'predator'
 addProp characterType string 'coyote'
 
@@ -635,6 +648,10 @@ addFeature IU
 
 featProp WaterPlant.Costume.costumeName setTo 'WL_plant.png'
 featProp WaterPlant.Costume.scale setTo 0.15
+ifProp global.showWaterPlants equal false [[
+  prop WaterPlant.visible setTo false
+  prop WaterPlant.isInert setTo true
+]]
 
 addProp energyLevel number 100
 prop WaterPlant.energyLevel setMin 0
@@ -689,7 +706,10 @@ addFeature IU
 
 featProp Fish.Costume.costumeName setTo 'AQ_fish.png'
 featProp Fish.Costume.scale setTo 0.15
-
+ifProp global.showFish equal false [[
+  prop Fish.visible setTo false
+  prop Fish.isInert setTo true
+]]
 addProp energyLevel number 100
 prop Fish.energyLevel setMin 0
 prop Fish.energyLevel setMax 100
@@ -697,7 +717,7 @@ prop Fish.energyLevel setMax 100
 addProp energyType string 'consumer'
 addProp characterType string 'fish'
 
-ifProp global.fishEatWaterPlants equal true [[
+ifProp global.fishUseEnergy equal true [[
   featProp Fish.Graphing.meterProp setTo 'energyLevel'
   featProp Fish.Graphing.meterColor setTo 65280
 ]]
@@ -845,6 +865,23 @@ addProp characterType string 'sun'
 
 // required directive
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "EnergyClear",
+      "scriptText": `# BLUEPRINT EnergyClear
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Physics
+
+featProp EnergyClear.Costume.costumeName setTo 'GEN_square.json'
+featProp EnergyClear.Costume.scale setTo 0.25
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -852,8 +889,8 @@ addProp characterType string 'sun'
       "id": "0",
       "label": "Twig 1",
       "bpid": "Twig",
-      "initScript": `prop x setTo -214.17
-prop y setTo 131.70`
+      "initScript": `prop x setTo -284.89
+prop y setTo 125.52`
     },
     {
       "id": "1",
@@ -906,8 +943,8 @@ prop y setTo -226.82`
       "id": "12",
       "label": "Rock 1",
       "bpid": "Rock",
-      "initScript": `prop x setTo 319.34
-prop y setTo -113.62`
+      "initScript": `prop x setTo 193.94
+prop y setTo 99.60`
     },
     {
       "id": "18",
@@ -996,8 +1033,8 @@ prop y setTo -361.04`
       "id": "50",
       "label": "Beaver 3",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -156.04
-prop y setTo 121.20
+      "initScript": `prop x setTo -155.23
+prop y setTo 178.05
 featProp Beaver.Costume.flipX setTo true
 `
     },
@@ -1014,6 +1051,20 @@ prop y setTo -232.34`
       "bpid": "Predator",
       "initScript": `prop x setTo -322.42
 prop y setTo 310.86`
+    },
+    {
+      "id": "53",
+      "label": "Clear Energy",
+      "bpid": "EnergyClear",
+      "initScript": `prop x setTo -420
+prop y setTo -118.73`
+    },
+    {
+      "id": "54",
+      "label": "Clear Energy",
+      "bpid": "EnergyClear",
+      "initScript": `prop x setTo 420
+prop y setTo -118.73`
     }
   ]
 }
