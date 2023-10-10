@@ -171,6 +171,9 @@ when EnergyRepresentation firsttouches EnergyClear [[
 
 // 🔎 WHAT Is happening at the Tree?  It is converting light energy into sugar in a process called photosynthesis
 when EnergyRepresentation firsttouches Tree [[
+  // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
+  prop EnergyRepresentation.gainEnergyThisVisit setTo false
+
   ifProp EnergyRepresentation.energyType equal 'source' [[
     // You will get some plant energy to give to a consumer
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
@@ -204,11 +207,13 @@ when EnergyRepresentation firsttouches Tree [[
     ]]
   ]]
 
-  ifFeatProp Tree.Graphing.text notEqual 'photosynthesis' [[
-    // If we are still showing the process, change the name back to what it was
-    featPropPush Tree.Graphing.text
-    propPop Tree.oldName
-    featProp Tree.Graphing.text setTo 'photosynthesis'
+  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+    ifFeatProp Tree.Graphing.text notEqual 'photosynthesis' [[
+      // If we are still showing the process, change the name back to what it was
+      featPropPush Tree.Graphing.text
+      propPop Tree.oldName
+      featProp Tree.Graphing.text setTo 'photosynthesis'
+    ]]
   ]]
 ]]
 
@@ -237,6 +242,9 @@ when EnergyRepresentation lasttouches Tree [[
 
 // 🔎 WHAT Is happening at the Water Plant?  It is converting light energy into sugar in a process called photosynthesis
 when EnergyRepresentation firsttouches WaterPlant [[
+  // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
+  prop EnergyRepresentation.gainEnergyThisVisit setTo false
+
   ifProp EnergyRepresentation.energyType equal 'source' [[
     // You will get some plant energy to give to a consumer
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
@@ -263,10 +271,12 @@ when EnergyRepresentation firsttouches WaterPlant [[
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
   ]]
 
-  ifFeatProp WaterPlant.Graphing.text notEqual 'photosynthesis' [[
-    featPropPush WaterPlant.Graphing.text
-    propPop WaterPlant.oldName
-    featProp WaterPlant.Graphing.text setTo 'photosynthesis'
+  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+    ifFeatProp WaterPlant.Graphing.text notEqual 'photosynthesis' [[
+      featPropPush WaterPlant.Graphing.text
+      propPop WaterPlant.oldName
+      featProp WaterPlant.Graphing.text setTo 'photosynthesis'
+    ]]
   ]]
 ]]
 
@@ -295,6 +305,9 @@ when EnergyRepresentation lasttouches WaterPlant [[
 
 // 🔎 WHAT Is happening at the Beaver?  It is plants that it ate into energy in a process called digestion
 when EnergyRepresentation firsttouches Beaver [[
+  // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
+  prop EnergyRepresentation.gainEnergyThisVisit setTo false
+
   ifProp EnergyRepresentation.energyType equal 'producer' [[
     // Only gain energy from water plants if we set the variable
     // that tells us this is the kind of water plant that beavers eat in this model
@@ -340,10 +353,12 @@ when EnergyRepresentation firsttouches Beaver [[
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
   ]]
 
-  ifFeatProp Beaver.Graphing.text notEqual 'digestion' [[
-    featPropPush Beaver.Graphing.text
-    propPop Beaver.oldName
-    featProp Beaver.Graphing.text setTo 'digestion'
+  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+    ifFeatProp Beaver.Graphing.text notEqual 'digestion' [[
+      featPropPush Beaver.Graphing.text
+      propPop Beaver.oldName
+      featProp Beaver.Graphing.text setTo 'digestion'
+    ]]
   ]]
 ]]
 
@@ -377,6 +392,9 @@ when EnergyRepresentation lasttouches Beaver [[
 ]]
 
 when EnergyRepresentation firsttouches Fish [[
+  // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
+  prop EnergyRepresentation.gainEnergyThisVisit setTo false
+
   ifProp EnergyRepresentation.energyType equal 'producer' [[
     ifProp EnergyRepresentation.characterType equal 'waterPlant' [[
       ifProp global.fishEatWaterPlants equal true [[
@@ -392,10 +410,12 @@ when EnergyRepresentation firsttouches Fish [[
       ]]
     ]]
 
-    ifFeatProp Fish.Graphing.text notEqual 'digestion' [[
-      featPropPush Fish.Graphing.text
-      propPop Fish.oldName
-      featProp Fish.Graphing.text setTo 'digestion'
+  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+      ifFeatProp Fish.Graphing.text notEqual 'digestion' [[
+        featPropPush Fish.Graphing.text
+        propPop Fish.oldName
+        featProp Fish.Graphing.text setTo 'digestion'
+      ]]
     ]]
   ]]
 
@@ -430,6 +450,9 @@ when EnergyRepresentation lasttouches Fish [[
 ]]
 
 when EnergyRepresentation firsttouches Predator [[
+  // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
+  prop EnergyRepresentation.gainEnergyThisVisit setTo false
+
   // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'consumer' [[
     // Do not gain energy because you are dropping some off
@@ -443,11 +466,12 @@ when EnergyRepresentation firsttouches Predator [[
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the coyote (a consumer, also a predator) gets energy by digesting a beaver.'
   ]]
 
-
-  ifFeatProp Predator.Graphing.text notEqual 'digestion' [[
-    featPropPush Predator.Graphing.text
-    propPop Predator.oldName
-    featProp Predator.Graphing.text setTo 'digestion'
+  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+    ifFeatProp Predator.Graphing.text notEqual 'digestion' [[
+      featPropPush Predator.Graphing.text
+      propPop Predator.oldName
+      featProp Predator.Graphing.text setTo 'digestion'
+    ]]
   ]]
 ]]
 
