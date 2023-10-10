@@ -1074,6 +1074,40 @@ featProp Unused.Costume.costumeName setTo 'GEN_onexone.json'
 prop Unused.visible setTo false
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+
+addFeature Graphing
+addFeature Costume
+
+// Hide the actual art since we just want the text to displaay
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Timer.Costume.scale setTo 1
+
+// A property to track the time
+addProp time number 0
+
+// set the initial label and then update it below during update
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// every second, add one to the time property and display the new time in the format \"Time: #\"\"
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
     }
   ],
   "instances": [
@@ -1231,14 +1265,14 @@ prop y setTo 310.86`
       "id": "53",
       "label": "Clear",
       "bpid": "EnergyClear",
-      "initScript": `prop x setTo -420
+      "initScript": `prop x setTo -440
 prop y setTo -118.73`
     },
     {
       "id": "54",
       "label": "Clear",
       "bpid": "EnergyClear",
-      "initScript": `prop x setTo 420
+      "initScript": `prop x setTo 440
 prop y setTo -118.73`
     },
     {
@@ -1254,6 +1288,13 @@ prop y setTo 71.88`
       "bpid": "Tree",
       "initScript": `prop x setTo -326.47
 prop y setTo 301.18`
+    },
+    {
+      "id": "57",
+      "label": "Timer57",
+      "bpid": "Timer",
+      "initScript": `prop Timer.x setTo 436.23
+prop Timer.y setTo -406.85`
     }
   ]
 }
