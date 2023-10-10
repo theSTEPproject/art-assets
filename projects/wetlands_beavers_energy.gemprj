@@ -24,7 +24,7 @@
   },
   "rounds": [
     {
-      "initScript": `\n            featCall global.IU logString 'Starting model round'
+      "initScript": `featCall global.IU logString 'Starting model round'
       `,
       "endScript": `
      
@@ -894,6 +894,34 @@ addFeature Physics
 
 featProp EnergyClear.Costume.costumeName setTo 'WL_clear_energy.png'
 featProp EnergyClear.Costume.scale setTo 0.15
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Teacher",
+      "scriptText": `# BLUEPRINT Teacher
+# TAG isCharControllable false
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Teacher.Costume.costumeName setTo 'GEN_onexone.json'
+prop Teacher.visible setTo false
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Unused",
+      "scriptText": `# BLUEPRINT Unused
+# TAG isCharControllable false
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Unused.Costume.costumeName setTo 'GEN_onexone.json'
+prop Unused.visible setTo false
 
 # PROGRAM UPDATE`
     }
