@@ -71,7 +71,7 @@ addProp tempNum number 0
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
 addProp hasBeavers boolean true
-addProp showWaterPlants boolean true
+addProp showWaterPlants boolean false
 addProp showFish boolean false
 addProp showPredator boolean false
 addProp waterPlantsUseEnergy boolean false
@@ -193,7 +193,14 @@ when EnergyRepresentation firsttouches Tree [[
 
     // Create a log that the tree made energy
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
-  ]]
+    ]]
+
+    ifFeatProp Tree.Graphing.text notEqual 'photosynthesis' [[
+      // If we are still showing the process, change the name back to what it was
+      featPropPush Tree.Graphing.text
+      propPop Tree.oldName
+      featProp Tree.Graphing.text setTo 'photosynthesis'
+    ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -211,15 +218,6 @@ when EnergyRepresentation firsttouches Tree [[
 
       // Create a log that the tree made energy
       featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
-    ]]
-  ]]
-
-  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
-    ifFeatProp Tree.Graphing.text notEqual 'photosynthesis' [[
-      // If we are still showing the process, change the name back to what it was
-      featPropPush Tree.Graphing.text
-      propPop Tree.oldName
-      featProp Tree.Graphing.text setTo 'photosynthesis'
     ]]
   ]]
 ]]
@@ -265,6 +263,12 @@ when EnergyRepresentation firsttouches WaterPlant [[
     prop WaterPlant.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+  
+    ifFeatProp WaterPlant.Graphing.text notEqual 'photosynthesis' [[
+      featPropPush WaterPlant.Graphing.text
+      propPop WaterPlant.oldName
+      featProp WaterPlant.Graphing.text setTo 'photosynthesis'
+    ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -277,14 +281,6 @@ when EnergyRepresentation firsttouches WaterPlant [[
 
     // Create a log that the water plant made energy
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
-  ]]
-
-  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
-    ifFeatProp WaterPlant.Graphing.text notEqual 'photosynthesis' [[
-      featPropPush WaterPlant.Graphing.text
-      propPop WaterPlant.oldName
-      featProp WaterPlant.Graphing.text setTo 'photosynthesis'
-    ]]
   ]]
 ]]
 
@@ -350,6 +346,11 @@ when EnergyRepresentation firsttouches Beaver [[
       featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a tree.'
     ]]
 
+    ifFeatProp Beaver.Graphing.text notEqual 'digestion' [[
+      featPropPush Beaver.Graphing.text
+      propPop Beaver.oldName
+      featProp Beaver.Graphing.text setTo 'digestion'
+    ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -360,14 +361,6 @@ when EnergyRepresentation firsttouches Beaver [[
     prop EnergyRepresentation.energyType setTo 'digestion'
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
-  ]]
-
-  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
-    ifFeatProp Beaver.Graphing.text notEqual 'digestion' [[
-      featPropPush Beaver.Graphing.text
-      propPop Beaver.oldName
-      featProp Beaver.Graphing.text setTo 'digestion'
-    ]]
   ]]
 ]]
 
