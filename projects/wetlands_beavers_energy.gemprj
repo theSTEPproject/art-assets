@@ -71,13 +71,13 @@ addProp tempNum number 0
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
 addProp hasBeavers boolean true
-addProp showWaterPlants boolean false
+addProp showWaterPlants boolean true
 addProp showFish boolean false
 addProp showPredator boolean false
-addProp waterPlantsUseEnergy boolean true
+addProp waterPlantsUseEnergy boolean false
 addProp beaversEatWaterPlants boolean true
 addProp fishEatWaterPlants boolean true
-addProp fishUseEnergy boolean true
+addProp fishUseEnergy boolean false
 addProp predatorsEatBeavers boolean false
 addProp predatorsUseEnergy boolean false
 
@@ -823,12 +823,8 @@ addProp energyType string 'producer'
 addProp characterType string 'waterPlant'
 addProp oldName string ''
 
-ifProp global.waterPlantsUseEnergy equal true [[
-  featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
-  featProp WaterPlant.Graphing.meterColor setTo 65280
-]]
-
-featProp WaterPlant.Graphing.text setTo 'Water Plant'
+featProp WaterPlant.Graphing.meterProp setTo 'energyLevel'
+featProp WaterPlant.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 1 [[
@@ -879,12 +875,8 @@ addProp energyType string 'consumer'
 addProp characterType string 'fish'
 addProp oldName string ''
 
-ifProp global.fishUseEnergy equal true [[
-  featProp Fish.Graphing.meterProp setTo 'energyLevel'
-  featProp Fish.Graphing.meterColor setTo 65280
-]]
-
-featProp Fish.Graphing.text setTo 'Fish'
+featProp Fish.Graphing.meterProp setTo 'energyLevel'
+featProp Fish.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 
