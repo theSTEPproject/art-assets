@@ -70,6 +70,7 @@ addProp tempNum number 0
 
 // ✏️ CHANGE these variables to have the model show different details about how energy
 // ✏️ is used in the system
+addProp hasBeavers boolean true
 addProp showWaterPlants boolean false
 addProp showFish boolean false
 addProp showPredator boolean false
@@ -383,6 +384,11 @@ addFeature Movement
 featProp Beaver.Costume.costumeName setTo 'WL_beaver.png'
 featProp Beaver.Costume.scale setTo 0.15
 
+ifProp global.hasBeavers equal false [[
+  prop Beaver.visible setTo false
+  prop Beaver.isInert setTo true
+]]
+
 // For logging more elaborate ideas
 addProp tempString string ''
 
@@ -508,6 +514,9 @@ featProp Lodge.Costume.width setTo 120
 featProp Lodge.Costume.height setTo 40
 featCall Lodge.Costume setColorizeHSV 0.1 0.4 0.8
 
+ifProp global.hasBeavers equal false [[
+  prop Lodge.visible setTo false
+]]
 
 # PROGRAM UPDATE
 `
@@ -528,6 +537,9 @@ featProp Dam.Costume.width setTo 150
 featProp Dam.Costume.height setTo 40
 featCall Dam.Costume setColorizeHSV 0.1 0.4 0.8
 
+ifProp global.hasBeavers equal false [[
+  prop Dam.visible setTo false
+]]
 
 # PROGRAM UPDATE
 `
@@ -544,10 +556,12 @@ addFeature Costume
 addFeature Physics
 
 featProp Water.Costume.costumeName setTo 'GEN_square.json'
-featProp Water.Costume.width setTo 200
 featProp Water.Costume.height setTo 400
 featCall Water.Costume setColorize 51 170 255
+featProp Water.Costume.width setTo 200
 prop Water.zIndex setTo -200
+
+
 
 
 // can be above or below the dam
@@ -914,9 +928,13 @@ prop y setTo 0
       "initScript": `prop x setTo 0
 prop y setTo -200
 prop location setTo 'aboveDam'
-prop Water.speedOfWater setTo 'slow'
-featCall Water.Costume setColorize 0 71 143
-featProp Water.Costume.width setTo 470
+
+ifProp global.hasBeavers equal true [[
+    prop Water.speedOfWater setTo 'slow'
+    featCall Water.Costume setColorize 0 71 143
+    featProp Water.Costume.width setTo 470
+]]
+
 `
     },
     {
@@ -926,9 +944,11 @@ featProp Water.Costume.width setTo 470
       "initScript": `prop x setTo 0
 prop y setTo 199
 prop location setTo 'belowDam'
-prop Water.speedOfWater setTo 'slow'
-featCall Water.Costume setColorize 128 225 255
-featProp Water.Costume.width setTo 110
+ifProp global.hasBeavers equal true [[
+    prop Water.speedOfWater setTo 'slow'
+    featCall Water.Costume setColorize 128 225 255
+    featProp Water.Costume.width setTo 110
+]]
 
 `
     },
@@ -1003,7 +1023,12 @@ prop zIndex setTo 50`
       "bpid": "WaterSpeed",
       "initScript": `prop x setTo 2.90
 prop y setTo 196.10
-prop location setTo 'belowDam'`
+prop location setTo 'belowDam'
+ifProp global.hasBeavers equal true [[
+  featProp WaterSpeed.Costume.costumeName setTo 'WL_water_speed_fast.png'
+]]
+
+`
     },
     {
       "id": "45",
@@ -1012,7 +1037,10 @@ prop location setTo 'belowDam'`
       "initScript": `prop x setTo -1.18
 prop y setTo -163.69
 prop location setTo 'aboveDam'
-prop visible setTo false
+ifProp global.hasBeavers equal true [[
+  // Super slow because of the dam so don't show speed
+  prop visible setTo false
+]]
 `
     },
     {
