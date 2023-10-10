@@ -31,14 +31,106 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
+# PROGRAM INIT
+addFeature IU
+prop global.visible setTo false
+
+// current col / row
+// 0 means we haven't started this run yet
+addProp col number 0
+addProp row number 0
+
+// choices in this run
+addProp currentColChoice string ''
+addProp colChoice1 string ''
+addProp colChoice2 string ''
+addProp colChoice3 string ''
+
+addProp nextCol number 0
+
+featCall global.IU setupFunction 'updateFlowActions' [[
+  propPop global.col
+  propPush global.nextCol
+  prop global.nextCol add 1
+
+  
+
+]]
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "FlowDirector",
+      "scriptText": `# BLUEPRINT FlowDirector
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
 
 # PROGRAM INIT
 
-prop global.visible setTo false
+addFeature Costume
+featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
+
+addFeature Physics
+addFeature Touches
+
+featCall FlowDirector.Touches monitor 'FlowAction' c2b
+featCall FlowDirector.Touches monitor 'Start' c2b
 
 # PROGRAM UPDATE
 
-`
+when FlowDirector centerfirsttouches Start [[
+  // re-set the global properties so that we can display what is going on in this set of choices
+  prop global.col setTo 0
+  prop global.row setTo 0
+  prop global.colChoice1 setTo ''
+  prop global.colChoice2 setTo ''
+  prop global.colChoice3 setTo ''
+  prop global.currentColChoice setTo ''
+
+  // we are starting a new run, so clear things out and get us ready
+  featCall global.IU callFunction 'updateFlowActions'
+]]
+
+when FlowDirector centerfirsttouches FlowAction [[
+  // update the global row and col then run tun the updateActions code
+  propPush FlowAction.col
+  propPop global.col
+  propPush FlowAction.row
+  propPop global.row
+  propPush FlowAction.actionChoice
+  propPop global.currentColChoice
+
+  featCall global.IU callFunction 'updateFlowActions'
+]]`
+    },
+    {
+      "name": "FlowAction",
+      "scriptText": `# BLUEPRINT FlowAction
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Physics
+addFeature Touches
+addFeature Costume
+featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
+featProp FlowAction.Costume.scale setTo 0.4
+prop FlowAction.alpha setTo 0.5
+
+addProp row number 0
+addProp col number 0
+
+addProp actionChoice string ''
+prop FlowAction.actionChoice addOption 'not chosen yet' 'not chosen yet'
+prop FlowAction.actionChoice addOption 'collect materials' 'collect materials'
+prop FlowAction.actionChoice addOption 'work on dam' 'work on dam'
+prop FlowAction.actionChoice addOption 'work on lodge' 'work on lodge'
+prop FlowAction.actionChoice addOption 'play' 'play'
+prop FlowAction.actionChoice addOption 'eat and store food' 'eat and store food'
+prop FlowAction.actionChoice setToOption 'not chosen yet'
+
+# PROGRAM UPDATE`
     },
     {
       "name": "Teacher",
@@ -69,38 +161,27 @@ prop Unused.visible setTo false
 # PROGRAM UPDATE`
     },
     {
-      "name": "FlowDirector",
-      "scriptText": `# BLUEPRINT FlowDirector
-# TAG isPozyxControllable true
+      "name": "Start",
+      "scriptText": `# BLUEPRINT Start
 # TAG isCharControllable true
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-
-addFeature Costume
-featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
-
-addFeature Physics
-addFeature Touches
-
-# PROGRAM UPDATE`
-    },
-    {
-      "name": "FlowAction",
-      "scriptText": `# BLUEPRINT FlowAction
 # TAG isPozyxControllable false
-# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-
 addFeature Costume
-featProp FlowAction.Costume.costumeName setTo 'WL_seq_play.png'
-featProp FlowAction.Costume.scale setTo 0.4
-addFeature Physics
-addFeature Touches
+featProp Start.Costume.costumeName setTo 'KB_marker_home.png'
+featProp Start.Costume.scale setTo 0.4
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
 
-# PROGRAM UPDATE`
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -108,42 +189,42 @@ addFeature Touches
       "id": "0",
       "label": "FlowAction 1 1",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -290
+      "initScript": `prop x setTo -210
 prop y setTo -250`
     },
     {
       "id": "1",
       "label": "FlowAction 1 2",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -290
+      "initScript": `prop x setTo -210
 prop y setTo -40`
     },
     {
       "id": "2",
       "label": "FlowAction 1 3",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -290
+      "initScript": `prop x setTo -210
 prop y setTo 180`
     },
     {
       "id": "3",
       "label": "FlowAction 2 1",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 0
+      "initScript": `prop x setTo 40
 prop y setTo -250`
     },
     {
       "id": "4",
       "label": "FlowAction 2 2",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 0
+      "initScript": `prop x setTo 40
 prop y setTo -40`
     },
     {
       "id": "5",
       "label": "FlowAction 2 3",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 0
+      "initScript": `prop x setTo 40
 prop y setTo 180`
     },
     {
@@ -166,6 +247,13 @@ prop y setTo -40`
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
 prop y setTo 180`
+    },
+    {
+      "id": "9",
+      "label": "Start",
+      "bpid": "Start",
+      "initScript": `prop x setTo -387.43
+prop y setTo -38.52`
     }
   ]
 }
