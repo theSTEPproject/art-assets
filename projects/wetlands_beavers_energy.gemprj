@@ -991,8 +991,8 @@ prop y setTo -324.79`
       "id": "26",
       "label": "WaterPlant 1",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo -52.45
-prop y setTo -71.28
+      "initScript": `prop x setTo -147.50
+prop y setTo -135.70
 `
     },
     {
@@ -1034,8 +1034,8 @@ ifProp global.hasBeavers equal true [[
       "id": "45",
       "label": "WaterSpeedTop",
       "bpid": "WaterSpeed",
-      "initScript": `prop x setTo -1.18
-prop y setTo -163.69
+      "initScript": `prop x setTo 3.74
+prop y setTo -135.92
 prop location setTo 'aboveDam'
 ifProp global.hasBeavers equal true [[
   // Super slow because of the dam so don't show speed
