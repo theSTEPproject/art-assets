@@ -74,10 +74,10 @@ addProp hasBeavers boolean true
 addProp showWaterPlants boolean false
 addProp showFish boolean false
 addProp showPredator boolean false
-addProp waterPlantsUseEnergy boolean false
-addProp beaversEatWaterPlants boolean false
-addProp fishEatWaterPlants boolean false
-addProp fishUseEnergy boolean false
+addProp waterPlantsUseEnergy boolean true
+addProp beaversEatWaterPlants boolean true
+addProp fishEatWaterPlants boolean true
+addProp fishUseEnergy boolean true
 addProp predatorsEatBeavers boolean false
 addProp predatorsUseEnergy boolean false
 
@@ -175,6 +175,11 @@ when EnergyRepresentation firsttouches Tree [[
   prop EnergyRepresentation.gainEnergyThisVisit setTo false
 
   ifProp EnergyRepresentation.energyType equal 'source' [[
+  
+      ifProp Tree.freshGreenBitsForBeavers notEqual 0 [[
+      prop Tree.freshGreenBitsForBeavers sub 1
+
+
     // You will get some plant energy to give to a consumer
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
@@ -187,6 +192,7 @@ when EnergyRepresentation firsttouches Tree [[
 
     // Create a log that the tree made energy
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
+  ]]
   ]]
 
   // if you are carrying nothing, gain energy
@@ -821,14 +827,14 @@ ifProp global.waterPlantsUseEnergy equal true [[
   featProp WaterPlant.Graphing.meterColor setTo 65280
 ]]
 
-  featProp WaterPlant.Graphing.text setTo ''
+featProp WaterPlant.Graphing.text setTo 'Water Plant'
 
 # PROGRAM UPDATE
 every 1 [[
 
   ifProp global.waterPlantsUseEnergy equal true [[
-      // lower energyLevel because living takes energy
-      prop WaterPlant.energyLevel sub 2
+    // lower energyLevel because living takes energy
+    prop WaterPlant.energyLevel sub 2
   ]]
 
   // Set the color of the energy meter depending on the amount of energy that the character has
@@ -842,9 +848,7 @@ every 1 [[
   ifProp WaterPlant.energyLevel lessThan 30 [[
     featProp WaterPlant.Graphing.meterColor setTo 16711680
   ]]
-]]
-
-`
+]]`
     },
     {
       "name": "Fish",
@@ -879,7 +883,7 @@ ifProp global.fishUseEnergy equal true [[
   featProp Fish.Graphing.meterColor setTo 65280
 ]]
 
-  featProp Fish.Graphing.text setTo ''
+featProp Fish.Graphing.text setTo 'Fish'
 
 # PROGRAM UPDATE
 
@@ -888,8 +892,8 @@ every 1 [[
   ifProp global.fishEatWaterPlants equal true [[
 
     ifProp global.fishUseEnergy equal true [[
-        // lower energyLevel because living takes energy
-        prop Fish.energyLevel sub 2
+      // lower energyLevel because living takes energy
+      prop Fish.energyLevel sub 2
     ]]
 
     // Set the color of the energy meter depending on the amount of energy that the character has
@@ -904,8 +908,7 @@ every 1 [[
       featProp Fish.Graphing.meterColor setTo 16711680
     ]]
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Tree",
@@ -930,34 +933,32 @@ prop Tree.energyLevel setMax 100
 featProp Tree.Graphing.meterProp setTo 'energyLevel'
 featProp Tree.Graphing.meterColor setTo 65280
 
-addProp freshGreenBitsForBeavers number 3
+addProp freshGreenBitsForBeavers number 8
 addProp energyType string 'producer'
 addProp characterType string 'tree'
 addProp oldName string ''
 
 # PROGRAM UPDATE
 every 1 [[
-    // lower energyLevel because living takes energy
-    prop Tree.energyLevel sub 1
+  // lower energyLevel because living takes energy
+  prop Tree.energyLevel sub 1
 
-    // Set the color of the energy meter depending on the amount of energy that the character has
-    // These are green orange, and red in order
-    ifProp Tree.energyLevel greaterThanOrEqual 60 [[
-      featProp Tree.Graphing.meterColor setTo 65280
-    ]]
-    ifProp Tree.energyLevel lessThan 60 [[
-      featProp Tree.Graphing.meterColor setTo 16737792
-    ]]
-    ifProp Tree.energyLevel lessThan 30 [[
-      featProp Tree.Graphing.meterColor setTo 16711680
-    ]]
+  // Set the color of the energy meter depending on the amount of energy that the character has
+  // These are green orange, and red in order
+  ifProp Tree.energyLevel greaterThanOrEqual 60 [[
+    featProp Tree.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Tree.energyLevel lessThan 60 [[
+    featProp Tree.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Tree.energyLevel lessThan 30 [[
+    featProp Tree.Graphing.meterColor setTo 16711680
+  ]]
 
-    ifProp Tree.freshGreenBitsForBeavers equal 0 [[
-      featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
-    ]]
-]]
-
-  `
+  ifProp Tree.freshGreenBitsForBeavers equal 0 [[
+    featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+  ]]
+]]`
     },
     {
       "name": "GreatSpotForDam",
@@ -1075,13 +1076,6 @@ prop Unused.visible setTo false
   ],
   "instances": [
     {
-      "id": "0",
-      "label": "Twig 1",
-      "bpid": "Twig",
-      "initScript": `prop x setTo -284.89
-prop y setTo 125.52`
-    },
-    {
       "id": "1",
       "label": "Lodge",
       "bpid": "Lodge",
@@ -1128,20 +1122,6 @@ ifProp global.hasBeavers equal true [[
 `
     },
     {
-      "id": "9",
-      "label": "Twig 2",
-      "bpid": "Twig",
-      "initScript": `prop x setTo 336.74
-prop y setTo -226.82`
-    },
-    {
-      "id": "12",
-      "label": "Rock 1",
-      "bpid": "Rock",
-      "initScript": `prop x setTo 193.94
-prop y setTo 99.60`
-    },
-    {
       "id": "18",
       "label": "Tree 3",
       "bpid": "Tree",
@@ -1159,16 +1139,15 @@ prop y setTo 20.23`
       "id": "20",
       "label": "Tree 1",
       "bpid": "Tree",
-      "initScript": `prop x setTo 336.30
+      "initScript": `prop x setTo 336.3
 prop y setTo -324.79`
     },
     {
       "id": "26",
       "label": "WaterPlant 1",
       "bpid": "WaterPlant",
-      "initScript": `prop x setTo -147.50
-prop y setTo -135.70
-`
+      "initScript": `prop x setTo -147.5
+prop y setTo -135.7`
     },
     {
       "id": "27",
@@ -1222,8 +1201,8 @@ ifProp global.hasBeavers equal true [[
       "id": "47",
       "label": "Beaver 1",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 39.43
-prop y setTo -231.28`
+      "initScript": `prop x setTo 13.48
+prop y setTo -229.04`
     },
     {
       "id": "48",
@@ -1233,20 +1212,11 @@ prop y setTo -231.28`
 prop y setTo -361.04`
     },
     {
-      "id": "50",
-      "label": "Beaver 3",
-      "bpid": "Beaver",
-      "initScript": `prop x setTo -155.23
-prop y setTo 178.05
-featProp Beaver.Costume.flipX setTo true
-`
-    },
-    {
       "id": "51",
       "label": "Beaver 2",
       "bpid": "Beaver",
-      "initScript": `prop x setTo 156.78
-prop y setTo -232.34`
+      "initScript": `prop x setTo -164.69
+prop y setTo 218.55`
     },
     {
       "id": "52",
@@ -1268,6 +1238,20 @@ prop y setTo -118.73`
       "bpid": "EnergyClear",
       "initScript": `prop x setTo 420
 prop y setTo -118.73`
+    },
+    {
+      "id": "55",
+      "label": "Tree55",
+      "bpid": "Tree",
+      "initScript": `prop x setTo 301.72
+prop y setTo 71.88`
+    },
+    {
+      "id": "56",
+      "label": "Tree56",
+      "bpid": "Tree",
+      "initScript": `prop x setTo -326.47
+prop y setTo 301.18`
     }
   ]
 }
