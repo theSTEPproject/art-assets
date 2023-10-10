@@ -182,7 +182,7 @@ when EnergyRepresentation firsttouches Tree [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
 
-    // The tree gains energy from this process 
+    // ✏️ CHANGE How much energy the tree gets from photosynthesis (between 0-100)
     prop Tree.energyLevel add 30
 
     // Create a log that the tree made energy
@@ -191,7 +191,7 @@ when EnergyRepresentation firsttouches Tree [[
 
   // if you are carrying nothing, gain energy
   ifProp EnergyRepresentation.energyType equal 'none' [[
-    // Only gain energy from the tree if it still has lots of fresh green parts 
+    // Only gain energy from the tree if it still has lots of fresh green parts
     // these go away when beavers eat them, and then need time to grow back
     ifProp Tree.freshGreenBitsForBeavers notEqual 0 [[
       prop Tree.freshGreenBitsForBeavers sub 1
@@ -252,8 +252,8 @@ when EnergyRepresentation firsttouches WaterPlant [[
     // Change the artwork to show that this is photosynthesis, and is converting energy
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
-    
-    // The water plant gains energy from this process 
+
+    // ✏️ CHANGE How much energy the water plant gets from photosynthesis (between 0-100)
     prop WaterPlant.energyLevel add 30
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
@@ -262,11 +262,11 @@ when EnergyRepresentation firsttouches WaterPlant [[
   // if you are carrying nothing, gain energy
   ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
-    
+
     // Change the artwork to show that this is photosynthesis, and is converting energy
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
-    
+
     // Create a log that the water plant made energy
     featCall EnergyRepresentation.IU logString 'An energy representation is showing a plant using photosynthesis to convert energy from the sun into sugar, which is energy for the plant'
   ]]
@@ -303,7 +303,7 @@ when EnergyRepresentation lasttouches WaterPlant [[
   ]]
 ]]
 
-// 🔎 WHAT Is happening at the Beaver?  It is plants that it ate into energy in a process called digestion
+// 🔎 WHAT Is happening at the Beaver?  It is converting plants that it ate into energy in a process called digestion
 when EnergyRepresentation firsttouches Beaver [[
   // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
   prop EnergyRepresentation.gainEnergyThisVisit setTo false
@@ -316,11 +316,11 @@ when EnergyRepresentation firsttouches Beaver [[
 
         prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
-        // Change the artwork to show that this is digestion 
+        // Change the artwork to show that this is digestion
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
 
-        // give the beaver some energy from digestion 
+        // ✏️ CHANGE How much energy the beaver gets from digestion of the water plant (between 0-100)
         prop Beaver.energyLevel add 20
 
         // Create a log that the beaver gained energy
@@ -331,11 +331,11 @@ when EnergyRepresentation firsttouches Beaver [[
     ifProp EnergyRepresentation.characterType equal 'tree' [[
       prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
-      // Change the artwork to show that this is digestion 
+      // Change the artwork to show that this is digestion
       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
       prop EnergyRepresentation.energyType setTo 'digestion'
-      
-      // give the beaver some energy from digestion 
+
+      // ✏️ CHANGE How much energy the beaver gets from digestion of the tree (between 0-100)
       prop Beaver.energyLevel add 20
 
       featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a tree.'
@@ -363,6 +363,7 @@ when EnergyRepresentation firsttouches Beaver [[
 ]]
 
 when EnergyRepresentation lasttouches Beaver [[
+  // If we are gaining energy from this visit, make sure we know it was from a plant
   ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
     ifProp EnergyRepresentation.energyType equal 'digestion' [[
 
@@ -383,6 +384,7 @@ when EnergyRepresentation lasttouches Beaver [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
   ]]
 
+  // If we are still showing the process, change the name back to what it was
   ifFeatProp Beaver.Graphing.text equal 'digestion' [[
     propPush Beaver.oldName
     featPropPop Beaver.Graphing.text
@@ -391,26 +393,31 @@ when EnergyRepresentation lasttouches Beaver [[
 
 ]]
 
+// 🔎 WHAT Is happening at the Fish?  It is converting plants that it ate into energy in a process called digestion
 when EnergyRepresentation firsttouches Fish [[
   // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
   prop EnergyRepresentation.gainEnergyThisVisit setTo false
 
+  // Only gain energy from water plants (not trees since that would be weird)
   ifProp EnergyRepresentation.energyType equal 'producer' [[
     ifProp EnergyRepresentation.characterType equal 'waterPlant' [[
       ifProp global.fishEatWaterPlants equal true [[
 
-        // Do not gain energy because you are dropping some off
         prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
+        // Change the artwork to show that this is digestion
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
+
+        // ✏️ CHANGE How much energy the fish gets from digestion (between 0-100)
         prop Fish.energyLevel add 20
 
+        // Create a log that the beaver gained energy
         featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
       ]]
     ]]
 
-  ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
+    ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
       ifFeatProp Fish.Graphing.text notEqual 'digestion' [[
         featPropPush Fish.Graphing.text
         propPop Fish.oldName
@@ -437,6 +444,7 @@ when EnergyRepresentation firsttouches Fish [[
 ]]
 
 when EnergyRepresentation lasttouches Fish [[
+  // If we are gaining energy from this visit, make sure we know it was from a plant
   ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
     ifProp EnergyRepresentation.energyType equal 'digestion' [[
       prop EnergyRepresentation.energyType setTo 'none'
@@ -449,20 +457,23 @@ when EnergyRepresentation lasttouches Fish [[
   ]]
 ]]
 
+// 🔎 WHAT Is happening at the predator? It is eating a beaver to make energy through digestion
 when EnergyRepresentation firsttouches Predator [[
   // Set this to false in case it is the wrong kind of energy, and then set it to true below if it is the right kind
   prop EnergyRepresentation.gainEnergyThisVisit setTo false
 
   // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'consumer' [[
-    // Do not gain energy because you are dropping some off
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
+    // Change the artwork to show that this is digestion
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
 
+    // ✏️ CHANGE How much energy the predator gets from digestion (between 0-100)
     prop Predator.energyLevel add 30
 
+    // Create a log that the predator gained energy
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the coyote (a consumer, also a predator) gets energy by digesting a beaver.'
   ]]
 
@@ -476,12 +487,10 @@ when EnergyRepresentation firsttouches Predator [[
 ]]
 
 when EnergyRepresentation lasttouches Predator [[
-  // ifProp EnergyRepresentation.gainEnergyThisVisit equal true [[
   ifProp EnergyRepresentation.energyType equal 'digestion' [[
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
     prop EnergyRepresentation.energyType setTo 'none'
   ]]
-  // ]]
 
   ifFeatProp Predator.Graphing.text equal 'digestion' [[
     propPush Predator.oldName
