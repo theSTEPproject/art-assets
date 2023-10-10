@@ -206,7 +206,7 @@ when EnergyRepresentation firsttouches Tree [[
       prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
       // Change the artwork to show that this is photosynthesis, and is converting energy
-      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
       prop EnergyRepresentation.energyType setTo 'photosynthesis'
 
       // Create a log that the tree made energy
@@ -272,7 +272,7 @@ when EnergyRepresentation firsttouches WaterPlant [[
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
     // Change the artwork to show that this is photosynthesis, and is converting energy
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
 
     // Create a log that the water plant made energy
@@ -356,7 +356,7 @@ when EnergyRepresentation firsttouches Beaver [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
@@ -440,7 +440,7 @@ when EnergyRepresentation firsttouches Fish [[
   ifProp EnergyRepresentation.energyType equal 'none' [[
     prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_fish.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
 
     featCall EnergyRepresentation.IU logString 'An energy representation is showing how the beaver (a consumer) gets energy by digesting a plant.'
