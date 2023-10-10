@@ -1910,15 +1910,15 @@ prop y setTo -28.52`
       "id": "79",
       "label": "Timer79",
       "bpid": "Timer",
-      "initScript": `prop x setTo -360.57
-prop y setTo -398.91`
+      "initScript": `prop x setTo 358.39
+prop y setTo -400.99`
     },
     {
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -269.89
-prop y setTo 256.71`
+      "initScript": `prop x setTo -266.77
+prop y setTo 225.54`
     },
     {
       "id": "109",
@@ -1928,67 +1928,18 @@ prop y setTo 256.71`
 prop y setTo -316.55`
     },
     {
-      "id": "121",
-      "label": "VeggieGarden121",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 270.62
-prop y setTo 252.06`
-    },
-    {
-      "id": "123",
-      "label": "Mouse123",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo -213.42
-prop y setTo -30.54`
-    },
-    {
-      "id": "124",
-      "label": "Mouse124",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo 10.40
-prop y setTo 118.60`
-    },
-    {
       "id": "125",
-      "label": "Mouse125",
-      "bpid": "Mouse",
-      "initScript": `prop x setTo 219.78
-prop y setTo -84.75`
+      "label": "VeggieGarden125",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 245.92
+prop y setTo 256.99`
     },
     {
       "id": "126",
-      "label": "Clover126",
-      "bpid": "Clover",
-      "initScript": `prop x setTo 8
-prop y setTo 41`
-    },
-    {
-      "id": "127",
-      "label": "Clover127",
-      "bpid": "Clover",
-      "initScript": `prop x setTo -217.48
-prop y setTo -150.33`
-    },
-    {
-      "id": "128",
-      "label": "Caterpillar128",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -7.68
-prop y setTo -103.53`
-    },
-    {
-      "id": "129",
-      "label": "Caterpillar129",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo 320.58
-prop y setTo 15.42`
-    },
-    {
-      "id": "130",
-      "label": "Caterpillar130",
-      "bpid": "Caterpillar",
-      "initScript": `prop x setTo -320.89
-prop y setTo 98.11`
+      "label": "VeggieGarden126",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 16.18
+prop y setTo 0.84`
     }
   ]
 }
