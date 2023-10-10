@@ -176,6 +176,7 @@ when EnergyRepresentation firsttouches Tree [[
 
   ifProp EnergyRepresentation.energyType equal 'source' [[
   
+      // If the beavers havent eaten too much ... 
       ifProp Tree.freshGreenBitsForBeavers notEqual 0 [[
       prop Tree.freshGreenBitsForBeavers sub 1
 
@@ -933,7 +934,7 @@ prop Tree.energyLevel setMax 100
 featProp Tree.Graphing.meterProp setTo 'energyLevel'
 featProp Tree.Graphing.meterColor setTo 65280
 
-addProp freshGreenBitsForBeavers number 8
+addProp freshGreenBitsForBeavers number 3
 addProp energyType string 'producer'
 addProp characterType string 'tree'
 addProp oldName string ''
@@ -957,6 +958,7 @@ every 1 [[
 
   ifProp Tree.freshGreenBitsForBeavers equal 0 [[
     featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+    prop Tree.energyLevel setTo 0
   ]]
 ]]`
     },
