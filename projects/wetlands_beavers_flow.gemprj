@@ -50,8 +50,8 @@ addProp colChoice3 string ''
 addProp nextCol number 0
 
 featCall global.IU setupFunction 'updateFlowActions' [[
-  propPop global.col
-  propPush global.nextCol
+  propPush global.col
+  propPop global.nextCol
   prop global.nextCol add 1
 
   featCall global.Population charactersForEach FlowAction [[
@@ -136,34 +136,51 @@ prop FlowAction.actionChoice addOption 'eat and store food' 'eat and store food'
 prop FlowAction.actionChoice setToOption 'not chosen yet'
 
 featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
-  
+
   // double check the numbers make sense here.
-  if global.col equal 0 [[
-    if FlowAction.col equal 1 [[
-      if FlowAction.row equal 1 [[
-        prop FlowAction.actionChoice setToOption 'work on dam' 
+  ifProp global.col equal 0 [[
+    ifProp FlowAction.col equal 1 [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'work on dam'
       ]]
-      if FlowAction.row equal 2 [[
-        prop FlowAction.actionChoice setToOption 'eat and store food' 
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
 
       ]]
-      if FlowAction.row equal 3 [[
-          prop FlowAction.actionChoice setToOption 'play' 
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'play'
       ]]
 
     ]]
 
-    if FlowAction.col equal 2 [[
-      
+    ifProp FlowAction.col equal 2 [[
+
     ]]
 
-    if FlowAction.col equal 3 [[
-      
-    ]]
+    ifProp FlowAction.col equal 3 [[
 
-    // update the art based on the current selection
-    // if you were set to nothing do that
-  ]] 
+    ]]
+  ]]
+
+  // update the art based on the current selection
+  ifProp FlowAction.actionChoice equalToOption 'not chosen yet' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
+  ]]
+  ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_collect.png'
+  ]]
+  ifProp FlowAction.actionChoice equalToOption 'work on dam' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_dam.png'
+  ]]
+  ifProp FlowAction.actionChoice equalToOption 'work on lodge' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_lodge.png'
+  ]]
+  ifProp FlowAction.actionChoice equalToOption 'play' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_play.png'
+  ]]
+  ifProp FlowAction.actionChoice equalToOption 'eat and store food' [[
+    featProp FlowAction.Costume.costumeName setTo 'WL_seq_eat.png'
+  ]]
 ]]
 
 # PROGRAM UPDATE`
@@ -219,63 +236,82 @@ featProp Start.Costume.scale setTo 0.4
       "label": "FlowAction 1 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo -250`
+prop y setTo -250
+prop FlowAction.col setTo 1
+prop FlowAction.row setTo 1
+`
     },
     {
       "id": "1",
       "label": "FlowAction 1 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo -40`
+prop y setTo -40
+prop FlowAction.col setTo 1
+prop FlowAction.row setTo 2`
     },
     {
       "id": "2",
       "label": "FlowAction 1 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo 180`
+prop y setTo 180
+prop FlowAction.col setTo 1
+prop FlowAction.row setTo 3`
     },
     {
       "id": "3",
       "label": "FlowAction 2 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo -250`
+prop y setTo -250
+prop FlowAction.col setTo 2
+prop FlowAction.row setTo 1`
     },
     {
       "id": "4",
       "label": "FlowAction 2 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo -40`
+prop y setTo -40
+prop FlowAction.col setTo 2
+prop FlowAction.row setTo 2`
     },
     {
       "id": "5",
       "label": "FlowAction 2 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo 180`
+prop y setTo 180
+prop FlowAction.col setTo 2
+prop FlowAction.row setTo 3`
     },
     {
       "id": "6",
       "label": "FlowAction 3 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo -250`
+prop y setTo -250
+prop FlowAction.col setTo 3
+prop FlowAction.row setTo 1`
     },
     {
       "id": "7",
       "label": "FlowAction 3 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo -40`
+prop y setTo -40
+prop FlowAction.col setTo 3
+prop FlowAction.row setTo 2`
     },
     {
       "id": "8",
       "label": "FlowAction 3 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo 180`
+prop y setTo 180
+prop FlowAction.col setTo 3
+prop FlowAction.row setTo 3`
     },
     {
       "id": "9",
