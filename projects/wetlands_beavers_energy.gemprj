@@ -172,7 +172,7 @@ when EnergyRepresentation firsttouches EnergyClear [[
 when EnergyRepresentation firsttouches Tree [[
   ifProp EnergyRepresentation.energyType equal 'source' [[
     // Do not gain energy because you are dropping some off
-    prop EnergyRepresentation.gainEnergyThisVisit setTo false
+    prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
@@ -227,7 +227,7 @@ when EnergyRepresentation lasttouches Tree [[
 when EnergyRepresentation firsttouches WaterPlant [[
   ifProp EnergyRepresentation.energyType equal 'source' [[
     // Do not gain energy because you are dropping some off
-    prop EnergyRepresentation.gainEnergyThisVisit setTo false
+    prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
@@ -280,7 +280,7 @@ when EnergyRepresentation firsttouches Beaver [[
       ifProp global.beaversEatWaterPlants equal true [[
 
         // Do not gain energy because you are dropping some off
-        prop EnergyRepresentation.gainEnergyThisVisit setTo false
+        prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
@@ -292,7 +292,7 @@ when EnergyRepresentation firsttouches Beaver [[
 
     ifProp EnergyRepresentation.characterType equal 'tree' [[
       // Do not gain energy because you are dropping some off
-      prop EnergyRepresentation.gainEnergyThisVisit setTo false
+      prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
       prop EnergyRepresentation.energyType setTo 'digestion'
@@ -355,7 +355,7 @@ when EnergyRepresentation firsttouches Fish [[
       ifProp global.fishEatWaterPlants equal true [[
 
         // Do not gain energy because you are dropping some off
-        prop EnergyRepresentation.gainEnergyThisVisit setTo false
+        prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
@@ -406,7 +406,7 @@ when EnergyRepresentation firsttouches Predator [[
   // if you are not carrying energy, show the digestion but do not change energy levels
   ifProp EnergyRepresentation.energyType equal 'consumer' [[
     // Do not gain energy because you are dropping some off
-    prop EnergyRepresentation.gainEnergyThisVisit setTo false
+    prop EnergyRepresentation.gainEnergyThisVisit setTo true
 
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
