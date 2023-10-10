@@ -33,6 +33,7 @@
 
 # PROGRAM INIT
 addFeature IU
+addFeature Population
 prop global.visible setTo false
 
 // current col / row
@@ -53,8 +54,9 @@ featCall global.IU setupFunction 'updateFlowActions' [[
   propPush global.nextCol
   prop global.nextCol add 1
 
-  
-
+  featCall global.Population charactersForEach FlowAction [[
+    featCall FlowAction.IU callFunction 'updateActionDisplay'
+  ]]
 ]]
 # PROGRAM UPDATE`
     },
@@ -69,6 +71,7 @@ featCall global.IU setupFunction 'updateFlowActions' [[
 
 addFeature Costume
 featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
+featProp FlowDirector.Costume.scale setTo 0.3
 
 addFeature Physics
 addFeature Touches
@@ -114,6 +117,8 @@ when FlowDirector centerfirsttouches FlowAction [[
 addFeature Physics
 addFeature Touches
 addFeature Costume
+addFeature IU
+
 featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
 featProp FlowAction.Costume.scale setTo 0.4
 prop FlowAction.alpha setTo 0.5
@@ -129,6 +134,37 @@ prop FlowAction.actionChoice addOption 'work on lodge' 'work on lodge'
 prop FlowAction.actionChoice addOption 'play' 'play'
 prop FlowAction.actionChoice addOption 'eat and store food' 'eat and store food'
 prop FlowAction.actionChoice setToOption 'not chosen yet'
+
+featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
+  
+  // double check the numbers make sense here.
+  if global.col equal 0 [[
+    if FlowAction.col equal 1 [[
+      if FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'work on dam' 
+      ]]
+      if FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food' 
+
+      ]]
+      if FlowAction.row equal 3 [[
+          prop FlowAction.actionChoice setToOption 'play' 
+      ]]
+
+    ]]
+
+    if FlowAction.col equal 2 [[
+      
+    ]]
+
+    if FlowAction.col equal 3 [[
+      
+    ]]
+
+    // update the art based on the current selection
+    // if you were set to nothing do that
+  ]] 
+]]
 
 # PROGRAM UPDATE`
     },
@@ -168,20 +204,13 @@ prop Unused.visible setTo false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
+addFeature Physics
 addFeature Costume
 featProp Start.Costume.costumeName setTo 'KB_marker_home.png'
 featProp Start.Costume.scale setTo 0.4
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     }
   ],
   "instances": [
