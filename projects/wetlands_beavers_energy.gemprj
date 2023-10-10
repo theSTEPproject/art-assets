@@ -228,8 +228,9 @@ when EnergyRepresentation lasttouches Tree [[
     ]]
   ]]
   ifProp EnergyRepresentation.gainEnergyThisVisit equal false [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ifProp EnergyRepresentation.energyType equal 'none' [[
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ]]
   ]]
 
   // If we are still showing the process, change the name back to what it was
@@ -291,8 +292,9 @@ when EnergyRepresentation lasttouches WaterPlant [[
     ]]
   ]]
   ifProp EnergyRepresentation.gainEnergyThisVisit equal false [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ifProp EnergyRepresentation.energyType equal 'none' [[
+      featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ]]
   ]]
 
   // If we are still showing the process, change the name back to what it was
@@ -453,8 +455,9 @@ when EnergyRepresentation lasttouches Fish [[
     ]]
   ]]
   ifProp EnergyRepresentation.gainEnergyThisVisit equal false [[
-    prop EnergyRepresentation.energyType setTo 'none'
-    featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+     ifProp EnergyRepresentation.energyType equal 'none' [[
+       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_empty.png'
+    ]]
   ]]
 ]]
 
