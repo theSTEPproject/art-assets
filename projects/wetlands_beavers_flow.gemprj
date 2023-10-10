@@ -1,0 +1,109 @@
+{
+  "id": "wetlands_beavers_flow",
+  "label": "Wetlands: Beavers Flow",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x8A9A5B",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+
+prop global.visible setTo false
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "InteractingCharacter1",
+      "scriptText": `# BLUEPRINT InteractingCharacter1
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+featProp InteractingCharacter1.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Teacher",
+      "scriptText": `# BLUEPRINT Teacher
+# TAG isCharControllable false
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Teacher.Costume.costumeName setTo 'GEN_onexone.json'
+prop Teacher.visible setTo false
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Unused",
+      "scriptText": `# BLUEPRINT Unused
+# TAG isCharControllable false
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Unused.Costume.costumeName setTo 'GEN_onexone.json'
+prop Unused.visible setTo false
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "FlowDirector",
+      "scriptText": `# BLUEPRINT FlowDirector
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE`
+    }
+  ],
+  "instances": []
+}
