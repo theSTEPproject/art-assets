@@ -55,10 +55,11 @@ addProp ateAndStoredCount number 0
 addProp tempNum number 0
 addProp tempString string ''
 addProp tempBool boolean false
+addProp rowDiffIsBig boolean false
 
 // setup the lastY to reflect the last action so that
 // we can shift up and down and position between the last and current
-addProp lastY number -50
+addProp lastY number -60
 addProp newY number 0
 
 // setup the basic properties for the flow actions
@@ -111,7 +112,7 @@ when FlowDirector centerfirsttouches Start [[
   featCall FlowDirector.Population charactersForEach Arrow [[
     prop Arrow.visible setTo false
     // Set this to the middle (update if we move the arrows)
-    prop Arrow.y setTo -50
+    prop Arrow.y setTo -60
   ]]
 
   // we are starting a new run, so clear things out and get us ready
@@ -132,7 +133,7 @@ when FlowDirector centerfirsttouches FlowAction [[
       ifProp global.col equal 0 [[
         prop global.row setTo 2
         // this should be the middle / where start is
-        prop global.lastY setTo -50
+        prop global.lastY setTo -60
 
       ]]
 
@@ -149,6 +150,9 @@ when FlowDirector centerfirsttouches FlowAction [[
         prop FlowDirector.tempNum mul -1
       ]]
 
+      // check scale of difference to shift arrow up or down
+      prop global.rowDiffIsBig setTo false
+
       // have 3 existing arrows and then scale, rotate, and shift up or down
       // to scale, select different artowork that is longer
       
@@ -164,6 +168,7 @@ when FlowDirector centerfirsttouches FlowAction [[
 
       // if rows are gap of 2, use long angled, (flip horiztonal if needed) 
       ifProp FlowDirector.tempNum equal 2 [[
+        prop global.rowDiffIsBig setTo true
         prop FlowDirector.arrowCostumeName setTo 'WL_arrow_long.png'
       ]] 
       
@@ -186,23 +191,41 @@ when FlowDirector centerfirsttouches FlowAction [[
           // set the costume name based on distance (this is set above)
           propPush global.tempString
           featPropPop Arrow.Costume.costumeName
-          // rotate it based on direction if up or down (this is set above)
-          propPush global.tempBool
-          featPropPop Arrow.Costume.flipY
           
           // shift up or down if needed
           // to be in-between the last and current action
           propPush global.lastY
           propPush global.newY
           stackSub 
-          propPush Arrow.y
-          stackAdd
-          push 2
-          stackDiv 
+          propPop global.tempNum
+          
+          propPush global.newY
           propPop Arrow.y
+
+          ifProp global.tempNum greaterThan 0 [[
+              prop Arrow.y sub 100
+              ifProp global.rowDiffIsBig equal true [[
+                prop Arrow.y sub 100
+              ]]
+
+          ]]
+          ifProp global.tempNum lessThan 0 [[
+              prop Arrow.y add 100
+              ifProp global.rowDiffIsBig equal true [[
+                prop Arrow.y add 100
+              ]]
+          ]]
+
+          // flip it based on direction if up or down (this is set above)
+          propPush global.tempBool
+          featPropPop Arrow.Costume.flipY
 
           // make it visible
           prop Arrow.visible setTo true
+
+          // update the last y to be where the action was
+          propPush global.newY
+          propPop global.lastY
         ]]
       ]]
  
@@ -255,7 +278,7 @@ addFeature IU
 
 featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
 featProp FlowAction.Costume.scale setTo 0.4
-prop FlowAction.alpha setTo 0.5
+prop FlowAction.alpha setTo 0.3
 
 // where is this in the grid
 addProp row number 0
@@ -280,7 +303,7 @@ addProp tempNum number 0
 featCall FlowAction.IU setupFunction initActionDisplay [[
   prop FlowAction.locked setTo false
   prop FlowAction.selected setTo false
-  prop FlowAction.alpha setTo 0.5
+  prop FlowAction.alpha setTo 0.3
   prop FlowAction.actionChoice setToOption 'not chosen yet'
   featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
 ]]
@@ -302,7 +325,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     prop FlowAction.locked setTo true
     // if you aren't the selected one, then fade
     ifProp FlowAction.selected equal false [[
-      prop FlowAction.alpha setTo 0.5
+      prop FlowAction.alpha setTo 0.3
     ]]
   ]]
 
@@ -583,7 +606,7 @@ prop FlowAction.row setTo 3`
       "label": "Start",
       "bpid": "Start",
       "initScript": `prop x setTo -387.43
-prop y setTo -38.52`
+prop y setTo -60`
     },
     {
       "id": "10",
@@ -597,15 +620,16 @@ prop y setTo 290.54`
       "label": "Arrow 1",
       "bpid": "Arrow",
       "initScript": `prop x setTo -307.23
-prop y setTo -50
-prop Arrow.col setTo 0`
+prop y setTo -60
+prop Arrow.col setTo 0
+`
     },
     {
       "id": "12",
       "label": "Arrow 2",
       "bpid": "Arrow",
       "initScript": `prop x setTo -65.9
-prop y setTo -50
+prop y setTo -60
 prop Arrow.col setTo 1`
     },
     {
@@ -613,7 +637,7 @@ prop Arrow.col setTo 1`
       "label": "Arrow 3",
       "bpid": "Arrow",
       "initScript": `prop x setTo 174.29
-prop y setTo -50
+prop y setTo -60
 prop Arrow.col setTo 2`
     }
   ]
