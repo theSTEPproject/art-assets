@@ -43,23 +43,24 @@ addProp row number 0
 
 // choices in this run
 addProp lastColChoice string ''
-addProp colChoice1 string ''
-addProp colChoice2 string ''
-addProp colChoice3 string ''
 
-addProp nextCol number 0
+// choices across runs
+addProp collectedMaterialsCount number 0
+addProp workedOnDamCount number 0
+addProp workedOnLodgeCount number 0
+addProp playedCount number 0
+addProp ateAndStoredCount number 0
 
+// setup the basic properties for the flow actions
 featCall global.IU setupFunction 'initFlowActions' [[
   featCall global.Population charactersForEach FlowAction [[
     featCall FlowAction.IU callFunction 'initActionDisplay'
   ]]
 ]]
 
+// tell all the flow actions to update their display based on
+// the current col and most recent choice (if any)
 featCall global.IU setupFunction 'updateFlowActions' [[
-  propPush global.col
-  propPop global.nextCol
-  prop global.nextCol add 1
-
   featCall global.Population charactersForEach FlowAction [[
     featCall FlowAction.IU callFunction 'updateActionDisplay'
   ]]
@@ -91,9 +92,6 @@ when FlowDirector centerfirsttouches Start [[
   // re-set the global properties so that we can display what is going on in this set of choices
   prop global.col setTo 0
   prop global.row setTo 0
-  prop global.colChoice1 setTo ''
-  prop global.colChoice2 setTo ''
-  prop global.colChoice3 setTo ''
   prop global.lastColChoice setTo ''
 
   // we are starting a new run, so clear things out and get us ready
@@ -122,7 +120,21 @@ when FlowDirector centerfirsttouches FlowAction [[
 
 
       // do any global variable updating based on what type we are so displays update
-      dbgOut 'update globals here'
+      ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
+        prop global.collectedMaterialsCount add 1
+      ]]
+      ifProp FlowAction.actionChoice equalToOption 'work on dam' [[
+        prop global.workedOnDamCount add 1
+      ]]
+      ifProp FlowAction.actionChoice equalToOption 'work on lodge' [[
+        prop global.workedOnLodgeCount add 1
+      ]]
+      ifProp FlowAction.actionChoice equalToOption 'play' [[
+        prop global.playedCount add 1
+      ]]
+      ifProp FlowAction.actionChoice equalToOption 'eat and store food' [[
+        prop global.ateAndStoredCount add 1
+      ]]
 
       // update all of the flowActions
       featCall global.IU callFunction 'updateFlowActions'
@@ -288,7 +300,6 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   ifProp FlowAction.actionChoice equalToOption 'not chosen yet' [[
     featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
   ]]
-
   ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
     featProp FlowAction.Costume.costumeName setTo 'WL_seq_collect.png'
   ]]
@@ -349,6 +360,30 @@ addFeature Costume
 featProp Start.Costume.costumeName setTo 'KB_marker_home.png'
 featProp Start.Costume.scale setTo 0.4
 # PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "UpdateText",
+      "scriptText": `# BLUEPRINT UpdateText
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp UpdateText.Costume.costumeName setTo 'GEN_onexone.json'
+featProp UpdateText.Graphing.wordWrapWidth setTo 500
+featProp UpdateText.Graphing.text setTo 'Updates will appear here temporarily'
+
+# PROGRAM UPDATE
+
+every 0.5 runAtStart [[
+  exprPush {{'collectedMaterialsCount: ' + global.getProp('collectedMaterialsCount').value + ', workedOnDamCount: ' + global.getProp('workedOnDamCount').value +', workedOnLodgeCount: ' + global.getProp('workedOnLodgeCount').value +', playedCount: ' + global.getProp('playedCount').value +', ateAndStoredCount: ' + global.getProp('ateAndStoredCount').value}}
+  featPropPop  UpdateText.Graphing.text 
+]]
+
 
 `
     }
@@ -442,6 +477,13 @@ prop FlowAction.row setTo 3`
       "bpid": "Start",
       "initScript": `prop x setTo -387.43
 prop y setTo -38.52`
+    },
+    {
+      "id": "10",
+      "label": "UpdateText10",
+      "bpid": "UpdateText",
+      "initScript": `prop x setTo 38.70
+prop y setTo 290.54`
     }
   ]
 }
