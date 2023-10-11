@@ -27,7 +27,7 @@
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -50,14 +50,14 @@ addFeature Graphing
 addFeature IU
 addProp alive Boolean true
 
-// Set the snake artwork and make it smaller
+// Set the snake artwork and make it smaller 
 featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.4
 
-// Tells snakes how to move when they are controlled by the computer
+// Tells snakes how to move when they are controlled by the computer 
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
@@ -462,7 +462,7 @@ ifProp Clover.hasNutrients equal true [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -592,7 +592,7 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -683,7 +683,7 @@ when Robin touches VeggieGarden [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
         prop VeggieGarden.energyLevel sub 10
-
+        
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -740,7 +740,7 @@ every 1 runAtStart [[
     {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-        featCall Hawk.IU logString 'Hawk ate a robin.'
+\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1226,7 +1226,7 @@ onEvent Tick [[
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 
@@ -1343,7 +1343,7 @@ when Worm touches Mouse [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-        featCall Worm.IU logString 'Worm is decomposing a dead mouse.'
+\t\tfeatCall Worm.IU logString 'Worm is decomposing a dead mouse.'
         // make the mouse smaller
         featProp Mouse.Costume.scale sub 0.1
         // the mouse will disappear when it is very small
@@ -1408,7 +1408,7 @@ when Worm touches Snake [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-        featCall Worm.IU logString 'Worm is decomposing a dead snake.'
+         featCall Worm.IU logString 'Worm is decomposing a dead snake.'
 
         // make the snake smaller
         featProp Snake.Costume.scale sub 0.1
@@ -1439,7 +1439,7 @@ when Worm touches Robin [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-        featCall Worm.IU logString 'Worm is decomposing a dead robin.'
+         featCall Worm.IU logString 'Worm is decomposing a dead robin.'
 
         // make the robin smaller
         featProp Robin.Costume.scale sub 0.1

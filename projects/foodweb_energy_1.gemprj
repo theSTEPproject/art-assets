@@ -1261,73 +1261,66 @@ prop y setTo -394.50`
     },
     {
       "id": "6",
-      "label": "Sky6",
+      "label": "Sky",
       "bpid": "Sky",
       "initScript": `prop x setTo 1.18
 prop y setTo 0.80`
     },
     {
       "id": "9",
-      "label": "VeggieGarden9",
+      "label": "VeggieGarden",
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo -56.64
 prop y setTo 280.37`
     },
     {
       "id": "10",
-      "label": "Clover10",
+      "label": "Clover",
       "bpid": "Clover",
       "initScript": `prop x setTo -311.02
 prop y setTo 127.67`
     },
     {
       "id": "11",
-      "label": "Caterpillar11",
+      "label": "Caterpillar",
       "bpid": "Caterpillar",
       "initScript": `prop x setTo 1.68
 prop y setTo -174.71`
     },
     {
       "id": "16",
-      "label": "Mouse16",
+      "label": "Mouse",
       "bpid": "Mouse",
       "initScript": `prop x setTo 315.85
 prop y setTo -226.99`
     },
     {
       "id": "17",
-      "label": "Robin17",
+      "label": "Robin",
       "bpid": "Robin",
       "initScript": `prop x setTo 263.92
 prop y setTo -10.20`
     },
     {
       "id": "18",
-      "label": "Snake18",
+      "label": "Snake",
       "bpid": "Snake",
       "initScript": `prop x setTo -289.96
 prop y setTo -162.58`
     },
     {
       "id": "19",
-      "label": "Hawk19",
+      "label": "Hawk",
       "bpid": "Hawk",
       "initScript": `prop x setTo 276.05
 prop y setTo 240.72`
     },
     {
       "id": "20",
-      "label": "energyReset20",
+      "label": "energyReset",
       "bpid": "energyReset",
       "initScript": `prop x setTo 365.65
 prop y setTo -364.83`
-    },
-    {
-      "id": "21",
-      "label": "teacher21",
-      "bpid": "teacher",
-      "initScript": `prop x setTo 29
-prop y setTo 30`
     }
   ]
 }
