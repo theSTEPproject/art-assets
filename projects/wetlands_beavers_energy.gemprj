@@ -81,6 +81,11 @@ addProp fishUseEnergy boolean false
 addProp predatorsEatBeavers boolean false
 addProp predatorsUseEnergy boolean false
 
+// track how many times each kind of energy conversion happens
+addProp countSunToPlant number 0
+addProp plantToConsumer number 0
+addProp consumerToPredator number 0
+
 # PROGRAM UPDATE`
     },
     {
@@ -187,6 +192,7 @@ when EnergyRepresentation firsttouches Tree [[
     // Change the artwork to show that this is photosynthesis, and is converting energy
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
+    prop global.countSunToPlant add 1
 
     // ✏️ CHANGE How much energy the tree gets from photosynthesis (between 0-100)
     prop Tree.energyLevel add 30
@@ -258,6 +264,7 @@ when EnergyRepresentation firsttouches WaterPlant [[
     // Change the artwork to show that this is photosynthesis, and is converting energy
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_sun_plant.png'
     prop EnergyRepresentation.energyType setTo 'photosynthesis'
+    prop global.countSunToPlant add 1
 
     // ✏️ CHANGE How much energy the water plant gets from photosynthesis (between 0-100)
     prop WaterPlant.energyLevel add 30
@@ -324,6 +331,7 @@ when EnergyRepresentation firsttouches Beaver [[
         // Change the artwork to show that this is digestion
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
+        prop global.plantToConsumer add 1
 
         // ✏️ CHANGE How much energy the beaver gets from digestion of the water plant (between 0-100)
         prop Beaver.energyLevel add 20
@@ -339,6 +347,7 @@ when EnergyRepresentation firsttouches Beaver [[
       // Change the artwork to show that this is digestion
       featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_beaver.png'
       prop EnergyRepresentation.energyType setTo 'digestion'
+      prop global.plantToConsumer add 1
 
       // ✏️ CHANGE How much energy the beaver gets from digestion of the tree (between 0-100)
       prop Beaver.energyLevel add 20
@@ -411,6 +420,7 @@ when EnergyRepresentation firsttouches Fish [[
         // Change the artwork to show that this is digestion
         featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_plant_fish.png'
         prop EnergyRepresentation.energyType setTo 'digestion'
+        prop global.plantToConsumer add 1
 
         // ✏️ CHANGE How much energy the fish gets from digestion (between 0-100)
         prop Fish.energyLevel add 20
@@ -473,6 +483,7 @@ when EnergyRepresentation firsttouches Predator [[
     // Change the artwork to show that this is digestion
     featProp EnergyRepresentation.Costume.costumeName setTo 'WL_energy_beaver_coyote.png'
     prop EnergyRepresentation.energyType setTo 'digestion'
+    prop global.consumerToPredator add 1
 
     // ✏️ CHANGE How much energy the predator gets from digestion (between 0-100)
     prop Predator.energyLevel add 30
