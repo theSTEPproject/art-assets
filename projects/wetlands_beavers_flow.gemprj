@@ -123,9 +123,15 @@ featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
 featProp FlowAction.Costume.scale setTo 0.4
 prop FlowAction.alpha setTo 0.5
 
+// where is this in the grid
 addProp row number 0
 addProp col number 0
 
+// is this item locked (the column was selected) and was it the one chosen?
+addProp locked boolean false
+addProp selected boolean false
+
+// All the choices of actions (not all are displayed in each column)
 addProp actionChoice string ''
 prop FlowAction.actionChoice addOption 'not chosen yet' 'not chosen yet'
 prop FlowAction.actionChoice addOption 'collect materials' 'collect materials'
@@ -135,7 +141,20 @@ prop FlowAction.actionChoice addOption 'play' 'play'
 prop FlowAction.actionChoice addOption 'eat and store food' 'eat and store food'
 prop FlowAction.actionChoice setToOption 'not chosen yet'
 
+addProp tempNum number 0
+
 featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
+
+  // is this greater than the current (e.g., to the right)
+  propPush global.col
+  propPush FlowAction.col
+  stackSub
+  propPop FlowAction.tempNum
+
+  dbgOut {{ 'global.col: ' + global.getProp('col').value + 'FlowAction.col: ' + FlowAction.getProp('col').value + 'FlowAction.tempNum: ' + FlowAction.getProp('tempNum').value }}
+
+  // if so ...
+
 
   // double check the numbers make sense here.
   ifProp global.col equal 0 [[
@@ -237,7 +256,7 @@ featProp Start.Costume.scale setTo 0.4
       "label": "FlowAction 1 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo -250
+prop y setTo -270
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 1
 `
@@ -247,7 +266,7 @@ prop FlowAction.row setTo 1
       "label": "FlowAction 1 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo -40
+prop y setTo -60
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 2`
     },
@@ -256,7 +275,7 @@ prop FlowAction.row setTo 2`
       "label": "FlowAction 1 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo -210
-prop y setTo 180
+prop y setTo 160
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 3`
     },
@@ -265,7 +284,7 @@ prop FlowAction.row setTo 3`
       "label": "FlowAction 2 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo -250
+prop y setTo -270
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 1`
     },
@@ -274,7 +293,7 @@ prop FlowAction.row setTo 1`
       "label": "FlowAction 2 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo -40
+prop y setTo -60
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 2`
     },
@@ -283,7 +302,7 @@ prop FlowAction.row setTo 2`
       "label": "FlowAction 2 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 40
-prop y setTo 180
+prop y setTo 160
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 3`
     },
@@ -292,7 +311,7 @@ prop FlowAction.row setTo 3`
       "label": "FlowAction 3 1",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo -250
+prop y setTo -270
 prop FlowAction.col setTo 3
 prop FlowAction.row setTo 1`
     },
@@ -301,7 +320,7 @@ prop FlowAction.row setTo 1`
       "label": "FlowAction 3 2",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo -40
+prop y setTo -60
 prop FlowAction.col setTo 3
 prop FlowAction.row setTo 2`
     },
@@ -310,7 +329,7 @@ prop FlowAction.row setTo 2`
       "label": "FlowAction 3 3",
       "bpid": "FlowAction",
       "initScript": `prop x setTo 290
-prop y setTo 180
+prop y setTo 160
 prop FlowAction.col setTo 3
 prop FlowAction.row setTo 3`
     },
