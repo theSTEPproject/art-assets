@@ -516,6 +516,53 @@ prop Arrow.visible setTo false
 addProp col number 0
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "EcosystemDiversity",
+      "scriptText": `# BLUEPRINT EcosystemDiversity
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+
+featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
+featProp EcosystemDiversity.Costume.scale setTo 0.2
+featProp EcosystemDiversity.Graphing.text setTo 'helpful diversity'
+
+addProp diversityLevel number 0
+prop diversityLevel setMin 0
+prop diversityLevel setMax 10
+
+featProp  EcosystemDiversity.Graphing.meterProp setTo 'diversityLevel'
+addProp tempNum number 0
+# PROGRAM UPDATE
+
+every 0.5 runAtStart [[
+   // exprPush {{'collectedMaterialsCount: ' + global.getProp('collectedMaterialsCount').value + ', workedOnDamCount: ' + global.getProp('workedOnDamCount').value +', workedOnLodgeCount: ' + global.getProp('workedOnLodgeCount').value +', playedCount: ' + global.getProp('playedCount').value +', ateAndStoredCount: ' + global.getProp('ateAndStoredCount').value}}
+  prop EcosystemDiversity.tempNum setTo 2
+  propPush EcosystemDiversity.tempNum
+  propPush global.workedOnDamCount
+  stackDiv
+  propPop EcosystemDiversity.diversityLevel
+
+  ifProp EcosystemDiversity.diversityLevel equal 0 [[
+    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
+  ]]
+  ifProp EcosystemDiversity.diversityLevel greaterThan 0 [[
+    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_2.png'
+  ]]
+  ifProp EcosystemDiversity.diversityLevel greaterThan 4 [[
+    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_3.png'
+  ]]
+  ifProp EcosystemDiversity.diversityLevel greaterThan 6 [[
+    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_4.png'
+  ]]
+]]
+
+`
     }
   ],
   "instances": [
@@ -612,8 +659,8 @@ prop y setTo -60`
       "id": "10",
       "label": "UpdateText",
       "bpid": "UpdateText",
-      "initScript": `prop x setTo 38.70
-prop y setTo 290.54`
+      "initScript": `prop x setTo 163.28
+prop y setTo 290.02`
     },
     {
       "id": "11",
@@ -639,6 +686,13 @@ prop Arrow.col setTo 1`
       "initScript": `prop x setTo 174.29
 prop y setTo -60
 prop Arrow.col setTo 2`
+    },
+    {
+      "id": "14",
+      "label": "EcosystemDiversityMeter",
+      "bpid": "EcosystemDiversity",
+      "initScript": `prop x setTo -303.93
+prop y setTo 270.92`
     }
   ]
 }
