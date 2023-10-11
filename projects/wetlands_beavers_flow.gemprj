@@ -548,17 +548,22 @@ every 0.5 runAtStart [[
   stackDiv
   propPop EcosystemDiversity.diversityLevel
 
+  // set the art and meter color to show how we are doing
   ifProp EcosystemDiversity.diversityLevel equal 0 [[
     featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
+    featProp EcosystemDiversity.Graphing.meterColor setTo 16737792
   ]]
   ifProp EcosystemDiversity.diversityLevel greaterThan 0 [[
     featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_2.png'
+    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
   ]]
   ifProp EcosystemDiversity.diversityLevel greaterThan 4 [[
     featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_3.png'
+    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
   ]]
   ifProp EcosystemDiversity.diversityLevel greaterThan 6 [[
     featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_4.png'
+    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
   ]]
 ]]
 
