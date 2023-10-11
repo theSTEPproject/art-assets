@@ -80,6 +80,7 @@ addProp fishEatWaterPlants boolean true
 addProp fishUseEnergy boolean false
 addProp predatorsEatBeavers boolean false
 addProp predatorsUseEnergy boolean false
+addProp showConversionCounts boolean true
 
 // track how many times each kind of energy conversion happens
 addProp countSunToPlant number 0
@@ -1118,6 +1119,9 @@ featProp EnergyConversionBackground.Costume.costumeName setTo 'WL_conversions_bg
 featProp EnergyConversionBackground.Costume.scale setTo 0.5
 prop EnergyConversionBackground.zIndex setTo -500
 
+ifProp global.showConversionCounts equal false [[
+  prop EnergyConversionBackground.visible setTo false
+]]
 # PROGRAM UPDATE`
     },
     {
@@ -1134,6 +1138,10 @@ featProp CounterText.Costume.costumeName setTo 'GEN_onexone.json'
 featProp CounterText.Graphing.text setTo '0'
 
 addProp counterName string ''
+
+ifProp global.showConversionCounts equal false [[
+  prop CounterText.visible setTo false
+]]
 
 # PROGRAM UPDATE
 
@@ -1375,8 +1383,7 @@ prop CounterText.counterName setTo 'plantToConsumer'
       "bpid": "CounterText",
       "initScript": `prop CounterText.x setTo 540
 prop CounterText.y setTo -170.0
-prop CounterText.counterName setTo 'consumerToPredator'
-`
+prop CounterText.counterName setTo 'consumerToPredator'\n`
     }
   ]
 }
