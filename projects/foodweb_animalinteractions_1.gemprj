@@ -267,7 +267,7 @@ ifProp global.skyState equal 'daytime' [[
 ]]
 
 ifProp VeggieGarden.hasNutrients equal true [[
-  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy.png'
+  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   // insert code here
 ]]
 
@@ -381,7 +381,7 @@ ifProp global.skyState notEqual 'daytime' [[
       // 🔎 WHAT DOES THIS DO?
       // 🔎 how much energy do clover lose each second?
       // ✏️ LETS CHANGE THIS:
-      // ✏️ Higher numbers => lose energy faster
+      // ✏️ Larger numbers => lose energy faster
       prop Clover.energyLevel sub 3
     ]]
   ]]
@@ -393,7 +393,7 @@ ifProp global.skyState equal 'daytime' [[
       // 🔎 WHAT DOES THIS DO?
       // 🔎 how much energy do clover get in the sunlight?
       // ✏️ LETS CHANGE THIS:
-      // ✏️ Lower numbers => gain energy faster
+      // ✏️ Larger numbers => gain energy faster
       prop Clover.energyLevel add 5
     ]]
   ]]
@@ -406,7 +406,7 @@ ifProp Clover.hasNutrients equal false [[
 
 ifProp Clover.hasNutrients equal true [[
   // insert code here
-  featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy.png'
+  featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy2.png'
 ]]
 
 # PROGRAM UPDATE
@@ -432,10 +432,8 @@ every 1 runAtStart [[
   // dead
   ifProp Clover.energyLevel equal 0 [[
     prop Clover.alive setTo false
-    featProp Clover.Costume.currentFrame setTo 2
+    featProp Clover.Movement.movementType setTo 'false'
     prop Clover.alpha setTo 0.3
-    prop Clover.alive setTo false
-    prop Clover.isInert setTo true
   ]]
 
 ]]
@@ -1440,9 +1438,11 @@ addFeature Cursor
 addProp alive boolean true
 addProp hasNutrients boolean false
 
+//gives the worm character a worm costume and makes it smaller
 featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
 featProp Worm.Costume.scale setTo 0.4
 
+//tells the worm how to move if it is controlled by the computer
 featProp Worm.Movement.movementType setTo 'wander'
 featProp Worm.Movement.distance setTo 4
 featCall Worm.Movement setRandomDirection
@@ -1474,13 +1474,23 @@ featProp Worm.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do WORMS lose?
+// ✏️ LETS CHANGE THIS:
+// ✏️ HIGHER numbers => LOSE ENERGY faster
   prop Worm.energyLevel sub 1
+  
+  // change the worm costume if it has nutrients
   ifProp Worm.hasNutrients equal true [[
     featProp Worm.Costume.costumeName setTo 'FW1_Worm_Nutrients.png'
   ]]
   ifProp Worm.hasNutrients equal false [[
     featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
   ]]
+  
+  
+  //Colors the energy meter based on how much energy the worm has 
   ifProp Worm.energyLevel greaterThanOrEqual 50 [[
     featProp Worm.Graphing.meterColor setTo 65280
   ]]
@@ -1498,18 +1508,32 @@ every 1 runAtStart [[
     featProp Worm.Movement.movementType setTo 'stop'
     prop Worm.alive setTo false
   ]]
-
+//updates the energy graph 
   featProp Worm.Graphing.meterProp setTo 'energyLevel'
 ]]
 
+
+// tells the worm to eat a dead mouse 
 when Worm touches Mouse [[
   every 1 [[
+  // only living worms can eat 
     ifProp Worm.alive equal true [[
+    //check that the mouse is dead 
       ifProp Mouse.alive equal false [[
-        prop Worm.energyLevel add 10
         featProp Worm.Costume.glow setTo 1
+        
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a mouse?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10       
+        
+        // the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        //make the mouse smaller 
         featProp Mouse.Costume.scale sub 0.1
+        //the mouse will disappear when it is very small 
         ifFeatProp Mouse.Costume.scale lessThan 0.1 [[
           prop Mouse.visible setTo false
           prop Mouse.alpha setTo 0
@@ -1520,14 +1544,27 @@ when Worm touches Mouse [[
   ]]
 ]]
 
+// tells the worm to eat a dead hawk 
 when Worm touches Hawk [[
   every 1 [[
+  // only living worms can eat 
     ifProp Worm.alive equal true [[
+    // check that the hawk is dead 
       ifProp Hawk.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a hawk?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        
+        //the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        //make the hawk smaller 
         featProp Hawk.Costume.scale sub 0.1
+        //the hawk will disappear when it is very small
         ifFeatProp Hawk.Costume.scale lessThan 0.1 [[
           prop Hawk.visible setTo false
           prop Hawk.alpha setTo 0
@@ -1538,14 +1575,27 @@ when Worm touches Hawk [[
   ]]
 ]]
 
+// tells the worm to eat a dead snake 
 when Worm touches Snake [[
   every 1 [[
+  // only living worms can eat 
     ifProp Worm.alive equal true [[
+    //check that the snake is dead 
       ifProp Snake.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a snake?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        
+        //the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        // make the snake smaller 
         featProp Snake.Costume.scale sub 0.1
+        //the snake will disappear when it is very small 
         ifFeatProp Snake.Costume.scale lessThan 0.1 [[
           prop Snake.visible setTo false
           prop Snake.alpha setTo 0
@@ -1555,15 +1605,26 @@ when Worm touches Snake [[
     ]]
   ]]
 ]]
-
+// tells the worm to eat a dead robin
 when Worm touches Robin [[
   every 1 [[
+  // only living worms can eat 
     ifProp Worm.alive equal true [[
+    // check that the robin is alive 
       ifProp Robin.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a robin?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        
+        // the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        // make the robin smaller
         featProp Robin.Costume.scale sub 0.1
+        //the robin will disappear when it is very small 
         ifFeatProp Robin.Costume.scale lessThan 0.1 [[
           prop Robin.visible setTo false
           prop Robin.alpha setTo 0
@@ -1576,12 +1637,23 @@ when Worm touches Robin [[
 
 when Worm touches Caterpillar [[
   every 1 [[
+  // only living worms can eat
     ifProp Worm.alive equal true [[
+    // check that the caterpillar is dead
       ifProp Caterpillar.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a caterpillar?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        // the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        //make the caterpillar smaller 
         featProp Caterpillar.Costume.scale sub 0.1
+        // the caterpillar will disappear when it is very small 
         ifFeatProp Caterpillar.Costume.scale lessThan 0.1 [[
           prop Caterpillar.visible setTo false
           prop Caterpillar.alpha setTo 0
@@ -1591,15 +1663,27 @@ when Worm touches Caterpillar [[
     ]]
   ]]
 ]]
-
+//tells the worm to eat a dead veggie garden 
 when Worm touches VeggieGarden [[
   every 1 [[
+  // only living worms can eat
     ifProp Worm.alive equal true [[
+    // check that the veggie garden is dead
       ifProp VeggieGarden.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a veggie garden?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        
+        //the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        //make the veggie garden smaller 
         featProp VeggieGarden.Costume.scale sub 0.1
+        //the veggie garden is disappear when it is very small
         ifFeatProp VeggieGarden.Costume.scale lessThan 0.1 [[
           prop VeggieGarden.visible setTo false
           prop VeggieGarden.alpha setTo 0
@@ -1609,15 +1693,26 @@ when Worm touches VeggieGarden [[
     ]]
   ]]
 ]]
-
+//tells the worm to eat a dead clover 
 when Worm touches Clover [[
   every 1 [[
+  //only living worms can eat 
     ifProp Worm.alive equal true [[
+    //check that the clover is dead
       ifProp Clover.alive equal false [[
+      featProp Worm.Costume.glow setTo 1
+      // 🔎 WHAT DOES THIS DO?
+\t  // 🔎 How much ENERGY do WORMS GAIN when eating a clover?
+\t  // ✏️ LETS CHANGE THIS:
+\t  // ✏️ LARGER numbers => GAINS MORE ENERGY
         prop Worm.energyLevel add 10
-        featProp Worm.Costume.glow setTo 1
+        
+        //the worm carries nutrients after eating 
         prop Worm.hasNutrients setTo true
+        
+        // make the clover smaller
         featProp Clover.Costume.scale sub 0.1
+        //the clover will disappear when it is very small 
         ifFeatProp Clover.Costume.scale lessThan 0.1 [[
           prop Clover.visible setTo false
           prop Clover.alpha setTo 0
@@ -1628,6 +1723,8 @@ when Worm touches Clover [[
   ]]
 ]]
 
+
+// tells the worm to pass nutrients to a living clover 
 when Worm touches Clover [[
   ifProp Worm.hasNutrients equal true [[
     ifProp Clover.alive equal true [[
@@ -1638,6 +1735,7 @@ when Worm touches Clover [[
     ]]
   ]]
 ]]
+//tells the worm to pass nutrients to a living veggie garden
 when Worm touches VeggieGarden [[
   ifProp Worm.hasNutrients equal true [[
     ifProp VeggieGarden.alive equal true [[
@@ -1649,11 +1747,7 @@ when Worm touches VeggieGarden [[
   ]]
 ]]
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "Mouse",
@@ -1917,8 +2011,8 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -266.77
-prop y setTo 225.54`
+      "initScript": `prop x setTo -279.81
+prop y setTo 66.73`
     },
     {
       "id": "109",
@@ -1931,15 +2025,50 @@ prop y setTo -316.55`
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 245.92
-prop y setTo 256.99`
+      "initScript": `prop x setTo 254.22
+prop y setTo 246.32`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 16.18
-prop y setTo 0.84`
+      "initScript": `prop x setTo 217.66
+prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "Clover127",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -5
+prop y setTo -2`
+    },
+    {
+      "id": "128",
+      "label": "Mouse128",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo -8
+prop y setTo -32`
+    },
+    {
+      "id": "129",
+      "label": "Mouse129",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 298.15
+prop y setTo -1.04`
+    },
+    {
+      "id": "130",
+      "label": "Mouse130",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 151.30
+prop y setTo 304.37`
+    },
+    {
+      "id": "131",
+      "label": "Mouse131",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo -107.00
+prop y setTo 275.11`
     }
   ]
 }
