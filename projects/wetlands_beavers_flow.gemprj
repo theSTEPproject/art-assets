@@ -11,7 +11,7 @@
       false
     ],
     "bounce": true,
-    "bgcolor": "0xADD8E6",
+    "bgcolor": "0x8A9A5B",
     "roundsCanLoop": true,
     "showWebCam": false,
     "scaleX": 1,
@@ -22,7 +22,13 @@
     "mirrorX": false,
     "mirrorY": false
   },
-  "rounds": [],
+  "rounds": [
+    {
+      "time": 100,
+      "initScript": ``,
+      "endScript": ``
+    }
+  ],
   "blueprints": [
     {
       "name": "global",
