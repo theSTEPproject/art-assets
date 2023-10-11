@@ -42,12 +42,18 @@ addProp col number 0
 addProp row number 0
 
 // choices in this run
-addProp currentColChoice string ''
+addProp lastColChoice string ''
 addProp colChoice1 string ''
 addProp colChoice2 string ''
 addProp colChoice3 string ''
 
 addProp nextCol number 0
+
+featCall global.IU setupFunction 'initFlowActions' [[
+  featCall global.Population charactersForEach FlowAction [[
+    featCall FlowAction.IU callFunction 'initActionDisplay'
+  ]]
+]]
 
 featCall global.IU setupFunction 'updateFlowActions' [[
   propPush global.col
@@ -88,22 +94,40 @@ when FlowDirector centerfirsttouches Start [[
   prop global.colChoice1 setTo ''
   prop global.colChoice2 setTo ''
   prop global.colChoice3 setTo ''
-  prop global.currentColChoice setTo ''
+  prop global.lastColChoice setTo ''
 
   // we are starting a new run, so clear things out and get us ready
+  featCall global.IU callFunction 'initFlowActions'
   featCall global.IU callFunction 'updateFlowActions'
 ]]
 
 when FlowDirector centerfirsttouches FlowAction [[
-  // update the global row and col then run tun the updateActions code
-  propPush FlowAction.col
-  propPop global.col
-  propPush FlowAction.row
-  propPop global.row
-  propPush FlowAction.actionChoice
-  propPop global.currentColChoice
+  // ignore if we have been locked 
+  ifProp FlowAction.locked equal false [[
+    // the not chosen yet actions are all the ones to the right of the current row, so ignore if we are one of those
+    ifProp FlowAction.actionChoice notEqual 'not chosen yet' [[
+      // mark this FlowAction selected
+      prop FlowAction.selected setTo true
 
-  featCall global.IU callFunction 'updateFlowActions'
+      // set the global context to be this col and row so we know what was selected
+      // this helps in iterating through the FlowActions to update them (see updateFlowActions)
+      propPush FlowAction.col
+      propPop global.col
+      propPush FlowAction.row
+      propPop global.row
+
+      // record this as the lastColChoice so we know what's what 
+      propPush FlowAction.actionChoice
+      propPop global.lastColChoice
+
+
+      // do any global variable updating based on what type we are so displays update
+      dbgOut 'update globals here'
+
+      // update all of the flowActions
+      featCall global.IU callFunction 'updateFlowActions'
+    ]]
+  ]]
 ]]`
     },
     {
@@ -143,22 +167,41 @@ prop FlowAction.actionChoice setToOption 'not chosen yet'
 
 addProp tempNum number 0
 
+featCall FlowAction.IU setupFunction initActionDisplay [[
+  prop FlowAction.locked setTo false
+  prop FlowAction.selected setTo false
+  prop FlowAction.alpha setTo 0.5
+  prop FlowAction.actionChoice setToOption 'not chosen yet'
+  featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
+]]
+
 featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
 
-  // is this greater than the current (e.g., to the right)
+  // do some quick math so we know the relative difference between our current action and the current col
+  // 0 means same col, 1 means this is directly to the right, 2 means further
   propPush global.col
   propPush FlowAction.col
   stackSub
   propPop FlowAction.tempNum
 
-  dbgOut {{ 'global.col: ' + global.getProp('col').value + 'FlowAction.col: ' + FlowAction.getProp('col').value + 'FlowAction.tempNum: ' + FlowAction.getProp('tempNum').value }}
+  // dbgOut {{ 'global.col: ' + global.getProp('col').value + 'FlowAction.col: ' + FlowAction.getProp('col').value + 'FlowAction.tempNum: ' + FlowAction.getProp('tempNum').value }}
 
-  // if so ...
+  // if we are the current col, lock
+  ifProp tempNum equal 0 [[
+    // lock this row
+    prop FlowAction.locked setTo true
+    // if you aren't the selected one, then fade
+    ifProp FlowAction.selected equal false [[
+      prop FlowAction.alpha setTo 0.5
+    ]]
+  ]]
 
+  // if we are the next valid set of choices, set up the options
+  ifProp tempNum equal 1 [[
+    prop FlowAction.alpha setTo 1
 
-  // double check the numbers make sense here.
-  ifProp global.col equal 0 [[
-    ifProp FlowAction.col equal 1 [[
+    // This is the first column because the prior was empty, so display initial options
+    ifProp global.lastColChoice equal '' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'work on dam'
       ]]
@@ -169,16 +212,28 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ifProp FlowAction.row equal 3 [[
         prop FlowAction.actionChoice setToOption 'play'
       ]]
-
     ]]
 
-    ifProp FlowAction.col equal 2 [[
-
+    // if we chose play, our new options are ... 
+    ifProp global.lastColChoice equal 'play' [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
+      ]]
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'work on dam'
+      ]]
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'play'
+      ]]
     ]]
+  ]]
 
-    ifProp FlowAction.col equal 3 [[
-
-    ]]
+  // if we are further to the right than the next set of options, blank and initialize
+  ifProp tempNum greaterThan 1 [[
+    // don't do anything since init handles it, so maybe remove this entire block ... 
+    //prop FlowAction.actionChoice setToOption 'not chosen yet'
+    //prop FlowAction.selected setTo false
+    //prop FlowAction.locked setTo false
   ]]
 
   // update the art based on the current selection
