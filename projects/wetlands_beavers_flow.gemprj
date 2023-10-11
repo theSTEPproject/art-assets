@@ -203,7 +203,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     // This is the first column because the prior was empty, so display initial options
     ifProp global.lastColChoice equal '' [[
       ifProp FlowAction.row equal 1 [[
-        prop FlowAction.actionChoice setToOption 'work on dam'
+        prop FlowAction.actionChoice setToOption 'collect materials'
       ]]
       ifProp FlowAction.row equal 2 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
@@ -214,7 +214,18 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // if we chose play, our new options are ... 
+    ifProp global.lastColChoice equal 'collect materials' [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'work on dam'
+      ]]
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
+      ]]
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'play'
+      ]]
+    ]]
+
     ifProp global.lastColChoice equal 'play' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
@@ -226,6 +237,43 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
         prop FlowAction.actionChoice setToOption 'play'
       ]]
     ]]
+
+    ifProp global.lastColChoice equal 'eat and store food' [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'collect materials'
+      ]]
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
+      ]]
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'play'
+      ]]
+    ]]
+
+    ifProp global.lastColChoice equal 'work on dam' [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
+      ]]
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'work on lodge'
+      ]]
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'play'
+      ]]
+    ]]
+
+    ifProp global.lastColChoice equal 'work on lodge' [[
+      ifProp FlowAction.row equal 1 [[
+        prop FlowAction.actionChoice setToOption 'eat and store food'
+      ]]
+      ifProp FlowAction.row equal 2 [[
+        prop FlowAction.actionChoice setToOption 'work on dam'
+      ]]
+      ifProp FlowAction.row equal 3 [[
+        prop FlowAction.actionChoice setToOption 'work on lodge'
+      ]]
+    ]]
+
   ]]
 
   // if we are further to the right than the next set of options, blank and initialize
@@ -310,7 +358,7 @@ featProp Start.Costume.scale setTo 0.4
       "id": "0",
       "label": "FlowAction 1 1",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -210
+      "initScript": `prop x setTo -190
 prop y setTo -270
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 1
@@ -320,7 +368,7 @@ prop FlowAction.row setTo 1
       "id": "1",
       "label": "FlowAction 1 2",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -210
+      "initScript": `prop x setTo -190
 prop y setTo -60
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 2`
@@ -329,7 +377,7 @@ prop FlowAction.row setTo 2`
       "id": "2",
       "label": "FlowAction 1 3",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo -210
+      "initScript": `prop x setTo -190
 prop y setTo 160
 prop FlowAction.col setTo 1
 prop FlowAction.row setTo 3`
@@ -338,7 +386,7 @@ prop FlowAction.row setTo 3`
       "id": "3",
       "label": "FlowAction 2 1",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 40
+      "initScript": `prop x setTo 50
 prop y setTo -270
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 1`
@@ -347,7 +395,7 @@ prop FlowAction.row setTo 1`
       "id": "4",
       "label": "FlowAction 2 2",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 40
+      "initScript": `prop x setTo 50
 prop y setTo -60
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 2`
@@ -356,7 +404,7 @@ prop FlowAction.row setTo 2`
       "id": "5",
       "label": "FlowAction 2 3",
       "bpid": "FlowAction",
-      "initScript": `prop x setTo 40
+      "initScript": `prop x setTo 50
 prop y setTo 160
 prop FlowAction.col setTo 2
 prop FlowAction.row setTo 3`
