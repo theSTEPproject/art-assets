@@ -1444,16 +1444,7 @@ addFeature Graphing
 featProp TextLabel.Costume.costumeName setTo 'GEN_onexone.json'
 featProp TextLabel.Graphing.text setTo 'Ecosystem Health'
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "EcosystemHealthBackground",

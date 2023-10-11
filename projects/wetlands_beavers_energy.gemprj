@@ -1104,6 +1104,58 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.Graphing.text
 ]]`
+    },
+    {
+      "name": "EnergyConversionBackground",
+      "scriptText": `# BLUEPRINT EnergyConversionBackground
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp EnergyConversionBackground.Costume.costumeName setTo 'WL_conversions_bg.png'
+featProp EnergyConversionBackground.Costume.scale setTo 0.5
+prop EnergyConversionBackground.zIndex setTo -500
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "CounterText",
+      "scriptText": `# BLUEPRINT CounterText
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp CounterText.Costume.costumeName setTo 'GEN_onexone.json'
+featProp CounterText.Graphing.text setTo '0'
+
+addProp counterName string ''
+
+# PROGRAM UPDATE
+
+every 0.1 runAtStart [[
+  ifProp CounterText.counterName equal 'countSunToPlant' [[
+    propPush global.countSunToPlant
+    featPropPop CounterText.Graphing.text
+  ]]
+
+  ifProp CounterText.counterName equal 'plantToConsumer' [[
+    propPush global.plantToConsumer
+    featPropPop CounterText.Graphing.text
+  ]]
+
+  ifProp CounterText.counterName equal 'consumerToPredator' [[
+    propPush global.consumerToPredator
+    featPropPop CounterText.Graphing.text
+  ]]
+]]
+
+
+`
     }
   ],
   "instances": [
@@ -1262,14 +1314,14 @@ prop y setTo 310.86`
       "label": "Clear",
       "bpid": "EnergyClear",
       "initScript": `prop x setTo -440
-prop y setTo -118.73`
+prop y setTo -60`
     },
     {
       "id": "54",
       "label": "Clear",
       "bpid": "EnergyClear",
-      "initScript": `prop x setTo 440
-prop y setTo -118.73`
+      "initScript": `prop EnergyClear.x setTo 440
+prop EnergyClear.y setTo -60`
     },
     {
       "id": "55",
@@ -1291,6 +1343,40 @@ prop y setTo 301.18`
       "bpid": "Timer",
       "initScript": `prop Timer.x setTo 436.23
 prop Timer.y setTo -406.85`
+    },
+    {
+      "id": "58",
+      "label": "EnergyConversionBackground58",
+      "bpid": "EnergyConversionBackground",
+      "initScript": `prop EnergyConversionBackground.x setTo 492.61
+prop EnergyConversionBackground.y setTo -239.62`
+    },
+    {
+      "id": "59",
+      "label": "countSunToPlant",
+      "bpid": "CounterText",
+      "initScript": `prop CounterText.x setTo 540
+prop CounterText.y setTo -258.74
+prop CounterText.counterName setTo 'countSunToPlant'
+`
+    },
+    {
+      "id": "60",
+      "label": "plantToConsumer",
+      "bpid": "CounterText",
+      "initScript": `prop CounterText.x setTo 540
+prop CounterText.y setTo -214.37
+prop CounterText.counterName setTo 'plantToConsumer'
+`
+    },
+    {
+      "id": "61",
+      "label": "consumerToPredator",
+      "bpid": "CounterText",
+      "initScript": `prop CounterText.x setTo 540
+prop CounterText.y setTo -170.0
+prop CounterText.counterName setTo 'consumerToPredator'
+`
     }
   ]
 }
