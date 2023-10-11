@@ -122,7 +122,7 @@ when FlowDirector centerfirsttouches FlowAction [[
 
       // before we set the new context, use the old one to draw an arrow
       // if this is the first col, draw the arrow from the start (treat as row 2)
-      ifProp FlowAction.col equal 0 [[
+      ifProp global.col equal 0 [[
         prop global.row setTo 2
       ]]
 
@@ -132,10 +132,10 @@ when FlowDirector centerfirsttouches FlowAction [[
       propPop FlowDirector.tempNum
 
       // check if we need to flip it, and if so mul -1 to get abs
-      prop FlowDirector.needFlip setTo false
+      prop FlowDirector.needFlip setTo true
 
       ifProp FlowDirector.tempNum lessThan 0 [[
-        prop FlowDirector.needFlip setTo true
+        prop FlowDirector.needFlip setTo false
         prop FlowDirector.tempNum mul -1
       ]]
 
@@ -162,16 +162,10 @@ when FlowDirector centerfirsttouches FlowAction [[
       propPop global.tempString
       propPush FlowDirector.needFlip
       propPop global.tempBool
-
-      dbgOut 'about to check '
-      dbgOut {{'going into for each, col is ' + global.getProp('col').value}}
       
       featCall FlowDirector.Population charactersForEach Arrow [[
         propPush global.col
         propPush Arrow.col
-
-        dbgOut {{' col is ' + Arrow.getProp('col').value}}
-
         stackSub
         propPop global.tempNum
 
@@ -363,14 +357,6 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-  ]]
-
-  // if we are further to the right than the next set of options, blank and initialize
-  ifProp tempNum greaterThan 1 [[
-    // don't do anything since init handles it, so maybe remove this entire block ... 
-    //prop FlowAction.actionChoice setToOption 'not chosen yet'
-    //prop FlowAction.selected setTo false
-    //prop FlowAction.locked setTo false
   ]]
 
   // update the art based on the current selection
