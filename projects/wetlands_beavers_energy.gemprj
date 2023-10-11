@@ -1307,8 +1307,8 @@ prop y setTo -361.04`
       "id": "51",
       "label": "Beaver 2",
       "bpid": "Beaver",
-      "initScript": `prop x setTo -164.69
-prop y setTo 218.55`
+      "initScript": `prop x setTo -113.66
+prop y setTo 174.50`
     },
     {
       "id": "52",
@@ -1333,17 +1333,17 @@ prop EnergyClear.y setTo -60`
     },
     {
       "id": "55",
-      "label": "Tree55",
+      "label": "Tree 4",
       "bpid": "Tree",
       "initScript": `prop x setTo 301.72
 prop y setTo 71.88`
     },
     {
       "id": "56",
-      "label": "Tree56",
+      "label": "Tree 5",
       "bpid": "Tree",
-      "initScript": `prop x setTo -326.47
-prop y setTo 301.18`
+      "initScript": `prop x setTo -314.52
+prop y setTo 320.07`
     },
     {
       "id": "57",

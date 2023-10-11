@@ -56,6 +56,11 @@ addProp tempNum number 0
 addProp tempString string ''
 addProp tempBool boolean false
 
+// setup the lastY to reflect the last action so that
+// we can shift up and down and position between the last and current
+addProp lastY number -50
+addProp newY number 0
+
 // setup the basic properties for the flow actions
 featCall global.IU setupFunction 'initFlowActions' [[
   featCall global.Population charactersForEach FlowAction [[
@@ -105,6 +110,8 @@ when FlowDirector centerfirsttouches Start [[
 
   featCall FlowDirector.Population charactersForEach Arrow [[
     prop Arrow.visible setTo false
+    // Set this to the middle (update if we move the arrows)
+    prop Arrow.y setTo -50
   ]]
 
   // we are starting a new run, so clear things out and get us ready
@@ -124,6 +131,9 @@ when FlowDirector centerfirsttouches FlowAction [[
       // if this is the first col, draw the arrow from the start (treat as row 2)
       ifProp global.col equal 0 [[
         prop global.row setTo 2
+        // this should be the middle / where start is
+        prop global.lastY setTo -50
+
       ]]
 
       propPush global.row
@@ -162,7 +172,9 @@ when FlowDirector centerfirsttouches FlowAction [[
       propPop global.tempString
       propPush FlowDirector.needFlip
       propPop global.tempBool
-      
+      propPush FlowAction.y
+      propPop global.newY
+
       featCall FlowDirector.Population charactersForEach Arrow [[
         propPush global.col
         propPush Arrow.col
@@ -171,10 +183,25 @@ when FlowDirector centerfirsttouches FlowAction [[
 
         // if they are the same col and thus this is the right arrow
         ifProp global.tempNum equal 0 [[
+          // set the costume name based on distance (this is set above)
           propPush global.tempString
           featPropPop Arrow.Costume.costumeName
+          // rotate it based on direction if up or down (this is set above)
           propPush global.tempBool
           featPropPop Arrow.Costume.flipY
+          
+          // shift up or down if needed
+          // to be in-between the last and current action
+          propPush global.lastY
+          propPush global.newY
+          stackSub 
+          propPush Arrow.y
+          stackAdd
+          push 2
+          stackDiv 
+          propPop Arrow.y
+
+          // make it visible
           prop Arrow.visible setTo true
         ]]
       ]]
