@@ -24,7 +24,6 @@
   },
   "rounds": [
     {
-      "time": 100,
       "initScript": ``,
       "endScript": ``
     }
@@ -574,6 +573,62 @@ every 0.5 runAtStart [[
 ]]
 
 `
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+
+addFeature Graphing
+addFeature Costume
+
+// Hide the actual art since we just want the text to displaay
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Timer.Costume.scale setTo 1
+
+// A property to track the time
+addProp time number 0
+
+// Unit of time
+addProp timeUnit string 'days'
+
+// set the initial label and then update it below during update
+exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
+featPropPop Timer.Graphing.text
+
+# PROGRAM UPDATE
+// every second, add one to the time property and display the new time in the format \"Time: #\"\"
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "EnergyConversionBackground",
+      "scriptText": `# BLUEPRINT EnergyConversionBackground
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp EnergyConversionBackground.Costume.costumeName setTo 'WL_conversions_bg.png'
+featProp EnergyConversionBackground.Costume.scale setTo 0.5
+prop EnergyConversionBackground.zIndex setTo -500
+
+ifProp global.showConversionCounts equal false [[
+  prop EnergyConversionBackground.visible setTo false
+]]
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -704,6 +759,13 @@ prop Arrow.col setTo 2`
       "bpid": "EcosystemDiversity",
       "initScript": `prop x setTo -303.93
 prop y setTo 270.92`
+    },
+    {
+      "id": "15",
+      "label": "Timer15",
+      "bpid": "Timer",
+      "initScript": `prop Timer.x setTo 491.69
+prop Timer.y setTo -402.96`
     }
   ]
 }

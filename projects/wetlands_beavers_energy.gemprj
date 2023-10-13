@@ -1095,14 +1095,18 @@ featProp Timer.Costume.scale setTo 1
 // A property to track the time
 addProp time number 0
 
+// Unit of time
+addProp timeUnit string 'days'
+
 // set the initial label and then update it below during update
-featProp Timer.Graphing.text setTo 'Time: 0'
+exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
+featPropPop Timer.Graphing.text
 
 # PROGRAM UPDATE
 // every second, add one to the time property and display the new time in the format \"Time: #\"\"
 every 1 runAtStart [[
   prop Timer.time add 1
-  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
   featPropPop Timer.Graphing.text
 ]]`
     },
@@ -1349,8 +1353,8 @@ prop y setTo 320.07`
       "id": "57",
       "label": "Timer57",
       "bpid": "Timer",
-      "initScript": `prop Timer.x setTo 436.23
-prop Timer.y setTo -406.85`
+      "initScript": `prop Timer.x setTo 486.57
+prop Timer.y setTo -404.54`
     },
     {
       "id": "58",
