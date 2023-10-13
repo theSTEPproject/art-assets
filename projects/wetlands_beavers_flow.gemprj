@@ -325,7 +325,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   // dbgOut {{ 'global.col: ' + global.getProp('col').value + 'FlowAction.col: ' + FlowAction.getProp('col').value + 'FlowAction.tempNum: ' + FlowAction.getProp('tempNum').value }}
 
   // if we are the current col, lock
-  ifProp tempNum equal 0 [[
+  ifProp FlowAction.tempNum equal 0 [[
     // lock this row
     prop FlowAction.locked setTo true
     // if you aren't the selected one, then fade
@@ -335,7 +335,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   ]]
 
   // if we are the next valid set of choices, set up the options
-  ifProp tempNum equal 1 [[
+  ifProp FlowAction.tempNum equal 1 [[
     prop FlowAction.alpha setTo 1
 
     // This is the first column because the prior was empty, so display initial options
@@ -345,7 +345,6 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
       ifProp FlowAction.row equal 2 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
-
       ]]
       ifProp FlowAction.row equal 3 [[
         prop FlowAction.actionChoice setToOption 'play'
@@ -639,8 +638,7 @@ ifProp global.showConversionCounts equal false [[
       "initScript": `prop x setTo -190
 prop y setTo -270
 prop FlowAction.col setTo 1
-prop FlowAction.row setTo 1
-`
+prop FlowAction.row setTo 1`
     },
     {
       "id": "1",
