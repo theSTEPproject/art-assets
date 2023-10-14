@@ -41,14 +41,6 @@ addFeature IU
 addFeature Population
 prop global.visible setTo false
 
-// current col / row
-// 0 means we havent started this run yet
-addProp col number 0
-addProp row number 0
-
-// choices in this run
-addProp lastColChoice string ''
-
 // 🔎 choices and counts across runs
 addProp timeCount number 0
 addProp timeUnit string 'days'
@@ -58,16 +50,24 @@ addProp workedOnLodgeCount number 0
 addProp playedCount number 0
 addProp ateAndStoredCount number 0
 
-// temp stuff for passing in to loops
-addProp tempNum number 0
-addProp tempString string ''
-addProp tempBool boolean false
-addProp rowDiffIsBig boolean false
+// current col / row
+// 0 means we havent started this run yet
+addProp col number 0
+addProp row number 0
 
 // setup the lastY to reflect the last action so that
 // we can shift up and down and position between the last and current
 addProp lastY number -60
 addProp newY number 0
+
+// last action chosen by the player
+addProp lastColChoice string ''
+
+// temp stuff for passing in to loops
+addProp tempNum number 0
+addProp tempString string ''
+addProp tempBool boolean false
+addProp rowDiffIsBig boolean false
 
 // setup the basic properties for the flow actions
 featCall global.IU setupFunction 'initFlowActions' [[
@@ -113,7 +113,7 @@ addProp touchTimer number 0
 # PROGRAM UPDATE
 
 when FlowDirector centertouches Start [[
-  
+
 
   every 0.1 runAtStart [[
     featProp FlowDirector.Costume.glow setTo 1
@@ -271,7 +271,7 @@ when FlowDirector centertouches FlowAction [[
           propPush FlowAction.actionChoice
           propPop global.lastColChoice
 
-          // do any global variable updating based on what type we are so displays update
+          // ✏️ CHANGE How the different actions impact the variables?
           ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
             prop global.collectedMaterialsCount add 1
           ]]
@@ -355,13 +355,11 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   stackSub
   propPop FlowAction.tempNum
 
-  // dbgOut {{ 'global.col: ' + global.getProp('col').value + 'FlowAction.col: ' + FlowAction.getProp('col').value + 'FlowAction.tempNum: ' + FlowAction.getProp('tempNum').value }}
-
   // if we are the current col, lock
   ifProp FlowAction.tempNum equal 0 [[
     // lock this row
     prop FlowAction.locked setTo true
-    // if you aren't the selected one, then fade
+    // if you arent the selected one, then fade
     ifProp FlowAction.selected equal false [[
       prop FlowAction.alpha setTo 0.3
     ]]
@@ -642,24 +640,6 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + global.getProp('timeUnit').value }}
   featPropPop Timer.Graphing.text
 ]]`
-    },
-    {
-      "name": "EnergyConversionBackground",
-      "scriptText": `# BLUEPRINT EnergyConversionBackground
-# TAG IsCharControllable false
-# TAG IsPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Costume
-featProp EnergyConversionBackground.Costume.costumeName setTo 'WL_conversions_bg.png'
-featProp EnergyConversionBackground.Costume.scale setTo 0.5
-prop EnergyConversionBackground.zIndex setTo -500
-
-ifProp global.showConversionCounts equal false [[
-  prop EnergyConversionBackground.visible setTo false
-]]
-# PROGRAM UPDATE`
     }
   ],
   "instances": [
