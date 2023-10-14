@@ -239,6 +239,7 @@ when FlowDirector centertouches Start [[
       prop global.playerActionChoice setTo ''
       prop global.timeCount add 1
 
+      featCall global.IU logString '--------------------------'
       exprPush {{ 'ROUND ' + global.getProp('timeCount').value + ' Beaver selecting a set of actions' }}
       featPropPop global.IU.logStringText
       featCall global.IU logProperty
