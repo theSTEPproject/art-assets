@@ -42,7 +42,7 @@ addFeature Population
 prop global.visible setTo false
 
 // current col / row
-// 0 means we haven't started this run yet
+// 0 means we havent started this run yet
 addProp col number 0
 addProp row number 0
 
@@ -99,7 +99,7 @@ addFeature Physics
 addFeature Touches
 
 featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
-featProp FlowDirector.Costume.scale setTo 0.3
+featProp FlowDirector.Costume.scale setTo 0.2
 
 featCall FlowDirector.Touches monitor 'FlowAction' c2b
 featCall FlowDirector.Touches monitor 'Start' c2b
@@ -108,167 +108,197 @@ addProp tempNum number 0
 addProp needFlip boolean false
 addProp arrowCostumeName string ''
 
+addProp touchTimer number 0
+
 # PROGRAM UPDATE
 
-when FlowDirector centerfirsttouches Start [[
-  // re-set the global properties so that we can display what is going on in this set of choices
-  prop global.col setTo 0
-  prop global.row setTo 0
-  prop global.lastColChoice setTo ''
-  prop global.timeCount add 1
+when FlowDirector centertouches Start [[
+  
 
-  featCall FlowDirector.Population charactersForEach Arrow [[
-    prop Arrow.visible setTo false
-    // Set this to the middle (update if we move the arrows)
-    prop Arrow.y setTo -60
-  ]]
-
-  // we are starting a new run, so clear things out and get us ready
-  featCall global.IU callFunction 'initFlowActions'
-  featCall global.IU callFunction 'updateFlowActions'
-]]
-
-when FlowDirector centerfirsttouches FlowAction [[
-  // ignore if we have been locked
-  ifProp FlowAction.locked equal false [[
-    // the not chosen yet actions are all the ones to the right of the current row, so ignore if we are one of those
-    ifProp FlowAction.actionChoice notEqual 'not chosen yet' [[
-      // mark this FlowAction selected
-      prop FlowAction.selected setTo true
-
-      // before we set the new context, use the old one to draw an arrow
-      // if this is the first col, draw the arrow from the start (treat as row 2)
-      ifProp global.col equal 0 [[
-        prop global.row setTo 2
-        // this should be the middle / where start is
-        prop global.lastY setTo -60
-
-      ]]
-
-      propPush global.row
-      propPush FlowAction.row
-      stackSub
-      propPop FlowDirector.tempNum
-
-      // check if we need to flip it, and if so mul -1 to get abs
-      prop FlowDirector.needFlip setTo true
-
-      ifProp FlowDirector.tempNum lessThan 0 [[
-        prop FlowDirector.needFlip setTo false
-        prop FlowDirector.tempNum mul -1
-      ]]
-
-      // check scale of difference to shift arrow up or down
-      prop global.rowDiffIsBig setTo false
-
-      // have 3 existing arrows and then scale, rotate, and shift up or down
-      // to scale, select different artowork that is longer
-
-      // if rows are same, use short, straight
-      ifProp FlowDirector.tempNum equal 0 [[
-        prop FlowDirector.arrowCostumeName setTo 'WL_arrow_short.png'
-      ]]
-
-      // if rows are gap of 1, use medium angled (flip horiztonal if needed)
-      ifProp FlowDirector.tempNum equal 1 [[
-        prop FlowDirector.arrowCostumeName setTo 'WL_arrow_medium.png'
-      ]]
-
-      // if rows are gap of 2, use long angled, (flip horiztonal if needed)
-      ifProp FlowDirector.tempNum equal 2 [[
-        prop global.rowDiffIsBig setTo true
-        prop FlowDirector.arrowCostumeName setTo 'WL_arrow_long.png'
-      ]]
-
-      // pass variables up to global so we can use them in the next call
-      propPush FlowDirector.arrowCostumeName
-      propPop global.tempString
-      propPush FlowDirector.needFlip
-      propPop global.tempBool
-      propPush FlowAction.y
-      propPop global.newY
+  every 0.1 runAtStart [[
+    featProp FlowDirector.Costume.glow setTo 1
+    prop FlowDirector.touchTimer add 1
+    ifProp FlowDirector.touchTimer equal 10 [[
+      // re-set the global properties so that we can display what is going on in this set of choices
+      prop global.col setTo 0
+      prop global.row setTo 0
+      prop global.lastColChoice setTo ''
+      prop global.timeCount add 1
 
       featCall FlowDirector.Population charactersForEach Arrow [[
-        propPush global.col
-        propPush Arrow.col
-        stackSub
-        propPop global.tempNum
-
-        // if they are the same col and thus this is the right arrow
-        ifProp global.tempNum equal 0 [[
-          // set the costume name based on distance (this is set above)
-          propPush global.tempString
-          featPropPop Arrow.Costume.costumeName
-
-          // shift up or down if needed
-          // to be in-between the last and current action
-          propPush global.lastY
-          propPush global.newY
-          stackSub
-          propPop global.tempNum
-
-          propPush global.newY
-          propPop Arrow.y
-
-          ifProp global.tempNum greaterThan 0 [[
-            prop Arrow.y sub 100
-            ifProp global.rowDiffIsBig equal true [[
-              prop Arrow.y sub 100
-            ]]
-
-          ]]
-          ifProp global.tempNum lessThan 0 [[
-            prop Arrow.y add 100
-            ifProp global.rowDiffIsBig equal true [[
-              prop Arrow.y add 100
-            ]]
-          ]]
-
-          // flip it based on direction if up or down (this is set above)
-          propPush global.tempBool
-          featPropPop Arrow.Costume.flipY
-
-          // make it visible
-          prop Arrow.visible setTo true
-
-          // update the last y to be where the action was
-          propPush global.newY
-          propPop global.lastY
-        ]]
+        prop Arrow.visible setTo false
+        // Set this to the middle (update if we move the arrows)
+        prop Arrow.y setTo -60
       ]]
 
-      // set the global context to be this col and row so we know what was selected
-      // this helps in iterating through the FlowActions to update them (see updateFlowActions)
-      propPush FlowAction.col
-      propPop global.col
-      propPush FlowAction.row
-      propPop global.row
-
-      // record this as the lastColChoice so we know what's what
-      propPush FlowAction.actionChoice
-      propPop global.lastColChoice
-
-      // do any global variable updating based on what type we are so displays update
-      ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
-        prop global.collectedMaterialsCount add 1
-      ]]
-      ifProp FlowAction.actionChoice equalToOption 'work on dam' [[
-        prop global.workedOnDamCount add 1
-      ]]
-      ifProp FlowAction.actionChoice equalToOption 'work on lodge' [[
-        prop global.workedOnLodgeCount add 1
-      ]]
-      ifProp FlowAction.actionChoice equalToOption 'play' [[
-        prop global.playedCount add 1
-      ]]
-      ifProp FlowAction.actionChoice equalToOption 'eat and store food' [[
-        prop global.ateAndStoredCount add 1
-      ]]
-
-      // update all of the flowActions
+      // we are starting a new run, so clear things out and get us ready
+      featCall global.IU callFunction 'initFlowActions'
       featCall global.IU callFunction 'updateFlowActions'
     ]]
   ]]
+]]
+
+when FlowDirector centerlasttouches Start [[
+  prop FlowDirector.touchTimer setTo 0
+  featProp FlowDirector.Costume.glow setTo 0
+]]
+
+when FlowDirector centertouches FlowAction [[
+  every 0.1 runAtStart [[
+    // ignore if we have been locked
+    ifProp FlowAction.locked equal false [[
+
+      // the not chosen yet actions are all the ones to the right of the current row, so ignore if we are one of those
+      ifProp FlowAction.actionChoice notEqual 'not chosen yet' [[
+
+        featProp FlowDirector.Costume.glow setTo 1
+        prop FlowDirector.touchTimer add 1
+
+        ifProp FlowDirector.touchTimer equal 10 [[
+
+
+          // mark this FlowAction selected
+          prop FlowAction.selected setTo true
+
+          // before we set the new context, use the old one to draw an arrow
+          // if this is the first col, draw the arrow from the start (treat as row 2)
+          ifProp global.col equal 0 [[
+            prop global.row setTo 2
+            // this should be the middle / where start is
+            prop global.lastY setTo -60
+          ]]
+
+          propPush global.row
+          propPush FlowAction.row
+          stackSub
+          propPop FlowDirector.tempNum
+
+          // check if we need to flip it, and if so mul -1 to get abs
+          prop FlowDirector.needFlip setTo true
+
+          ifProp FlowDirector.tempNum lessThan 0 [[
+            prop FlowDirector.needFlip setTo false
+            prop FlowDirector.tempNum mul -1
+          ]]
+
+          // check scale of difference to shift arrow up or down
+          prop global.rowDiffIsBig setTo false
+
+          // have 3 existing arrows and then scale, rotate, and shift up or down
+          // to scale, select different artowork that is longer
+
+          // if rows are same, use short, straight
+          ifProp FlowDirector.tempNum equal 0 [[
+            prop FlowDirector.arrowCostumeName setTo 'WL_arrow_short.png'
+          ]]
+
+          // if rows are gap of 1, use medium angled (flip horiztonal if needed)
+          ifProp FlowDirector.tempNum equal 1 [[
+            prop FlowDirector.arrowCostumeName setTo 'WL_arrow_medium.png'
+          ]]
+
+          // if rows are gap of 2, use long angled, (flip horiztonal if needed)
+          ifProp FlowDirector.tempNum equal 2 [[
+            prop global.rowDiffIsBig setTo true
+            prop FlowDirector.arrowCostumeName setTo 'WL_arrow_long.png'
+          ]]
+
+          // pass variables up to global so we can use them in the next call
+          propPush FlowDirector.arrowCostumeName
+          propPop global.tempString
+          propPush FlowDirector.needFlip
+          propPop global.tempBool
+          propPush FlowAction.y
+          propPop global.newY
+
+          featCall FlowDirector.Population charactersForEach Arrow [[
+            propPush global.col
+            propPush Arrow.col
+            stackSub
+            propPop global.tempNum
+
+            // if they are the same col and thus this is the right arrow
+            ifProp global.tempNum equal 0 [[
+              // set the costume name based on distance (this is set above)
+              propPush global.tempString
+              featPropPop Arrow.Costume.costumeName
+
+              // shift up or down if needed
+              // to be in-between the last and current action
+              propPush global.lastY
+              propPush global.newY
+              stackSub
+              propPop global.tempNum
+
+              propPush global.newY
+              propPop Arrow.y
+
+              ifProp global.tempNum greaterThan 0 [[
+                prop Arrow.y sub 100
+                ifProp global.rowDiffIsBig equal true [[
+                  prop Arrow.y sub 100
+                ]]
+
+              ]]
+              ifProp global.tempNum lessThan 0 [[
+                prop Arrow.y add 100
+                ifProp global.rowDiffIsBig equal true [[
+                  prop Arrow.y add 100
+                ]]
+              ]]
+
+              // flip it based on direction if up or down (this is set above)
+              propPush global.tempBool
+              featPropPop Arrow.Costume.flipY
+
+              // make it visible
+              prop Arrow.visible setTo true
+
+              // update the last y to be where the action was
+              propPush global.newY
+              propPop global.lastY
+            ]]
+          ]]
+
+          // set the global context to be this col and row so we know what was selected
+          // this helps in iterating through the FlowActions to update them (see updateFlowActions)
+          propPush FlowAction.col
+          propPop global.col
+          propPush FlowAction.row
+          propPop global.row
+
+          // record this as the lastColChoice so we know whats what
+          propPush FlowAction.actionChoice
+          propPop global.lastColChoice
+
+          // do any global variable updating based on what type we are so displays update
+          ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
+            prop global.collectedMaterialsCount add 1
+          ]]
+          ifProp FlowAction.actionChoice equalToOption 'work on dam' [[
+            prop global.workedOnDamCount add 1
+          ]]
+          ifProp FlowAction.actionChoice equalToOption 'work on lodge' [[
+            prop global.workedOnLodgeCount add 1
+          ]]
+          ifProp FlowAction.actionChoice equalToOption 'play' [[
+            prop global.playedCount add 1
+          ]]
+          ifProp FlowAction.actionChoice equalToOption 'eat and store food' [[
+            prop global.ateAndStoredCount add 1
+          ]]
+
+          // update all of the flowActions
+          featCall global.IU callFunction 'updateFlowActions'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+when FlowDirector centerlasttouches FlowAction [[
+  prop FlowDirector.touchTimer setTo 0
+  featProp FlowDirector.Costume.glow setTo 0
 ]]`
     },
     {
@@ -308,7 +338,7 @@ prop FlowAction.actionChoice setToOption 'not chosen yet'
 
 addProp tempNum number 0
 
-featCall FlowAction.IU setupFunction initActionDisplay [[
+featCall FlowAction.IU setupFunction 'initActionDisplay' [[
   prop FlowAction.locked setTo false
   prop FlowAction.selected setTo false
   prop FlowAction.alpha setTo 0.3
