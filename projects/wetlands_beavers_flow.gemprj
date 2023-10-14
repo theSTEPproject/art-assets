@@ -840,6 +840,33 @@ every 1 runAtStart [[
   propPop PollutionGraph.pollutionCleaned
 
 ]]`
+    },
+    {
+      "name": "ChanceBeaversHurtGraph",
+      "scriptText": `# BLUEPRINT ChanceBeaversHurtGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp ChanceBeaversHurtGraph.Costume.costumeName setTo 'GEN_square.json'
+featProp ChanceBeaversHurtGraph.Costume.scale setTo 0.2
+
+addProp chanceBeaversHurtByCoyotes number 0
+prop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes setMin 0
+prop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes setMax 10
+
+featProp ChanceBeaversHurtGraph.Graphing.meterProp setTo 'chanceBeaversHurtByCoyotes'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.chanceBeaversHurtByCoyotes
+  propPop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes
+
+]]
+`
     }
   ],
   "instances": [
@@ -974,29 +1001,36 @@ prop Timer.y setTo -402.07`
       "id": "16",
       "label": "Slow Water",
       "bpid": "SlowWaterGraph",
-      "initScript": `prop SlowWaterGraph.x setTo -204.34
-prop SlowWaterGraph.y setTo 287.53`
+      "initScript": `prop SlowWaterGraph.x setTo -227.59
+prop SlowWaterGraph.y setTo 288.44`
     },
     {
       "id": "17",
       "label": "Water Plants",
       "bpid": "WaterPlantGraph",
-      "initScript": `prop WaterPlantGraph.x setTo -79.74
-prop WaterPlantGraph.y setTo 287.69`
+      "initScript": `prop WaterPlantGraph.x setTo -110.17
+prop WaterPlantGraph.y setTo 291.42`
     },
     {
       "id": "18",
       "label": "Fish",
       "bpid": "FishGraph",
-      "initScript": `prop FishGraph.x setTo 50.23
-prop FishGraph.y setTo 296.07`
+      "initScript": `prop FishGraph.x setTo 16.73
+prop FishGraph.y setTo 297.72`
     },
     {
       "id": "19",
       "label": "Pollution Cleaned",
       "bpid": "PollutionGraph",
-      "initScript": `prop PollutionGraph.x setTo 165.70
-prop PollutionGraph.y setTo 291.04`
+      "initScript": `prop PollutionGraph.x setTo 114.26
+prop PollutionGraph.y setTo 290.44`
+    },
+    {
+      "id": "20",
+      "label": "Chance Beavers Hurt",
+      "bpid": "ChanceBeaversHurtGraph",
+      "initScript": `prop ChanceBeaversHurtGraph.x setTo 225.78
+prop ChanceBeaversHurtGraph.y setTo 288.63`
     }
   ]
 }
