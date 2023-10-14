@@ -52,7 +52,7 @@ addProp numberBeavers number 0
 addProp numberFish number 0
 addProp numberWaterPlants number 0
 addProp pollutionCleaned number 0
-addProp beaversHurtByCoyotes number 0
+addProp chanceBeaversHurtByCoyotes number 10
 addProp beaverHappiness number 0
 addProp beaversReadyForWinter number 0
 // this prop is for the EcosystemSummary character to change its art
@@ -161,24 +161,42 @@ featCall global.IU setupFunction 'updateVariables' [[
       ]]
     ]]
   ]]
+
   ifProp global.playerActionChoice equal 'work on lodge' [[
     featCall global.IU logString 'Beaver worked on the lodge'
-
     prop global.workedOnLodgeCount add 1
 
     ifProp global.lodgeSize lessThan 10 [[
-      featCall global.IU logString 'LodgeSize ⬆'
+      featCall global.IU logString 'Lodge Size ⬆'
       prop global.lodgeSize add 1
+
+      ifProp global.chanceBeaversHurtByCoyotes greaterThan 0 [[
+        featCall global.IU logString 'Lodge Size ⬆ --> Chance Beavers Hurt ⬇'
+        prop global.chanceBeaversHurtByCoyotes sub 1
+      ]]
     ]]
 
+
   ]]
+  
   ifProp global.playerActionChoice equal 'play' [[
     featCall global.IU logString 'Beaver played'
     prop global.playedCount add 1
+
+    ifProp global.beaverHappiness lessThanOrEqual 10 [[
+        featCall global.IU logString 'Play ⬆ --> Beaver Happiness ⬆'
+        prop global.beaverHappiness add 1
+    ]]
   ]]
+
   ifProp global.playerActionChoice equal 'eat and store food' [[
     featCall global.IU logString 'Beaver ate and stored some food for winter'
     prop global.ateAndStoredCount add 1
+
+      ifProp global.beaversReadyForWinter lessThanOrEqual 10 [[
+        featCall global.IU logString 'Stored Food ⬆ --> Beaver Ready For Winter ⬆'
+        prop global.beaversReadyForWinter add 1
+    ]]
   ]]
 
 ]]
