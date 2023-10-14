@@ -42,12 +42,12 @@ addFeature Population
 prop global.visible setTo false
 
 // 🔎 system properties that we want to track
-// 🔎 all of these are in a range of 0-10 to help us 
+// 🔎 all of these are in a range of 0-10 to help us
 // 🔎 think about them as going from low to high in a similar manner
 // 🔎 0 is none, 1 is a little, 5 is medium amount, 10 is a lot
 addProp damSize number 0
 addProp lodgeSize number 0
-addProp slowWater number 0
+addProp slowWaterAmount number 0
 addProp numberBeavers number 0
 addProp numberFish number 0
 addProp numberWaterPlants number 0
@@ -55,8 +55,11 @@ addProp pollutionCleaned number 0
 addProp beaversHurtByCoyotes number 0
 addProp beaverHappiness number 0
 addProp beaversReadyForWinter number 0
+// this prop is for the EcosystemSummary character to change its art
+addProp systemSummaryLevel number 1
 
 // 🔎 choices / counts across runs
+addProp canBuildLodge boolean false
 addProp timeCount number 0
 addProp timeUnit string 'days'
 addProp collectedMaterialsCount number 0
@@ -85,23 +88,89 @@ addProp tempBool boolean false
 addProp rowDiffIsBig boolean false
 
 // This function is alled to update all of the variables in the system
-// whenever a new action is chosen 
+// whenever a new action is chosen
 featCall global.IU setupFunction 'updateVariables' [[
-  // 🔎 Reminder: all of these numbers are between 0-10 to help us 
+  // 🔎 Reminder: all of these numbers are between 0-10 to help us
   // 🔎 think about them as going from low to high in a similar manner
   // 🔎 0 is none, 1 is a little, 5 is medium amount, 10 is a lot
 
   ifProp global.playerActionChoice equal 'collect materials' [[
-      featCall global.IU logString 'Beaver collected materials'
-      prop global.collectedMaterialsCount add 1
+    featCall global.IU logString 'Beaver collected materials and can now work on the dam or lodge'
+    prop global.collectedMaterialsCount add 1
   ]]
   ifProp global.playerActionChoice equal 'work on dam' [[
     featCall global.IU logString 'Beaver worked on the dam'
     prop global.workedOnDamCount add 1
+
+    ifProp global.damSize lessThan 10 [[
+      // temporarily stop logging this because it was too much information 
+      // featCall global.IU logString 'Dam ⬆'
+      prop global.damSize add 1
+
+      // when the damSize first hits 1, update our system summary to show the dam
+      ifProp global.damSize equal 1 [[
+        // update the summary to show that we have a dam
+        prop global.systemSummaryLevel setTo 2
+      ]]
+
+      // Whenever the dam gets bigger, we have more slow water behind it
+      featCall global.IU logString 'Dam ⬆ --> Slow Water ⬆'
+      prop global.slowWaterAmount add 1
+
+      // when there is more slow water, we might get more water plants
+      ifProp global.slowWaterAmount greaterThan 3 [[
+        featCall global.IU logString 'Slow Water ⬆ --> Water Plants ⬆ (if there is enough)'
+        prop global.numberWaterPlants add 1
+
+        // update the summary to show that we have plants now
+        ifProp global.numberWaterPlants equal 1 [[
+          prop global.systemSummaryLevel setTo 3
+        ]]
+
+        ifProp global.numberWaterPlants greaterThan 3 [[
+          ifProp global.pollutionCleaned lessThanOrEqual 10 [[
+            featCall global.IU logString 'Water Plants ⬆ --> Pollution Cleaned ⬆ (if enough)'
+            prop global.pollutionCleaned add 1
+          ]]
+        ]]
+      ]]
+
+      // when there is more slow water, we might get more fish appearing
+      ifProp global.slowWaterAmount greaterThan 4 [[
+        featCall global.IU logString 'Slow Water ⬆ --> Fish ⬆ (if there is enough)'
+        prop global.numberFish add 1
+
+        // update the summary to show that we have a fish now
+        ifProp global.numberFish equal 1 [[
+          prop global.systemSummaryLevel setTo 4
+        ]]
+      ]]
+
+      // when there is enough water, the beavers can also build the lodge
+      ifProp global.slowWaterAmount greaterThan 5 [[
+        featCall global.IU logString 'Slow Water ⬆ --> Lodge is an option)'
+        prop global.canBuildLodge setTo true
+      ]]
+
+      // When the dam is big enough it can help filter pollution
+      ifProp global.damSize greaterThan 5 [[
+        ifProp global.pollutionCleaned lessThanOrEqual 10 [[
+          featCall global.IU logString 'Dam ⬆ --> Pollution Cleaned ⬆'
+          prop global.pollutionCleaned add 1
+        ]]
+      ]]
+    ]]
   ]]
   ifProp global.playerActionChoice equal 'work on lodge' [[
     featCall global.IU logString 'Beaver worked on the lodge'
+
     prop global.workedOnLodgeCount add 1
+
+    ifProp global.lodgeSize lessThan 10 [[
+      featCall global.IU logString 'LodgeSize ⬆'
+      prop global.lodgeSize add 1
+    ]]
+
   ]]
   ifProp global.playerActionChoice equal 'play' [[
     featCall global.IU logString 'Beaver played'
@@ -129,10 +198,7 @@ featCall global.IU setupFunction 'updateFlowActions' [[
   ]]
 ]]
 
-# PROGRAM UPDATE
-
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "FlowDirector",
@@ -173,6 +239,10 @@ when FlowDirector centertouches Start [[
       prop global.playerActionChoice setTo ''
       prop global.timeCount add 1
 
+      exprPush {{ 'ROUND ' + global.getProp('timeCount').value + ' Beaver selecting a set of actions' }}
+      featPropPop global.IU.logStringText
+      featCall global.IU logProperty
+
       featCall FlowDirector.Population charactersForEach Arrow [[
         prop Arrow.visible setTo false
         // Set this to the middle (update if we move the arrows)
@@ -203,7 +273,6 @@ when FlowDirector centertouches FlowAction [[
         prop FlowDirector.touchTimer add 1
 
         ifProp FlowDirector.touchTimer equal 10 [[
-
 
           // mark this FlowAction selected
           prop FlowAction.selected setTo true
@@ -458,7 +527,12 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
       ifProp FlowAction.row equal 2 [[
-        prop FlowAction.actionChoice setToOption 'work on lodge'
+        ifProp global.canBuildLodge equal true [[
+          prop FlowAction.actionChoice setToOption 'work on lodge'
+        ]] 
+        ifProp global.canBuildLodge equal false [[
+          prop FlowAction.actionChoice setToOption 'work on dam'
+        ]]
       ]]
       ifProp FlowAction.row equal 3 [[
         prop FlowAction.actionChoice setToOption 'play'
@@ -547,30 +621,6 @@ featProp Start.Costume.scale setTo 0.4
 `
     },
     {
-      "name": "UpdateText",
-      "scriptText": `# BLUEPRINT UpdateText
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
-
-# PROGRAM INIT
-addFeature Graphing
-addFeature Costume
-featProp UpdateText.Costume.costumeName setTo 'GEN_onexone.json'
-featProp UpdateText.Graphing.wordWrapWidth setTo 500
-featProp UpdateText.Graphing.text setTo 'Updates will appear here temporarily'
-
-# PROGRAM UPDATE
-
-every 0.5 runAtStart [[
-  exprPush {{'collectedMaterialsCount: ' + global.getProp('collectedMaterialsCount').value + ', workedOnDamCount: ' + global.getProp('workedOnDamCount').value +', workedOnLodgeCount: ' + global.getProp('workedOnLodgeCount').value +', playedCount: ' + global.getProp('playedCount').value +', ateAndStoredCount: ' + global.getProp('ateAndStoredCount').value}}
-  featPropPop  UpdateText.Graphing.text 
-]]
-
-
-`
-    },
-    {
       "name": "Arrow",
       "scriptText": `# BLUEPRINT Arrow
 # TAG isCharControllable true
@@ -588,52 +638,44 @@ addProp col number 0
 # PROGRAM UPDATE`
     },
     {
-      "name": "EcosystemDiversity",
-      "scriptText": `# BLUEPRINT EcosystemDiversity
+      "name": "EcosystemSummary",
+      "scriptText": `# BLUEPRINT EcosystemSummary
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
 addFeature Costume
-addFeature Graphing
+addFeature Graphing 
 
-featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
-featProp EcosystemDiversity.Costume.scale setTo 0.2
-featProp EcosystemDiversity.Graphing.text setTo 'helpful diversity'
+featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
+featProp EcosystemSummary.Costume.scale setTo 0.2
 
-addProp diversityLevel number 0
-prop diversityLevel setMin 0
-prop diversityLevel setMax 10
+// levels are 1-4 to match the picture
+// these are set in global when specific things happen 
+addProp systemSummaryLevel number 1
 
-featProp  EcosystemDiversity.Graphing.meterProp setTo 'diversityLevel'
-addProp tempNum number 0
 # PROGRAM UPDATE
 
 every 0.5 runAtStart [[
-   // exprPush {{'collectedMaterialsCount: ' + global.getProp('collectedMaterialsCount').value + ', workedOnDamCount: ' + global.getProp('workedOnDamCount').value +', workedOnLodgeCount: ' + global.getProp('workedOnLodgeCount').value +', playedCount: ' + global.getProp('playedCount').value +', ateAndStoredCount: ' + global.getProp('ateAndStoredCount').value}}
-  prop EcosystemDiversity.tempNum setTo 2
-  propPush EcosystemDiversity.tempNum
-  propPush global.workedOnDamCount
-  stackDiv
-  propPop EcosystemDiversity.diversityLevel
+  propPush global.systemSummaryLevel 
+  propPop EcosystemSummary.systemSummaryLevel 
 
   // set the art and meter color to show how we are doing
-  ifProp EcosystemDiversity.diversityLevel equal 0 [[
-    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
-    featProp EcosystemDiversity.Graphing.meterColor setTo 16737792
+  ifProp EcosystemSummary.systemSummaryLevel equal 1 [[
+    featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_1.png'
   ]]
-  ifProp EcosystemDiversity.diversityLevel greaterThan 0 [[
-    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_2.png'
-    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
+  ifProp EcosystemSummary.systemSummaryLevel equal 2 [[
+    featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_2.png'
   ]]
-  ifProp EcosystemDiversity.diversityLevel greaterThan 4 [[
-    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_3.png'
-    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
+  ifProp EcosystemSummary.systemSummaryLevel equal 3 [[
+    featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_3.png'
   ]]
-  ifProp EcosystemDiversity.diversityLevel greaterThan 6 [[
-    featProp EcosystemDiversity.Costume.costumeName setTo 'WL_ecosystem_status_4.png'
-    featProp EcosystemDiversity.Graphing.meterColor setTo 65280
+  ifProp EcosystemSummary.systemSummaryLevel equal 4 [[
+    featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_4.png'
+  ]]
+  ifProp EcosystemSummary.systemSummaryLevel equal 5 [[
+    featProp EcosystemSummary.Costume.costumeName setTo 'WL_ecosystem_status_5.png'
   ]]
 ]]
 
@@ -674,6 +716,110 @@ every 1 runAtStart [[
 
   exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + global.getProp('timeUnit').value }}
   featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "SlowWaterGraph",
+      "scriptText": `# BLUEPRINT SlowWaterGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp SlowWaterGraph.Costume.costumeName setTo 'GEN_square.json'
+featProp SlowWaterGraph.Costume.scale setTo 0.2
+
+addProp slowWaterAmount number 0
+prop SlowWaterGraph.slowWaterAmount setMin 0
+prop SlowWaterGraph.slowWaterAmount setMax 10
+
+featProp SlowWaterGraph.Graphing.meterProp setTo 'slowWaterAmount'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.slowWaterAmount
+  propPop SlowWaterGraph.slowWaterAmount
+
+]]`
+    },
+    {
+      "name": "WaterPlantGraph",
+      "scriptText": `# BLUEPRINT WaterPlantGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp WaterPlantGraph.Costume.costumeName setTo 'WL_waterplant.png'
+featProp WaterPlantGraph.Costume.scale setTo 0.1
+
+addProp numberWaterPlants number 0
+prop WaterPlantGraph.numberWaterPlants setMin 0
+prop WaterPlantGraph.numberWaterPlants setMax 10
+
+featProp WaterPlantGraph.Graphing.meterProp setTo 'numberWaterPlants'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.numberWaterPlants
+  propPop WaterPlantGraph.numberWaterPlants
+
+]]`
+    },
+    {
+      "name": "FishGraph",
+      "scriptText": `# BLUEPRINT FishGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp FishGraph.Costume.costumeName setTo 'WL_fish.png'
+featProp FishGraph.Costume.scale setTo 0.2
+
+addProp numberFish number 0
+prop FishGraph.numberFish setMin 0
+prop FishGraph.numberFish setMax 10
+
+featProp FishGraph.Graphing.meterProp setTo 'numberFish'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.numberFish
+  propPop FishGraph.numberFish
+
+]]`
+    },
+    {
+      "name": "PollutionGraph",
+      "scriptText": `# BLUEPRINT PollutionGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp PollutionGraph.Costume.costumeName setTo 'GEN_square.json'
+featProp PollutionGraph.Costume.scale setTo 0.2
+
+addProp pollutionCleaned number 0
+prop PollutionGraph.pollutionCleaned setMin 0
+prop PollutionGraph.pollutionCleaned setMax 10
+
+featProp PollutionGraph.Graphing.meterProp setTo 'pollutionCleaned'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.pollutionCleaned
+  propPop PollutionGraph.pollutionCleaned
+
 ]]`
     }
   ],
@@ -767,13 +913,6 @@ prop FlowAction.row setTo 3`
 prop y setTo -60`
     },
     {
-      "id": "10",
-      "label": "UpdateText",
-      "bpid": "UpdateText",
-      "initScript": `prop x setTo 163.28
-prop y setTo 290.02`
-    },
-    {
       "id": "11",
       "label": "Arrow 1",
       "bpid": "Arrow",
@@ -800,17 +939,45 @@ prop Arrow.col setTo 2`
     },
     {
       "id": "14",
-      "label": "EcosystemDiversityMeter",
-      "bpid": "EcosystemDiversity",
-      "initScript": `prop x setTo -303.93
-prop y setTo 270.92`
+      "label": "Ecosystem Summary",
+      "bpid": "EcosystemSummary",
+      "initScript": `prop EcosystemSummary.x setTo -337.15
+prop EcosystemSummary.y setTo 264.35`
     },
     {
       "id": "15",
       "label": "Timer15",
       "bpid": "Timer",
-      "initScript": `prop Timer.x setTo 491.69
-prop Timer.y setTo -402.96`
+      "initScript": `prop Timer.x setTo 335.60
+prop Timer.y setTo -402.07`
+    },
+    {
+      "id": "16",
+      "label": "Slow Water",
+      "bpid": "SlowWaterGraph",
+      "initScript": `prop SlowWaterGraph.x setTo -204.34
+prop SlowWaterGraph.y setTo 287.53`
+    },
+    {
+      "id": "17",
+      "label": "Water Plants",
+      "bpid": "WaterPlantGraph",
+      "initScript": `prop WaterPlantGraph.x setTo -79.74
+prop WaterPlantGraph.y setTo 287.69`
+    },
+    {
+      "id": "18",
+      "label": "Fish",
+      "bpid": "FishGraph",
+      "initScript": `prop FishGraph.x setTo 50.23
+prop FishGraph.y setTo 296.07`
+    },
+    {
+      "id": "19",
+      "label": "Pollution Cleaned",
+      "bpid": "PollutionGraph",
+      "initScript": `prop PollutionGraph.x setTo 165.70
+prop PollutionGraph.y setTo 291.04`
     }
   ]
 }
