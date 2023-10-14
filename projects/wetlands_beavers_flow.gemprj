@@ -41,7 +41,22 @@ addFeature IU
 addFeature Population
 prop global.visible setTo false
 
-// 🔎 choices and counts across runs
+// 🔎 system properties that we want to track
+// 🔎 all of these are in a range of 0-10 to help us 
+// 🔎 think about them as going from low to high in a similar manner
+// 🔎 0 is none, 1 is a little, 5 is medium amount, 10 is a lot
+addProp damSize number 0
+addProp lodgeSize number 0
+addProp slowWater number 0
+addProp numberBeavers number 0
+addProp numberFish number 0
+addProp numberWaterPlants number 0
+addProp pollutionCleaned number 0
+addProp beaversHurtByCoyotes number 0
+addProp beaverHappiness number 0
+addProp beaversReadyForWinter number 0
+
+// 🔎 choices / counts across runs
 addProp timeCount number 0
 addProp timeUnit string 'days'
 addProp collectedMaterialsCount number 0
@@ -61,13 +76,43 @@ addProp lastY number -60
 addProp newY number 0
 
 // last action chosen by the player
-addProp lastColChoice string ''
+addProp playerActionChoice string ''
 
 // temp stuff for passing in to loops
 addProp tempNum number 0
 addProp tempString string ''
 addProp tempBool boolean false
 addProp rowDiffIsBig boolean false
+
+// This function is alled to update all of the variables in the system
+// whenever a new action is chosen 
+featCall global.IU setupFunction 'updateVariables' [[
+  // 🔎 Reminder: all of these numbers are between 0-10 to help us 
+  // 🔎 think about them as going from low to high in a similar manner
+  // 🔎 0 is none, 1 is a little, 5 is medium amount, 10 is a lot
+
+  ifProp global.playerActionChoice equal 'collect materials' [[
+      featCall global.IU logString 'Beaver collected materials'
+      prop global.collectedMaterialsCount add 1
+  ]]
+  ifProp global.playerActionChoice equal 'work on dam' [[
+    featCall global.IU logString 'Beaver worked on the dam'
+    prop global.workedOnDamCount add 1
+  ]]
+  ifProp global.playerActionChoice equal 'work on lodge' [[
+    featCall global.IU logString 'Beaver worked on the lodge'
+    prop global.workedOnLodgeCount add 1
+  ]]
+  ifProp global.playerActionChoice equal 'play' [[
+    featCall global.IU logString 'Beaver played'
+    prop global.playedCount add 1
+  ]]
+  ifProp global.playerActionChoice equal 'eat and store food' [[
+    featCall global.IU logString 'Beaver ate and stored some food for winter'
+    prop global.ateAndStoredCount add 1
+  ]]
+
+]]
 
 // setup the basic properties for the flow actions
 featCall global.IU setupFunction 'initFlowActions' [[
@@ -83,7 +128,11 @@ featCall global.IU setupFunction 'updateFlowActions' [[
     featCall FlowAction.IU callFunction 'updateActionDisplay'
   ]]
 ]]
-# PROGRAM UPDATE`
+
+# PROGRAM UPDATE
+
+
+`
     },
     {
       "name": "FlowDirector",
@@ -114,7 +163,6 @@ addProp touchTimer number 0
 
 when FlowDirector centertouches Start [[
 
-
   every 0.1 runAtStart [[
     featProp FlowDirector.Costume.glow setTo 1
     prop FlowDirector.touchTimer add 1
@@ -122,7 +170,7 @@ when FlowDirector centertouches Start [[
       // re-set the global properties so that we can display what is going on in this set of choices
       prop global.col setTo 0
       prop global.row setTo 0
-      prop global.lastColChoice setTo ''
+      prop global.playerActionChoice setTo ''
       prop global.timeCount add 1
 
       featCall FlowDirector.Population charactersForEach Arrow [[
@@ -267,29 +315,16 @@ when FlowDirector centertouches FlowAction [[
           propPush FlowAction.row
           propPop global.row
 
-          // record this as the lastColChoice so we know whats what
+          // record this as the playerActionChoice so we know whats what
           propPush FlowAction.actionChoice
-          propPop global.lastColChoice
+          propPop global.playerActionChoice
 
-          // ✏️ CHANGE How the different actions impact the variables?
-          ifProp FlowAction.actionChoice equalToOption 'collect materials' [[
-            prop global.collectedMaterialsCount add 1
-          ]]
-          ifProp FlowAction.actionChoice equalToOption 'work on dam' [[
-            prop global.workedOnDamCount add 1
-          ]]
-          ifProp FlowAction.actionChoice equalToOption 'work on lodge' [[
-            prop global.workedOnLodgeCount add 1
-          ]]
-          ifProp FlowAction.actionChoice equalToOption 'play' [[
-            prop global.playedCount add 1
-          ]]
-          ifProp FlowAction.actionChoice equalToOption 'eat and store food' [[
-            prop global.ateAndStoredCount add 1
-          ]]
+          // have global update our variables based on what we just chose
+          featCall global.IU callFunction 'updateVariables'
 
           // update all of the flowActions
           featCall global.IU callFunction 'updateFlowActions'
+
         ]]
       ]]
     ]]
@@ -370,7 +405,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     prop FlowAction.alpha setTo 1
 
     // This is the first column because the prior was empty, so display initial options
-    ifProp global.lastColChoice equal '' [[
+    ifProp global.playerActionChoice equal '' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'collect materials'
       ]]
@@ -382,7 +417,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    ifProp global.lastColChoice equal 'collect materials' [[
+    ifProp global.playerActionChoice equal 'collect materials' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'work on dam'
       ]]
@@ -394,7 +429,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    ifProp global.lastColChoice equal 'play' [[
+    ifProp global.playerActionChoice equal 'play' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
@@ -406,7 +441,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    ifProp global.lastColChoice equal 'eat and store food' [[
+    ifProp global.playerActionChoice equal 'eat and store food' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'collect materials'
       ]]
@@ -418,7 +453,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    ifProp global.lastColChoice equal 'work on dam' [[
+    ifProp global.playerActionChoice equal 'work on dam' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
@@ -430,7 +465,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    ifProp global.lastColChoice equal 'work on lodge' [[
+    ifProp global.playerActionChoice equal 'work on lodge' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
