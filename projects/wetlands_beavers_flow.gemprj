@@ -49,7 +49,9 @@ addProp row number 0
 // choices in this run
 addProp lastColChoice string ''
 
-// choices across runs
+// 🔎 choices and counts across runs
+addProp timeCount number 0
+addProp timeUnit string 'days'
 addProp collectedMaterialsCount number 0
 addProp workedOnDamCount number 0
 addProp workedOnLodgeCount number 0
@@ -113,6 +115,7 @@ when FlowDirector centerfirsttouches Start [[
   prop global.col setTo 0
   prop global.row setTo 0
   prop global.lastColChoice setTo ''
+  prop global.timeCount add 1
 
   featCall FlowDirector.Population charactersForEach Arrow [[
     prop Arrow.visible setTo false
@@ -126,7 +129,7 @@ when FlowDirector centerfirsttouches Start [[
 ]]
 
 when FlowDirector centerfirsttouches FlowAction [[
-  // ignore if we have been locked 
+  // ignore if we have been locked
   ifProp FlowAction.locked equal false [[
     // the not chosen yet actions are all the ones to the right of the current row, so ignore if we are one of those
     ifProp FlowAction.actionChoice notEqual 'not chosen yet' [[
@@ -144,7 +147,7 @@ when FlowDirector centerfirsttouches FlowAction [[
 
       propPush global.row
       propPush FlowAction.row
-      stackSub 
+      stackSub
       propPop FlowDirector.tempNum
 
       // check if we need to flip it, and if so mul -1 to get abs
@@ -160,23 +163,23 @@ when FlowDirector centerfirsttouches FlowAction [[
 
       // have 3 existing arrows and then scale, rotate, and shift up or down
       // to scale, select different artowork that is longer
-      
+
       // if rows are same, use short, straight
       ifProp FlowDirector.tempNum equal 0 [[
         prop FlowDirector.arrowCostumeName setTo 'WL_arrow_short.png'
       ]]
 
-      // if rows are gap of 1, use medium angled (flip horiztonal if needed) 
+      // if rows are gap of 1, use medium angled (flip horiztonal if needed)
       ifProp FlowDirector.tempNum equal 1 [[
         prop FlowDirector.arrowCostumeName setTo 'WL_arrow_medium.png'
       ]]
 
-      // if rows are gap of 2, use long angled, (flip horiztonal if needed) 
+      // if rows are gap of 2, use long angled, (flip horiztonal if needed)
       ifProp FlowDirector.tempNum equal 2 [[
         prop global.rowDiffIsBig setTo true
         prop FlowDirector.arrowCostumeName setTo 'WL_arrow_long.png'
-      ]] 
-      
+      ]]
+
       // pass variables up to global so we can use them in the next call
       propPush FlowDirector.arrowCostumeName
       propPop global.tempString
@@ -196,29 +199,29 @@ when FlowDirector centerfirsttouches FlowAction [[
           // set the costume name based on distance (this is set above)
           propPush global.tempString
           featPropPop Arrow.Costume.costumeName
-          
+
           // shift up or down if needed
           // to be in-between the last and current action
           propPush global.lastY
           propPush global.newY
-          stackSub 
+          stackSub
           propPop global.tempNum
-          
+
           propPush global.newY
           propPop Arrow.y
 
           ifProp global.tempNum greaterThan 0 [[
+            prop Arrow.y sub 100
+            ifProp global.rowDiffIsBig equal true [[
               prop Arrow.y sub 100
-              ifProp global.rowDiffIsBig equal true [[
-                prop Arrow.y sub 100
-              ]]
+            ]]
 
           ]]
           ifProp global.tempNum lessThan 0 [[
+            prop Arrow.y add 100
+            ifProp global.rowDiffIsBig equal true [[
               prop Arrow.y add 100
-              ifProp global.rowDiffIsBig equal true [[
-                prop Arrow.y add 100
-              ]]
+            ]]
           ]]
 
           // flip it based on direction if up or down (this is set above)
@@ -233,7 +236,7 @@ when FlowDirector centerfirsttouches FlowAction [[
           propPop global.lastY
         ]]
       ]]
- 
+
       // set the global context to be this col and row so we know what was selected
       // this helps in iterating through the FlowActions to update them (see updateFlowActions)
       propPush FlowAction.col
@@ -241,7 +244,7 @@ when FlowDirector centerfirsttouches FlowAction [[
       propPush FlowAction.row
       propPop global.row
 
-      // record this as the lastColChoice so we know what's what 
+      // record this as the lastColChoice so we know what's what
       propPush FlowAction.actionChoice
       propPop global.lastColChoice
 
@@ -596,18 +599,17 @@ featProp Timer.Costume.scale setTo 1
 // A property to track the time
 addProp time number 0
 
-// Unit of time
-addProp timeUnit string 'days'
-
 // set the initial label and then update it below during update
-exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
+exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + global.getProp('timeUnit').value }}
 featPropPop Timer.Graphing.text
 
 # PROGRAM UPDATE
 // every second, add one to the time property and display the new time in the format \"Time: #\"\"
 every 1 runAtStart [[
-  prop Timer.time add 1
-  exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + Timer.getProp('timeUnit').value}}
+  propPush global.timeCount
+  propPop Timer.time
+
+  exprPush {{ 'Time: ' + Timer.getProp('time').value + ' ' + global.getProp('timeUnit').value }}
   featPropPop Timer.Graphing.text
 ]]`
     },
