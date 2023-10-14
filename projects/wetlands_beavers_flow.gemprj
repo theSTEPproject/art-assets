@@ -53,7 +53,7 @@ addProp numberFish number 0
 addProp numberWaterPlants number 0
 addProp pollutionCleaned number 0
 addProp chanceBeaversHurtByCoyotes number 10
-addProp beaverHappiness number 0
+addProp beaverFun number 0
 addProp beaversReadyForWinter number 0
 // this prop is for the EcosystemSummary character to change its art
 addProp systemSummaryLevel number 1
@@ -183,9 +183,9 @@ featCall global.IU setupFunction 'updateVariables' [[
     featCall global.IU logString 'Beaver played'
     prop global.playedCount add 1
 
-    ifProp global.beaverHappiness lessThanOrEqual 10 [[
-        featCall global.IU logString 'Play ⬆ --> Beaver Happiness ⬆'
-        prop global.beaverHappiness add 1
+    ifProp global.beaverFun lessThanOrEqual 10 [[
+        featCall global.IU logString 'Play ⬆ --> Beaver Fun ⬆'
+        prop global.beaverFun add 1
     ]]
   ]]
 
@@ -750,6 +750,7 @@ addFeature Graphing
 featProp SlowWaterGraph.Costume.costumeName setTo 'GEN_square.json'
 featCall SlowWaterGraph.Costume setColorize 0 118 198
 featProp SlowWaterGraph.Costume.scale setTo 0.2
+featProp SlowWaterGraph.Graphing.wordWrapWidth setTo 90
 
 addProp slowWaterAmount number 0
 prop SlowWaterGraph.slowWaterAmount setMin 0
@@ -776,6 +777,7 @@ addFeature Costume
 addFeature Graphing
 featProp WaterPlantGraph.Costume.costumeName setTo 'WL_waterplant.png'
 featProp WaterPlantGraph.Costume.scale setTo 0.1
+featProp WaterPlantGraph.Graphing.wordWrapWidth setTo 100
 
 addProp numberWaterPlants number 0
 prop WaterPlantGraph.numberWaterPlants setMin 0
@@ -853,7 +855,7 @@ every 1 runAtStart [[
 addFeature Costume
 addFeature Graphing
 featProp ChanceBeaversHurtGraph.Costume.costumeName setTo 'WL_coyote.png'
-featProp ChanceBeaversHurtGraph.Costume.scale setTo 0.2
+featProp ChanceBeaversHurtGraph.Costume.scale setTo 0.15
 
 addProp chanceBeaversHurtByCoyotes number 0
 prop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes setMin 0
@@ -866,12 +868,11 @@ every 1 runAtStart [[
   propPush global.chanceBeaversHurtByCoyotes
   propPop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes
 
-]]
-`
+]]`
     },
     {
-      "name": "BeaverHappinessGraph",
-      "scriptText": `# BLUEPRINT BeaverHappinessGraph
+      "name": "BeaverFunGraph",
+      "scriptText": `# BLUEPRINT BeaverFunGraph
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -879,19 +880,45 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp BeaverHappinessGraph.Costume.costumeName setTo 'WL_beaver.png'
-featProp BeaverHappinessGraph.Costume.scale setTo 0.15
+featProp BeaverFunGraph.Costume.costumeName setTo 'WL_beaver.png'
+featProp BeaverFunGraph.Costume.scale setTo 0.1
 
-addProp beaverHappiness number 0
-prop BeaverHappinessGraph.beaverHappiness setMin 0
-prop BeaverHappinessGraph.beaverHappiness setMax 10
+addProp beaverFun number 0
+prop BeaverFunGraph.beaverFun setMin 0
+prop BeaverFunGraph.beaverFun setMax 10
 
-featProp BeaverHappinessGraph.Graphing.meterProp setTo 'beaverHappiness'
+featProp BeaverFunGraph.Graphing.meterProp setTo 'beaverFun'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  propPush global.beaverHappiness
-  propPop BeaverHappinessGraph.beaverHappiness
+  propPush global.beaverFun
+  propPop BeaverFunGraph.beaverFun
+
+]]`
+    },
+    {
+      "name": "BeaversReadyForWinterGraph",
+      "scriptText": `# BLUEPRINT BeaversReadyForWinterGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp BeaversReadyForWinterGraph.Costume.costumeName setTo 'WL_beaver.png'
+featProp BeaversReadyForWinterGraph.Costume.scale setTo 0.1
+
+addProp beaversReadyForWinter number 0
+prop BeaversReadyForWinterGraph.beaversReadyForWinter setMin 0
+prop BeaversReadyForWinterGraph.beaversReadyForWinter setMax 10
+
+featProp BeaversReadyForWinterGraph.Graphing.meterProp setTo 'beaversReadyForWinter'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  propPush global.beaversReadyForWinter
+  propPop BeaversReadyForWinterGraph.beaversReadyForWinter
 
 ]]`
     }
@@ -1014,8 +1041,8 @@ prop Arrow.col setTo 2`
       "id": "14",
       "label": "Ecosystem Summary",
       "bpid": "EcosystemSummary",
-      "initScript": `prop EcosystemSummary.x setTo -344.00
-prop EcosystemSummary.y setTo 264.35`
+      "initScript": `prop EcosystemSummary.x setTo -348.38
+prop EcosystemSummary.y setTo 273.63`
     },
     {
       "id": "15",
@@ -1028,43 +1055,50 @@ prop Timer.y setTo -402.07`
       "id": "16",
       "label": "Slow Water",
       "bpid": "SlowWaterGraph",
-      "initScript": `prop SlowWaterGraph.x setTo -238.08
-prop SlowWaterGraph.y setTo 288.77`
+      "initScript": `prop SlowWaterGraph.x setTo -257.30
+prop SlowWaterGraph.y setTo 300.03`
     },
     {
       "id": "17",
       "label": "Water Plants",
       "bpid": "WaterPlantGraph",
-      "initScript": `prop WaterPlantGraph.x setTo -123.89
-prop WaterPlantGraph.y setTo 290.69`
+      "initScript": `prop WaterPlantGraph.x setTo -184.88
+prop WaterPlantGraph.y setTo 301.64`
     },
     {
       "id": "18",
       "label": "Fish",
       "bpid": "FishGraph",
-      "initScript": `prop FishGraph.x setTo -6.62
-prop FishGraph.y setTo 297.05`
+      "initScript": `prop FishGraph.x setTo -85.78
+prop FishGraph.y setTo 306.82`
     },
     {
       "id": "19",
       "label": "Pollution Cleaned",
       "bpid": "PollutionGraph",
-      "initScript": `prop PollutionGraph.x setTo 92.71
-prop PollutionGraph.y setTo 291.96`
+      "initScript": `prop PollutionGraph.x setTo 9.78
+prop PollutionGraph.y setTo 297.67`
     },
     {
       "id": "20",
       "label": "Chance Beavers Hurt",
       "bpid": "ChanceBeaversHurtGraph",
-      "initScript": `prop ChanceBeaversHurtGraph.x setTo 204.65
-prop ChanceBeaversHurtGraph.y setTo 281.88`
+      "initScript": `prop ChanceBeaversHurtGraph.x setTo 125.57
+prop ChanceBeaversHurtGraph.y setTo 292.91`
     },
     {
       "id": "21",
-      "label": "Beaver Happiness",
-      "bpid": "BeaverHappinessGraph",
-      "initScript": `prop BeaverHappinessGraph.x setTo 323.19
-prop BeaverHappinessGraph.y setTo 281.18`
+      "label": "Beaver Fun",
+      "bpid": "BeaverFunGraph",
+      "initScript": `prop BeaverFunGraph.x setTo 247.99
+prop BeaverFunGraph.y setTo 296.92`
+    },
+    {
+      "id": "22",
+      "label": "Ready For Winter",
+      "bpid": "BeaversReadyForWinterGraph",
+      "initScript": `prop BeaversReadyForWinterGraph.x setTo 352.53
+prop BeaversReadyForWinterGraph.y setTo 297.70`
     }
   ]
 }
