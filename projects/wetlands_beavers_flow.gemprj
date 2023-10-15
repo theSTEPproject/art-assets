@@ -25,7 +25,51 @@
   "rounds": [
     {
       "initScript": ``,
-      "endScript": ``
+      "endScript": `
+        // Generate a summary of the last run 
+        featCall global.Graphing showMessage 'Nice Work! Here is a summary of what you did:'
+        featCall global.Graphing showMessage ''
+        featCall global.IU logString 'SUMMARY:'
+
+        exprPush {{'Total run was ' + global.getProp('timeCount').value + ' ' + global.getProp('timeUnit').value}}
+        propPop global.tempString
+        propPush global.tempString
+        featPropPop global.IU.logStringText
+        featCall global.IU logProperty
+        propPush global.tempString
+        featPropPop global.Graphing.messageStringToShow
+        featCall global.Graphing showMessageProp
+
+        exprPush {{'Collected materials ' + global.getProp('collectedMaterialsCount').value + ' times'}}
+        propPop global.tempString
+        propPush global.tempString
+        featPropPop global.IU.logStringText
+        featCall global.IU logProperty
+        propPush global.tempString
+        featPropPop global.Graphing.messageStringToShow
+        featCall global.Graphing showMessageProp
+
+        exprPush {{'Worked on dam ' + global.getProp('workedOnDamCount').value + ' times, and lodge ' + global.getProp('workedOnLodgeCount').value + ' times'}}
+        propPop global.tempString
+        propPush global.tempString
+        featPropPop global.IU.logStringText
+        featCall global.IU logProperty
+        propPush global.tempString
+        featPropPop global.Graphing.messageStringToShow
+        featCall global.Graphing showMessageProp
+
+        exprPush {{'Ate and stored food ' + global.getProp('ateAndStoredCount').value + ' times, and played ' + global.getProp('playedCount').value + ' times'}}
+        propPop global.tempString
+        propPush global.tempString
+        featPropPop global.IU.logStringText
+        featCall global.IU logProperty
+        propPush global.tempString
+        featPropPop global.Graphing.messageStringToShow
+        featCall global.Graphing showMessageProp
+
+        // log that we are done
+        featCall global.IU logString 'Ending model run'
+      `
     }
   ],
   "blueprints": [
@@ -39,6 +83,8 @@
 # PROGRAM INIT
 addFeature IU
 addFeature Population
+addFeature Graphing
+
 prop global.visible setTo false
 
 // 🔎 system properties that we want to track
@@ -103,7 +149,7 @@ featCall global.IU setupFunction 'updateVariables' [[
     prop global.workedOnDamCount add 1
 
     ifProp global.damSize lessThan 10 [[
-      // temporarily stop logging this because it was too much information 
+      // temporarily stop logging this because it was too much information
       // featCall global.IU logString 'Dam ⬆'
       prop global.damSize add 1
 
@@ -178,14 +224,14 @@ featCall global.IU setupFunction 'updateVariables' [[
 
 
   ]]
-  
+
   ifProp global.playerActionChoice equal 'play' [[
     featCall global.IU logString 'Beaver played'
     prop global.playedCount add 1
 
     ifProp global.beaverFun lessThanOrEqual 10 [[
-        featCall global.IU logString 'Play ⬆ --> Beaver Fun ⬆'
-        prop global.beaverFun add 1
+      featCall global.IU logString 'Play ⬆ --> Beaver Fun ⬆'
+      prop global.beaverFun add 1
     ]]
   ]]
 
@@ -193,9 +239,9 @@ featCall global.IU setupFunction 'updateVariables' [[
     featCall global.IU logString 'Beaver ate and stored some food for winter'
     prop global.ateAndStoredCount add 1
 
-      ifProp global.beaversReadyForWinter lessThanOrEqual 10 [[
-        featCall global.IU logString 'Stored Food ⬆ --> Beaver Ready For Winter ⬆'
-        prop global.beaversReadyForWinter add 1
+    ifProp global.beaversReadyForWinter lessThanOrEqual 10 [[
+      featCall global.IU logString 'Stored Food ⬆ --> Beaver Ready For Winter ⬆'
+      prop global.beaversReadyForWinter add 1
     ]]
   ]]
 
@@ -216,7 +262,12 @@ featCall global.IU setupFunction 'updateFlowActions' [[
   ]]
 ]]
 
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+onEvent START [[
+  featCall global.IU logString '--------------------------'
+  featCall global.IU logString 'Starting model run'
+]]`
     },
     {
       "name": "FlowDirector",
