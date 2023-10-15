@@ -789,8 +789,8 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "name": "SlowWaterGraph",
-      "scriptText": `# BLUEPRINT SlowWaterGraph
+      "name": "SlowWaterMeter",
+      "scriptText": `# BLUEPRINT SlowWaterMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -798,27 +798,27 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp SlowWaterGraph.Costume.costumeName setTo 'GEN_square.json'
-featCall SlowWaterGraph.Costume setColorize 0 118 198
-featProp SlowWaterGraph.Costume.scale setTo 0.2
-featProp SlowWaterGraph.Graphing.wordWrapWidth setTo 90
+featProp SlowWaterMeter.Costume.costumeName setTo 'GEN_square.json'
+featCall SlowWaterMeter.Costume setColorize 0 118 198
+featProp SlowWaterMeter.Costume.scale setTo 0.2
+featProp SlowWaterMeter.Graphing.wordWrapWidth setTo 90
 
 addProp slowWaterAmount number 0
-prop SlowWaterGraph.slowWaterAmount setMin 0
-prop SlowWaterGraph.slowWaterAmount setMax 10
+prop SlowWaterMeter.slowWaterAmount setMin 0
+prop SlowWaterMeter.slowWaterAmount setMax 10
 
-featProp SlowWaterGraph.Graphing.meterProp setTo 'slowWaterAmount'
+featProp SlowWaterMeter.Graphing.meterProp setTo 'slowWaterAmount'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.slowWaterAmount
-  propPop SlowWaterGraph.slowWaterAmount
+  propPop SlowWaterMeter.slowWaterAmount
 
 ]]`
     },
     {
-      "name": "WaterPlantGraph",
-      "scriptText": `# BLUEPRINT WaterPlantGraph
+      "name": "WaterPlantMeter",
+      "scriptText": `# BLUEPRINT WaterPlantMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -826,26 +826,26 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp WaterPlantGraph.Costume.costumeName setTo 'WL_waterplant.png'
-featProp WaterPlantGraph.Costume.scale setTo 0.1
-featProp WaterPlantGraph.Graphing.wordWrapWidth setTo 100
+featProp WaterPlantMeter.Costume.costumeName setTo 'WL_waterplant.png'
+featProp WaterPlantMeter.Costume.scale setTo 0.1
+featProp WaterPlantMeter.Graphing.wordWrapWidth setTo 100
 
 addProp numberWaterPlants number 0
-prop WaterPlantGraph.numberWaterPlants setMin 0
-prop WaterPlantGraph.numberWaterPlants setMax 10
+prop WaterPlantMeter.numberWaterPlants setMin 0
+prop WaterPlantMeter.numberWaterPlants setMax 10
 
-featProp WaterPlantGraph.Graphing.meterProp setTo 'numberWaterPlants'
+featProp WaterPlantMeter.Graphing.meterProp setTo 'numberWaterPlants'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.numberWaterPlants
-  propPop WaterPlantGraph.numberWaterPlants
+  propPop WaterPlantMeter.numberWaterPlants
 
 ]]`
     },
     {
-      "name": "FishGraph",
-      "scriptText": `# BLUEPRINT FishGraph
+      "name": "FishMeter",
+      "scriptText": `# BLUEPRINT FishMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -853,25 +853,25 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp FishGraph.Costume.costumeName setTo 'WL_fish.png'
-featProp FishGraph.Costume.scale setTo 0.2
+featProp FishMeter.Costume.costumeName setTo 'WL_fish.png'
+featProp FishMeter.Costume.scale setTo 0.2
 
 addProp numberFish number 0
-prop FishGraph.numberFish setMin 0
-prop FishGraph.numberFish setMax 10
+prop FishMeter.numberFish setMin 0
+prop FishMeter.numberFish setMax 10
 
-featProp FishGraph.Graphing.meterProp setTo 'numberFish'
+featProp FishMeter.Graphing.meterProp setTo 'numberFish'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.numberFish
-  propPop FishGraph.numberFish
+  propPop FishMeter.numberFish
 
 ]]`
     },
     {
-      "name": "PollutionGraph",
-      "scriptText": `# BLUEPRINT PollutionGraph
+      "name": "PollutionCleanedMeter",
+      "scriptText": `# BLUEPRINT PollutionCleanedMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -879,25 +879,25 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp PollutionGraph.Costume.costumeName setTo 'GEN_square.json'
-featProp PollutionGraph.Costume.scale setTo 0.2
+featProp PollutionCleanedMeter.Costume.costumeName setTo 'WL_pollution_cleaning.png'
+featProp PollutionCleanedMeter.Costume.scale setTo 0.1
 
 addProp pollutionCleaned number 0
-prop PollutionGraph.pollutionCleaned setMin 0
-prop PollutionGraph.pollutionCleaned setMax 10
+prop PollutionCleanedMeter.pollutionCleaned setMin 0
+prop PollutionCleanedMeter.pollutionCleaned setMax 10
 
-featProp PollutionGraph.Graphing.meterProp setTo 'pollutionCleaned'
+featProp PollutionCleanedMeter.Graphing.meterProp setTo 'pollutionCleaned'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.pollutionCleaned
-  propPop PollutionGraph.pollutionCleaned
+  propPop PollutionCleanedMeter.pollutionCleaned
 
 ]]`
     },
     {
-      "name": "ChanceBeaversHurtGraph",
-      "scriptText": `# BLUEPRINT ChanceBeaversHurtGraph
+      "name": "ChanceHurtMeter",
+      "scriptText": `# BLUEPRINT ChanceHurtMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -905,25 +905,25 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp ChanceBeaversHurtGraph.Costume.costumeName setTo 'WL_coyote.png'
-featProp ChanceBeaversHurtGraph.Costume.scale setTo 0.15
+featProp ChanceHurtMeter.Costume.costumeName setTo 'WL_coyote.png'
+featProp ChanceHurtMeter.Costume.scale setTo 0.15
 
 addProp chanceBeaversHurtByCoyotes number 0
-prop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes setMin 0
-prop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes setMax 10
+prop ChanceHurtMeter.chanceBeaversHurtByCoyotes setMin 0
+prop ChanceHurtMeter.chanceBeaversHurtByCoyotes setMax 10
 
-featProp ChanceBeaversHurtGraph.Graphing.meterProp setTo 'chanceBeaversHurtByCoyotes'
+featProp ChanceHurtMeter.Graphing.meterProp setTo 'chanceBeaversHurtByCoyotes'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.chanceBeaversHurtByCoyotes
-  propPop ChanceBeaversHurtGraph.chanceBeaversHurtByCoyotes
+  propPop ChanceHurtMeter.chanceBeaversHurtByCoyotes
 
 ]]`
     },
     {
-      "name": "BeaverFunGraph",
-      "scriptText": `# BLUEPRINT BeaverFunGraph
+      "name": "BeaverFunMeter",
+      "scriptText": `# BLUEPRINT BeaverFunMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -931,25 +931,25 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp BeaverFunGraph.Costume.costumeName setTo 'WL_beaver.png'
-featProp BeaverFunGraph.Costume.scale setTo 0.1
+featProp BeaverFunMeter.Costume.costumeName setTo 'WL_beaver_fun.png'
+featProp BeaverFunMeter.Costume.scale setTo 0.1
 
 addProp beaverFun number 0
-prop BeaverFunGraph.beaverFun setMin 0
-prop BeaverFunGraph.beaverFun setMax 10
+prop BeaverFunMeter.beaverFun setMin 0
+prop BeaverFunMeter.beaverFun setMax 10
 
-featProp BeaverFunGraph.Graphing.meterProp setTo 'beaverFun'
+featProp BeaverFunMeter.Graphing.meterProp setTo 'beaverFun'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.beaverFun
-  propPop BeaverFunGraph.beaverFun
+  propPop BeaverFunMeter.beaverFun
 
 ]]`
     },
     {
-      "name": "BeaversReadyForWinterGraph",
-      "scriptText": `# BLUEPRINT BeaversReadyForWinterGraph
+      "name": "BeaversReadyForWinterMeter",
+      "scriptText": `# BLUEPRINT BeaversReadyForWinterMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -957,19 +957,48 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp BeaversReadyForWinterGraph.Costume.costumeName setTo 'WL_beaver.png'
-featProp BeaversReadyForWinterGraph.Costume.scale setTo 0.1
+featProp BeaversReadyForWinterMeter.Costume.costumeName setTo 'WL_beaver_winter.png'
+featProp BeaversReadyForWinterMeter.Costume.scale setTo 0.1
 
 addProp beaversReadyForWinter number 0
-prop BeaversReadyForWinterGraph.beaversReadyForWinter setMin 0
-prop BeaversReadyForWinterGraph.beaversReadyForWinter setMax 10
+prop BeaversReadyForWinterMeter.beaversReadyForWinter setMin 0
+prop BeaversReadyForWinterMeter.beaversReadyForWinter setMax 10
 
-featProp BeaversReadyForWinterGraph.Graphing.meterProp setTo 'beaversReadyForWinter'
+featProp BeaversReadyForWinterMeter.Graphing.meterProp setTo 'beaversReadyForWinter'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
   propPush global.beaversReadyForWinter
-  propPop BeaversReadyForWinterGraph.beaversReadyForWinter
+  propPop BeaversReadyForWinterMeter.beaversReadyForWinter
+
+]]`
+    },
+    {
+      "name": "GlobalPropertyMeter",
+      "scriptText": `# BLUEPRINT GlobalPropertyMeter
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp GlobalPropertyMeter.Costume.costumeName setTo 'WL_property.png'
+featProp GlobalPropertyMeter.Costume.scale setTo 0.1
+
+addProp currentValue number 0
+prop GlobalPropertyMeter.currentValue setMin 0
+prop GlobalPropertyMeter.currentValue setMax 10
+
+featProp GlobalPropertyMeter.Graphing.meterProp setTo 'currentValue'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  // ✏️ CHANGE What property this graph will keep track of by changing the next line
+  // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
+  // ✏️ workedOnLodgeCount, playedCount
+  propPush global.damSize
+  propPop GlobalPropertyMeter.currentValue
 
 ]]`
     }
@@ -1097,7 +1126,7 @@ prop EcosystemSummary.y setTo 273.63`
     },
     {
       "id": "15",
-      "label": "Timer15",
+      "label": "Timer",
       "bpid": "Timer",
       "initScript": `prop Timer.x setTo 335.60
 prop Timer.y setTo -402.07`
@@ -1105,51 +1134,58 @@ prop Timer.y setTo -402.07`
     {
       "id": "16",
       "label": "Slow Water",
-      "bpid": "SlowWaterGraph",
-      "initScript": `prop SlowWaterGraph.x setTo -257.30
-prop SlowWaterGraph.y setTo 300.03`
+      "bpid": "SlowWaterMeter",
+      "initScript": `prop SlowWaterMeter.x setTo -251.36
+prop SlowWaterMeter.y setTo 300.03`
     },
     {
       "id": "17",
       "label": "Water Plants",
-      "bpid": "WaterPlantGraph",
-      "initScript": `prop WaterPlantGraph.x setTo -184.88
-prop WaterPlantGraph.y setTo 301.64`
+      "bpid": "WaterPlantMeter",
+      "initScript": `prop WaterPlantMeter.x setTo -179.81
+prop WaterPlantMeter.y setTo 301.64`
     },
     {
       "id": "18",
       "label": "Fish",
-      "bpid": "FishGraph",
-      "initScript": `prop FishGraph.x setTo -85.78
-prop FishGraph.y setTo 306.82`
+      "bpid": "FishMeter",
+      "initScript": `prop FishMeter.x setTo -80.72
+prop FishMeter.y setTo 308.08`
     },
     {
       "id": "19",
       "label": "Pollution Cleaned",
-      "bpid": "PollutionGraph",
-      "initScript": `prop PollutionGraph.x setTo 9.78
-prop PollutionGraph.y setTo 297.67`
+      "bpid": "PollutionCleanedMeter",
+      "initScript": `prop PollutionCleanedMeter.x setTo 9.78
+prop PollutionCleanedMeter.y setTo 297.67`
     },
     {
       "id": "20",
       "label": "Chance Beavers Hurt",
-      "bpid": "ChanceBeaversHurtGraph",
-      "initScript": `prop ChanceBeaversHurtGraph.x setTo 125.57
-prop ChanceBeaversHurtGraph.y setTo 292.91`
+      "bpid": "ChanceHurtMeter",
+      "initScript": `prop ChanceHurtMeter.x setTo 125.57
+prop ChanceHurtMeter.y setTo 292.91`
     },
     {
       "id": "21",
       "label": "Beaver Fun",
-      "bpid": "BeaverFunGraph",
-      "initScript": `prop BeaverFunGraph.x setTo 247.99
-prop BeaverFunGraph.y setTo 296.92`
+      "bpid": "BeaverFunMeter",
+      "initScript": `prop BeaverFunMeter.x setTo 247.99
+prop BeaverFunMeter.y setTo 296.92`
     },
     {
       "id": "22",
       "label": "Ready For Winter",
-      "bpid": "BeaversReadyForWinterGraph",
-      "initScript": `prop BeaversReadyForWinterGraph.x setTo 352.53
-prop BeaversReadyForWinterGraph.y setTo 297.70`
+      "bpid": "BeaversReadyForWinterMeter",
+      "initScript": `prop BeaversReadyForWinterMeter.x setTo 352.53
+prop BeaversReadyForWinterMeter.y setTo 297.7`
+    },
+    {
+      "id": "23",
+      "label": "Test",
+      "bpid": "GlobalPropertyMeter",
+      "initScript": `prop GlobalPropertyMeter.x setTo -339.21
+prop GlobalPropertyMeter.y setTo 143.00`
     }
   ]
 }
