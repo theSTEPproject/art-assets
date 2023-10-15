@@ -149,8 +149,7 @@ featCall global.IU setupFunction 'updateVariables' [[
     prop global.workedOnDamCount add 1
 
     ifProp global.damSize lessThan 10 [[
-      // temporarily stop logging this because it was too much information
-      // featCall global.IU logString 'Dam ⬆'
+      featCall global.IU logString 'Dam ⬆'
       prop global.damSize add 1
 
       // when the damSize first hits 1, update our system summary to show the dam
