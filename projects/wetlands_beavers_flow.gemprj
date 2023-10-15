@@ -136,6 +136,7 @@ addProp rowDiffIsBig boolean false
 // This function is alled to update all of the variables in the system
 // whenever a new action is chosen
 featCall global.IU setupFunction 'updateVariables' [[
+  // ✏️ CHANGE How all of the variables are impacted by beaver behavior
   // 🔎 Reminder: all of these numbers are between 0-10 to help us
   // 🔎 think about them as going from low to high in a similar manner
   // 🔎 0 is none, 1 is a little, 5 is medium amount, 10 is a lot
