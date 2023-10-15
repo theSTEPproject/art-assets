@@ -282,8 +282,8 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 
-featProp FlowDirector.Costume.costumeName setTo 'GEN_circle.json'
-featProp FlowDirector.Costume.scale setTo 0.2
+featProp FlowDirector.Costume.costumeName setTo 'WL_beaver.png'
+featProp FlowDirector.Costume.scale setTo 0.15
 
 featCall FlowDirector.Touches monitor 'FlowAction' c2b
 featCall FlowDirector.Touches monitor 'Start' c2b
@@ -974,8 +974,8 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "name": "GlobalPropertyMeter",
-      "scriptText": `# BLUEPRINT GlobalPropertyMeter
+      "name": "PropertyMeter",
+      "scriptText": `# BLUEPRINT PropertyMeter
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -983,22 +983,75 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp GlobalPropertyMeter.Costume.costumeName setTo 'WL_property.png'
-featProp GlobalPropertyMeter.Costume.scale setTo 0.1
+featProp PropertyMeter.Graphing.isLargeGraphic setTo true
+featProp PropertyMeter.Costume.costumeName setTo 'GEN_onexone.json'
+
+addProp propertyName string ''
 
 addProp currentValue number 0
-prop GlobalPropertyMeter.currentValue setMin 0
-prop GlobalPropertyMeter.currentValue setMax 10
+prop PropertyMeter.currentValue setMin 0
+prop PropertyMeter.currentValue setMax 10
 
-featProp GlobalPropertyMeter.Graphing.meterProp setTo 'currentValue'
+featProp PropertyMeter.Graphing.meterProp setTo 'currentValue'
+
+// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
+// ✏️ workedOnLodgeCount, playedCount
+// ✏️ NOTE: the instance can override this so look there
+prop PropertyMeter.propertyName setTo 'damSize'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  // ✏️ CHANGE What property this graph will keep track of by changing the next line
-  // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-  // ✏️ workedOnLodgeCount, playedCount
-  propPush global.damSize
-  propPop GlobalPropertyMeter.currentValue
+
+  propPush PropertyMeter.propertyName
+  featPropPop PropertyMeter.Graphing.text
+
+  exprPush {{ global.getProp(PropertyMeter.getProp('propertyName').value).value }}
+  propPop PropertyMeter.currentValue
+
+]]`
+    },
+    {
+      "name": "PropertyGraph",
+      "scriptText": `# BLUEPRINT PropertyGraph
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp PropertyGraph.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PropertyGraph.Graphing.isLargeGraphic setTo true
+featProp PropertyGraph.Graphing.graphFrequency setTo 10
+featProp PropertyGraph.Graphing.graphMinY setTo 0
+featProp PropertyGraph.Graphing.graphMaxY setTo 10
+
+
+addProp propertyName string ''
+
+addProp currentValue number 0
+prop PropertyGraph.currentValue setMin 0
+prop PropertyGraph.currentValue setMax 10
+
+featProp PropertyGraph.Graphing.graphProp setTo 'currentValue'
+
+// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
+// ✏️ pollutionCleaned, chanceBeaversHurtByCoyotes, beaverFun, beaversReadyForWinter
+// ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
+// ✏️ NOTE: the instance can override this so look there
+prop PropertyGraph.propertyName setTo 'damSize'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  propPush PropertyGraph.propertyName
+  featPropPop PropertyGraph.Graphing.text
+
+  exprPush {{ global.getProp(PropertyGraph.getProp('propertyName').value).value }}
+  propPop PropertyGraph.currentValue
 
 ]]`
     }
@@ -1182,10 +1235,29 @@ prop BeaversReadyForWinterMeter.y setTo 297.7`
     },
     {
       "id": "23",
-      "label": "Test",
-      "bpid": "GlobalPropertyMeter",
-      "initScript": `prop GlobalPropertyMeter.x setTo -339.21
-prop GlobalPropertyMeter.y setTo 143.00`
+      "label": "Property Meter",
+      "bpid": "PropertyMeter",
+      "initScript": `prop PropertyMeter.x setTo 481.57
+prop PropertyMeter.y setTo 305.31
+
+// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
+// ✏️ workedOnLodgeCount, playedCount
+prop PropertyMeter.propertyName setTo 'damSize'`
+    },
+    {
+      "id": "24",
+      "label": "Property Graph",
+      "bpid": "PropertyGraph",
+      "initScript": `prop PropertyGraph.x setTo 482.8
+prop PropertyGraph.y setTo 149.16
+
+// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
+// ✏️ pollutionCleaned, chanceBeaversHurtByCoyotes, beaverFun, beaversReadyForWinter
+// ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
+prop PropertyGraph.propertyName setTo 'damSize'`
     }
   ]
 }
