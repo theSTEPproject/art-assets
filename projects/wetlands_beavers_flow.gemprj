@@ -219,6 +219,7 @@ featCall global.IU setupFunction 'updateVariables' [[
       ifProp global.chanceBeaversHurtByCoyotes greaterThan 0 [[
         featCall global.IU logString 'Lodge Size ⬆ --> Chance Beavers Hurt ⬇'
         prop global.chanceBeaversHurtByCoyotes sub 1
+        prop global.systemSummaryLevel setTo 5
       ]]
     ]]
 
