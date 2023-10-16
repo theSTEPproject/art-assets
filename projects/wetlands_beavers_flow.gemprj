@@ -98,7 +98,7 @@ addProp numberBeavers number 0
 addProp numberFish number 0
 addProp numberWaterPlants number 0
 addProp pollutionCleaned number 0
-addProp chanceBeaversHurtByCoyotes number 10
+addProp chanceBeaversHurt number 10
 addProp beaverFun number 0
 addProp beaversReadyForWinter number 0
 // this prop is for the EcosystemSummary character to change its art
@@ -216,9 +216,9 @@ featCall global.IU setupFunction 'updateVariables' [[
       featCall global.IU logString 'Lodge Size ⬆'
       prop global.lodgeSize add 1
 
-      ifProp global.chanceBeaversHurtByCoyotes greaterThan 0 [[
+      ifProp global.chanceBeaversHurt greaterThan 0 [[
         featCall global.IU logString 'Lodge Size ⬆ --> Chance Beavers Hurt ⬇'
-        prop global.chanceBeaversHurtByCoyotes sub 1
+        prop global.chanceBeaversHurt sub 1
         prop global.systemSummaryLevel setTo 5
       ]]
     ]]
@@ -907,16 +907,16 @@ addFeature Graphing
 featProp ChanceHurtMeter.Costume.costumeName setTo 'WL_Chance beaver hurt.png'
 featProp ChanceHurtMeter.Costume.scale setTo 0.15
 
-addProp chanceBeaversHurtByCoyotes number 0
-prop ChanceHurtMeter.chanceBeaversHurtByCoyotes setMin 0
-prop ChanceHurtMeter.chanceBeaversHurtByCoyotes setMax 10
+addProp chanceBeaversHurt number 0
+prop ChanceHurtMeter.chanceBeaversHurt setMin 0
+prop ChanceHurtMeter.chanceBeaversHurt setMax 10
 
-featProp ChanceHurtMeter.Graphing.meterProp setTo 'chanceBeaversHurtByCoyotes'
+featProp ChanceHurtMeter.Graphing.meterProp setTo 'chanceBeaversHurt'
 
 # PROGRAM UPDATE
 every 1 runAtStart [[
-  propPush global.chanceBeaversHurtByCoyotes
-  propPop ChanceHurtMeter.chanceBeaversHurtByCoyotes
+  propPush global.chanceBeaversHurt
+  propPop ChanceHurtMeter.chanceBeaversHurt
 
 ]]`
     },
@@ -1038,7 +1038,7 @@ featProp PropertyGraph.Graphing.graphProp setTo 'currentValue'
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
 // ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
-// ✏️ pollutionCleaned, chanceBeaversHurtByCoyotes, beaverFun, beaversReadyForWinter
+// ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 // ✏️ NOTE: the instance can override this so look there
 prop PropertyGraph.propertyName setTo 'damSize'
@@ -1067,16 +1067,7 @@ featProp grassbackground.Costume.costumeName setTo 'WL_background_Grass.png'
 featProp grassbackground.Costume.scale setTo 1.6
 prop grassbackground.zIndex setTo -999
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     },
     {
       "name": "timebox",
@@ -1093,16 +1084,7 @@ featProp timebox.Costume.scale setTo 0.5
 prop timebox.zIndex setTo -200
 
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+`
     }
   ],
   "instances": [
@@ -1304,20 +1286,20 @@ prop PropertyGraph.y setTo 149.16
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
 // ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
-// ✏️ pollutionCleaned, chanceBeaversHurtByCoyotes, beaverFun, beaversReadyForWinter
+// ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 prop PropertyGraph.propertyName setTo 'damSize'`
     },
     {
       "id": "25",
-      "label": "grassbackground25",
+      "label": "Grass Background",
       "bpid": "grassbackground",
       "initScript": `prop grassbackground.x setTo -2.20
 prop grassbackground.y setTo -12.11`
     },
     {
       "id": "26",
-      "label": "timebox26",
+      "label": "Timer BG",
       "bpid": "timebox",
       "initScript": `prop timebox.x setTo 335
 prop timebox.y setTo -424.78`
