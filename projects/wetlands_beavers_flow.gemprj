@@ -904,7 +904,7 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp ChanceHurtMeter.Costume.costumeName setTo 'WL_coyote.png'
+featProp ChanceHurtMeter.Costume.costumeName setTo 'WL_Chance beaver hurt.png'
 featProp ChanceHurtMeter.Costume.scale setTo 0.15
 
 addProp chanceBeaversHurtByCoyotes number 0
