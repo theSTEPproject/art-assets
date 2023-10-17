@@ -622,7 +622,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
         ]]
       ]]
       ifProp FlowAction.row equal 3 [[
-        prop FlowAction.actionChoice setToOption 'play'
+        prop FlowAction.actionChoice setToOption 'work on dam'
       ]]
     ]]
 
@@ -1010,10 +1010,11 @@ prop PropertyMeter.currentValue setMax 10
 
 featProp PropertyMeter.Graphing.meterProp setTo 'currentValue'
 
-// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ CHANGE What property this meter will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount, happyFishers
-// ✏️ NOTE: the instance can override this so look there
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, happyFishers, numberWaterPlants
+// ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
+// ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 prop PropertyMeter.propertyName setTo 'damSize'
 
 # PROGRAM UPDATE
@@ -1285,27 +1286,29 @@ prop BeaversReadyForWinterMeter.y setTo 260`
       "id": "23",
       "label": "Property Meter",
       "bpid": "PropertyMeter",
-      "initScript": `prop PropertyMeter.x setTo 481.57
-prop PropertyMeter.y setTo 305.31
+      "initScript": `prop PropertyMeter.x setTo 533.35
+prop PropertyMeter.y setTo 302.73
 
-// ✏️ CHANGE What property this graph will keep track of by changing the next line
+// ✏️ CHANGE What property this meter will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount, happyFishers
-prop PropertyMeter.propertyName setTo 'happyFishers'`
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, happyFishers, numberWaterPlants
+// ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
+// ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
+prop PropertyMeter.propertyName setTo 'workedOnDamCount'`
     },
     {
       "id": "24",
       "label": "Property Graph",
       "bpid": "PropertyGraph",
-      "initScript": `prop PropertyGraph.x setTo 482.8
-prop PropertyGraph.y setTo 149.16
+      "initScript": `prop PropertyGraph.x setTo 533.35 
+prop PropertyGraph.y setTo 145.39
 
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
 // ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, happyFishers, numberWaterPlants
 // ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
-prop PropertyGraph.propertyName setTo 'damSize'`
+prop PropertyGraph.propertyName setTo 'happyFishers'`
     },
     {
       "id": "25",
