@@ -50,7 +50,7 @@ matchString = '🔎 HOW'
 cssClass = ''
 color = 'rgba(255,255,255,1)'
 backgroundColor = 'rgba(0,255,0,0.5)'
-help = 'Explanation fow how this works.'
+help = 'Explanation for how this works.'
 isBookmark = true
 
 [[commentTypes]]
