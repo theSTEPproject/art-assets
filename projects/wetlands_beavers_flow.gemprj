@@ -96,6 +96,7 @@ addProp lodgeSize number 0
 addProp slowWaterAmount number 0
 addProp numberBeavers number 0
 addProp numberFish number 0
+addProp happyFishers number 0
 addProp numberWaterPlants number 0
 addProp pollutionCleaned number 0
 addProp chanceBeaversHurt number 10
@@ -185,6 +186,9 @@ featCall global.IU setupFunction 'updateVariables' [[
       ifProp global.slowWaterAmount greaterThan 4 [[
         featCall global.IU logString 'Slow Water ⬆ --> Fish ⬆ (if there is enough)'
         prop global.numberFish add 1
+        
+        featCall global.IU logString 'Fish ⬆ --> Happy Fishers ⬆'
+        prop global.happyFishers add 1
 
         // update the summary to show that we have a fish now
         ifProp global.numberFish equal 1 [[
@@ -1008,7 +1012,7 @@ featProp PropertyMeter.Graphing.meterProp setTo 'currentValue'
 
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount
+// ✏️ workedOnLodgeCount, playedCount, happyFishers
 // ✏️ NOTE: the instance can override this so look there
 prop PropertyMeter.propertyName setTo 'damSize'
 
@@ -1050,7 +1054,7 @@ featProp PropertyGraph.Graphing.graphProp setTo 'currentValue'
 
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, happyFishers, numberWaterPlants
 // ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 // ✏️ NOTE: the instance can override this so look there
@@ -1286,8 +1290,8 @@ prop PropertyMeter.y setTo 305.31
 
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount
-prop PropertyMeter.propertyName setTo 'damSize'`
+// ✏️ workedOnLodgeCount, playedCount, happyFishers
+prop PropertyMeter.propertyName setTo 'happyFishers'`
     },
     {
       "id": "24",
@@ -1298,7 +1302,7 @@ prop PropertyGraph.y setTo 149.16
 
 // ✏️ CHANGE What property this graph will keep track of by changing the next line
 // ✏️ Options include: damSize, lodgeSize, collectedMaterialsCount, workedOnDamCount
-// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, numberWaterPlants
+// ✏️ workedOnLodgeCount, playedCount, slowWaterAmount, numberFish, happyFishers, numberWaterPlants
 // ✏️ pollutionCleaned, chanceBeaversHurt, beaverFun, beaversReadyForWinter
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 prop PropertyGraph.propertyName setTo 'damSize'`
