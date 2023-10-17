@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_1",
+  "id": "foodweb_animalinteractions_1_group3",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -1859,13 +1859,6 @@ prop y setTo -316.55`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 254.22
 prop y setTo 246.32`
-    },
-    {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
     }
   ]
 }
