@@ -823,14 +823,26 @@ addProp slowWaterAmount number 0
 prop SlowWaterMeter.slowWaterAmount setMin 0
 prop SlowWaterMeter.slowWaterAmount setMax 10
 
+// to know if we changed our number
+addProp oldAmount number 0
+
 featProp SlowWaterMeter.Graphing.meterProp setTo 'slowWaterAmount'
 
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.slowWaterAmount
   propPop SlowWaterMeter.slowWaterAmount
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{SlowWaterMeter.getProp('oldAmount').value != SlowWaterMeter.getProp('slowWaterAmount').value}} [[
+    featProp SlowWaterMeter.Costume.glow setTo 1
+    propPush SlowWaterMeter.slowWaterAmount
+    propPop SlowWaterMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "WaterPlantMeter",
@@ -852,12 +864,24 @@ prop WaterPlantMeter.numberWaterPlants setMax 10
 
 featProp WaterPlantMeter.Graphing.meterProp setTo 'numberWaterPlants'
 
+// to know if we changed our number
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.numberWaterPlants
   propPop WaterPlantMeter.numberWaterPlants
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{WaterPlantMeter.getProp('oldAmount').value != WaterPlantMeter.getProp('numberWaterPlants').value}} [[
+    featProp WaterPlantMeter.Costume.glow setTo 1
+    propPush WaterPlantMeter.numberWaterPlants
+    propPop WaterPlantMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "FishMeter",
@@ -878,12 +902,24 @@ prop FishMeter.numberFish setMax 10
 
 featProp FishMeter.Graphing.meterProp setTo 'numberFish'
 
+// to know if we changed our number
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.numberFish
   propPop FishMeter.numberFish
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{FishMeter.getProp('oldAmount').value != FishMeter.getProp('numberFish').value}} [[
+    featProp FishMeter.Costume.glow setTo 1
+    propPush FishMeter.numberFish
+    propPop FishMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "PollutionCleanedMeter",
@@ -904,12 +940,24 @@ prop PollutionCleanedMeter.pollutionCleaned setMax 10
 
 featProp PollutionCleanedMeter.Graphing.meterProp setTo 'pollutionCleaned'
 
+// to know if we changed our number
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.pollutionCleaned
   propPop PollutionCleanedMeter.pollutionCleaned
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{PollutionCleanedMeter.getProp('oldAmount').value != PollutionCleanedMeter.getProp('pollutionCleaned').value}} [[
+    featProp PollutionCleanedMeter.Costume.glow setTo 1
+    propPush PollutionCleanedMeter.pollutionCleaned
+    propPop PollutionCleanedMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "ChanceHurtMeter",
@@ -930,12 +978,24 @@ prop ChanceHurtMeter.chanceBeaversHurt setMax 10
 
 featProp ChanceHurtMeter.Graphing.meterProp setTo 'chanceBeaversHurt'
 
+// to know if we changed our number
+addProp oldAmount number 10
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.chanceBeaversHurt
   propPop ChanceHurtMeter.chanceBeaversHurt
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{ChanceHurtMeter.getProp('oldAmount').value != ChanceHurtMeter.getProp('chanceBeaversHurt').value}} [[
+    featProp ChanceHurtMeter.Costume.glow setTo 1
+    propPush ChanceHurtMeter.chanceBeaversHurt
+    propPop ChanceHurtMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "BeaverFunMeter",
@@ -956,12 +1016,26 @@ prop BeaverFunMeter.beaverFun setMax 10
 
 featProp BeaverFunMeter.Graphing.meterProp setTo 'beaverFun'
 
+
+// to know if we changed our number
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.beaverFun
   propPop BeaverFunMeter.beaverFun
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{BeaverFunMeter.getProp('oldAmount').value != BeaverFunMeter.getProp('beaverFun').value}} [[
+    featProp BeaverFunMeter.Costume.glow setTo 1
+    propPush BeaverFunMeter.beaverFun
+    propPop BeaverFunMeter.oldAmount
+  ]]
+]]
 
-]]`
+`
     },
     {
       "name": "BeaversReadyForWinterMeter",
@@ -982,12 +1056,24 @@ prop BeaversReadyForWinterMeter.beaversReadyForWinter setMax 10
 
 featProp BeaversReadyForWinterMeter.Graphing.meterProp setTo 'beaversReadyForWinter'
 
+// to know if we changed our number
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
-every 1 runAtStart [[
+every 0.1 runAtStart [[
+  // set the local amount based on the global property
   propPush global.beaversReadyForWinter
   propPop BeaversReadyForWinterMeter.beaversReadyForWinter
-
-]]`
+  
+  // if the amount changed, glow to help draw attention to it
+  // and then update the oldAmount so that we can check it next time
+  ifExpr {{BeaversReadyForWinterMeter.getProp('oldAmount').value != BeaversReadyForWinterMeter.getProp('beaversReadyForWinter').value}} [[
+    featProp BeaversReadyForWinterMeter.Costume.glow setTo 1
+    propPush BeaversReadyForWinterMeter.beaversReadyForWinter
+    propPop BeaversReadyForWinterMeter.oldAmount
+  ]]
+]]
+`
     },
     {
       "name": "PropertyMeter",
@@ -1017,14 +1103,20 @@ featProp PropertyMeter.Graphing.meterProp setTo 'currentValue'
 // ✏️ collectedMaterialsCount, workedOnDamCount, workedOnLodgeCount, playedCount, ateAndStoredCount
 prop PropertyMeter.propertyName setTo 'damSize'
 
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
   propPush PropertyMeter.propertyName
   featPropPop PropertyMeter.Graphing.text
 
-  exprPush {{ global.getProp(PropertyMeter.getProp('propertyName').value).value }}
-  propPop PropertyMeter.currentValue
+  ifExpr {{PropertyMeter.getProp('oldAmount').value != global.getProp(PropertyMeter.getProp('propertyName').value).value}} [[
+    exprPush {{ global.getProp(PropertyMeter.getProp('propertyName').value).value }}
+    propPop PropertyMeter.currentValue
+    featProp PropertyMeter.Costume.glow setTo 1
+  ]]
+ 
 
 ]]`
     },
@@ -1061,15 +1153,18 @@ featProp PropertyGraph.Graphing.graphProp setTo 'currentValue'
 // ✏️ NOTE: the instance can override this so look there
 prop PropertyGraph.propertyName setTo 'damSize'
 
+addProp oldAmount number 0
+
 # PROGRAM UPDATE
 every 1 runAtStart [[
 
   propPush PropertyGraph.propertyName
   featPropPop PropertyGraph.Graphing.text
 
-  exprPush {{ global.getProp(PropertyGraph.getProp('propertyName').value).value }}
-  propPop PropertyGraph.currentValue
-
+  ifExpr {{PropertyGraph.getProp('oldAmount').value != global.getProp(PropertyGraph.getProp('propertyName').value).value}} [[
+    exprPush {{ global.getProp(PropertyGraph.getProp('propertyName').value).value }}
+    propPop PropertyGraph.currentValue
+  ]]
 ]]`
     },
     {
