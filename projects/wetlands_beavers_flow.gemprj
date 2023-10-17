@@ -1068,33 +1068,33 @@ every 1 runAtStart [[
 ]]`
     },
     {
-      "name": "grassbackground",
-      "scriptText": `# BLUEPRINT grassbackground
+      "name": "GrassBackground",
+      "scriptText": `# BLUEPRINT GrassBackground
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
 addFeature Costume
-featProp grassbackground.Costume.costumeName setTo 'WL_background_Grass.png'
-featProp grassbackground.Costume.scale setTo 1.6
-prop grassbackground.zIndex setTo -999
+featProp GrassBackground.Costume.costumeName setTo 'WL_background_Grass.png'
+featProp GrassBackground.Costume.scale setTo 1.6
+prop GrassBackground.zIndex setTo -999
 # PROGRAM UPDATE
 `
     },
     {
-      "name": "timebox",
-      "scriptText": `# BLUEPRINT timebox
+      "name": "TimeBackground",
+      "scriptText": `# BLUEPRINT TimeBackground
 # TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
 addFeature Costume
-featProp timebox.Costume.costumeName setTo 'GEN_square.json'
-featCall timebox.Costume setColorize 255 140 0
-featProp timebox.Costume.scale setTo 0.5
-prop timebox.zIndex setTo -200
+featProp TimeBackground.Costume.costumeName setTo 'GEN_square.json'
+featCall TimeBackground.Costume setColorize 255 140 0
+featProp TimeBackground.Costume.scale setTo 0.5
+prop TimeBackground.zIndex setTo -200
 
 # PROGRAM UPDATE
 `
@@ -1306,16 +1306,16 @@ prop PropertyGraph.propertyName setTo 'damSize'`
     {
       "id": "25",
       "label": "Grass Background",
-      "bpid": "grassbackground",
-      "initScript": `prop grassbackground.x setTo -2.20
-prop grassbackground.y setTo -12.11`
+      "bpid": "GrassBackground",
+      "initScript": `prop GrassBackground.x setTo -2.20
+prop GrassBackground.y setTo -12.11`
     },
     {
       "id": "26",
       "label": "Timer BG",
-      "bpid": "timebox",
-      "initScript": `prop timebox.x setTo 335
-prop timebox.y setTo -424.78`
+      "bpid": "TimeBackground",
+      "initScript": `prop TimeBackground.x setTo 335
+prop TimeBackground.y setTo -424.78`
     }
   ]
 }
