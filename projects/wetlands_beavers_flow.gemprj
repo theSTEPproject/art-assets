@@ -818,6 +818,7 @@ featProp SlowWaterMeter.Costume.costumeName setTo 'GEN_square.json'
 featCall SlowWaterMeter.Costume setColorize 0 118 198
 featProp SlowWaterMeter.Costume.scale setTo 0.2
 featProp SlowWaterMeter.Graphing.wordWrapWidth setTo 90
+featProp SlowWaterMeter.Graphing.meterColor setTo 139 
 
 addProp slowWaterAmount number 0
 prop SlowWaterMeter.slowWaterAmount setMin 0
@@ -857,6 +858,7 @@ addFeature Graphing
 featProp WaterPlantMeter.Costume.costumeName setTo 'WL_Waterplantgrowth.png'
 featProp WaterPlantMeter.Costume.scale setTo 0.15
 featProp WaterPlantMeter.Graphing.wordWrapWidth setTo 100
+featProp WaterPlantMeter.Graphing.meterColor setTo 139 
 
 addProp numberWaterPlants number 0
 prop WaterPlantMeter.numberWaterPlants setMin 0
@@ -895,6 +897,7 @@ addFeature Costume
 addFeature Graphing
 featProp FishMeter.Costume.costumeName setTo 'WL_FishGrowth.png'
 featProp FishMeter.Costume.scale setTo 0.15
+featProp FishMeter.Graphing.meterColor setTo 139 
 
 addProp numberFish number 0
 prop FishMeter.numberFish setMin 0
@@ -933,6 +936,7 @@ addFeature Costume
 addFeature Graphing
 featProp PollutionCleanedMeter.Costume.costumeName setTo 'WL_pollution_cleaning.png'
 featProp PollutionCleanedMeter.Costume.scale setTo 0.15
+featProp PollutionCleanedMeter.Graphing.meterColor setTo 139 
 
 addProp pollutionCleaned number 0
 prop PollutionCleanedMeter.pollutionCleaned setMin 0
@@ -971,6 +975,7 @@ addFeature Costume
 addFeature Graphing
 featProp ChanceHurtMeter.Costume.costumeName setTo 'WL_Chance beaver hurt.png'
 featProp ChanceHurtMeter.Costume.scale setTo 0.15
+featProp ChanceHurtMeter.Graphing.meterColor setTo 139 
 
 addProp chanceBeaversHurt number 0
 prop ChanceHurtMeter.chanceBeaversHurt setMin 0
@@ -1009,6 +1014,7 @@ addFeature Costume
 addFeature Graphing
 featProp BeaverFunMeter.Costume.costumeName setTo 'WL_beaver_fun.png'
 featProp BeaverFunMeter.Costume.scale setTo 0.15
+featProp BeaverFunMeter.Graphing.meterColor setTo 139 
 
 addProp beaverFun number 0
 prop BeaverFunMeter.beaverFun setMin 0
@@ -1049,6 +1055,7 @@ addFeature Costume
 addFeature Graphing
 featProp BeaversReadyForWinterMeter.Costume.costumeName setTo 'WL_beaver_winter.png'
 featProp BeaversReadyForWinterMeter.Costume.scale setTo 0.15
+featProp BeaversReadyForWinterMeter.Graphing.meterColor setTo 139 
 
 addProp beaversReadyForWinter number 0
 prop BeaversReadyForWinterMeter.beaversReadyForWinter setMin 0
@@ -1087,6 +1094,7 @@ addFeature Costume
 addFeature Graphing
 featProp PropertyMeter.Graphing.isLargeGraphic setTo true
 featProp PropertyMeter.Costume.costumeName setTo 'GEN_onexone.json'
+featProp PropertyMeter.Graphing.meterColor setTo 30406 
 
 addProp propertyName string ''
 
@@ -1115,6 +1123,8 @@ every 1 runAtStart [[
     exprPush {{ global.getProp(PropertyMeter.getProp('propertyName').value).value }}
     propPop PropertyMeter.currentValue
     featProp PropertyMeter.Costume.glow setTo 1
+    propPush PropertyMeter.currentValue
+    propPop PropertyMeter.oldAmount
   ]]
  
 
