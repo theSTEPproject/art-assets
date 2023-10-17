@@ -513,6 +513,7 @@ prop FlowAction.actionChoice setToOption 'not chosen yet'
 
 addProp tempNum number 0
 
+// This function sets up the initial displays when we get to start (so they are all blank)
 featCall FlowAction.IU setupFunction 'initActionDisplay' [[
   prop FlowAction.locked setTo false
   prop FlowAction.selected setTo false
@@ -521,8 +522,8 @@ featCall FlowAction.IU setupFunction 'initActionDisplay' [[
   featProp FlowAction.Costume.costumeName setTo 'WL_seq_blank.png'
 ]]
 
+// Each time we make a new action selection, update all of the actions to the new situation
 featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
-
   // do some quick math so we know the relative difference between our current action and the current col
   // 0 means same col, 1 means this is directly to the right, 2 means further
   propPush global.col
@@ -544,6 +545,9 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   ifProp FlowAction.tempNum equal 1 [[
     prop FlowAction.alpha setTo 1
 
+    // 🔎 WHAT Happens when we setup the actions? 
+    // 🔎 Arrange them based on what the last choice was ... see below
+
     // This is the first column because the prior was empty, so display initial options
     ifProp global.playerActionChoice equal '' [[
       ifProp FlowAction.row equal 1 [[
@@ -557,6 +561,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
+    // The last choice was \"collect materials\" so now the beaver can ... 
     ifProp global.playerActionChoice equal 'collect materials' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'work on dam'
@@ -569,6 +574,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
+    // The last choice was \"play\" so now the beaver can ... 
     ifProp global.playerActionChoice equal 'play' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
@@ -581,6 +587,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
+    // The last choice was \"play\" so now the beaver can ... 
     ifProp global.playerActionChoice equal 'eat and store food' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'collect materials'
@@ -593,14 +600,17 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
+    // The last choice was \"work on dam\" so now the beaver can ... 
+    // Note that the options change if it is possible to work on the lodge
     ifProp global.playerActionChoice equal 'work on dam' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
       ifProp FlowAction.row equal 2 [[
+        // Note that the \"canBuildLodge\" variable is set in global based on how deep the water is.
         ifProp global.canBuildLodge equal true [[
           prop FlowAction.actionChoice setToOption 'work on lodge'
-        ]] 
+        ]]
         ifProp global.canBuildLodge equal false [[
           prop FlowAction.actionChoice setToOption 'work on dam'
         ]]
@@ -610,6 +620,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
+    // The last choice was \"work on lodge\" so now the beaver can ... 
     ifProp global.playerActionChoice equal 'work on lodge' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
