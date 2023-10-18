@@ -569,7 +569,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
   ifProp FlowAction.tempNum equal 1 [[
     prop FlowAction.alpha setTo 1
 
-    // 🔎 WHAT Happens when we setup the actions? 
+    // 🔎 WHAT Happens when we setup the actions?
     // 🔎 Arrange them based on what the last choice was ... see below
 
     // This is the first column because the prior was empty, so display initial options
@@ -585,7 +585,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"collect materials\" so now the beaver can ... 
+    // The last choice was \"collect materials\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'collect materials' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'work on dam'
@@ -598,7 +598,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"play\" so now the beaver can ... 
+    // The last choice was \"play\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'play' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
@@ -611,7 +611,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"eat and store food\" so now the beaver can ... 
+    // The last choice was \"eat and store food\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'eat and store food' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'collect materials'
@@ -624,7 +624,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"rest\" so now the beaver can ... 
+    // The last choice was \"rest\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'rest' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'collect materials'
@@ -637,7 +637,7 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"work on dam\" so now the beaver can ... 
+    // The last choice was \"work on dam\" so now the beaver can ...
     // Note that you can't work on the lodge until the water is deep enough
     ifProp global.playerActionChoice equal 'work on dam' [[
       ifProp FlowAction.row equal 1 [[
@@ -659,16 +659,16 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
       ]]
     ]]
 
-    // The last choice was \"work on lodge\" so now the beaver can ... 
+    // The last choice was \"work on lodge\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'work on lodge' [[
       ifProp FlowAction.row equal 1 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
       ]]
       ifProp FlowAction.row equal 2 [[
-        prop FlowAction.actionChoice setToOption 'work on dam'
+        prop FlowAction.actionChoice setToOption 'rest'
       ]]
       ifProp FlowAction.row equal 3 [[
-        prop FlowAction.actionChoice setToOption 'work on lodge'
+        prop FlowAction.actionChoice setToOption 'play'
       ]]
     ]]
 
@@ -850,11 +850,10 @@ every 1 runAtStart [[
 # PROGRAM INIT
 addFeature Costume
 addFeature Graphing
-featProp SlowWaterMeter.Costume.costumeName setTo 'GEN_square.json'
-featCall SlowWaterMeter.Costume setColorize 0 118 198
-featProp SlowWaterMeter.Costume.scale setTo 0.2
+featProp SlowWaterMeter.Costume.costumeName setTo 'WL_Slow Water.png'
+featProp SlowWaterMeter.Costume.scale setTo 0.15
 featProp SlowWaterMeter.Graphing.wordWrapWidth setTo 90
-featProp SlowWaterMeter.Graphing.meterColor setTo 139 
+featProp SlowWaterMeter.Graphing.meterColor setTo 139
 
 addProp slowWaterAmount number 0
 prop SlowWaterMeter.slowWaterAmount setMin 0
@@ -870,16 +869,15 @@ every 0.1 runAtStart [[
   // set the local amount based on the global property
   propPush global.slowWaterAmount
   propPop SlowWaterMeter.slowWaterAmount
-  
+
   // if the amount changed, glow to help draw attention to it
   // and then update the oldAmount so that we can check it next time
-  ifExpr {{SlowWaterMeter.getProp('oldAmount').value != SlowWaterMeter.getProp('slowWaterAmount').value}} [[
+  ifExpr {{ SlowWaterMeter.getProp('oldAmount').value != SlowWaterMeter.getProp('slowWaterAmount').value }} [[
     featProp SlowWaterMeter.Costume.glow setTo 1
     propPush SlowWaterMeter.slowWaterAmount
     propPop SlowWaterMeter.oldAmount
   ]]
-]]
-`
+]]`
     },
     {
       "name": "WaterPlantMeter",
@@ -1379,49 +1377,49 @@ prop Timer.y setTo -402.07`
       "label": "Slow Water",
       "bpid": "SlowWaterMeter",
       "initScript": `prop SlowWaterMeter.x setTo -347.87
-prop SlowWaterMeter.y setTo 260`
+prop SlowWaterMeter.y setTo 275`
     },
     {
       "id": "17",
       "label": "Water Plants",
       "bpid": "WaterPlantMeter",
       "initScript": `prop WaterPlantMeter.x setTo -230
-prop WaterPlantMeter.y setTo 260`
+prop WaterPlantMeter.y setTo 275`
     },
     {
       "id": "18",
       "label": "Fish",
       "bpid": "FishMeter",
       "initScript": `prop FishMeter.x setTo -121.32
-prop FishMeter.y setTo 260`
+prop FishMeter.y setTo 275`
     },
     {
       "id": "19",
       "label": "Pollution Cleaned",
       "bpid": "PollutionCleanedMeter",
       "initScript": `prop PollutionCleanedMeter.x setTo -0.03
-prop PollutionCleanedMeter.y setTo 260`
+prop PollutionCleanedMeter.y setTo 275`
     },
     {
       "id": "20",
       "label": "Chance Beavers Hurt",
       "bpid": "ChanceHurtMeter",
       "initScript": `prop ChanceHurtMeter.x setTo 131.22
-prop ChanceHurtMeter.y setTo 260`
+prop ChanceHurtMeter.y setTo 275`
     },
     {
       "id": "21",
       "label": "Beaver Fun",
       "bpid": "BeaverFunMeter",
       "initScript": `prop BeaverFunMeter.x setTo 248.8
-prop BeaverFunMeter.y setTo 260`
+prop BeaverFunMeter.y setTo 275`
     },
     {
       "id": "22",
       "label": "Ready For Winter",
       "bpid": "BeaversReadyForWinterMeter",
       "initScript": `prop BeaversReadyForWinterMeter.x setTo 356.85
-prop BeaversReadyForWinterMeter.y setTo 260`
+prop BeaversReadyForWinterMeter.y setTo 275`
     },
     {
       "id": "23",
