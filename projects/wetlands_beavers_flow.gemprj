@@ -252,6 +252,8 @@ featCall global.IU setupFunction 'updateVariables' [[
     ]]
   ]]
 
+  // 📖 Mengxi saw a website that said that beavers store food in their lodge
+  // 📖 for the winter, but if they don't have a lodge they can store it underground
   ifProp global.playerActionChoice equal 'eat and store food' [[
     featCall global.IU logString 'Beaver ate and stored some food for winter'
     prop global.ateAndStoredCount add 1
@@ -263,6 +265,8 @@ featCall global.IU setupFunction 'updateVariables' [[
   ]]
 
   ifProp global.playerActionChoice equal 'rest' [[
+    // 📖 Selena read that beavers can sleep or hide in the mud if they don't have a lodge
+    // 📖 Once they build a lodge, though, they rest there!
     ifProp global.lodgeSize equal 0 [[
       featCall global.IU logString 'Beaver rested in the mud'
     ]]
