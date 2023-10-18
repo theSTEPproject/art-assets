@@ -624,7 +624,14 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     // The last choice was \"eat and store food\" so now the beaver can ...
     ifProp global.playerActionChoice equal 'eat and store food' [[
       ifProp FlowAction.row equal 1 [[
-        prop FlowAction.actionChoice setToOption 'collect materials'
+        ifProp global.canBuildLodge equal true [[
+          prop FlowAction.actionChoice setToOption 'work on lodge'
+        ]]
+        ifProp global.canBuildLodge equal false [[
+          prop FlowAction.actionChoice setToOption 'work on lodge'
+          prop FlowAction.locked setTo true
+          prop FlowAction.alpha setTo 0.3
+        ]]
       ]]
       ifProp FlowAction.row equal 2 [[
         prop FlowAction.actionChoice setToOption 'eat and store food'
@@ -707,9 +714,9 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     ifProp global.lodgeSize equal 0 [[
       featProp FlowAction.Costume.costumeName setTo 'WL_seq_rest_mud.png'
     ]]
-        ifProp global.lodgeSize greaterThan 0 [[
+    ifProp global.lodgeSize greaterThan 0 [[
       featProp FlowAction.Costume.costumeName setTo 'WL_seq_rest_lodge.png'
-    ]] 
+    ]]
   ]]
 ]]
 
