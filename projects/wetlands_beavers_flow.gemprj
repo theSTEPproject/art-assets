@@ -263,7 +263,13 @@ featCall global.IU setupFunction 'updateVariables' [[
   ]]
 
   ifProp global.playerActionChoice equal 'rest' [[
-    featCall global.IU logString 'Beaver rested'
+    ifProp global.lodgeSize equal 0 [[
+      featCall global.IU logString 'Beaver rested in the mud'
+    ]]
+    ifProp global.lodgeSize greaterThan 0 [[
+      featCall global.IU logString 'Beaver rested in a lodge'
+    ]] 
+
     prop global.restedCount add 1
     // we added this because the students suggested it. Right now it doesn't impact
     // the model diretly, but it could! How do you think it would work?
