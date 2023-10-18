@@ -694,7 +694,12 @@ featCall FlowAction.IU setupFunction 'updateActionDisplay' [[
     featProp FlowAction.Costume.costumeName setTo 'WL_seq_eat.png'
   ]]
   ifProp FlowAction.actionChoice equalToOption 'rest' [[
-    featProp FlowAction.Costume.costumeName setTo 'WL_seq_rest.png'
+    ifProp global.lodgeSize equal 0 [[
+      featProp FlowAction.Costume.costumeName setTo 'WL_seq_rest_mud.png'
+    ]]
+        ifProp global.lodgeSize greaterThan 0 [[
+      featProp FlowAction.Costume.costumeName setTo 'WL_seq_rest_lodge.png'
+    ]] 
   ]]
 ]]
 
