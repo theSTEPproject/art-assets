@@ -148,6 +148,8 @@ featCall global.IU setupFunction 'updateVariables' [[
   ]]
 
   // 🔎 HOW does working on the dam work?
+  // 📖 Joshua read that after the beavers build the dam, they also listen
+  // 📖 carefully, and any time they hear a leak they repair it
   ifProp global.playerActionChoice equal 'work on dam' [[
     featCall global.IU logString 'Beaver worked on the dam'
     prop global.workedOnDamCount add 1
@@ -167,7 +169,8 @@ featCall global.IU setupFunction 'updateVariables' [[
       featCall global.IU logString 'Dam ⬆ --> Slow Water ⬆'
       prop global.slowWaterAmount add 1
 
-      // 📖 Zach read that many water plants can only grow when there is enough slow water or else their seeds wash away too fast
+      // 📖 Zach read that many water plants can only grow when there is enough
+      // 📖 slow water or else their seeds wash away too fast
       ifProp global.slowWaterAmount greaterThan 3 [[
         featCall global.IU logString 'Slow Water ⬆ --> Water Plants ⬆ (if there is enough)'
         prop global.numberWaterPlants add 1
@@ -177,7 +180,8 @@ featCall global.IU setupFunction 'updateVariables' [[
           prop global.systemSummaryLevel setTo 3
         ]]
 
-        // 📖 Selena read that water plants also help clear pollution, but we probably don't notice until there are a few of them
+        // 📖 Selena read that water plants also help clear pollution, but we
+        // 📖 probably don't notice until there are a few of them
         ifProp global.numberWaterPlants greaterThan 3 [[
           ifProp global.pollutionCleaned lessThanOrEqual 10 [[
             featCall global.IU logString 'Water Plants ⬆ --> Pollution Cleaned ⬆ (if enough)'
@@ -186,7 +190,8 @@ featCall global.IU setupFunction 'updateVariables' [[
         ]]
       ]]
 
-      // 📖 Mengxi saw in a book that when there is enough slow, deep water, fish are able to spawn
+      // 📖 Mengxi saw in a book that when there is enough slow, deep water,
+      // 📖 fish are able to spawn
       ifProp global.slowWaterAmount greaterThan 4 [[
         featCall global.IU logString 'Slow Water ⬆ --> Fish ⬆ (if there is enough)'
         prop global.numberFish add 1
@@ -206,7 +211,8 @@ featCall global.IU setupFunction 'updateVariables' [[
         prop global.canBuildLodge setTo true
       ]]
 
-      // 📖 Joshua saw on the web that when the dam is big enough it can help filter pollution
+      // 📖 Joshua saw on the web that when the dam is big enough it can help
+      // 📖 filter pollution
       ifProp global.damSize greaterThan 5 [[
         ifProp global.pollutionCleaned lessThanOrEqual 10 [[
           featCall global.IU logString 'Dam ⬆ --> Pollution Cleaned ⬆'
