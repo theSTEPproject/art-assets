@@ -146,34 +146,38 @@ featCall global.IU setupFunction 'updateVariables' [[
     featCall global.IU logString 'Beaver collected materials and can now work on the dam or lodge'
     prop global.collectedMaterialsCount add 1
   ]]
+
+  // 🔎 HOW does working on the dam work?
   ifProp global.playerActionChoice equal 'work on dam' [[
     featCall global.IU logString 'Beaver worked on the dam'
     prop global.workedOnDamCount add 1
 
+    // The dam grows unless it is at the maximum size of 10
     ifProp global.damSize lessThan 10 [[
       featCall global.IU logString 'Dam ⬆'
       prop global.damSize add 1
 
       // when the damSize first hits 1, update our system summary to show the dam
       ifProp global.damSize equal 1 [[
-        // update the summary to show that we have a dam
         prop global.systemSummaryLevel setTo 2
       ]]
 
       // Whenever the dam gets bigger, we have more slow water behind it
+      // The slow water is also deeper
       featCall global.IU logString 'Dam ⬆ --> Slow Water ⬆'
       prop global.slowWaterAmount add 1
 
-      // when there is more slow water, we might get more water plants
+      // 📖 Zach read that many water plants can only grow when there is enough slow water or else their seeds wash away too fast
       ifProp global.slowWaterAmount greaterThan 3 [[
         featCall global.IU logString 'Slow Water ⬆ --> Water Plants ⬆ (if there is enough)'
         prop global.numberWaterPlants add 1
 
-        // update the summary to show that we have plants now
+        // If water plants do grow, update the summary to show that we have plants now
         ifProp global.numberWaterPlants equal 1 [[
           prop global.systemSummaryLevel setTo 3
         ]]
 
+        // 📖 Selena read that water plants also help clear pollution, but we probably don't notice until there are a few of them
         ifProp global.numberWaterPlants greaterThan 3 [[
           ifProp global.pollutionCleaned lessThanOrEqual 10 [[
             featCall global.IU logString 'Water Plants ⬆ --> Pollution Cleaned ⬆ (if enough)'
@@ -182,15 +186,15 @@ featCall global.IU setupFunction 'updateVariables' [[
         ]]
       ]]
 
-      // when there is more slow water, we might get more fish appearing
+      // 📖 Mengxi saw in a book that when there is enough slow, deep water, fish are able to spawn
       ifProp global.slowWaterAmount greaterThan 4 [[
         featCall global.IU logString 'Slow Water ⬆ --> Fish ⬆ (if there is enough)'
         prop global.numberFish add 1
-        
+
         featCall global.IU logString 'Fish ⬆ --> Happy Fishers ⬆'
         prop global.happyFishers add 1
 
-        // update the summary to show that we have a fish now
+        // If we have at least one fish, update the summary to show that we have a fish now
         ifProp global.numberFish equal 1 [[
           prop global.systemSummaryLevel setTo 4
         ]]
@@ -202,7 +206,7 @@ featCall global.IU setupFunction 'updateVariables' [[
         prop global.canBuildLodge setTo true
       ]]
 
-      // When the dam is big enough it can help filter pollution
+      // 📖 Joshua saw on the web that when the dam is big enough it can help filter pollution
       ifProp global.damSize greaterThan 5 [[
         ifProp global.pollutionCleaned lessThanOrEqual 10 [[
           featCall global.IU logString 'Dam ⬆ --> Pollution Cleaned ⬆'
@@ -212,6 +216,7 @@ featCall global.IU setupFunction 'updateVariables' [[
     ]]
   ]]
 
+  // 🔎 HOW does working on the lodge impact the ecosystem?
   ifProp global.playerActionChoice equal 'work on lodge' [[
     featCall global.IU logString 'Beaver worked on the lodge'
     prop global.workedOnLodgeCount add 1
