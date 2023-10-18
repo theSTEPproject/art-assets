@@ -1643,7 +1643,6 @@ featProp Mouse.Graphing.meterProp setTo 'energyLevel'
 featProp Mouse.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
-
 // whenever a Mouse touches a clover
 when Mouse touches Clover [[
   every 1 runAtStart [[

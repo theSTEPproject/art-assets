@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_1",
+  "id": "foodweb_animalinteractions_2_bluegroup",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -1808,7 +1808,7 @@ addFeature Costume
 
 featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
 featProp teacher.Costume.scale setTo 0.2
-prop teacher.alpha setTo 0.1
+prop teacher.alpha setTo 0
 
 
 # PROGRAM UPDATE
