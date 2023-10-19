@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_2_bluegroup",
+  "id": "foodweb_animalinteractions_2_blockB_bluegroup",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1866,6 +1866,27 @@ prop y setTo 246.32`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 217.66
 prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "Snake127",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 296.66
+prop Snake.y setTo 98.43`
+    },
+    {
+      "id": "128",
+      "label": "Snake128",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -284.57
+prop Snake.y setTo -110.15`
+    },
+    {
+      "id": "129",
+      "label": "Robin129",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 328.57
+prop Robin.y setTo -243.95`
     }
   ]
 }
