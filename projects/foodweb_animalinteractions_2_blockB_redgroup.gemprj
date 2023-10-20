@@ -1866,6 +1866,34 @@ prop y setTo 246.32`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 217.66
 prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "Robin127",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 7.08
+prop Robin.y setTo -6.46`
+    },
+    {
+      "id": "128",
+      "label": "Snake128",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 245.40
+prop Snake.y setTo -6.18`
+    },
+    {
+      "id": "129",
+      "label": "Worm129",
+      "bpid": "Worm",
+      "initScript": `prop Worm.x setTo 7
+prop Worm.y setTo 9`
+    },
+    {
+      "id": "130",
+      "label": "Caterpillar130",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -209.41
+prop Caterpillar.y setTo 188.06`
     }
   ]
 }
