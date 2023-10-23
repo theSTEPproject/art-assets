@@ -96,6 +96,9 @@ prop global.visible setTo false
 // the dam needs to update this
 addProp damSize number 10
 addProp lodgeSize number 10
+// These properties are not yet being used, but are illustrative
+addProp roomToHideInLodge number 0
+addProp roomForFoodInLodge number 0
 
 // change this to true once the water is a certain size
 addProp canBuildLodge boolean false
@@ -141,7 +144,7 @@ featCall global.IU setupFunction 'popupMessage' [[
 ]]
 
 // 🔎 Ecosystem health ranges between 0 (dead!) and 10 (doing amazing)
-// 🔎 Start at 3, and hope it gets better! 
+// 🔎 Start at 3, and hope it gets better!
 // 🔎 This is based on different organisms being alive, so they change it in their code
 addProp ecosystemHealth number 3
 prop global.ecosystemHealth setMin 0
@@ -243,6 +246,31 @@ every 0.5 [[
   ifProp global.damSize lessThan 50 [[
     prop global.canBuildLodge setTo false
   ]]
+]]
+
+// ✏️ CHANGE How building the lodge impacts the winter
+ifProp global.lodgeSize equal 0 [[
+  // the lodge can't be build yet since there is not enough deep slow water
+  // so the beavers can't store food or hide in it 
+  // (they hide in the mud but that's not as safe)
+  prop global.roomToHideInLodge setTo 0
+  prop global.roomForFoodInLodge setTo 0
+]]
+ifProp global.lodgeSize greaterThanOrEqual 3 [[
+  // a little bit of the lodge was built, so some beavers can use it
+  prop global.roomToHideInLodge setTo 2
+  prop global.roomForFoodInLodge setTo 4
+]]
+ifProp global.lodgeSize greaterThanOrEqual 5 [[
+  // a medium amount of the lodge is built, so almost all of the beavers can hide there
+  prop global.roomToHideInLodge setTo 3
+  prop global.roomForFoodInLodge setTo 6
+]]
+ifProp global.lodgeSize greaterThanOrEqual 8 [[
+  // the lodge is pretty big, so all the beavers can hide there
+  // and they can store lots of food
+  prop global.roomToHideInLodge setTo 4
+  prop global.roomForFoodInLodge setTo 8
 ]]
 
 onEvent START [[
