@@ -111,10 +111,14 @@ addProp fishCount number 0
 
 // variables for helping the environment
 addProp carbonCaptureRate number 10
-addProp pollutionInWater number 60
 
-addProp initialCarbonCaptureRate number 10
-addProp initialPollutionInWater number 60
+// start the pollution 1/2 way, and have it shift constantly
+addProp pollutionInWater number 50
+prop global.pollutionInWater setMin 0
+prop global.pollutionInWater setMax 100
+
+addProp startingCarbonCaptureRate number 10
+addProp startingPollutionInWater number 100
 
 addProp tempNum number 0
 addProp tempString string ''
@@ -216,18 +220,32 @@ every 1 [[
   prop global.tempNum setTo 5
   propPush global.tempNum
   stackMul
-  propPush global.initialCarbonCaptureRate
+  propPush global.startingCarbonCaptureRate
   stackAdd
   propPop global.carbonCaptureRate
+]]
 
-  // now do the same for pollution, but subtract instead of add
-  propPush global.waterPlantCount
-  prop global.tempNum setTo 5
-  propPush global.tempNum
-  stackMul
-  propPush global.initialPollutionInWater
-  stackSub
-  propPop global.pollutionInWater
+every 1 runAtStart [[
+  // ✏️ CHANGE CHANGE this code to impact how pollution is impacted by this ecosystem every 1 second / day
+  // There are lots of businesses and homes that make some pollution, so let's add
+  // a little each second
+  prop global.pollutionInWater add 2
+
+  // Some people also clean up the water to make the environment better for them and their neighbors
+  prop global.pollutionInWater sub 1
+
+  // 📖 Mengxi read that some water plants help clear pollution
+  // This might be a little unrealistic because the pollution will all go away
+  // Which is much harder in the real world, but
+  ifProp global.waterPlantCount greaterThan 2 [[
+    prop global.pollutionInWater sub 1
+  ]]
+
+  // 📖 Selena read that the dam itself will filter some pollution out of the water
+  ifProp global.damSize greaterThan 5 [[
+    prop global.pollutionInWater sub 1
+  ]]
+
 
 ]]
 
@@ -251,7 +269,7 @@ every 0.5 [[
 // ✏️ CHANGE How building the lodge impacts the winter
 ifProp global.lodgeSize equal 0 [[
   // the lodge can't be build yet since there is not enough deep slow water
-  // so the beavers can't store food or hide in it 
+  // so the beavers can't store food or hide in it
   // (they hide in the mud but that's not as safe)
   prop global.roomToHideInLodge setTo 0
   prop global.roomForFoodInLodge setTo 0
@@ -1668,8 +1686,8 @@ prop y setTo -214.38`
       "id": "18",
       "label": "Tree 3",
       "bpid": "Tree",
-      "initScript": `prop x setTo 329.12
-prop y setTo 216.84`
+      "initScript": `prop Tree.x setTo 299.97
+prop Tree.y setTo 214.14`
     },
     {
       "id": "19",
@@ -1878,6 +1896,13 @@ prop y setTo 345`
       "bpid": "Predator",
       "initScript": `prop x setTo -290.56
 prop y setTo 323.37`
+    },
+    {
+      "id": "56",
+      "label": "PollutionGraph56",
+      "bpid": "PollutionGraph",
+      "initScript": `prop PollutionGraph.x setTo 499.53
+prop PollutionGraph.y setTo 271.36`
     }
   ]
 }
