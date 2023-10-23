@@ -1534,8 +1534,8 @@ prop WaterKey.zIndex setTo -500
 
 # PROGRAM INIT
 addFeature Costume
-featProp Ruler.Costume.costumeName setTo 'WL_Ruler_2.png'
-featProp Ruler.Costume.scale setTo 0.5
+featProp Ruler.Costume.costumeName setTo 'WL_Ruler.png'
+featProp Ruler.Costume.scale setTo 0.255
 prop Ruler.zIndex setTo -0.1
 
 # PROGRAM UPDATE
