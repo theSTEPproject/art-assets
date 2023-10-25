@@ -91,13 +91,14 @@ featProp character.Costume.scale setTo 1
 addFeature Costume
 featProp Sun.Costume.costumeName setTo 'circle.json'
 // Instead of sun art, we are using a generic circle, so the next line tints it yellow
-featCall Sun.Costume setColorize 255 215 0
+featCall Sun.Costume setColorize 225 175 0
 // This makess sure the sunu is behind everything else
+featProp Sun.Costume.scale setTo 0.5
 prop Sun.zIndex setTo 0
 
 
 addFeature Physics
-featProp Sun.Costume.scale setTo 1
+featProp Sun.Costume.scale setTo 0.6
 addProp energyType string 'sun'
 
 // required directive
@@ -1249,8 +1250,8 @@ prop teacher.alpha setTo 0
       "id": "0",
       "label": "Sun",
       "bpid": "Sun",
-      "initScript": `prop x setTo -199.1
-prop y setTo -381.73`
+      "initScript": `prop Sun.x setTo -200.31
+prop Sun.y setTo -426.24`
     },
     {
       "id": "5",
