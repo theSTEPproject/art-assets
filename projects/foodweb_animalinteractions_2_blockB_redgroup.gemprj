@@ -1885,8 +1885,8 @@ prop Snake.y setTo -6.18`
       "id": "129",
       "label": "Worm129",
       "bpid": "Worm",
-      "initScript": `prop Worm.x setTo 7
-prop Worm.y setTo 9`
+      "initScript": `prop Worm.x setTo 2.91
+prop Worm.y setTo 141.52`
     },
     {
       "id": "130",
@@ -1894,6 +1894,13 @@ prop Worm.y setTo 9`
       "bpid": "Caterpillar",
       "initScript": `prop Caterpillar.x setTo -209.41
 prop Caterpillar.y setTo 188.06`
+    },
+    {
+      "id": "131",
+      "label": "Clover131",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -211.32
+prop Clover.y setTo -143.52`
     }
   ]
 }
