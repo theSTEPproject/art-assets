@@ -1822,6 +1822,41 @@ prop teacher.alpha setTo 0
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "invasiveSpecies",
+      "scriptText": `# BLUEPRINT invasiveSpecies
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS _______________?
+// 🔎 ___________ are ???????????? who EAT ??????? to make ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+
+// Set the hawk artwork and make it 1/2 size since it is really big
+featProp invasiveSpecies.Costume.costumeName setTo 'IS_questionmark.png'
+// 🔎 WHAT SIZE IS THE ORGANISM?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER ORGANISMS
+featProp invasiveSpecies.Costume.scale setTo 0.5
+
+`
     }
   ],
   "instances": [
@@ -1866,6 +1901,13 @@ prop y setTo 246.32`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 217.66
 prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "invasiveSpecies127",
+      "bpid": "invasiveSpecies",
+      "initScript": `prop invasiveSpecies.x setTo 45
+prop invasiveSpecies.y setTo -41`
     }
   ]
 }
