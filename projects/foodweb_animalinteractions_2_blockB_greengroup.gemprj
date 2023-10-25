@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_2_blockB_greengroup",
+  "id": "foodweb_animalinteractions_2_greengroup",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -1857,57 +1857,15 @@ prop y setTo -316.55`
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 273.03
-prop VeggieGarden.y setTo 50.00`
+      "initScript": `prop x setTo 254.22
+prop y setTo 246.32`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 19.70
-prop VeggieGarden.y setTo -144.69`
-    },
-    {
-      "id": "127",
-      "label": "Snake127",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 44
-prop Snake.y setTo 23`
-    },
-    {
-      "id": "128",
-      "label": "Caterpillar128",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -212.50
-prop Caterpillar.y setTo 227.41`
-    },
-    {
-      "id": "129",
-      "label": "Robin129",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -285.48
-prop Robin.y setTo -105.33`
-    },
-    {
-      "id": "130",
-      "label": "Clover130",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo 14.36
-prop Clover.y setTo 225.77`
-    },
-    {
-      "id": "131",
-      "label": "Worm131",
-      "bpid": "Worm",
-      "initScript": `prop Worm.x setTo 205.04
-prop Worm.y setTo 143.25`
-    },
-    {
-      "id": "132",
-      "label": "Mouse132",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -164.61
-prop Mouse.y setTo 29.99`
+      "initScript": `prop x setTo 217.66
+prop y setTo -152.05`
     }
   ]
 }
