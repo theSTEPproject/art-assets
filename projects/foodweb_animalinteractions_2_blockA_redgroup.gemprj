@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_2_redgroup",
+  "id": "foodweb_animalinteractions_2_blockA_redgroup",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -226,7 +226,7 @@ addFeature IU
 addProp alive Boolean true
 addProp hasNutrients boolean false
 
-// set the costume and make it smaller 
+// set the costume and make it smaller
 featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
 featProp VeggieGarden.Costume.scale setTo 0.3
 
@@ -234,7 +234,7 @@ featProp VeggieGarden.Costume.scale setTo 0.3
 featCall VeggieGarden.Touches monitor 'Robin' b2b
 
 // setup to track energy and begin at 3/4 way
-addProp energyLevel number 75
+addProp energyLevel number 100
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
@@ -244,7 +244,7 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-//veggie gardens lose energy during the night
+// veggie gardens lose energy during the night
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -257,7 +257,7 @@ ifProp global.skyState notEqual 'daytime' [[
   ]]
 ]]
 
-//veggie gardens gain energy during the daytime
+// veggie gardens gain energy during the daytime
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -270,7 +270,7 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
-//change the veggie garden costume to show if it has nutrients 
+// change the veggie garden costume to show if it has nutrients
 ifProp VeggieGarden.hasNutrients equal true [[
   featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
@@ -320,14 +320,13 @@ every 1 runAtStart [[
 // veggie gardens lose nutrients over time
 ifProp VeggieGarden.hasNutrients equal true [[
   every 10 [[
-      // 🔎 WHAT DOES THIS DO?
-      // 🔎 how long do veggie gardens keep their nutrients?
-      // ✏️ LETS CHANGE THIS:
-      // ✏️ LARGER numbers => nutrients stay for longer
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how long do veggie gardens keep their nutrients?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ LARGER numbers => nutrients stay for longer
     prop VeggieGarden.hasNutrients setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Clover",
@@ -1631,7 +1630,7 @@ featCall Mouse.Touches monitor 'Worm' b2b
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each Mouse START with?
 // ✏️ LETS CHANGE THIS:
-addProp energyLevel Number 50
+addProp energyLevel Number 100
 
 // 🔎 what is the MOST/LEAST amount of energy a Mouse can have?
 prop Mouse.energyLevel setMax 100
@@ -1866,6 +1865,13 @@ prop y setTo 246.32`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 217.66
 prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "Snake127",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -45
+prop Snake.y setTo -13`
     }
   ]
 }
