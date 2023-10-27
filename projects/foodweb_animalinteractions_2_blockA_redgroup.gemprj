@@ -773,7 +773,7 @@ featProp Hawk.Costume.scale setTo 0.5
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 3
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -848,7 +848,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1872,6 +1872,20 @@ prop y setTo -152.05`
       "bpid": "Snake",
       "initScript": `prop Snake.x setTo -45
 prop Snake.y setTo -13`
+    },
+    {
+      "id": "128",
+      "label": "Robin128",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -257.13
+prop Robin.y setTo -135.61`
+    },
+    {
+      "id": "129",
+      "label": "Caterpillar129",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -166.05
+prop Caterpillar.y setTo 201.51`
     }
   ]
 }

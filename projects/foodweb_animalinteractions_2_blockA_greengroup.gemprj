@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_animalinteractions_2_greengroup",
+  "id": "foodweb_animalinteractions_2_blockA_greengroup",
   "label": "Garden Ecosystem 1",
   "metadata": {
     "top": -400,
@@ -769,7 +769,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // 🔎 WHAT SIZE IS THE HAWK?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER HAWKS
-featProp Hawk.Costume.scale setTo 0.5
+featProp Hawk.Costume.scale setTo 0.3
 
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1850,8 +1850,8 @@ prop y setTo 66.73`
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
+      "initScript": `prop Hawk.x setTo -68.83
+prop Hawk.y setTo -299.37`
     },
     {
       "id": "125",
@@ -1866,6 +1866,48 @@ prop y setTo 246.32`
       "bpid": "VeggieGarden",
       "initScript": `prop x setTo 217.66
 prop y setTo -152.05`
+    },
+    {
+      "id": "127",
+      "label": "Snake127",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -253.03
+prop Snake.y setTo -118.98`
+    },
+    {
+      "id": "128",
+      "label": "Robin128",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 186.58
+prop Robin.y setTo -288.57`
+    },
+    {
+      "id": "129",
+      "label": "Caterpillar129",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 233.31
+prop Caterpillar.y setTo -1.28`
+    },
+    {
+      "id": "130",
+      "label": "Caterpillar130",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 271.48
+prop Caterpillar.y setTo 175.32`
+    },
+    {
+      "id": "131",
+      "label": "Worm131",
+      "bpid": "Worm",
+      "initScript": `prop Worm.x setTo -234.50
+prop Worm.y setTo 255.22`
+    },
+    {
+      "id": "132",
+      "label": "Clover132",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 19
+prop Clover.y setTo -16`
     }
   ]
 }
