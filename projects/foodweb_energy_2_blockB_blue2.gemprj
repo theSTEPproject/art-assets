@@ -1,0 +1,1327 @@
+{
+  "id": "foodweb_energy_1",
+  "label": "Garden Ecosystem 2",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 255255204,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+
+// Explanation:
+// This model involves learners repreesenting the energy flow in the system (need to add more here)
+
+prop global.visible setTo false
+
+addProp energyReleasedAsHeat number 0
+addFeature IU
+featCall global.IU logString 'Init GE energy transfer 1 model'
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Explanation",
+      "scriptText": `# BLUEPRINT Explanation
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// ----------------------------------------------------------------------------------------------------------------
+// 🔎 WHAT DOES THIS DO? This charaacter is meaant to explain the rest of the scripts, and is not meant to be added to the stage
+// ----------------------------------------------------------------------------------------------------------------
+
+// 🔎 The goal of this model is to let students explore the energy in the foodweb system by being a
+// 🔎 representation of that energy rather than a character. Therefore they will be the EenergyRepresentation
+// 🔎 character using either pozyx or charController
+
+// 🔎 The system is intended to mirror the foodweb model in that energy is meant to go from the sun to the hawk. 
+// 🔎 To help movivate the students, the consumers and producers lose energy over time, so they will die if the users don't hurry and give it to them
+
+// 🔎 The main chaaracter is therefore the EnergyRepresentation, which students can use to look around. As they touch
+// 🔎 an energy source, they will pick up / become that kind of energy
+// 🔎 So, a key thing to look at for is how the EnergyRepresentation character changes it's energyType as it moves around
+
+# PROGRAM INIT
+addFeature Costume
+featProp character.Costume.costumeName setTo 'GEN_onexone.json'
+featProp character.Costume.scale setTo 1
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]`
+    },
+    {
+      "name": "Sun",
+      "scriptText": `# BLUEPRINT Sun
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+# PROGRAM INIT
+// 🔎 The sun is one of the characters that produces energy
+// 🔎 Since it is a perpetual source of energy and doesn't do anything but sit here, it is relatively
+// 🔎 simple, and just needs the variables for the EnergyRepresentation to read
+
+
+addFeature Costume
+featProp Sun.Costume.costumeName setTo 'circle.json'
+// Instead of sun art, we are using a generic circle, so the next line tints it yellow
+featCall Sun.Costume setColorize 225 175 0
+// This makess sure the sunu is behind everything else
+featProp Sun.Costume.scale setTo 0.5
+prop Sun.zIndex setTo 0
+
+
+addFeature Physics
+featProp Sun.Costume.scale setTo 0.6
+addProp energyType string 'sun'
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Sky",
+      "scriptText": `# BLUEPRINT Sky
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// Note: this character doesn't do anyhting - it is just for show since there is no
+// other easy way to add background art
+addFeature Costume
+featProp Sky.Costume.costumeName setTo 'FWE_background (Yellow filter).png'
+// featCall Sky.Costume setColorize 53 81 92
+
+addFeature Physics
+featProp Sky.Costume.width setTo 800
+featProp Sky.Costume.height setTo 800
+
+// make sure this is always way in the back behind all
+// of the other characters
+prop Sky.zIndex setTo -100
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "EnergyRepresentation",
+      "scriptText": `# BLUEPRINT EnergyRepresentation
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+
+addFeature Costume
+featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+
+addFeature Physics
+featProp EnergyRepresentation.Costume.scale setTo 0.06
+
+// setup energy properties
+addProp energyLevel Number 0
+prop EnergyRepresentation.energyLevel setMax 100
+prop EnergyRepresentation.energyLevel setMin 0
+
+// setup energy type so that we know what we can give it to
+// start with none
+addProp energyType String 'none'
+
+addFeature Touches
+featCall EnergyRepresentation.Touches monitor 'Sun' c2b
+featCall EnergyRepresentation.Touches monitor 'VeggieGarden' c2b
+featCall EnergyRepresentation.Touches monitor 'Clover' c2b
+featCall EnergyRepresentation.Touches monitor 'Caterpillar' c2b
+featCall EnergyRepresentation.Touches monitor 'Mouse' c2b
+featCall EnergyRepresentation.Touches monitor 'Robin' c2b
+featCall EnergyRepresentation.Touches monitor 'Snake' c2b
+featCall EnergyRepresentation.Touches monitor 'Hawk' c2b
+featCall EnergyRepresentation.Touches monitor 'energyReset' c2b
+
+addFeature IU
+
+# PROGRAM UPDATE
+when EnergyRepresentation centerfirsttouches energyReset [[
+  // insert code here
+  prop EnergyRepresentation.energyType setTo 'none'
+  prop EnergyRepresentation.energyLevel setTo 0
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+  featCall EnergyRepresentation.IU logString 'Resetting energy type'
+]]
+
+
+// 🔎 WHAT DOES THIS DO? Updating Sun energy
+when EnergyRepresentation centerFirstTouches Sun [[
+  // 🔎 when touching, show an annotation about how the sun produces energy
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
+
+]]
+
+when EnergyRepresentation centerLastTouches Sun [[
+  // 🔎 when moving off, take a full amount of energy in the form of sunlight and heat (our focus fis on light since the plants use it)
+  prop EnergyRepresentation.energyType setTo 'sun'
+  prop EnergyRepresentation.energyLevel setTo 100
+  featCall EnergyRepresentation.IU logString 'Energy transfer from none to sun'
+  featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun.png'
+]]
+
+
+// 🔎 WHAT DOES THIS DO? Updating VeggieGarden energy
+when EnergyRepresentation centerFirstTouches VeggieGarden [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'veggieGarden'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggiegarden_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to Veggie'
+  ]]
+
+  // 🔎 if you have energy from the sun, then give some energy to the veggie garden, but not all of it because some is released into the environment
+  // 🔎 as heat or lost in other ways
+  ifProp EnergyRepresentation.energyType equal 'sun' [[
+    prop EnergyRepresentation.energyType setTo 'sunToVeggie'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from sun to veggie'
+    // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop VeggieGarden.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 50
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun_to_veggieGarden.png'
+    featProp VeggieGarden.Costume.glow setTo 1
+  ]]
+
+  // if you have no energy type, take some energy from the VeggieGarden
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToVeggie' && VeggieGarden.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieGarden'
+    // ✏️ LETS CHANGE THIS: alter how much energy the VeggieGarden gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop VeggieGarden.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggiegarden_energy.png'
+  ]]
+
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with veggiegarden energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToVeggie' }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieGarden'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggiegarden_energy.png'
+  ]]
+]]
+
+
+// 🔎  WHAT DOES THIS DO? Updating Clover energy
+when EnergyRepresentation centerFirstTouches Clover [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to clover'
+  ]]
+
+  // 🔎 if you have energy from the sun, then give some energy to the veggie garden, but not all of it because some is released into the environment
+  // 🔎 as heat or lost in other ways
+  ifProp EnergyRepresentation.energyType equal 'sun' [[
+    prop EnergyRepresentation.energyType setTo 'sunToClover'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from sun to clover'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Clover gets from the sun
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Clover.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 50
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun to clover.png'
+    featProp Clover.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Clover [[
+  // if you have no energy type, take some energy from the Clover
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'sunToClover' && Clover.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Clover gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Clover.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
+  ]]
+
+  // temporary kludge to drop the need to return ... need to clean this up for plants, bunnies, waste, worms
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'sunToClover' }} [[
+    prop EnergyRepresentation.energyType setTo 'clover'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_energy.png'
+  ]]
+]]
+
+// 🔎 WHAT DOES THIS DO? Updating Caterpillar energy
+when EnergyRepresentation centerFirstTouches Caterpillar [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to caterpillar'
+  ]]
+  // 🔎 when touch Caterpillar, and energy type is from veggieGarden and energy isn't 0, get energy, change meter color to orange, change type to veggieToCaterpillar
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'veggieGarden' && Caterpillar.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieToCaterpillar'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from veggie to catterpillar'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Caterpillar gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Caterpillar.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_caterpillar.png'
+    featProp Caterpillar.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Caterpillar [[
+  // 🔎 if you have no Caterpillar energy type, take some energy from the Caterpillar to the energy
+  ifExpr {{ ( EnergyRepresentation.getProp('energyType').value == 'veggieToCaterpillar') && Caterpillar.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Caterpillar gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Caterpillar.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
+  ]]
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Caterpillar energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'veggieToCaterpillar' }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillar'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Caterpillar_energy.png'
+  ]]
+]]
+
+// 🔎 WHAT DOES THIS DO?  Updating Mouse energy
+
+when EnergyRepresentation centerFirstTouches Mouse [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'mouse'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to mouse'
+  ]]
+
+  // 🔎 when touch Mouse, and energy type is from veggieGarden and energy isn't 0, get energy, change meter color to orange, change type to veggieToMouse
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'veggieGarden' && Mouse.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieToMouse'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from veggie to mouse'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Mouse.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_mouse.png'
+    featProp Mouse.Costume.glow setTo 1
+  ]]
+
+  // 🔎 when touch Mouse, and energy type is from clover and energy isn't 0, get energy, change meter color to orange, change type to cloverToMouse
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'clover' && Mouse.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'cloverToMouse'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from clover to mouse'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the clover, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Mouse.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_clover_to_mouse.png'
+    featProp Mouse.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Mouse [[
+  // 🔎 if you have no Mouse energy type, take some energy from the Mouse to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'veggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'cloverToMouse' ) && Mouse.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'mouse'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Mouse.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
+  ]]
+
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Mouse energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'veggieToMouse' || EnergyRepresentation.getProp('energyType').value == 'cloverToMouse' }} [[
+    prop EnergyRepresentation.energyType setTo 'mouse'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_energy.png'
+  ]]
+]]
+
+
+// 🔎 WHAT DOES THIS DO?  Updating Robin energy
+when EnergyRepresentation centerFirstTouches Robin [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'robin'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to robin'
+  ]]
+
+  // 🔎 when touch Mouse, and energy type is from veggieGarden and energy isn't 0, get energy, change meter color to orange, change type to veggieToRobin
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'veggieGarden' && Robin.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'veggieToRobin'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from veggie to robin'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Mouse gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Robin.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_veggieGarden_to_robin.png'
+    featProp Robin.Costume.glow setTo 1
+  ]]
+
+  // 🔎 when touch Robin, and energy type is from caterpillar and energy isn't 0, get energy, change meter color to orange, change type to caterpillarToRobin
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'caterpillar' && Robin.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'caterpillarToRobin'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from caterpillar to robin'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Robin gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Robin.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_caterpillar_to_robin.png'
+    featProp Robin.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Robin [[
+  // 🔎 if you have no Robin energy type, take some energy from the Robin to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'veggieToRobin' ) && Robin.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'robin'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Robin gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Robin.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
+  ]]
+
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Robin energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'caterpillarToRobin' || EnergyRepresentation.getProp('energyType').value == 'veggieToRobin' }} [[
+    prop EnergyRepresentation.energyType setTo 'robin'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_energy.png'
+  ]]
+]]
+
+// 🔎 WHAT DOES THIS DO?  Updating Snake energy
+when EnergyRepresentation centerFirstTouches Snake [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'snake'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to snake'
+  ]]
+
+  // 🔎 when touch snake and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToSnake
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Snake.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'mouseToSnake'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from mouse to snake'
+    // ✏️ LETS CHANGE THIS: alter how much energy the snake gets from the VeggieGarden, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Snake.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_snake.png'
+    featProp Snake.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Snake [[
+  // 🔎 if you have no Snake energy type, take some energy from the Snake to the energy
+  ifExpr {{ (EnergyRepresentation.getProp('energyType').value == 'mouseToSnake') && Snake.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'snake'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Snake gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Snake.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so not that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
+  ]]
+
+  // when leaving (after arriving with relevent energy type) make sure to leave with Snake energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'mouseToSnake' }} [[
+    prop EnergyRepresentation.energyType setTo 'snake'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_energy.png'
+  ]]
+]]
+
+// 🔎 WHAT DOES THIS DO?  Updating Hawk energy
+when EnergyRepresentation centerFirstTouches Hawk [[
+  ifProp EnergyRepresentation.energyType equal 'none' [[
+    prop EnergyRepresentation.energyType setTo 'hawk'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_Hawk_energy.png'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from none to hawk'
+  ]]
+
+  // 🔎 when touch Hawk and energy type is from mouse and energy isn't 0, get energy, change meter color to orange, change type to mouseToHawk
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'mouse' && Hawk.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'mouseToHawk'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from mouse to hawk'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the mouse, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Hawk.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_mouse_to_hawk.png'
+    featProp Hawk.Costume.glow setTo 1
+  ]]
+
+  // 🔎 when touch Hawk and energy type is from robin and energy isn't 0, get energy, change meter color to orange, change type to robinToHawk
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'robin' && Hawk.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'robinToHawk'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from robin to hawk'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the robin, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Hawk.energyLevel add 25
+    // 🔎 we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_robin_to_hawk.png'
+    featProp Hawk.Costume.glow setTo 1
+  ]]
+
+  // 🔎 when touch Hawk and energy type is from snake and energy isn't 0, get energy, change meter color to orange, change type to snakeToHawk
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'snake' && Hawk.getProp('energyLevel').value >2 }} [[
+    prop EnergyRepresentation.energyType setTo 'snakeToHawk'
+    featCall EnergyRepresentation.IU logString 'Energy transfer from snake to hawk'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gets from the snake, and what it does to the energy character
+    prop EnergyRepresentation.energyLevel setTo 0
+    prop Hawk.energyLevel add 25
+    // 🔎  we are losing 50 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 15
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_snake_to_hawk.png'
+    featProp Hawk.Costume.glow setTo 1
+  ]]
+]]
+
+when EnergyRepresentation centerLastTouches Hawk [[
+  // 🔎 if you have no Hawk energy type, take some energy from the Hawk to the energy
+  ifExpr {{ ( EnergyRepresentation.getProp('energyType').value == 'mouseToHawk' || EnergyRepresentation.getProp('energyType').value == 'robinToHawk' || EnergyRepresentation.getProp('energyType').value == 'snakeToHawk') && Hawk.getProp('energyLevel').value > 25 }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    // ✏️ LETS CHANGE THIS: alter how much energy the Hawk gives to a animal
+    // ✏️ it was too fast, so i am removing less then I am moving, but let's imagine they are on different scales
+    prop Hawk.energyLevel sub 10
+    prop EnergyRepresentation.energyLevel add 25
+    // 🔎 we are losing 25 of the hundred, so note that in the global
+    prop global.energyReleasedAsHeat add 25
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+  ]]
+
+  // 🔎 when leaving (after arriving with relevent energy type) make sure to leave with Hawk energy type
+  ifExpr {{ EnergyRepresentation.getProp('energyType').value == 'none' || EnergyRepresentation.getProp('energyType').value == 'hawk' || EnergyRepresentation.getProp('energyType').value == 'mouseToHawk' || EnergyRepresentation.getProp('energyType').value == 'robinToHawk' || EnergyRepresentation.getProp('energyType').value == 'snakeToHawk' }} [[
+    prop EnergyRepresentation.energyType setTo 'none'
+    featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_empty_energy.png'
+  ]]
+]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+addProp time number 0
+prop Timer.zIndex setTo 500
+
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "GraphLostEnergy",
+      "scriptText": `# BLUEPRINT GraphLostEnergy
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 This is a graph of energy lost to heat from all charaacters
+// 🔎 since there are lots of characters, rather than sume them up one type
+// 🔎 at a time, use a global variabe to track that excess heat
+
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featProp GraphLostEnergy.Costume.costumeName setTo 'GEN_onexone.json'
+featProp GraphLostEnergy.Costume.scale setTo 1
+
+addFeature Graphing
+addFeature Population
+featProp GraphLostEnergy.Graphing.isLargeGraphic setTo true
+
+
+// using a generic name so that it is easier to change later
+addProp lostEnergy number 500
+prop GraphLostEnergy.lostEnergy setMax 1000
+prop GraphLostEnergy.lostEnergy setMin 0
+
+featProp GraphLostEnergy.Graphing.graphProp setTo 'lostEnergy'
+
+// make sure something displays with some initial text, on bottom right at first
+prop GraphLostEnergy.x setTo 495
+prop GraphLostEnergy.y setTo 350
+prop GraphLostEnergy.zIndex setTo 300
+
+featProp GraphLostEnergy.Graphing.text setTo 'Lost Energy'
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // exprPush {{ global.getProp('energyReleasedAsHeat').value }}
+  propPush global.energyReleasedAsHeat
+  propPop GraphLostEnergy.lostEnergy
+
+]]`
+    },
+    {
+      "name": "EnergyInSystem",
+      "scriptText": `# BLUEPRINT EnergyInSystem
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// required directive
+# PROGRAM INIT
+// hide the actual art since we just want the text to displaay
+addFeature Costume
+featProp EnergyInSystem.Costume.costumeName setTo 'GEN_onexone.json'
+featProp EnergyInSystem.Costume.scale setTo 1
+
+addFeature Graphing
+addFeature Population
+featProp EnergyInSystem.Graphing.isLargeGraphic setTo true
+
+// using a generic name so that it is easier to change later
+addProp totalEnergy Number 500
+prop EnergyInSystem.totalEnergy setMax 1000
+prop EnergyInSystem.totalEnergy setMin 0
+
+// to store the current values of all animals and vaggies separately
+// I could just add them up below, but this way we can see them in the inspector
+addProp totalVeggieGardenEnergy Number 0
+addProp totalCloverEnergy Number 0
+addProp totalRobinEnergy Number 0
+addProp totalCaterpillarEnergy Number 0
+addProp totalMouseEnergy Number 0
+addProp totalHawkEnergy Number 0
+addProp totaSnakeEnergy Number 0
+
+featProp EnergyInSystem.Graphing.graphProp setTo 'totalEnergy'
+
+// make sure something displays with some initial text, on bottom right at first
+prop EnergyInSystem.x setTo 495
+prop EnergyInSystem.y setTo 187
+prop EnergyInSystem.zIndex setTo 300
+
+featProp EnergyInSystem.Graphing.text setTo 'Energy in System'
+
+# PROGRAM UPDATE
+
+onEvent Tick [[
+
+  // count up the VaggieGarden
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'VeggieGarden'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'VeggieGarden' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalVeggieGardenEnergy
+
+  // count up the Clover
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Clover'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Clover' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalCloverEnergy
+
+  // count up the Robin
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Robin'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Robin' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalRobinEnergy
+
+  // count up the Caterpillar
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Caterpillar'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Caterpillar' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalCaterpillarEnergy
+
+  // count up the Mouse
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Mouse'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Mouse' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalMouseEnergy
+
+  // count up the Hawk
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Hawk'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Hawk' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totalHawkEnergy
+
+  // count up the Snake
+  featProp EnergyInSystem.Population.monitoredCharacter setTo 'Snake'
+  featProp EnergyInSystem.Population.monitoredCharacterProp setTo 'energyLevel'
+  featCall EnergyInSystem.Population countCharacterProp 'Snake' 'energyLevel'
+  exprPush {{ EnergyInSystem.getFeatProp('Population', 'sum').value }}
+  propPop EnergyInSystem.totaSnakeEnergy
+
+  // graph the sum
+  exprPush {{ EnergyInSystem.getProp('totalVeggieGardenEnergy').value + agent.getProp('totalCloverEnergy').value + agent.getProp('totalRobinEnergy').value + agent.getProp('totalCaterpillarEnergy').value + agent.getProp('totalMouseEnergy').value + agent.getProp('totalHawkEnergy').value + agent.getProp('totaSnakeEnergy').value }}
+  propPop EnergyInSystem.totalEnergy
+
+
+]]`
+    },
+    {
+      "name": "VeggieGarden",
+      "scriptText": `# BLUEPRINT VeggieGarden
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// 🔎 The VeggieGarden is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+addFeature Costume
+featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
+
+addFeature Physics
+featProp VeggieGarden.Costume.scale setTo 0.3
+
+addProp energyType String 'veggieGarden'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel number 50
+prop VeggieGarden.energyLevel setMax 100
+prop VeggieGarden.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
+featProp VeggieGarden.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  ifProp VeggieGarden.energyLevel greaterThan 0 [[
+    // ✏️ LETS CHANGE THIS: make VeggieGarden lose nutrients faster (or slower)
+    prop VeggieGarden.energyLevel sub 1
+  ]]
+  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifProp VeggieGarden.energyLevel greaterThanOrEqual 60 [[
+    // Green
+    featProp VeggieGarden.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifProp VeggieGarden.energyLevel lessThan 60 [[
+    // Orange
+    featProp VeggieGarden.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifProp VeggieGarden.energyLevel lessThan 30 [[
+    // Red
+    featProp VeggieGarden.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp VeggieGarden.energyLevel equal 0 [[
+    prop VeggieGarden.alpha setTo 0.3
+    prop VeggieGarden.isInert setTo true
+  ]]
+
+  featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
+]]`
+    },
+    {
+      "name": "Clover",
+      "scriptText": `# BLUEPRINT Clover
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// 🔎 The Clover is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+addFeature Costume
+featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
+
+addFeature Physics
+featProp Clover.Costume.scale setTo 0.3
+addProp energyType String 'clover'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Clover.energyLevel setMax 100
+prop Clover.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Clover.Graphing.meterProp setTo 'energyLevel'
+featProp Clover.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // 
+  ifProp Clover.energyLevel greaterThan 0 [[
+    // ✏️ LETS CHANGE THIS: make Clover lose nutrients faster (or slower)
+    prop Clover.energyLevel sub 1
+  ]]
+  // this code sets the color of the energy bar based on how hungry the clover is
+  // set clover energy meter color
+  // doing great
+  ifProp Clover.energyLevel greaterThan 60 [[
+    // Green
+    featProp Clover.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifProp Clover.energyLevel lessThan 60 [[
+    // Orange
+    featProp Clover.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifProp Clover.energyLevel lessThan 30 [[
+    // Red
+    featProp Clover.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Clover.energyLevel equal 0 [[
+    prop Clover.alpha setTo 0.3
+    prop Clover.isInert setTo true
+  ]]
+  featProp Clover.Graphing.meterProp setTo 'energyLevel'
+]]`
+    },
+    {
+      "name": "Caterpillar",
+      "scriptText": `# BLUEPRINT Caterpillar
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 The Caterpillar is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+
+addFeature Costume
+featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
+
+addFeature Physics
+featProp Caterpillar.Costume.scale setTo 0.3
+addProp energyType String 'caterpillar'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Caterpillar.energyLevel setMax 100
+prop Caterpillar.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
+
+featProp Caterpillar.Graphing.meterColor setTo 65280
+
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // ✏️ LETS CHANGE THIS: make Caterpillar lose energy faster (or slower)
+  ifProp Caterpillar.energyLevel greaterThan 0 [[
+    prop Caterpillar.energyLevel sub 1
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the Caterpillar is
+  // sated
+  ifProp Caterpillar.energyLevel greaterThanOrEqual 50 [[
+    featProp Caterpillar.Costume.currentFrame setTo 0
+    // Green
+    featProp Caterpillar.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifProp Caterpillar.energyLevel lessThan 50 [[
+    featProp Caterpillar.Costume.currentFrame setTo 1
+    // Orange
+    featProp Caterpillar.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifProp Caterpillar.energyLevel lessThan 20 [[
+    featProp Caterpillar.Costume.currentFrame setTo 1
+    // Red
+    featProp Caterpillar.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Caterpillar.energyLevel lessThan 1 [[
+    featProp Caterpillar.Costume.currentFrame setTo 2
+    prop Caterpillar.alpha setTo 0.3
+    prop Caterpillar.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "Mouse",
+      "scriptText": `# BLUEPRINT Mouse
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 The Mouse is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+addFeature Costume
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
+
+addFeature Physics
+featProp Mouse.Costume.scale setTo 0.25
+addProp energyType String 'mouse'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Mouse.energyLevel setMax 100
+prop Mouse.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+
+featProp Mouse.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+  ifProp Mouse.energyLevel greaterThan 0 [[
+    // ✏️ LETS CHANGE THIS: make Mouse lose energy faster (or slower)
+    prop Mouse.energyLevel sub 1
+  ]]
+  // this code sets the color of the energy bar based on how hungry the Mouse is
+  // sated
+  ifProp Mouse.energyLevel greaterThanOrEqual 50 [[
+    featProp Mouse.Costume.currentFrame setTo 0
+    // Green
+    featProp Mouse.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifProp Mouse.energyLevel lessThan 50 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    // Orange
+    featProp Mouse.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifProp Mouse.energyLevel lessThan 20 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    // Red
+    featProp Mouse.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Mouse.energyLevel lessThan 1 [[
+    featProp Mouse.Costume.currentFrame setTo 2
+    prop Mouse.alpha setTo 0.3
+    prop Mouse.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "Robin",
+      "scriptText": `# BLUEPRINT Robin
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 The Robin is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+addFeature Costume
+featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
+
+addFeature Physics
+featProp Robin.Costume.scale setTo 0.15
+addProp energyType String 'robin'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Robin.energyLevel setMax 100
+prop Robin.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Robin.Graphing.meterProp setTo 'energyLevel'
+featProp Robin.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+  ifProp Robin.energyLevel greaterThan 0[[
+    // ✏️ LETS CHANGE THIS: make Robin lose energy faster (or slower)
+    prop Robin.energyLevel sub 1
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the Robin is
+  // sated
+  ifProp Robin.energyLevel greaterThanOrEqual 50 [[
+    featProp Robin.Costume.currentFrame setTo 0
+    // Green
+    featProp Robin.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifProp Robin.energyLevel lessThan 50 [[
+    featProp Robin.Costume.currentFrame setTo 1
+    // Orange
+    featProp Robin.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifProp Robin.energyLevel lessThan 20 [[
+    featProp Robin.Costume.currentFrame setTo 1
+    // Red
+    featProp Robin.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Robin.energyLevel lessThan 1 [[
+    featProp Robin.Costume.currentFrame setTo 2
+    prop Robin.alpha setTo 0.3
+    prop Robin.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Robin.Graphing.meterProp setTo 'energyLevel'
+]]
+
+`
+    },
+    {
+      "name": "Snake",
+      "scriptText": `# BLUEPRINT Snake
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 The Snake is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+
+addFeature Costume
+featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
+
+addFeature Physics
+featProp Snake.Costume.scale setTo 0.25
+addProp energyType String 'snake'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Snake.energyLevel setMax 100
+prop Snake.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Snake.Graphing.meterProp setTo 'energyLevel'
+
+featProp Snake.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+  ifProp Snake.energyLevel greaterThan 0 [[
+    prop Snake.energyLevel sub 1
+  ]]
+  // ✏️ LETS CHANGE THIS: make Snake lose energy faster (or slower)
+
+
+  // this code sets the color of the energy bar based on how hungry the Snake is
+  // sated
+  ifProp Snake.energyLevel greaterThanOrEqual 50 [[
+    featProp Snake.Costume.currentFrame setTo 0
+    // Green
+    featProp Snake.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifProp Snake.energyLevel lessThan 50 [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Orange
+    featProp Snake.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifProp Snake.energyLevel lessThan 20 [[
+    featProp Snake.Costume.currentFrame setTo 1
+    // Red
+    featProp Snake.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Snake.energyLevel lessThan 1 [[
+    featProp Snake.Costume.currentFrame setTo 2
+    prop Snake.alpha setTo 0.3
+    prop Snake.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Snake.Graphing.meterProp setTo 'energyLevel'
+]]`
+    },
+    {
+      "name": "Hawk",
+      "scriptText": `# BLUEPRINT Hawk
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// required directive
+# PROGRAM INIT
+// 🔎 The Hawk is one of the characters that takes / produces energy
+// 🔎 Note that it mostly just stores properties that the EnergyRepresentation will check / change
+// 🔎 The other main functionality (under update) is that it will update its meter color depending on
+// 🔎 how much energy it has
+
+addFeature Costume
+featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
+
+addFeature Physics
+featProp Hawk.Costume.scale setTo 0.4
+addProp energyType String 'hawk'
+
+// setup to track energy and begin at 1/2 way
+addProp energyLevel Number 50
+prop Hawk.energyLevel setMax 100
+prop Hawk.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+featProp Hawk.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 2 runAtStart [[
+
+  // ✏️ LETS CHANGE THIS: make Hawk lose energy faster (or slower)
+  ifProp Hawk.energyLevel greaterThan 0[[
+    prop Hawk.energyLevel sub 1 
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the Hawk is
+  // sated
+  ifProp Hawk.energyLevel greaterThanOrEqual 50 [[
+    featProp Hawk.Costume.currentFrame setTo 0
+    // Green
+    featProp Hawk.Graphing.meterColor setTo 65280
+  ]]
+  // could eat
+  ifProp Hawk.energyLevel lessThan 50 [[
+    featProp Hawk.Costume.currentFrame setTo 1
+    // Orange
+    featProp Hawk.Graphing.meterColor setTo 16737792
+  ]]
+  // hungry
+  ifProp Hawk.energyLevel lessThan 20 [[
+    featProp Hawk.Costume.currentFrame setTo 1
+    // Red
+    featProp Hawk.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp Hawk.energyLevel lessThan 1 [[
+    featProp Hawk.Costume.currentFrame setTo 2
+    prop Hawk.alpha setTo 0.3
+    prop Hawk.isInert setTo true
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+]]`
+    },
+    {
+      "name": "energyReset",
+      "scriptText": `# BLUEPRINT energyReset
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Touches
+addFeature Movement
+addFeature Physics
+
+featProp energyReset.Costume.costumeName setTo 'FWE_energy_reset.png'
+featProp energyReset.Costume.scale setTo 0.1
+prop energyReset.alpha setTo 0.5
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "teacher",
+      "scriptText": `# BLUEPRINT teacher
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp teacher.Costume.scale setTo 0.2
+prop teacher.alpha setTo 0
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "Sun",
+      "bpid": "Sun",
+      "initScript": `prop Sun.x setTo -200.31
+prop Sun.y setTo -426.24`
+    },
+    {
+      "id": "5",
+      "label": "Timer",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 297.95
+prop y setTo -394.50`
+    },
+    {
+      "id": "6",
+      "label": "Sky",
+      "bpid": "Sky",
+      "initScript": `prop x setTo 1.18
+prop y setTo 0.80`
+    },
+    {
+      "id": "9",
+      "label": "VeggieGarden",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -56.64
+prop y setTo 280.37`
+    },
+    {
+      "id": "10",
+      "label": "Clover",
+      "bpid": "Clover",
+      "initScript": `prop x setTo -311.02
+prop y setTo 127.67`
+    },
+    {
+      "id": "11",
+      "label": "Caterpillar",
+      "bpid": "Caterpillar",
+      "initScript": `prop x setTo 1.68
+prop y setTo -174.71`
+    },
+    {
+      "id": "16",
+      "label": "Mouse",
+      "bpid": "Mouse",
+      "initScript": `prop x setTo 315.85
+prop y setTo -226.99`
+    },
+    {
+      "id": "17",
+      "label": "Robin",
+      "bpid": "Robin",
+      "initScript": `prop x setTo 263.92
+prop y setTo -10.20`
+    },
+    {
+      "id": "18",
+      "label": "Snake",
+      "bpid": "Snake",
+      "initScript": `prop x setTo -289.96
+prop y setTo -162.58`
+    },
+    {
+      "id": "19",
+      "label": "Hawk",
+      "bpid": "Hawk",
+      "initScript": `prop x setTo 276.05
+prop y setTo 240.72`
+    },
+    {
+      "id": "20",
+      "label": "energyReset",
+      "bpid": "energyReset",
+      "initScript": `prop x setTo 365.65
+prop y setTo -364.83`
+    }
+  ]
+}
