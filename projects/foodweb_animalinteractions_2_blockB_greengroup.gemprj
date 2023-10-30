@@ -1847,13 +1847,6 @@ prop y setTo -400.99`
 prop y setTo 66.73`
     },
     {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
-    },
-    {
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
@@ -1866,13 +1859,6 @@ prop VeggieGarden.y setTo 50.00`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo 19.70
 prop VeggieGarden.y setTo -144.69`
-    },
-    {
-      "id": "127",
-      "label": "Snake127",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 44
-prop Snake.y setTo 23`
     },
     {
       "id": "128",
