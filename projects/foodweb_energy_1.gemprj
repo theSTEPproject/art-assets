@@ -251,7 +251,7 @@ when EnergyRepresentation centerFirstTouches Clover [[
     featCall EnergyRepresentation.IU logString 'Energy transfer from sun to clover'
     // ✏️ LETS CHANGE THIS: alter how much energy the Clover gets from the sun
     prop EnergyRepresentation.energyLevel setTo 0
-    prop Clover.energyLevel add 50
+    prop Clover.energyLevel add 25
     // 🔎 we are losing 50 of the hundred, so note that in the global
     prop global.energyReleasedAsHeat add 50
     featProp EnergyRepresentation.Costume.costumeName setTo 'FWE_sun to clover.png'
