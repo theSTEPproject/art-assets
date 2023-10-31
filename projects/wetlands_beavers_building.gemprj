@@ -990,7 +990,7 @@ addFeature Population
 
 featProp Predator.Costume.costumeName setTo 'WL_coyote.png'
 featProp Predator.Costume.scale setTo 0.2
-
+featProp Predator.Costume.glowColor setToColor 16189448
 featCall Predator.Touches monitor 'Beaver' b2b
 
 # PROGRAM UPDATE
@@ -1010,8 +1010,7 @@ when Predator firsttouches Beaver [[
     prop Beaver.alpha setTo 0.5
     prop Beaver.isInert setTo true
     prop Beaver.energyLevel setTo 0
-
-
+    featProp Predator.Costume.glow setTo 1
     // ✏️ Make a popup to tell show users that this beaver was eaten!
     featCall Predator.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Crunch!'
@@ -1029,9 +1028,7 @@ when Predator firsttouches Beaver [[
 
   ]]
 
-]]
-
-`
+]]`
     },
     {
       "name": "GoodWaterPlantSpot",
