@@ -349,7 +349,7 @@ propPush Beaver.trackerId
 propPop Beaver.displayText
 featProp Beaver.Graphing.textProp setTo 'displayText'
 featProp Beaver.Graphing.meterProp setTo 'energyLevel'
-featProp Beaver.Graphing.meterColor setTo 65280
+featProp Beaver.Graphing.meterColor setToColor 65280
 
 // ✏️ LETS CHANGE THIS: Does the beaver lose energy?
 // ✏️ If this is set to false, it helps us explore the model without worrying about food
@@ -872,7 +872,7 @@ addFeature Physics
 featProp Water.Costume.costumeName setTo 'GEN_square.json'
 featProp Water.Costume.width setTo 200
 featProp Water.Costume.height setTo 400
-featCall Water.Costume setColorize 51 170 255
+featProp Water.Costume.color setToColor 3386111
 prop Water.zIndex setTo -200
 
 addProp depth number 1
@@ -934,7 +934,7 @@ every 0.5 [[
     // the water is shallow, so it moves pretty fast
     prop Water.speed setTo 'fast'
     // make the light blue so we know it is shallow
-    featCall Water.Costume setColorize 51 170 255
+    featProp Water.Costume.color setToColor 9358843
   ]]
 
   // 🔎 Water depth is medium
@@ -942,7 +942,7 @@ every 0.5 [[
     // the water is medium deep, so it moves medium fast
     prop Water.speed setTo 'medium'
     // make the water medium  blue so we know it is medium deep
-    featCall Water.Costume setColorize 0 118 198
+    featProp Water.Costume.color setToColor 3386111
   ]]
 
   // 🔎 Water depth is deep
@@ -950,7 +950,7 @@ every 0.5 [[
     // the water is deep, so it moves pretty slow
     prop Water.speed setTo 'slow'
     // make the water dark blue so we know it is deep
-    featCall Water.Costume setColorize 0 71 143
+    featProp Water.Costume.color setToColor 3378406
   ]]
 
 ]]`
