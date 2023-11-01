@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_energy_1",
+  "id": "foodweb_energy_2_blockB_green2",
   "label": "Garden Ecosystem 2",
   "metadata": {
     "top": -400,
@@ -729,7 +729,7 @@ addFeature Costume
 featProp VeggieGarden.Costume.costumeName setTo 'FWE_veggiegarden.png'
 
 addFeature Physics
-featProp VeggieGarden.Costume.scale setTo 0.3
+featProp VeggieGarden.Costume.scale setTo 0.2
 
 addProp energyType String 'veggieGarden'
 
@@ -1139,7 +1139,7 @@ addFeature Costume
 featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 
 addFeature Physics
-featProp Hawk.Costume.scale setTo 0.4
+featProp Hawk.Costume.scale setTo 0.3
 addProp energyType String 'hawk'
 
 // setup to track energy and begin at 1/2 way
@@ -1156,8 +1156,8 @@ featProp Hawk.Graphing.meterColor setTo 65280
 every 2 runAtStart [[
 
   // ✏️ LETS CHANGE THIS: make Hawk lose energy faster (or slower)
-  ifProp Hawk.energyLevel greaterThan 0[[
-    prop Hawk.energyLevel sub 1 
+  ifProp Hawk.energyLevel greaterThan 0 [[
+    prop Hawk.energyLevel sub 1
   ]]
 
   // this code sets the color of the energy bar based on how hungry the Hawk is
@@ -1264,57 +1264,57 @@ prop y setTo -394.50`
       "id": "6",
       "label": "Sky",
       "bpid": "Sky",
-      "initScript": `prop x setTo 1.18
-prop y setTo 0.80`
+      "initScript": `prop Sky.x setTo 1.18
+prop Sky.y setTo 0.80`
     },
     {
       "id": "9",
       "label": "VeggieGarden",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -56.64
-prop y setTo 280.37`
+      "initScript": `prop VeggieGarden.x setTo -185.36
+prop VeggieGarden.y setTo 116.76`
     },
     {
       "id": "10",
       "label": "Clover",
       "bpid": "Clover",
-      "initScript": `prop x setTo -311.02
-prop y setTo 127.67`
+      "initScript": `prop Clover.x setTo 199.06
+prop Clover.y setTo 60.30`
     },
     {
       "id": "11",
       "label": "Caterpillar",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo 1.68
-prop y setTo -174.71`
+      "initScript": `prop Caterpillar.x setTo -143.89
+prop Caterpillar.y setTo -5.08`
     },
     {
       "id": "16",
       "label": "Mouse",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 315.85
-prop y setTo -226.99`
+      "initScript": `prop Mouse.x setTo 153.44
+prop Mouse.y setTo -51.35`
     },
     {
       "id": "17",
       "label": "Robin",
       "bpid": "Robin",
-      "initScript": `prop x setTo 263.92
-prop y setTo -10.20`
+      "initScript": `prop Robin.x setTo -94.57
+prop Robin.y setTo -111.25`
     },
     {
       "id": "18",
       "label": "Snake",
       "bpid": "Snake",
-      "initScript": `prop x setTo -289.96
-prop y setTo -162.58`
+      "initScript": `prop Snake.x setTo 98.61
+prop Snake.y setTo -151.75`
     },
     {
       "id": "19",
       "label": "Hawk",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 276.05
-prop y setTo 240.72`
+      "initScript": `prop Hawk.x setTo -13.87
+prop Hawk.y setTo -230.86`
     },
     {
       "id": "20",

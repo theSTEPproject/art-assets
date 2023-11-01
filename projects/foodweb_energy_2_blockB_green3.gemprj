@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_energy_2_blockB_red1",
+  "id": "foodweb_energy_2_blockB_green3",
   "label": "Garden Ecosystem 2",
   "metadata": {
     "top": -400,
@@ -792,7 +792,7 @@ addFeature Costume
 featProp Clover.Costume.costumeName setTo 'FW1_clover.png'
 
 addFeature Physics
-featProp Clover.Costume.scale setTo 0.25
+featProp Clover.Costume.scale setTo 0.3
 addProp energyType String 'clover'
 
 // setup to track energy and begin at 1/2 way
@@ -1271,50 +1271,50 @@ prop y setTo 0.80`
       "id": "9",
       "label": "VeggieGarden",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -13.93
-prop VeggieGarden.y setTo -23.24`
+      "initScript": `prop VeggieGarden.x setTo 222.45
+prop VeggieGarden.y setTo 95.10`
     },
     {
       "id": "10",
       "label": "Clover",
       "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -254.45
-prop Clover.y setTo -18.94`
+      "initScript": `prop Clover.x setTo 19.81
+prop Clover.y setTo 209.48`
     },
     {
       "id": "11",
       "label": "Caterpillar",
       "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -134.54
-prop Caterpillar.y setTo -20.02`
+      "initScript": `prop Caterpillar.x setTo 20.93
+prop Caterpillar.y setTo 103.19`
     },
     {
       "id": "16",
       "label": "Mouse",
       "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 125.37
-prop Mouse.y setTo -18.04`
+      "initScript": `prop Mouse.x setTo 223.22
+prop Mouse.y setTo -12.86`
     },
     {
       "id": "17",
       "label": "Robin",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo 232.75
-prop Robin.y setTo -28.67`
+      "initScript": `prop Robin.x setTo 17.30
+prop Robin.y setTo -18.62`
     },
     {
       "id": "18",
       "label": "Snake",
       "bpid": "Snake",
-      "initScript": `prop Snake.x setTo -344.22
-prop Snake.y setTo -24.05`
+      "initScript": `prop Snake.x setTo 210.49
+prop Snake.y setTo -144.53`
     },
     {
       "id": "19",
       "label": "Hawk",
       "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 351.09
-prop Hawk.y setTo -42.11`
+      "initScript": `prop Hawk.x setTo 21.01
+prop Hawk.y setTo -156.27`
     },
     {
       "id": "20",
