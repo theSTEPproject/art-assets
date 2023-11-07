@@ -495,7 +495,7 @@ featProp Caterpillar.Costume.scale setTo 0.3
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
-featProp Caterpillar.Movement.distance setTo 2
+featProp Caterpillar.Movement.distance setTo 3
 featProp Caterpillar.Movement.targetY setMax 0.7
 
 // make sure we track interactions with the other creatures
@@ -1887,6 +1887,27 @@ prop Snake.y setTo -110.15`
       "bpid": "Robin",
       "initScript": `prop Robin.x setTo 328.57
 prop Robin.y setTo -243.95`
+    },
+    {
+      "id": "130",
+      "label": "Clover130",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -33.18
+prop Clover.y setTo -21.35`
+    },
+    {
+      "id": "131",
+      "label": "Caterpillar131",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -46.63
+prop Caterpillar.y setTo 168.69`
+    },
+    {
+      "id": "132",
+      "label": "Clover132",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -171.79
+prop Clover.y setTo 246.03`
     }
   ]
 }

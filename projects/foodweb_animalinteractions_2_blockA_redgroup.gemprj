@@ -1886,6 +1886,20 @@ prop Robin.y setTo -135.61`
       "bpid": "Caterpillar",
       "initScript": `prop Caterpillar.x setTo -166.05
 prop Caterpillar.y setTo 201.51`
+    },
+    {
+      "id": "130",
+      "label": "Clover130",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 153.70
+prop Clover.y setTo 16.91`
+    },
+    {
+      "id": "131",
+      "label": "Worm131",
+      "bpid": "Worm",
+      "initScript": `prop Worm.x setTo 12.82
+prop Worm.y setTo 161.87`
     }
   ]
 }
