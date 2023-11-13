@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_template",
+  "id": "InvasiveSpecies_BlockB_CookieCrumbleWithSwag",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -27,8 +27,8 @@
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A SNAKE?
@@ -50,14 +50,14 @@ addFeature Graphing
 addFeature IU
 addProp alive Boolean true
 
-// Set the snake artwork and make it smaller 
+// Set the snake artwork and make it smaller
 featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.4
 
-// Tells snakes how to move when they are controlled by the computer 
+// Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
@@ -462,8 +462,8 @@ ifProp Clover.hasNutrients equal true [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A CATERPILLAR?
@@ -592,8 +592,8 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A ROBIN?
@@ -683,7 +683,7 @@ when Robin touches VeggieGarden [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
         prop VeggieGarden.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -740,8 +740,8 @@ every 1 runAtStart [[
     {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A HAWK?
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1225,8 +1225,8 @@ onEvent Tick [[
     {
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 
@@ -1343,7 +1343,7 @@ when Worm touches Mouse [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-\t\tfeatCall Worm.IU logString 'Worm is decomposing a dead mouse.'
+        featCall Worm.IU logString 'Worm is decomposing a dead mouse.'
         // make the mouse smaller
         featProp Mouse.Costume.scale sub 0.1
         // the mouse will disappear when it is very small
@@ -1408,7 +1408,7 @@ when Worm touches Snake [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-         featCall Worm.IU logString 'Worm is decomposing a dead snake.'
+        featCall Worm.IU logString 'Worm is decomposing a dead snake.'
 
         // make the snake smaller
         featProp Snake.Costume.scale sub 0.1
@@ -1439,7 +1439,7 @@ when Worm touches Robin [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-         featCall Worm.IU logString 'Worm is decomposing a dead robin.'
+        featCall Worm.IU logString 'Worm is decomposing a dead robin.'
 
         // make the robin smaller
         featProp Robin.Costume.scale sub 0.1
@@ -1580,9 +1580,9 @@ when Worm touches VeggieGarden [[
     {
       "name": "Mouse",
       "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable true
-# TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
 
 // 🔎 WHAT IS A MOUSE?
 // 🔎 MICE are ???????? who EAT ??????? to make MOUSE ENERGY through DIGESTION
@@ -1824,39 +1824,174 @@ prop teacher.alpha setTo 0
 // ✏️ body`
     },
     {
-      "name": "invasiveSpecies",
-      "scriptText": `# BLUEPRINT invasiveSpecies
-# TAG isCharControllable true
+      "name": "LadyBug",
+      "scriptText": `# BLUEPRINT LadyBug
 # TAG isPozyxControllable true
-# TAG isPTrackControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
 
-// 🔎 WHAT IS _______________?
-// 🔎 ___________ are ???????????? who EAT ??????? to make ENERGY through DIGESTION
+// 🔎 WHAT IS A LADYBUG?
+// ✏️ CHANGE LADYBUGS are ???????? who EAT ??????? to make LADYBUG ENERGY through DIGESTION
 
 // 🔎 WHAT IS A PRODUCER?
 // 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
 
 // 🔎 WHAT IS A CONSUMER?
-// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 CONSUMERS are organism that cannot make its own food
+// 🔎 and must eat other plants or animals to get energy
+
 
 # PROGRAM INIT
+// add the features we are likely to use
 addFeature Movement
 addFeature Costume
+addFeature Cursor
 addFeature Physics
-addFeature Touches
 addFeature Graphing
+addFeature Touches
 addFeature IU
 addProp alive Boolean true
 
 
-// Set the hawk artwork and make it 1/2 size since it is really big
-featProp invasiveSpecies.Costume.costumeName setTo 'IS_questionmark.png'
-// 🔎 WHAT SIZE IS THE ORGANISM?
-// ✏️ LETS CHANGE THIS:
-// ✏️ LARGER number => LARGER ORGANISMS
-featProp invasiveSpecies.Costume.scale setTo 0.5
+// set the LadyBug artwork and make it smaller
+featProp LadyBug.Costume.costumeName setTo 'IS_ladybug2.png'
+// ✏️ You can change the art to the ladybug with clover drawn by students by changing the file to 'IS_ladybug.png'
 
-`
+// ✏️ CHANGE The size of the LadyBug (LARGER number => LARGER LadyBug)
+featProp LadyBug.Costume.scale setTo 0.5
+featProp LadyBug.Costume.flipX setTo true
+
+// ✏️ if the computer controls the LadyBug, this tells the LadyBug how to move and how quickly
+// ✏️ CHANGE the speed that the LadyBug moves
+featProp LadyBug.Movement.distance setTo 4
+featProp LadyBug.Movement.movementType setTo 'wander'
+featCall LadyBug.Movement setRandomDirection
+
+
+// make sure we track interactions with the other creatures
+featCall LadyBug.Touches monitor 'VeggieGarden' b2b
+featCall LadyBug.Touches monitor 'Clover' b2b
+featCall LadyBug.Touches monitor 'Worm' b2b
+featCall LadyBug.Touches monitor 'Robin' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each LadyBug START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 50
+
+// 🔎 what is the MOST/LEAST amount of energy a LadyBug can have?
+prop LadyBug.energyLevel setMax 100
+prop LadyBug.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green
+featProp LadyBug.Graphing.meterProp setTo 'energyLevel'
+featProp LadyBug.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// 📖 Our Organism gains energy from:
+// ✏️ The LadyBug gains energy from the clover
+
+// ✏️ whenever a LadyBug touches a clover
+when LadyBug touches Clover [[
+  every 1 runAtStart [[
+    // the LadyBug and the clover must be alive
+    ifProp LadyBug.alive equal true [[
+      ifProp Clover.alive equal true [[
+
+        featProp LadyBug.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
+        // ✏️ CHANGE the energy clovers lose (LARGER numbers => LOSE MORE ENERGY)
+        prop Clover.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LadyBugs GAIN when eating?
+        // ✏️ CHANGE the energy LadyBugs gain from the clover (LARGER numbers => GAIN MORE ENERGY)
+        prop LadyBug.energyLevel add 10
+        featCall LadyBug.IU logString 'LadyBug ate some of a clover.'
+      ]]
+    ]]
+  ]]
+]]
+
+// 📖 Our Organism gives energy to:
+// ✏️ The LadyBug gives energy to the Robin
+
+// ✏️ whenever a LadyBug touches a Robin
+when LadyBug touches Robin [[
+  every 1 runAtStart [[
+    // ✏️ if the LadyBug and the Robin are alive
+    ifProp LadyBug.alive equal true [[
+      ifProp Robin.alive equal true [[
+        featProp Robin.Costume.glow setTo 1
+        // ✏️ the LadyBug dies when touched by the Robin
+        featProp LadyBug.Movement.movementType setTo 'stop'
+        prop LadyBug.alive setTo false
+        prop LadyBug.alpha setTo 0.3
+        prop LadyBug.energyLevel setTo 0
+        featCall LadyBug.IU logString 'LadyBug was eaten by Robin.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Robins GAIN when eating a LadyBug?
+        // ✏️ CHANGE the energy the Robin gains from the LadyBug (LARGER numbers => GAIN MORE ENERGY)
+        prop Robin.energyLevel add 25
+        featCall Robin.IU logString 'Robin ate a LadyBug.'
+      ]]
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do LadyBugs LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop LadyBug.energyLevel sub 3
+
+  // 🔎 WHAT DOES THIS DO?
+  // This script changes the color of the LadyBug's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+
+  // The LadyBug is feeling good, so make the meter green if the LadyBug has over 50 energy (out of 100)
+  ifProp LadyBug.energyLevel greaterThanOrEqual 50 [[
+    featProp LadyBug.Costume.currentFrame setTo 0
+    featProp LadyBug.Graphing.meterColor setTo 65280
+  ]]
+
+  // The LadyBug is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp LadyBug.energyLevel lessThan 50 [[
+    featProp LadyBug.Costume.currentFrame setTo 1
+    featProp LadyBug.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The LadyBug is really hungry, so make the meter red if we are under 20
+  ifProp LadyBug.energyLevel lessThan 20 [[
+    featProp LadyBug.Costume.currentFrame setTo 1
+    featProp LadyBug.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The LadyBug is dead if it has 0 energy
+  ifProp LadyBug.energyLevel equal 0 [[
+    prop LadyBug.alive setTo false
+    featProp LadyBug.Costume.currentFrame setTo 2
+    prop LadyBug.alpha setTo 0.3
+    featProp LadyBug.Movement.movementType setTo 'stop'
+    featCall LadyBug.IU logString 'LadyBug died of starvation.'
+  ]]
+  // set meter to mirror energyLevel
+  featProp LadyBug.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+
+
+
+
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     }
   ],
   "instances": [
@@ -1904,10 +2039,24 @@ prop y setTo -152.05`
     },
     {
       "id": "127",
-      "label": "invasiveSpecies127",
-      "bpid": "invasiveSpecies",
-      "initScript": `prop invasiveSpecies.x setTo 45
-prop invasiveSpecies.y setTo -41`
+      "label": "LadyBug127",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo 224.83
+prop LadyBug.y setTo 46.15`
+    },
+    {
+      "id": "128",
+      "label": "LadyBug128",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo -211.73
+prop LadyBug.y setTo -111.88`
+    },
+    {
+      "id": "129",
+      "label": "LadyBug129",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo 49.65
+prop LadyBug.y setTo 242.91`
     }
   ]
 }
