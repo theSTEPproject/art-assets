@@ -1883,7 +1883,7 @@ addProp energyLevel Number 50
 prop Bunny.energyLevel setMax 100
 prop Bunny.energyLevel setMin 0
 
-// use a widget to depict the current energy, and color it green 
+// use a widget to depict the current energy, and color it green
 featProp Bunny.Graphing.meterProp setTo 'energyLevel'
 featProp Bunny.Graphing.meterColor setTo 65280
 
@@ -1988,6 +1988,7 @@ when Bunny touches Hawk [[
     ]]
   ]]
 ]]
+
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
@@ -2087,7 +2088,7 @@ prop y setTo -152.05`
       "id": "127",
       "label": "Bunny127",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -145.70
+      "initScript": `prop Bunny.x setTo -145.7
 prop Bunny.y setTo -86.18`
     },
     {
