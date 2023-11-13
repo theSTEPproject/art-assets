@@ -27,8 +27,8 @@
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A SNAKE?
@@ -50,14 +50,14 @@ addFeature Graphing
 addFeature IU
 addProp alive Boolean true
 
-// Set the snake artwork and make it smaller 
+// Set the snake artwork and make it smaller
 featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.4
 
-// Tells snakes how to move when they are controlled by the computer 
+// Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
@@ -462,8 +462,8 @@ ifProp Clover.hasNutrients equal true [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A CATERPILLAR?
@@ -592,8 +592,8 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A ROBIN?
@@ -683,7 +683,7 @@ when Robin touches VeggieGarden [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
         prop VeggieGarden.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -740,8 +740,8 @@ every 1 runAtStart [[
     {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A HAWK?
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1580,9 +1580,9 @@ when Worm touches VeggieGarden [[
     {
       "name": "Mouse",
       "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable true
-# TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
 
 // 🔎 WHAT IS A MOUSE?
 // 🔎 MICE are ???????? who EAT ??????? to make MOUSE ENERGY through DIGESTION
