@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_template",
+  "id": "InvasiveSpecies_BlockB_DragonDemonsTo",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -27,8 +27,8 @@
     {
       "name": "Snake",
       "scriptText": `# BLUEPRINT Snake
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A SNAKE?
@@ -50,14 +50,14 @@ addFeature Graphing
 addFeature IU
 addProp alive Boolean true
 
-// Set the snake artwork and make it smaller 
+// Set the snake artwork and make it smaller
 featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.4
 
-// Tells snakes how to move when they are controlled by the computer 
+// Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
 featProp Snake.Movement.distance setTo 3
@@ -462,8 +462,8 @@ ifProp Clover.hasNutrients equal true [[
     {
       "name": "Caterpillar",
       "scriptText": `# BLUEPRINT Caterpillar
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A CATERPILLAR?
@@ -592,8 +592,8 @@ every 1 runAtStart [[
     {
       "name": "Robin",
       "scriptText": `# BLUEPRINT Robin
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A ROBIN?
@@ -683,7 +683,7 @@ when Robin touches VeggieGarden [[
       every 1 runAtStart [[
         featProp Robin.Costume.glow setTo 1
         prop VeggieGarden.energyLevel sub 10
-        
+
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do ROBIN GAIN when eating?
         // ✏️ LETS CHANGE THIS:
@@ -740,8 +740,8 @@ every 1 runAtStart [[
     {
       "name": "Hawk",
       "scriptText": `# BLUEPRINT Hawk
-# TAG isPozyxControllable true
-# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 // 🔎 WHAT IS A HAWK?
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -1225,8 +1225,8 @@ onEvent Tick [[
     {
       "name": "Worm",
       "scriptText": `# BLUEPRINT Worm
-# TAG isCharControllable true
-# TAG isPozyxControllable true
+# TAG isCharControllable false
+# TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
 
@@ -1343,7 +1343,7 @@ when Worm touches Mouse [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-\t\tfeatCall Worm.IU logString 'Worm is decomposing a dead mouse.'
+        featCall Worm.IU logString 'Worm is decomposing a dead mouse.'
         // make the mouse smaller
         featProp Mouse.Costume.scale sub 0.1
         // the mouse will disappear when it is very small
@@ -1408,7 +1408,7 @@ when Worm touches Snake [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-         featCall Worm.IU logString 'Worm is decomposing a dead snake.'
+        featCall Worm.IU logString 'Worm is decomposing a dead snake.'
 
         // make the snake smaller
         featProp Snake.Costume.scale sub 0.1
@@ -1439,7 +1439,7 @@ when Worm touches Robin [[
 
         // the worm carries nutrients after eating
         prop Worm.hasNutrients setTo true
-         featCall Worm.IU logString 'Worm is decomposing a dead robin.'
+        featCall Worm.IU logString 'Worm is decomposing a dead robin.'
 
         // make the robin smaller
         featProp Robin.Costume.scale sub 0.1
@@ -1580,9 +1580,9 @@ when Worm touches VeggieGarden [[
     {
       "name": "Mouse",
       "scriptText": `# BLUEPRINT Mouse
-# TAG isPozyxControllable true
-# TAG isCharControllable true
-# TAG isPTrackControllable true
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
 
 // 🔎 WHAT IS A MOUSE?
 // 🔎 MICE are ???????? who EAT ??????? to make MOUSE ENERGY through DIGESTION
@@ -1824,39 +1824,244 @@ prop teacher.alpha setTo 0
 // ✏️ body`
     },
     {
-      "name": "invasiveSpecies",
-      "scriptText": `# BLUEPRINT invasiveSpecies
-# TAG isCharControllable true
+      "name": "Bear",
+      "scriptText": `# BLUEPRINT Bear
 # TAG isPozyxControllable true
-# TAG isPTrackControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
 
-// 🔎 WHAT IS _______________?
-// 🔎 ___________ are ???????????? who EAT ??????? to make ENERGY through DIGESTION
+// 🔎 WHAT IS A BEAR?
+// ✏️ CHANGE BEARS are ???????? who EAT ??????? to make BEAR ENERGY through DIGESTION
 
 // 🔎 WHAT IS A PRODUCER?
 // 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
 
 // 🔎 WHAT IS A CONSUMER?
-// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+// 🔎 CONSUMERS are organism that cannot make its own food
+// 🔎 and must eat other plants or animals to get energy
+
 
 # PROGRAM INIT
+// add the features we are likely to use
 addFeature Movement
 addFeature Costume
+addFeature Cursor
 addFeature Physics
-addFeature Touches
 addFeature Graphing
+addFeature Touches
 addFeature IU
 addProp alive Boolean true
 
 
-// Set the hawk artwork and make it 1/2 size since it is really big
-featProp invasiveSpecies.Costume.costumeName setTo 'IS_questionmark.png'
-// 🔎 WHAT SIZE IS THE ORGANISM?
-// ✏️ LETS CHANGE THIS:
-// ✏️ LARGER number => LARGER ORGANISMS
-featProp invasiveSpecies.Costume.scale setTo 0.5
+// set the Bear artwork and make it smaller
+featProp Bear.Costume.costumeName setTo 'IS_bear.png'
 
-`
+// ✏️ CHANGE The size of the Bear (LARGER number => LARGER BEAR)
+featProp Bear.Costume.scale setTo 0.3
+featProp Bear.Costume.flipX setTo true
+
+// ✏️ if the computer controls the Bear, this tells the Bear how to move and how quickly
+// ✏️ CHANGE the speed that the bear moves
+featProp Bear.Movement.distance setTo 4
+featProp Bear.Movement.movementType setTo 'wander'
+featCall Bear.Movement setRandomDirection
+
+
+// make sure we track interactions with the other creatures
+featCall Bear.Touches monitor 'VeggieGarden' b2b
+featCall Bear.Touches monitor 'Worm' b2b
+featCall Bear.Touches monitor 'Hawk' b2b
+featCall Bear.Touches monitor 'Snake' b2b
+featCall Bear.Touches monitor 'Mouse' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each Bear START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 50
+
+// 🔎 what is the MOST/LEAST amount of energy a Bear can have?
+prop Bear.energyLevel setMax 100
+prop Bear.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green
+featProp Bear.Graphing.meterProp setTo 'energyLevel'
+featProp Bear.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// 📖 Our Organism gains energy from:
+// ✏️ The bear gains energy from the veggie garden, hawk, mouse, snake
+
+// ✏️ whenever a Bear touches a veggie garden
+when Bear touches VeggieGarden [[
+  every 1 runAtStart [[
+    ifProp Bear.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Bear.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ CHANGE the energy veggie gardens lose (LARGER numbers => LOSE MORE ENERGY)
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do bears GAIN when eating?
+        // ✏️ CHANGE the energy bears gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Bear.energyLevel add 10
+        featCall Bear.IU logString 'Bear ate some of a veggie garden.'
+
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the bear is touching a mouse
+when Bear touches Mouse [[
+  every 1 runAtStart [[
+    // ✏️ if the Bear and the mouse are alive
+    ifProp Bear.alive equal true [[
+      ifProp Mouse.alive equal true [[
+        featProp Bear.Costume.glow setTo 1
+        // ✏️ the mouse dies when touched by the Bear
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Mouse.energyLevel setTo 0
+        featCall Mouse.IU logString 'Mouse was eaten by a bear.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do BEARS GAIN when eating a mouse?
+        // ✏️ CHANGE the energy bears gain from a mouse (LARGER numbers => GAIN MORE ENERGY)
+        prop Bear.energyLevel add 25
+        featCall Bear.IU logString 'Bear ate a mouse.'
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the bear is touching a snake
+when Bear touches Snake [[
+  every 1 runAtStart [[
+    // ✏️ if the Bear and the mouse are alive
+    ifProp Bear.alive equal true [[
+      ifProp Snake.alive equal true [[
+        featProp Bear.Costume.glow setTo 1
+        // ✏️ the mouse dies when touched by the Bear
+        featProp Snake.Movement.movementType setTo 'stop'
+        prop Snake.alive setTo false
+        prop Snake.alpha setTo 0.3
+        prop Snake.energyLevel setTo 0
+        featCall Snake.IU logString 'Snake was eaten by a bear.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do BEARS GAIN when eating a snake?
+        // ✏️ CHANGE the energy bears gain from a snake (LARGER numbers => GAIN MORE ENERGY)
+        prop Bear.energyLevel add 25
+        featCall Bear.IU logString 'Bear ate a snake.'
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the bear is touching a hawk
+when Bear touches Hawk [[
+  every 1 runAtStart [[
+    // ✏️ if the Bear and the mouse are alive
+    ifProp Bear.alive equal true [[
+      ifProp Hawk.alive equal true [[
+        featProp Bear.Costume.glow setTo 1
+        // ✏️ the mouse dies when touched by the Bear
+        featProp Hawk.Movement.movementType setTo 'stop'
+        prop Hawk.alive setTo false
+        prop Hawk.alpha setTo 0.3
+        prop Hawk.energyLevel setTo 0
+        featCall Hawk.IU logString 'Hawk was eaten by a bear.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do BEARS GAIN when eating a hawk?
+        // ✏️ CHANGE the energy bears gain from a hawk (LARGER numbers => GAIN MORE ENERGY)
+        prop Bear.energyLevel add 25
+        featCall Bear.IU logString 'Bear ate a hawk.'
+      ]]
+    ]]
+  ]]
+]]
+
+// 📖 Our Organism gives energy to:
+// ✏️ The bear gives energy to the hawk
+
+// ✏️ whenever a Bear touches a hawk
+// when Bear touches Hawk [[
+// every 1 runAtStart [[
+// ✏️ if the bear and the hawk are alive
+// ifProp Bear.alive equal true [[
+// ifProp Hawk.alive equal true [[
+// featProp Hawk.Costume.glow setTo 1
+// ✏️ the bear dies when touched by the hawk
+// featProp Bear.Movement.movementType setTo 'stop'
+// prop Bear.alive setTo false
+// prop Bear.alpha setTo 0.3
+// prop Bear.energyLevel setTo 0
+// featCall Bear.IU logString 'Bear was eaten by hawk.'
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do HAWKS GAIN when eating a bear?
+// ✏️ CHANGE the energy the hawk gains from the bear (LARGER numbers => GAIN MORE ENERGY)
+// prop Hawk.energyLevel add 25
+// featCall Hawk.IU logString 'Hawk ate a bear.'
+// ]]
+// ]]
+// ]]
+// ]]
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do Bunnies LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Bear.energyLevel sub 3
+
+  // 🔎 WHAT DOES THIS DO?
+  // This script changes the color of the Bear's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+
+  // The Bear is feeling good, so make the meter green if the Bear has over 50 energy (out of 100)
+  ifProp Bear.energyLevel greaterThanOrEqual 50 [[
+    featProp Bear.Costume.currentFrame setTo 0
+    featProp Bear.Graphing.meterColor setTo 65280
+  ]]
+
+  // The Bear is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Bear.energyLevel lessThan 50 [[
+    featProp Bear.Costume.currentFrame setTo 1
+    featProp Bear.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The Bear is really hungry, so make the meter red if we are under 20
+  ifProp Bear.energyLevel lessThan 20 [[
+    featProp Bear.Costume.currentFrame setTo 1
+    featProp Bear.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The Bear is dead if it has 0 energy
+  ifProp Bear.energyLevel equal 0 [[
+    prop Bear.alive setTo false
+    featProp Bear.Costume.currentFrame setTo 2
+    prop Bear.alpha setTo 0.3
+    featProp Bear.Movement.movementType setTo 'stop'
+    featCall Bear.IU logString 'Bear died of starvation.'
+  ]]
+  // set meter to mirror energyLevel
+  featProp Bear.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+
+
+
+
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
     }
   ],
   "instances": [
@@ -1904,10 +2109,24 @@ prop y setTo -152.05`
     },
     {
       "id": "127",
-      "label": "invasiveSpecies127",
-      "bpid": "invasiveSpecies",
-      "initScript": `prop invasiveSpecies.x setTo 45
-prop invasiveSpecies.y setTo -41`
+      "label": "Bear127",
+      "bpid": "Bear",
+      "initScript": `prop Bear.x setTo 221.23
+prop Bear.y setTo 29.31`
+    },
+    {
+      "id": "130",
+      "label": "Bear130",
+      "bpid": "Bear",
+      "initScript": `prop Bear.x setTo -94.20
+prop Bear.y setTo 231.14`
+    },
+    {
+      "id": "131",
+      "label": "Bear131",
+      "bpid": "Bear",
+      "initScript": `prop Bear.x setTo -177.64
+prop Bear.y setTo -121.68`
     }
   ]
 }
