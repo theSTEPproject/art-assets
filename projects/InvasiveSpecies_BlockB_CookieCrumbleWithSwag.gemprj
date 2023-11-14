@@ -774,7 +774,7 @@ featProp Hawk.Costume.scale setTo 0.5
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 3
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -1858,12 +1858,12 @@ featProp LadyBug.Costume.costumeName setTo 'IS_ladybug2.png'
 // ✏️ You can change the art to the ladybug with clover drawn by students by changing the file to 'IS_ladybug.png'
 
 // ✏️ CHANGE The size of the LadyBug (LARGER number => LARGER LadyBug)
-featProp LadyBug.Costume.scale setTo 0.5
+featProp LadyBug.Costume.scale setTo 0.6
 featProp LadyBug.Costume.flipX setTo true
 
 // ✏️ if the computer controls the LadyBug, this tells the LadyBug how to move and how quickly
 // ✏️ CHANGE the speed that the LadyBug moves
-featProp LadyBug.Movement.distance setTo 4
+featProp LadyBug.Movement.distance setTo 5
 featProp LadyBug.Movement.movementType setTo 'wander'
 featCall LadyBug.Movement setRandomDirection
 
@@ -2010,53 +2010,95 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "97",
-      "label": "VeggieGarden97",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
-    },
-    {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
-    },
-    {
-      "id": "125",
-      "label": "VeggieGarden125",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
-    },
-    {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
-    },
-    {
       "id": "127",
       "label": "LadyBug127",
       "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo 224.83
-prop LadyBug.y setTo 46.15`
+      "initScript": `prop LadyBug.x setTo -261.76
+prop LadyBug.y setTo -151.39`
     },
     {
       "id": "128",
       "label": "LadyBug128",
       "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo -211.73
-prop LadyBug.y setTo -111.88`
+      "initScript": `prop LadyBug.x setTo 104.12
+prop LadyBug.y setTo -146.4`
     },
     {
-      "id": "129",
-      "label": "LadyBug129",
+      "id": "130",
+      "label": "Hawk130",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 319.57
+prop Hawk.y setTo -335.34`
+    },
+    {
+      "id": "132",
+      "label": "Robin132",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -67.91
+prop Robin.y setTo -280.55`
+    },
+    {
+      "id": "133",
+      "label": "Caterpillar133",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 33.38
+prop Caterpillar.y setTo -56.63`
+    },
+    {
+      "id": "137",
+      "label": "Clover137",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 332.56
+prop Clover.y setTo 8.00`
+    },
+    {
+      "id": "138",
+      "label": "Clover138",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 329.48
+prop Clover.y setTo 274.83`
+    },
+    {
+      "id": "139",
+      "label": "Clover139",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -331.82
+prop Clover.y setTo -33.57`
+    },
+    {
+      "id": "140",
+      "label": "Mouse140",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 178.31
+prop Mouse.y setTo -17.03`
+    },
+    {
+      "id": "141",
+      "label": "Mouse141",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -153.95
+prop Mouse.y setTo -26.16`
+    },
+    {
+      "id": "142",
+      "label": "VeggieGarden142",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -108.35
+prop VeggieGarden.y setTo 162.09`
+    },
+    {
+      "id": "143",
+      "label": "VeggieGarden143",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -139.10
+prop VeggieGarden.y setTo 285.29`
+    },
+    {
+      "id": "144",
+      "label": "LadyBug144",
       "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo 49.65
-prop LadyBug.y setTo 242.91`
+      "initScript": `prop LadyBug.x setTo 89.53
+prop LadyBug.y setTo 88.53`
     }
   ]
 }

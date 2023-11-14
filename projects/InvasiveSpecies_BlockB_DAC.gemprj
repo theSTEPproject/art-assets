@@ -50,17 +50,17 @@ addFeature Graphing
 addFeature IU
 addProp alive Boolean true
 
-// Set the snake artwork and make it smaller 
+// Set the snake artwork and make it smaller
 featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
 featProp Snake.Costume.scale setTo 0.4
 
-// Tells snakes how to move when they are controlled by the computer 
+// Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
-featProp Snake.Movement.distance setTo 3
+featProp Snake.Movement.distance setTo 2
 // featProp Snake.Movement.targetY setMax 0.7
 
 
@@ -774,7 +774,7 @@ featProp Hawk.Costume.scale setTo 0.5
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 1
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -849,7 +849,7 @@ when Hawk touches Robin [[
         // ✏️ LETS CHANGE THIS:
         // ✏️ LARGER numbers => GAIN MORE ENERGY
         prop Hawk.energyLevel add 25
-\t\tfeatCall Hawk.IU logString 'Hawk ate a robin.'
+        featCall Hawk.IU logString 'Hawk ate a robin.'
       ]]
     ]]
   ]]
@@ -2059,50 +2059,106 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
+      "initScript": `prop VeggieGarden.x setTo -317.22
+prop VeggieGarden.y setTo -154.04`
     },
     {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
+      "initScript": `prop Hawk.x setTo -28.83
+prop Hawk.y setTo -309.71`
     },
     {
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
+      "initScript": `prop VeggieGarden.x setTo -42.70
+prop VeggieGarden.y setTo 234.24`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
-    },
-    {
-      "id": "127",
-      "label": "Bunny127",
-      "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -29.00
-prop Bunny.y setTo -14.00`
+      "initScript": `prop VeggieGarden.x setTo -204.14
+prop VeggieGarden.y setTo -78.89`
     },
     {
       "id": "130",
       "label": "Bunny130",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo 210.98
-prop Bunny.y setTo 107.38`
+      "initScript": `prop Bunny.x setTo 121.34
+prop Bunny.y setTo 217.34`
     },
     {
       "id": "131",
       "label": "Bunny131",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -166.14
-prop Bunny.y setTo 196.98`
+      "initScript": `prop Bunny.x setTo -220.62
+prop Bunny.y setTo 271`
+    },
+    {
+      "id": "133",
+      "label": "Snake133",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 13.85
+prop Snake.y setTo -72.14`
+    },
+    {
+      "id": "134",
+      "label": "Mouse134",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -8.74
+prop Mouse.y setTo 67.37`
+    },
+    {
+      "id": "135",
+      "label": "Mouse135",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 232.40
+prop Mouse.y setTo -101.15`
+    },
+    {
+      "id": "136",
+      "label": "Robin136",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 156.15
+prop Robin.y setTo 64.55`
+    },
+    {
+      "id": "137",
+      "label": "Robin137",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 258.93
+prop Robin.y setTo -4.11`
+    },
+    {
+      "id": "138",
+      "label": "Caterpillar138",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -236.23
+prop Caterpillar.y setTo 79.70`
+    },
+    {
+      "id": "139",
+      "label": "Caterpillar139",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -290.72
+prop Caterpillar.y setTo 131.18`
+    },
+    {
+      "id": "140",
+      "label": "Clover140",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 272.91
+prop Clover.y setTo 112.25`
+    },
+    {
+      "id": "141",
+      "label": "Clover141",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 274.93
+prop Clover.y setTo 250.35`
     }
   ]
 }
