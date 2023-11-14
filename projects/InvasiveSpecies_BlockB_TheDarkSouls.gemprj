@@ -226,9 +226,9 @@ addFeature IU
 addProp alive Boolean true
 addProp hasNutrients boolean false
 
-// set the costume and make it smaller 
+// set the costume and make it smaller
 featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
-featProp VeggieGarden.Costume.scale setTo 0.3
+featProp VeggieGarden.Costume.scale setTo 0.5
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Robin' b2b
@@ -244,7 +244,7 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-//veggie gardens lose energy during the night
+// veggie gardens lose energy during the night
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -257,7 +257,7 @@ ifProp global.skyState notEqual 'daytime' [[
   ]]
 ]]
 
-//veggie gardens gain energy during the daytime
+// veggie gardens gain energy during the daytime
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -270,7 +270,7 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
-//change the veggie garden costume to show if it has nutrients 
+// change the veggie garden costume to show if it has nutrients
 ifProp VeggieGarden.hasNutrients equal true [[
   featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
@@ -320,14 +320,13 @@ every 1 runAtStart [[
 // veggie gardens lose nutrients over time
 ifProp VeggieGarden.hasNutrients equal true [[
   every 10 [[
-      // 🔎 WHAT DOES THIS DO?
-      // 🔎 how long do veggie gardens keep their nutrients?
-      // ✏️ LETS CHANGE THIS:
-      // ✏️ LARGER numbers => nutrients stay for longer
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how long do veggie gardens keep their nutrients?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ LARGER numbers => nutrients stay for longer
     prop VeggieGarden.hasNutrients setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Clover",
@@ -1857,7 +1856,7 @@ addProp alive Boolean true
 featProp Bunny.Costume.costumeName setTo 'IS_bunny1.png'
 
 // ✏️ CHANGE The size of the bunny (LARGER number => LARGER BUNNY)
-featProp Bunny.Costume.scale setTo 0.2
+featProp Bunny.Costume.scale setTo 0.3
 featProp Bunny.Costume.flipX setTo true
 
 // ✏️ if the computer controls the Bunny, this tells the Bunny how to move and how quickly
@@ -2060,50 +2059,92 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
-    },
-    {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
+      "initScript": `prop VeggieGarden.x setTo -95.59
+prop VeggieGarden.y setTo -0.53`
     },
     {
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
+      "initScript": `prop VeggieGarden.x setTo 71.04
+prop VeggieGarden.y setTo 94.18`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
+      "initScript": `prop VeggieGarden.x setTo 60.35
+prop VeggieGarden.y setTo -64.07`
     },
     {
       "id": "127",
       "label": "Bunny127",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -145.7
-prop Bunny.y setTo -86.18`
+      "initScript": `prop Bunny.x setTo -245.06
+prop Bunny.y setTo -99.63`
     },
     {
       "id": "128",
       "label": "Bunny128",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -30.88
-prop Bunny.y setTo 233.81`
+      "initScript": `prop Bunny.x setTo -83.67
+prop Bunny.y setTo 185.17`
     },
     {
       "id": "130",
       "label": "Bunny130",
       "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo 137.55
-prop Bunny.y setTo 47.33`
+      "initScript": `prop Bunny.x setTo 118.92
+prop Bunny.y setTo -240.38`
+    },
+    {
+      "id": "131",
+      "label": "Robin131",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -99.07
+prop Robin.y setTo -307.29`
+    },
+    {
+      "id": "132",
+      "label": "Robin132",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -293.61
+prop Robin.y setTo 178.27`
+    },
+    {
+      "id": "133",
+      "label": "Clover133",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -115.21
+prop Clover.y setTo -167.05`
+    },
+    {
+      "id": "134",
+      "label": "Clover134",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -242.51
+prop Clover.y setTo 45.38`
+    },
+    {
+      "id": "135",
+      "label": "Caterpillar135",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -167.52
+prop Caterpillar.y setTo 297.00`
+    },
+    {
+      "id": "137",
+      "label": "Mouse137",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 268.18
+prop Mouse.y setTo 194.10`
+    },
+    {
+      "id": "138",
+      "label": "Mouse138",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 2
+prop Mouse.y setTo 10`
     }
   ]
 }

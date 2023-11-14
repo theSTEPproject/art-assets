@@ -2103,15 +2103,15 @@ prop y setTo -152.05`
       "id": "127",
       "label": "BlueJay127",
       "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 45
-prop BlueJay.y setTo -41`
+      "initScript": `prop BlueJay.x setTo 165.92
+prop BlueJay.y setTo -338.98`
     },
     {
       "id": "128",
       "label": "BlueJay128",
       "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -191.59
-prop BlueJay.y setTo -93.46`
+      "initScript": `prop BlueJay.x setTo -256.37
+prop BlueJay.y setTo -140.96`
     },
     {
       "id": "129",
@@ -2119,6 +2119,244 @@ prop BlueJay.y setTo -93.46`
       "bpid": "BlueJay",
       "initScript": `prop BlueJay.x setTo 2.03
 prop BlueJay.y setTo 231.14`
+    },
+    {
+      "id": "130",
+      "label": "BlueJay130",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 9.38
+prop BlueJay.y setTo 60.31`
+    },
+    {
+      "id": "131",
+      "label": "BlueJay131",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -133.19
+prop BlueJay.y setTo 26.14`
+    },
+    {
+      "id": "132",
+      "label": "BlueJay132",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 152.74
+prop BlueJay.y setTo -17.08`
+    },
+    {
+      "id": "133",
+      "label": "Hawk133",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 273.07
+prop Hawk.y setTo -286.54`
+    },
+    {
+      "id": "134",
+      "label": "Hawk134",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 98.89
+prop Hawk.y setTo -242.68`
+    },
+    {
+      "id": "136",
+      "label": "VeggieGarden136",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 161.44
+prop VeggieGarden.y setTo 154.87`
+    },
+    {
+      "id": "137",
+      "label": "VeggieGarden137",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -241.34
+prop VeggieGarden.y setTo 242.15`
+    },
+    {
+      "id": "138",
+      "label": "Snake138",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -87.77
+prop Snake.y setTo 149.08`
+    },
+    {
+      "id": "140",
+      "label": "Snake140",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 101.48
+prop Snake.y setTo 286.27`
+    },
+    {
+      "id": "141",
+      "label": "Snake141",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 283.27
+prop Snake.y setTo 3.91`
+    },
+    {
+      "id": "142",
+      "label": "Robin142",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 280.33
+prop Robin.y setTo -69.76`
+    },
+    {
+      "id": "143",
+      "label": "Robin143",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -167.48
+prop Robin.y setTo 209.64`
+    },
+    {
+      "id": "144",
+      "label": "Robin144",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -308.43
+prop Robin.y setTo -98.29`
+    },
+    {
+      "id": "145",
+      "label": "Robin145",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -66.82
+prop Robin.y setTo -133.33`
+    },
+    {
+      "id": "146",
+      "label": "Mouse146",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 77.55
+prop Mouse.y setTo -101.38`
+    },
+    {
+      "id": "147",
+      "label": "Mouse147",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -36
+prop Mouse.y setTo 12`
+    },
+    {
+      "id": "148",
+      "label": "Mouse148",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 210.39
+prop Mouse.y setTo 74.42`
+    },
+    {
+      "id": "149",
+      "label": "Mouse149",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 336.37
+prop Mouse.y setTo 138.62`
+    },
+    {
+      "id": "150",
+      "label": "Mouse150",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -292.82
+prop Mouse.y setTo 154.70`
+    },
+    {
+      "id": "151",
+      "label": "Caterpillar151",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 335.11
+prop Caterpillar.y setTo 332.28`
+    },
+    {
+      "id": "152",
+      "label": "Caterpillar152",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -314.38
+prop Caterpillar.y setTo -200.31`
+    },
+    {
+      "id": "153",
+      "label": "Caterpillar153",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -118.72
+prop Caterpillar.y setTo 317.29`
+    },
+    {
+      "id": "154",
+      "label": "Caterpillar154",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 330.32
+prop Caterpillar.y setTo -179.27`
+    },
+    {
+      "id": "155",
+      "label": "Caterpillar155",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -332.60
+prop Caterpillar.y setTo 236.68`
+    },
+    {
+      "id": "156",
+      "label": "Clover156",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -144.83
+prop Clover.y setTo -62.02`
+    },
+    {
+      "id": "157",
+      "label": "Clover157",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -109.51
+prop Clover.y setTo -214.21`
+    },
+    {
+      "id": "158",
+      "label": "Clover158",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -361.05
+prop Clover.y setTo 13.42`
+    },
+    {
+      "id": "159",
+      "label": "Clover159",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 345.05
+prop Clover.y setTo -42.23`
+    },
+    {
+      "id": "160",
+      "label": "BlueJay160",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -145.06
+prop BlueJay.y setTo -290.46`
+    },
+    {
+      "id": "161",
+      "label": "BlueJay161",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -19
+prop BlueJay.y setTo 38`
+    },
+    {
+      "id": "162",
+      "label": "BlueJay162",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 18
+prop BlueJay.y setTo 30`
+    },
+    {
+      "id": "163",
+      "label": "BlueJay163",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 10
+prop BlueJay.y setTo 45`
+    },
+    {
+      "id": "164",
+      "label": "BlueJay164",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -92.70
+prop BlueJay.y setTo -358.46`
+    },
+    {
+      "id": "165",
+      "label": "BlueJay165",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -288.26
+prop BlueJay.y setTo -263.22`
     }
   ]
 }
