@@ -1993,8 +1993,8 @@ every 1 runAtStart [[
       "id": "13",
       "label": "Background13",
       "bpid": "Background",
-      "initScript": `prop x setTo -0.99
-prop y setTo -28.52`
+      "initScript": `prop Background.x setTo -59.13
+prop Background.y setTo -1.45`
     },
     {
       "id": "79",
@@ -2007,50 +2007,78 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
+      "initScript": `prop VeggieGarden.x setTo -314.90
+prop VeggieGarden.y setTo -157.83`
     },
     {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
-    },
-    {
-      "id": "125",
-      "label": "VeggieGarden125",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
+      "initScript": `prop Hawk.x setTo -76.38
+prop Hawk.y setTo 281.96`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
-    },
-    {
-      "id": "127",
-      "label": "Horse127",
-      "bpid": "Horse",
-      "initScript": `prop Horse.x setTo 184.68
-prop Horse.y setTo 72.52`
-    },
-    {
-      "id": "128",
-      "label": "Horse128",
-      "bpid": "Horse",
-      "initScript": `prop Horse.x setTo -65.71
-prop Horse.y setTo -95.93`
+      "initScript": `prop VeggieGarden.x setTo -161.29
+prop VeggieGarden.y setTo -149.05`
     },
     {
       "id": "129",
       "label": "Horse129",
       "bpid": "Horse",
-      "initScript": `prop Horse.x setTo -163.02
-prop Horse.y setTo 213.76`
+      "initScript": `prop Horse.x setTo 126.71
+prop Horse.y setTo -30.84`
+    },
+    {
+      "id": "130",
+      "label": "Clover130",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 23.08
+prop Clover.y setTo -133.38`
+    },
+    {
+      "id": "131",
+      "label": "Clover131",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 162.46
+prop Clover.y setTo -136.23`
+    },
+    {
+      "id": "132",
+      "label": "Robin132",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -199.55
+prop Robin.y setTo 39.05`
+    },
+    {
+      "id": "133",
+      "label": "Mouse133",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -206.56
+prop Mouse.y setTo -44.08`
+    },
+    {
+      "id": "134",
+      "label": "Robin134",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -359.97
+prop Robin.y setTo 42.03`
+    },
+    {
+      "id": "135",
+      "label": "Horse135",
+      "bpid": "Horse",
+      "initScript": `prop Horse.x setTo -54.14
+prop Horse.y setTo -23.02`
+    },
+    {
+      "id": "136",
+      "label": "Mouse136",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -366.86
+prop Mouse.y setTo -47.03`
     }
   ]
 }
