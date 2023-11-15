@@ -55,7 +55,7 @@ featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
-featProp Snake.Costume.scale setTo 0.1
+featProp Snake.Costume.scale setTo 0.3
 
 // Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
@@ -72,7 +72,7 @@ featCall Snake.Touches monitor 'Mouse' b2b
 // 🔎 How much ENERGY do SNAKES START with?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER numbers => START with MORE ENERGY
-addProp energyLevel Number 50
+addProp energyLevel Number 75
 
 // 🔎 What is the MOST/LEAST amount of energy a snake can have?
 prop Snake.energyLevel setMax 100
@@ -769,7 +769,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // 🔎 WHAT SIZE IS THE HAWK?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER HAWKS
-featProp Hawk.Costume.scale setTo 0.1
+featProp Hawk.Costume.scale setTo 0.3
 
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
@@ -2087,13 +2087,6 @@ prop y setTo -400.99`
 prop Hawk.y setTo 45.93`
     },
     {
-      "id": "131",
-      "label": "Bear131",
-      "bpid": "Bear",
-      "initScript": `prop Bear.x setTo 27.84
-prop Bear.y setTo -125.14`
-    },
-    {
       "id": "132",
       "label": "VeggieGarden132",
       "bpid": "VeggieGarden",
@@ -2141,6 +2134,13 @@ prop Snake.y setTo 189.84`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo 180.78
 prop VeggieGarden.y setTo 229.90`
+    },
+    {
+      "id": "140",
+      "label": "VeggieGarden140",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -239.21
+prop VeggieGarden.y setTo 217.23`
     }
   ]
 }

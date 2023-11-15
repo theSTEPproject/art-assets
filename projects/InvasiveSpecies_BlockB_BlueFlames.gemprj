@@ -2075,71 +2075,15 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
-    },
-    {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
-    },
-    {
-      "id": "125",
-      "label": "VeggieGarden125",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
+      "initScript": `prop VeggieGarden.x setTo -277.36
+prop VeggieGarden.y setTo -127.95`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
-    },
-    {
-      "id": "127",
-      "label": "BlueJay127",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 165.92
-prop BlueJay.y setTo -338.98`
-    },
-    {
-      "id": "128",
-      "label": "BlueJay128",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -256.37
-prop BlueJay.y setTo -140.96`
-    },
-    {
-      "id": "129",
-      "label": "BlueJay129",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 2.03
-prop BlueJay.y setTo 231.14`
-    },
-    {
-      "id": "130",
-      "label": "BlueJay130",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 9.38
-prop BlueJay.y setTo 60.31`
-    },
-    {
-      "id": "131",
-      "label": "BlueJay131",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -133.19
-prop BlueJay.y setTo 26.14`
-    },
-    {
-      "id": "132",
-      "label": "BlueJay132",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 152.74
-prop BlueJay.y setTo -17.08`
+      "initScript": `prop VeggieGarden.x setTo 245.47
+prop VeggieGarden.y setTo -132.41`
     },
     {
       "id": "133",
@@ -2149,18 +2093,11 @@ prop BlueJay.y setTo -17.08`
 prop Hawk.y setTo -286.54`
     },
     {
-      "id": "134",
-      "label": "Hawk134",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 98.89
-prop Hawk.y setTo -242.68`
-    },
-    {
       "id": "136",
       "label": "VeggieGarden136",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 161.44
-prop VeggieGarden.y setTo 154.87`
+      "initScript": `prop VeggieGarden.x setTo 269.42
+prop VeggieGarden.y setTo 235.85`
     },
     {
       "id": "137",
@@ -2170,13 +2107,6 @@ prop VeggieGarden.y setTo 154.87`
 prop VeggieGarden.y setTo 242.15`
     },
     {
-      "id": "138",
-      "label": "Snake138",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo -87.77
-prop Snake.y setTo 149.08`
-    },
-    {
       "id": "140",
       "label": "Snake140",
       "bpid": "Snake",
@@ -2184,32 +2114,11 @@ prop Snake.y setTo 149.08`
 prop Snake.y setTo 286.27`
     },
     {
-      "id": "141",
-      "label": "Snake141",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 283.27
-prop Snake.y setTo 3.91`
-    },
-    {
       "id": "142",
       "label": "Robin142",
       "bpid": "Robin",
       "initScript": `prop Robin.x setTo 280.33
 prop Robin.y setTo -69.76`
-    },
-    {
-      "id": "143",
-      "label": "Robin143",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -167.48
-prop Robin.y setTo 209.64`
-    },
-    {
-      "id": "144",
-      "label": "Robin144",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -308.43
-prop Robin.y setTo -98.29`
     },
     {
       "id": "145",
@@ -2315,48 +2224,6 @@ prop Clover.y setTo 13.42`
       "bpid": "Clover",
       "initScript": `prop Clover.x setTo 345.05
 prop Clover.y setTo -42.23`
-    },
-    {
-      "id": "160",
-      "label": "BlueJay160",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -145.06
-prop BlueJay.y setTo -290.46`
-    },
-    {
-      "id": "161",
-      "label": "BlueJay161",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -19
-prop BlueJay.y setTo 38`
-    },
-    {
-      "id": "162",
-      "label": "BlueJay162",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 18
-prop BlueJay.y setTo 30`
-    },
-    {
-      "id": "163",
-      "label": "BlueJay163",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 10
-prop BlueJay.y setTo 45`
-    },
-    {
-      "id": "164",
-      "label": "BlueJay164",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -92.70
-prop BlueJay.y setTo -358.46`
-    },
-    {
-      "id": "165",
-      "label": "BlueJay165",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -288.26
-prop BlueJay.y setTo -263.22`
     }
   ]
 }

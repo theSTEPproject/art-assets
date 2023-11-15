@@ -1891,6 +1891,30 @@ featProp LadyBug.Graphing.meterColor setTo 65280
 // 📖 Our Organism gains energy from:
 // ✏️ The LadyBug gains energy from the clover
 
+// ✏️ whenever a LadyBug touches a veggiegarden
+when LadyBug touches VeggieGarden [[
+  every 1 runAtStart [[
+    // the LadyBug and the clover must be alive
+    ifProp LadyBug.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+
+        featProp LadyBug.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VeggieGarden LOSE when eaten?
+        // ✏️ CHANGE the energy clovers lose (LARGER numbers => LOSE MORE ENERGY)
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LadyBugs GAIN when eating?
+        // ✏️ CHANGE the energy LadyBugs gain from the VeggieGarden (LARGER numbers => GAIN MORE ENERGY)
+        prop LadyBug.energyLevel add 10
+        featCall LadyBug.IU logString 'LadyBug ate some of a VeggieGarden.'
+      ]]
+    ]]
+  ]]
+]]
+
 // ✏️ whenever a LadyBug touches a clover
 when LadyBug touches Clover [[
   every 1 runAtStart [[
@@ -2010,20 +2034,6 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "127",
-      "label": "LadyBug127",
-      "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo -261.76
-prop LadyBug.y setTo -151.39`
-    },
-    {
-      "id": "128",
-      "label": "LadyBug128",
-      "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo 104.12
-prop LadyBug.y setTo -146.4`
-    },
-    {
       "id": "130",
       "label": "Hawk130",
       "bpid": "Hawk",
@@ -2092,13 +2102,6 @@ prop VeggieGarden.y setTo 162.09`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -139.10
 prop VeggieGarden.y setTo 285.29`
-    },
-    {
-      "id": "144",
-      "label": "LadyBug144",
-      "bpid": "LadyBug",
-      "initScript": `prop LadyBug.x setTo 89.53
-prop LadyBug.y setTo 88.53`
     }
   ]
 }

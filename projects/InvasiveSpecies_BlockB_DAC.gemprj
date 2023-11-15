@@ -2059,43 +2059,29 @@ prop y setTo -400.99`
       "id": "97",
       "label": "VeggieGarden97",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -317.22
-prop VeggieGarden.y setTo -154.04`
+      "initScript": `prop VeggieGarden.x setTo -246.05
+prop VeggieGarden.y setTo 236.96`
     },
     {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo -28.83
-prop Hawk.y setTo -309.71`
+      "initScript": `prop Hawk.x setTo 231.29
+prop Hawk.y setTo -315.44`
     },
     {
       "id": "125",
       "label": "VeggieGarden125",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -42.70
-prop VeggieGarden.y setTo 234.24`
+      "initScript": `prop VeggieGarden.x setTo -71.33
+prop VeggieGarden.y setTo 233.43`
     },
     {
       "id": "126",
       "label": "VeggieGarden126",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -204.14
-prop VeggieGarden.y setTo -78.89`
-    },
-    {
-      "id": "130",
-      "label": "Bunny130",
-      "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo 121.34
-prop Bunny.y setTo 217.34`
-    },
-    {
-      "id": "131",
-      "label": "Bunny131",
-      "bpid": "Bunny",
-      "initScript": `prop Bunny.x setTo -220.62
-prop Bunny.y setTo 271`
+      "initScript": `prop VeggieGarden.x setTo -332.57
+prop VeggieGarden.y setTo 63.43`
     },
     {
       "id": "133",
