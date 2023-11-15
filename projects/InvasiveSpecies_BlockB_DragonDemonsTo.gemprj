@@ -55,7 +55,7 @@ featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
-featProp Snake.Costume.scale setTo 0.4
+featProp Snake.Costume.scale setTo 0.1
 
 // Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
@@ -621,7 +621,7 @@ featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 // 🔎 WHAT SIZE IS THE ROBIN?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER ROBINS
-featProp Robin.Costume.scale setTo 0.2
+featProp Robin.Costume.scale setTo 0.05
 
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
@@ -769,7 +769,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // 🔎 WHAT SIZE IS THE HAWK?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER HAWKS
-featProp Hawk.Costume.scale setTo 0.5
+featProp Hawk.Costume.scale setTo 0.1
 
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
@@ -1613,7 +1613,7 @@ featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 // 🔎 WHAT SIZE IS THE Mouse?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER Mouse
-featProp Mouse.Costume.scale setTo 0.4
+featProp Mouse.Costume.scale setTo 0.1
 featProp Mouse.Costume.flipX setTo true
 
 // if the computer controls the Mouse, this tells the Mouse how to move and how quickly
@@ -2080,53 +2080,67 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "97",
-      "label": "VeggieGarden97",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -279.81
-prop y setTo 66.73`
-    },
-    {
       "id": "109",
       "label": "Hawk109",
       "bpid": "Hawk",
-      "initScript": `prop x setTo -13.21
-prop y setTo -316.55`
-    },
-    {
-      "id": "125",
-      "label": "VeggieGarden125",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 254.22
-prop y setTo 246.32`
-    },
-    {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop x setTo 217.66
-prop y setTo -152.05`
-    },
-    {
-      "id": "127",
-      "label": "Bear127",
-      "bpid": "Bear",
-      "initScript": `prop Bear.x setTo 221.23
-prop Bear.y setTo 29.31`
-    },
-    {
-      "id": "130",
-      "label": "Bear130",
-      "bpid": "Bear",
-      "initScript": `prop Bear.x setTo -94.20
-prop Bear.y setTo 231.14`
+      "initScript": `prop Hawk.x setTo -208.3
+prop Hawk.y setTo 45.93`
     },
     {
       "id": "131",
       "label": "Bear131",
       "bpid": "Bear",
-      "initScript": `prop Bear.x setTo -177.64
-prop Bear.y setTo -121.68`
+      "initScript": `prop Bear.x setTo 27.84
+prop Bear.y setTo -125.14`
+    },
+    {
+      "id": "132",
+      "label": "VeggieGarden132",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -36.42
+prop VeggieGarden.y setTo 233.80`
+    },
+    {
+      "id": "133",
+      "label": "Snake133",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -82.1
+prop Snake.y setTo 34.92`
+    },
+    {
+      "id": "134",
+      "label": "Mouse134",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 315.16
+prop Mouse.y setTo -24.78`
+    },
+    {
+      "id": "135",
+      "label": "Hawk135",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 228.65
+prop Hawk.y setTo -190.42`
+    },
+    {
+      "id": "136",
+      "label": "Robin136",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -291.98
+prop Robin.y setTo -226.9`
+    },
+    {
+      "id": "138",
+      "label": "Snake138",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo 330.14
+prop Snake.y setTo 189.84`
+    },
+    {
+      "id": "139",
+      "label": "VeggieGarden139",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 180.78
+prop VeggieGarden.y setTo 229.90`
     }
   ]
 }
