@@ -1,5 +1,5 @@
 {
-  "id": "Photosynthesis",
+  "id": "Photosynthesis_new",
   "label": "Garden Ecosystem 3",
   "metadata": {
     "top": -400,
@@ -81,7 +81,7 @@ when Molecule touches WaterGenerator [[
   // insert code here
   ifProp WaterGenerator.setupMode equal true [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'PS_water.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
     prop Molecule.state setTo 'water'
   ]]
 ]]
@@ -114,6 +114,7 @@ when Molecule touches Plant_Body [[
     featProp Molecule.Costume.costumeName setTo 'PS_waterthinking.png'
     prop Molecule.state setTo 'needsWater'
     prop global.plantGrowth add 1
+    featProp Left_Leaf.Costume.glow setTo 1
   ]]
 ]]
 
@@ -122,7 +123,7 @@ when Molecule touches Roots [[
   // insert code here
   ifProp Molecule.state equal 'needsWater' [[
     // insert code here
-    featProp Molecule.Costume.costumeName setTo 'PS_water.png'
+    featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
     prop Molecule.state setTo 'water'
     featProp Molecule.Costume.glow setTo 1
   ]]
@@ -228,10 +229,10 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Roots.Costume.costumeName setTo 'PS_root_system.png'
-featProp Roots.Costume.scale setTo 0.25
+featProp Roots.Costume.costumeName setTo 'PS_roots.png'
+featProp Roots.Costume.scale setTo 0.8
 
-//prop Roots.alpha setTo 0.5
+// prop Roots.alpha setTo 0.5
 
 addFeature Physics
 
@@ -287,10 +288,10 @@ prop Chloroplast.hasCarbonDioxide setMin 0
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Plant_Body.Costume.costumeName setTo 'PS_plant_body.png'
-featProp Plant_Body.Costume.scale setTo 0.3
+featProp Plant_Body.Costume.costumeName setTo 'PS_body.png'
+featProp Plant_Body.Costume.scale setTo 0.5
 
-//prop Plant_Body.alpha setTo 0.5
+// prop Plant_Body.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -311,9 +312,9 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Left_Leaf.Costume.costumeName setTo 'PS_left_leaf.png'
+featProp Left_Leaf.Costume.costumeName setTo 'PS_leaf.png'
 
-//prop Left_Leaf.alpha setTo 0.5
+// prop Left_Leaf.alpha setTo 0.5
 
 // featProp Left_Leaf.Costume.scale setTo 0.1
 exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
@@ -330,6 +331,17 @@ addFeature Physics
 every 1 [[
   exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
   featPropPop Left_Leaf.Costume.scale
+]]
+
+when Molecule touches Plant_Body [[
+  // insert code here
+  ifProp Molecule.state equal 'sugar' [[
+    featProp Left_Leaf.Costume.glow setTo 1
+    every 3 runAfter [[
+      // insert code here
+      featProp Left_Leaf.Costume.glow setTo 0
+    ]]
+  ]]
 ]]`
     },
     {
@@ -342,10 +354,13 @@ every 1 [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Right_Leaf.Costume.costumeName setTo 'PS_right_leaf.png'
-featProp Right_Leaf.Costume.scale setTo 0.25
+featProp Right_Leaf.Costume.costumeName setTo 'PS_rightLeaf.png'
+featProp Right_Leaf.Costume.scale setTo 0.4
 
-//prop Right_Leaf.alpha setTo 0.5
+prop Right_Leaf.zIndex setTo -15
+
+
+// prop Right_Leaf.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -366,13 +381,13 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Ground.Costume.costumeName setTo 'PS_dirt_ground.png'
-//prop Ground.alpha setTo 0.5
+featProp Ground.Costume.costumeName setTo 'PS_ground.png'
+// prop Ground.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
 
-featProp Ground.Costume.scale setTo 0.3
+featProp Ground.Costume.scale setTo 0.5
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -390,7 +405,7 @@ featProp Ground.Costume.scale setTo 0.3
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
-
+prop Sky.zIndex setTo -999
 //prop Sky.alpha setTo 0.5
 
 addFeature Physics
@@ -441,8 +456,8 @@ every 10 [[
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp WaterGenerator.Costume.costumeName setTo 'PS_water.png'
-featProp WaterGenerator.Costume.scale setTo 0.03
+featProp WaterGenerator.Costume.costumeName setTo 'PS_waterdrop.png'
+featProp WaterGenerator.Costume.scale setTo 0.15
 
 addFeature Physics
 addFeature Touches
@@ -593,10 +608,10 @@ featCall global.IU logString 'Init GE Photosynthesis model'
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
-featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdroplet.png'
-featProp Water_Droplet.Costume.scale setTo 0.03
+featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdrop.png'
+featProp Water_Droplet.Costume.scale setTo 0.3
 
-//prop Water_Droplet.alpha setTo 0.5
+// prop Water_Droplet.alpha setTo 0.5
 
 addFeature Physics
 addFeature Touches
@@ -631,6 +646,82 @@ prop teacher.alpha setTo 0
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Tomato.Costume.costumeName setTo 'PS_tomato.png'
+featProp Tomato.Costume.scale setTo 0.6
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Zoom",
+      "scriptText": `# BLUEPRINT Zoom
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Zoom.Costume.costumeName setTo 'PS_zoom.png'
+featProp Zoom.Costume.scale setTo 0.52
+prop Zoom.zIndex setTo -10
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Zoom2",
+      "scriptText": `# BLUEPRINT Zoom2
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Zoom2.Costume.costumeName setTo 'PS_zoom2.png'
+featProp Zoom2.Costume.scale setTo 0.6
+
+prop Zoom2.zIndex setTo -10
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
@@ -638,29 +729,30 @@ prop teacher.alpha setTo 0
       "id": "22",
       "label": "Sky22",
       "bpid": "Sky",
-      "initScript": `prop x setTo -8.8
-prop y setTo 19.97`
+      "initScript": `prop Sky.x setTo -1.77
+prop Sky.y setTo 21.14`
     },
     {
       "id": "23",
       "label": "Ground23",
       "bpid": "Ground",
-      "initScript": `prop x setTo -8.04
-prop y setTo 46.33`
+      "initScript": `prop Ground.x setTo 1.33
+prop Ground.y setTo 289.40`
     },
     {
       "id": "24",
       "label": "Plant_Body24",
       "bpid": "Plant_Body",
-      "initScript": `prop x setTo -68.98
-prop y setTo -19.32`
+      "initScript": `prop Plant_Body.x setTo -13.93
+prop Plant_Body.y setTo 57.98`
     },
     {
       "id": "25",
       "label": "Roots25",
       "bpid": "Roots",
-      "initScript": `prop x setTo -73.74
-prop y setTo 346.73`
+      "initScript": `prop Roots.x setTo -24.54
+prop Roots.y setTo 380.61
+`
     },
     {
       "id": "26",
@@ -673,15 +765,15 @@ prop y setTo 193.53`
       "id": "27",
       "label": "Left_Leaf27",
       "bpid": "Left_Leaf",
-      "initScript": `prop x setTo -188.53
-prop y setTo -98.13`
+      "initScript": `prop Left_Leaf.x setTo -62.03
+prop Left_Leaf.y setTo -58.31`
     },
     {
       "id": "32",
       "label": "WaterGenerator32",
       "bpid": "WaterGenerator",
-      "initScript": `prop x setTo 139.65
-prop y setTo -371.08`
+      "initScript": `prop WaterGenerator.x setTo 124.42
+prop WaterGenerator.y setTo -369.91`
     },
     {
       "id": "33",
@@ -705,81 +797,46 @@ prop y setTo -371.26`
 prop y setTo -370.28`
     },
     {
-      "id": "36",
-      "label": "Water_Droplet36",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo 64.04
-prop y setTo 306.51`
-    },
-    {
-      "id": "38",
-      "label": "Water_Droplet38",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -186.04
-prop y setTo 271.53`
-    },
-    {
-      "id": "39",
-      "label": "Water_Droplet39",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -115.88
-prop y setTo 336.58`
-    },
-    {
-      "id": "40",
-      "label": "Water_Droplet40",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -184.89
-prop y setTo 347.67`
-    },
-    {
-      "id": "41",
-      "label": "Water_Droplet41",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -81.18
-prop y setTo 270.93`
-    },
-    {
-      "id": "42",
-      "label": "Water_Droplet42",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo 70.1
-prop y setTo 350.08`
-    },
-    {
-      "id": "43",
-      "label": "Water_Droplet43",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -2.75
-prop y setTo 285.95`
-    },
-    {
-      "id": "44",
-      "label": "Water_Droplet44",
-      "bpid": "Water_Droplet",
-      "initScript": `prop x setTo -69.14
-prop y setTo 339.35`
-    },
-    {
       "id": "45",
       "label": "Right_Leaf45",
       "bpid": "Right_Leaf",
-      "initScript": `prop x setTo 102.94
-prop y setTo 14.29`
+      "initScript": `prop Right_Leaf.x setTo 149.81
+prop Right_Leaf.y setTo -53.66`
     },
     {
       "id": "46",
       "label": "Chloroplast46",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 236.88
-prop y setTo -239.09`
+      "initScript": `prop Chloroplast.x setTo 263.82
+prop Chloroplast.y setTo -257.83`
     },
     {
       "id": "47",
       "label": "Chloroplast47",
       "bpid": "Chloroplast",
-      "initScript": `prop x setTo 307.14
-prop y setTo 210.3`
+      "initScript": `prop Chloroplast.x setTo 269.66
+prop Chloroplast.y setTo 110.74`
+    },
+    {
+      "id": "49",
+      "label": "Tomato49",
+      "bpid": "Tomato",
+      "initScript": `prop Tomato.x setTo -135.45
+prop Tomato.y setTo 125.82`
+    },
+    {
+      "id": "50",
+      "label": "Zoom50",
+      "bpid": "Zoom",
+      "initScript": `prop Zoom.x setTo 217.58
+prop Zoom.y setTo -225.34`
+    },
+    {
+      "id": "51",
+      "label": "Zoom251",
+      "bpid": "Zoom2",
+      "initScript": `prop Zoom2.x setTo 260.92
+prop Zoom2.y setTo 48.74`
     }
   ]
 }

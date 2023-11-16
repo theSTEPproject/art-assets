@@ -2145,6 +2145,20 @@ prop Clover.y setTo 112.25`
       "bpid": "Clover",
       "initScript": `prop Clover.x setTo 274.93
 prop Clover.y setTo 250.35`
+    },
+    {
+      "id": "142",
+      "label": "Bunny142",
+      "bpid": "Bunny",
+      "initScript": `prop Bunny.x setTo 120.84
+prop Bunny.y setTo 226.86`
+    },
+    {
+      "id": "144",
+      "label": "Bunny144",
+      "bpid": "Bunny",
+      "initScript": `prop Bunny.x setTo -143.82
+prop Bunny.y setTo 152.46`
     }
   ]
 }

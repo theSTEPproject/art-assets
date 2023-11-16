@@ -2102,6 +2102,34 @@ prop VeggieGarden.y setTo 162.09`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -139.10
 prop VeggieGarden.y setTo 285.29`
+    },
+    {
+      "id": "146",
+      "label": "LadyBug146",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo -206.43
+prop LadyBug.y setTo -118.47`
+    },
+    {
+      "id": "147",
+      "label": "LadyBug147",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo -269.56
+prop LadyBug.y setTo 100.41`
+    },
+    {
+      "id": "148",
+      "label": "LadyBug148",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo 163.97
+prop LadyBug.y setTo 123.74`
+    },
+    {
+      "id": "149",
+      "label": "LadyBug149",
+      "bpid": "LadyBug",
+      "initScript": `prop LadyBug.x setTo 113.40
+prop LadyBug.y setTo -165.20`
     }
   ]
 }

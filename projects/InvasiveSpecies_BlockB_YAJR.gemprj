@@ -2000,8 +2000,8 @@ prop Background.y setTo -1.45`
       "id": "79",
       "label": "Timer79",
       "bpid": "Timer",
-      "initScript": `prop x setTo 358.39
-prop y setTo -400.99`
+      "initScript": `prop Timer.x setTo 305.46
+prop Timer.y setTo -400.99`
     },
     {
       "id": "97",
@@ -2079,6 +2079,13 @@ prop Clover.y setTo 300.40`
       "bpid": "Clover",
       "initScript": `prop Clover.x setTo 289.56
 prop Clover.y setTo -130.33`
+    },
+    {
+      "id": "140",
+      "label": "Horse140",
+      "bpid": "Horse",
+      "initScript": `prop Horse.x setTo -245.19
+prop Horse.y setTo 165.03`
     }
   ]
 }

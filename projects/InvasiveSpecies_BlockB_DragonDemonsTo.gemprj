@@ -2141,6 +2141,13 @@ prop VeggieGarden.y setTo 229.90`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -239.21
 prop VeggieGarden.y setTo 217.23`
+    },
+    {
+      "id": "141",
+      "label": "Bear141",
+      "bpid": "Bear",
+      "initScript": `prop Bear.x setTo -14
+prop Bear.y setTo -5`
     }
   ]
 }

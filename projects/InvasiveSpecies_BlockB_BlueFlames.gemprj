@@ -2224,6 +2224,41 @@ prop Clover.y setTo 13.42`
       "bpid": "Clover",
       "initScript": `prop Clover.x setTo 345.05
 prop Clover.y setTo -42.23`
+    },
+    {
+      "id": "160",
+      "label": "BlueJay160",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 85.76
+prop BlueJay.y setTo -1.96`
+    },
+    {
+      "id": "161",
+      "label": "BlueJay161",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 33.05
+prop BlueJay.y setTo -188.11`
+    },
+    {
+      "id": "162",
+      "label": "BlueJay162",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 116.56
+prop BlueJay.y setTo 168.11`
+    },
+    {
+      "id": "163",
+      "label": "BlueJay163",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -235.11
+prop BlueJay.y setTo 38.61`
+    },
+    {
+      "id": "164",
+      "label": "BlueJay164",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -90.23
+prop BlueJay.y setTo 201.84`
     }
   ]
 }

@@ -2138,6 +2138,13 @@ prop Hawk.y setTo -324.65`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -159.51
 prop VeggieGarden.y setTo 157.88`
+    },
+    {
+      "id": "141",
+      "label": "Bunny141",
+      "bpid": "Bunny",
+      "initScript": `prop Bunny.x setTo 7.65
+prop Bunny.y setTo 245.23`
     }
   ]
 }
