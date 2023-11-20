@@ -1,5 +1,5 @@
 {
-  "id": "foodweb_energy_1",
+  "id": "foodweb_energy_2_blockA_red1",
   "label": "Garden Ecosystem 2",
   "metadata": {
     "top": -400,
@@ -1271,50 +1271,50 @@ prop y setTo 0.80`
       "id": "9",
       "label": "VeggieGarden",
       "bpid": "VeggieGarden",
-      "initScript": `prop x setTo -56.64
-prop y setTo 280.37`
+      "initScript": `prop VeggieGarden.x setTo -243.77
+prop VeggieGarden.y setTo 6.69`
     },
     {
       "id": "10",
       "label": "Clover",
       "bpid": "Clover",
-      "initScript": `prop x setTo -311.02
-prop y setTo 127.67`
+      "initScript": `prop Clover.x setTo -44.35
+prop Clover.y setTo 201.36`
     },
     {
       "id": "11",
       "label": "Caterpillar",
       "bpid": "Caterpillar",
-      "initScript": `prop x setTo 1.68
-prop y setTo -174.71`
+      "initScript": `prop Caterpillar.x setTo 145.54
+prop Caterpillar.y setTo 160.97`
     },
     {
       "id": "16",
       "label": "Mouse",
       "bpid": "Mouse",
-      "initScript": `prop x setTo 315.85
-prop y setTo -226.99`
+      "initScript": `prop Mouse.x setTo -219.82
+prop Mouse.y setTo 162.49`
     },
     {
       "id": "17",
       "label": "Robin",
       "bpid": "Robin",
-      "initScript": `prop x setTo 263.92
-prop y setTo -10.20`
+      "initScript": `prop Robin.x setTo -81.11
+prop Robin.y setTo -85.06`
     },
     {
       "id": "18",
       "label": "Snake",
       "bpid": "Snake",
-      "initScript": `prop x setTo -289.96
-prop y setTo -162.58`
+      "initScript": `prop Snake.x setTo 235.19
+prop Snake.y setTo 32.74`
     },
     {
       "id": "19",
       "label": "Hawk",
       "bpid": "Hawk",
-      "initScript": `prop x setTo 276.05
-prop y setTo 240.72`
+      "initScript": `prop Hawk.x setTo 92.43
+prop Hawk.y setTo -90.27`
     },
     {
       "id": "20",
