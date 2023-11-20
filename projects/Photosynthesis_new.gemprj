@@ -42,6 +42,7 @@ addProp state string 'oxygen'
 
 addFeature Physics
 addFeature Touches
+addFeature IU
 featCall Molecule.Touches monitor 'Rabbit' b2b
 featCall Molecule.Touches monitor 'Roots' b2b
 featCall Molecule.Touches monitor 'Chloroplast' b2b
@@ -65,6 +66,7 @@ when Molecule touches OxygenGenerator [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
     prop Molecule.state setTo 'oxygen'
+    featProp Molecule.IU.logStringText setTo 'Molecule became oxygen from generator.'
   ]]
 ]]
 
@@ -74,6 +76,7 @@ when Molecule touches CarbonDioxideGenerator [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
     prop Molecule.state setTo 'carbon_dioxide'
+    featProp Molecule.IU.logStringText setTo 'Molecule became carbon dioxide from generator.'
   ]]
 ]]
 
@@ -83,6 +86,7 @@ when Molecule touches WaterGenerator [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
     prop Molecule.state setTo 'water'
+    featProp Molecule.IU.logStringText setTo 'Molecule became water from generator. '
   ]]
 ]]
 
@@ -92,6 +96,7 @@ when Molecule touches SugarGenerator [[
     // insert code here
     featProp Molecule.Costume.costumeName setTo 'PS_sugar.png'
     prop Molecule.state setTo 'sugar'
+    featProp Molecule.IU.logStringText setTo 'Molecule became sugar from generator.'
   ]]
 ]]
 
@@ -103,6 +108,7 @@ when Molecule touches Rabbit [[
     featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
     prop Molecule.state setTo 'carbon_dioxide'
     featProp Molecule.Costume.glow setTo 1
+    featProp Molecule.IU.logStringText setTo 'Oxygen interacted with Rabbit to become carbon dioxide. '
   ]]
 ]]
 
@@ -111,10 +117,12 @@ when Molecule touches Plant_Body [[
   // insert code here
   ifProp Molecule.state equal 'sugar' [[
     // insert code here
+    featProp Plant_Body.Costume.glow setTo 1
     featProp Molecule.Costume.costumeName setTo 'PS_waterthinking.png'
     prop Molecule.state setTo 'needsWater'
     prop global.plantGrowth add 1
-    featProp Left_Leaf.Costume.glow setTo 1
+    prop global.plantGrow setTo true
+    featProp Molecule.IU.logStringText setTo 'Sugar interacted with plant body to become water thinking. '
   ]]
 ]]
 
@@ -126,6 +134,7 @@ when Molecule touches Roots [[
     featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
     prop Molecule.state setTo 'water'
     featProp Molecule.Costume.glow setTo 1
+    featProp Molecule.IU.logStringText setTo 'Water thinking interacted with roots to become water. '
   ]]
 ]]
 
@@ -136,10 +145,13 @@ when Molecule firsttouches Chloroplast [[
   ifProp Molecule.state equal 'water' [[
     // insert code here
     prop Chloroplast.hasWater add 1
+    featProp Molecule.IU.logStringText setTo 'A water is on the chloroplast. '
   ]]
   ifProp Molecule.state equal 'carbon_dioxide' [[
     // insert code here
     prop Chloroplast.hasCarbonDioxide add 1
+    featProp Molecule.IU.logStringText setTo 'A carbon dioxide is on the chloroplast. '
+
   ]]
 ]]
 
@@ -157,6 +169,7 @@ when Molecule touches Chloroplast [[
         ifProp Chloroplast.hasCarbonDioxide greaterThan 0 [[
           // insert code here
           prop Chloroplast.hasCarbonDioxide sub 1
+          featProp Molecule.IU.logStringText setTo 'Water has interacted with a carbon dioxide on the chloroplast to become oxygen. '
         ]]
       ]]
     ]]
@@ -170,6 +183,7 @@ when Molecule touches Chloroplast [[
         ifProp Chloroplast.hasWater greaterThan 0 [[
           // insert code here
           prop Chloroplast.hasWater sub 1
+          featProp Molecule.IU.logStringText setTo 'Carbon dioxide has interacted with a water on the chloroplast to become sugar.'
         ]]
       ]]
     ]]
@@ -312,7 +326,11 @@ addFeature Touches
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
+addFeature Touches
+addFeature Physics
+addProp growing boolean false
 featProp Left_Leaf.Costume.costumeName setTo 'PS_leaf.png'
+
 
 // prop Left_Leaf.alpha setTo 0.5
 
@@ -320,7 +338,7 @@ featProp Left_Leaf.Costume.costumeName setTo 'PS_leaf.png'
 exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
 featPropPop Left_Leaf.Costume.scale
 
-addFeature Physics
+
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
@@ -328,20 +346,20 @@ addFeature Physics
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
 // left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
+ifProp global.plantGrow equal true [[
+  featProp Left_Leaf.Costume.glow setTo 1
+  featProp Left_Leaf.Costume.glowColor setTo 3139328
+  every 1 [[
+    // insert code here
+    prop global.plantGrow setTo false
+    featProp Left_Leaf.Costume.glow setTo 0
+
+  ]]
+  // insert code here
+]]
 every 1 [[
   exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
   featPropPop Left_Leaf.Costume.scale
-]]
-
-when Molecule touches Plant_Body [[
-  // insert code here
-  ifProp Molecule.state equal 'sugar' [[
-    featProp Left_Leaf.Costume.glow setTo 1
-    every 3 runAfter [[
-      // insert code here
-      featProp Left_Leaf.Costume.glow setTo 0
-    ]]
-  ]]
 ]]`
     },
     {
@@ -457,7 +475,7 @@ every 10 [[
 // This is the most basic setup of properties that happens as soon as this character is saved
 addFeature Costume
 featProp WaterGenerator.Costume.costumeName setTo 'PS_waterdrop.png'
-featProp WaterGenerator.Costume.scale setTo 0.15
+featProp WaterGenerator.Costume.scale setTo 0.05
 
 addFeature Physics
 addFeature Touches
@@ -593,6 +611,7 @@ prop global.visible setTo false
 
 addProp plantGrowth number 0
 addProp skyState string 'daytime'
+addProp plantGrow boolean false
 addFeature IU
 featCall global.IU logString 'Init GE Photosynthesis model'
 // required directive
@@ -707,9 +726,59 @@ prop Zoom.zIndex setTo -10
 # PROGRAM INIT
 addFeature Costume
 featProp Zoom2.Costume.costumeName setTo 'PS_zoom2.png'
-featProp Zoom2.Costume.scale setTo 0.6
+featProp Zoom2.Costume.scale setTo 0.62
 
 prop Zoom2.zIndex setTo -10
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Stick",
+      "scriptText": `# BLUEPRINT Stick
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Stick.Costume.costumeName setTo 'PS_stick.png'
+featProp Stick.Costume.scale setTo 0.2
+prop Stick.zIndex setTo -10
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "TopLeaf",
+      "scriptText": `# BLUEPRINT TopLeaf
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp TopLeaf.Costume.costumeName setTo 'PS_rightLeaf.png'
+featProp TopLeaf.Costume.scale setTo 0.15
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -765,8 +834,8 @@ prop y setTo 193.53`
       "id": "27",
       "label": "Left_Leaf27",
       "bpid": "Left_Leaf",
-      "initScript": `prop Left_Leaf.x setTo -62.03
-prop Left_Leaf.y setTo -58.31`
+      "initScript": `prop Left_Leaf.x setTo -180.34
+prop Left_Leaf.y setTo -142.65`
     },
     {
       "id": "32",
@@ -800,22 +869,22 @@ prop y setTo -370.28`
       "id": "45",
       "label": "Right_Leaf45",
       "bpid": "Right_Leaf",
-      "initScript": `prop Right_Leaf.x setTo 149.81
-prop Right_Leaf.y setTo -53.66`
+      "initScript": `prop Right_Leaf.x setTo 163.31
+prop Right_Leaf.y setTo 8.22`
     },
     {
       "id": "46",
       "label": "Chloroplast46",
       "bpid": "Chloroplast",
-      "initScript": `prop Chloroplast.x setTo 263.82
-prop Chloroplast.y setTo -257.83`
+      "initScript": `prop Chloroplast.x setTo 277.32
+prop Chloroplast.y setTo -202.70`
     },
     {
       "id": "47",
       "label": "Chloroplast47",
       "bpid": "Chloroplast",
-      "initScript": `prop Chloroplast.x setTo 269.66
-prop Chloroplast.y setTo 110.74`
+      "initScript": `prop Chloroplast.x setTo 301.17
+prop Chloroplast.y setTo 132.12`
     },
     {
       "id": "49",
@@ -828,15 +897,29 @@ prop Tomato.y setTo 125.82`
       "id": "50",
       "label": "Zoom50",
       "bpid": "Zoom",
-      "initScript": `prop Zoom.x setTo 217.58
-prop Zoom.y setTo -225.34`
+      "initScript": `prop Zoom.x setTo 233.33
+prop Zoom.y setTo -169.08`
     },
     {
       "id": "51",
       "label": "Zoom251",
       "bpid": "Zoom2",
-      "initScript": `prop Zoom2.x setTo 260.92
-prop Zoom2.y setTo 48.74`
+      "initScript": `prop Zoom2.x setTo 289.04
+prop Zoom2.y setTo 68.99`
+    },
+    {
+      "id": "52",
+      "label": "Stick52",
+      "bpid": "Stick",
+      "initScript": `prop Stick.x setTo -86.97
+prop Stick.y setTo -112.89`
+    },
+    {
+      "id": "53",
+      "label": "TopLeaf53",
+      "bpid": "TopLeaf",
+      "initScript": `prop TopLeaf.x setTo 46.65
+prop TopLeaf.y setTo -124.35`
     }
   ]
 }
