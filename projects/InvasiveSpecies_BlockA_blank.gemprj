@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_BlockB_BlueFlames",
+  "id": "InvasiveSpecies_BlockA_blank",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -1824,14 +1824,14 @@ prop teacher.alpha setTo 0
 // ✏️ body`
     },
     {
-      "name": "BlueJay",
-      "scriptText": `# BLUEPRINT BlueJay
+      "name": "Mole",
+      "scriptText": `# BLUEPRINT Mole
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
-// 🔎 WHAT IS A BLUE JAY?
-// ✏️ CHANGE BLUE JAYS are ???????? who EAT ??????? to make BLUE JAY ENERGY through DIGESTION
+// 🔎 WHAT IS A MOLE?
+// ✏️ CHANGE MOLES are omnivores who EAT veggie gardens and caterpillars to make MOLE ENERGY through DIGESTION
 
 // 🔎 WHAT IS A PRODUCER?
 // 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
@@ -1853,74 +1853,50 @@ addFeature IU
 addProp alive Boolean true
 
 
-// set the BlueJay artwork and make it smaller
-featProp BlueJay.Costume.costumeName setTo 'IS_bluejay.png'
+// set the mole artwork and make it smaller
+featProp Mole.Costume.costumeName setTo 'IS_mole.png'
 
-// ✏️ CHANGE The size of the BlueJay (LARGER number => LARGER BlueJay)
-featProp BlueJay.Costume.scale setTo 0.2
-featProp BlueJay.Costume.flipX setTo false
+// ✏️ CHANGE The size of the Mole (LARGER number => LARGER Mole)
+featProp Mole.Costume.scale setTo 0.2
+featProp Mole.Costume.flipX setTo false
 
-// ✏️ if the computer controls the BlueJay, this tells the BlueJay how to move and how quickly
-// ✏️ CHANGE the speed that the BlueJay moves
-featProp BlueJay.Movement.distance setTo 4
-featProp BlueJay.Movement.movementType setTo 'wander'
-featCall BlueJay.Movement setRandomDirection
+// ✏️ if the computer controls the Mole, this tells the Mole how to move and how quickly
+// ✏️ CHANGE the speed that the Mole moves
+featProp Mole.Movement.distance setTo 4
+featProp Mole.Movement.movementType setTo 'wander'
+featCall Mole.Movement setRandomDirection
 
 
 // make sure we track interactions with the other creatures
-featCall BlueJay.Touches monitor 'VeggieGarden' b2b
-featCall BlueJay.Touches monitor 'Clover' b2b
-featCall BlueJay.Touches monitor 'Worm' b2b
-featCall BlueJay.Touches monitor 'Hawk' b2b
-featCall BlueJay.Touches monitor 'Caterpillar' b2b
+featCall Mole.Touches monitor 'VeggieGarden' b2b
+featCall Mole.Touches monitor 'Clover' b2b
+featCall Mole.Touches monitor 'Worm' b2b
+featCall Mole.Touches monitor 'Hawk' b2b
+featCall Mole.Touches monitor 'Caterpillar' b2b
 
 // 🔎 WHAT DOES THIS DO?
-// 🔎 how much does energy does each BlueJay START with?
+// 🔎 how much does energy does each Mole START with?
 // ✏️ LETS CHANGE THIS:
 addProp energyLevel Number 50
 
-// 🔎 what is the MOST/LEAST amount of energy a BlueJay can have?
-prop BlueJay.energyLevel setMax 100
-prop BlueJay.energyLevel setMin 0
+// 🔎 what is the MOST/LEAST amount of energy a Mole can have?
+prop Mole.energyLevel setMax 100
+prop Mole.energyLevel setMin 0
 
 // use a widget to depict the current energy, and color it green
-featProp BlueJay.Graphing.meterProp setTo 'energyLevel'
-featProp BlueJay.Graphing.meterColor setTo 65280
+featProp Mole.Graphing.meterProp setTo 'energyLevel'
+featProp Mole.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The BlueJay gains energy from the veggie garden and the clover
+// ✏️ The Mole gains energy from the veggie garden and the clover
 
-// ✏️ whenever a BlueJay touches a clover
-when BlueJay touches Clover [[
+// ✏️ whenever a Mole touches a veggie garden
+when Mole touches VeggieGarden [[
   every 1 runAtStart [[
-    // the BlueJay and the clover must be alive
-    ifProp BlueJay.alive equal true [[
-      ifProp Clover.alive equal true [[
-
-        featProp BlueJay.Costume.glow setTo 1
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
-        // ✏️ CHANGE the energy clovers lose (LARGER numbers => LOSE MORE ENERGY)
-        prop Clover.energyLevel sub 10
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BlueJays GAIN when eating?
-        // ✏️ CHANGE the energy BlueJays gain from the clover (LARGER numbers => GAIN MORE ENERGY)
-        prop BlueJay.energyLevel add 10
-        featCall BlueJay.IU logString 'BlueJay ate some of a clover.'
-      ]]
-    ]]
-  ]]
-]]
-
-// ✏️ whenever a BlueJay touches a veggie garden
-when BlueJay touches VeggieGarden [[
-  every 1 runAtStart [[
-    ifProp BlueJay.alive equal true [[
+    ifProp Mole.alive equal true [[
       ifProp VeggieGarden.alive equal true [[
-        featProp BlueJay.Costume.glow setTo 1
+        featProp Mole.Costume.glow setTo 1
 
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
@@ -1928,34 +1904,34 @@ when BlueJay touches VeggieGarden [[
         prop VeggieGarden.energyLevel sub 10
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BlueJays GAIN when eating?
-        // ✏️ CHANGE the energy BlueJays gain from VG (LARGER numbers => GAIN MORE ENERGY)
-        prop BlueJay.energyLevel add 10
-        featCall BlueJay.IU logString 'BlueJay ate some of a veggie garden.'
+        // 🔎 How much ENERGY do Moles GAIN when eating?
+        // ✏️ CHANGE the energy Moles gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Mole.energyLevel add 10
+        featCall Mole.IU logString 'Mole ate some of a veggie garden.'
 
       ]]
     ]]
   ]]
 ]]
-// ✏️ whenever the BlueJay is touching a Caterpillar
-when BlueJay touches Caterpillar [[
+// ✏️ whenever the Mole is touching a Caterpillar
+when Mole touches Caterpillar [[
   every 1 runAtStart [[
-    // ✏️ if the BlueJay and the Caterpillar are alive
-    ifProp BlueJay.alive equal true [[
+    // ✏️ if the Mole and the Caterpillar are alive
+    ifProp Mole.alive equal true [[
       ifProp Caterpillar.alive equal true [[
-        featProp BlueJay.Costume.glow setTo 1
-        // ✏️ the Caterpillar dies when touched by the BlueJay
+        featProp Mole.Costume.glow setTo 1
+        // ✏️ the Caterpillar dies when touched by the Mole
         featProp Caterpillar.Movement.movementType setTo 'stop'
         prop Caterpillar.alive setTo false
         prop Caterpillar.alpha setTo 0.3
         prop Caterpillar.energyLevel setTo 0
-        featCall Caterpillar.IU logString 'Caterpillar was eaten by a BlueJay.'
+        featCall Caterpillar.IU logString 'Caterpillar was eaten by a Mole.'
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BlueJays GAIN when eating a Caterpillar?
-        // ✏️ CHANGE the energy BlueJays gain from a Caterpillar (LARGER numbers => GAIN MORE ENERGY)
-        prop BlueJay.energyLevel add 25
-        featCall BlueJay.IU logString 'BlueJay ate a mouse.'
+        // 🔎 How much ENERGY do Mole GAIN when eating a Caterpillar?
+        // ✏️ CHANGE the energy Mole gain from a Caterpillar (LARGER numbers => GAIN MORE ENERGY)
+        prop Mole.energyLevel add 25
+        featCall Mole.IU logString 'Mole ate a mouse.'
       ]]
     ]]
   ]]
@@ -1963,96 +1939,50 @@ when BlueJay touches Caterpillar [[
 
 
 // 📖 Our Organism gives energy to:
-// ✏️ The BlueJay gives energy to the snake and the hawk
+// ✏️ The Mole gives energy to nothing 
 
-// ✏️ whenever a BlueJay touches a snake
-when BlueJay touches Snake [[
-  every 1 runAtStart [[
-    // ✏️ if the BlueJay and the snake are alive
-    ifProp BlueJay.alive equal true [[
-      ifProp Snake.alive equal true [[
-        featProp Snake.Costume.glow setTo 1
-        // ✏️ the BlueJay dies when touched by the snake
-        featProp BlueJay.Movement.movementType setTo 'stop'
-        prop BlueJay.alive setTo false
-        prop BlueJay.alpha setTo 0.3
-        prop BlueJay.energyLevel setTo 0
-        featCall BlueJay.IU logString 'BlueJay was eaten by snake.'
 
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do SNAKES GAIN when eating a BlueJay?
-        // ✏️ CHANGE the energy the snake gains from the BlueJay (LARGER numbers => GAIN MORE ENERGY)
-        prop Snake.energyLevel add 25
-        featCall Snake.IU logString 'Snake ate a BlueJay.'
-      ]]
-    ]]
-  ]]
-]]
-
-// ✏️ whenever a BlueJay touches a hawk
-when BlueJay touches Hawk [[
-  every 1 runAtStart [[
-    // ✏️ if the BlueJay and the snake are alive
-    ifProp BlueJay.alive equal true [[
-      ifProp Hawk.alive equal true [[
-        featProp Hawk.Costume.glow setTo 1
-        // ✏️ the BlueJay dies when touched by the hawk
-        featProp BlueJay.Movement.movementType setTo 'stop'
-        prop BlueJay.alive setTo false
-        prop BlueJay.alpha setTo 0.3
-        prop BlueJay.energyLevel setTo 0
-        featCall BlueJay.IU logString 'BlueJay was eaten by hawk.'
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do HAWKS GAIN when eating a BlueJay?
-        // ✏️ CHANGE the energy the hawk gains from the BlueJay (LARGER numbers => GAIN MORE ENERGY)
-        prop Hawk.energyLevel add 25
-        featCall Hawk.IU logString 'Hawk ate a BlueJay.'
-      ]]
-    ]]
-  ]]
-]]
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
-  // 🔎 How much ENERGY do BlueJays LOSE when moving?
+  // 🔎 How much ENERGY do Moles LOSE when moving?
   // ✏️ LETS CHANGE THIS:
   // ✏️ LARGER numbers => LOSE MORE ENERGY
-  prop BlueJay.energyLevel sub 3
+  prop Mole.energyLevel sub 3
 
   // 🔎 WHAT DOES THIS DO?
-  // This script changes the color of the BlueJay's meter depending on how much energy it has
+  // This script changes the color of the Mole's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
 
 
-  // The BlueJay is feeling good, so make the meter green if the BlueJay has over 50 energy (out of 100)
-  ifProp BlueJay.energyLevel greaterThanOrEqual 50 [[
-    featProp BlueJay.Costume.currentFrame setTo 0
-    featProp BlueJay.Graphing.meterColor setTo 65280
+  // The Mole is feeling good, so make the meter green if the Mole has over 50 energy (out of 100)
+  ifProp Mole.energyLevel greaterThanOrEqual 50 [[
+    featProp Mole.Costume.currentFrame setTo 0
+    featProp Mole.Graphing.meterColor setTo 65280
   ]]
 
-  // The BlueJay is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
-  ifProp BlueJay.energyLevel lessThan 50 [[
-    featProp BlueJay.Costume.currentFrame setTo 1
-    featProp BlueJay.Graphing.meterColor setTo 16737792
+  // The Mole is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Mole.energyLevel lessThan 50 [[
+    featProp Mole.Costume.currentFrame setTo 1
+    featProp Mole.Graphing.meterColor setTo 16737792
   ]]
 
-  // The BlueJay is really hungry, so make the meter red if we are under 20
-  ifProp BlueJay.energyLevel lessThan 20 [[
-    featProp BlueJay.Costume.currentFrame setTo 1
-    featProp BlueJay.Graphing.meterColor setTo 16711680
+  // The Mole is really hungry, so make the meter red if we are under 20
+  ifProp Mole.energyLevel lessThan 20 [[
+    featProp Mole.Costume.currentFrame setTo 1
+    featProp Mole.Graphing.meterColor setTo 16711680
   ]]
 
-  // The BlueJay is dead if it has 0 energy
-  ifProp BlueJay.energyLevel equal 0 [[
-    prop BlueJay.alive setTo false
-    featProp BlueJay.Costume.currentFrame setTo 2
-    prop BlueJay.alpha setTo 0.3
-    featProp BlueJay.Movement.movementType setTo 'stop'
-    featCall BlueJay.IU logString 'BlueJay died of starvation.'
+  // The Mole is dead if it has 0 energy
+  ifProp Mole.energyLevel equal 0 [[
+    prop Mole.alive setTo false
+    featProp Mole.Costume.currentFrame setTo 2
+    prop Mole.alpha setTo 0.3
+    featProp Mole.Movement.movementType setTo 'stop'
+    featCall Mole.IU logString 'Mole died of starvation.'
   ]]
   // set meter to mirror energyLevel
-  featProp BlueJay.Graphing.meterProp setTo 'energyLevel'
+  featProp Mole.Graphing.meterProp setTo 'energyLevel'
 ]]`
     }
   ],
@@ -2072,193 +2002,25 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "97",
-      "label": "VeggieGarden97",
+      "id": "80",
+      "label": "Mole80",
+      "bpid": "Mole",
+      "initScript": `prop Mole.x setTo -39
+prop Mole.y setTo -18`
+    },
+    {
+      "id": "81",
+      "label": "VeggieGarden81",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -277.36
-prop VeggieGarden.y setTo -127.95`
+      "initScript": `prop VeggieGarden.x setTo 89.11
+prop VeggieGarden.y setTo 60.11`
     },
     {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 245.47
-prop VeggieGarden.y setTo -132.41`
-    },
-    {
-      "id": "133",
-      "label": "Hawk133",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 273.07
-prop Hawk.y setTo -286.54`
-    },
-    {
-      "id": "136",
-      "label": "VeggieGarden136",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 269.42
-prop VeggieGarden.y setTo 235.85`
-    },
-    {
-      "id": "137",
-      "label": "VeggieGarden137",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -241.34
-prop VeggieGarden.y setTo 242.15`
-    },
-    {
-      "id": "140",
-      "label": "Snake140",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 101.48
-prop Snake.y setTo 286.27`
-    },
-    {
-      "id": "142",
-      "label": "Robin142",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo 280.33
-prop Robin.y setTo -69.76`
-    },
-    {
-      "id": "145",
-      "label": "Robin145",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -66.82
-prop Robin.y setTo -133.33`
-    },
-    {
-      "id": "146",
-      "label": "Mouse146",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 77.55
-prop Mouse.y setTo -101.38`
-    },
-    {
-      "id": "147",
-      "label": "Mouse147",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -36
-prop Mouse.y setTo 12`
-    },
-    {
-      "id": "148",
-      "label": "Mouse148",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 210.39
-prop Mouse.y setTo 74.42`
-    },
-    {
-      "id": "149",
-      "label": "Mouse149",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 336.37
-prop Mouse.y setTo 138.62`
-    },
-    {
-      "id": "150",
-      "label": "Mouse150",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -292.82
-prop Mouse.y setTo 154.70`
-    },
-    {
-      "id": "151",
-      "label": "Caterpillar151",
+      "id": "82",
+      "label": "Caterpillar82",
       "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 335.11
-prop Caterpillar.y setTo 332.28`
-    },
-    {
-      "id": "152",
-      "label": "Caterpillar152",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -314.38
-prop Caterpillar.y setTo -200.31`
-    },
-    {
-      "id": "153",
-      "label": "Caterpillar153",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -118.72
-prop Caterpillar.y setTo 317.29`
-    },
-    {
-      "id": "154",
-      "label": "Caterpillar154",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 330.32
-prop Caterpillar.y setTo -179.27`
-    },
-    {
-      "id": "155",
-      "label": "Caterpillar155",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -332.60
-prop Caterpillar.y setTo 236.68`
-    },
-    {
-      "id": "156",
-      "label": "Clover156",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -144.83
-prop Clover.y setTo -62.02`
-    },
-    {
-      "id": "157",
-      "label": "Clover157",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -109.51
-prop Clover.y setTo -214.21`
-    },
-    {
-      "id": "158",
-      "label": "Clover158",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -361.05
-prop Clover.y setTo 13.42`
-    },
-    {
-      "id": "159",
-      "label": "Clover159",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo 345.05
-prop Clover.y setTo -42.23`
-    },
-    {
-      "id": "160",
-      "label": "BlueJay160",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 85.76
-prop BlueJay.y setTo -1.96`
-    },
-    {
-      "id": "161",
-      "label": "BlueJay161",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 33.05
-prop BlueJay.y setTo -188.11`
-    },
-    {
-      "id": "162",
-      "label": "BlueJay162",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 116.56
-prop BlueJay.y setTo 168.11`
-    },
-    {
-      "id": "163",
-      "label": "BlueJay163",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -235.11
-prop BlueJay.y setTo 38.61`
-    },
-    {
-      "id": "164",
-      "label": "BlueJay164",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -90.23
-prop BlueJay.y setTo 201.84`
+      "initScript": `prop Caterpillar.x setTo 110.42
+prop Caterpillar.y setTo -50.96`
     }
   ]
 }
