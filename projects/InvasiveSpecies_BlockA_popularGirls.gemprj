@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_BlockB_BlueFlames",
+  "id": "InvasiveSpecies_BlockA_popularGirls",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -1854,7 +1854,7 @@ addProp alive Boolean true
 
 
 // set the BlueJay artwork and make it smaller
-featProp BlueJay.Costume.costumeName setTo 'IS_bluejay.png'
+featProp BlueJay.Costume.costumeName setTo 'IS_bluejayA.png'
 
 // ✏️ CHANGE The size of the BlueJay (LARGER number => LARGER BlueJay)
 featProp BlueJay.Costume.scale setTo 0.2
@@ -1889,31 +1889,7 @@ featProp BlueJay.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The BlueJay gains energy from the veggie garden and the clover
-
-// ✏️ whenever a BlueJay touches a clover
-when BlueJay touches Clover [[
-  every 1 runAtStart [[
-    // the BlueJay and the clover must be alive
-    ifProp BlueJay.alive equal true [[
-      ifProp Clover.alive equal true [[
-
-        featProp BlueJay.Costume.glow setTo 1
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
-        // ✏️ CHANGE the energy clovers lose (LARGER numbers => LOSE MORE ENERGY)
-        prop Clover.energyLevel sub 10
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BlueJays GAIN when eating?
-        // ✏️ CHANGE the energy BlueJays gain from the clover (LARGER numbers => GAIN MORE ENERGY)
-        prop BlueJay.energyLevel add 10
-        featCall BlueJay.IU logString 'BlueJay ate some of a clover.'
-      ]]
-    ]]
-  ]]
-]]
+// ✏️ The BlueJay gains energy from the veggie garden and the caterpillar
 
 // ✏️ whenever a BlueJay touches a veggie garden
 when BlueJay touches VeggieGarden [[
@@ -1937,6 +1913,7 @@ when BlueJay touches VeggieGarden [[
     ]]
   ]]
 ]]
+
 // ✏️ whenever the BlueJay is touching a Caterpillar
 when BlueJay touches Caterpillar [[
   every 1 runAtStart [[
@@ -1963,31 +1940,7 @@ when BlueJay touches Caterpillar [[
 
 
 // 📖 Our Organism gives energy to:
-// ✏️ The BlueJay gives energy to the snake and the hawk
-
-// ✏️ whenever a BlueJay touches a snake
-when BlueJay touches Snake [[
-  every 1 runAtStart [[
-    // ✏️ if the BlueJay and the snake are alive
-    ifProp BlueJay.alive equal true [[
-      ifProp Snake.alive equal true [[
-        featProp Snake.Costume.glow setTo 1
-        // ✏️ the BlueJay dies when touched by the snake
-        featProp BlueJay.Movement.movementType setTo 'stop'
-        prop BlueJay.alive setTo false
-        prop BlueJay.alpha setTo 0.3
-        prop BlueJay.energyLevel setTo 0
-        featCall BlueJay.IU logString 'BlueJay was eaten by snake.'
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do SNAKES GAIN when eating a BlueJay?
-        // ✏️ CHANGE the energy the snake gains from the BlueJay (LARGER numbers => GAIN MORE ENERGY)
-        prop Snake.energyLevel add 25
-        featCall Snake.IU logString 'Snake ate a BlueJay.'
-      ]]
-    ]]
-  ]]
-]]
+// ✏️ The BlueJay gives energy to the hawk
 
 // ✏️ whenever a BlueJay touches a hawk
 when BlueJay touches Hawk [[
@@ -2012,6 +1965,7 @@ when BlueJay touches Hawk [[
     ]]
   ]]
 ]]
+
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
@@ -2072,193 +2026,32 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "97",
-      "label": "VeggieGarden97",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -277.36
-prop VeggieGarden.y setTo -127.95`
+      "id": "80",
+      "label": "BlueJay80",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo -39
+prop BlueJay.y setTo -18`
     },
     {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 245.47
-prop VeggieGarden.y setTo -132.41`
+      "id": "81",
+      "label": "Caterpillar81",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 242.76
+prop Caterpillar.y setTo -0.39`
     },
     {
-      "id": "133",
-      "label": "Hawk133",
+      "id": "82",
+      "label": "VeggieGarden82",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 14.61
+prop VeggieGarden.y setTo 264.45`
+    },
+    {
+      "id": "83",
+      "label": "Hawk83",
       "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 273.07
-prop Hawk.y setTo -286.54`
-    },
-    {
-      "id": "136",
-      "label": "VeggieGarden136",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 269.42
-prop VeggieGarden.y setTo 235.85`
-    },
-    {
-      "id": "137",
-      "label": "VeggieGarden137",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -241.34
-prop VeggieGarden.y setTo 242.15`
-    },
-    {
-      "id": "140",
-      "label": "Snake140",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 101.48
-prop Snake.y setTo 286.27`
-    },
-    {
-      "id": "142",
-      "label": "Robin142",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo 280.33
-prop Robin.y setTo -69.76`
-    },
-    {
-      "id": "145",
-      "label": "Robin145",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -66.82
-prop Robin.y setTo -133.33`
-    },
-    {
-      "id": "146",
-      "label": "Mouse146",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 77.55
-prop Mouse.y setTo -101.38`
-    },
-    {
-      "id": "147",
-      "label": "Mouse147",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -36
-prop Mouse.y setTo 12`
-    },
-    {
-      "id": "148",
-      "label": "Mouse148",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 210.39
-prop Mouse.y setTo 74.42`
-    },
-    {
-      "id": "149",
-      "label": "Mouse149",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 336.37
-prop Mouse.y setTo 138.62`
-    },
-    {
-      "id": "150",
-      "label": "Mouse150",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -292.82
-prop Mouse.y setTo 154.70`
-    },
-    {
-      "id": "151",
-      "label": "Caterpillar151",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 335.11
-prop Caterpillar.y setTo 332.28`
-    },
-    {
-      "id": "152",
-      "label": "Caterpillar152",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -314.38
-prop Caterpillar.y setTo -200.31`
-    },
-    {
-      "id": "153",
-      "label": "Caterpillar153",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -118.72
-prop Caterpillar.y setTo 317.29`
-    },
-    {
-      "id": "154",
-      "label": "Caterpillar154",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 330.32
-prop Caterpillar.y setTo -179.27`
-    },
-    {
-      "id": "155",
-      "label": "Caterpillar155",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -332.60
-prop Caterpillar.y setTo 236.68`
-    },
-    {
-      "id": "156",
-      "label": "Clover156",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -144.83
-prop Clover.y setTo -62.02`
-    },
-    {
-      "id": "157",
-      "label": "Clover157",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -109.51
-prop Clover.y setTo -214.21`
-    },
-    {
-      "id": "158",
-      "label": "Clover158",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -361.05
-prop Clover.y setTo 13.42`
-    },
-    {
-      "id": "159",
-      "label": "Clover159",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo 345.05
-prop Clover.y setTo -42.23`
-    },
-    {
-      "id": "160",
-      "label": "BlueJay160",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 85.76
-prop BlueJay.y setTo -1.96`
-    },
-    {
-      "id": "161",
-      "label": "BlueJay161",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 33.05
-prop BlueJay.y setTo -188.11`
-    },
-    {
-      "id": "162",
-      "label": "BlueJay162",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 116.56
-prop BlueJay.y setTo 168.11`
-    },
-    {
-      "id": "163",
-      "label": "BlueJay163",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -235.11
-prop BlueJay.y setTo 38.61`
-    },
-    {
-      "id": "164",
-      "label": "BlueJay164",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -90.23
-prop BlueJay.y setTo 201.84`
+      "initScript": `prop Hawk.x setTo 145.84
+prop Hawk.y setTo -213.07`
     }
   ]
 }
