@@ -60,7 +60,7 @@ featProp Snake.Costume.scale setTo 0.3
 // Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
 // featProp Snake.Movement.compassDirection setTo 'S'
-featProp Snake.Movement.distance setTo 3
+featProp Snake.Movement.distance setTo 0.1
 // featProp Snake.Movement.targetY setMax 0.7
 
 
@@ -495,7 +495,7 @@ featProp Caterpillar.Costume.scale setTo 0.3
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
-featProp Caterpillar.Movement.distance setTo 2
+featProp Caterpillar.Movement.distance setTo 10
 featProp Caterpillar.Movement.targetY setMax 0.7
 
 // make sure we track interactions with the other creatures
@@ -626,7 +626,7 @@ featProp Robin.Costume.scale setTo 0.2
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
-featProp Robin.Movement.distance setTo 3
+featProp Robin.Movement.distance setTo 10
 featProp Robin.Movement.targetY setMax 0.7
 
 // check with robins touch caterpillars
@@ -774,7 +774,7 @@ featProp Hawk.Costume.scale setTo 0.3
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 0.1
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -1619,7 +1619,7 @@ featProp Mouse.Costume.flipX setTo true
 // if the computer controls the Mouse, this tells the Mouse how to move and how quickly
 // featProp Mouse.Movement.direction addRndInt 1 360
 featProp Mouse.Movement.movementType setTo 'wander'
-featProp Mouse.Movement.distance setTo 4
+featProp Mouse.Movement.distance setTo 10
 featCall Mouse.Movement setRandomDirection
 
 
@@ -1861,7 +1861,7 @@ featProp Gorilla.Costume.scale setTo 0.4
 
 // ✏️ if the computer controls the Gorilla, this tells the Gorilla how to move and how quickly
 // ✏️ CHANGE the speed that the Gorilla moves
-featProp Gorilla.Movement.distance setTo 4
+featProp Gorilla.Movement.distance setTo 10
 featProp Gorilla.Movement.movementType setTo 'wander'
 featCall Gorilla.Movement setRandomDirection
 
@@ -2053,36 +2053,71 @@ prop y setTo -400.99`
       "id": "82",
       "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -122.26
-prop VeggieGarden.y setTo 174.72`
+      "initScript": `prop VeggieGarden.x setTo -175.39
+prop VeggieGarden.y setTo -160.12`
     },
     {
       "id": "86",
       "label": "Gorilla86",
       "bpid": "Gorilla",
-      "initScript": `prop Gorilla.x setTo 133.8
-prop Gorilla.y setTo -142.38`
+      "initScript": `prop Gorilla.x setTo -115.82
+prop Gorilla.y setTo 3.98`
     },
     {
       "id": "88",
       "label": "Clover88",
       "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -29
-prop Clover.y setTo 43`
+      "initScript": `prop Clover.x setTo 107.34
+prop Clover.y setTo -156.50`
     },
     {
       "id": "89",
       "label": "Caterpillar89",
       "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 297.99
-prop Caterpillar.y setTo -81.92`
+      "initScript": `prop Caterpillar.x setTo 16.29
+prop Caterpillar.y setTo -60.87`
     },
     {
       "id": "90",
       "label": "Robin90",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -252.76
-prop Robin.y setTo -121.26`
+      "initScript": `prop Robin.x setTo 40.22
+prop Robin.y setTo 180.78`
+    },
+    {
+      "id": "91",
+      "label": "Clover91",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -38.20
+prop Clover.y setTo -154.28`
+    },
+    {
+      "id": "92",
+      "label": "VeggieGarden92",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 248.69
+prop VeggieGarden.y setTo -168.38`
+    },
+    {
+      "id": "93",
+      "label": "Mouse93",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 255.65
+prop Mouse.y setTo -71.17`
+    },
+    {
+      "id": "94",
+      "label": "Snake94",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -103.24
+prop Snake.y setTo 198.44`
+    },
+    {
+      "id": "95",
+      "label": "Hawk95",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo -287.66
+prop Hawk.y setTo 15.16`
     }
   ]
 }
