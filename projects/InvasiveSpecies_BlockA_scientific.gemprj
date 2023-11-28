@@ -1862,7 +1862,7 @@ featProp Cat.Costume.flipX setTo true
 
 // ✏️ if the computer controls the Cat, this tells the Cat how to move and how quickly
 // ✏️ CHANGE the speed that the Cat moves
-featProp Cat.Movement.distance setTo 4
+featProp Cat.Movement.distance setTo -1
 featProp Cat.Movement.movementType setTo 'wander'
 featCall Cat.Movement setRandomDirection
 
@@ -2037,29 +2037,134 @@ prop y setTo -400.99`
       "id": "133",
       "label": "Snake133",
       "bpid": "Snake",
-      "initScript": `prop Snake.x setTo -82.1
-prop Snake.y setTo 34.92`
+      "initScript": `prop Snake.x setTo 147.94
+prop Snake.y setTo 168.83`
     },
     {
       "id": "134",
       "label": "Mouse134",
       "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 315.16
-prop Mouse.y setTo -24.78`
+      "initScript": `prop Mouse.x setTo 344.92
+prop Mouse.y setTo 262.49`
     },
     {
       "id": "136",
       "label": "Robin136",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -291.98
-prop Robin.y setTo -226.9`
+      "initScript": `prop Robin.x setTo -20.74
+prop Robin.y setTo 111.87`
     },
     {
-      "id": "137",
-      "label": "Cat137",
+      "id": "139",
+      "label": "Robin139",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 191.14
+prop Robin.y setTo -148.74`
+    },
+    {
+      "id": "141",
+      "label": "Cat141",
       "bpid": "Cat",
-      "initScript": `prop Cat.x setTo 48
-prop Cat.y setTo -4`
+      "initScript": `prop Cat.x setTo 226.88
+prop Cat.y setTo 167.07`
+    },
+    {
+      "id": "142",
+      "label": "VeggieGarden142",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 202.01
+prop VeggieGarden.y setTo 288.02`
+    },
+    {
+      "id": "144",
+      "label": "VeggieGarden144",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -288.98
+prop VeggieGarden.y setTo -30.88`
+    },
+    {
+      "id": "145",
+      "label": "Mouse145",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -120.63
+prop Mouse.y setTo 104.06`
+    },
+    {
+      "id": "146",
+      "label": "Mouse146",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -257.55
+prop Mouse.y setTo -100.65`
+    },
+    {
+      "id": "148",
+      "label": "VeggieGarden148",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -2.52
+prop VeggieGarden.y setTo -149.51`
+    },
+    {
+      "id": "149",
+      "label": "Mouse149",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -280.46
+prop Mouse.y setTo 291.85`
+    },
+    {
+      "id": "150",
+      "label": "Mouse150",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 222.86
+prop Mouse.y setTo 2.91`
+    },
+    {
+      "id": "151",
+      "label": "Hawk151",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo -34
+prop Hawk.y setTo -13`
+    },
+    {
+      "id": "152",
+      "label": "VeggieGarden152",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 104.63
+prop VeggieGarden.y setTo -7.86`
+    },
+    {
+      "id": "153",
+      "label": "VeggieGarden153",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -214.26
+prop VeggieGarden.y setTo -130.40`
+    },
+    {
+      "id": "154",
+      "label": "VeggieGarden154",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -178.11
+prop VeggieGarden.y setTo 79.18`
+    },
+    {
+      "id": "155",
+      "label": "VeggieGarden155",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -52.88
+prop VeggieGarden.y setTo 209.18`
+    },
+    {
+      "id": "156",
+      "label": "VeggieGarden156",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -268.75
+prop VeggieGarden.y setTo 192.24`
+    },
+    {
+      "id": "157",
+      "label": "VeggieGarden157",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 311.91
+prop VeggieGarden.y setTo -136.40`
     }
   ]
 }
