@@ -1824,14 +1824,14 @@ prop teacher.alpha setTo 0
 // ✏️ body`
     },
     {
-      "name": "Puppy",
-      "scriptText": `# BLUEPRINT Puppy
+      "name": "Gorilla",
+      "scriptText": `# BLUEPRINT Gorilla
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
-// 🔎 WHAT IS A PUPPY?
-// ✏️ CHANGE PUPPIES are ???????? who EAT ??????? to make PUPPY ENERGY through DIGESTION
+// 🔎 WHAT IS A GORILLA?
+// ✏️ CHANGE GORILLAS are ???????? who EAT ??????? to make GORILLA ENERGY through DIGESTION
 
 // 🔎 WHAT IS A PRODUCER?
 // 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
@@ -1853,49 +1853,49 @@ addFeature IU
 addProp alive Boolean true
 
 
-// set the Puppy artwork and make it smaller
-featProp Puppy.Costume.costumeName setTo 'IS_puppy.png'
+// set the Gorilla artwork and make it smaller
+featProp Gorilla.Costume.costumeName setTo 'IS_gorilla.png'
 
-// ✏️ CHANGE The size of the Puppy (LARGER number => LARGER Puppy)
-featProp Puppy.Costume.scale setTo 0.25
+// ✏️ CHANGE The size of the Gorilla (LARGER number => LARGER Gorilla)
+featProp Gorilla.Costume.scale setTo 0.4
 
-// ✏️ if the computer controls the Puppy, this tells the Puppy how to move and how quickly
-// ✏️ CHANGE the speed that the Puppy moves
-featProp Puppy.Movement.distance setTo 4
-featProp Puppy.Movement.movementType setTo 'wander'
-featCall Puppy.Movement setRandomDirection
+// ✏️ if the computer controls the Gorilla, this tells the Gorilla how to move and how quickly
+// ✏️ CHANGE the speed that the Gorilla moves
+featProp Gorilla.Movement.distance setTo 4
+featProp Gorilla.Movement.movementType setTo 'wander'
+featCall Gorilla.Movement setRandomDirection
 
 
 // make sure we track interactions with the other creatures
-featCall Puppy.Touches monitor 'VeggieGarden' b2b
-featCall Puppy.Touches monitor 'Worm' b2b
-featCall Puppy.Touches monitor 'Hawk' b2b
-featCall Puppy.Touches monitor 'Robin' b2b
-featCall Puppy.Touches monitor 'Mouse' b2b
+featCall Gorilla.Touches monitor 'VeggieGarden' b2b
+featCall Gorilla.Touches monitor 'Worm' b2b
+featCall Gorilla.Touches monitor 'Clover' b2b
+featCall Gorilla.Touches monitor 'Robin' b2b
+featCall Gorilla.Touches monitor 'Caterpillar' b2b
 
 // 🔎 WHAT DOES THIS DO?
-// 🔎 how much does energy does each Puppy START with?
+// 🔎 how much does energy does each Gorilla START with?
 // ✏️ LETS CHANGE THIS:
 addProp energyLevel Number 50
 
-// 🔎 what is the MOST/LEAST amount of energy a Puppy can have?
-prop Puppy.energyLevel setMax 100
-prop Puppy.energyLevel setMin 0
+// 🔎 what is the MOST/LEAST amount of energy a Gorilla can have?
+prop Gorilla.energyLevel setMax 100
+prop Gorilla.energyLevel setMin 0
 
 // use a widget to depict the current energy, and color it green
-featProp Puppy.Graphing.meterProp setTo 'energyLevel'
-featProp Puppy.Graphing.meterColor setTo 65280
+featProp Gorilla.Graphing.meterProp setTo 'energyLevel'
+featProp Gorilla.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The Puppy gains energy from the veggie garden, mouse, robin
+// ✏️ The Gorilla gains energy from the veggie garden, clover, caterpillar, robin
 
-// ✏️ whenever a Puppy touches a veggie garden
-when Puppy touches VeggieGarden [[
+// ✏️ whenever a Gorilla touches a veggie garden
+when Gorilla touches VeggieGarden [[
   every 1 runAtStart [[
-    ifProp Puppy.alive equal true [[
+    ifProp Gorilla.alive equal true [[
       ifProp VeggieGarden.alive equal true [[
-        featProp Puppy.Costume.glow setTo 1
+        featProp Gorilla.Costume.glow setTo 1
 
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
@@ -1903,128 +1903,126 @@ when Puppy touches VeggieGarden [[
         prop VeggieGarden.energyLevel sub 10
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do Puppies GAIN when eating?
-        // ✏️ CHANGE the energy Puppy gain from VG (LARGER numbers => GAIN MORE ENERGY)
-        prop Puppy.energyLevel add 10
-        featCall Puppy.IU logString 'Puppy ate some of a veggie garden.'
+        // 🔎 How much ENERGY do Gorillas GAIN when eating?
+        // ✏️ CHANGE the energy Gorillas gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Gorilla.energyLevel add 10
+        featCall Gorilla.IU logString 'Gorilla ate some of a veggie garden.'
 
       ]]
     ]]
   ]]
 ]]
-
-// ✏️ whenever the Puppy is touching a mouse
-when Puppy touches Mouse [[
+// ✏️ whenever a Gorilla touches a Clover
+when Gorilla touches Clover [[
   every 1 runAtStart [[
-    // ✏️ if the Puppy and the mouse are alive
-    ifProp Puppy.alive equal true [[
-      ifProp Mouse.alive equal true [[
-        featProp Puppy.Costume.glow setTo 1
-        // ✏️ the mouse dies when touched by the Puppy
-        featProp Mouse.Movement.movementType setTo 'stop'
-        prop Mouse.alive setTo false
-        prop Mouse.alpha setTo 0.3
-        prop Mouse.energyLevel setTo 0
-        featCall Mouse.IU logString 'Mouse was eaten by a Puppy.'
+    ifProp Gorilla.alive equal true [[
+      ifProp Clover.alive equal true [[
+        featProp Gorilla.Costume.glow setTo 1
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do Puppies GAIN when eating a mouse?
-        // ✏️ CHANGE the energy Puppies gain from a mouse (LARGER numbers => GAIN MORE ENERGY)
-        prop Puppy.energyLevel add 25
-        featCall Puppy.IU logString 'Puppy ate a mouse.'
+        // 🔎 How much ENERGY do CLOVERS LOSE when eaten?
+        // ✏️ CHANGE the energy clovers lose (LARGER numbers => LOSE MORE ENERGY)
+        prop Clover.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Gorillas GAIN when eating?
+        // ✏️ CHANGE the energy Gorillas gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Gorilla.energyLevel add 10
+        featCall Gorilla.IU logString 'Gorilla ate some of a Clover.'
+
       ]]
     ]]
   ]]
 ]]
 
-// ✏️ whenever the Puppy is touching a Robin
-when Puppy touches Robin [[
+// ✏️ whenever the Gorilla is touching a mouse
+when Gorilla touches Caterpillar [[
   every 1 runAtStart [[
-    // ✏️ if the Puppy and the Robin are alive
-    ifProp Puppy.alive equal true [[
+    // ✏️ if the Gorilla and the Caterpillar are alive
+    ifProp Gorilla.alive equal true [[
+      ifProp Caterpillar.alive equal true [[
+        featProp Gorilla.Costume.glow setTo 1
+        // ✏️ the mouse dies when touched by the Gorilla
+        featProp Caterpillar.Movement.movementType setTo 'stop'
+        prop Caterpillar.alive setTo false
+        prop Caterpillar.alpha setTo 0.3
+        prop Caterpillar.energyLevel setTo 0
+        featCall Caterpillar.IU logString 'Caterpillar was eaten by a Gorilla.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Gorillas GAIN when eating a Caterpillar?
+        // ✏️ CHANGE the energy Gorillas gain from a Caterpillar (LARGER numbers => GAIN MORE ENERGY)
+        prop Gorilla.energyLevel add 25
+        featCall Gorilla.IU logString 'Gorilla ate a Caterpillar.'
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the Gorilla is touching a Robin
+when Gorilla touches Robin [[
+  every 1 runAtStart [[
+    // ✏️ if the Gorilla and the Robin are alive
+    ifProp Gorilla.alive equal true [[
       ifProp Robin.alive equal true [[
-        featProp Puppy.Costume.glow setTo 1
-        // ✏️ the Robin dies when touched by the Puppy
+        featProp Gorilla.Costume.glow setTo 1
+        // ✏️ the Robin dies when touched by the Gorilla
         featProp Robin.Movement.movementType setTo 'stop'
         prop Robin.alive setTo false
         prop Robin.alpha setTo 0.3
         prop Robin.energyLevel setTo 0
-        featCall Robin.IU logString 'Robin was eaten by a Puppy.'
+        featCall Robin.IU logString 'Robin was eaten by a Gorilla.'
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do Puppies GAIN when eating a Robin?
-        // ✏️ CHANGE the energy puppies gain from a Robin (LARGER numbers => GAIN MORE ENERGY)
-        prop Puppy.energyLevel add 25
-        featCall Puppy.IU logString 'Puppy ate a Robin.'
+        // 🔎 How much ENERGY do Gorillas GAIN when eating a Robin?
+        // ✏️ CHANGE the energy Gorillas gain from a Robin (LARGER numbers => GAIN MORE ENERGY)
+        prop Gorilla.energyLevel add 25
+        featCall Gorilla.IU logString 'Gorilla ate a Robin.'
       ]]
     ]]
   ]]
 ]]
 
 // 📖 Our Organism gives energy to:
-// ✏️ The Puppy gives energy to the hawk
-
-// ✏️ whenever a Puppy touches a hawk
-when Puppy touches Hawk [[
-  every 1 runAtStart [[
-    // ✏️ if the Puppy and the hawk are alive
-    ifProp Puppy.alive equal true [[
-      ifProp Hawk.alive equal true [[
-        featProp Hawk.Costume.glow setTo 1
-        // ✏️ the Puppy dies when touched by the hawk
-        featProp Puppy.Movement.movementType setTo 'stop'
-        prop Puppy.alive setTo false
-        prop Puppy.alpha setTo 0.3
-        prop Puppy.energyLevel setTo 0
-        featCall Puppy.IU logString 'Puppy was eaten by hawk.'
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do HAWKS GAIN when eating a Puppy?
-        // ✏️ CHANGE the energy the hawk gains from the Puppy (LARGER numbers => GAIN MORE ENERGY)
-        prop Hawk.energyLevel add 25
-        featCall Hawk.IU logString 'Hawk ate a Puppy.'
-      ]]
-    ]]
-  ]]
-]]
+// ✏️ The Gorilla gives energy to nothing.
 
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
-  // 🔎 How much ENERGY do Bunnies LOSE when moving?
+  // 🔎 How much ENERGY do Gorillas LOSE when moving?
   // ✏️ LETS CHANGE THIS:
   // ✏️ LARGER numbers => LOSE MORE ENERGY
-  prop Puppy.energyLevel sub 3
+  prop Gorilla.energyLevel sub 3
 
   // 🔎 WHAT DOES THIS DO?
-  // This script changes the color of the Puppy's' meter depending on how much energy it has
+  // This script changes the color of the Gorilla's meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
 
 
-  // The Puppy is feeling good, so make the meter green if the Puppy has over 50 energy (out of 100)
-  ifProp Puppy.energyLevel greaterThanOrEqual 50 [[
-    featProp Puppy.Graphing.meterColor setTo 65280
+  // The Gorilla is feeling good, so make the meter green if the Gorilla has over 50 energy (out of 100)
+  ifProp Gorilla.energyLevel greaterThanOrEqual 50 [[
+    featProp Gorilla.Graphing.meterColor setTo 65280
   ]]
 
-  // The Puppy is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
-  ifProp Puppy.energyLevel lessThan 50 [[
-    featProp Puppy.Graphing.meterColor setTo 16737792
+  // The Gorilla is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Gorilla.energyLevel lessThan 50 [[
+    featProp Gorilla.Graphing.meterColor setTo 16737792
   ]]
 
-  // The Puppy is really hungry, so make the meter red if we are under 20
-  ifProp Puppy.energyLevel lessThan 20 [[
-    featProp Puppy.Graphing.meterColor setTo 16711680
+  // The Gorilla is really hungry, so make the meter red if we are under 20
+  ifProp Gorilla.energyLevel lessThan 20 [[
+    featProp Gorilla.Graphing.meterColor setTo 16711680
   ]]
 
-  // The Puppy is dead if it has 0 energy
-  ifProp Puppy.energyLevel equal 0 [[
-    prop Puppy.alive setTo false
-    prop Puppy.alpha setTo 0.3
-    featProp Puppy.Movement.movementType setTo 'stop'
-    featCall Puppy.IU logString 'Puppy died of starvation.'
+  // The Gorilla is dead if it has 0 energy
+  ifProp Gorilla.energyLevel equal 0 [[
+    prop Gorilla.alive setTo false
+    prop Gorilla.alpha setTo 0.3
+    featProp Gorilla.Movement.movementType setTo 'stop'
+    featCall Gorilla.IU logString 'Gorilla died of starvation.'
   ]]
   // set meter to mirror energyLevel
-  featProp Puppy.Graphing.meterProp setTo 'energyLevel'
+  featProp Gorilla.Graphing.meterProp setTo 'energyLevel'
 ]]
 
 
@@ -2052,13 +2050,6 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "80",
-      "label": "Puppy80",
-      "bpid": "Puppy",
-      "initScript": `prop Puppy.x setTo -4.23
-prop Puppy.y setTo 3.85`
-    },
-    {
       "id": "82",
       "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
@@ -2066,25 +2057,32 @@ prop Puppy.y setTo 3.85`
 prop VeggieGarden.y setTo 174.72`
     },
     {
-      "id": "83",
-      "label": "Robin83",
+      "id": "86",
+      "label": "Gorilla86",
+      "bpid": "Gorilla",
+      "initScript": `prop Gorilla.x setTo 133.8
+prop Gorilla.y setTo -142.38`
+    },
+    {
+      "id": "88",
+      "label": "Clover88",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -29
+prop Clover.y setTo 43`
+    },
+    {
+      "id": "89",
+      "label": "Caterpillar89",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 297.99
+prop Caterpillar.y setTo -81.92`
+    },
+    {
+      "id": "90",
+      "label": "Robin90",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -142.46
-prop Robin.y setTo -147.8`
-    },
-    {
-      "id": "84",
-      "label": "Mouse84",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 201.87
-prop Mouse.y setTo 268.30`
-    },
-    {
-      "id": "85",
-      "label": "Hawk85",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 15
-prop Hawk.y setTo 42`
+      "initScript": `prop Robin.x setTo -252.76
+prop Robin.y setTo -121.26`
     }
   ]
 }
