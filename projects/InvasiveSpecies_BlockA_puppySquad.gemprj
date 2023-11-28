@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_BlockB_DragonDemonsTo",
+  "id": "InvasiveSpecies_BlockA_puppySquad",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -621,7 +621,7 @@ featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 // 🔎 WHAT SIZE IS THE ROBIN?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER ROBINS
-featProp Robin.Costume.scale setTo 0.05
+featProp Robin.Costume.scale setTo 0.2
 
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
@@ -1613,7 +1613,7 @@ featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 // 🔎 WHAT SIZE IS THE Mouse?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER Mouse
-featProp Mouse.Costume.scale setTo 0.1
+featProp Mouse.Costume.scale setTo 0.3
 featProp Mouse.Costume.flipX setTo true
 
 // if the computer controls the Mouse, this tells the Mouse how to move and how quickly
@@ -1824,14 +1824,14 @@ prop teacher.alpha setTo 0
 // ✏️ body`
     },
     {
-      "name": "Bear",
-      "scriptText": `# BLUEPRINT Bear
+      "name": "Puppy",
+      "scriptText": `# BLUEPRINT Puppy
 # TAG isPozyxControllable true
 # TAG isCharControllable true
 # TAG isPTrackControllable true
 
-// 🔎 WHAT IS A BEAR?
-// ✏️ CHANGE BEARS are ???????? who EAT ??????? to make BEAR ENERGY through DIGESTION
+// 🔎 WHAT IS A PUPPY?
+// ✏️ CHANGE PUPPIES are ???????? who EAT ??????? to make PUPPY ENERGY through DIGESTION
 
 // 🔎 WHAT IS A PRODUCER?
 // 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
@@ -1853,50 +1853,49 @@ addFeature IU
 addProp alive Boolean true
 
 
-// set the Bear artwork and make it smaller
-featProp Bear.Costume.costumeName setTo 'IS_bear.png'
+// set the Puppy artwork and make it smaller
+featProp Puppy.Costume.costumeName setTo 'IS_puppy.png'
 
-// ✏️ CHANGE The size of the Bear (LARGER number => LARGER BEAR)
-featProp Bear.Costume.scale setTo 0.3
-featProp Bear.Costume.flipX setTo true
+// ✏️ CHANGE The size of the Puppy (LARGER number => LARGER Puppy)
+featProp Puppy.Costume.scale setTo 0.25
 
-// ✏️ if the computer controls the Bear, this tells the Bear how to move and how quickly
-// ✏️ CHANGE the speed that the bear moves
-featProp Bear.Movement.distance setTo 4
-featProp Bear.Movement.movementType setTo 'wander'
-featCall Bear.Movement setRandomDirection
+// ✏️ if the computer controls the Puppy, this tells the Puppy how to move and how quickly
+// ✏️ CHANGE the speed that the Puppy moves
+featProp Puppy.Movement.distance setTo 4
+featProp Puppy.Movement.movementType setTo 'wander'
+featCall Puppy.Movement setRandomDirection
 
 
 // make sure we track interactions with the other creatures
-featCall Bear.Touches monitor 'VeggieGarden' b2b
-featCall Bear.Touches monitor 'Worm' b2b
-featCall Bear.Touches monitor 'Hawk' b2b
-featCall Bear.Touches monitor 'Snake' b2b
-featCall Bear.Touches monitor 'Mouse' b2b
+featCall Puppy.Touches monitor 'VeggieGarden' b2b
+featCall Puppy.Touches monitor 'Worm' b2b
+featCall Puppy.Touches monitor 'Hawk' b2b
+featCall Puppy.Touches monitor 'Robin' b2b
+featCall Puppy.Touches monitor 'Mouse' b2b
 
 // 🔎 WHAT DOES THIS DO?
-// 🔎 how much does energy does each Bear START with?
+// 🔎 how much does energy does each Puppy START with?
 // ✏️ LETS CHANGE THIS:
 addProp energyLevel Number 50
 
-// 🔎 what is the MOST/LEAST amount of energy a Bear can have?
-prop Bear.energyLevel setMax 100
-prop Bear.energyLevel setMin 0
+// 🔎 what is the MOST/LEAST amount of energy a Puppy can have?
+prop Puppy.energyLevel setMax 100
+prop Puppy.energyLevel setMin 0
 
 // use a widget to depict the current energy, and color it green
-featProp Bear.Graphing.meterProp setTo 'energyLevel'
-featProp Bear.Graphing.meterColor setTo 65280
+featProp Puppy.Graphing.meterProp setTo 'energyLevel'
+featProp Puppy.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The bear gains energy from the veggie garden, hawk, mouse, snake
+// ✏️ The Puppy gains energy from the veggie garden, mouse, robin
 
-// ✏️ whenever a Bear touches a veggie garden
-when Bear touches VeggieGarden [[
+// ✏️ whenever a Puppy touches a veggie garden
+when Puppy touches VeggieGarden [[
   every 1 runAtStart [[
-    ifProp Bear.alive equal true [[
+    ifProp Puppy.alive equal true [[
       ifProp VeggieGarden.alive equal true [[
-        featProp Bear.Costume.glow setTo 1
+        featProp Puppy.Costume.glow setTo 1
 
         // 🔎 WHAT DOES THIS DO?
         // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
@@ -1904,155 +1903,128 @@ when Bear touches VeggieGarden [[
         prop VeggieGarden.energyLevel sub 10
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do bears GAIN when eating?
-        // ✏️ CHANGE the energy bears gain from VG (LARGER numbers => GAIN MORE ENERGY)
-        prop Bear.energyLevel add 10
-        featCall Bear.IU logString 'Bear ate some of a veggie garden.'
+        // 🔎 How much ENERGY do Puppies GAIN when eating?
+        // ✏️ CHANGE the energy Puppy gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Puppy.energyLevel add 10
+        featCall Puppy.IU logString 'Puppy ate some of a veggie garden.'
 
       ]]
     ]]
   ]]
 ]]
 
-// ✏️ whenever the bear is touching a mouse
-when Bear touches Mouse [[
+// ✏️ whenever the Puppy is touching a mouse
+when Puppy touches Mouse [[
   every 1 runAtStart [[
-    // ✏️ if the Bear and the mouse are alive
-    ifProp Bear.alive equal true [[
+    // ✏️ if the Puppy and the mouse are alive
+    ifProp Puppy.alive equal true [[
       ifProp Mouse.alive equal true [[
-        featProp Bear.Costume.glow setTo 1
-        // ✏️ the mouse dies when touched by the Bear
+        featProp Puppy.Costume.glow setTo 1
+        // ✏️ the mouse dies when touched by the Puppy
         featProp Mouse.Movement.movementType setTo 'stop'
         prop Mouse.alive setTo false
         prop Mouse.alpha setTo 0.3
         prop Mouse.energyLevel setTo 0
-        featCall Mouse.IU logString 'Mouse was eaten by a bear.'
+        featCall Mouse.IU logString 'Mouse was eaten by a Puppy.'
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BEARS GAIN when eating a mouse?
-        // ✏️ CHANGE the energy bears gain from a mouse (LARGER numbers => GAIN MORE ENERGY)
-        prop Bear.energyLevel add 25
-        featCall Bear.IU logString 'Bear ate a mouse.'
+        // 🔎 How much ENERGY do Puppies GAIN when eating a mouse?
+        // ✏️ CHANGE the energy Puppies gain from a mouse (LARGER numbers => GAIN MORE ENERGY)
+        prop Puppy.energyLevel add 25
+        featCall Puppy.IU logString 'Puppy ate a mouse.'
       ]]
     ]]
   ]]
 ]]
 
-// ✏️ whenever the bear is touching a snake
-when Bear touches Snake [[
+// ✏️ whenever the Puppy is touching a Robin
+when Puppy touches Robin [[
   every 1 runAtStart [[
-    // ✏️ if the Bear and the mouse are alive
-    ifProp Bear.alive equal true [[
-      ifProp Snake.alive equal true [[
-        featProp Bear.Costume.glow setTo 1
-        // ✏️ the mouse dies when touched by the Bear
-        featProp Snake.Movement.movementType setTo 'stop'
-        prop Snake.alive setTo false
-        prop Snake.alpha setTo 0.3
-        prop Snake.energyLevel setTo 0
-        featCall Snake.IU logString 'Snake was eaten by a bear.'
+    // ✏️ if the Puppy and the Robin are alive
+    ifProp Puppy.alive equal true [[
+      ifProp Robin.alive equal true [[
+        featProp Puppy.Costume.glow setTo 1
+        // ✏️ the Robin dies when touched by the Puppy
+        featProp Robin.Movement.movementType setTo 'stop'
+        prop Robin.alive setTo false
+        prop Robin.alpha setTo 0.3
+        prop Robin.energyLevel setTo 0
+        featCall Robin.IU logString 'Robin was eaten by a Puppy.'
 
         // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BEARS GAIN when eating a snake?
-        // ✏️ CHANGE the energy bears gain from a snake (LARGER numbers => GAIN MORE ENERGY)
-        prop Bear.energyLevel add 25
-        featCall Bear.IU logString 'Bear ate a snake.'
-      ]]
-    ]]
-  ]]
-]]
-
-// ✏️ whenever the bear is touching a hawk
-when Bear touches Hawk [[
-  every 1 runAtStart [[
-    // ✏️ if the Bear and the mouse are alive
-    ifProp Bear.alive equal true [[
-      ifProp Hawk.alive equal true [[
-        featProp Bear.Costume.glow setTo 1
-        // ✏️ the mouse dies when touched by the Bear
-        featProp Hawk.Movement.movementType setTo 'stop'
-        prop Hawk.alive setTo false
-        prop Hawk.alpha setTo 0.3
-        prop Hawk.energyLevel setTo 0
-        featCall Hawk.IU logString 'Hawk was eaten by a bear.'
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do BEARS GAIN when eating a hawk?
-        // ✏️ CHANGE the energy bears gain from a hawk (LARGER numbers => GAIN MORE ENERGY)
-        prop Bear.energyLevel add 25
-        featCall Bear.IU logString 'Bear ate a hawk.'
+        // 🔎 How much ENERGY do Puppies GAIN when eating a Robin?
+        // ✏️ CHANGE the energy puppies gain from a Robin (LARGER numbers => GAIN MORE ENERGY)
+        prop Puppy.energyLevel add 25
+        featCall Puppy.IU logString 'Puppy ate a Robin.'
       ]]
     ]]
   ]]
 ]]
 
 // 📖 Our Organism gives energy to:
-// ✏️ The bear gives energy to the hawk
+// ✏️ The Puppy gives energy to the hawk
 
-// ✏️ whenever a Bear touches a hawk
-// when Bear touches Hawk [[
-// every 1 runAtStart [[
-// ✏️ if the bear and the hawk are alive
-// ifProp Bear.alive equal true [[
-// ifProp Hawk.alive equal true [[
-// featProp Hawk.Costume.glow setTo 1
-// ✏️ the bear dies when touched by the hawk
-// featProp Bear.Movement.movementType setTo 'stop'
-// prop Bear.alive setTo false
-// prop Bear.alpha setTo 0.3
-// prop Bear.energyLevel setTo 0
-// featCall Bear.IU logString 'Bear was eaten by hawk.'
+// ✏️ whenever a Puppy touches a hawk
+when Puppy touches Hawk [[
+  every 1 runAtStart [[
+    // ✏️ if the Puppy and the hawk are alive
+    ifProp Puppy.alive equal true [[
+      ifProp Hawk.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // ✏️ the Puppy dies when touched by the hawk
+        featProp Puppy.Movement.movementType setTo 'stop'
+        prop Puppy.alive setTo false
+        prop Puppy.alpha setTo 0.3
+        prop Puppy.energyLevel setTo 0
+        featCall Puppy.IU logString 'Puppy was eaten by hawk.'
 
-// 🔎 WHAT DOES THIS DO?
-// 🔎 How much ENERGY do HAWKS GAIN when eating a bear?
-// ✏️ CHANGE the energy the hawk gains from the bear (LARGER numbers => GAIN MORE ENERGY)
-// prop Hawk.energyLevel add 25
-// featCall Hawk.IU logString 'Hawk ate a bear.'
-// ]]
-// ]]
-// ]]
-// ]]
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a Puppy?
+        // ✏️ CHANGE the energy the hawk gains from the Puppy (LARGER numbers => GAIN MORE ENERGY)
+        prop Hawk.energyLevel add 25
+        featCall Hawk.IU logString 'Hawk ate a Puppy.'
+      ]]
+    ]]
+  ]]
+]]
+
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
   // 🔎 How much ENERGY do Bunnies LOSE when moving?
   // ✏️ LETS CHANGE THIS:
   // ✏️ LARGER numbers => LOSE MORE ENERGY
-  prop Bear.energyLevel sub 3
+  prop Puppy.energyLevel sub 3
 
   // 🔎 WHAT DOES THIS DO?
-  // This script changes the color of the Bear's meter depending on how much energy it has
+  // This script changes the color of the Puppy's' meter depending on how much energy it has
   // We can change the numbers if we want the colors to appear at different levels
 
 
-  // The Bear is feeling good, so make the meter green if the Bear has over 50 energy (out of 100)
-  ifProp Bear.energyLevel greaterThanOrEqual 50 [[
-    featProp Bear.Costume.currentFrame setTo 0
-    featProp Bear.Graphing.meterColor setTo 65280
+  // The Puppy is feeling good, so make the meter green if the Puppy has over 50 energy (out of 100)
+  ifProp Puppy.energyLevel greaterThanOrEqual 50 [[
+    featProp Puppy.Graphing.meterColor setTo 65280
   ]]
 
-  // The Bear is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
-  ifProp Bear.energyLevel lessThan 50 [[
-    featProp Bear.Costume.currentFrame setTo 1
-    featProp Bear.Graphing.meterColor setTo 16737792
+  // The Puppy is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Puppy.energyLevel lessThan 50 [[
+    featProp Puppy.Graphing.meterColor setTo 16737792
   ]]
 
-  // The Bear is really hungry, so make the meter red if we are under 20
-  ifProp Bear.energyLevel lessThan 20 [[
-    featProp Bear.Costume.currentFrame setTo 1
-    featProp Bear.Graphing.meterColor setTo 16711680
+  // The Puppy is really hungry, so make the meter red if we are under 20
+  ifProp Puppy.energyLevel lessThan 20 [[
+    featProp Puppy.Graphing.meterColor setTo 16711680
   ]]
 
-  // The Bear is dead if it has 0 energy
-  ifProp Bear.energyLevel equal 0 [[
-    prop Bear.alive setTo false
-    featProp Bear.Costume.currentFrame setTo 2
-    prop Bear.alpha setTo 0.3
-    featProp Bear.Movement.movementType setTo 'stop'
-    featCall Bear.IU logString 'Bear died of starvation.'
+  // The Puppy is dead if it has 0 energy
+  ifProp Puppy.energyLevel equal 0 [[
+    prop Puppy.alive setTo false
+    prop Puppy.alpha setTo 0.3
+    featProp Puppy.Movement.movementType setTo 'stop'
+    featCall Puppy.IU logString 'Puppy died of starvation.'
   ]]
   // set meter to mirror energyLevel
-  featProp Bear.Graphing.meterProp setTo 'energyLevel'
+  featProp Puppy.Graphing.meterProp setTo 'energyLevel'
 ]]
 
 
@@ -2080,74 +2052,39 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo -208.3
-prop Hawk.y setTo 45.93`
+      "id": "80",
+      "label": "Puppy80",
+      "bpid": "Puppy",
+      "initScript": `prop Puppy.x setTo -4.23
+prop Puppy.y setTo 3.85`
     },
     {
-      "id": "132",
-      "label": "VeggieGarden132",
+      "id": "82",
+      "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -36.42
-prop VeggieGarden.y setTo 233.80`
+      "initScript": `prop VeggieGarden.x setTo -122.26
+prop VeggieGarden.y setTo 174.72`
     },
     {
-      "id": "133",
-      "label": "Snake133",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo -82.1
-prop Snake.y setTo 34.92`
-    },
-    {
-      "id": "134",
-      "label": "Mouse134",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 315.16
-prop Mouse.y setTo -24.78`
-    },
-    {
-      "id": "135",
-      "label": "Hawk135",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 228.65
-prop Hawk.y setTo -190.42`
-    },
-    {
-      "id": "136",
-      "label": "Robin136",
+      "id": "83",
+      "label": "Robin83",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -291.98
-prop Robin.y setTo -226.9`
+      "initScript": `prop Robin.x setTo -142.46
+prop Robin.y setTo -147.8`
     },
     {
-      "id": "138",
-      "label": "Snake138",
-      "bpid": "Snake",
-      "initScript": `prop Snake.x setTo 330.14
-prop Snake.y setTo 189.84`
+      "id": "84",
+      "label": "Mouse84",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 201.87
+prop Mouse.y setTo 268.30`
     },
     {
-      "id": "139",
-      "label": "VeggieGarden139",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 180.78
-prop VeggieGarden.y setTo 229.90`
-    },
-    {
-      "id": "140",
-      "label": "VeggieGarden140",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -239.21
-prop VeggieGarden.y setTo 217.23`
-    },
-    {
-      "id": "141",
-      "label": "Bear141",
-      "bpid": "Bear",
-      "initScript": `prop Bear.x setTo -14
-prop Bear.y setTo -5`
+      "id": "85",
+      "label": "Hawk85",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 140.19
+prop Hawk.y setTo -136.84`
     }
   ]
 }
