@@ -226,9 +226,9 @@ addFeature IU
 addProp alive Boolean true
 addProp hasNutrients boolean false
 
-// set the costume and make it smaller 
+// set the costume and make it smaller
 featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
-featProp VeggieGarden.Costume.scale setTo 0.3
+featProp VeggieGarden.Costume.scale setTo 0.5
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Robin' b2b
@@ -244,7 +244,7 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-//veggie gardens lose energy during the night
+// veggie gardens lose energy during the night
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -257,7 +257,7 @@ ifProp global.skyState notEqual 'daytime' [[
   ]]
 ]]
 
-//veggie gardens gain energy during the daytime
+// veggie gardens gain energy during the daytime
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -270,7 +270,7 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
-//change the veggie garden costume to show if it has nutrients 
+// change the veggie garden costume to show if it has nutrients
 ifProp VeggieGarden.hasNutrients equal true [[
   featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
@@ -320,14 +320,13 @@ every 1 runAtStart [[
 // veggie gardens lose nutrients over time
 ifProp VeggieGarden.hasNutrients equal true [[
   every 10 [[
-      // 🔎 WHAT DOES THIS DO?
-      // 🔎 how long do veggie gardens keep their nutrients?
-      // ✏️ LETS CHANGE THIS:
-      // ✏️ LARGER numbers => nutrients stay for longer
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how long do veggie gardens keep their nutrients?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ LARGER numbers => nutrients stay for longer
     prop VeggieGarden.hasNutrients setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Clover",
@@ -781,7 +780,7 @@ featCall Hawk.Movement setRandomDirection
 featCall Hawk.Touches monitor 'Snake' b2b
 featCall Hawk.Touches monitor 'Robin' b2b
 featCall Hawk.Touches monitor 'Mouse' b2b
-
+featCall Hawk.Touches monitor 'Mole' b2b
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 How much ENERGY do HAWKS START with?
@@ -890,6 +889,35 @@ when Hawk lastTouches Mouse [[
   featProp Hawk.Costume.glow setTo 0
 ]]
 
+// whenever the hawk is touching a Mole
+when Hawk touches Mole [[
+  every 1 runAtStart [[
+    // if the hawk and the Mole are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Mouse.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // the mouse dies when touched by the hawk
+        featProp Mole.Movement.movementType setTo 'stop'
+        prop Mole.alive setTo false
+        prop Mole.alpha setTo 0.3
+        prop Mole.energyLevel setTo 0
+        featCall Mole.IU logString 'Mole was eaten by a hawk.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a mole?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+        featCall Hawk.IU logString 'Hawk ate a mole.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the hawk eats a mouse, it will stop glowing
+when Hawk lastTouches Mole [[
+  featProp Hawk.Costume.glow setTo 0
+]]
 every 1 runAtStart [[
 
   // 🔎 WHAT DOES THIS DO?
@@ -1991,8 +2019,8 @@ every 1 runAtStart [[
       "id": "13",
       "label": "Background13",
       "bpid": "Background",
-      "initScript": `prop x setTo -0.99
-prop y setTo -28.52`
+      "initScript": `prop Background.x setTo -3.06
+prop Background.y setTo -29.55`
     },
     {
       "id": "79",
@@ -2005,22 +2033,85 @@ prop y setTo -400.99`
       "id": "80",
       "label": "Mole80",
       "bpid": "Mole",
-      "initScript": `prop Mole.x setTo -39
-prop Mole.y setTo -18`
+      "initScript": `prop Mole.x setTo -131.93
+prop Mole.y setTo 117.01`
     },
     {
       "id": "81",
       "label": "VeggieGarden81",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 89.11
-prop VeggieGarden.y setTo 60.11`
+      "initScript": `prop VeggieGarden.x setTo -304.01
+prop VeggieGarden.y setTo -178.64`
     },
     {
-      "id": "82",
-      "label": "Caterpillar82",
+      "id": "83",
+      "label": "Mole83",
+      "bpid": "Mole",
+      "initScript": `prop Mole.x setTo -245.15
+prop Mole.y setTo -82.44`
+    },
+    {
+      "id": "84",
+      "label": "VeggieGarden84",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 243.49
+prop VeggieGarden.y setTo -6.13`
+    },
+    {
+      "id": "85",
+      "label": "VeggieGarden85",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -24.52
+prop VeggieGarden.y setTo 215.53`
+    },
+    {
+      "id": "86",
+      "label": "Caterpillar86",
       "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 110.42
-prop Caterpillar.y setTo -50.96`
+      "initScript": `prop Caterpillar.x setTo -68.35
+prop Caterpillar.y setTo -1.57`
+    },
+    {
+      "id": "87",
+      "label": "Caterpillar87",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 270.62
+prop Caterpillar.y setTo -162.05`
+    },
+    {
+      "id": "88",
+      "label": "Caterpillar88",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 247.34
+prop Caterpillar.y setTo 184.24`
+    },
+    {
+      "id": "89",
+      "label": "Mole89",
+      "bpid": "Mole",
+      "initScript": `prop Mole.x setTo 166.28
+prop Mole.y setTo -188.98`
+    },
+    {
+      "id": "90",
+      "label": "VeggieGarden90",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 4.58
+prop VeggieGarden.y setTo -207.18`
+    },
+    {
+      "id": "91",
+      "label": "VeggieGarden91",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -285.07
+prop VeggieGarden.y setTo 101.22`
+    },
+    {
+      "id": "92",
+      "label": "Hawk92",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo -128.08
+prop Hawk.y setTo -294.77`
     }
   ]
 }
