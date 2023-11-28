@@ -226,9 +226,9 @@ addFeature IU
 addProp alive Boolean true
 addProp hasNutrients boolean false
 
-// set the costume and make it smaller 
+// set the costume and make it smaller
 featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
-featProp VeggieGarden.Costume.scale setTo 0.3
+featProp VeggieGarden.Costume.scale setTo 0.5
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Robin' b2b
@@ -244,7 +244,7 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-//veggie gardens lose energy during the night
+// veggie gardens lose energy during the night
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -257,7 +257,7 @@ ifProp global.skyState notEqual 'daytime' [[
   ]]
 ]]
 
-//veggie gardens gain energy during the daytime
+// veggie gardens gain energy during the daytime
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -270,7 +270,7 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
-//change the veggie garden costume to show if it has nutrients 
+// change the veggie garden costume to show if it has nutrients
 ifProp VeggieGarden.hasNutrients equal true [[
   featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
@@ -320,14 +320,13 @@ every 1 runAtStart [[
 // veggie gardens lose nutrients over time
 ifProp VeggieGarden.hasNutrients equal true [[
   every 10 [[
-      // 🔎 WHAT DOES THIS DO?
-      // 🔎 how long do veggie gardens keep their nutrients?
-      // ✏️ LETS CHANGE THIS:
-      // ✏️ LARGER numbers => nutrients stay for longer
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how long do veggie gardens keep their nutrients?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ LARGER numbers => nutrients stay for longer
     prop VeggieGarden.hasNutrients setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Clover",
@@ -774,7 +773,7 @@ featProp Hawk.Costume.scale setTo 0.3
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 2
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -1631,7 +1630,7 @@ featCall Mouse.Touches monitor 'Worm' b2b
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each Mouse START with?
 // ✏️ LETS CHANGE THIS:
-addProp energyLevel Number 50
+addProp energyLevel Number 60
 
 // 🔎 what is the MOST/LEAST amount of energy a Mouse can have?
 prop Mouse.energyLevel setMax 100
@@ -1857,11 +1856,11 @@ addProp alive Boolean true
 featProp Puppy.Costume.costumeName setTo 'IS_puppy.png'
 
 // ✏️ CHANGE The size of the Puppy (LARGER number => LARGER Puppy)
-featProp Puppy.Costume.scale setTo 0.25
+featProp Puppy.Costume.scale setTo 0.3
 
 // ✏️ if the computer controls the Puppy, this tells the Puppy how to move and how quickly
 // ✏️ CHANGE the speed that the Puppy moves
-featProp Puppy.Movement.distance setTo 4
+featProp Puppy.Movement.distance setTo 6
 featProp Puppy.Movement.movementType setTo 'wander'
 featCall Puppy.Movement setRandomDirection
 
@@ -1876,7 +1875,7 @@ featCall Puppy.Touches monitor 'Mouse' b2b
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each Puppy START with?
 // ✏️ LETS CHANGE THIS:
-addProp energyLevel Number 50
+addProp energyLevel Number 100
 
 // 🔎 what is the MOST/LEAST amount of energy a Puppy can have?
 prop Puppy.energyLevel setMax 100
@@ -2052,39 +2051,74 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "80",
-      "label": "Puppy80",
-      "bpid": "Puppy",
-      "initScript": `prop Puppy.x setTo -4.23
-prop Puppy.y setTo 3.85`
-    },
-    {
       "id": "82",
       "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -122.26
-prop VeggieGarden.y setTo 174.72`
+      "initScript": `prop VeggieGarden.x setTo -198.51
+prop VeggieGarden.y setTo -130.8`
     },
     {
       "id": "83",
       "label": "Robin83",
       "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -142.46
-prop Robin.y setTo -147.8`
+      "initScript": `prop Robin.x setTo -135.14
+prop Robin.y setTo 61.06`
     },
     {
       "id": "84",
       "label": "Mouse84",
       "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 201.87
-prop Mouse.y setTo 268.30`
+      "initScript": `prop Mouse.x setTo -329.8
+prop Mouse.y setTo -30.65`
     },
     {
-      "id": "85",
-      "label": "Hawk85",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 140.19
-prop Hawk.y setTo -136.84`
+      "id": "86",
+      "label": "VeggieGarden86",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -241.77
+prop VeggieGarden.y setTo 203.30`
+    },
+    {
+      "id": "87",
+      "label": "Clover87",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 131.53
+prop Clover.y setTo -135.98`
+    },
+    {
+      "id": "88",
+      "label": "Puppy88",
+      "bpid": "Puppy",
+      "initScript": `prop Puppy.x setTo -329.72
+prop Puppy.y setTo -210.14`
+    },
+    {
+      "id": "89",
+      "label": "Caterpillar89",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -9.90
+prop Caterpillar.y setTo 66.47`
+    },
+    {
+      "id": "90",
+      "label": "Snake90",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -2.60
+prop Snake.y setTo 160.35`
+    },
+    {
+      "id": "91",
+      "label": "VeggieGarden91",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 187.83
+prop VeggieGarden.y setTo 33.66`
+    },
+    {
+      "id": "92",
+      "label": "Mouse92",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 316.37
+prop Mouse.y setTo -53.18`
     }
   ]
 }
