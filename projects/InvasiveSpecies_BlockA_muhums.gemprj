@@ -1,5 +1,5 @@
 {
-  "id": "InvasiveSpecies_BlockB_YAJR",
+  "id": "InvasiveSpecies_BlockA_muhums",
   "label": "Garden Ecosystem 2.5",
   "metadata": {
     "top": -400,
@@ -1854,11 +1854,10 @@ addProp alive Boolean true
 
 
 // set the Horse artwork and make it smaller
-featProp Horse.Costume.costumeName setTo 'IS_horse.png'
+featProp Horse.Costume.costumeName setTo 'IS_horseA.png'
 
 // ✏️ CHANGE The size of the Horse (LARGER number => LARGER HORSE)
 featProp Horse.Costume.scale setTo 0.25
-featProp Horse.Costume.flipX setTo true
 
 // ✏️ if the computer controls the Horse, this tells the Horse how to move and how quickly
 // ✏️ CHANGE the speed that the Horse moves
@@ -1871,6 +1870,8 @@ featCall Horse.Movement setRandomDirection
 featCall Horse.Touches monitor 'VeggieGarden' b2b
 featCall Horse.Touches monitor 'Clover' b2b
 featCall Horse.Touches monitor 'Worm' b2b
+featCall Horse.Touches monitor 'Caterpillar' b2b
+featCall Horse.Touches monitor 'Mouse' b2b
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each Horse START with?
@@ -1887,7 +1888,7 @@ featProp Horse.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The Horse gains energy from the clover and the veggie garden
+// ✏️ The Horse gains energy from the clover, veggie garden, caterpillar, and mouse
 
 // ✏️ whenever a Horse touches a clover
 when Horse touches Clover [[
@@ -1931,6 +1932,54 @@ when Horse touches VeggieGarden [[
         prop Horse.energyLevel add 10
         featCall Horse.IU logString 'Horse ate some of a veggie garden.'
 
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the Horse is touching a Caterpillar
+when Horse touches Caterpillar [[
+  every 1 runAtStart [[
+    // ✏️ if the Horse and the Caterpillar are alive
+    ifProp Horse.alive equal true [[
+      ifProp Caterpillar.alive equal true [[
+        featProp Horse.Costume.glow setTo 1
+        // ✏️ the Caterpillar dies when touched by the Horse
+        featProp Caterpillar.Movement.movementType setTo 'stop'
+        prop Caterpillar.alive setTo false
+        prop Caterpillar.alpha setTo 0.3
+        prop Caterpillar.energyLevel setTo 0
+        featCall Caterpillar.IU logString 'Caterpillar was eaten by a Horse.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Horses GAIN when eating a Caterpillar?
+        // ✏️ CHANGE the energy Horses gain from a Caterpillar (LARGER numbers => GAIN MORE ENERGY)
+        prop Horse.energyLevel add 25
+        featCall Horse.IU logString 'Horse ate a Caterpillar.'
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever the Horse is touching a mouse
+when Horse touches Mouse [[
+  every 1 runAtStart [[
+    // ✏️ if the Horse and the Mouse are alive
+    ifProp Horse.alive equal true [[
+      ifProp Mouse.alive equal true [[
+        featProp Horse.Costume.glow setTo 1
+        // ✏️ the Mouse dies when touched by the Horse
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Mouse.energyLevel setTo 0
+        featCall Mouse.IU logString 'Mouse was eaten by a Horse.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Horses GAIN when eating a Mouse?
+        // ✏️ CHANGE the energy Horses gain from a Mouse (LARGER numbers => GAIN MORE ENERGY)
+        prop Horse.energyLevel add 25
+        featCall Horse.IU logString 'Horse ate a mouse.'
       ]]
     ]]
   ]]
@@ -1993,8 +2042,8 @@ every 1 runAtStart [[
       "id": "13",
       "label": "Background13",
       "bpid": "Background",
-      "initScript": `prop Background.x setTo -59.13
-prop Background.y setTo -1.45`
+      "initScript": `prop Background.x setTo -1.90
+prop Background.y setTo 2.13`
     },
     {
       "id": "79",
@@ -2004,88 +2053,39 @@ prop Background.y setTo -1.45`
 prop Timer.y setTo -400.99`
     },
     {
-      "id": "97",
-      "label": "VeggieGarden97",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -314.90
-prop VeggieGarden.y setTo -157.83`
-    },
-    {
-      "id": "109",
-      "label": "Hawk109",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo -76.38
-prop Hawk.y setTo 281.96`
-    },
-    {
-      "id": "126",
-      "label": "VeggieGarden126",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 193.72
-prop VeggieGarden.y setTo 248.49`
-    },
-    {
-      "id": "130",
-      "label": "Clover130",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -37.45
-prop Clover.y setTo -139.11`
-    },
-    {
-      "id": "132",
-      "label": "Robin132",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo 310.06
-prop Robin.y setTo 233.73`
-    },
-    {
-      "id": "133",
-      "label": "Mouse133",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -187.74
-prop Mouse.y setTo 41.81`
-    },
-    {
-      "id": "134",
-      "label": "Robin134",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -390.24
-prop Robin.y setTo 257.16`
-    },
-    {
-      "id": "136",
-      "label": "Mouse136",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo -393.04
-prop Mouse.y setTo -68.30`
-    },
-    {
-      "id": "137",
-      "label": "VeggieGarden137",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -50.17
-prop VeggieGarden.y setTo 45.27`
-    },
-    {
-      "id": "138",
-      "label": "Clover138",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -353.64
-prop Clover.y setTo 300.40`
-    },
-    {
-      "id": "139",
-      "label": "Clover139",
-      "bpid": "Clover",
-      "initScript": `prop Clover.x setTo 289.56
-prop Clover.y setTo -130.33`
-    },
-    {
       "id": "140",
       "label": "Horse140",
       "bpid": "Horse",
       "initScript": `prop Horse.x setTo -245.19
 prop Horse.y setTo 165.03`
+    },
+    {
+      "id": "141",
+      "label": "Caterpillar141",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -41
+prop Caterpillar.y setTo -29`
+    },
+    {
+      "id": "142",
+      "label": "Mouse142",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 200.61
+prop Mouse.y setTo 21.23`
+    },
+    {
+      "id": "143",
+      "label": "VeggieGarden143",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 13.46
+prop VeggieGarden.y setTo 250.56`
+    },
+    {
+      "id": "144",
+      "label": "Clover144",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo -307.06
+prop Clover.y setTo -56.69`
     }
   ]
 }
