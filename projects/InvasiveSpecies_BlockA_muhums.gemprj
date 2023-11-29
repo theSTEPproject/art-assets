@@ -495,7 +495,7 @@ featProp Caterpillar.Costume.scale setTo 0.3
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
-featProp Caterpillar.Movement.distance setTo 2
+featProp Caterpillar.Movement.distance setTo 3
 featProp Caterpillar.Movement.targetY setMax 0.7
 
 // make sure we track interactions with the other creatures
@@ -626,7 +626,7 @@ featProp Robin.Costume.scale setTo 0.2
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
-featProp Robin.Movement.distance setTo 3
+featProp Robin.Movement.distance setTo 5
 featProp Robin.Movement.targetY setMax 0.7
 
 // check with robins touch caterpillars
@@ -1888,7 +1888,7 @@ featProp Horse.Graphing.meterColor setTo 65280
 
 # PROGRAM UPDATE
 // 📖 Our Organism gains energy from:
-// ✏️ The Horse gains energy from the clover, veggie garden, caterpillar, and mouse
+// ✏️ The Horse gains energy from the clover, veggie garden
 
 // ✏️ whenever a Horse touches a clover
 when Horse touches Clover [[
@@ -1937,53 +1937,8 @@ when Horse touches VeggieGarden [[
   ]]
 ]]
 
-// ✏️ whenever the Horse is touching a Caterpillar
-when Horse touches Caterpillar [[
-  every 1 runAtStart [[
-    // ✏️ if the Horse and the Caterpillar are alive
-    ifProp Horse.alive equal true [[
-      ifProp Caterpillar.alive equal true [[
-        featProp Horse.Costume.glow setTo 1
-        // ✏️ the Caterpillar dies when touched by the Horse
-        featProp Caterpillar.Movement.movementType setTo 'stop'
-        prop Caterpillar.alive setTo false
-        prop Caterpillar.alpha setTo 0.3
-        prop Caterpillar.energyLevel setTo 0
-        featCall Caterpillar.IU logString 'Caterpillar was eaten by a Horse.'
 
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do Horses GAIN when eating a Caterpillar?
-        // ✏️ CHANGE the energy Horses gain from a Caterpillar (LARGER numbers => GAIN MORE ENERGY)
-        prop Horse.energyLevel add 25
-        featCall Horse.IU logString 'Horse ate a Caterpillar.'
-      ]]
-    ]]
-  ]]
-]]
 
-// ✏️ whenever the Horse is touching a mouse
-when Horse touches Mouse [[
-  every 1 runAtStart [[
-    // ✏️ if the Horse and the Mouse are alive
-    ifProp Horse.alive equal true [[
-      ifProp Mouse.alive equal true [[
-        featProp Horse.Costume.glow setTo 1
-        // ✏️ the Mouse dies when touched by the Horse
-        featProp Mouse.Movement.movementType setTo 'stop'
-        prop Mouse.alive setTo false
-        prop Mouse.alpha setTo 0.3
-        prop Mouse.energyLevel setTo 0
-        featCall Mouse.IU logString 'Mouse was eaten by a Horse.'
-
-        // 🔎 WHAT DOES THIS DO?
-        // 🔎 How much ENERGY do Horses GAIN when eating a Mouse?
-        // ✏️ CHANGE the energy Horses gain from a Mouse (LARGER numbers => GAIN MORE ENERGY)
-        prop Horse.energyLevel add 25
-        featCall Horse.IU logString 'Horse ate a mouse.'
-      ]]
-    ]]
-  ]]
-]]
 
 every 1 runAtStart [[
 
@@ -2056,36 +2011,92 @@ prop Timer.y setTo -400.99`
       "id": "140",
       "label": "Horse140",
       "bpid": "Horse",
-      "initScript": `prop Horse.x setTo -245.19
-prop Horse.y setTo 165.03`
-    },
-    {
-      "id": "141",
-      "label": "Caterpillar141",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo -41
-prop Caterpillar.y setTo -29`
-    },
-    {
-      "id": "142",
-      "label": "Mouse142",
-      "bpid": "Mouse",
-      "initScript": `prop Mouse.x setTo 200.61
-prop Mouse.y setTo 21.23`
+      "initScript": `prop Horse.x setTo 283.62
+prop Horse.y setTo 270.11`
     },
     {
       "id": "143",
       "label": "VeggieGarden143",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 13.46
-prop VeggieGarden.y setTo 250.56`
+      "initScript": `prop VeggieGarden.x setTo 320.80
+prop VeggieGarden.y setTo 9.88`
     },
     {
       "id": "144",
       "label": "Clover144",
       "bpid": "Clover",
-      "initScript": `prop Clover.x setTo -307.06
-prop Clover.y setTo -56.69`
+      "initScript": `prop Clover.x setTo -183.90
+prop Clover.y setTo -96.24`
+    },
+    {
+      "id": "145",
+      "label": "Clover145",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 121.59
+prop Clover.y setTo -96.53`
+    },
+    {
+      "id": "146",
+      "label": "Clover146",
+      "bpid": "Clover",
+      "initScript": `prop Clover.x setTo 40.94
+prop Clover.y setTo 277.88`
+    },
+    {
+      "id": "147",
+      "label": "Robin147",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 38.06
+prop Robin.y setTo -335.56`
+    },
+    {
+      "id": "148",
+      "label": "Robin148",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 245.66
+prop Robin.y setTo -331.89`
+    },
+    {
+      "id": "149",
+      "label": "VeggieGarden149",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -275.53
+prop VeggieGarden.y setTo 234.20`
+    },
+    {
+      "id": "150",
+      "label": "Caterpillar150",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 92.07
+prop Caterpillar.y setTo 36.45`
+    },
+    {
+      "id": "151",
+      "label": "Caterpillar151",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -179.78
+prop Caterpillar.y setTo 9.52`
+    },
+    {
+      "id": "152",
+      "label": "Robin152",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -122.62
+prop Robin.y setTo -256.88`
+    },
+    {
+      "id": "153",
+      "label": "Caterpillar153",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 175.36
+prop Caterpillar.y setTo 294.66`
+    },
+    {
+      "id": "154",
+      "label": "Caterpillar154",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 19
+prop Caterpillar.y setTo -32`
     }
   ]
 }

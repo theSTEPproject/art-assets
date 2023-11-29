@@ -55,7 +55,7 @@ featProp Snake.Costume.costumeName setTo 'FW1_snake.png'
 // 🔎 WHAT SIZE IS THE SNAKE?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER SNAKES
-featProp Snake.Costume.scale setTo 0.4
+featProp Snake.Costume.scale setTo 0.1
 
 // Tells snakes how to move when they are controlled by the computer
 featProp Snake.Movement.movementType setTo 'wander'
@@ -226,9 +226,9 @@ addFeature IU
 addProp alive Boolean true
 addProp hasNutrients boolean false
 
-// set the costume and make it smaller 
+// set the costume and make it smaller
 featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
-featProp VeggieGarden.Costume.scale setTo 0.3
+featProp VeggieGarden.Costume.scale setTo 0.4
 
 // make sure we track interactions with the other creatures
 featCall VeggieGarden.Touches monitor 'Robin' b2b
@@ -244,7 +244,7 @@ featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
 featProp VeggieGarden.Graphing.meterColor setTo 65280
 
 # PROGRAM EVENT
-//veggie gardens lose energy during the night
+// veggie gardens lose energy during the night
 ifProp global.skyState notEqual 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -257,7 +257,7 @@ ifProp global.skyState notEqual 'daytime' [[
   ]]
 ]]
 
-//veggie gardens gain energy during the daytime
+// veggie gardens gain energy during the daytime
 ifProp global.skyState equal 'daytime' [[
   every 1 [[
     ifProp VeggieGarden.alive equal true [[
@@ -270,7 +270,7 @@ ifProp global.skyState equal 'daytime' [[
   ]]
 ]]
 
-//change the veggie garden costume to show if it has nutrients 
+// change the veggie garden costume to show if it has nutrients
 ifProp VeggieGarden.hasNutrients equal true [[
   featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
   featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
@@ -320,14 +320,13 @@ every 1 runAtStart [[
 // veggie gardens lose nutrients over time
 ifProp VeggieGarden.hasNutrients equal true [[
   every 10 [[
-      // 🔎 WHAT DOES THIS DO?
-      // 🔎 how long do veggie gardens keep their nutrients?
-      // ✏️ LETS CHANGE THIS:
-      // ✏️ LARGER numbers => nutrients stay for longer
+    // 🔎 WHAT DOES THIS DO?
+    // 🔎 how long do veggie gardens keep their nutrients?
+    // ✏️ LETS CHANGE THIS:
+    // ✏️ LARGER numbers => nutrients stay for longer
     prop VeggieGarden.hasNutrients setTo false
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Clover",
@@ -491,7 +490,7 @@ featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
 // 🔎 WHAT SIZE IS THE CATERPILLAR?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER CATERPILLAR
-featProp Caterpillar.Costume.scale setTo 0.3
+featProp Caterpillar.Costume.scale setTo 0.1
 
 featProp Caterpillar.Movement.movementType setTo 'wander'
 featProp Caterpillar.Movement.compassDirection setTo 'W'
@@ -621,7 +620,7 @@ featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
 // 🔎 WHAT SIZE IS THE ROBIN?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER ROBINS
-featProp Robin.Costume.scale setTo 0.2
+featProp Robin.Costume.scale setTo 0.1
 
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
@@ -769,7 +768,7 @@ featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
 // 🔎 WHAT SIZE IS THE HAWK?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER HAWKS
-featProp Hawk.Costume.scale setTo 0.5
+featProp Hawk.Costume.scale setTo 0.1
 
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
@@ -1613,7 +1612,7 @@ featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
 // 🔎 WHAT SIZE IS THE Mouse?
 // ✏️ LETS CHANGE THIS:
 // ✏️ LARGER number => LARGER Mouse
-featProp Mouse.Costume.scale setTo 0.4
+featProp Mouse.Costume.scale setTo 0.1
 featProp Mouse.Costume.flipX setTo true
 
 // if the computer controls the Mouse, this tells the Mouse how to move and how quickly
@@ -1857,7 +1856,7 @@ addProp alive Boolean true
 featProp BlueJay.Costume.costumeName setTo 'IS_bluejayA.png'
 
 // ✏️ CHANGE The size of the BlueJay (LARGER number => LARGER BlueJay)
-featProp BlueJay.Costume.scale setTo 0.2
+featProp BlueJay.Costume.scale setTo 0.16
 featProp BlueJay.Costume.flipX setTo false
 
 // ✏️ if the computer controls the BlueJay, this tells the BlueJay how to move and how quickly
@@ -2029,29 +2028,134 @@ prop y setTo -400.99`
       "id": "80",
       "label": "BlueJay80",
       "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo -39
-prop BlueJay.y setTo -18`
+      "initScript": `prop BlueJay.x setTo 11.85
+prop BlueJay.y setTo -202.18`
     },
     {
       "id": "81",
       "label": "Caterpillar81",
       "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 242.76
-prop Caterpillar.y setTo -0.39`
+      "initScript": `prop Caterpillar.x setTo 239.37
+prop Caterpillar.y setTo -113.38`
     },
     {
       "id": "82",
       "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 14.61
-prop VeggieGarden.y setTo 264.45`
+      "initScript": `prop VeggieGarden.x setTo 307.27
+prop VeggieGarden.y setTo 272.36`
     },
     {
       "id": "83",
       "label": "Hawk83",
       "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo 145.84
-prop Hawk.y setTo -213.07`
+      "initScript": `prop Hawk.x setTo -303.88
+prop Hawk.y setTo -303.47`
+    },
+    {
+      "id": "84",
+      "label": "Robin84",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 152.92
+prop Robin.y setTo -237.73`
+    },
+    {
+      "id": "85",
+      "label": "Robin85",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -132.68
+prop Robin.y setTo -235.9`
+    },
+    {
+      "id": "86",
+      "label": "BlueJay86",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 300.47
+prop BlueJay.y setTo -350.64`
+    },
+    {
+      "id": "87",
+      "label": "BlueJay87",
+      "bpid": "BlueJay",
+      "initScript": `prop BlueJay.x setTo 58.16
+prop BlueJay.y setTo -345.42`
+    },
+    {
+      "id": "88",
+      "label": "Caterpillar88",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -273.15
+prop Caterpillar.y setTo -147.68`
+    },
+    {
+      "id": "89",
+      "label": "Caterpillar89",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 168.46
+prop Caterpillar.y setTo 284.14`
+    },
+    {
+      "id": "90",
+      "label": "Caterpillar90",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -284.37
+prop Caterpillar.y setTo 185.37`
+    },
+    {
+      "id": "91",
+      "label": "Mouse91",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -137.03
+prop Mouse.y setTo 297.69`
+    },
+    {
+      "id": "92",
+      "label": "Mouse92",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -158.4
+prop Mouse.y setTo 12.98`
+    },
+    {
+      "id": "93",
+      "label": "Mouse93",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 290.67
+prop Mouse.y setTo 162.17`
+    },
+    {
+      "id": "94",
+      "label": "Snake94",
+      "bpid": "Snake",
+      "initScript": `prop Snake.x setTo -134.98
+prop Snake.y setTo -100.55`
+    },
+    {
+      "id": "95",
+      "label": "VeggieGarden95",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 49.66
+prop VeggieGarden.y setTo 60.89`
+    },
+    {
+      "id": "96",
+      "label": "VeggieGarden96",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -306.29
+prop VeggieGarden.y setTo -41.07`
+    },
+    {
+      "id": "97",
+      "label": "VeggieGarden97",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 320.15
+prop VeggieGarden.y setTo -158.42`
+    },
+    {
+      "id": "98",
+      "label": "VeggieGarden98",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -292.68
+prop VeggieGarden.y setTo 281.23`
     }
   ]
 }
