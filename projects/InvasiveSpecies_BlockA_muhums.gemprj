@@ -1895,7 +1895,7 @@ when Horse touches Clover [[
   every 1 runAtStart [[
     // the Horse and the clover must be alive
     ifProp Horse.alive equal true [[
-      ifProp Horse.alive equal true [[
+      ifProp Clover.alive equal true [[
 
         featProp Horse.Costume.glow setTo 1
 
@@ -2008,13 +2008,6 @@ prop Background.y setTo 2.13`
 prop Timer.y setTo -400.99`
     },
     {
-      "id": "140",
-      "label": "Horse140",
-      "bpid": "Horse",
-      "initScript": `prop Horse.x setTo 283.62
-prop Horse.y setTo 270.11`
-    },
-    {
       "id": "143",
       "label": "VeggieGarden143",
       "bpid": "VeggieGarden",
@@ -2078,25 +2071,11 @@ prop Caterpillar.y setTo 36.45`
 prop Caterpillar.y setTo 9.52`
     },
     {
-      "id": "152",
-      "label": "Robin152",
-      "bpid": "Robin",
-      "initScript": `prop Robin.x setTo -122.62
-prop Robin.y setTo -256.88`
-    },
-    {
-      "id": "153",
-      "label": "Caterpillar153",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 175.36
-prop Caterpillar.y setTo 294.66`
-    },
-    {
-      "id": "154",
-      "label": "Caterpillar154",
-      "bpid": "Caterpillar",
-      "initScript": `prop Caterpillar.x setTo 19
-prop Caterpillar.y setTo -32`
+      "id": "155",
+      "label": "VeggieGarden155",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -53.98
+prop VeggieGarden.y setTo 162.33`
     }
   ]
 }

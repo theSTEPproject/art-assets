@@ -234,7 +234,7 @@ featProp VeggieGarden.Costume.scale setTo 0.4
 featCall VeggieGarden.Touches monitor 'Robin' b2b
 
 // setup to track energy and begin at 3/4 way
-addProp energyLevel number 75
+addProp energyLevel number 100
 prop VeggieGarden.energyLevel setMax 100
 prop VeggieGarden.energyLevel setMin 0
 
@@ -773,7 +773,7 @@ featProp Hawk.Costume.scale setTo 0.1
 // This tells the hawks how to move
 // featProp Hawk.Movement.direction addRndInt 1 360
 featProp Hawk.Movement.movementType setTo 'wander'
-featProp Hawk.Movement.distance setTo 5
+featProp Hawk.Movement.distance setTo 1
 featCall Hawk.Movement setRandomDirection
 
 // // Check when the hawk touches other organisms so it can eat it
@@ -2025,13 +2025,6 @@ prop y setTo -28.52`
 prop y setTo -400.99`
     },
     {
-      "id": "80",
-      "label": "BlueJay80",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 11.85
-prop BlueJay.y setTo -202.18`
-    },
-    {
       "id": "81",
       "label": "Caterpillar81",
       "bpid": "Caterpillar",
@@ -2065,20 +2058,6 @@ prop Robin.y setTo -237.73`
       "bpid": "Robin",
       "initScript": `prop Robin.x setTo -132.68
 prop Robin.y setTo -235.9`
-    },
-    {
-      "id": "86",
-      "label": "BlueJay86",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 300.47
-prop BlueJay.y setTo -350.64`
-    },
-    {
-      "id": "87",
-      "label": "BlueJay87",
-      "bpid": "BlueJay",
-      "initScript": `prop BlueJay.x setTo 58.16
-prop BlueJay.y setTo -345.42`
     },
     {
       "id": "88",
@@ -2156,6 +2135,13 @@ prop VeggieGarden.y setTo -158.42`
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -292.68
 prop VeggieGarden.y setTo 281.23`
+    },
+    {
+      "id": "99",
+      "label": "VeggieGarden99",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -8.45
+prop VeggieGarden.y setTo 230.4`
     }
   ]
 }

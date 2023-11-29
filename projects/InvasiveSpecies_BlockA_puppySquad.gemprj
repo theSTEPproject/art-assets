@@ -1871,6 +1871,7 @@ featCall Puppy.Touches monitor 'Worm' b2b
 featCall Puppy.Touches monitor 'Hawk' b2b
 featCall Puppy.Touches monitor 'Robin' b2b
 featCall Puppy.Touches monitor 'Mouse' b2b
+featCall Puppy.Touches monitor 'Clover' b2b
 
 // 🔎 WHAT DOES THIS DO?
 // 🔎 how much does energy does each Puppy START with?
@@ -1906,6 +1907,29 @@ when Puppy touches VeggieGarden [[
         // ✏️ CHANGE the energy Puppy gain from VG (LARGER numbers => GAIN MORE ENERGY)
         prop Puppy.energyLevel add 10
         featCall Puppy.IU logString 'Puppy ate some of a veggie garden.'
+
+      ]]
+    ]]
+  ]]
+]]
+
+// ✏️ whenever a Puppy touches a clover
+when Puppy touches Clover [[
+  every 1 runAtStart [[
+    ifProp Puppy.alive equal true [[
+      ifProp Clover.alive equal true [[
+        featProp Puppy.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ CHANGE the energy veggie gardens lose (LARGER numbers => LOSE MORE ENERGY)
+        prop Clover.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Puppies GAIN when eating?
+        // ✏️ CHANGE the energy Puppy gain from VG (LARGER numbers => GAIN MORE ENERGY)
+        prop Puppy.energyLevel add 10
+        featCall Puppy.IU logString 'Puppy ate some of a clover.'
 
       ]]
     ]]
@@ -2086,13 +2110,6 @@ prop VeggieGarden.y setTo 203.30`
 prop Clover.y setTo -135.98`
     },
     {
-      "id": "88",
-      "label": "Puppy88",
-      "bpid": "Puppy",
-      "initScript": `prop Puppy.x setTo -329.72
-prop Puppy.y setTo -210.14`
-    },
-    {
       "id": "89",
       "label": "Caterpillar89",
       "bpid": "Caterpillar",
@@ -2119,6 +2136,13 @@ prop VeggieGarden.y setTo 33.66`
       "bpid": "Mouse",
       "initScript": `prop Mouse.x setTo 316.37
 prop Mouse.y setTo -53.18`
+    },
+    {
+      "id": "93",
+      "label": "Hawk93",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo 318.28
+prop Hawk.y setTo -313.93`
     }
   ]
 }

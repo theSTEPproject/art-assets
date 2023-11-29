@@ -2054,14 +2054,7 @@ prop y setTo -400.99`
       "label": "VeggieGarden82",
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -175.39
-prop VeggieGarden.y setTo -160.12`
-    },
-    {
-      "id": "86",
-      "label": "Gorilla86",
-      "bpid": "Gorilla",
-      "initScript": `prop Gorilla.x setTo -115.82
-prop Gorilla.y setTo 3.98`
+prop VeggieGarden.y setTo -160.94`
     },
     {
       "id": "88",
@@ -2118,6 +2111,48 @@ prop Snake.y setTo 198.44`
       "bpid": "Hawk",
       "initScript": `prop Hawk.x setTo -287.66
 prop Hawk.y setTo 15.16`
+    },
+    {
+      "id": "96",
+      "label": "VeggieGarden96",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo -317.37
+prop VeggieGarden.y setTo -160.16`
+    },
+    {
+      "id": "97",
+      "label": "Caterpillar97",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 235.59
+prop Caterpillar.y setTo 83.52`
+    },
+    {
+      "id": "98",
+      "label": "Caterpillar98",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -183.24
+prop Caterpillar.y setTo -4.72`
+    },
+    {
+      "id": "99",
+      "label": "Robin99",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 279.03
+prop Robin.y setTo 198.96`
+    },
+    {
+      "id": "100",
+      "label": "Robin100",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -230.32
+prop Robin.y setTo 180.87`
+    },
+    {
+      "id": "101",
+      "label": "VeggieGarden101",
+      "bpid": "VeggieGarden",
+      "initScript": `prop VeggieGarden.x setTo 366.00
+prop VeggieGarden.y setTo -165.04`
     }
   ]
 }

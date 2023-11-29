@@ -2030,25 +2030,11 @@ prop Background.y setTo -29.55`
 prop y setTo -400.99`
     },
     {
-      "id": "80",
-      "label": "Mole80",
-      "bpid": "Mole",
-      "initScript": `prop Mole.x setTo -131.93
-prop Mole.y setTo 117.01`
-    },
-    {
       "id": "81",
       "label": "VeggieGarden81",
       "bpid": "VeggieGarden",
       "initScript": `prop VeggieGarden.x setTo -304.01
 prop VeggieGarden.y setTo -178.64`
-    },
-    {
-      "id": "83",
-      "label": "Mole83",
-      "bpid": "Mole",
-      "initScript": `prop Mole.x setTo -245.15
-prop Mole.y setTo -82.44`
     },
     {
       "id": "84",
@@ -2086,13 +2072,6 @@ prop Caterpillar.y setTo -162.05`
 prop Caterpillar.y setTo 184.24`
     },
     {
-      "id": "89",
-      "label": "Mole89",
-      "bpid": "Mole",
-      "initScript": `prop Mole.x setTo 166.28
-prop Mole.y setTo -188.98`
-    },
-    {
       "id": "90",
       "label": "VeggieGarden90",
       "bpid": "VeggieGarden",
@@ -2108,10 +2087,17 @@ prop VeggieGarden.y setTo 101.22`
     },
     {
       "id": "92",
-      "label": "Hawk92",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo -128.08
-prop Hawk.y setTo -294.77`
+      "label": "Caterpillar92",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo -275.12
+prop Caterpillar.y setTo -20.81`
+    },
+    {
+      "id": "93",
+      "label": "Caterpillar93",
+      "bpid": "Caterpillar",
+      "initScript": `prop Caterpillar.x setTo 30.09
+prop Caterpillar.y setTo 105.24`
     }
   ]
 }

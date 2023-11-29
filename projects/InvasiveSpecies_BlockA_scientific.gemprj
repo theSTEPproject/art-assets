@@ -626,7 +626,7 @@ featProp Robin.Costume.scale setTo 0.2
 // tells robins how to move when they are controlled by the computer
 featProp Robin.Movement.movementType setTo 'wander'
 featProp Robin.Movement.compassDirection setTo 'W'
-featProp Robin.Movement.distance setTo 3
+featProp Robin.Movement.distance setTo 1
 featProp Robin.Movement.targetY setMax 0.7
 
 // check with robins touch caterpillars
@@ -1619,7 +1619,7 @@ featProp Mouse.Costume.flipX setTo true
 // if the computer controls the Mouse, this tells the Mouse how to move and how quickly
 // featProp Mouse.Movement.direction addRndInt 1 360
 featProp Mouse.Movement.movementType setTo 'wander'
-featProp Mouse.Movement.distance setTo 4
+featProp Mouse.Movement.distance setTo 1
 featCall Mouse.Movement setRandomDirection
 
 
@@ -2062,13 +2062,6 @@ prop Robin.y setTo 111.87`
 prop Robin.y setTo -148.74`
     },
     {
-      "id": "141",
-      "label": "Cat141",
-      "bpid": "Cat",
-      "initScript": `prop Cat.x setTo 226.88
-prop Cat.y setTo 167.07`
-    },
-    {
       "id": "142",
       "label": "VeggieGarden142",
       "bpid": "VeggieGarden",
@@ -2118,53 +2111,88 @@ prop Mouse.y setTo 291.85`
 prop Mouse.y setTo 2.91`
     },
     {
-      "id": "151",
-      "label": "Hawk151",
-      "bpid": "Hawk",
-      "initScript": `prop Hawk.x setTo -34
-prop Hawk.y setTo -13`
-    },
-    {
       "id": "152",
-      "label": "VeggieGarden152",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 104.63
-prop VeggieGarden.y setTo -7.86`
+      "label": "Robin152",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 351.92
+prop Robin.y setTo -256.94`
     },
     {
       "id": "153",
-      "label": "VeggieGarden153",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -214.26
-prop VeggieGarden.y setTo -130.40`
+      "label": "Robin153",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 9.64
+prop Robin.y setTo -274.4`
     },
     {
       "id": "154",
-      "label": "VeggieGarden154",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -178.11
-prop VeggieGarden.y setTo 79.18`
+      "label": "Robin154",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -265.13
+prop Robin.y setTo -226.49`
     },
     {
       "id": "155",
-      "label": "VeggieGarden155",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -52.88
-prop VeggieGarden.y setTo 209.18`
+      "label": "Mouse155",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 42
+prop Mouse.y setTo -24`
     },
     {
       "id": "156",
-      "label": "VeggieGarden156",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo -268.75
-prop VeggieGarden.y setTo 192.24`
+      "label": "Mouse156",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -3
+prop Mouse.y setTo 9`
     },
     {
       "id": "157",
-      "label": "VeggieGarden157",
-      "bpid": "VeggieGarden",
-      "initScript": `prop VeggieGarden.x setTo 311.91
-prop VeggieGarden.y setTo -136.40`
+      "label": "Mouse157",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -5
+prop Mouse.y setTo -11`
+    },
+    {
+      "id": "158",
+      "label": "Mouse158",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 1
+prop Mouse.y setTo 7`
+    },
+    {
+      "id": "159",
+      "label": "Robin159",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -7
+prop Robin.y setTo -3`
+    },
+    {
+      "id": "160",
+      "label": "Robin160",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo 3
+prop Robin.y setTo -2`
+    },
+    {
+      "id": "161",
+      "label": "Robin161",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -36
+prop Robin.y setTo -33`
+    },
+    {
+      "id": "162",
+      "label": "Robin162",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -11
+prop Robin.y setTo -1`
+    },
+    {
+      "id": "163",
+      "label": "Robin163",
+      "bpid": "Robin",
+      "initScript": `prop Robin.x setTo -36
+prop Robin.y setTo 3`
     }
   ]
 }
