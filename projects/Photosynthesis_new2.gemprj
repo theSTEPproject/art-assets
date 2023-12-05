@@ -236,13 +236,11 @@ addFeature IU
 // flip the costume to face east when the mouse is moving to th east.
 ifFeatProp Rabbit.Movement.compassDirection equal 'E' [[
   featProp Rabbit.Costume.flipX setTo true
-  featCall Rabbit.IU logString 'Mouse is moving to the east. '
   // insert code here
 ]]
 // flip the costume to face west when the mouse is moving to the west.
 ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
   featProp Rabbit.Costume.flipX setTo false
-  featCall Rabbit.IU logString 'Mouse is moving to the west. '
 ]]
 
 when Rabbit centerfirsttouches Tomato [[
@@ -709,47 +707,38 @@ addProp bitten number 0
 
 ifProp Tomato.bitten equal 0 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomato.png'
-  featCall Tomato.IU logString 'Tomato is whole.'
 ]]
 
 ifProp Tomato.bitten equal 1 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite1.png'
-  featCall Tomato.IU logString 'Tomato has been bitten one time.'
 ]]
 
 ifProp Tomato.bitten equal 2 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite2.png'
-  featCall Tomato.IU logString 'Tomato has been bitten two times.'
 ]]
 
 ifProp Tomato.bitten equal 3 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite3.png'
-  featCall Tomato.IU logString 'Tomato has been bitten three times.'
 ]]
 
 ifProp Tomato.bitten equal 4 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite4.png'
-  featCall Tomato.IU logString 'Tomato has been bitten four times.'
 ]]
 
 ifProp Tomato.bitten equal 5 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite5.png'
-  featCall Tomato.IU logString 'Tomato has been bitten five times.'
 ]]
 
 ifProp Tomato.bitten equal 6 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite6.png'
-  featCall Tomato.IU logString 'Tomato has been bitten six times.'
 ]]
 
 ifProp Tomato.bitten equal 7 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite7.png'
-  featCall Tomato.IU logString 'Tomato has been bitten seven times.'
 ]]
 
 ifProp Tomato.bitten equal 8 [[
   featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite8.png'
-  featCall Tomato.IU logString 'Tomato has been bitten eight times and is gone.'
   every 5 [[
     // insert code here
     prop Tomato.bitten setTo 0
