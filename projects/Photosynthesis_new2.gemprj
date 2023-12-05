@@ -1,0 +1,988 @@
+{
+  "id": "Photosynthesis_new2",
+  "label": "Garden Ecosystem 3",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 4539717,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Molecule",
+      "scriptText": `# BLUEPRINT Molecule
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
+featProp Molecule.Costume.scale setTo 0.1
+
+addProp state string 'oxygen'
+
+addFeature Physics
+addFeature Touches
+addFeature IU
+featCall Molecule.Touches monitor 'Rabbit' b2b
+featCall Molecule.Touches monitor 'Roots' b2b
+featCall Molecule.Touches monitor 'Chloroplast' b2b
+featCall Molecule.Touches monitor 'Plant_Body' b2b
+featCall Molecule.Touches monitor 'OxygenGenerator' b2b
+featCall Molecule.Touches monitor 'CarbonDioxideGenerator' b2b
+featCall Molecule.Touches monitor 'WaterGenerator' b2b
+featCall Molecule.Touches monitor 'SugarGenerator' b2b
+
+addFeature Movement
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+// setting starting states of molecules
+when Molecule touches OxygenGenerator [[
+  // insert code here
+  ifProp OxygenGenerator.setupMode equal true [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
+    prop Molecule.state setTo 'oxygen'
+    featProp Molecule.IU.logStringText setTo 'Molecule became oxygen from generator.'
+  ]]
+]]
+
+when Molecule touches CarbonDioxideGenerator [[
+  // insert code here
+  ifProp CarbonDioxideGenerator.setupMode equal true [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
+    prop Molecule.state setTo 'carbon_dioxide'
+    featProp Molecule.IU.logStringText setTo 'Molecule became carbon dioxide from generator.'
+  ]]
+]]
+
+when Molecule touches WaterGenerator [[
+  // insert code here
+  ifProp WaterGenerator.setupMode equal true [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
+    prop Molecule.state setTo 'water'
+    featProp Molecule.IU.logStringText setTo 'Molecule became water from generator. '
+  ]]
+]]
+
+when Molecule touches SugarGenerator [[
+  // insert code here
+  ifProp SugarGenerator.setupMode equal true [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_sugar.png'
+    prop Molecule.state setTo 'sugar'
+    featProp Molecule.IU.logStringText setTo 'Molecule became sugar from generator.'
+  ]]
+]]
+
+// Rabbit changes oxygen to carbon dioxide
+when Molecule touches Rabbit [[
+  // insert code here
+  ifProp Molecule.state equal 'oxygen' [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_carbon_dioxide.png'
+    prop Molecule.state setTo 'carbon_dioxide'
+    featProp Molecule.Costume.glow setTo 1
+    featProp Molecule.IU.logStringText setTo 'Oxygen interacted with Rabbit to become carbon dioxide. '
+  ]]
+]]
+
+// plant body turns sugar into an icon that the plant needs more water and causes the plant (left leaf) to grow
+when Molecule touches Plant_Body [[
+  // insert code here
+  ifProp Molecule.state equal 'sugar' [[
+    // insert code here
+    featProp Plant_Body.Costume.glow setTo 1
+    featProp Molecule.Costume.costumeName setTo 'PS_waterthinking.png'
+    prop Molecule.state setTo 'needsWater'
+    prop global.plantGrowth add 1
+    prop global.plantGrow setTo true
+    featProp Molecule.IU.logStringText setTo 'Sugar interacted with plant body to become water thinking. '
+  ]]
+]]
+
+// roots allow the plant to get water so the needs water icon turns into water
+when Molecule touches Roots [[
+  // insert code here
+  ifProp Molecule.state equal 'needsWater' [[
+    // insert code here
+    featProp Molecule.Costume.costumeName setTo 'PS_waterdrop.png'
+    prop Molecule.state setTo 'water'
+    featProp Molecule.Costume.glow setTo 1
+    featProp Molecule.IU.logStringText setTo 'Water thinking interacted with roots to become water. '
+  ]]
+]]
+
+// this is the script for photosynthesis; when water and carbon dioxide are on chloroplast and it's daytime, water turns into oxygen and carbon_dioxide turns into sugar
+
+when Molecule firsttouches Chloroplast [[
+  // insert code here
+  ifProp Molecule.state equal 'water' [[
+    // insert code here
+    prop Chloroplast.hasWater add 1
+    featProp Molecule.IU.logStringText setTo 'A water is on the chloroplast. '
+  ]]
+  ifProp Molecule.state equal 'carbon_dioxide' [[
+    // insert code here
+    prop Chloroplast.hasCarbonDioxide add 1
+    featProp Molecule.IU.logStringText setTo 'A carbon dioxide is on the chloroplast. '
+
+  ]]
+]]
+
+when Molecule touches Chloroplast [[
+  // insert code here
+  ifProp global.skyState equal 'daytime' [[
+    // insert code here
+    ifProp Molecule.state equal 'water' [[
+      // ifExpr {{ Chloroplast.getProp('hasCarbonDioxide').value == true }} [[
+      ifProp Chloroplast.hasCarbonDioxide greaterThanOrEqual 1 [[
+        // insert code here
+        featProp Molecule.Costume.costumeName setTo 'PS_oxygen.png'
+        prop Molecule.state setTo 'oxygen'
+        featProp Molecule.Costume.glow setTo 1
+        ifProp Chloroplast.hasCarbonDioxide greaterThan 0 [[
+          // insert code here
+          prop Chloroplast.hasCarbonDioxide sub 1
+          featProp Molecule.IU.logStringText setTo 'Water has interacted with a carbon dioxide on the chloroplast to become oxygen. '
+        ]]
+      ]]
+    ]]
+    // ifExpr {{ Chloroplast.getProp('hasWater').value == true }} [[
+    ifProp Molecule.state equal 'carbon_dioxide' [[
+      ifProp Chloroplast.hasWater greaterThanOrEqual 1 [[
+        // insert code here
+        featProp Molecule.Costume.costumeName setTo 'PS_sugar.png'
+        prop Molecule.state setTo 'sugar'
+        featProp Molecule.Costume.glow setTo 1
+        ifProp Chloroplast.hasWater greaterThan 0 [[
+          // insert code here
+          prop Chloroplast.hasWater sub 1
+          featProp Molecule.IU.logStringText setTo 'Carbon dioxide has interacted with a water on the chloroplast to become sugar.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+when Molecule lasttouches Chloroplast [[
+  // insert code here
+  ifProp Molecule.state equal 'water' [[
+    // insert code here
+    ifProp Chloroplast.hasWater greaterThan 0 [[
+      // insert code here
+      prop Chloroplast.hasWater sub 1
+    ]]
+  ]]
+  ifProp Molecule.state equal 'carbon_dioxide' [[
+    // insert code here
+    ifProp Chloroplast.hasCarbonDioxide greaterThan 0 [[
+      // insert code here
+      prop Chloroplast.hasCarbonDioxide sub 1
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Rabbit",
+      "scriptText": `# BLUEPRINT Rabbit
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Rabbit.Costume.costumeName setTo 'FWE_mouse.png'
+featProp Rabbit.Costume.flipX setTo true
+featProp Rabbit.Costume.scale setTo 0.5
+
+addFeature Touches
+addFeature Physics
+featCall Rabbit.Touches monitor 'Tomato' c2b
+
+addFeature Movement
+featProp Rabbit.Movement.direction setTo 0
+featProp Rabbit.Movement.distance setTo 4
+featProp Rabbit.Movement.movementType setTo 'edgeToEdge'
+
+addFeature IU
+
+# PROGRAM UPDATE
+// flip the costume to face east when the mouse is moving to th east.
+ifFeatProp Rabbit.Movement.compassDirection equal 'E' [[
+  featProp Rabbit.Costume.flipX setTo true
+  featCall Rabbit.IU logString 'Mouse is moving to the east. '
+  // insert code here
+]]
+// flip the costume to face west when the mouse is moving to the west.
+ifFeatProp Rabbit.Movement.compassDirection equal 'W' [[
+  featProp Rabbit.Costume.flipX setTo false
+  featCall Rabbit.IU logString 'Mouse is moving to the west. '
+]]
+
+when Rabbit centerfirsttouches Tomato [[
+  ifProp Tomato.bitten lessThan 8 [[
+    prop Tomato.bitten add 1
+    featProp Rabbit.Costume.glowColor setTo 16770742
+    featProp Rabbit.Costume.glow setTo 1
+  ]]
+  ifProp global.plantGrowth greaterThanOrEqual -3 [[
+    prop global.plantGrowth sub 1
+  ]]
+]]`
+    },
+    {
+      "name": "Roots",
+      "scriptText": `# BLUEPRINT Roots
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Roots.Costume.costumeName setTo 'PS_roots.png'
+featProp Roots.Costume.scale setTo 0.8
+
+// prop Roots.alpha setTo 0.5
+
+addFeature Physics
+
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Chloroplast",
+      "scriptText": `# BLUEPRINT Chloroplast
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Chloroplast.Costume.costumeName setTo 'PS_chloroplast.png'
+featProp Chloroplast.Costume.scale setTo 0.25
+
+//prop Chloroplast.alpha setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+featCall Chloroplast.Touches monitor 'Molecule' b2b
+
+addProp hasWater number 0
+prop Chloroplast.hasWater setTo 0
+prop Chloroplast.hasWater setMin 0
+
+addProp hasCarbonDioxide number 0
+prop Chloroplast.hasCarbonDioxide setTo 0
+prop Chloroplast.hasCarbonDioxide setMin 0
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Plant_Body",
+      "scriptText": `# BLUEPRINT Plant_Body
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Plant_Body.Costume.costumeName setTo 'PS_body.png'
+featProp Plant_Body.Costume.scale setTo 0.5
+
+// prop Plant_Body.alpha setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Left_Leaf",
+      "scriptText": `# BLUEPRINT Left_Leaf
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+addFeature Touches
+addFeature Physics
+addProp growing boolean false
+featProp Left_Leaf.Costume.costumeName setTo 'PS_leaf.png'
+
+
+// prop Left_Leaf.alpha setTo 0.5
+
+// featProp Left_Leaf.Costume.scale setTo 0.1
+exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
+featPropPop Left_Leaf.Costume.scale
+
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+// left leaf grows everytime sugar is deposited/everytime sugar changes to water in the roots
+ifProp global.plantGrow equal true [[
+  featProp Left_Leaf.Costume.glow setTo 1
+  featProp Left_Leaf.Costume.glowColor setTo 3139328
+  every 1 [[
+    // insert code here
+    prop global.plantGrow setTo false
+    featProp Left_Leaf.Costume.glow setTo 0
+
+  ]]
+  // insert code here
+]]
+every 1 [[
+  exprPush {{ (global.getProp('plantGrowth').value / 50 + 0.1) }}
+  featPropPop Left_Leaf.Costume.scale
+]]`
+    },
+    {
+      "name": "Right_Leaf",
+      "scriptText": `# BLUEPRINT Right_Leaf
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Right_Leaf.Costume.costumeName setTo 'PS_rightLeaf.png'
+featProp Right_Leaf.Costume.scale setTo 0.4
+
+prop Right_Leaf.zIndex setTo -15
+
+
+// prop Right_Leaf.alpha setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Ground",
+      "scriptText": `# BLUEPRINT Ground
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Ground.Costume.costumeName setTo 'PS_ground.png'
+// prop Ground.alpha setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+featProp Ground.Costume.scale setTo 0.5
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Sky",
+      "scriptText": `# BLUEPRINT Sky
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
+prop Sky.zIndex setTo -999
+//prop Sky.alpha setTo 0.5
+
+addFeature Physics
+featProp Sky.Costume.scale setTo 0.3
+
+addProp state string 'daytime'
+prop global.skyState setTo 'daytime'
+
+addProp changed boolean false
+prop Sky.changed setTo false
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+every 10 [[
+  // insert code here
+  // ifExpr {{Sky.getProp('state').value == 'daytime'}} [[
+  ifProp Sky.state equal 'daytime' [[
+    // insert code here
+    // featProp Sky.Costume.costumeName setTo 'dusk.png'
+    featProp Sky.Costume.costumeName setTo 'PS_nighttime.png'
+    prop Sky.state setTo 'nighttime'
+    prop global.skyState setTo 'nighttime'
+    prop Sky.changed setTo true
+  ]]
+  ifExpr {{ Sky.getProp('changed').value == false }} [[
+    // ifProp Sky.changed equal false [[
+    // insert code here
+    ifProp Sky.state equal 'nighttime' [[
+      // insert code here
+      featProp Sky.Costume.costumeName setTo 'PS_daytime.png'
+      prop Sky.state setTo 'daytime'
+      prop global.skyState setTo 'daytime'
+    ]]
+  ]]
+  prop Sky.changed setTo false
+]]`
+    },
+    {
+      "name": "WaterGenerator",
+      "scriptText": `# BLUEPRINT WaterGenerator
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp WaterGenerator.Costume.costumeName setTo 'PS_waterdrop.png'
+featProp WaterGenerator.Costume.scale setTo 0.05
+
+addFeature Physics
+addFeature Touches
+
+featCall WaterGenerator.Touches monitor 'Molecule' b2b
+
+addProp setupMode boolean false
+prop WaterGenerator.setupMode setTo true
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp WaterGenerator.setupMode equal true [[
+    // insert code here
+    prop WaterGenerator.setupMode setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "CarbonDioxideGenerator",
+      "scriptText": `# BLUEPRINT CarbonDioxideGenerator
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp CarbonDioxideGenerator.Costume.costumeName setTo 'PS_carbon_dioxide.png'
+featProp CarbonDioxideGenerator.Costume.scale setTo 0.03
+
+addFeature Physics
+addFeature Touches
+
+featCall CarbonDioxideGenerator.Touches monitor 'Molecule' b2b
+
+addProp setupMode boolean false
+prop CarbonDioxideGenerator.setupMode setTo true
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp CarbonDioxideGenerator.setupMode equal true [[
+    // insert code here
+    prop CarbonDioxideGenerator.setupMode setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "SugarGenerator",
+      "scriptText": `# BLUEPRINT SugarGenerator
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp SugarGenerator.Costume.costumeName setTo 'PS_sugar.png'
+featProp SugarGenerator.Costume.scale setTo 0.02
+
+addFeature Physics
+addFeature Touches
+
+featCall SugarGenerator.Touches monitor 'Molecule' b2b
+
+addProp setupMode boolean false
+prop SugarGenerator.setupMode setTo true
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp SugarGenerator.setupMode equal true [[
+    // insert code here
+    prop SugarGenerator.setupMode setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "OxygenGenerator",
+      "scriptText": `# BLUEPRINT OxygenGenerator
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp OxygenGenerator.Costume.costumeName setTo 'PS_oxygen.png'
+featProp OxygenGenerator.Costume.scale setTo 0.03
+
+addFeature Physics
+addFeature Touches
+
+featCall OxygenGenerator.Touches monitor 'Molecule' b2b
+
+addProp setupMode boolean false
+prop OxygenGenerator.setupMode setTo true
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 15 runAfter [[
+  // insert code here
+  ifProp OxygenGenerator.setupMode equal true [[
+    // insert code here
+    prop OxygenGenerator.setupMode setTo false
+  ]]
+]]`
+    },
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+// Explanation:
+// This model involves learners in representing molecules cycling and changing through photosynthesis and respiration. The model involves a plant and a bunny, and a background that alternates between daytime and nighttime. The bunny breathes in oxygen and breathes out carbon dioxide, so when a learner-as-oxygen touches the bunny, they become carbon dioxide. If it is daytime, when a learner-as-carbon dioxide and a learner-as-water meet on the plants chloroplast, photosynthesis occurs and the carbon dioxide becomes sugar while the water becomes oxygen. Then, if the learner-as-sugar touches the plant's roots, they become water. When this happens, one of the plant's leaves (the left leaf) grows slightly, representing how photosynthesis creates sugars that enable the plant to grow. In this way, learners can rotate through the four types of molecules in the model. Note that in the starting state of the model, all learners are oxygen molecules, but there are \"molecule generators\" in the top right of the screen that enable them to switch to other molecule types before engaging with the rest of the model.
+
+addFeature Population
+prop global.visible setTo false
+
+addProp plantGrowth number 0
+addProp skyState string 'daytime'
+addProp plantGrow boolean false
+addFeature IU
+featCall global.IU logString 'Init GE Photosynthesis model'
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Water_Droplet",
+      "scriptText": `# BLUEPRINT Water_Droplet
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+addFeature Costume
+featProp Water_Droplet.Costume.costumeName setTo 'PS_waterdrop.png'
+featProp Water_Droplet.Costume.scale setTo 0.3
+
+// prop Water_Droplet.alpha setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "teacher",
+      "scriptText": `# BLUEPRINT teacher
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp teacher.Costume.scale setTo 0.2
+prop teacher.alpha setTo 0
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Tomato",
+      "scriptText": `# BLUEPRINT Tomato
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Tomato.Costume.costumeName setTo 'PS_tomato.png'
+featProp Tomato.Costume.scale setTo 0.35
+
+addFeature Physics
+addFeature Touches
+addFeature IU
+addProp bitten number 0
+# PROGRAM UPDATE
+
+ifProp Tomato.bitten equal 0 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomato.png'
+]]
+
+ifProp Tomato.bitten equal 1 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite1.png'
+]]
+
+ifProp Tomato.bitten equal 2 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite2.png'
+]]
+
+ifProp Tomato.bitten equal 3 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite3.png'
+]]
+
+ifProp Tomato.bitten equal 4 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite4.png'
+]]
+
+ifProp Tomato.bitten equal 5 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite5.png'
+]]
+
+ifProp Tomato.bitten equal 6 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite6.png'
+]]
+
+ifProp Tomato.bitten equal 7 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite7.png'
+]]
+
+ifProp Tomato.bitten equal 8 [[
+  featProp Tomato.Costume.costumeName setTo 'PS_tomatoBite8.png'
+  every 5 [[
+    // insert code here
+    prop Tomato.bitten setTo 0
+  ]]
+]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Zoom",
+      "scriptText": `# BLUEPRINT Zoom
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Zoom.Costume.costumeName setTo 'PS_zoom.png'
+featProp Zoom.Costume.scale setTo 0.52
+prop Zoom.zIndex setTo -10
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Zoom2",
+      "scriptText": `# BLUEPRINT Zoom2
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Zoom2.Costume.costumeName setTo 'PS_zoom2.png'
+featProp Zoom2.Costume.scale setTo 0.62
+
+prop Zoom2.zIndex setTo -10
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Stick",
+      "scriptText": `# BLUEPRINT Stick
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Stick.Costume.costumeName setTo 'PS_stick.png'
+featProp Stick.Costume.scale setTo 0.3
+prop Stick.zIndex setTo -10
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "TopLeaf",
+      "scriptText": `# BLUEPRINT TopLeaf
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp TopLeaf.Costume.costumeName setTo 'PS_rightLeaf.png'
+featProp TopLeaf.Costume.scale setTo 0.15
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    }
+  ],
+  "instances": [
+    {
+      "id": "22",
+      "label": "Sky22",
+      "bpid": "Sky",
+      "initScript": `prop Sky.x setTo -1.77
+prop Sky.y setTo 21.14`
+    },
+    {
+      "id": "23",
+      "label": "Ground23",
+      "bpid": "Ground",
+      "initScript": `prop Ground.x setTo 1.33
+prop Ground.y setTo 289.40`
+    },
+    {
+      "id": "24",
+      "label": "Plant_Body24",
+      "bpid": "Plant_Body",
+      "initScript": `prop Plant_Body.x setTo -13.93
+prop Plant_Body.y setTo 57.98`
+    },
+    {
+      "id": "25",
+      "label": "Roots25",
+      "bpid": "Roots",
+      "initScript": `prop Roots.x setTo 25.96
+prop Roots.y setTo 376.01
+`
+    },
+    {
+      "id": "26",
+      "label": "Rabbit26",
+      "bpid": "Rabbit",
+      "initScript": `prop x setTo -322.32
+prop y setTo 193.53`
+    },
+    {
+      "id": "27",
+      "label": "Left_Leaf27",
+      "bpid": "Left_Leaf",
+      "initScript": `prop Left_Leaf.x setTo -215.92
+prop Left_Leaf.y setTo -151.83`
+    },
+    {
+      "id": "32",
+      "label": "WaterGenerator32",
+      "bpid": "WaterGenerator",
+      "initScript": `prop WaterGenerator.x setTo 124.42
+prop WaterGenerator.y setTo -369.91`
+    },
+    {
+      "id": "33",
+      "label": "CarbonDioxideGenerator33",
+      "bpid": "CarbonDioxideGenerator",
+      "initScript": `prop x setTo -141.31
+prop y setTo -368.49`
+    },
+    {
+      "id": "34",
+      "label": "SugarGenerator34",
+      "bpid": "SugarGenerator",
+      "initScript": `prop x setTo 341.71
+prop y setTo -371.26`
+    },
+    {
+      "id": "35",
+      "label": "OxygenGenerator35",
+      "bpid": "OxygenGenerator",
+      "initScript": `prop x setTo -369.04
+prop y setTo -370.28`
+    },
+    {
+      "id": "45",
+      "label": "Right_Leaf45",
+      "bpid": "Right_Leaf",
+      "initScript": `prop Right_Leaf.x setTo 163.31
+prop Right_Leaf.y setTo 8.22`
+    },
+    {
+      "id": "46",
+      "label": "Chloroplast46",
+      "bpid": "Chloroplast",
+      "initScript": `prop Chloroplast.x setTo 277.32
+prop Chloroplast.y setTo -202.70`
+    },
+    {
+      "id": "47",
+      "label": "Chloroplast47",
+      "bpid": "Chloroplast",
+      "initScript": `prop Chloroplast.x setTo 301.17
+prop Chloroplast.y setTo 132.12`
+    },
+    {
+      "id": "49",
+      "label": "Tomato49",
+      "bpid": "Tomato",
+      "initScript": `prop Tomato.x setTo -95.28
+prop Tomato.y setTo 181.57`
+    },
+    {
+      "id": "50",
+      "label": "Zoom50",
+      "bpid": "Zoom",
+      "initScript": `prop Zoom.x setTo 233.33
+prop Zoom.y setTo -169.08`
+    },
+    {
+      "id": "51",
+      "label": "Zoom251",
+      "bpid": "Zoom2",
+      "initScript": `prop Zoom2.x setTo 289.04
+prop Zoom2.y setTo 68.99`
+    },
+    {
+      "id": "52",
+      "label": "Stick52",
+      "bpid": "Stick",
+      "initScript": `prop Stick.x setTo -112.22
+prop Stick.y setTo -118.63`
+    },
+    {
+      "id": "53",
+      "label": "TopLeaf53",
+      "bpid": "TopLeaf",
+      "initScript": `prop TopLeaf.x setTo 46.65
+prop TopLeaf.y setTo -124.35`
+    }
+  ]
+}
