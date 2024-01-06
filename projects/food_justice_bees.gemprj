@@ -1,5 +1,5 @@
 {
-  "id": "FoodJusticeBees",
+  "id": "food_justice_bees",
   "label": "Food Justice: Bees",
   "metadata": {
     "top": -400,
@@ -12,7 +12,15 @@
     ],
     "bounce": true,
     "bgcolor": 102,
-    "roundsCanLoop": true
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
   },
   "rounds": [],
   "blueprints": [
@@ -37,18 +45,16 @@ prop global.visible setTo false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-// This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featProp ScoutBee.Costume.costumeName setTo 'GEN_circle.json'
-
 addFeature Physics
 addFeature Touches
 
+featProp ScoutBee.Costume.costumeName setTo 'HB_bee.png'
+featProp ScoutBee.Costume.scale setTo 0.3
+
+
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
 
 
 `
@@ -61,21 +67,26 @@ addFeature Touches
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
-// This is the most basic setup of properties that happens as soon as this character is saved
 
 addFeature Costume
-featProp Flower.Costume.costumeName setTo 'GEN_square.json'
-
 addFeature Physics
 addFeature Touches
 
+featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+featProp Flower.Costume.scale setTo 0.3
+
 
 # PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-\n`
+`
     }
   ],
-  "instances": []
+  "instances": [
+    {
+      "id": "0",
+      "label": "Flower0",
+      "bpid": "Flower",
+      "initScript": `prop Flower.x setTo -411.57
+prop Flower.y setTo -321.53`
+    }
+  ]
 }
