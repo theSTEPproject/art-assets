@@ -1,0 +1,81 @@
+{
+  "id": "FoodJusticeBees",
+  "label": "Food Justice: Bees",
+  "metadata": {
+    "top": -400,
+    "right": 500,
+    "bottom": 400,
+    "left": -500,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+
+prop global.visible setTo false
+
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "ScoutBee",
+      "scriptText": `# BLUEPRINT ScoutBee
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp ScoutBee.Costume.costumeName setTo 'GEN_circle.json'
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+
+`
+    },
+    {
+      "name": "Flower",
+      "scriptText": `# BLUEPRINT Flower
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Flower.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+\n`
+    }
+  ],
+  "instances": []
+}
