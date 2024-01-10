@@ -76,6 +76,8 @@
         // CAPEN: it would be cool if at the end of the round we could send infoPanels
         // to the ECA about what the round looked like to get feedback
 
+        // TODO: Provide suggestions for what should go to the ECA
+
       `
     }
   ],
@@ -140,6 +142,7 @@ prop ScoutBee.energyLevel setMax 100
 
 // monitor flower Touches
 featCall ScoutBee.Touches monitor 'Flower' c2b
+featCall ScoutBee.Touches monitor 'Hive' c2b
 
 featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 
@@ -148,18 +151,28 @@ featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 
 // use a little energy and maybe update the meter
 every 1 runAtStart [[
-  prop ScoutBee.energyLevel sub 1
 
-  // Set the color of the energy meter depending on the amount of energy that the character has
-  // These are green orange, and red in order
-  ifProp ScoutBee.energyLevel greaterThanOrEqual 60 [[
-    featProp ScoutBee.Graphing.meterColor setTo 65280
-  ]]
-  ifProp ScoutBee.energyLevel lessThan 60 [[
-    featProp ScoutBee.Graphing.meterColor setTo 16737792
-  ]]
-  ifProp ScoutBee.energyLevel lessThan 30 [[
-    featProp ScoutBee.Graphing.meterColor setTo 16711680
+  ifProp ScoutBee.isInert equal false [[
+
+    prop ScoutBee.energyLevel sub 5
+
+    // Set the color of the energy meter depending on the amount of energy that the character has
+    // These are green orange, and red in order
+    ifProp ScoutBee.energyLevel greaterThanOrEqual 60 [[
+      featProp ScoutBee.Graphing.meterColor setTo 65280
+    ]]
+    ifProp ScoutBee.energyLevel lessThan 60 [[
+      featProp ScoutBee.Graphing.meterColor setTo 16737792
+    ]]
+    ifProp ScoutBee.energyLevel lessThan 30 [[
+      featProp ScoutBee.Graphing.meterColor setTo 16711680
+    ]]
+    
+    ifProp ScoutBee.energyLevel equal 0 [[
+      featCall ScoutBee.IU logString 'Bee died from running out of energy'
+      prop ScoutBee.alpha setTo 0.5
+      prop ScoutBee.isInert setTo true
+    ]]
   ]]
   
 ]]
@@ -195,10 +208,34 @@ when ScoutBee centerlasttouches Flower [[
   featProp ScoutBee.Costume.glow setTo 0
 ]]
 
-// when first touch a hive
-// reset energy
-// transfer nectar to hive
-// reset pollen`
+when ScoutBee centerfirsttouches Hive [[
+  featProp ScoutBee.Costume.glow setTo 2
+
+  // reset energy
+  prop ScoutBee.energyLevel setTo 100
+
+  // transfer nectar to hive
+  propPush ScoutBee.nectarCount
+  propPush Hive.nectarCount
+  stackAdd
+  propPop Hive.nectarCount
+  prop ScoutBee.nectarCount setTo 0
+
+  // reset pollen
+  prop flowerID setTo 0
+  prop pollenColor setTo 0
+]]
+
+when ScoutBee centertouches Hive [[
+    every 1 [[
+    featProp ScoutBee.Costume.glow setTo 2
+  ]]
+]]
+
+when ScoutBee centerlasttouches Hive [[
+  featProp ScoutBee.Costume.glow setTo 0
+]]
+`
     },
     {
       "name": "Flower",
@@ -250,9 +287,15 @@ addFeature Costume
 addFeature Physics
 addFeature Graphing
 
-
 featProp Hive.Costume.costumeName setTo 'HB_hiveCommercial.png'
 featProp Hive.Costume.scale setTo 0.3
+
+addProp nectarCount number 20
+prop Hive.nectarCount setMin 0
+prop Hive.nectarCount setMax 500
+
+featProp Hive.Graphing.meterProp setTo  'nectarCount'
+
 
 # PROGRAM UPDATE
 `
