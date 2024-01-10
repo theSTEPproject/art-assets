@@ -134,14 +134,35 @@ addProp pollenColor number 0
 addProp nectarCount number 0
 
 // how much energy do we have
-addProp energyCount number 100
+addProp energyLevel number 100
+prop ScoutBee.energyLevel setMin 0
+prop ScoutBee.energyLevel setMax 100
 
 // monitor flower Touches
 featCall ScoutBee.Touches monitor 'Flower' c2b
 
+featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
+
+
 # PROGRAM UPDATE
 
 // use a little energy and maybe update the meter
+every 1 runAtStart [[
+  prop ScoutBee.energyLevel sub 1
+
+  // Set the color of the energy meter depending on the amount of energy that the character has
+  // These are green orange, and red in order
+  ifProp ScoutBee.energyLevel greaterThanOrEqual 60 [[
+    featProp ScoutBee.Graphing.meterColor setTo 65280
+  ]]
+  ifProp ScoutBee.energyLevel lessThan 60 [[
+    featProp ScoutBee.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp ScoutBee.energyLevel lessThan 30 [[
+    featProp ScoutBee.Graphing.meterColor setTo 16711680
+  ]]
+  
+]]
 
 // when first touch a flower
 when ScoutBee centerfirsttouches Flower [[
