@@ -23,9 +23,10 @@
     "mirrorY": false
   },
   "rounds": [
-        {
+    {
       "time": 100,
-      "initScript": `
+      "initScript": `\n        
+
         // CAPEN: about to set some variables for the current run. This might be where we would 
         // instead have them have been updated by the ECA, or do some kind of check if it did update them
         // to be able to use a default if not?
@@ -37,6 +38,35 @@
         // CAPEN: This is one thing wed want to potentially have the ECA
         // setup, but might also want a way to override it or ignore the ECA setting if we want to try something 
 
+        // set the field type 
+        // TODO: do via another round, or ECA or or ... 
+        prop global.fieldType setTo 'garden' 
+
+        // Based on the field type (garden or parking lot) do some setup below ... 
+
+        ifProp global.fieldType equal 'garden' [[
+          // setup the correct background image 
+          featCall global.Population tellCharacterByName 'Background' [[
+            featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
+          ]]
+
+          // place a lot of flowers of at least 2-3 types, grouped
+          // set the colors for each one 
+          // set the type for each one
+          // set the costume to match the type 
+        ]]
+
+        ifProp global.fieldType equal 'parking lot' [[
+          // setup the correct background image 
+          featCall global.Population tellCharacterByName 'Background' [[
+            featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
+          ]]
+
+          // place a few flowers, scattered 
+          // set the colors for each one
+          // set the type for each one
+          // set the costume to match the type 
+        ]]
 
         prop global.roundNum add 1
       `,
@@ -45,7 +75,6 @@
 
         // CAPEN: it would be cool if at the end of the round we could send infoPanels
         // to the ECA about what the round looked like to get feedback
-
 
       `
     }
@@ -60,9 +89,20 @@
 
 # PROGRAM INIT
 
+// TODO update default templates for characters and models
+
+addFeature IU
+addFeature Population
+// NOTE: using population in the round code 
+
 prop global.visible setTo false
 
+// so we know how many rounds we have run through
+// TODO: make sure this is incrementing
 addProp roundNum number 0
+
+// Is this a garden or a parking lot?
+addProp fieldType string 'garden'
 
 # PROGRAM UPDATE`
     },
@@ -78,15 +118,66 @@ addProp roundNum number 0
 addFeature Costume
 addFeature Physics
 addFeature Touches
+addFeature Graphing
+addFeature IU
 
 featProp ScoutBee.Costume.costumeName setTo 'HB_bee.png'
 featProp ScoutBee.Costume.scale setTo 0.3
 
+// what flower pollen are we carrying - 0 is none
+addProp flowerID number 0
+
+// what color is the nectar - use white for empty
+addProp pollenColor number 0
+
+// how much nectar are we carrying
+addProp nectarCount number 0
+
+// how much energy do we have
+addProp energyCount number 100
+
+// monitor flower Touches
+featCall ScoutBee.Touches monitor 'Flower' c2b
 
 # PROGRAM UPDATE
 
+// use a little energy and maybe update the meter
 
-`
+// when first touch a flower
+when ScoutBee centerfirsttouches Flower [[
+  featProp ScoutBee.Costume.glow setTo 2
+
+  // drop off pollen if appropriate (e.g., different id)
+  // if same color / type
+  // if different id
+  // add to pollination count on flower
+  // clear off the bee
+  // pick up new pollen
+  // if it has any
+  // place it on bee
+  // reduce pollen on plant
+]]
+
+when ScoutBee centertouches Flower [[
+  // take some nectar from the flower every second
+  every 1 [[
+    featProp ScoutBee.Costume.glow setTo 2
+
+    ifProp Flower.nectarCount greaterThan 0 [[
+      prop ScoutBee.nectarCount add 1
+      prop Flower.nectarCount sub 1
+    ]]
+  ]]
+]]
+
+when ScoutBee centerlasttouches Flower [[
+  featProp ScoutBee.Costume.glow setTo 0
+]]
+
+// when first touch a hive
+// reset energy
+// transfer nectar to hive
+// reset pollen`
     },
     {
       "name": "Flower",
@@ -99,11 +190,64 @@ featProp ScoutBee.Costume.scale setTo 0.3
 
 addFeature Costume
 addFeature Physics
-addFeature Touches
+addFeature Graphing
 
+// setup the costume
 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
 featProp Flower.Costume.scale setTo 0.3
 
+// TODO update this to be sequential on creation
+// unique flower ID to avoid self-pollination 
+addProp flowerID number 0
+// what flower type is this?
+addProp flowerType string ''
+// what color is the flower / pollen for tracking on the bee 
+addProp flowerColor number 0
+
+// in case we want this to go down later, track nectar and pollen amount
+addProp nectarCount number 100
+addProp pollenCount number 20
+
+// how many times has this flower been pollinated?
+addProp pollinationCount number 0
+
+
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Hive",
+      "scriptText": `# BLUEPRINT Hive
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Graphing
+
+
+featProp Hive.Costume.costumeName setTo 'HB_hiveCommercial.png'
+featProp Hive.Costume.scale setTo 0.3
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+featProp Background.Costume.costumeName setTo 'FJ_background_garden.png'
+prop Background.zIndex setTo -500
 
 # PROGRAM UPDATE
 `
@@ -112,10 +256,24 @@ featProp Flower.Costume.scale setTo 0.3
   "instances": [
     {
       "id": "0",
-      "label": "Flower0",
+      "label": "Flower 1",
       "bpid": "Flower",
       "initScript": `prop Flower.x setTo 29
 prop Flower.y setTo 30`
+    },
+    {
+      "id": "1",
+      "label": "Hive",
+      "bpid": "Hive",
+      "initScript": `prop Hive.x setTo -421.00
+prop Hive.y setTo 292.23`
+    },
+    {
+      "id": "2",
+      "label": "Background",
+      "bpid": "Background",
+      "initScript": `prop Background.x setTo 0
+prop Background.y setTo 90`
     }
   ]
 }
