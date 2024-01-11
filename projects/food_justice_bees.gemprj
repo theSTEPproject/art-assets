@@ -107,7 +107,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -300
-                prop Flower.y setTo 50
+                prop Flower.y setTo 100
                 prop Flower.flowerId setTo 1
           ]]
 
@@ -115,8 +115,8 @@
                 prop Flower.flowerType setTo 'red'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
-                prop Flower.x setTo 150
-                prop Flower.y setTo 75
+                prop Flower.x setTo 200
+                prop Flower.y setTo 100
                 prop Flower.flowerId setTo 2
           ]]
 
@@ -167,10 +167,10 @@
 
         // TODO: Provide suggestions for what should go to the ECA
 
-          featCall global.Graphing showMessage  'Nice work! Remember:'
-          featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
-          featCall global.Graphing showMessage  'Or message ECA2 if you have bee questions.'
-          featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
+        featCall global.Graphing showMessage  'Nice work! Remember:'
+        featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
+        featCall global.Graphing showMessage  'Or message ECA2 if you have bee questions.'
+        featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
 
         
       `
@@ -546,6 +546,41 @@ featCall FieldChoiceButton.IU handleClick [[
         ]]
       ]]
       `
+    },
+    {
+      "name": "PollinationGraph",
+      "scriptText": `# BLUEPRINT PollinationGraph
+      # TAG isCharControllable false
+      # TAG isPozyxControllable false
+      # TAG isPTrackControllable false
+
+      # PROGRAM INIT
+      addFeature Costume
+      addFeature Graphing
+      addFeature Population
+
+      addProp totalPollinationCount number 0
+
+      featProp PollinationGraph.Costume.costumeName setTo 'GEN_onexone.json'
+      featProp PollinationGraph.Graphing.isLargeGraphic setTo true
+      featProp PollinationGraph.Graphing.graphProp setTo 'totalPollinationCount'
+      featProp PollinationGraph.Graphing.graphMinY setTo 0
+      featProp PollinationGraph.Graphing.graphMaxY setTo 100
+      featProp PollinationGraph.Graphing.graphMinX setTo 0
+      featProp PollinationGraph.Graphing.graphMaxX setTo 100
+      featProp PollinationGraph.Graphing.text setTo 'Pollination Count'
+      featProp PollinationGraph.Graphing.meterColor setTo 65280
+
+      # PROGRAM UPDATE
+      every 1 runAtStart [[
+        
+          featCall PollinationGraph.Population countCharacterProp 'Flower' 'pollinationCount'
+          featPropPush PollinationGraph.Population.avg
+          propPop PollinationGraph.totalPollinationCount
+
+      ]]
+
+      `
     }
   ],
   "instances": [
@@ -578,7 +613,15 @@ prop FieldChoiceButton.fieldType setTo 'garden'
       "bpid": "FieldChoiceButton",
       "initScript": `prop FieldChoiceButton.x setTo 180.85
 prop FieldChoiceButton.y setTo 44.27
-prop FieldChoiceButton.fieldType setTo 'parking lot'\n`
+prop FieldChoiceButton.fieldType setTo 'parking lot'
+`
+    },
+    {
+      "id": "5",
+      "label": "PollinationGraph5",
+      "bpid": "PollinationGraph",
+      "initScript": `prop PollinationGraph.x setTo 402.60
+prop PollinationGraph.y setTo -278.15`
     }
   ]
 }
