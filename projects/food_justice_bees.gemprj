@@ -24,7 +24,11 @@
   },
   "rounds": [
     {
-      "initScript": `\n        prop global.roundType setTo 'init'
+      "initScript": `\n       
+      // TODO: fix reset on time 
+      
+       prop global.roundType setTo 'init'
+
 
         // de-activate bees so they do not do things
         featCall global.Population charactersForEach 'ScoutBee' [[
@@ -78,6 +82,9 @@
         // activate bees so they do things
         featCall global.Population charactersForEach 'ScoutBee' [[
           prop ScoutBee.isInert setTo false
+          // TODO: Move to a centralized initialize function for easier startup
+          prop ScoutBee.energyLevel setTo 100
+          prop ScoutBee.nectarCount setTo 0
         ]]
 
 
