@@ -99,7 +99,7 @@
           // place a lot of flowers of at least 2-3 types, grouped
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.flowerColor setToColor 16045323
+                prop Flower.pollenColor setToColor 16045323
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 100
@@ -107,11 +107,29 @@
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.flowerColor setToColor 16045323
+                prop Flower.pollenColor setToColor 16045323
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -300
                 prop Flower.y setTo 50
                 prop Flower.flowerID setTo 1
+          ]]
+
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setToColor 16058890
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 150
+                prop Flower.y setTo 75
+                prop Flower.flowerID setTo 2
+          ]]
+
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setToColor 16058890
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 100
+                prop Flower.y setTo 100
+                prop Flower.flowerID setTo 3
           ]]
         ]]
 
@@ -124,7 +142,7 @@
           // place a lot of flowers of at least 2-3 types, grouped
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.flowerColor setToColor 16045323
+                prop Flower.pollenColor setToColor 16045323
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo 400
                 prop Flower.y setTo -350
@@ -132,7 +150,7 @@
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.flowerColor setToColor 16045323
+                prop Flower.pollenColor setToColor 16045323
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo -350
@@ -211,7 +229,7 @@ featProp ScoutBee.Costume.scale setTo 0.3
 // what flower pollen are we carrying, -1 is none
 addProp flowerID number -1
 
-// what color is the nectar - use white for empty
+// what color is the pollen - use 0 for empty
 addProp pollenColor number 0
 
 // how much nectar are we carrying
@@ -254,14 +272,17 @@ when ScoutBee centerfirsttouches Flower [[
   // drop off pollen if appropriate (e.g., different id)
   ifExpr {{ScoutBee.getProp('flowerID').value != Flower.getProp('flowerID').value }} [[
     // if we are carrying pollen 
-    ifProp ScoutBee.flowerID notEqual -1 [[
-      // the flower has been pollinated 
+    ifExpr {{ScoutBee.getProp('pollenColor').value == Flower.getProp('pollenColor').value }} [[
+      // the flower has been pollinated because it is the same species
       prop Flower.pollinationCount add 1
     ]]
 
     // either way the bee picks up the pollen type 
     propPush Flower.flowerID   
     propPop ScoutBee.flowerID
+
+    propPush Flower.pollenColor   
+    propPop ScoutBee.pollenColor
 
     //TODO: indicate the pollen color being carried 
   ]]
@@ -336,7 +357,7 @@ addProp flowerID number 0
 // what flower type is this?
 addProp flowerType string ''
 // what color is the flower / pollen for tracking on the bee
-addProp flowerColor number 0
+addProp pollenColor number 0
 
 // in case we want this to go down later, track nectar and pollen amount
 addProp nectarCount number 100
