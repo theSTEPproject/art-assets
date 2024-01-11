@@ -159,14 +159,9 @@
       `,
       "endScript": `
         // TODO: update the info about the run if it is not current 
+        // TODO: Make copies of / clear out the graph 
 
-        // CAPEN: it would be cool if at the end of the round we could send info 
-        // to the ECA about what the round looked like to get feedback
-        // In the nearterm this might be identifying tags that are set for the next
-        // time that an eca prompt is submitted?
-
-        // TODO: Provide suggestions for what should go to the ECA
-
+        // Provide suggestions for what should go to the ECA
         featCall global.Graphing showMessage  'Nice work! Remember:'
         featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
         featCall global.Graphing showMessage  'Or message ECA2 if you have bee questions.'
