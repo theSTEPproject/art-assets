@@ -205,9 +205,24 @@ addProp roundType string 'init'
 // Is this a garden or a parking lot?
 addProp fieldType string 'garden'
 
-addProp pollenX number 0
-addProp pollenY number 0
-addProp pollenColor string ''
+addProp xForPopup number 0
+addProp yForPopup number 0
+
+// popup messages
+addProp textForPopup string ''
+featCall global.IU setupFunction 'popupMessage' [[
+
+  featCall global.Population createCharacter PopupEffect [[
+    propPush global.textForPopup
+    propPop PopupEffect.textToUse
+    prop PopupEffect.costumeToUse setTo ''
+   
+    propPush global.xForPopup
+    propPop PopupEffect.x
+    propPush global.yForPopup
+    propPop PopupEffect.y
+  ]]
+]]
 
 # PROGRAM UPDATE`
     },
@@ -273,10 +288,18 @@ every 1 runAtStart [[
     prop ScoutBee.energyLevel sub 5
     
     ifProp ScoutBee.energyLevel equal 0 [[
-      featCall ScoutBee.IU logString 'Bee died from running out of energy'
+      featCall ScoutBee.IU logString 'A bee died from running out of energy'
       prop ScoutBee.alpha setTo 0.5
       prop ScoutBee.isInert setTo true
-      // TODO: use popup to say it was death
+
+      prop global.textForPopup setTo 'Whoops, ran out of energy!' 
+      propPush ScoutBee.x
+      propPop global.xForPopup
+      propPush ScoutBee.y
+      propPop global.yForPopup
+
+      featCall global.IU callFunction 'popupMessage'
+
     ]]
   ]]
   
@@ -472,6 +495,55 @@ featCall FieldChoiceButton.IU handleClick [[
   propPop global.fieldType
 ]]
 `
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+      # TAG isPozyxControllable false
+      # TAG isCharControllable false
+      # TAG isPTrackControllable false
+
+      # PROGRAM INIT
+
+      addFeature Costume
+      addFeature Physics
+      addFeature Graphing
+      addFeature Population
+
+      featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+      prop PopupEffect.zIndex setTo 600
+
+      featProp PopupEffect.Graphing.wordWrapWidth setTo 300
+      featProp PopupEffect.Graphing.fontSize setTo 28
+      featProp PopupEffect.Graphing.text setTo ''
+
+      addProp costumeToUse string ''
+      addProp textToUse string 'TEST'
+      addProp countDown Number 2
+
+      # PROGRAM UPDATE
+
+      every 0.1 runAtStart [[
+        ifProp PopupEffect.costumeToUse notEqual '' [[
+          propPush PopupEffect.costumeToUse
+          featPropPop PopupEffect.Costume.costumeName
+          prop PopupEffect.costumeToUse setTo ''
+        ]]
+
+        ifProp PopupEffect.textToUse notEqual '' [[
+          propPush PopupEffect.textToUse
+          featPropPop PopupEffect.Graphing.text
+          prop PopupEffect.textToUse setTo ''
+        ]]
+      ]]
+      every 1 runAtStart [[
+
+        prop PopupEffect.countDown sub 1
+        ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+          featCall PopupEffect.Population removeCharacter
+        ]]
+      ]]
+      `
     }
   ],
   "instances": [
