@@ -24,8 +24,7 @@
   },
   "rounds": [
     {
-      "initScript": `
-        prop global.roundType setTo 'init'
+      "initScript": `\n        prop global.roundType setTo 'init'
 
         // de-activate bees so they do not do things
         featCall global.Population charactersForEach 'ScoutBee' [[
@@ -99,37 +98,37 @@
           // place a lot of flowers of at least 2-3 types, grouped
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.pollenColor setToColor 16045323
+                prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 100
-                prop Flower.flowerID setTo 0
+                prop Flower.flowerId setTo 0
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.pollenColor setToColor 16045323
+                prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -300
                 prop Flower.y setTo 50
-                prop Flower.flowerID setTo 1
+                prop Flower.flowerId setTo 1
           ]]
 
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'red'
-                prop Flower.pollenColor setToColor 16058890
+                prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
                 prop Flower.x setTo 150
                 prop Flower.y setTo 75
-                prop Flower.flowerID setTo 2
+                prop Flower.flowerId setTo 2
           ]]
 
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'red'
-                prop Flower.pollenColor setToColor 16058890
+                prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
                 prop Flower.x setTo 100
                 prop Flower.y setTo 100
-                prop Flower.flowerID setTo 3
+                prop Flower.flowerId setTo 3
           ]]
         ]]
 
@@ -142,19 +141,19 @@
           // place a lot of flowers of at least 2-3 types, grouped
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.pollenColor setToColor 16045323
+                prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo 400
                 prop Flower.y setTo -350
-                prop Flower.flowerID setTo 0
+                prop Flower.flowerId setTo 0
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
-                prop Flower.pollenColor setToColor 16045323
+                prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo -350
-                prop Flower.flowerID setTo 1
+                prop Flower.flowerId setTo 1
           ]]
         ]]
 
@@ -206,6 +205,10 @@ addProp roundType string 'init'
 // Is this a garden or a parking lot?
 addProp fieldType string 'garden'
 
+addProp pollenX number 0
+addProp pollenY number 0
+addProp pollenColor string ''
+
 # PROGRAM UPDATE`
     },
     {
@@ -222,15 +225,18 @@ addFeature Physics
 addFeature Touches
 addFeature Graphing
 addFeature IU
+addFeature Population
+addFeature Movement
 
-featProp ScoutBee.Costume.costumeName setTo 'HB_bee.png'
+featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_empty.png'
 featProp ScoutBee.Costume.scale setTo 0.3
+prop ScoutBee.zIndex setTo 500
 
 // what flower pollen are we carrying, -1 is none
-addProp flowerID number -1
+addProp flowerId number -1
 
 // what color is the pollen - use 0 for empty
-addProp pollenColor number 0
+addProp pollenColor string 'empty'
 
 // how much nectar are we carrying
 addProp nectarCount number 0
@@ -247,7 +253,17 @@ featCall ScoutBee.Touches monitor 'Hive' c2b
 featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 featProp ScoutBee.Graphing.meterColor setTo 11416319
 
+
 # PROGRAM UPDATE
+
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp ScoutBee.Movement.compassDirection equal 'E' [[
+  featProp ScoutBee.Costume.flipX setTo false
+]]
+ifFeatProp ScoutBee.Movement.compassDirection equal 'W' [[
+  featProp ScoutBee.Costume.flipX setTo true
+]]
 
 // use a little energy and maybe update the meter
 every 1 runAtStart [[
@@ -260,6 +276,7 @@ every 1 runAtStart [[
       featCall ScoutBee.IU logString 'Bee died from running out of energy'
       prop ScoutBee.alpha setTo 0.5
       prop ScoutBee.isInert setTo true
+      // TODO: use popup to say it was death
     ]]
   ]]
   
@@ -270,7 +287,7 @@ when ScoutBee centerfirsttouches Flower [[
   featProp ScoutBee.Costume.glow setTo 2
 
   // drop off pollen if appropriate (e.g., different id)
-  ifExpr {{ScoutBee.getProp('flowerID').value != Flower.getProp('flowerID').value }} [[
+  ifExpr {{ScoutBee.getProp('flowerId').value != Flower.getProp('flowerId').value }} [[
     // if we are carrying pollen 
     ifExpr {{ScoutBee.getProp('pollenColor').value == Flower.getProp('pollenColor').value }} [[
       // the flower has been pollinated because it is the same species
@@ -278,13 +295,22 @@ when ScoutBee centerfirsttouches Flower [[
     ]]
 
     // either way the bee picks up the pollen type 
-    propPush Flower.flowerID   
-    propPop ScoutBee.flowerID
+    propPush Flower.flowerId   
+    propPop ScoutBee.flowerId
 
     propPush Flower.pollenColor   
     propPop ScoutBee.pollenColor
+   
+    ifProp ScoutBee.pollenColor equal 'red' [[
+      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_red.png'
+    ]]
+
+    ifProp ScoutBee.pollenColor equal 'yellow' [[
+      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_yellow.png'
+    ]]
 
     //TODO: indicate the pollen color being carried 
+
   ]]
 ]]
 
@@ -318,8 +344,10 @@ when ScoutBee centerfirsttouches Hive [[
   prop ScoutBee.nectarCount setTo 0
 
   // reset pollen
-  prop ScoutBee.flowerID setTo -1
-  prop ScoutBee.pollenColor setTo 0
+  prop ScoutBee.flowerId setTo -1
+  prop ScoutBee.pollenColor setTo 'empty'
+  featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_empty.png'
+
 ]]
 
 when ScoutBee centertouches Hive [[
@@ -331,6 +359,8 @@ when ScoutBee centertouches Hive [[
 when ScoutBee centerlasttouches Hive [[
   featProp ScoutBee.Costume.glow setTo 0
 ]]
+
+
 `
     },
     {
@@ -353,11 +383,11 @@ featProp Flower.Costume.scale setTo 0.3
 
 // TODO update this to be sequential on creation
 // unique flower ID to avoid self-pollination
-addProp flowerID number 0
+addProp flowerId number 0
 // what flower type is this?
 addProp flowerType string ''
 // what color is the flower / pollen for tracking on the bee
-addProp pollenColor number 0
+addProp pollenColor string 'empty'
 
 // in case we want this to go down later, track nectar and pollen amount
 addProp nectarCount number 100
@@ -474,8 +504,7 @@ prop FieldChoiceButton.fieldType setTo 'garden'
       "bpid": "FieldChoiceButton",
       "initScript": `prop FieldChoiceButton.x setTo 180.85
 prop FieldChoiceButton.y setTo 44.27
-prop FieldChoiceButton.fieldType setTo 'parking lot'
-`
+prop FieldChoiceButton.fieldType setTo 'parking lot'\n`
     }
   ]
 }
