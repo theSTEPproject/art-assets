@@ -505,6 +505,7 @@ featCall FieldChoiceButton.IU handleClick [[
 
       # PROGRAM INIT
 
+      // TODO: move this all to a feature 
       addFeature Costume
       addFeature Physics
       addFeature Graphing
