@@ -31,6 +31,12 @@
           prop ScoutBee.isInert setTo true
         ]]
 
+        // remove flowers from prior run now rather than at the end of the run so the kids can
+        // discuss what they looked like in discussing the run 
+        featCall global.Population charactersForEach 'Flower' [[
+          featCall Flower.Population removeCharacter
+        ]]
+
         featCall global.Population tellCharacterByName 'Background' [[
           featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
         ]]
@@ -74,19 +80,11 @@
           prop ScoutBee.isInert setTo false
         ]]
 
-        // CAPEN: about to set some variables for the current run. This might be where we would 
-        // instead have them have been updated by the ECA, or do some kind of check if it did update them
-        // to be able to use a default if not?
 
         // TODO: If there were prior runs, move them to the later slots
         // that way we can use the current slot if we want
 
-        // TODO: ID the field type and then set it up (parking lot or garden)
-        // CAPEN: This is one thing wed want to potentially have the ECA
-        // setup, but might also want a way to override it or ignore the ECA setting if we want to try something 
-
         // Based on the field type (garden or parking lot) do some setup below ... 
-
         ifProp global.fieldType equal 'garden' [[
           // setup the correct background image 
           featCall global.Population tellCharacterByName 'Background' [[
@@ -169,9 +167,12 @@
 
         // TODO: Provide suggestions for what should go to the ECA
 
-        featCall global.Population charactersForEach 'Flower' [[
-          featCall Flower.Population removeCharacter
-        ]]
+          featCall global.Graphing showMessage  'Nice work! Remember:'
+          featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
+          featCall global.Graphing showMessage  'Or message ECA2 if you have bee questions.'
+          featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
+
+        
       `
     }
   ],
