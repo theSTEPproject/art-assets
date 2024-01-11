@@ -208,8 +208,8 @@ addFeature IU
 featProp ScoutBee.Costume.costumeName setTo 'HB_bee.png'
 featProp ScoutBee.Costume.scale setTo 0.3
 
-// what flower pollen are we carrying - 0 is none
-addProp flowerID number 0
+// what flower pollen are we carrying, -1 is none
+addProp flowerID number -1
 
 // what color is the nectar - use white for empty
 addProp pollenColor number 0
@@ -227,7 +227,7 @@ featCall ScoutBee.Touches monitor 'Flower' c2b
 featCall ScoutBee.Touches monitor 'Hive' c2b
 
 featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
-
+featProp ScoutBee.Graphing.meterColor setTo 11416319
 
 # PROGRAM UPDATE
 
@@ -252,14 +252,19 @@ when ScoutBee centerfirsttouches Flower [[
   featProp ScoutBee.Costume.glow setTo 2
 
   // drop off pollen if appropriate (e.g., different id)
-  // if same color / type
-  // if different id
-  // add to pollination count on flower
-  // clear off the bee
-  // pick up new pollen
-  // if it has any
-  // place it on bee
-  // reduce pollen on plant
+  ifExpr {{ScoutBee.getProp('flowerID').value != Flower.getProp('flowerID').value }} [[
+    // if we are carrying pollen 
+    ifProp ScoutBee.flowerID notEqual -1 [[
+      // the flower has been pollinated 
+      prop Flower.pollinationCount add 1
+    ]]
+
+    // either way the bee picks up the pollen type 
+    propPush Flower.flowerID   
+    propPop ScoutBee.flowerID
+
+    //TODO: indicate the pollen color being carried 
+  ]]
 ]]
 
 when ScoutBee centertouches Flower [[
@@ -292,8 +297,8 @@ when ScoutBee centerfirsttouches Hive [[
   prop ScoutBee.nectarCount setTo 0
 
   // reset pollen
-  prop flowerID setTo 0
-  prop pollenColor setTo 0
+  prop ScoutBee.flowerID setTo -1
+  prop ScoutBee.pollenColor setTo 0
 ]]
 
 when ScoutBee centertouches Hive [[
