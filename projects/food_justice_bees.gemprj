@@ -25,18 +25,25 @@
   "rounds": [
     {
       "initScript": `
+        prop global.roundType setTo 'init'
+
+        // de-activate bees so they do not do things
+        featCall global.Population charactersForEach 'ScoutBee' [[
+          prop ScoutBee.isInert setTo true
+        ]]
+
         featCall global.Population tellCharacterByName 'Background' [[
           featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
         ]]
 
         featCall global.Population charactersForEach 'FieldChoiceButton' [[
-          prop character.visible setTo true
+          prop FieldChoiceButton.visible setTo true
         ]]
 
       `,
       "endScript": `
         featCall global.Population charactersForEach 'FieldChoiceButton' [[
-          prop character.visible setTo false
+          prop FieldChoiceButton.visible setTo false
         ]]
 
         ifProp global.fieldType equal 'garden' [[
@@ -60,7 +67,13 @@
     {
       "time": 100,
       "initScript": `
-      
+        // TODO: Move this to a feature (Timer?)
+        prop global.roundType setTo 'run'
+
+        // activate bees so they do things
+        featCall global.Population charactersForEach 'ScoutBee' [[
+          prop ScoutBee.isInert setTo false
+        ]]
 
         // CAPEN: about to set some variables for the current run. This might be where we would 
         // instead have them have been updated by the ECA, or do some kind of check if it did update them
@@ -92,6 +105,14 @@
                 prop Flower.y setTo 100
                 prop Flower.flowerID setTo 0
           ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerColor setToColor 16045323
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -300
+                prop Flower.y setTo 50
+                prop Flower.flowerID setTo 1
+          ]]
         ]]
 
         ifProp global.fieldType equal 'parking lot' [[
@@ -100,10 +121,23 @@
             featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
-          // place a few flowers, scattered 
-          // set the colors for each one
-          // set the type for each one
-          // set the costume to match the type 
+          // place a lot of flowers of at least 2-3 types, grouped
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerColor setToColor 16045323
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo 400
+                prop Flower.y setTo -350
+                prop Flower.flowerID setTo 0
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerColor setToColor 16045323
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -400
+                prop Flower.y setTo -350
+                prop Flower.flowerID setTo 1
+          ]]
         ]]
 
         prop global.roundNum add 1
@@ -119,7 +153,7 @@
         // TODO: Provide suggestions for what should go to the ECA
 
         featCall global.Population charactersForEach 'Flower' [[
-          featCall character.Population removeCharacter
+          featCall Flower.Population removeCharacter
         ]]
       `
     }
@@ -147,6 +181,9 @@ prop global.visible setTo false
 // so we know how many rounds we have run through
 // TODO: make sure this is incrementing
 addProp roundNum number 0
+
+// init and run
+addProp roundType string 'init'
 
 // Is this a garden or a parking lot?
 addProp fieldType string 'garden'
@@ -200,18 +237,6 @@ every 1 runAtStart [[
   ifProp ScoutBee.isInert equal false [[
 
     prop ScoutBee.energyLevel sub 5
-
-    // Set the color of the energy meter depending on the amount of energy that the character has
-    // These are green orange, and red in order
-    ifProp ScoutBee.energyLevel greaterThanOrEqual 60 [[
-      featProp ScoutBee.Graphing.meterColor setTo 65280
-    ]]
-    ifProp ScoutBee.energyLevel lessThan 60 [[
-      featProp ScoutBee.Graphing.meterColor setTo 16737792
-    ]]
-    ifProp ScoutBee.energyLevel lessThan 30 [[
-      featProp ScoutBee.Graphing.meterColor setTo 16711680
-    ]]
     
     ifProp ScoutBee.energyLevel equal 0 [[
       featCall ScoutBee.IU logString 'Bee died from running out of energy'
@@ -314,6 +339,12 @@ addProp pollenCount number 20
 
 // how many times has this flower been pollinated?
 addProp pollinationCount number 0
+prop Flower.pollinationCount setMin 0
+prop Flower.pollinationCount setMax 10
+
+featProp Flower.Graphing.meterProp setTo 'pollinationCount' 
+featProp Flower.Graphing.meterColor setTo 65280
+
 
 # PROGRAM UPDATE`
     },
