@@ -24,8 +24,43 @@
   },
   "rounds": [
     {
+      "initScript": `
+        featCall global.Population tellCharacterByName 'Background' [[
+          featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
+        ]]
+
+        featCall global.Population charactersForEach 'FieldChoiceButton' [[
+          prop character.visible setTo true
+        ]]
+
+      `,
+      "endScript": `
+        featCall global.Population charactersForEach 'FieldChoiceButton' [[
+          prop character.visible setTo false
+        ]]
+
+        ifProp global.fieldType equal 'garden' [[
+          featCall global.Population tellCharacterByName 'Background' [[
+            featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
+          ]]
+
+          featCall global.Graphing showMessage  'You have chosen the garden! Click prep round, then start to try it out.'
+        
+        ]]
+        ifProp global.fieldType equal 'parking lot' [[
+          featCall global.Population tellCharacterByName 'Background' [[
+            featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
+          ]]
+
+          featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
+        ]]
+
+      `
+    },
+    {
       "time": 100,
-      "initScript": `\n        
+      "initScript": `
+      
 
         // CAPEN: about to set some variables for the current run. This might be where we would 
         // instead have them have been updated by the ECA, or do some kind of check if it did update them
@@ -38,10 +73,6 @@
         // CAPEN: This is one thing wed want to potentially have the ECA
         // setup, but might also want a way to override it or ignore the ECA setting if we want to try something 
 
-        // set the field type 
-        // TODO: do via another round, or ECA or or ... 
-        prop global.fieldType setTo 'garden' 
-
         // Based on the field type (garden or parking lot) do some setup below ... 
 
         ifProp global.fieldType equal 'garden' [[
@@ -50,10 +81,17 @@
             featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
           ]]
 
+          // TODO: add a method to set the label and set that up 
+
           // place a lot of flowers of at least 2-3 types, grouped
-          // set the colors for each one 
-          // set the type for each one
-          // set the costume to match the type 
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerColor setToColor 16045323
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -400
+                prop Flower.y setTo 100
+                prop Flower.flowerID setTo 0
+          ]]
         ]]
 
         ifProp global.fieldType equal 'parking lot' [[
@@ -73,11 +111,16 @@
       "endScript": `
         // TODO: update the info about the run if it is not current 
 
-        // CAPEN: it would be cool if at the end of the round we could send infoPanels
+        // CAPEN: it would be cool if at the end of the round we could send info 
         // to the ECA about what the round looked like to get feedback
+        // In the nearterm this might be identifying tags that are set for the next
+        // time that an eca prompt is submitted?
 
         // TODO: Provide suggestions for what should go to the ECA
 
+        featCall global.Population charactersForEach 'Flower' [[
+          featCall character.Population removeCharacter
+        ]]
       `
     }
   ],
@@ -95,6 +138,8 @@
 
 addFeature IU
 addFeature Population
+addFeature Graphing
+
 // NOTE: using population in the round code 
 
 prop global.visible setTo false
@@ -249,17 +294,18 @@ when ScoutBee centerlasttouches Hive [[
 addFeature Costume
 addFeature Physics
 addFeature Graphing
+addFeature Population
 
 // setup the costume
 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
 featProp Flower.Costume.scale setTo 0.3
 
 // TODO update this to be sequential on creation
-// unique flower ID to avoid self-pollination 
+// unique flower ID to avoid self-pollination
 addProp flowerID number 0
 // what flower type is this?
 addProp flowerType string ''
-// what color is the flower / pollen for tracking on the bee 
+// what color is the flower / pollen for tracking on the bee
 addProp flowerColor number 0
 
 // in case we want this to go down later, track nectar and pollen amount
@@ -269,11 +315,7 @@ addProp pollenCount number 20
 // how many times has this flower been pollinated?
 addProp pollinationCount number 0
 
-
-
-# PROGRAM UPDATE
-
-`
+# PROGRAM UPDATE`
     },
     {
       "name": "Hive",
@@ -310,21 +352,42 @@ featProp Hive.Graphing.meterProp setTo  'nectarCount'
 # PROGRAM INIT
 addFeature Costume
 
-featProp Background.Costume.costumeName setTo 'FJ_background_garden.png'
+featProp Background.Costume.costumeName setTo 'FJ_background_choose.png'
 prop Background.zIndex setTo -500
 
 # PROGRAM UPDATE
 `
+    },
+    {
+      "name": "FieldChoiceButton",
+      "scriptText": `# BLUEPRINT FieldChoiceButton
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature IU
+addFeature Graphing
+addFeature Timer
+
+featProp FieldChoiceButton.Costume.costumeName setTo 'GEN_square.json'
+featProp FieldChoiceButton.Costume.scale setTo 0.5
+
+addProp fieldType string 'garden'
+
+
+# PROGRAM UPDATE
+
+featCall FieldChoiceButton.IU handleClick [[
+  featCall FieldChoiceButton.Timer stopRound
+  propPush FieldChoiceButton.fieldType
+  propPop global.fieldType
+]]
+`
     }
   ],
   "instances": [
-    {
-      "id": "0",
-      "label": "Flower 1",
-      "bpid": "Flower",
-      "initScript": `prop Flower.x setTo 29
-prop Flower.y setTo 30`
-    },
     {
       "id": "1",
       "label": "Hive",
@@ -338,6 +401,24 @@ prop Hive.y setTo 292.23`
       "bpid": "Background",
       "initScript": `prop Background.x setTo 0
 prop Background.y setTo 90`
+    },
+    {
+      "id": "3",
+      "label": "Garden",
+      "bpid": "FieldChoiceButton",
+      "initScript": `prop FieldChoiceButton.x setTo -186.68
+prop FieldChoiceButton.y setTo 44.82
+prop FieldChoiceButton.fieldType setTo 'garden'
+`
+    },
+    {
+      "id": "4",
+      "label": "Parking Lot",
+      "bpid": "FieldChoiceButton",
+      "initScript": `prop FieldChoiceButton.x setTo 180.85
+prop FieldChoiceButton.y setTo 44.27
+prop FieldChoiceButton.fieldType setTo 'parking lot'
+`
     }
   ]
 }
