@@ -168,6 +168,19 @@
         // TODO: update the info about the run if it is not current 
         // TODO: Make copies of / clear out the graph 
 
+        // Update art on flowers to show they were pollinated
+        featCall global.Population charactersForEach 'Flower' [[
+          ifProp Flower.pollinationCount greaterThan 0 [[
+            ifProp Flower.pollenColor equal 'red' [[
+              featProp Flower.Costume.costumeName setTo 'HB_redFlowerPollinated.png'
+            ]]
+            ifProp Flower.pollenColor equal 'yellow' [[
+              featProp Flower.Costume.costumeName setTo 'HB_yellowFlowerPollinated.png'
+            ]]
+          ]]
+        ]]
+
+
         // Provide suggestions for what should go to the ECA
         featCall global.Graphing showMessage  'Nice work! Remember:'
         featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
