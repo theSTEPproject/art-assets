@@ -596,6 +596,20 @@ featCall FieldChoiceButton.IU handleClick [[
       ]]
 
       `
+    },
+    {
+      "name": "Key",
+      "scriptText": `# BLUEPRINT Key
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Key.Costume.costumeName setTo 'FJ_key.png'
+featProp Key.Costume.scale setTo 0.5
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -626,8 +640,8 @@ prop FieldChoiceButton.fieldType setTo 'garden'
       "id": "4",
       "label": "Parking Lot",
       "bpid": "FieldChoiceButton",
-      "initScript": `prop FieldChoiceButton.x setTo 180.85
-prop FieldChoiceButton.y setTo 44.27
+      "initScript": `prop FieldChoiceButton.x setTo 172.69
+prop FieldChoiceButton.y setTo 39.72
 prop FieldChoiceButton.fieldType setTo 'parking lot'
 `
     },
@@ -635,8 +649,15 @@ prop FieldChoiceButton.fieldType setTo 'parking lot'
       "id": "5",
       "label": "PollinationGraph5",
       "bpid": "PollinationGraph",
-      "initScript": `prop PollinationGraph.x setTo 402.60
-prop PollinationGraph.y setTo -278.15`
+      "initScript": `prop PollinationGraph.x setTo 427.48
+prop PollinationGraph.y setTo -26.94`
+    },
+    {
+      "id": "6",
+      "label": "Key6",
+      "bpid": "Key",
+      "initScript": `prop Key.x setTo 413.81
+prop Key.y setTo -265.94`
     }
   ]
 }
