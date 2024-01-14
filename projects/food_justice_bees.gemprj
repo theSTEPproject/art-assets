@@ -55,6 +55,11 @@
           prop FieldChoiceButton.visible setTo false
         ]]
 
+        // stop the current graph from updating 
+        featCall global.Population charactersForEach 'PollinationGraph' [[
+          featProp PollinationGraph.Graphing.graphFrequency setTo 0
+        ]]
+
         ifProp global.fieldType equal 'garden' [[
           featCall global.Population tellCharacterByName 'Background' [[
             featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
@@ -70,7 +75,6 @@
 
           featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
         ]]
-
       `
     },
     {
@@ -78,6 +82,37 @@
       "initScript": `
         // TODO: Move this to a feature (Timer?)
         prop global.roundType setTo 'run'
+
+        // Move prior pollination graphs down a bit, and delete if there are too many
+        featCall global.Population charactersForEach 'PollinationGraph' [[
+
+          prop PollinationGraph.row add 1
+          ifProp PollinationGraph.row equal 4 [[
+            // remove the graph since we are out of space
+            featCall PollinationGraph.Population removeCharacter
+          ]]
+          // if we didnt remove it, shift this down a bit 
+          ifProp PollinationGraph.row lessThan 4 [[
+            prop PollinationGraph.y add 170
+          ]]
+        ]]
+
+        // create a new pollination graph in the top row / position 
+        featCall global.Population createCharacter PollinationGraph [[
+          prop PollinationGraph.x setTo 420
+          prop PollinationGraph.y setTo -35
+          propPush global.fieldType
+          propPop PollinationGraph.fieldType
+          
+          propPush PollinationGraph.fieldType
+          propPop global.tempString
+          prop global.tempString add ' pollination count round '
+          // TODO: make this better 
+          exprPush {{ global.getProp('tempString').value + global.getProp('roundNum').value }}
+          propPop global.tempString
+          propPush global.tempString
+          featPropPop PollinationGraph.Graphing.text
+        ]]
 
         // activate bees so they do things
         featCall global.Population charactersForEach 'ScoutBee' [[
@@ -87,9 +122,6 @@
           prop ScoutBee.nectarCount setTo 0
         ]]
 
-
-        // TODO: If there were prior runs, move them to the later slots
-        // that way we can use the current slot if we want
 
         // Based on the field type (garden or parking lot) do some setup below ... 
         ifProp global.fieldType equal 'garden' [[
@@ -148,7 +180,7 @@
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo 400
+                prop Flower.x setTo 260
                 prop Flower.y setTo -350
                 prop Flower.flowerId setTo 0
           ]]
@@ -179,7 +211,6 @@
             ]]
           ]]
         ]]
-
 
         // Provide suggestions for what should go to the ECA
         featCall global.Graphing showMessage  'Nice work! Remember:'
@@ -221,10 +252,11 @@ addProp roundType string 'init'
 // Is this a garden or a parking lot?
 addProp fieldType string 'garden'
 
-addProp xForPopup number 0
-addProp yForPopup number 0
+addProp tempString string ''
 
 // popup messages
+addProp xForPopup number 0
+addProp yForPopup number 0
 addProp textForPopup string ''
 featCall global.IU setupFunction 'popupMessage' [[
 
@@ -580,19 +612,27 @@ featCall FieldChoiceButton.IU handleClick [[
       featProp PollinationGraph.Graphing.isLargeGraphic setTo true
       featProp PollinationGraph.Graphing.graphProp setTo 'totalPollinationCount'
       featProp PollinationGraph.Graphing.graphMinY setTo 0
-      featProp PollinationGraph.Graphing.graphMaxY setTo 100
+      featProp PollinationGraph.Graphing.graphMaxY setTo 50
       featProp PollinationGraph.Graphing.graphMinX setTo 0
       featProp PollinationGraph.Graphing.graphMaxX setTo 100
-      featProp PollinationGraph.Graphing.text setTo 'Pollination Count'
+      featProp PollinationGraph.Graphing.text setTo 'pollination count'
       featProp PollinationGraph.Graphing.meterColor setTo 65280
+      featProp PollinationGraph.Graphing.wordWrapWidth setTo 150
+
+
+      // what row are we in on the screen (4 total, incremented at end of round)
+      addProp row number 1
+
+      addProp fieldType string ''
 
       # PROGRAM UPDATE
       every 1 runAtStart [[
-        
+        // only update if this is the main graph, otherwise leave it as a record
+        ifProp PollinationGraph.row equal 1 [[
           featCall PollinationGraph.Population countCharacterProp 'Flower' 'pollinationCount'
           featPropPush PollinationGraph.Population.avg
           propPop PollinationGraph.totalPollinationCount
-
+        ]]
       ]]
 
       `
@@ -644,13 +684,6 @@ prop FieldChoiceButton.fieldType setTo 'garden'
 prop FieldChoiceButton.y setTo 39.72
 prop FieldChoiceButton.fieldType setTo 'parking lot'
 `
-    },
-    {
-      "id": "5",
-      "label": "PollinationGraph5",
-      "bpid": "PollinationGraph",
-      "initScript": `prop PollinationGraph.x setTo 427.48
-prop PollinationGraph.y setTo -26.94`
     },
     {
       "id": "6",
