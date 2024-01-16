@@ -25,6 +25,8 @@
   "rounds": [
     {
       "initScript": `\n       
+      // TODO: All new artowk, of course 
+      // TODO: can we circumvent the prepare and start on subsequent runs? 
       // TODO: fix reset on time 
       
        prop global.roundType setTo 'init'
@@ -121,7 +123,6 @@
           prop ScoutBee.energyLevel setTo 100
           prop ScoutBee.nectarCount setTo 0
         ]]
-
 
         // Based on the field type (garden or parking lot) do some setup below ... 
         ifProp global.fieldType equal 'garden' [[
