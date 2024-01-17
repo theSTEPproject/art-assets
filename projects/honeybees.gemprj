@@ -23,6 +23,16 @@
     "mirrorY": false
   },
   "rounds": [],
+  "ecaTypes": [
+    {
+      "label": "Text Megan",
+      "name": "Knowledge_Pollination"
+    },
+    {
+      "label": "Text Selene",
+      "name": "Knowledge_FoodJustice"
+    }
+  ],
   "blueprints": [
     {
       "name": "global",
