@@ -225,12 +225,16 @@
   ],
     "ecaTypes": [
     {
-      "label": "Text Megan",
+      "label": "Megan",
       "name": "Knowledge_Pollination"
     },
     {
-      "label": "Text Selene",
+      "label": "Selene",
       "name": "Knowledge_FoodJustice"
+    },
+    {
+      "label": "Observing",
+      "name": "GEMSTEP_Observing"
     }
   ],
   "blueprints": [
