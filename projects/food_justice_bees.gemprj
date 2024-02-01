@@ -101,14 +101,14 @@
 
         // create a new pollination graph in the top row / position 
         featCall global.Population createCharacter PollinationGraph [[
-          prop PollinationGraph.x setTo 420
+          prop PollinationGraph.x setTo 400
           prop PollinationGraph.y setTo -35
           propPush global.fieldType
           propPop PollinationGraph.fieldType
           
           propPush PollinationGraph.fieldType
           propPop global.tempString
-          prop global.tempString add ' pollination count round '
+          prop global.tempString add ' round '
           // TODO: make this better 
           exprPush {{ global.getProp('tempString').value + global.getProp('roundNum').value }}
           propPop global.tempString
@@ -233,8 +233,7 @@
       `
     }
   ],
-    "ecaTypes": [
-
+  "ecaTypes": [
     {
       "label": "Wes (Gardener)",
       "name": "GEMSTEP_Observing"
@@ -516,7 +515,7 @@ featProp Hive.Costume.scale setTo 0.3
 
 addProp nectarCount number 20
 prop Hive.nectarCount setMin 0
-prop Hive.nectarCount setMax 500
+prop Hive.nectarCount setMax 50
 
 featProp Hive.Graphing.meterProp setTo  'nectarCount'
 
@@ -671,7 +670,7 @@ featCall FieldChoiceButton.IU handleClick [[
 # PROGRAM INIT
 addFeature Costume
 featProp Key.Costume.costumeName setTo 'FJ_key.png'
-featProp Key.Costume.scale setTo 0.5
+featProp Key.Costume.scale setTo 1
 
 # PROGRAM UPDATE`
     }
@@ -713,8 +712,8 @@ prop FieldChoiceButton.fieldType setTo 'parking lot'
       "id": "6",
       "label": "Key6",
       "bpid": "Key",
-      "initScript": `prop Key.x setTo 413.81
-prop Key.y setTo -265.94`
+      "initScript": `prop Key.x setTo 407.65
+prop Key.y setTo -18.97`
     }
   ]
 }
