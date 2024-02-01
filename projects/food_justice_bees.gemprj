@@ -513,14 +513,29 @@ addFeature Graphing
 featProp Hive.Costume.costumeName setTo 'HB_hiveCommercial.png'
 featProp Hive.Costume.scale setTo 0.3
 
-addProp nectarCount number 20
+addProp nectarCount number 10
 prop Hive.nectarCount setMin 0
-prop Hive.nectarCount setMax 50
+// nectar max - make sure to change below if this changes
+prop Hive.nectarCount setMax 30
 
 featProp Hive.Graphing.meterProp setTo  'nectarCount'
 
 
 # PROGRAM UPDATE
+
+every 1 runAtStart [[
+  ifProp Hive.nectarCount equal 30 [[
+    prop global.textForPopup setTo 'Hive is full, so the honey was collected!' 
+    propPush Hive.x
+    propPop global.xForPopup
+    propPush Hive.y
+    propPop global.yForPopup
+
+    featCall global.IU callFunction 'popupMessage'
+
+    prop Hive.nectarCount setTo 0
+  ]]
+]]
 `
     },
     {
