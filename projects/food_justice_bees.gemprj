@@ -215,8 +215,8 @@
 
         // Provide suggestions for what should go to the ECA
         featCall global.Graphing showMessage  'Nice work! Remember:'
-        featCall global.Graphing showMessage  'You can message ECA1 about what you noticed.'
-        featCall global.Graphing showMessage  'Or message ECA2 if you have bee questions.'
+        featCall global.Graphing showMessage  'You can message Wes about what you noticed.'
+        featCall global.Graphing showMessage  'Or message Nadia if you have bee questions.'
         featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
 
         
@@ -224,17 +224,14 @@
     }
   ],
     "ecaTypes": [
+
     {
-      "label": "Megan",
-      "name": "Knowledge_Pollination"
-    },
-    {
-      "label": "Selene",
-      "name": "Knowledge_FoodJustice"
-    },
-    {
-      "label": "Observing",
+      "label": "Wes (Gardener)",
       "name": "GEMSTEP_Observing"
+    },
+    {
+      "label": "Nadia (Bees)",
+      "name": "Knowledge_Pollination"
     }
   ],
   "blueprints": [
@@ -627,7 +624,7 @@ featCall FieldChoiceButton.IU handleClick [[
       featProp PollinationGraph.Graphing.isLargeGraphic setTo true
       featProp PollinationGraph.Graphing.graphProp setTo 'totalPollinationCount'
       featProp PollinationGraph.Graphing.graphMinY setTo 0
-      featProp PollinationGraph.Graphing.graphMaxY setTo 50
+      featProp PollinationGraph.Graphing.graphMaxY setTo 20
       featProp PollinationGraph.Graphing.graphMinX setTo 0
       featProp PollinationGraph.Graphing.graphMaxX setTo 100
       featProp PollinationGraph.Graphing.text setTo 'pollination count'
