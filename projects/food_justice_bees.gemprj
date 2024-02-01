@@ -141,6 +141,7 @@
                 prop Flower.x setTo -400
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 0
+                featProp Flower.Graphing.text setTo 'Yellow 1'
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
@@ -149,6 +150,8 @@
                 prop Flower.x setTo -300
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 1
+                featProp Flower.Graphing.text setTo 'Yellow 2'
+
           ]]
 
           featCall global.Population createCharacter Flower [[
@@ -158,6 +161,8 @@
                 prop Flower.x setTo 200
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 2
+                featProp Flower.Graphing.text setTo 'Red 2'
+
           ]]
 
           featCall global.Population createCharacter Flower [[
@@ -167,6 +172,8 @@
                 prop Flower.x setTo 100
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 3
+                featProp Flower.Graphing.text setTo 'Red 1'
+
           ]]
         ]]
 
@@ -184,6 +191,8 @@
                 prop Flower.x setTo 260
                 prop Flower.y setTo -350
                 prop Flower.flowerId setTo 0
+                featProp Flower.Graphing.text setTo 'Yellow 1'
+
           ]]
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
@@ -192,6 +201,7 @@
                 prop Flower.x setTo -400
                 prop Flower.y setTo -350
                 prop Flower.flowerId setTo 1
+                featProp Flower.Graphing.text setTo 'Yellow 2'
           ]]
         ]]
 
@@ -327,6 +337,8 @@ featCall ScoutBee.Touches monitor 'Hive' c2b
 
 featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 featProp ScoutBee.Graphing.meterColor setTo 11416319
+
+
 
 
 # PROGRAM UPDATE
