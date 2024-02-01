@@ -51,6 +51,12 @@
           prop FieldChoiceButton.visible setTo true
         ]]
 
+
+        featCall global.Population charactersForEach 'FinishMessage' [[
+          prop FinishMessage.visible setTo false
+        ]]
+
+
       `,
       "endScript": `
         featCall global.Population charactersForEach 'FieldChoiceButton' [[
@@ -208,8 +214,6 @@
         prop global.roundNum add 1
       `,
       "endScript": `
-        // TODO: update the info about the run if it is not current 
-        // TODO: Make copies of / clear out the graph 
 
         // Update art on flowers to show they were pollinated
         featCall global.Population charactersForEach 'Flower' [[
@@ -223,11 +227,15 @@
           ]]
         ]]
 
+        featCall global.Population charactersForEach 'FinishMessage' [[
+          prop FinishMessage.visible setTo true
+        ]]
+
         // Provide suggestions for what should go to the ECA
-        featCall global.Graphing showMessage  'Nice work! Remember:'
-        featCall global.Graphing showMessage  'You can message Wes about what you noticed.'
-        featCall global.Graphing showMessage  'Or message Nadia if you have bee questions.'
-        featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
+        // featCall global.Graphing showMessage  'Nice work! Remember:'
+        // featCall global.Graphing showMessage  'You can message Wes about what you noticed.'
+        // featCall global.Graphing showMessage  'Or message Nadia if you have bee questions.'
+        // featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
 
         
       `
@@ -515,8 +523,7 @@ featProp Hive.Costume.scale setTo 0.3
 
 addProp nectarCount number 10
 prop Hive.nectarCount setMin 0
-// nectar max - make sure to change below if this changes
-prop Hive.nectarCount setMax 30
+prop Hive.nectarCount setMax 40
 
 featProp Hive.Graphing.meterProp setTo  'nectarCount'
 
@@ -524,7 +531,7 @@ featProp Hive.Graphing.meterProp setTo  'nectarCount'
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
-  ifProp Hive.nectarCount equal 30 [[
+  ifProp Hive.nectarCount equal 11 [[
     prop global.textForPopup setTo 'Hive is full, so the honey was collected!' 
     propPush Hive.x
     propPop global.xForPopup
@@ -688,6 +695,23 @@ featProp Key.Costume.costumeName setTo 'FJ_key.png'
 featProp Key.Costume.scale setTo 1
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "FinishMessage",
+      "scriptText": `# BLUEPRINT FinishMessage
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp FinishMessage.Costume.costumeName setTo 'FJ_finish.png'
+featProp FinishMessage.Costume.scale setTo 0.7
+prop FinishMessage.visible setTo false
+
+
+# PROGRAM UPDATE
+`
     }
   ],
   "instances": [
@@ -729,6 +753,13 @@ prop FieldChoiceButton.fieldType setTo 'parking lot'
       "bpid": "Key",
       "initScript": `prop Key.x setTo 407.65
 prop Key.y setTo -18.97`
+    },
+    {
+      "id": "7",
+      "label": "FinishMessage7",
+      "bpid": "FinishMessage",
+      "initScript": `prop FinishMessage.x setTo -95.44
+prop FinishMessage.y setTo -275.28`
     }
   ]
 }
