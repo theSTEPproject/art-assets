@@ -244,7 +244,8 @@
   "ecaTypes": [
     {
       "label": "Wes (Gardener)",
-      "name": "GEMSTEP_Observing"
+      "name": "GEMSTEP_Observing",
+      "initialMessage": "Hi! What did you notice in running this model?"
     },
     {
       "label": "Nadia (Bees)",
