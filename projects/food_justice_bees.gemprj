@@ -228,6 +228,7 @@
         ]]
 
         featCall global.IU forceNext
+        featCall global.IU toggleECA
 
       `
     }
