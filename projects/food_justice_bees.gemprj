@@ -83,6 +83,9 @@
 
           featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
         ]]
+
+        featCall global.IU forceNext
+
       `
     },
     {
@@ -237,7 +240,8 @@
         // featCall global.Graphing showMessage  'Or message Nadia if you have bee questions.'
         // featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
 
-        
+        featCall global.IU forceNext
+
       `
     }
   ],
@@ -302,7 +306,9 @@ featCall global.IU setupFunction 'popupMessage' [[
   ]]
 ]]
 
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+    `
     },
     {
       "name": "ScoutBee",
