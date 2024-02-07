@@ -31,15 +31,12 @@
       
        prop global.roundType setTo 'init'
 
-
         // de-activate bees so they do not do things
         featCall global.Population charactersForEach 'ScoutBee' [[
           prop ScoutBee.isInert setTo true
         ]]
 
         // rest of the setup is in global onEvent Start 
-
-
       `,
       "endScript": `
         featCall global.Population charactersForEach 'FieldChoiceButton' [[
@@ -67,6 +64,12 @@
 
           featCall global.IU logString 'Parking lot model chosen'
           featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
+        
+          // show the pollution
+          featCall global.Population tellCharacterByName 'Pollution' [[
+            prop Pollution.visible setTo true
+            prop Pollution.isInert setTo false
+          ]]
         ]]
 
         featCall global.IU forceNext
@@ -135,7 +138,7 @@
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo -400
+                prop Flower.x setTo -385
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Yellow 1'
@@ -144,7 +147,7 @@
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo -300
+                prop Flower.x setTo -220
                 prop Flower.y setTo 100
                 prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Yellow 2'
@@ -185,21 +188,23 @@
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo 260
-                prop Flower.y setTo -350
-                prop Flower.flowerId setTo 0
+                prop Flower.x setTo 270
+                prop Flower.y setTo -250
+                prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Yellow 1'
-
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo -400
-                prop Flower.y setTo -350
-                prop Flower.flowerId setTo 1
+                prop Flower.x setTo 260
+                prop Flower.y setTo 150
+                prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Yellow 2'
+
           ]]
+
         ]]
 
         prop global.roundNum add 1
@@ -295,13 +300,18 @@ onEvent Start [[
     prop FinishMessage.visible setTo false
   ]]
 
-  // make the field type choice buttons visible 
+  // make the field type choice buttons visible and hide the pollution
   ifProp global.roundType equal 'init' [[
 
     // remove flowers from prior run now rather than at the end of the run so the kids can
     // discuss what they looked like in discussing the run 
     featCall global.Population charactersForEach 'Flower' [[
       featCall Flower.Population removeCharacter
+    ]]
+
+    featCall global.Population tellCharacterByName 'Pollution' [[
+      prop Pollution.visible setTo false
+      prop Pollution.isInert setTo true
     ]]
 
     featCall global.Population tellCharacterByName 'Background' [[
@@ -353,11 +363,12 @@ prop ScoutBee.energyLevel setMax 100
 // monitor flower Touches
 featCall ScoutBee.Touches monitor 'Flower' c2b
 featCall ScoutBee.Touches monitor 'Hive' c2b
+featCall ScoutBee.Touches monitor 'Pollution' c2b
 
 featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 featProp ScoutBee.Graphing.meterColor setTo 11416319
 
-
+featProp ScoutBee.Costume.glowColor setToColor 16105472
 
 
 # PROGRAM UPDATE
@@ -377,13 +388,13 @@ every 1 runAtStart [[
   ifProp ScoutBee.isInert equal false [[
 
     prop ScoutBee.energyLevel sub 5
-    
+
     ifProp ScoutBee.energyLevel equal 0 [[
       featCall ScoutBee.IU logString 'A bee died from running out of energy'
       prop ScoutBee.alpha setTo 0.5
       prop ScoutBee.isInert setTo true
 
-      prop global.textForPopup setTo 'Whoops, ran out of energy!' 
+      prop global.textForPopup setTo 'Whoops, ran out of energy!'
       propPush ScoutBee.x
       propPop global.xForPopup
       propPush ScoutBee.y
@@ -393,7 +404,7 @@ every 1 runAtStart [[
 
     ]]
   ]]
-  
+
 ]]
 
 // when first touch a flower
@@ -404,21 +415,21 @@ when ScoutBee centerfirsttouches Flower [[
   featProp ScoutBee.Costume.glow setTo 2
 
   // drop off pollen if appropriate (e.g., different id)
-  ifExpr {{ScoutBee.getProp('flowerId').value != Flower.getProp('flowerId').value }} [[
-    // if we are carrying pollen 
-    ifExpr {{ScoutBee.getProp('pollenColor').value == Flower.getProp('pollenColor').value }} [[
+  ifExpr {{ ScoutBee.getProp('flowerId').value != Flower.getProp('flowerId').value }} [[
+    // if we are carrying pollen
+    ifExpr {{ ScoutBee.getProp('pollenColor').value == Flower.getProp('pollenColor').value }} [[
       // the flower has been pollinated because it is the same species
       prop Flower.pollinationCount add 1
       featCall ScoutBee.IU logString 'Bee pollinated a flower'
     ]]
 
-    // either way the bee picks up the pollen type 
-    propPush Flower.flowerId   
+    // either way the bee picks up the pollen type
+    propPush Flower.flowerId
     propPop ScoutBee.flowerId
 
-    propPush Flower.pollenColor   
+    propPush Flower.pollenColor
     propPop ScoutBee.pollenColor
-   
+
     ifProp ScoutBee.pollenColor equal 'red' [[
       featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_red.png'
     ]]
@@ -427,7 +438,7 @@ when ScoutBee centerfirsttouches Flower [[
       featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_yellow.png'
     ]]
 
-    //TODO: indicate the pollen color being carried 
+    // TODO: indicate the pollen color being carried
 
   ]]
 ]]
@@ -442,6 +453,25 @@ when ScoutBee centertouches Flower [[
       prop Flower.nectarCount sub 1
     ]]
   ]]
+]]
+
+when ScoutBee centertouches Pollution [[
+    featProp ScoutBee.Costume.glowColor setToColor 12396584
+    featProp ScoutBee.Costume.glow setTo 2
+]]
+
+when ScoutBee centertouches Pollution [[
+  every 1 runAtStart [[
+    featProp ScoutBee.Costume.glowColor setToColor 12396584
+    featProp ScoutBee.Costume.glow setTo 2
+    prop ScoutBee.energyLevel sub 2
+    featCall ScoutBee.IU logString 'Losing energy from pollution'
+  ]]
+]]
+
+when ScoutBee centerlasttouches Pollution [[
+  featProp ScoutBee.Costume.glow setTo 0
+  featProp ScoutBee.Costume.glowColor setToColor 16105472
 ]]
 
 when ScoutBee centerlasttouches Flower [[
@@ -471,17 +501,15 @@ when ScoutBee centerfirsttouches Hive [[
 ]]
 
 when ScoutBee centertouches Hive [[
-    every 1 [[
+  every 1 [[
+    featProp ScoutBee.Costume.glowColor setToColor 16105472
     featProp ScoutBee.Costume.glow setTo 2
   ]]
 ]]
 
 when ScoutBee centerlasttouches Hive [[
   featProp ScoutBee.Costume.glow setTo 0
-]]
-
-
-`
+]]`
     },
     {
       "name": "Flower",
@@ -726,7 +754,27 @@ addFeature Costume
 featProp FinishMessage.Costume.costumeName setTo 'FJ_finish.png'
 featProp FinishMessage.Costume.scale setTo 0.7
 prop FinishMessage.visible setTo false
+prop FinishMessage.zIndex setTo 500
 
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Pollution",
+      "scriptText": `# BLUEPRINT Pollution
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+
+featProp Pollution.Costume.costumeName setTo 'FJ_pollution.png'
+featProp Pollution.Costume.scale setTo 0.2
+
+// start hidden and inert
+prop Pollution.visible setTo false
+prop Pollution.isInert setTo true
 
 # PROGRAM UPDATE`
     }
@@ -777,6 +825,13 @@ prop Key.y setTo -18.97`
       "bpid": "FinishMessage",
       "initScript": `prop FinishMessage.x setTo -95.75
 prop FinishMessage.y setTo -216.96`
+    },
+    {
+      "id": "8",
+      "label": "Pollution",
+      "bpid": "Pollution",
+      "initScript": `prop Pollution.x setTo 150
+prop Pollution.y setTo 30`
     }
   ]
 }
