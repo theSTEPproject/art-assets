@@ -717,8 +717,7 @@ featProp FinishMessage.Costume.scale setTo 0.7
 prop FinishMessage.visible setTo false
 
 
-# PROGRAM UPDATE
-`
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -763,10 +762,10 @@ prop Key.y setTo -18.97`
     },
     {
       "id": "7",
-      "label": "FinishMessage7",
+      "label": "FinishMessage",
       "bpid": "FinishMessage",
-      "initScript": `prop FinishMessage.x setTo -95.44
-prop FinishMessage.y setTo -275.28`
+      "initScript": `prop FinishMessage.x setTo -95.75
+prop FinishMessage.y setTo -216.96`
     }
   ]
 }
