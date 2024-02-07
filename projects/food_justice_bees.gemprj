@@ -52,11 +52,6 @@
         ]]
 
 
-        featCall global.Population charactersForEach 'FinishMessage' [[
-          prop FinishMessage.visible setTo false
-        ]]
-
-
       `,
       "endScript": `
         featCall global.Population charactersForEach 'FieldChoiceButton' [[
@@ -307,7 +302,12 @@ featCall global.IU setupFunction 'popupMessage' [[
 ]]
 
 # PROGRAM UPDATE
-
+onEvent Start [[
+  // hide the finish message if it is still there.
+  featCall global.Population charactersForEach 'FinishMessage' [[
+    prop FinishMessage.visible setTo false
+  ]]
+]]
     `
     },
     {
