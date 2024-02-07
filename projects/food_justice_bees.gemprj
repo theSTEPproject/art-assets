@@ -399,7 +399,6 @@ every 1 runAtStart [[
       propPop global.xForPopup
       propPush ScoutBee.y
       propPop global.yForPopup
-
       featCall global.IU callFunction 'popupMessage'
 
     ]]
@@ -455,15 +454,22 @@ when ScoutBee centertouches Flower [[
   ]]
 ]]
 
-when ScoutBee centertouches Pollution [[
+when ScoutBee centerfirsttouches Pollution [[
     featProp ScoutBee.Costume.glowColor setToColor 12396584
     featProp ScoutBee.Costume.glow setTo 2
+
+    prop global.textForPopup setTo 'Cough cough!'
+    propPush ScoutBee.x
+    propPop global.xForPopup
+    propPush ScoutBee.y
+    propPop global.yForPopup
+    featCall global.IU callFunction 'popupMessage'
 ]]
 
 when ScoutBee centertouches Pollution [[
   every 1 runAtStart [[
-    featProp ScoutBee.Costume.glowColor setToColor 12396584
     featProp ScoutBee.Costume.glow setTo 2
+
     prop ScoutBee.energyLevel sub 2
     featCall ScoutBee.IU logString 'Losing energy from pollution'
   ]]
