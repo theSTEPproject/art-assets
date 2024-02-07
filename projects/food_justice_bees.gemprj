@@ -68,6 +68,7 @@
             featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
           ]]
 
+          featCall global.IU logString 'Garden model chosen'
           featCall global.Graphing showMessage  'You have chosen the garden! Click prep round, then start to try it out.'
         
         ]]
@@ -76,6 +77,7 @@
             featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
+          featCall global.IU logString 'Parking lot model chosen'
           featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
         ]]
 
@@ -86,6 +88,9 @@
     {
       "time": 100,
       "initScript": `
+
+        featCall global.IU logString 'Running new model'
+
         // TODO: Move this to a feature (Timer?)
         prop global.roundType setTo 'run'
 
@@ -393,6 +398,9 @@ every 1 runAtStart [[
 
 // when first touch a flower
 when ScoutBee centerfirsttouches Flower [[
+
+  featCall ScoutBee.IU logString 'Bee visiting a new flower'
+
   featProp ScoutBee.Costume.glow setTo 2
 
   // drop off pollen if appropriate (e.g., different id)
@@ -401,6 +409,7 @@ when ScoutBee centerfirsttouches Flower [[
     ifExpr {{ScoutBee.getProp('pollenColor').value == Flower.getProp('pollenColor').value }} [[
       // the flower has been pollinated because it is the same species
       prop Flower.pollinationCount add 1
+      featCall ScoutBee.IU logString 'Bee pollinated a flower'
     ]]
 
     // either way the bee picks up the pollen type 
@@ -441,6 +450,8 @@ when ScoutBee centerlasttouches Flower [[
 
 when ScoutBee centerfirsttouches Hive [[
   featProp ScoutBee.Costume.glow setTo 2
+
+  featCall ScoutBee.IU logString 'Bee dropping off nectar and resting at the hive'
 
   // reset energy
   prop ScoutBee.energyLevel setTo 100
