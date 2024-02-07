@@ -47,10 +47,6 @@
           featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
         ]]
 
-        featCall global.Population charactersForEach 'FieldChoiceButton' [[
-          prop FieldChoiceButton.visible setTo true
-        ]]
-
 
       `,
       "endScript": `
@@ -311,6 +307,13 @@ onEvent Start [[
   // hide the finish message if it is still there.
   featCall global.Population charactersForEach 'FinishMessage' [[
     prop FinishMessage.visible setTo false
+  ]]
+
+  // make the field type choice buttons visible 
+  ifProp global.roundType equal 'init' [[
+    featCall global.Population charactersForEach 'FieldChoiceButton' [[
+      prop FieldChoiceButton.visible setTo true
+    ]]
   ]]
 ]]
     `
