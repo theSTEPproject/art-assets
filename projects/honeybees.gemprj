@@ -25,12 +25,14 @@
   "rounds": [],
   "ecaTypes": [
     {
-      "label": "Text Megan",
-      "name": "Knowledge_Pollination"
+      "label": "Megan",
+      "name": "Knowledge_Pollination",
+      "initialMessage": "How did you do?"
     },
     {
-      "label": "Text Selene",
-      "name": "Knowledge_FoodJustice"
+      "label": "Selene",
+      "name": "Knowledge_FoodJustice",
+      "initialMessage": "What did you notice?"
     }
   ],
   "blueprints": [
