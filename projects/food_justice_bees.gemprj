@@ -37,15 +37,7 @@
           prop ScoutBee.isInert setTo true
         ]]
 
-        // remove flowers from prior run now rather than at the end of the run so the kids can
-        // discuss what they looked like in discussing the run 
-        featCall global.Population charactersForEach 'Flower' [[
-          featCall Flower.Population removeCharacter
-        ]]
-
-        featCall global.Population tellCharacterByName 'Background' [[
-          featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
-        ]]
+        // rest of the setup is in global onEvent Start 
 
 
       `,
@@ -230,12 +222,6 @@
           prop FinishMessage.visible setTo true
         ]]
 
-        // Provide suggestions for what should go to the ECA
-        // featCall global.Graphing showMessage  'Nice work! Remember:'
-        // featCall global.Graphing showMessage  'You can message Wes about what you noticed.'
-        // featCall global.Graphing showMessage  'Or message Nadia if you have bee questions.'
-        // featCall global.Graphing showMessage  'Press the prep round button when you are ready to try a new model.'
-
         featCall global.IU forceNext
 
       `
@@ -311,6 +297,17 @@ onEvent Start [[
 
   // make the field type choice buttons visible 
   ifProp global.roundType equal 'init' [[
+
+    // remove flowers from prior run now rather than at the end of the run so the kids can
+    // discuss what they looked like in discussing the run 
+    featCall global.Population charactersForEach 'Flower' [[
+      featCall Flower.Population removeCharacter
+    ]]
+
+    featCall global.Population tellCharacterByName 'Background' [[
+      featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
+    ]]
+
     featCall global.Population charactersForEach 'FieldChoiceButton' [[
       prop FieldChoiceButton.visible setTo true
     ]]
