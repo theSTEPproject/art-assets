@@ -820,7 +820,7 @@ prop FieldChoiceButton.fieldType setTo 'parking lot'
     },
     {
       "id": "6",
-      "label": "Key6",
+      "label": "Key",
       "bpid": "Key",
       "initScript": `prop Key.x setTo 407.65
 prop Key.y setTo -18.97`
