@@ -32,24 +32,24 @@
        prop global.roundType setTo 'init'
 
         // de-activate bees so they do not do things
-        featCall global.Population charactersForEach 'ScoutBee' [[
+        featCall global.Population charactersForEach ScoutBee [[
           prop ScoutBee.isInert setTo true
         ]]
 
         // rest of the setup is in global onEvent Start 
       `,
       "endScript": `
-        featCall global.Population charactersForEach 'FieldChoiceButton' [[
+        featCall global.Population charactersForEach FieldChoiceButton [[
           prop FieldChoiceButton.visible setTo false
         ]]
 
         // stop the current graph from updating 
-        featCall global.Population charactersForEach 'PollinationGraph' [[
+        featCall global.Population charactersForEach PollinationGraph [[
           featProp PollinationGraph.Graphing.graphFrequency setTo 0
         ]]
 
         ifProp global.fieldType equal 'garden' [[
-          featCall global.Population tellCharacterByName 'Background' [[
+          featCall global.Population tellCharacterByName Background [[
             featProp Background.Costume.costumeName setTo 'FJ_background_garden.png'
           ]]
 
@@ -58,7 +58,7 @@
         
         ]]
         ifProp global.fieldType equal 'parking lot' [[
-          featCall global.Population tellCharacterByName 'Background' [[
+          featCall global.Population tellCharacterByName Background [[
             featProp Background.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
@@ -66,7 +66,7 @@
           featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
         
           // show the pollution
-          featCall global.Population tellCharacterByName 'Pollution' [[
+          featCall global.Population tellCharacterByName Pollution [[
             prop Pollution.visible setTo true
             prop Pollution.isInert setTo false
           ]]
@@ -86,7 +86,7 @@
         prop global.roundType setTo 'run'
 
         // Move prior pollination graphs down a bit, and delete if there are too many
-        featCall global.Population charactersForEach 'PollinationGraph' [[
+        featCall global.Population charactersForEach PollinationGraph [[
 
           prop PollinationGraph.row add 1
           ifProp PollinationGraph.row equal 4 [[
@@ -117,7 +117,7 @@
         ]]
 
         // activate bees so they do things
-        featCall global.Population charactersForEach 'ScoutBee' [[
+        featCall global.Population charactersForEach ScoutBee [[
           prop ScoutBee.isInert setTo false
           // TODO: Move to a centralized initialize function for easier startup
           prop ScoutBee.energyLevel setTo 100
@@ -127,7 +127,7 @@
         // Based on the field type (garden or parking lot) do some setup below ... 
         ifProp global.fieldType equal 'garden' [[
           // setup the correct background image 
-          featCall global.Population tellCharacterByName 'Background' [[
+          featCall global.Population tellCharacterByName Background [[
             featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
           ]]
 
@@ -179,7 +179,7 @@
 
         ifProp global.fieldType equal 'parking lot' [[
           // setup the correct background image 
-          featCall global.Population tellCharacterByName 'Background' [[
+          featCall global.Population tellCharacterByName Background [[
             featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
@@ -212,7 +212,7 @@
       "endScript": `
 
         // Update art on flowers to show they were pollinated
-        featCall global.Population charactersForEach 'Flower' [[
+        featCall global.Population charactersForEach Flower [[
           ifProp Flower.pollinationCount greaterThan 0 [[
             ifProp Flower.pollenColor equal 'red' [[
               featProp Flower.Costume.costumeName setTo 'HB_redFlowerPollinated.png'
@@ -223,7 +223,7 @@
           ]]
         ]]
 
-        featCall global.Population charactersForEach 'FinishMessage' [[
+        featCall global.Population charactersForEach FinishMessage [[
           prop FinishMessage.visible setTo true
         ]]
 
