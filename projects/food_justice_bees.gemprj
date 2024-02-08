@@ -260,7 +260,7 @@ addFeature IU
 addFeature Population
 addFeature Graphing
 
-// NOTE: using population in the round code 
+// NOTE: using population in the round code
 
 prop global.visible setTo false
 
@@ -286,7 +286,7 @@ featCall global.IU setupFunction 'popupMessage' [[
     propPush global.textForPopup
     propPop PopupEffect.textToUse
     prop PopupEffect.costumeToUse setTo ''
-   
+
     propPush global.xForPopup
     propPop PopupEffect.x
     propPush global.yForPopup
@@ -297,7 +297,7 @@ featCall global.IU setupFunction 'popupMessage' [[
 # PROGRAM UPDATE
 onEvent Start [[
   // hide the finish message if it is still there.
-  featCall global.Population charactersForEach 'FinishMessage' [[
+  featCall global.Population charactersForEach FinishMessage [[
     prop FinishMessage.visible setTo false
   ]]
 
@@ -305,26 +305,25 @@ onEvent Start [[
   ifProp global.roundType equal 'init' [[
 
     // remove flowers from prior run now rather than at the end of the run so the kids can
-    // discuss what they looked like in discussing the run 
-    featCall global.Population charactersForEach 'Flower' [[
+    // discuss what they looked like in discussing the run
+    featCall global.Population charactersForEach Flower [[
       featCall Flower.Population removeCharacter
     ]]
 
-    featCall global.Population tellCharacterByName 'Pollution' [[
+    featCall global.Population tellCharacterByName Pollution [[
       prop Pollution.visible setTo false
       prop Pollution.isInert setTo true
     ]]
 
-    featCall global.Population tellCharacterByName 'Background' [[
+    featCall global.Population tellCharacterByName Background [[
       featProp Background.Costume.costumeName setTo 'FJ_background_choose.png'
     ]]
 
-    featCall global.Population charactersForEach 'FieldChoiceButton' [[
+    featCall global.Population charactersForEach FieldChoiceButton [[
       prop FieldChoiceButton.visible setTo true
     ]]
   ]]
-]]
-    `
+]]`
     },
     {
       "name": "ScoutBee",
