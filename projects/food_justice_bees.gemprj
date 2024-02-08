@@ -50,7 +50,7 @@
 
         ifProp global.fieldType equal 'garden' [[
           featCall global.Population tellCharacterByName 'Background' [[
-            featProp character.Costume.costumeName setTo 'FJ_background_garden.png'
+            featProp Background.Costume.costumeName setTo 'FJ_background_garden.png'
           ]]
 
           featCall global.IU logString 'Garden model chosen'
@@ -59,7 +59,7 @@
         ]]
         ifProp global.fieldType equal 'parking lot' [[
           featCall global.Population tellCharacterByName 'Background' [[
-            featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
+            featProp Background.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
           featCall global.IU logString 'Parking lot model chosen'
