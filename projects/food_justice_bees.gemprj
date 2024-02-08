@@ -316,7 +316,7 @@ onEvent Start [[
     ]]
 
     featCall global.Population tellCharacterByName 'Background' [[
-      featProp character.Costume.costumeName setTo 'FJ_background_choose.png'
+      featProp Background.Costume.costumeName setTo 'FJ_background_choose.png'
     ]]
 
     featCall global.Population charactersForEach 'FieldChoiceButton' [[
