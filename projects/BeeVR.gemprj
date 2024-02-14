@@ -26,7 +26,6 @@
     {
       "initScript": `\n       
       // TODO: All new artowk, of course 
-      // TODO: can we circumvent the prepare and start on subsequent runs? 
       // TODO: fix reset on time 
       
        prop global.roundType setTo 'init'
@@ -54,7 +53,7 @@
           ]]
 
           featCall global.IU logString 'Garden model chosen'
-          featCall global.Graphing showMessage  'You have chosen the garden! Click prep round, then start to try it out.'
+          featCall global.Graphing showMessage  'You have chosen the garden! Click start to try it out.'
         
         ]]
         ifProp global.fieldType equal 'parking lot' [[
@@ -63,7 +62,7 @@
           ]]
 
           featCall global.IU logString 'Parking lot model chosen'
-          featCall global.Graphing showMessage  'You have chosen the parking lot! Click prep round, then start to try it out.'
+          featCall global.Graphing showMessage  'You have chosen the parking lot! Click start to try it out.'
         
           // show the pollution
           featCall global.Population tellCharacterByName Pollution [[
@@ -133,13 +132,13 @@
 
           // TODO: add a method to set the label and set that up 
 
-          // place a lot of flowers of at least 2-3 types, grouped
+          // place a bunch of flowers for the garden in groups as if we planted them
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo -385
-                prop Flower.y setTo 100
+                prop Flower.x setTo -400
+                prop Flower.y setTo -200
                 prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Yellow 1'
           ]]
@@ -147,35 +146,122 @@
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
-                prop Flower.x setTo -220
-                prop Flower.y setTo 100
+                prop Flower.x setTo -250
+                prop Flower.y setTo -200
                 prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Yellow 2'
 
           ]]
-
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'red'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
-                prop Flower.x setTo 200
-                prop Flower.y setTo 100
+                prop Flower.x setTo 100
+                prop Flower.y setTo -200
+                prop Flower.flowerId setTo 3
+                featProp Flower.Graphing.text setTo 'Red 1'
+
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setTo 'red'
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 250
+                prop Flower.y setTo -200
                 prop Flower.flowerId setTo 2
                 featProp Flower.Graphing.text setTo 'Red 2'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.pollenColor setTo 'yellow'
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -400
+                prop Flower.y setTo 0
+                prop Flower.flowerId setTo 0
+                featProp Flower.Graphing.text setTo 'Yellow 3'
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.pollenColor setTo 'yellow'
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -250
+                prop Flower.y setTo 0
+                prop Flower.flowerId setTo 1
+                featProp Flower.Graphing.text setTo 'Yellow 4'
+
+          ]]
+          featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'red'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
                 prop Flower.x setTo 100
-                prop Flower.y setTo 100
+                prop Flower.y setTo 0
                 prop Flower.flowerId setTo 3
-                featProp Flower.Graphing.text setTo 'Red 1'
+                featProp Flower.Graphing.text setTo 'Red 3'
 
           ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setTo 'red'
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 250
+                prop Flower.y setTo 0
+                prop Flower.flowerId setTo 2
+                featProp Flower.Graphing.text setTo 'Red 4'
+
+          ]]
+
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.pollenColor setTo 'yellow'
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -400
+                prop Flower.y setTo 200
+                prop Flower.flowerId setTo 0
+                featProp Flower.Graphing.text setTo 'Yellow 5'
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'yellow'
+                prop Flower.pollenColor setTo 'yellow'
+                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                prop Flower.x setTo -250
+                prop Flower.y setTo 200
+                prop Flower.flowerId setTo 1
+                featProp Flower.Graphing.text setTo 'Yellow 6'
+
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setTo 'red'
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 100
+                prop Flower.y setTo 200
+                prop Flower.flowerId setTo 3
+                featProp Flower.Graphing.text setTo 'Red 5'
+
+          ]]
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setTo 'red'
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 250
+                prop Flower.y setTo 200
+                prop Flower.flowerId setTo 2
+                featProp Flower.Graphing.text setTo 'Red 6'
+
+          ]]
+
+
+          // place the hive and init 
+          featCall global.Population charactersForEach Hive [[
+            prop Hive.x setTo -65
+            prop Hive.y setTo 0
+            prop Hive.nectarCount setTo 10
+          ]]
         ]]
+
 
         ifProp global.fieldType equal 'parking lot' [[
           // setup the correct background image 
@@ -183,7 +269,7 @@
             featProp character.Costume.costumeName setTo 'FJ_background_parking_lot.png'
           ]]
 
-          // place a lot of flowers of at least 2-3 types, grouped
+          // place parking lot flowers
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'yellow'
                 prop Flower.pollenColor setTo 'yellow'
@@ -203,6 +289,23 @@
                 prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Yellow 2'
 
+          ]]
+
+          featCall global.Population createCharacter Flower [[
+                prop Flower.flowerType setTo 'red'
+                prop Flower.pollenColor setTo 'red'
+                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                prop Flower.x setTo 280
+                prop Flower.y setTo -170
+                prop Flower.flowerId setTo 1
+                featProp Flower.Graphing.text setTo 'Red 1'
+          ]]
+
+          // place the hive and init 
+          featCall global.Population charactersForEach Hive [[
+            prop Hive.x setTo -421.00
+            prop Hive.y setTo 292.23
+            prop Hive.nectarCount setTo 10
           ]]
 
         ]]
