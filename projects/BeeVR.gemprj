@@ -107,7 +107,7 @@
           
           propPush PollinationGraph.fieldType
           propPop global.tempString
-          prop global.tempString add ' round '
+          prop global.tempString add ' rnd '
           // TODO: make this better 
           exprPush {{ global.getProp('tempString').value + global.getProp('roundNum').value }}
           propPop global.tempString
