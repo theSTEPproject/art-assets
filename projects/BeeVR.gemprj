@@ -136,39 +136,39 @@
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo -200
-                prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Squash 1'
+
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo -200
-                prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Squash 2'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 100
                 prop Flower.y setTo -200
-                prop Flower.flowerId setTo 3
                 featProp Flower.Graphing.text setTo 'Strawberry 1'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 250
                 prop Flower.y setTo -200
-                prop Flower.flowerId setTo 2
                 featProp Flower.Graphing.text setTo 'Strawberry 2'
 
           ]]
@@ -176,39 +176,39 @@
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 0
-                prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Squash 3'
+
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo 0
-                prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Squash 4'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 100
                 prop Flower.y setTo 0
-                prop Flower.flowerId setTo 3
                 featProp Flower.Graphing.text setTo 'Strawberry 3'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 250
                 prop Flower.y setTo 0
-                prop Flower.flowerId setTo 2
                 featProp Flower.Graphing.text setTo 'Strawberry 4'
 
           ]]
@@ -216,43 +216,42 @@
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 200
-                prop Flower.flowerId setTo 0
                 featProp Flower.Graphing.text setTo 'Squash 5'
+
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo 200
-                prop Flower.flowerId setTo 1
                 featProp Flower.Graphing.text setTo 'Squash 6'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 100
                 prop Flower.y setTo 200
-                prop Flower.flowerId setTo 3
                 featProp Flower.Graphing.text setTo 'Strawberry 5'
 
           ]]
+
           featCall global.Population createCharacter Flower [[
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 250
                 prop Flower.y setTo 200
-                prop Flower.flowerId setTo 2
                 featProp Flower.Graphing.text setTo 'Strawberry 6'
 
           ]]
-
 
           // place the hive and init 
           featCall global.Population charactersForEach Hive [[
@@ -271,34 +270,33 @@
 
           // place parking lot flowers
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo 270
                 prop Flower.y setTo -250
-                prop Flower.flowerId setTo 1
-                featProp Flower.Graphing.text setTo 'Yellow 1'
+                featProp Flower.Graphing.text setTo 'Squash 1'
+
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'yellow'
+                prop Flower.flowerType setTo 'Squash'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
                 prop Flower.x setTo 260
                 prop Flower.y setTo 150
-                prop Flower.flowerId setTo 0
-                featProp Flower.Graphing.text setTo 'Yellow 2'
+                featProp Flower.Graphing.text setTo 'Squash 2'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'red'
+                prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
-                featProp Flower.Costume.costumeName setTo 'HB_redFlower.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 280
                 prop Flower.y setTo -170
-                prop Flower.flowerId setTo 1
-                featProp Flower.Graphing.text setTo 'Red 1'
+                featProp Flower.Graphing.text setTo 'Strawberry 1'
+ 
           ]]
 
           // place the hive and init 
@@ -316,12 +314,22 @@
 
         // Update art on flowers to show they were pollinated
         featCall global.Population charactersForEach Flower [[
-          ifProp Flower.pollinationCount greaterThan 0 [[
+
+          ifProp Flower.pollinationCount lessThan 3 [[
             ifProp Flower.pollenColor equal 'red' [[
-              featProp Flower.Costume.costumeName setTo 'HB_redFlowerPollinated.png'
+              featProp Flower.Costume.costumeName setTo 'FJ_strawberry_unhealthy.png'
             ]]
             ifProp Flower.pollenColor equal 'yellow' [[
-              featProp Flower.Costume.costumeName setTo 'HB_yellowFlowerPollinated.png'
+              featProp Flower.Costume.costumeName setTo 'FJ_squash_unhealthy.png'
+            ]]
+          ]]
+
+          ifProp Flower.pollinationCount greaterThanOrEqual 3 [[
+            ifProp Flower.pollenColor equal 'red' [[
+              featProp Flower.Costume.costumeName setTo 'FJ_strawberry_healthy.png'
+            ]]
+            ifProp Flower.pollenColor equal 'yellow' [[
+              featProp Flower.Costume.costumeName setTo 'FJ_squash_healthy.png'
             ]]
           ]]
         ]]
@@ -399,6 +407,7 @@ featCall global.IU setupFunction 'popupMessage' [[
 
 # PROGRAM UPDATE
 onEvent Start [[
+
   // hide the finish message if it is still there.
   featCall global.Population charactersForEach FinishMessage [[
     prop FinishMessage.visible setTo false
@@ -450,7 +459,7 @@ featProp ScoutBee.Costume.scale setTo 0.3
 prop ScoutBee.zIndex setTo 500
 
 // what flower pollen are we carrying, -1 is none
-addProp flowerId number -1
+addProp flowerId string 'not set'
 
 // what color is the pollen - use 0 for empty
 addProp pollenColor string 'empty'
@@ -472,7 +481,6 @@ featProp ScoutBee.Graphing.meterProp setTo 'energyLevel'
 featProp ScoutBee.Graphing.meterColor setTo 11416319
 
 featProp ScoutBee.Costume.glowColor setToColor 16105472
-
 
 # PROGRAM UPDATE
 
@@ -539,6 +547,7 @@ when ScoutBee centerfirsttouches Flower [[
     propPush Flower.pollenColor
     propPop ScoutBee.pollenColor
 
+    // indicate the pollen color being carried
     ifProp ScoutBee.pollenColor equal 'red' [[
       featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_red.png'
     ]]
@@ -546,8 +555,6 @@ when ScoutBee centerfirsttouches Flower [[
     ifProp ScoutBee.pollenColor equal 'yellow' [[
       featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_yellow.png'
     ]]
-
-    // TODO: indicate the pollen color being carried
 
   ]]
 ]]
@@ -610,7 +617,7 @@ when ScoutBee centerfirsttouches Hive [[
   prop ScoutBee.nectarCount setTo 0
 
   // reset pollen
-  prop ScoutBee.flowerId setTo -1
+  prop ScoutBee.flowerId setTo 'not set'
   prop ScoutBee.pollenColor setTo 'empty'
   featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_empty.png'
 
@@ -643,12 +650,12 @@ addFeature Population
 addFeature IU
 
 // setup the costume
-featProp Flower.Costume.costumeName setTo 'HB_yellowFlower.png'
+featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
 featProp Flower.Costume.scale setTo 0.3
 
 // TODO update this to be sequential on creation
 // unique flower ID to avoid self-pollination
-addProp flowerId number 0
+addProp flowerId string 'not set'
 // what flower type is this?
 addProp flowerType string ''
 // what color is the flower / pollen for tracking on the bee
@@ -663,9 +670,11 @@ addProp pollinationCount number 0
 prop Flower.pollinationCount setMin 0
 prop Flower.pollinationCount setMax 10
 
-featProp Flower.Graphing.meterProp setTo 'pollinationCount' 
+featProp Flower.Graphing.meterProp setTo 'pollinationCount'
 featProp Flower.Graphing.meterColor setTo 65280
 
+propPush Flower.trackerId
+propPop Flower.flowerId
 
 # PROGRAM UPDATE`
     },
