@@ -842,7 +842,7 @@ featCall FieldChoiceButton.IU handleClick [[
       featProp PollinationGraph.Graphing.isLargeGraphic setTo true
       featProp PollinationGraph.Graphing.graphProp setTo 'totalPollinationCount'
       featProp PollinationGraph.Graphing.graphMinY setTo 0
-      featProp PollinationGraph.Graphing.graphMaxY setTo 20
+      featProp PollinationGraph.Graphing.graphMaxY setTo 10
       featProp PollinationGraph.Graphing.graphMinX setTo 0
       featProp PollinationGraph.Graphing.graphMaxX setTo 100
       featProp PollinationGraph.Graphing.text setTo 'pollination count'
