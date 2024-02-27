@@ -100,7 +100,7 @@
 
         // create a new pollination graph in the top row / position 
         featCall global.Population createCharacter PollinationGraph [[
-          prop PollinationGraph.x setTo 400
+          prop PollinationGraph.x setTo 425
           prop PollinationGraph.y setTo -35
           propPush global.fieldType
           propPop PollinationGraph.fieldType
@@ -134,22 +134,22 @@
 
           // place a bunch of flowers for the garden in groups as if we planted them
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo -200
-                featProp Flower.Graphing.text setTo 'Squash 1'
+                featProp Flower.Graphing.text setTo 'Zucchini 1'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo -200
-                featProp Flower.Graphing.text setTo 'Squash 2'
+                featProp Flower.Graphing.text setTo 'Zucchini 2'
 
           ]]
 
@@ -174,22 +174,22 @@
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 0
-                featProp Flower.Graphing.text setTo 'Squash 3'
+                featProp Flower.Graphing.text setTo 'Zucchini 3'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo 0
-                featProp Flower.Graphing.text setTo 'Squash 4'
+                featProp Flower.Graphing.text setTo 'Zucchini 4'
 
           ]]
 
@@ -214,22 +214,22 @@
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -400
                 prop Flower.y setTo 200
-                featProp Flower.Graphing.text setTo 'Squash 5'
+                featProp Flower.Graphing.text setTo 'Zucchini 5'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -250
                 prop Flower.y setTo 200
-                featProp Flower.Graphing.text setTo 'Squash 6'
+                featProp Flower.Graphing.text setTo 'Zucchini 6'
 
           ]]
 
@@ -258,6 +258,7 @@
             prop Hive.x setTo -65
             prop Hive.y setTo 0
             prop Hive.nectarCount setTo 10
+            prop Hive.visible setTo true
           ]]
         ]]
 
@@ -270,22 +271,22 @@
 
           // place parking lot flowers
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
-                prop Flower.x setTo 270
-                prop Flower.y setTo -250
-                featProp Flower.Graphing.text setTo 'Squash 1'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
+                prop Flower.x setTo -327
+                prop Flower.y setTo -380
+                featProp Flower.Graphing.text setTo 'Zucchini 1'
 
           ]]
 
           featCall global.Population createCharacter Flower [[
-                prop Flower.flowerType setTo 'Squash'
+                prop Flower.flowerType setTo 'Zucchini'
                 prop Flower.pollenColor setTo 'yellow'
-                featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
-                prop Flower.x setTo 260
-                prop Flower.y setTo 150
-                featProp Flower.Graphing.text setTo 'Squash 2'
+                featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
+                prop Flower.x setTo 240
+                prop Flower.y setTo -380
+                featProp Flower.Graphing.text setTo 'Zucchini 2'
 
           ]]
 
@@ -293,17 +294,18 @@
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
-                prop Flower.x setTo 280
-                prop Flower.y setTo -170
+                prop Flower.x setTo -69
+                prop Flower.y setTo -360
                 featProp Flower.Graphing.text setTo 'Strawberry 1'
  
           ]]
 
-          // place the hive and init 
+          // place the hive and init bottom left
           featCall global.Population charactersForEach Hive [[
             prop Hive.x setTo -421.00
             prop Hive.y setTo 292.23
             prop Hive.nectarCount setTo 10
+            prop Hive.visible setTo true
           ]]
 
         ]]
@@ -320,7 +322,7 @@
               featProp Flower.Costume.costumeName setTo 'FJ_strawberry_unhealthy.png'
             ]]
             ifProp Flower.pollenColor equal 'yellow' [[
-              featProp Flower.Costume.costumeName setTo 'FJ_squash_unhealthy.png'
+              featProp Flower.Costume.costumeName setTo 'FJ_zucchini_unhealthy.png'
             ]]
           ]]
 
@@ -329,7 +331,7 @@
               featProp Flower.Costume.costumeName setTo 'FJ_strawberry_healthy.png'
             ]]
             ifProp Flower.pollenColor equal 'yellow' [[
-              featProp Flower.Costume.costumeName setTo 'FJ_squash_healthy.png'
+              featProp Flower.Costume.costumeName setTo 'FJ_zucchini_healthy.png'
             ]]
           ]]
         ]]
@@ -430,6 +432,13 @@ onEvent Start [[
     featCall global.Population tellCharacterByName Background [[
       featProp Background.Costume.costumeName setTo 'FJ_background_choose.png'
     ]]
+
+    // hide hive
+    featCall global.Population charactersForEach Hive [[
+      prop Hive.visible setTo false
+    ]]
+
+
 
     featCall global.Population charactersForEach FieldChoiceButton [[
       prop FieldChoiceButton.visible setTo true
@@ -535,8 +544,8 @@ when ScoutBee centerfirsttouches Flower [[
       ifProp Flower.flowerType equal 'Strawberry' [[
         featCall Flower.IU logString 'Strawberry plant was pollinated'
       ]]
-      ifProp Flower.flowerType equal 'Squash' [[
-        featCall Flower.IU logString 'Squash plant was pollinated'
+      ifProp Flower.flowerType equal 'Zucchini' [[
+        featCall Flower.IU logString 'Zucchini plant was pollinated'
       ]]
     ]]
 
@@ -650,7 +659,7 @@ addFeature Population
 addFeature IU
 
 // setup the costume
-featProp Flower.Costume.costumeName setTo 'FJ_squash.png'
+featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
 featProp Flower.Costume.scale setTo 0.3
 
 // TODO update this to be sequential on creation
@@ -690,21 +699,23 @@ addFeature Costume
 addFeature Physics
 addFeature Graphing
 
-featProp Hive.Costume.costumeName setTo 'HB_hiveCommercial.png'
-featProp Hive.Costume.scale setTo 0.3
+featProp Hive.Costume.costumeName setTo 'FJ_HiveCommercial.png'
+featProp Hive.Costume.scale setTo 0.1
 
 addProp nectarCount number 10
 prop Hive.nectarCount setMin 0
 prop Hive.nectarCount setMax 40
 
-featProp Hive.Graphing.meterProp setTo  'nectarCount'
+featProp Hive.Graphing.meterProp setTo 'nectarCount'
 
+// start hidden and each map makes it visible
+prop Hive.visible setTo false
 
 # PROGRAM UPDATE
 
 every 1 runAtStart [[
   ifProp Hive.nectarCount equal 11 [[
-    prop global.textForPopup setTo 'Hive is full, so the honey was collected!' 
+    prop global.textForPopup setTo 'Hive is full, so the honey was collected!'
     propPush Hive.x
     propPop global.xForPopup
     propPush Hive.y
@@ -714,8 +725,7 @@ every 1 runAtStart [[
 
     prop Hive.nectarCount setTo 0
   ]]
-]]
-`
+]]`
     },
     {
       "name": "Background",
@@ -910,7 +920,7 @@ prop Pollution.isInert setTo true
       "id": "1",
       "label": "Hive",
       "bpid": "Hive",
-      "initScript": `prop Hive.x setTo -421.00
+      "initScript": `prop Hive.x setTo -421
 prop Hive.y setTo 292.23`
     },
     {
@@ -924,8 +934,8 @@ prop Background.y setTo 90`
       "id": "3",
       "label": "Garden",
       "bpid": "FieldChoiceButton",
-      "initScript": `prop FieldChoiceButton.x setTo -186.68
-prop FieldChoiceButton.y setTo 44.82
+      "initScript": `prop FieldChoiceButton.x setTo -238.61
+prop FieldChoiceButton.y setTo 113.35
 prop FieldChoiceButton.fieldType setTo 'garden'
 `
     },
@@ -933,8 +943,8 @@ prop FieldChoiceButton.fieldType setTo 'garden'
       "id": "4",
       "label": "Parking Lot",
       "bpid": "FieldChoiceButton",
-      "initScript": `prop FieldChoiceButton.x setTo 172.69
-prop FieldChoiceButton.y setTo 39.72
+      "initScript": `prop FieldChoiceButton.x setTo 26.50
+prop FieldChoiceButton.y setTo 115.95
 prop FieldChoiceButton.fieldType setTo 'parking lot'
 `
     },
@@ -942,8 +952,8 @@ prop FieldChoiceButton.fieldType setTo 'parking lot'
       "id": "6",
       "label": "Key",
       "bpid": "Key",
-      "initScript": `prop Key.x setTo 407.65
-prop Key.y setTo -18.97`
+      "initScript": `prop Key.x setTo 422.24
+prop Key.y setTo -10.27`
     },
     {
       "id": "7",
@@ -956,8 +966,8 @@ prop FinishMessage.y setTo -216.96`
       "id": "8",
       "label": "Pollution",
       "bpid": "Pollution",
-      "initScript": `prop Pollution.x setTo 150
-prop Pollution.y setTo 30`
+      "initScript": `prop Pollution.x setTo -60
+prop Pollution.y setTo -214`
     }
   ]
 }
