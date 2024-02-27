@@ -558,11 +558,11 @@ when ScoutBee centerfirsttouches Flower [[
 
     // indicate the pollen color being carried
     ifProp ScoutBee.pollenColor equal 'red' [[
-      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_red.png'
+      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_strawberry.png'
     ]]
 
     ifProp ScoutBee.pollenColor equal 'yellow' [[
-      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_yellow.png'
+      featProp ScoutBee.Costume.costumeName setTo 'FJ_bee_zucchini.png'
     ]]
 
   ]]
@@ -668,6 +668,7 @@ addProp flowerId string 'not set'
 // what flower type is this?
 addProp flowerType string ''
 // what color is the flower / pollen for tracking on the bee
+// NOTE: zucchini is yellow, strawberry red, though we could change that 
 addProp pollenColor string 'empty'
 
 // in case we want this to go down later, track nectar and pollen amount
