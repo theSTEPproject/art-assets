@@ -40,6 +40,7 @@
       "endScript": `
         featCall global.Population charactersForEach FieldChoiceButton [[
           prop FieldChoiceButton.visible setTo false
+          
         ]]
 
         // stop the current graph from updating 
@@ -118,6 +119,7 @@
         // activate bees so they do things
         featCall global.Population charactersForEach ScoutBee [[
           prop ScoutBee.isInert setTo false
+          prop ScoutBee.alpha setTo 1
           // TODO: Move to a centralized initialize function for easier startup
           prop ScoutBee.energyLevel setTo 100
           prop ScoutBee.nectarCount setTo 0
@@ -668,7 +670,7 @@ addProp flowerId string 'not set'
 // what flower type is this?
 addProp flowerType string ''
 // what color is the flower / pollen for tracking on the bee
-// NOTE: zucchini is yellow, strawberry red, though we could change that 
+// NOTE: zucchini is yellow, strawberry red, though we could change that
 addProp pollenColor string 'empty'
 
 // in case we want this to go down later, track nectar and pollen amount
@@ -681,7 +683,7 @@ prop Flower.pollinationCount setMin 0
 prop Flower.pollinationCount setMax 10
 
 featProp Flower.Graphing.meterProp setTo 'pollinationCount'
-featProp Flower.Graphing.meterColor setTo 65280
+featProp Flower.Graphing.meterColor setToColor 484359
 
 propPush Flower.trackerId
 propPop Flower.flowerId
