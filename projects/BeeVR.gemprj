@@ -759,8 +759,8 @@ addFeature IU
 addFeature Graphing
 addFeature Timer
 
-featProp FieldChoiceButton.Costume.costumeName setTo 'GEN_square.json'
-featProp FieldChoiceButton.Costume.scale setTo 0.5
+//featProp FieldChoiceButton.Costume.costumeName setTo 'GEN_square.json'
+//featProp FieldChoiceButton.Costume.scale setTo 0.5
 
 addProp fieldType string 'garden'
 
@@ -940,6 +940,7 @@ prop Background.y setTo 90`
       "initScript": `prop FieldChoiceButton.x setTo -238.61
 prop FieldChoiceButton.y setTo 113.35
 prop FieldChoiceButton.fieldType setTo 'garden'
+featProp FieldChoiceButton.Costume.costumeName setTo 'FJ_choice_garden.png'
 `
     },
     {
@@ -949,6 +950,8 @@ prop FieldChoiceButton.fieldType setTo 'garden'
       "initScript": `prop FieldChoiceButton.x setTo 26.50
 prop FieldChoiceButton.y setTo 115.95
 prop FieldChoiceButton.fieldType setTo 'parking lot'
+featProp FieldChoiceButton.Costume.costumeName setTo 'FJ_choice_parking_lot.png'
+
 `
     },
     {
