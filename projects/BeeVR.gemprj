@@ -2,9 +2,9 @@
   "id": "BeeVR",
   "label": "BeeVR (Food Justice)",
   "metadata": {
-    "top": -400,
+    "top": -500,
     "right": 500,
-    "bottom": 400,
+    "bottom": 500,
     "left": -500,
     "wrap": [
       false,
@@ -138,7 +138,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -255
-                prop Flower.y setTo -270
+                prop Flower.y setTo -370
                 featProp Flower.Graphing.text setTo 'Zucchini 1'
           ]]
 
@@ -147,7 +147,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -112
-                prop Flower.y setTo -270
+                prop Flower.y setTo -370
                 featProp Flower.Graphing.text setTo 'Zucchini 2'
 
           ]]
@@ -157,7 +157,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo -148
-                prop Flower.y setTo -44
+                prop Flower.y setTo -134
                 featProp Flower.Graphing.text setTo 'Strawberry 1'
 
           ]]
@@ -167,7 +167,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 15
-                prop Flower.y setTo -42
+                prop Flower.y setTo -134
                 featProp Flower.Graphing.text setTo 'Strawberry 2'
 
           ]]
@@ -177,7 +177,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo 102
-                prop Flower.y setTo -270
+                prop Flower.y setTo -370
                 featProp Flower.Graphing.text setTo 'Zucchini 3'
 
           ]]
@@ -187,7 +187,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo 245
-                prop Flower.y setTo -270
+                prop Flower.y setTo -370
                 featProp Flower.Graphing.text setTo 'Zucchini 4'
 
           ]]
@@ -197,7 +197,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo -148
-                prop Flower.y setTo 88
+                prop Flower.y setTo 10
                 featProp Flower.Graphing.text setTo 'Strawberry 3'
 
           ]]
@@ -207,7 +207,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 15
-                prop Flower.y setTo 88
+                prop Flower.y setTo 10
                 featProp Flower.Graphing.text setTo 'Strawberry 4'
 
           ]]
@@ -217,7 +217,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo 265
-                prop Flower.y setTo -44
+                prop Flower.y setTo -150
                 featProp Flower.Graphing.text setTo 'Zucchini 5'
 
           ]]
@@ -227,7 +227,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo 265
-                prop Flower.y setTo 100
+                prop Flower.y setTo -10
                 featProp Flower.Graphing.text setTo 'Zucchini 6'
 
           ]]
@@ -237,7 +237,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 258
-                prop Flower.y setTo 257
+                prop Flower.y setTo 160
                 featProp Flower.Graphing.text setTo 'Strawberry 5'
 
           ]]
@@ -247,7 +247,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo 258
-                prop Flower.y setTo 350
+                prop Flower.y setTo 300
                 featProp Flower.Graphing.text setTo 'Strawberry 6'
 
           ]]
@@ -255,7 +255,7 @@
           // place the hive and init 
           featCall global.Population charactersForEach Hive [[
             prop Hive.x setTo -421.00
-            prop Hive.y setTo 292.23
+            prop Hive.y setTo 360
             prop Hive.nectarCount setTo 10
             prop Hive.visible setTo true
           ]]
@@ -274,7 +274,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo -327
-                prop Flower.y setTo -380
+                prop Flower.y setTo -470
                 featProp Flower.Graphing.text setTo 'Zucchini 1'
 
           ]]
@@ -284,7 +284,7 @@
                 prop Flower.pollenColor setTo 'yellow'
                 featProp Flower.Costume.costumeName setTo 'FJ_zucchini.png'
                 prop Flower.x setTo 240
-                prop Flower.y setTo -380
+                prop Flower.y setTo -470
                 featProp Flower.Graphing.text setTo 'Zucchini 2'
 
           ]]
@@ -294,7 +294,7 @@
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
                 prop Flower.x setTo -69
-                prop Flower.y setTo -360
+                prop Flower.y setTo -470
                 featProp Flower.Graphing.text setTo 'Strawberry 1'
  
           ]]
@@ -302,7 +302,7 @@
           // place the hive and init bottom left
           featCall global.Population charactersForEach Hive [[
             prop Hive.x setTo -421.00
-            prop Hive.y setTo 292.23
+            prop Hive.y setTo 360
             prop Hive.nectarCount setTo 10
             prop Hive.visible setTo true
           ]]
@@ -983,14 +983,14 @@ every 1 runAfterStart [[
       "label": "Hive",
       "bpid": "Hive",
       "initScript": `prop Hive.x setTo -421
-prop Hive.y setTo 292.23`
+prop Hive.y setTo 360`
     },
     {
       "id": "2",
       "label": "Background",
       "bpid": "Background",
       "initScript": `prop Background.x setTo 0
-prop Background.y setTo 90`
+prop Background.y setTo 0`
     },
     {
       "id": "3",
@@ -1024,22 +1024,22 @@ prop Key.y setTo -10.27`
       "id": "7",
       "label": "FinishMessage",
       "bpid": "FinishMessage",
-      "initScript": `prop FinishMessage.x setTo -82.33
-prop FinishMessage.y setTo 290`
+      "initScript": `prop FinishMessage.x setTo 0
+prop FinishMessage.y setTo 300`
     },
     {
       "id": "8",
       "label": "Pollution",
       "bpid": "Pollution",
       "initScript": `prop Pollution.x setTo -60
-prop Pollution.y setTo -214`
+prop Pollution.y setTo -314`
     },
     {
       "id": "9",
       "label": "SummaryText",
       "bpid": "SummaryText",
-      "initScript": `prop SummaryText.x setTo -131.99
-prop SummaryText.y setTo 372`
+      "initScript": `prop SummaryText.x setTo 15.96
+prop SummaryText.y setTo 430.70`
     }
   ]
 }
