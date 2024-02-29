@@ -706,7 +706,7 @@ addFeature Physics
 addFeature Graphing
 
 featProp Hive.Costume.costumeName setTo 'FJ_HiveCommercial.png'
-featProp Hive.Costume.scale setTo 0.1
+featProp Hive.Costume.scale setTo 0.15
 
 addProp nectarCount number 10
 prop Hive.nectarCount setMin 0
