@@ -142,7 +142,6 @@
                 prop Flower.x setTo -400
                 prop Flower.y setTo -200
                 featProp Flower.Graphing.text setTo 'Zucchini 1'
-
           ]]
 
           featCall global.Population createCharacter Flower [[
@@ -388,6 +387,10 @@ addProp roundType string 'init'
 
 // Is this a garden or a parking lot?
 addProp fieldType string 'garden'
+
+// for tracking sums to display
+addProp zucchiniPollinationSum number 0
+addProp strawberryPollinationSum number 0
 
 addProp tempString string ''
 
@@ -893,7 +896,7 @@ addFeature Costume
 featProp FinishMessage.Costume.costumeName setTo 'FJ_finish.png'
 featProp FinishMessage.Costume.scale setTo 0.7
 prop FinishMessage.visible setTo false
-prop FinishMessage.zIndex setTo 500
+prop FinishMessage.zIndex setTo 490
 
 # PROGRAM UPDATE`
     },
@@ -916,6 +919,64 @@ prop Pollution.visible setTo false
 prop Pollution.isInert setTo true
 
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "SummaryText",
+      "scriptText": `# BLUEPRINT SummaryText
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+
+addProp tempText string ''
+
+featProp SummaryText.Costume.costumeName setTo 'GEN_onexone.json'
+featProp SummaryText.Graphing.text setTo ''
+featProp SummaryText.Graphing.wordWrapWidth setTo 600
+prop SummaryText.zIndex setTo 500
+
+# PROGRAM UPDATE
+every 1 runAfterStart [[
+
+  // init amounts so that we can update them
+  prop global.zucchiniPollinationSum setTo 0
+  prop global.strawberryPollinationSum setTo 0
+
+  // update amounts
+  ifProp global.roundType equal 'run' [[
+
+    featCall global.Population charactersForEach Flower [[
+
+      ifProp Flower.flowerType equal 'Zucchini' [[
+        propPush Flower.pollinationCount
+        propPush global.zucchiniPollinationSum
+        stackAdd
+        propPop global.zucchiniPollinationSum
+      ]]
+      ifProp Flower.flowerType equal 'Strawberry' [[
+        propPush Flower.pollinationCount
+        propPush global.strawberryPollinationSum
+        stackAdd
+        propPop global.strawberryPollinationSum
+      ]]
+
+    ]]
+  ]]
+
+  // combine into text
+  exprPush {{ 'Zucchini pollinated ' + global.getProp('zucchiniPollinationSum').value + ' times; ' + 'Strawberry pollinated ' + global.getProp('strawberryPollinationSum').value}}
+  propPop SummaryText.tempText
+
+  // display the text
+  propPush SummaryText.tempText
+  featPropPop SummaryText.Graphing.text
+
+]]
+
+`
     }
   ],
   "instances": [
@@ -938,7 +999,7 @@ prop Background.y setTo 90`
       "label": "Garden",
       "bpid": "FieldChoiceButton",
       "initScript": `prop FieldChoiceButton.x setTo -238.61
-prop FieldChoiceButton.y setTo 113.35
+prop FieldChoiceButton.y setTo 115
 prop FieldChoiceButton.fieldType setTo 'garden'
 featProp FieldChoiceButton.Costume.costumeName setTo 'FJ_choice_garden.png'
 `
@@ -948,7 +1009,7 @@ featProp FieldChoiceButton.Costume.costumeName setTo 'FJ_choice_garden.png'
       "label": "Parking Lot",
       "bpid": "FieldChoiceButton",
       "initScript": `prop FieldChoiceButton.x setTo 26.50
-prop FieldChoiceButton.y setTo 115.95
+prop FieldChoiceButton.y setTo 115
 prop FieldChoiceButton.fieldType setTo 'parking lot'
 featProp FieldChoiceButton.Costume.costumeName setTo 'FJ_choice_parking_lot.png'
 
@@ -966,7 +1027,7 @@ prop Key.y setTo -10.27`
       "label": "FinishMessage",
       "bpid": "FinishMessage",
       "initScript": `prop FinishMessage.x setTo -82.33
-prop FinishMessage.y setTo 321.95`
+prop FinishMessage.y setTo 290`
     },
     {
       "id": "8",
@@ -974,6 +1035,13 @@ prop FinishMessage.y setTo 321.95`
       "bpid": "Pollution",
       "initScript": `prop Pollution.x setTo -60
 prop Pollution.y setTo -214`
+    },
+    {
+      "id": "9",
+      "label": "SummaryText",
+      "bpid": "SummaryText",
+      "initScript": `prop SummaryText.x setTo -131.99
+prop SummaryText.y setTo 352.92`
     }
   ]
 }
