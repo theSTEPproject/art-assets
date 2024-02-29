@@ -965,8 +965,8 @@ prop Key.y setTo -10.27`
       "id": "7",
       "label": "FinishMessage",
       "bpid": "FinishMessage",
-      "initScript": `prop FinishMessage.x setTo -95.75
-prop FinishMessage.y setTo -216.96`
+      "initScript": `prop FinishMessage.x setTo -82.33
+prop FinishMessage.y setTo 321.95`
     },
     {
       "id": "8",
