@@ -967,7 +967,7 @@ every 1 runAfterStart [[
   ]]
 
   // combine into text
-  exprPush {{ 'Zucchini pollinated ' + global.getProp('zucchiniPollinationSum').value + ' times; ' + 'Strawberry pollinated ' + global.getProp('strawberryPollinationSum').value}}
+  exprPush {{ 'Zucchini pollinated ' + global.getProp('zucchiniPollinationSum').value + ' times | ' + 'Strawberry pollinated ' + global.getProp('strawberryPollinationSum').value + ' times'}}
   propPop SummaryText.tempText
 
   // display the text
