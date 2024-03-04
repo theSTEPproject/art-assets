@@ -156,8 +156,8 @@
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
-                prop Flower.x setTo -148
-                prop Flower.y setTo -134
+                prop Flower.x setTo -158
+                prop Flower.y setTo -154
                 featProp Flower.Graphing.text setTo 'Strawberry 1'
 
           ]]
@@ -166,8 +166,8 @@
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
-                prop Flower.x setTo 15
-                prop Flower.y setTo -134
+                prop Flower.x setTo -15
+                prop Flower.y setTo -154
                 featProp Flower.Graphing.text setTo 'Strawberry 2'
 
           ]]
@@ -196,8 +196,8 @@
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
-                prop Flower.x setTo -148
-                prop Flower.y setTo 10
+                prop Flower.x setTo -158
+                prop Flower.y setTo -8
                 featProp Flower.Graphing.text setTo 'Strawberry 3'
 
           ]]
@@ -206,8 +206,8 @@
                 prop Flower.flowerType setTo 'Strawberry'
                 prop Flower.pollenColor setTo 'red'
                 featProp Flower.Costume.costumeName setTo 'FJ_strawberry.png'
-                prop Flower.x setTo 15
-                prop Flower.y setTo 10
+                prop Flower.x setTo -15
+                prop Flower.y setTo -8
                 featProp Flower.Graphing.text setTo 'Strawberry 4'
 
           ]]
