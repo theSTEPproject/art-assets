@@ -910,7 +910,7 @@ addFeature Costume
 addFeature Physics
 
 featProp Pollution.Costume.costumeName setTo 'FJ_pollution.png'
-featProp Pollution.Costume.scale setTo 0.2
+featProp Pollution.Costume.scale setTo 0.5
 
 // start hidden and inert
 prop Pollution.visible setTo false
