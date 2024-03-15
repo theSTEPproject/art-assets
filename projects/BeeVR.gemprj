@@ -346,7 +346,7 @@
         featCall global.IU forceNext
 
         // CAPEN LOOK HERE
-        // assemble the string
+        // check how many bees died
         propPush global.totalBeesCount
         propPush global.deadBeesCount
         stackSub
