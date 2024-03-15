@@ -376,11 +376,13 @@
     {
       "label": "Wes (Gardener)",
       "name": "GEMSTEP_Observing",
-      "initialMessage": "Hi! What did you notice in running this model?"
+      "initialMessage": "Hi! What did you notice in running this model?",
+      "profileImage": "FJ_bee_empty.png"
     },
     {
       "label": "Nadia (Bees)",
-      "name": "Knowledge_Pollination"
+      "name": "Knowledge_Pollination",
+      "profileImage": "FJ_bee_empty.png"
     }
   ],
   "blueprints": [
