@@ -117,7 +117,11 @@
         ]]
 
         // activate bees so they do things
+        prop global.totalBeesCount setTo 0
+        prop global.deadBeesCount setTo 0
+
         featCall global.Population charactersForEach ScoutBee [[
+          prop global.totalBeesCount add 1
           prop ScoutBee.isInert setTo false
           prop ScoutBee.alpha setTo 1
           // TODO: Move to a centralized initialize function for easier startup
@@ -340,8 +344,31 @@
         ]]
 
         featCall global.IU forceNext
-        featCall global.IU toggleECA
 
+        // CAPEN LOOK HERE
+        // assemble the string
+        propPush global.totalBeesCount
+        propPush global.deadBeesCount
+        stackSub
+        propPop global.tempNum
+
+        // note that some bees lived, but override if they all died 
+        prop global.tempString setTo 'Some bees lived'
+        ifProp global.tempNum equal 0 [[
+          prop global.tempString setTo 'All the bees died'
+        ]]
+
+        // set the status via a method
+        featCall global.AI setEcaStatus 'this will be overridden'
+        dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
+
+        // or set the status directly in case you need to use push to do it
+        propPush global.tempString
+        featPropPop global.AI.ecaStatusString
+        dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
+
+        // make the ECA visible after setting up the properties (above) so they can be sent
+        featCall global.AI toggleECA
       `
     }
   ],
@@ -369,6 +396,7 @@
 // TODO update default templates for characters and models
 
 addFeature IU
+addFeature AI
 addFeature Population
 addFeature Graphing
 
@@ -391,6 +419,10 @@ addProp zucchiniPollinationSum number 0
 addProp strawberryPollinationSum number 0
 
 addProp tempString string ''
+addProp tempNum number 0
+
+addProp totalBeesCount number 0
+addProp deadBeesCount number 0
 
 // popup messages
 addProp xForPopup number 0
@@ -411,6 +443,8 @@ featCall global.IU setupFunction 'popupMessage' [[
 ]]
 
 # PROGRAM UPDATE
+
+
 onEvent Start [[
 
   // hide the finish message if it is still there.
@@ -447,7 +481,9 @@ onEvent Start [[
       prop FieldChoiceButton.visible setTo true
     ]]
   ]]
-]]`
+]]
+
+`
     },
     {
       "name": "ScoutBee",
@@ -484,6 +520,9 @@ addProp energyLevel number 100
 prop ScoutBee.energyLevel setMin 0
 prop ScoutBee.energyLevel setMax 100
 
+// is the bee alive or dead?
+addProp status string 'alive'
+
 // monitor flower Touches
 featCall ScoutBee.Touches monitor 'Flower' c2b
 featCall ScoutBee.Touches monitor 'Hive' c2b
@@ -513,6 +552,9 @@ every 1 runAtStart [[
     prop ScoutBee.energyLevel sub 5
 
     ifProp ScoutBee.energyLevel equal 0 [[
+      prop ScoutBee.status setTo 'dead'
+      prop global.deadBeesCount add 1
+
       featCall ScoutBee.IU logString 'A bee died from running out of energy'
       prop ScoutBee.alpha setTo 0.5
       prop ScoutBee.isInert setTo true
