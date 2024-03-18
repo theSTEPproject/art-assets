@@ -377,12 +377,12 @@
       "label": "Wes (Gardener)",
       "name": "GEMSTEP_Observing",
       "initialMessage": "Hi! What did you notice in running this model?",
-      "profileImage": "FJ_bee_empty.png"
+      "profileImage": "FJ_WesPic.jpg"
     },
     {
       "label": "Nadia (Bees)",
       "name": "Knowledge_Pollination",
-      "profileImage": "FJ_bee_empty.png"
+      "profileImage": "FJ_NadiaPic.jpg"
     }
   ],
   "blueprints": [
@@ -694,7 +694,7 @@ when ScoutBee centerlasttouches Hive [[
       "name": "Flower",
       "scriptText": `# BLUEPRINT Flower
 # TAG isPozyxControllable false
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
