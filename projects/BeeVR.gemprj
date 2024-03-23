@@ -377,11 +377,13 @@
       "label": "Wes (Gardener)",
       "name": "GEMSTEP_Observing",
       "initialMessage": "Hi! What did you notice in running this model?",
+      "profileVoice": "Aaron",
       "profileImage": "FJ_WesPic.jpg"
     },
     {
       "label": "Nadia (Bees)",
       "name": "Knowledge_Pollination",
+      "profileVoice": "Karen",
       "profileImage": "FJ_NadiaPic.jpg"
     }
   ],
