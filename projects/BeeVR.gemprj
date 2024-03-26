@@ -262,6 +262,7 @@
             prop Hive.y setTo 360
             prop Hive.nectarCount setTo 10
             prop Hive.visible setTo true
+            featProp Hive.Costume.costumeName setTo 'FJ_HiveCommercial.png'
           ]]
         ]]
 
@@ -305,10 +306,11 @@
 
           // place the hive and init bottom left
           featCall global.Population charactersForEach Hive [[
-            prop Hive.x setTo -421.00
+            prop Hive.x setTo -398.00
             prop Hive.y setTo 360
             prop Hive.nectarCount setTo 10
             prop Hive.visible setTo true
+            featProp Hive.Costume.costumeName setTo 'FJ_HiveNatural.png'
           ]]
 
         ]]
@@ -938,7 +940,7 @@ featProp Key.Costume.scale setTo 1
 # PROGRAM INIT
 addFeature Costume
 featProp FinishMessage.Costume.costumeName setTo 'FJ_finish.png'
-featProp FinishMessage.Costume.scale setTo 0.7
+featProp FinishMessage.Costume.scale setTo 0.3
 prop FinishMessage.visible setTo false
 prop FinishMessage.zIndex setTo 490
 
@@ -1071,7 +1073,7 @@ prop Key.y setTo -10.27`
       "label": "FinishMessage",
       "bpid": "FinishMessage",
       "initScript": `prop FinishMessage.x setTo 0
-prop FinishMessage.y setTo 300`
+prop FinishMessage.y setTo 274`
     },
     {
       "id": "8",
