@@ -322,7 +322,7 @@
         // Update art on flowers to show they were pollinated
         featCall global.Population charactersForEach Flower [[
 
-          ifProp Flower.pollinationCount lessThan 5 [[
+          ifProp Flower.pollinationCount lessThan 3 [[
             ifProp Flower.pollenColor equal 'red' [[
               featProp Flower.Costume.costumeName setTo 'FJ_strawberry_unhealthy.png'
             ]]
@@ -331,7 +331,7 @@
             ]]
           ]]
 
-          ifProp Flower.pollinationCount greaterThanOrEqual 5 [[
+          ifProp Flower.pollinationCount greaterThanOrEqual 3 [[
             ifProp Flower.pollenColor equal 'red' [[
               featProp Flower.Costume.costumeName setTo 'FJ_strawberry_healthy.png'
             ]]
