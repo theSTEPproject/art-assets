@@ -1533,13 +1533,6 @@ prop y setTo -89.15`
       "bpid": "HealthMeter",
       "initScript": `prop x setTo 517.48
 prop y setTo 312.89`
-    },
-    {
-      "id": "1905",
-      "label": "DungBeetle1905",
-      "bpid": "DungBeetle",
-      "initScript": `prop x setTo -139.28
-prop y setTo 116.61`
     }
   ]
 }
