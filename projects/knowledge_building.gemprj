@@ -887,86 +887,162 @@ prop y setTo -276.63`
       "id": "34",
       "label": "Lake",
       "bpid": "Nature",
-      "initScript": `prop x setTo 137.98
-prop y setTo 285.46
+      "initScript": `prop x setTo -295.52
+prop y setTo 173.08
 prop name setTo 'lake'
 prop zIndex setTo -10`
+    },
+    {
+      "id": "36",
+      "label": "Chemistry Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 91.01
+prop y setTo 105.02
+prop name setTo 'chemistry'`
+    },
+    {
+      "id": "37",
+      "label": "Biology Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 253.54
+prop y setTo 89.10
+prop name setTo 'biology'`
+    },
+    {
+      "id": "38",
+      "label": "Conference Center",
+      "bpid": "Place",
+      "initScript": `prop x setTo -117.49
+prop y setTo -23.27
+prop name setTo 'conference'`
     },
     {
       "id": "39",
       "label": "House 2",
       "bpid": "Place",
-      "initScript": `prop x setTo 316.71
-prop y setTo 130.14
+      "initScript": `prop x setTo -87.99
+prop y setTo 296.40
 prop name setTo 'home'`
+    },
+    {
+      "id": "40",
+      "label": "Movement Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 169.03
+prop y setTo 273.79
+prop name setTo 'embodied'`
+    },
+    {
+      "id": "41",
+      "label": "Modeling Lab",
+      "bpid": "Place",
+      "initScript": `prop x setTo 329.30
+prop y setTo 270.22
+prop name setTo 'modeling'`
     },
     {
       "id": "43",
       "label": "Garden Center",
       "bpid": "Place",
-      "initScript": `prop x setTo -116.46
-prop y setTo -281.71
+      "initScript": `prop x setTo 317.72
+prop y setTo -294.15
 prop name setTo 'gardencenter'`
+    },
+    {
+      "id": "45",
+      "label": "conferencemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -125.66
+prop y setTo -84.87
+prop type setTo 'conference'`
+    },
+    {
+      "id": "46",
+      "label": "homemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -93.93
+prop y setTo 238.55
+prop type setTo 'home'`
+    },
+    {
+      "id": "47",
+      "label": "gardencentermarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 311.75
+prop y setTo -349.79
+prop type setTo 'gardencenter'`
+    },
+    {
+      "id": "48",
+      "label": "embodiedmarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 167.06
+prop y setTo 207.59
+prop type setTo 'embodied'`
+    },
+    {
+      "id": "49",
+      "label": "modelingmarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 329.75
+prop y setTo 211.45
+prop type setTo 'modeling'`
+    },
+    {
+      "id": "50",
+      "label": "chem marker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 86.46
+prop y setTo 46.36
+prop type setTo 'chemistry'`
+    },
+    {
+      "id": "52",
+      "label": "biomarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 251.46
+prop y setTo 30.82
+prop type setTo 'biology'`
+    },
+    {
+      "id": "53",
+      "label": "officemarker",
+      "bpid": "Marker",
+      "initScript": `prop x setTo 172.82
+prop y setTo -161.97
+prop type setTo 'office'`
     },
     {
       "id": "54",
       "label": "House 1",
       "bpid": "Place",
-      "initScript": `prop x setTo 220.85
-prop y setTo 57.27
+      "initScript": `prop x setTo 3.49
+prop y setTo -280.60
 prop name setTo 'home'
 `
+    },
+    {
+      "id": "55",
+      "label": "homemarker2",
+      "bpid": "Marker",
+      "initScript": `prop x setTo -5.47
+prop y setTo -336.62
+prop type setTo 'home'`
     },
     {
       "id": "58",
       "label": "Background58",
       "bpid": "Background",
-      "initScript": `prop x setTo -0.05
-prop y setTo -7.82`
+      "initScript": `prop x setTo -0.45
+prop y setTo -2.44`
     },
     {
       "id": "59",
       "label": "Office",
       "bpid": "Place",
-      "initScript": `prop x setTo 13.31
-prop y setTo -281.96
-prop name setTo 'office'
-`
-    },
-    {
-      "id": "60",
-      "label": "Commercial Site",
-      "bpid": "Place",
-      "initScript": `prop x setTo 148.45
-prop y setTo -278.66`
-    },
-    {
-      "id": "61",
-      "label": "Forest",
-      "bpid": "Nature",
-      "initScript": `prop x setTo 318.84
-prop y setTo 287.51`
-    },
-    {
-      "id": "62",
-      "label": "Shopping Plaza",
-      "bpid": "Place",
-      "initScript": `prop x setTo 287.92
-prop y setTo -282.21`
-    },
-    {
-      "id": "63",
-      "label": "Industry",
-      "bpid": "Place",
-      "initScript": `prop x setTo -327.82
-prop y setTo 51.02`
-    },
-    {
-      "id": "64",
-      "label": "Industry",
-      "bpid": "Place",
-      "initScript": `prop x setTo -323.47
-prop y setTo 183.42`
+      "initScript": `prop x setTo 171.53
+prop y setTo -116.51
+prop name setTo 'office'\n`
     }
   ]
 }
