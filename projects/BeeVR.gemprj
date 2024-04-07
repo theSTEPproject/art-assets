@@ -82,6 +82,10 @@
 
         featCall global.IU logString 'Running new model'
 
+        featCall global.Population tellCharacterByName SummaryText [[
+          prop SummaryText.visible setTo true
+        ]]
+
         // TODO: Move this to a feature (Timer?)
         prop global.roundType setTo 'run'
 
@@ -487,7 +491,9 @@ onEvent Start [[
       prop Hive.visible setTo false
     ]]
 
-
+    featCall global.Population tellCharacterByName SummaryText [[
+        prop SummaryText.visible setTo false
+    ]]
 
     featCall global.Population charactersForEach FieldChoiceButton [[
       prop FieldChoiceButton.visible setTo true
@@ -849,8 +855,6 @@ featCall FieldChoiceButton.IU handleClick [[
 
       # PROGRAM INIT
 
-      // dbgOut 'Popup init'
-
       // TODO: move this all to a feature 
       addFeature Costume
       addFeature Physics
@@ -1008,7 +1012,7 @@ addProp tempText string ''
 featProp SummaryText.Costume.costumeName setTo 'GEN_onexone.json'
 featProp SummaryText.Graphing.text setTo ''
 featProp SummaryText.Graphing.wordWrapWidth setTo 600
-prop SummaryText.zIndex setTo 500
+prop SummaryText.zIndex setTo 700
 
 # PROGRAM UPDATE
 every 1 runAfterStart [[
