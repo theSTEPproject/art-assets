@@ -362,12 +362,12 @@
 
         // set the status via a method
         featCall global.AI setEcaStatus 'this will be overridden'
-        dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
+        // dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
 
         // or set the status directly in case you need to use push to do it
         propPush global.tempString
         featPropPop global.AI.ecaStatusString
-        dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
+        // dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
 
         // make the ECA visible after setting up the properties (above) so they can be sent
         featCall global.AI toggleECA
@@ -430,6 +430,8 @@ addProp tempNum number 0
 addProp totalBeesCount number 0
 addProp deadBeesCount number 0
 
+addProp coughCount number 0
+
 // popup messages
 addProp xForPopup number 0
 addProp yForPopup number 0
@@ -437,6 +439,7 @@ addProp textForPopup string ''
 featCall global.IU setupFunction 'popupMessage' [[
 
   featCall global.Population createCharacter PopupEffect [[
+
     propPush global.textForPopup
     propPop PopupEffect.textToUse
     prop PopupEffect.costumeToUse setTo ''
@@ -445,6 +448,9 @@ featCall global.IU setupFunction 'popupMessage' [[
     propPop PopupEffect.x
     propPush global.yForPopup
     propPop PopupEffect.y
+
+    // dbgOut {{'created: ' + PopupEffect.getProp('trackerId').value + ' at ' + PopupEffect.getProp('x').value  + ','+ PopupEffect.getProp('y').value}}
+
   ]]
 ]]
 
@@ -635,7 +641,18 @@ when ScoutBee centerfirsttouches Pollution [[
     featProp ScoutBee.Costume.glowColor setToColor 12396584
     featProp ScoutBee.Costume.glow setTo 2
 
-    prop global.textForPopup setTo 'Cough cough!'
+    // dbgOut 'Trigger cough '
+
+    prop global.coughCount add 1
+
+    // temporary hack because for some reason repeat values stop displaying after 5 times ... JD
+    ifExpr {{global.getProp('coughCount').value % 2 == 0}} [[
+      prop global.textForPopup setTo 'Cough cough!'
+    ]]
+    ifExpr {{global.getProp('coughCount').value % 2 != 0}} [[
+      prop global.textForPopup setTo 'Cough cough!!'
+    ]]
+
     propPush ScoutBee.x
     propPop global.xForPopup
     propPush ScoutBee.y
@@ -832,6 +849,8 @@ featCall FieldChoiceButton.IU handleClick [[
 
       # PROGRAM INIT
 
+      // dbgOut 'Popup init'
+
       // TODO: move this all to a feature 
       addFeature Costume
       addFeature Physics
@@ -846,8 +865,8 @@ featCall FieldChoiceButton.IU handleClick [[
       featProp PopupEffect.Graphing.text setTo ''
 
       addProp costumeToUse string ''
-      addProp textToUse string 'TEST'
-      addProp countDown Number 2
+      addProp textToUse string ''
+      addProp countDown number 2
 
       # PROGRAM UPDATE
 
@@ -859,12 +878,19 @@ featCall FieldChoiceButton.IU handleClick [[
         ]]
 
         ifProp PopupEffect.textToUse notEqual '' [[
+
+          // dbgOut 'setting text' 
+
           propPush PopupEffect.textToUse
           featPropPop PopupEffect.Graphing.text
           prop PopupEffect.textToUse setTo ''
         ]]
       ]]
+
       every 1 runAtStart [[
+
+        // dbgOut {{'popup running with text: ' + PopupEffect.getFeatProp('Graphing','text').value + '; countDown: ' + PopupEffect.getProp('countDown').value}}
+
 
         prop PopupEffect.countDown sub 1
         ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[

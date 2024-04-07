@@ -20,7 +20,9 @@
     "translateY": 0,
     "rotate": 0,
     "mirrorX": false,
-    "mirrorY": false
+    "mirrorY": false,
+    "defaultCharacter": "Fish"
+
   },
   "rounds": [],
   "blueprints": [
