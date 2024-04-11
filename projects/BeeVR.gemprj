@@ -365,13 +365,11 @@
         ]]
 
         // set the status via a method
-        featCall global.AI setEcaStatus 'this will be overridden'
-        // dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
+        // featCall global.AI setEcaStatus 'model start'
 
         // or set the status directly in case you need to use push to do it
         propPush global.tempString
         featPropPop global.AI.ecaStatusString
-        // dbgOut {{'The status string is now set to: ' + global.getFeatProp('AI','ecaStatusString').value}}
 
         // make the ECA visible after setting up the properties (above) so they can be sent
         featCall global.AI toggleECA
