@@ -358,6 +358,16 @@
         stackSub
         propPop global.tempNum
 
+        // Current context options:
+        // Some bees lived
+        // All the bees died
+
+        // Add:
+        // All bees lived 
+          // DO WE WANT TO SAY WHY?
+        // Many flowers were pollinated
+        // Few flowers were pollinated 
+
         // note that some bees lived, but override if they all died 
         prop global.tempString setTo 'Some bees lived'
         ifProp global.tempNum equal 0 [[
