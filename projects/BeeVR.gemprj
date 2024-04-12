@@ -323,6 +323,9 @@
       `,
       "endScript": `
 
+        // re-set the pollinated count so that we can update it
+        prop global.totalPollinated setTo 0
+
         // Update art on flowers to show they were pollinated
         featCall global.Population charactersForEach Flower [[
 
@@ -336,6 +339,8 @@
           ]]
 
           ifProp Flower.pollinationCount greaterThanOrEqual 3 [[
+            prop global.totalPollinated add 1
+
             ifProp Flower.pollenColor equal 'red' [[
               featProp Flower.Costume.costumeName setTo 'FJ_strawberry_healthy.png'
             ]]
@@ -351,36 +356,63 @@
 
         featCall global.IU forceNext
 
+        // SETUP ECA STATUS STRING 
         // CAPEN LOOK HERE
-        // check how many bees died
-        propPush global.totalBeesCount
-        propPush global.deadBeesCount
-        stackSub
-        propPop global.tempNum
 
-        // Current context options:
-        // Some bees lived
-        // All the bees died
-        // Add:
-        // In the parking lot
-        // In the garden 
-        // All bees lived 
-          // DO WE WANT TO SAY WHY?
-        // Many flowers were pollinated
-        // Few flowers were pollinated 
+        // Bee options:
+          // Some bees lived.
+          // All the bees died.
+          // All the bees lived.
+       
+        // Flower options:
+          // Many flowers were pollinated.
+          // Few flowers were pollinated.
 
-        // note that some bees lived, but override if they all died 
-        prop global.tempString setTo 'Some bees lived'
-        ifProp global.tempNum equal 0 [[
-          prop global.tempString setTo 'All the bees died'
+        // Context options:
+        // In the parking lot.
+        // In the garden.
+
+        // Prep the bees lived component of the status
+        // Check if any died. If not, cool. If some did, was it some or all? 
+        // Determine by subtracting (to avoid using an expr )
+        prop global.beeStatusString setTo 'All the bees lived.'
+        ifProp global.deadBeesCount greaterThan 0 [[
+        
+          propPush global.totalBeesCount
+          propPush global.deadBeesCount
+          stackSub
+          propPop global.tempNum
+
+          prop global.beeStatusString setTo 'Some bees lived.'
+          ifProp global.tempNum equal 0 [[
+            prop global.beeStatusString setTo 'All the bees died.'
+          ]]
         ]]
 
-        // set the status via a method
-        // featCall global.AI setEcaStatus 'model start'
+        // prep the location portion of the status string 
+        prop global.locationStatusString setTo 'In the garden.'
+        ifProp global.fieldType equal 'parking lot' [[
+          prop global.locationStatusString setTo 'In the parking lot.'
+        ]]
 
-        // or set the status directly in case you need to use push to do it
-        propPush global.tempString
+        //Prep the flowerStatusString portion of ECA Status 
+        // Treat more than 3 as many
+        prop global.flowerStatusString setTo 'Few flowers were pollinated.'
+        ifProp global.totalPollinated greaterThan 3 [[
+          prop global.flowerStatusString setTo 'Many flowers were pollinated.'
+        ]]
+
+        //  set the status directly in cases when you need to use push to do it
+        exprPush{{global.getProp('beeStatusString').value + ' ' + global.getProp('locationStatusString').value + ' ' + global.getProp('flowerStatusString').value}} 
         featPropPop global.AI.ecaStatusString
+        
+        // Normally, the status is just updated whenever and sent when needed 
+        // Currently assuming we only will want to send after pressing stop (or dont need status)
+        // But may need to revisit 
+        dbgOut {{'ECA status string: ' + global.getFeatProp('AI', 'ecaStatusString').value}}
+
+        // we could also set the status via a method
+        // featCall global.AI setEcaStatus 'model start'
 
         // make the ECA visible after setting up the properties (above) so they can be sent
         featCall global.AI toggleECA
@@ -440,8 +472,15 @@ addProp strawberryPollinationSum number 0
 addProp tempString string ''
 addProp tempNum number 0
 
+// for setting the eca status ... 
+addProp beeStatusString string ''
+addProp flowerStatusString string ''
+addProp locationStatusString string ''
+
+// for keeping track of counts for status and reporting
 addProp totalBeesCount number 0
 addProp deadBeesCount number 0
+addProp totalPollinated number 0
 
 addProp coughCount number 0
 
