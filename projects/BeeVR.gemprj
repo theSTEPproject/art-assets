@@ -405,6 +405,7 @@
         //  set the status directly in cases when you need to use push to do it
         exprPush{{global.getProp('beeStatusString').value + ' ' + global.getProp('locationStatusString').value + ' ' + global.getProp('flowerStatusString').value}} 
         featPropPop global.AI.ecaStatusString
+        featCall global.AI updateECAStatus
         
         // Normally, the status is just updated whenever and sent when needed 
         // Currently assuming we only will want to send after pressing stop (or dont need status)
