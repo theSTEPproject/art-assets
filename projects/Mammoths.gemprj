@@ -57,11 +57,6 @@ prop global.visible setTo false
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
 
 # PROGRAM INIT
 // This is the most basic setup of properties that happens as soon as this character is saved
