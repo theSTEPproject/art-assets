@@ -1,0 +1,2379 @@
+{
+  "id": "InvasiveSpecies_NICE_lion-cactus-octopus",
+  "label": "Garden Ecosystem 2.5",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 3289600,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "Snake",
+      "scriptText": `# BLUEPRINT Snake
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A SNAKE?
+// 🔎 SNAKES are ?????? who EAT ?????? to make SNAKE ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+// Set the snake artwork and make it smaller
+featProp Snake.Costume.costumeName setTo 'IS_snake.png'
+// 🔎 WHAT SIZE IS THE SNAKE?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER SNAKES
+featProp Snake.Costume.scale setTo 0.05
+
+// Tells snakes how to move when they are controlled by the computer
+featProp Snake.Movement.movementType setTo 'wander'
+// featProp Snake.Movement.compassDirection setTo 'S'
+featProp Snake.Movement.distance setTo 3
+// featProp Snake.Movement.targetY setMax 0.7
+
+
+// check when snakes interact with rabbits
+featCall Snake.Touches monitor 'Mouse' b2b
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do SNAKES START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a snake can have?
+prop Snake.energyLevel setMax 100
+prop Snake.energyLevel setMin 0
+
+
+// use a widget to depict the current energy, and color it green
+featProp Snake.Graphing.meterProp setTo 'energyLevel'
+featProp Snake.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// whenever the snake is touching a mouse
+when Snake touches Mouse [[
+  ifProp Snake.alive equal true [[
+    ifProp Mouse.alive equal true [[
+      every 1 runAtStart [[
+        featProp Snake.Costume.glow setTo 1
+
+        // the mouse dies when touched by a snake
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.energyLevel setTo 0
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        featCall Mouse.IU logString 'Mouse was eaten by a snake.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do SNAKE GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Snake.energyLevel add 25
+        featCall Snake.IU logString 'Snake ate a mouse.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the snake eats a rabbit, it will stop glowing
+when Snake lastTouches Mouse [[
+  featProp Snake.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do SNAKES LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Snake.energyLevel sub 3
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the snake's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The snake is feeling good, so make the meter green if the snake has over 50 energy (out of 100)
+  ifProp Snake.energyLevel greaterThanOrEqual 50 [[
+    featProp Snake.Costume.currentFrame setTo 0
+    featProp Snake.Graphing.meterColor setTo 65280
+  ]]
+  // The snake is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Snake.energyLevel lessThan 50 [[
+    featProp Snake.Costume.currentFrame setTo 1
+    featProp Snake.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The snake is really hungry, so make the meter red if we are under 20
+  ifProp Snake.energyLevel lessThan 20 [[
+    featProp Snake.Costume.currentFrame setTo 1
+    featProp Snake.Graphing.meterColor setTo 16711680
+  ]]
+  // The snake is dead if it has 0 energy
+  ifProp Snake.energyLevel equal 0 [[
+    featProp Snake.Costume.currentFrame setTo 2
+    prop Snake.alpha setTo 0.3
+    prop Snake.alive setTo false
+    featProp Snake.Movement.movementType setTo 'stop'
+    featCall Snake.IU logString 'Snake died from starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Snake.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature IU
+
+featProp Background.Costume.costumeName setTo 'FW1_day.png'
+featProp Background.Costume.size setTo 800
+propPush global.alphaSettingForAll
+propPop Background.alpha
+prop Background.alpha setTo 1
+prop Background.zIndex setTo -110
+
+
+addProp state string 'daytime'
+prop global.skyState setTo 'daytime'
+addProp changed boolean false
+prop Background.changed setTo false
+
+
+# PROGRAM UPDATE
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How long is it day/night?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => MORE time in days/nights
+
+every 5 [[
+//Change the ecosystem to nighttime 
+  ifProp Background.state equal 'daytime' [[
+    featProp Background.Costume.costumeName setTo 'FW1_night.png'
+    prop Background.state setTo 'nighttime'
+    prop global.skyState setTo 'nighttime'
+    featCall Background.IU logString 'It has become night in the ecosystem. '
+    prop Background.changed setTo true
+  ]]
+  //Change the ecosystem to daytime
+  ifExpr {{ Background.getProp('changed').value == false }} [[
+    ifProp Background.state equal 'nighttime' [[
+      featProp Background.Costume.costumeName setTo 'FW1_day.png'
+      prop Background.state setTo 'daytime'
+      prop global.skyState setTo 'daytime'
+      featCall Background.IU logString 'It has become day in the ecosystem.'
+    ]]
+  ]]
+  prop Background.changed setTo false
+]]`
+    },
+    {
+      "name": "VeggieGarden",
+      "scriptText": `# BLUEPRINT VeggieGarden
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature IU
+addProp alive Boolean true
+addProp hasNutrients boolean false
+
+// set the costume and make it smaller 
+featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
+featProp VeggieGarden.Costume.scale setTo 0.3
+
+// make sure we track interactions with the other creatures
+featCall VeggieGarden.Touches monitor 'Robin' b2b
+
+// setup to track energy and begin at 3/4 way
+addProp energyLevel number 75
+prop VeggieGarden.energyLevel setMax 100
+prop VeggieGarden.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+addFeature Graphing
+featProp VeggieGarden.Graphing.meterProp setTo 'energyLevel'
+featProp VeggieGarden.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+//veggie gardens lose energy during the night
+ifProp global.skyState notEqual 'daytime' [[
+  every 1 [[
+    ifProp VeggieGarden.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do veggie gardens lose each second?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ LARGER numbers => lose energy faster
+      prop VeggieGarden.energyLevel sub 3
+    ]]
+  ]]
+]]
+
+//veggie gardens gain energy during the daytime
+ifProp global.skyState equal 'daytime' [[
+  every 1 [[
+    ifProp VeggieGarden.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do veggie gardens gain each second?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ LARGER numbers => gain energy faster
+      prop VeggieGarden.energyLevel add 10
+    ]]
+  ]]
+]]
+
+//change the veggie garden costume to show if it has nutrients 
+ifProp VeggieGarden.hasNutrients equal true [[
+  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_healthy2.png'
+  featCall VeggieGarden.IU logString 'Veggie garden gained nutrients.'
+]]
+
+ifProp VeggieGarden.hasNutrients equal false [[
+  featProp VeggieGarden.Costume.costumeName setTo 'FW1_veggie_unhealthy.png'
+  featCall VeggieGarden.IU logString 'Veggie garden lost nutrients.'
+]]
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+
+  // decrease energy each tick, using the energyUse varable to determine how much
+  ifProp VeggieGarden.energyLevel greaterThan 0 [[
+    prop VeggieGarden.energyLevel sub 1
+  ]]
+
+  // this code sets the color of the energy bar based on how hungry the VeggieGarden is
+  // set VeggieGarden energy meter color
+  // doing great
+  ifProp VeggieGarden.energyLevel greaterThanOrEqual 60 [[
+    // Green
+    featProp VeggieGarden.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifProp VeggieGarden.energyLevel lessThan 60 [[
+    // Orange
+    featProp VeggieGarden.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifProp VeggieGarden.energyLevel lessThan 30 [[
+    // Red
+    featProp VeggieGarden.Graphing.meterColor setTo 16711680
+  ]]
+  // dead
+  ifProp VeggieGarden.energyLevel equal 0 [[
+    featProp VeggieGarden.Costume.currentFrame setTo 2
+    prop VeggieGarden.alpha setTo 0.3
+    prop VeggieGarden.alive setTo false
+    featProp VeggieGarden.Movement.movementType setTo 'stop'
+    featCall VeggieGarden.IU logString 'Veggie garden died from starvation.'
+  ]]
+
+]]
+// veggie gardens lose nutrients over time
+ifProp VeggieGarden.hasNutrients equal true [[
+  every 10 [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how long do veggie gardens keep their nutrients?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ LARGER numbers => nutrients stay for longer
+    prop VeggieGarden.hasNutrients setTo false
+  ]]
+]]
+`
+    },
+    {
+      "name": "Clover",
+      "scriptText": `# BLUEPRINT Clover
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A CLOVER?
+// 🔎 CLOVERS are ?????? who USE ?????? and get EATEN by ??????
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+addProp hasNutrients boolean false
+
+// This sets the art for the clover character and makes it smaller
+featProp Clover.Costume.costumeName setTo 'FW1_clover_unhealthy.png'
+// 🔎 WHAT SIZE ARE CLOVER?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER CLOVER
+featProp Clover.Costume.scale setTo 0.4
+// moves the clover back so they appear behind other organisms
+prop Clover.zIndex setTo -10
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each clover START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 70
+// 🔎 what is the MOST/LEAST amount of energy a clover can have?
+prop Clover.energyLevel setMax 100
+prop Clover.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+featProp Clover.Graphing.meterProp setTo 'energyLevel'
+featProp Clover.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+  // the clover loses energy during the night 
+ifProp global.skyState notEqual 'daytime' [[
+  every 1 [[
+    ifProp Clover.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do clover lose each second?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Larger numbers => lose energy faster
+      prop Clover.energyLevel sub 3
+    ]]
+  ]]
+]]
+
+//the clover gains energy during the daytime
+ifProp global.skyState equal 'daytime' [[
+  every 1 [[
+    ifProp Clover.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do clover get in the sunlight?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Larger numbers => gain energy faster
+      prop Clover.energyLevel add 5
+    ]]
+  ]]
+]]
+
+// the clover changes costumes when it has nutrients 
+ifProp Clover.hasNutrients equal false [[
+  // insert code here
+  featProp Clover.Costume.costumeName setTo 'FW1_clover_unhealthy.png'
+  featCall Clover.IU logString 'Clover lost nutrients.'
+]]
+ifProp Clover.hasNutrients equal true [[
+  // insert code here
+  featProp Clover.Costume.costumeName setTo 'FW1_clover_healthy2.png'
+  featCall Clover.IU logString 'Clover gained nutrients.'
+]]
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  // this code sets the color of the energy bar based on how hungry the clover is
+  // set clover energy meter color
+  // doing great
+  ifProp Clover.energyLevel greaterThanOrEqual 60 [[
+    // Green
+    featProp Clover.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifProp Clover.energyLevel lessThan 60 [[
+    // Orange
+    featProp Clover.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifProp Clover.energyLevel lessThan 30 [[
+    // Red
+    featProp Clover.Graphing.meterColor setTo 16711680
+  ]]
+
+  // dead
+  ifProp Clover.energyLevel equal 0 [[
+    prop Clover.alive setTo false
+    featProp Clover.Movement.movementType setTo 'false'
+    prop Clover.alpha setTo 0.3
+    featCall Clover.IU logString 'Clover died from starvation.'
+  ]]
+
+]]
+// clovers lose their nutrience over time 
+ifProp Clover.hasNutrients equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how long do clover keep their nutrients?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Larger numbers => nutrients stay for longer 
+  every 10 [[
+  // clover has lost its nutrients 
+    prop Clover.hasNutrients setTo false
+  ]]
+
+]]`
+    },
+    {
+      "name": "Caterpillar",
+      "scriptText": `# BLUEPRINT Caterpillar
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A CATERPILLAR?
+// 🔎 CATERPILLARS are ?????? who EAT ?????? to make CATERPILLAR ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+// Set the caterpillar artwork and make it smaller since it is really big
+featProp Caterpillar.Costume.costumeName setTo 'FWE_caterpillar.png'
+// 🔎 WHAT SIZE IS THE CATERPILLAR?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER CATERPILLAR
+featProp Caterpillar.Costume.scale setTo 0.3
+
+featProp Caterpillar.Movement.movementType setTo 'wander'
+featProp Caterpillar.Movement.compassDirection setTo 'W'
+featProp Caterpillar.Movement.distance setTo 2
+featProp Caterpillar.Movement.targetY setMax 0.7
+
+// make sure we track interactions with the other creatures
+featCall Caterpillar.Touches monitor 'VeggieGarden' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do CATERPILLARS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a caterpillar can have?
+prop Caterpillar.energyLevel setMax 100
+prop Caterpillar.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green
+featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
+featProp Caterpillar.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+
+// whenever a caterpillar touches a veggie garden
+when Caterpillar touches VeggieGarden [[
+  every 1 runAtStart [[
+    // if the caterpillar and veggie garden are alive
+    ifProp Caterpillar.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Caterpillar.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => LOSE MORE ENERGY
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CATERPILLARS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Caterpillar.energyLevel add 10
+        featCall Caterpillar.IU logString 'Caterpillar ate some of a veggie garden.'
+      ]]
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do CATERPILLARS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Caterpillar.energyLevel sub 3
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the caterpillar's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The caterpillar is feeling good, so make the meter green if the caterpillar has over 50 energy (out of 100)
+  ifProp Caterpillar.energyLevel greaterThanOrEqual 50 [[
+    featProp Caterpillar.Costume.currentFrame setTo 0
+    featProp Caterpillar.Graphing.meterColor setTo 65280
+  ]]
+
+  // The caterpillar is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Caterpillar.energyLevel lessThan 50 [[
+    featProp Caterpillar.Costume.currentFrame setTo 1
+    featProp Caterpillar.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The caterpillar is really hungry, so make the meter red if we are under 20
+  ifProp Caterpillar.energyLevel lessThan 20 [[
+    featProp Caterpillar.Costume.currentFrame setTo 1
+    featProp Caterpillar.Graphing.meterColor setTo 16711680
+  ]]
+  // The caterpillar is dead if it has 0 energy
+  ifProp Caterpillar.energyLevel equal 0 [[
+    prop Caterpillar.alive setTo false
+    featProp Caterpillar.Costume.currentFrame setTo 2
+    prop Caterpillar.alpha setTo 0.3
+    featProp Caterpillar.Movement.movementType setTo 'string'
+    featCall Caterpillar.IU logString 'Caterpillar died from starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Caterpillar.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "Robin",
+      "scriptText": `# BLUEPRINT Robin
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A ROBIN?
+// 🔎 ROBINS are ?????? who EAT ?????? to make ROBIN ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+// Set the robin artwork and make it smaller since it is really big
+featProp Robin.Costume.costumeName setTo 'FWE_robin.png'
+
+// 🔎 WHAT SIZE IS THE ROBIN?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER ROBINS
+featProp Robin.Costume.scale setTo 0.2
+
+// tells robins how to move when they are controlled by the computer
+featProp Robin.Movement.movementType setTo 'wander'
+featProp Robin.Movement.compassDirection setTo 'W'
+featProp Robin.Movement.distance setTo 3
+featProp Robin.Movement.targetY setMax 0.7
+
+// check with robins touch caterpillars
+featCall Robin.Touches monitor 'Caterpillar' b2b
+featCall Robin.Touches monitor 'VeggieGarden' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do ROBINS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a robin can have?
+prop Robin.energyLevel setMax 100
+prop Robin.energyLevel setMin 0
+
+
+// use a widget to depict the current energy, and color it green
+featProp Robin.Graphing.meterProp setTo 'energyLevel'
+featProp Robin.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// whenever a robin is touching a caterpillar
+when Robin touches Caterpillar [[
+  // when the robin and the caterpillar are alive
+  ifProp Robin.alive equal true [[
+    ifProp Caterpillar.alive equal true [[
+      every 1 runAtStart [[
+        featProp Robin.Costume.glow setTo 1
+
+        // the caterpillar dies when touched by the robin
+        featProp Caterpillar.Movement.movementType setTo 'stop'
+        prop Caterpillar.alive setTo false
+        prop Caterpillar.energyLevel setTo 0
+        prop Caterpillar.alpha setTo 0.3
+        featCall Caterpillar.IU logString 'Caterpillar was eaten by a robin.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do ROBIN GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Robin.energyLevel add 25
+        featCall Robin.IU logString 'Robin ate a caterpillar.'
+      ]]
+    ]]
+  ]]
+]]
+
+// whenever a robin is touching a veggie garden
+when Robin touches VeggieGarden [[
+  // when the robin and the veggie garden are alive
+  ifProp Robin.alive equal true [[
+    ifProp VeggieGarden.alive equal true [[
+      every 1 runAtStart [[
+        featProp Robin.Costume.glow setTo 1
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do ROBIN GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Robin.energyLevel add 10
+        featCall Robin.IU logString 'Robin ate some of a veggie garden.'
+      ]]
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do ROBINS LOSE when flying?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Robin.energyLevel sub 3
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the robin's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The robin is feeling good, so make the meter green if the robin has over 50 energy (out of 100)
+  ifProp Robin.energyLevel greaterThanOrEqual 50 [[
+    featProp Robin.Costume.currentFrame setTo 0
+    featProp Robin.Graphing.meterColor setTo 65280
+  ]]
+
+  // The robin is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Robin.energyLevel lessThan 50 [[
+    featProp Robin.Costume.currentFrame setTo 1
+    featProp Robin.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The robin is really hungry, so make the meter red if we are under 20
+  ifProp Robin.energyLevel lessThan 20 [[
+    featProp Robin.Costume.currentFrame setTo 1
+    featProp Robin.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The robin is dead if it has 0 energy
+  ifProp Robin.energyLevel equal 0 [[
+    featProp Robin.Costume.currentFrame setTo 2
+    prop Robin.alpha setTo 0.3
+    prop Robin.alive setTo false
+    featProp Robin.Movement.movementType setTo 'stop'
+    featCall Robin.IU logString 'Robin died of starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Robin.Graphing.meterProp setTo 'energyLevel'
+]]`
+    },
+    {
+      "name": "Hawk",
+      "scriptText": `# BLUEPRINT Hawk
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A HAWK?
+// 🔎 HAWKS are CONSUMERS who EAT ??????? to make HAWK ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+// Set the hawk artwork and make it 1/2 size since it is really big
+featProp Hawk.Costume.costumeName setTo 'FWE_Hawk.png'
+
+// 🔎 WHAT SIZE IS THE HAWK?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER HAWKS
+featProp Hawk.Costume.scale setTo 0.5
+
+// This tells the hawks how to move
+// featProp Hawk.Movement.direction addRndInt 1 360
+featProp Hawk.Movement.movementType setTo 'wander'
+featProp Hawk.Movement.distance setTo 5
+featCall Hawk.Movement setRandomDirection
+
+// // Check when the hawk touches other organisms so it can eat it
+featCall Hawk.Touches monitor 'Snake' b2b
+featCall Hawk.Touches monitor 'Robin' b2b
+featCall Hawk.Touches monitor 'Mouse' b2b
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do HAWKS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy an hawk can have?
+prop Hawk.energyLevel setMax 100
+prop Hawk.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+
+featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+featProp Hawk.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// whenever the hawk is touching a snake
+when Hawk touches Snake [[
+  every 1 runAtStart [[
+    // if the hawk and the snake are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Snake.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // the snake dies when touched by the hawk
+        featProp Snake.Movement.movementType setTo 'stop'
+        prop Snake.alive setTo false
+        prop Snake.alpha setTo 0.3
+        prop Snake.energyLevel setTo 0
+        featCall Snake.IU logString 'Snake was eaten by hawk.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a snake?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+        featCall Hawk.IU logString 'Hawk ate a snake.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the hawk eats a snake, it will stop glowing
+when Hawk lastTouches Snake [[
+  featProp Hawk.Costume.glow setTo 0
+]]
+
+// whenever the hawk is touching a robin
+when Hawk touches Robin [[
+  every 1 runAtStart [[
+    // if the hawk and the snake are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Robin.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // the robin dies when touched by the hawk
+        featProp Robin.Movement.movementType setTo 'stop'
+        prop Robin.alive setTo false
+        prop Robin.alpha setTo 0.3
+        prop Robin.energyLevel setTo 0
+        featCall Robin.IU logString 'Robin was eaten by a hawk.'
+
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a robin?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+        featCall Hawk.IU logString 'Hawk ate a robin.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the hawk eats a robin, it will stop glowing
+when Hawk lastTouches Robin [[
+  featProp Hawk.Costume.glow setTo 0
+]]
+
+// whenever the hawk is touching a mouse
+when Hawk touches Mouse [[
+  every 1 runAtStart [[
+    // if the hawk and the mouse are alive
+    ifProp Hawk.alive equal true [[
+      ifProp Mouse.alive equal true [[
+        featProp Hawk.Costume.glow setTo 1
+        // the mouse dies when touched by the hawk
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Mouse.energyLevel setTo 0
+        featCall Mouse.IU logString 'Mouse was eaten by a hawk.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do HAWKS GAIN when eating a mouse?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Hawk.energyLevel add 25
+        featCall Hawk.IU logString 'Hawk ate a mouse.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the hawk eats a mouse, it will stop glowing
+when Hawk lastTouches Mouse [[
+  featProp Hawk.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do HAWKS LOSE when flying?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Hawk.energyLevel sub 2
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the hawk's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The hawk is feeling good, so make the meter green if the hawk has over 50 energy (out of 100)
+  ifProp Hawk.energyLevel greaterThanOrEqual 50 [[
+    featProp Hawk.Graphing.meterColor setTo 65280
+  ]]
+
+  // The hawk is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Hawk.energyLevel lessThan 50 [[
+    featProp Hawk.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The hawk is really hungry, so make the meter red if we are under 20
+  ifProp Hawk.energyLevel lessThan 20 [[
+    featProp Hawk.Graphing.meterColor setTo 16711680
+  ]]
+  // The hawk dies if it has 0 energy
+  ifProp Hawk.energyLevel equal 0 [[
+    prop Hawk.alive setTo false
+    // change the artwork to show it is dead
+    prop Hawk.alpha setTo 0.3
+    featProp Hawk.Movement.movementType setTo 'stop'
+    featCall Hawk.IU logString 'Hawk died from starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Hawk.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+# PROGRAM INIT
+addFeature Population
+prop global.visible setTo false
+addProp alphaSettingForAll number 0.5
+addProp skyState string 'daytime'
+addProp day boolean true
+addFeature IU
+featCall global.IU logString 'Init GE Animal interactions 1 model'
+
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+addProp time number 0
+prop Timer.zIndex setTo 500
+
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + agent.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    },
+    {
+      "name": "RobinPopulation",
+      "scriptText": `# BLUEPRINT RobinPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp RobinPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp RobinPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Robins
+addProp totalRobinPop number 2
+
+
+featProp RobinPopulation.Graphing.graphProp setTo 'totalRobinPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop RobinPopulation.x setTo 495
+prop RobinPopulation.y setTo 187
+prop RobinPopulation.zIndex setTo 300
+
+featProp RobinPopulation.Graphing.text setTo 'Robin Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the RobinRobinPopulation
+  featProp RobinPopulation.Population.monitoredCharacter setTo 'Robin'
+  featProp RobinPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall RobinPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop RobinPopulation.totalRobinPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalRobinPop').value }}
+  propPop RobinPopulation.totalRobinPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "SnakePopulation",
+      "scriptText": `# BLUEPRINT SnakePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp SnakePopulation.Costume.costumeName setTo 'onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp SnakePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Snakes
+addProp totalSnakePop number 2
+
+
+featProp SnakePopulation.Graphing.graphProp setTo 'totalSnakePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop SnakePopulation.x setTo 495
+prop SnakePopulation.y setTo 187
+prop SnakePopulation.zIndex setTo 300
+
+featProp SnakePopulation.Graphing.text setTo 'Snake Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the snake
+  featProp SnakePopulation.Population.monitoredCharacter setTo 'Snake'
+  featProp SnakePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall SnakePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop SnakePopulation.totalSnakePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalSnakePop').value }}
+  propPop SnakePopulation.totalSnakePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "CaterpillarPopulation",
+      "scriptText": `# BLUEPRINT CaterpillarPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp CaterpillarPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp CaterpillarPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Caterpillars
+addProp totalCaterpillarPop number 2
+
+
+featProp CaterpillarPopulation.Graphing.graphProp setTo 'totalCaterpillarPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop CaterpillarPopulation.x setTo 495
+prop CaterpillarPopulation.y setTo 187
+prop CaterpillarPopulation.zIndex setTo 300
+
+featProp CaterpillarPopulation.Graphing.text setTo 'Caterpillar Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Caterpillar
+  featProp CaterpillarPopulation.Population.monitoredCharacter setTo 'Caterpillar'
+  featProp CaterpillarPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall CaterpillarPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop CaterpillarPopulation.totalCaterpillarPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalCaterpillarPop').value }}
+  propPop CaterpillarPopulation.totalCaterpillarPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "VeggieGardenPopulation",
+      "scriptText": `# BLUEPRINT VeggieGardenPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp VeggieGardenPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp VeggieGardenPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of VeggieGardens
+addProp totalVeggieGardenPop number 4
+
+
+featProp VeggieGardenPopulation.Graphing.graphProp setTo 'totalVeggieGardenPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop VeggieGardenPopulation.x setTo 495
+prop VeggieGardenPopulation.y setTo 187
+prop VeggieGardenPopulation.zIndex setTo 300
+
+featProp VeggieGardenPopulation.Graphing.text setTo 'VeggieGarden Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the VeggieGarden
+  featProp VeggieGardenPopulation.Population.monitoredCharacter setTo 'VeggieGarden'
+  featProp VeggieGardenPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall VeggieGardenPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop VeggieGardenPopulation.totalVeggieGardenPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalVeggieGardenPop').value }}
+  propPop VeggieGardenPopulation.totalVeggieGardenPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "CloverPopulation",
+      "scriptText": `# BLUEPRINT CloverPopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp CloverPopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp CloverPopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Clovers
+addProp totalCloverPop number 2
+
+
+featProp CloverPopulation.Graphing.graphProp setTo 'totalCloverPop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop CloverPopulation.x setTo 495
+prop CloverPopulation.y setTo 187
+prop CloverPopulation.zIndex setTo 300
+
+featProp CloverPopulation.Graphing.text setTo 'Clover Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Clover
+  featProp CloverPopulation.Population.monitoredCharacter setTo 'Clover'
+  featProp CloverPopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall CloverPopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop CloverPopulation.totalCloverPop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalCloverPop').value }}
+  propPop CloverPopulation.totalCloverPop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Worm",
+      "scriptText": `# BLUEPRINT Worm
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+
+// 🔎 WHAT IS A WORM?
+// 🔎 Worms are ?????? who EAT ??????
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Touches
+addFeature Physics
+addFeature Graphing
+addFeature Movement
+addFeature Cursor
+addFeature IU
+addProp alive boolean true
+addProp hasNutrients boolean false
+
+// gives the worm character a worm costume and makes it smaller
+featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
+featProp Worm.Costume.scale setTo 0.4
+
+// tells the worm how to move if it is controlled by the computer
+featProp Worm.Movement.movementType setTo 'wander'
+featProp Worm.Movement.distance setTo 4
+featCall Worm.Movement setRandomDirection
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do WORMS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel number 40
+
+// 🔎 What is the MOST/LEAST amount of energy an algae can have?
+prop Worm.energyLevel setMax 100
+prop Worm.energyLevel setMin 0
+
+// check when the worm touches other organisms
+featCall Worm.Touches monitor 'Hawk' b2b
+featCall Worm.Touches monitor 'Snake' b2b
+featCall Worm.Touches monitor 'Mouse' b2b
+featCall Worm.Touches monitor 'Robin' b2b
+featCall Worm.Touches monitor 'Caterpillar' b2b
+featCall Worm.Touches monitor 'VeggieGarden' b2b
+featCall Worm.Touches monitor 'Clover' b2b
+
+
+// use a widget to depict the current energy, and color it green
+featProp Worm.Graphing.meterProp setTo 'energyLevel'
+featProp Worm.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do WORMS lose?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE ENERGY faster
+  prop Worm.energyLevel sub 1
+
+  // change the worm costume if it has nutrients
+  ifProp Worm.hasNutrients equal true [[
+    featProp Worm.Costume.costumeName setTo 'FW1_Worm_Nutrients.png'
+  ]]
+  ifProp Worm.hasNutrients equal false [[
+    featProp Worm.Costume.costumeName setTo 'FW1_worm.png'
+  ]]
+
+
+  // Colors the energy meter based on how much energy the worm has
+  ifProp Worm.energyLevel greaterThanOrEqual 50 [[
+    featProp Worm.Graphing.meterColor setTo 65280
+  ]]
+  // The worm is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Worm.energyLevel lessThan 50 [[
+    featProp Worm.Graphing.meterColor setTo 16737792
+  ]]
+  // The worm is really hungry, so make the meter red if we are under 20
+  ifProp Worm.energyLevel lessThan 20 [[
+    featProp Worm.Graphing.meterColor setTo 16711680
+  ]]
+  // The worm is dead if it has 0 energy
+  ifProp Worm.energyLevel equal 0 [[
+    prop Worm.alpha setTo 0.3
+    featProp Worm.Movement.movementType setTo 'stop'
+    prop Worm.alive setTo false
+    featCall Worm.IU logString 'Worm has died from starvation.'
+  ]]
+  // updates the energy graph
+  featProp Worm.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+// tells the worm to eat a dead mouse
+when Worm touches Mouse [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the mouse is dead
+      ifProp Mouse.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a mouse?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead mouse.'
+        // make the mouse smaller
+        featProp Mouse.Costume.scale sub 0.1
+        // the mouse will disappear when it is very small
+        ifFeatProp Mouse.Costume.scale lessThan 0.1 [[
+          prop Mouse.visible setTo false
+          prop Mouse.alpha setTo 0
+          prop Mouse.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead mouse.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+// tells the worm to eat a dead hawk
+when Worm touches Hawk [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the hawk is dead
+      ifProp Hawk.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a hawk?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead hawk.'
+
+        // make the hawk smaller
+        featProp Hawk.Costume.scale sub 0.1
+        // the hawk will disappear when it is very small
+        ifFeatProp Hawk.Costume.scale lessThan 0.1 [[
+          prop Hawk.visible setTo false
+          prop Hawk.alpha setTo 0
+          prop Hawk.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead hawk.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+// tells the worm to eat a dead snake
+when Worm touches Snake [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the snake is dead
+      ifProp Snake.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a snake?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead snake.'
+
+        // make the snake smaller
+        featProp Snake.Costume.scale sub 0.1
+        // the snake will disappear when it is very small
+        ifFeatProp Snake.Costume.scale lessThan 0.1 [[
+          prop Snake.visible setTo false
+          prop Snake.alpha setTo 0
+          prop Snake.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead snake.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+// tells the worm to eat a dead robin
+when Worm touches Robin [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the robin is alive
+      ifProp Robin.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a robin?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead robin.'
+
+        // make the robin smaller
+        featProp Robin.Costume.scale sub 0.1
+        // the robin will disappear when it is very small
+        ifFeatProp Robin.Costume.scale lessThan 0.1 [[
+          prop Robin.visible setTo false
+          prop Robin.alpha setTo 0
+          prop Robin.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead robin.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+when Worm touches Caterpillar [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the caterpillar is dead
+      ifProp Caterpillar.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a caterpillar?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead caterpillar.'
+
+        // make the caterpillar smaller
+        featProp Caterpillar.Costume.scale sub 0.1
+        // the caterpillar will disappear when it is very small
+        ifFeatProp Caterpillar.Costume.scale lessThan 0.1 [[
+          prop Caterpillar.visible setTo false
+          prop Caterpillar.alpha setTo 0
+          prop Caterpillar.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead caterpillar.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+// tells the worm to eat a dead veggie garden
+when Worm touches VeggieGarden [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the veggie garden is dead
+      ifProp VeggieGarden.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a veggie garden?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead veggie garden.'
+
+        // make the veggie garden smaller
+        featProp VeggieGarden.Costume.scale sub 0.1
+        // the veggie garden is disappear when it is very small
+        ifFeatProp VeggieGarden.Costume.scale lessThan 0.1 [[
+          prop VeggieGarden.visible setTo false
+          prop VeggieGarden.alpha setTo 0
+          prop VeggieGarden.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead veggie garden.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+// tells the worm to eat a dead clover
+when Worm touches Clover [[
+  every 1 [[
+    // only living worms can eat
+    ifProp Worm.alive equal true [[
+      // check that the clover is dead
+      ifProp Clover.alive equal false [[
+        featProp Worm.Costume.glow setTo 1
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do WORMS GAIN when eating a clover?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAINS MORE ENERGY
+        prop Worm.energyLevel add 10
+
+        // the worm carries nutrients after eating
+        prop Worm.hasNutrients setTo true
+        featCall Worm.IU logString 'Worm is decomposing a dead clover.'
+
+        // make the clover smaller
+        featProp Clover.Costume.scale sub 0.1
+        // the clover will disappear when it is very small
+        ifFeatProp Clover.Costume.scale lessThan 0.1 [[
+          prop Clover.visible setTo false
+          prop Clover.alpha setTo 0
+          prop Clover.isInert setTo true
+          featCall Worm.IU logString 'Worm has fully decomposed a dead clover.'
+        ]]
+      ]]
+    ]]
+  ]]
+]]
+
+
+// tells the worm to pass nutrients to a living clover
+when Worm touches Clover [[
+  ifProp Worm.hasNutrients equal true [[
+    ifProp Clover.alive equal true [[
+      // the worm gives its nutrients
+      prop Worm.hasNutrients setTo false
+      featProp Clover.Costume.glow setTo 1
+      // the clover gains nutrients
+      prop Clover.hasNutrients setTo true
+      featCall Worm.IU logString 'Worm gave nutrients to a clover.'
+    ]]
+  ]]
+]]
+// tells the worm to pass nutrients to a living veggie garden
+when Worm touches VeggieGarden [[
+  ifProp Worm.hasNutrients equal true [[
+    ifProp VeggieGarden.alive equal true [[
+      // the worm gives its nutrients
+      prop Worm.hasNutrients setTo false
+      featProp VeggieGarden.Costume.glow setTo 1
+      // the veggie garden gains nutrients
+      prop VeggieGarden.hasNutrients setTo true
+      featCall Worm.IU logString 'Worm gave nutrients to a veggie garden.'
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Mouse",
+      "scriptText": `# BLUEPRINT Mouse
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A MOUSE?
+// 🔎 MICE are ???????? who EAT ??????? to make MOUSE ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organism that cannot make its own food
+// 🔎 and must eat other plants or animals to get energy
+
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+
+// set the Mouse artwork and make it smaller
+featProp Mouse.Costume.costumeName setTo 'FWE_mouse.png'
+
+// 🔎 WHAT SIZE IS THE Mouse?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER Mouse
+featProp Mouse.Costume.scale setTo 0.4
+featProp Mouse.Costume.flipX setTo true
+
+// if the computer controls the Mouse, this tells the Mouse how to move and how quickly
+// featProp Mouse.Movement.direction addRndInt 1 360
+featProp Mouse.Movement.movementType setTo 'wander'
+featProp Mouse.Movement.distance setTo 4
+featCall Mouse.Movement setRandomDirection
+
+
+// make sure we track interactions with the other creatures
+featCall Mouse.Touches monitor 'VeggieGarden' b2b
+featCall Mouse.Touches monitor 'Clover' b2b
+featCall Mouse.Touches monitor 'Worm' b2b
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each Mouse START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 50
+
+// 🔎 what is the MOST/LEAST amount of energy a Mouse can have?
+prop Mouse.energyLevel setMax 100
+prop Mouse.energyLevel setMin 0
+
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+featProp Mouse.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+
+// whenever a Mouse touches a clover
+when Mouse touches Clover [[
+  every 1 runAtStart [[
+    // the Mouse and the clover must be alive
+    ifProp Mouse.alive equal true [[
+      ifProp Clover.alive equal true [[
+
+        featProp Mouse.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do CLOVER LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => LOSE MORE ENERGY
+        prop Clover.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do MouseS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Mouse.energyLevel add 10
+        featCall Mouse.IU logString 'Mouse ate some of a clover.'
+      ]]
+    ]]
+  ]]
+]]
+
+// whenever a Mouse touches a veggie garden
+when Mouse touches VeggieGarden [[
+  every 1 runAtStart [[
+    ifProp Mouse.alive equal true [[
+      ifProp VeggieGarden.alive equal true [[
+        featProp Mouse.Costume.glow setTo 1
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do VEGGIE GARDEN LOSE when eaten?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => LOSE MORE ENERGY
+        prop VeggieGarden.energyLevel sub 10
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do MouseS GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Mouse.energyLevel add 10
+        featCall Mouse.IU logString 'Mouse ate some of a veggie garden.'
+
+      ]]
+    ]]
+  ]]
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do MouseS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Mouse.energyLevel sub 3
+
+  // 🔎 WHAT DOES THIS DO?
+  // This script changes the color of the Mouse's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+
+  // The Mouse is feeling good, so make the meter green if the Mouse has over 50 energy (out of 100)
+  ifProp Mouse.energyLevel greaterThanOrEqual 50 [[
+    featProp Mouse.Costume.currentFrame setTo 0
+    featProp Mouse.Graphing.meterColor setTo 65280
+  ]]
+
+  // The Mouse is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Mouse.energyLevel lessThan 50 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    featProp Mouse.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The Mouse is really hungry, so make the meter red if we are under 20
+  ifProp Mouse.energyLevel lessThan 20 [[
+    featProp Mouse.Costume.currentFrame setTo 1
+    featProp Mouse.Graphing.meterColor setTo 16711680
+  ]]
+
+  // The Mouse is dead if it has 0 energy
+  ifProp Mouse.energyLevel equal 0 [[
+    prop Mouse.alive setTo false
+    featProp Mouse.Costume.currentFrame setTo 2
+    prop Mouse.alpha setTo 0.3
+    featProp Mouse.Movement.movementType setTo 'stop'
+    featCall Mouse.IU logString 'Mouse died of starvation.'
+  ]]
+  // set meter to mirror energyLevel
+  featProp Mouse.Graphing.meterProp setTo 'energyLevel'
+]]
+
+
+
+
+
+
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time`
+    },
+    {
+      "name": "MousePopulation",
+      "scriptText": `# BLUEPRINT MousePopulation
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+# PROGRAM DEFINE
+addFeature Costume
+featProp MousePopulation.Costume.costumeName setTo 'GEN_onexone.json'
+
+addFeature Graphing
+addFeature Population
+featProp MousePopulation.Graphing.isLargeGraphic setTo true
+
+// set y axis to starting # of Mouses
+addProp totalMousePop number 3
+
+
+featProp MousePopulation.Graphing.graphProp setTo 'totalMousePop'
+
+# PROGRAM INIT
+// make sure something displays with some initial text, on bottom right at first
+prop MousePopulation.x setTo 495
+prop MousePopulation.y setTo 187
+prop MousePopulation.zIndex setTo 300
+
+featProp MousePopulation.Graphing.text setTo 'Mouse Population'
+
+# PROGRAM EVENT
+
+onEvent Tick [[
+
+
+  // count up the Bunny
+  featProp MousePopulation.Population.monitoredCharacter setTo 'Mouse'
+  featProp MousePopulation.Population.monitoredCharacterProp setTo 'alive'
+  featCall MousePopulation.Population countCharacterProp
+  exprPush {{ agent.getFeatProp('Population', 'sum').value }}
+  propPop MousePopulation.totalMousePop
+
+  // graph the sum
+  exprPush {{ agent.getProp('totalMousePop').value }}
+  propPop MousePopulation.totalMousePop
+
+
+]]
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "teacher",
+      "scriptText": `# BLUEPRINT teacher
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+
+featProp teacher.Costume.costumeName setTo 'FW1_rabbit.png'
+featProp teacher.Costume.scale setTo 0.2
+prop teacher.alpha setTo 0
+
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "Lion",
+      "scriptText": `# BLUEPRINT Lion
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS _______________?
+// 🔎 ___________ are ???????????? who EAT ??????? to make ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+
+// Set the lion artwork and make it 1/2 size since it is really big
+featProp Lion.Costume.costumeName setTo 'IS_lion.png'
+featProp Lion.Costume.color setToColor 16116736
+// 🔎 WHAT SIZE IS THE ORGANISM?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER ORGANISMS
+featProp Lion.Costume.scale setTo 0.5
+
+// // Check when the Lion touches other organisms so it can eat it
+featCall Lion.Touches monitor 'Snake' b2b
+featCall Lion.Touches monitor 'Robin' b2b
+featCall Lion.Touches monitor 'Mouse' b2b
+featCall Lion.Touches monitor 'Hawk' b2b
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do LionS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy an Lion can have?
+prop Lion.energyLevel setMax 100
+prop Lion.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+
+featProp Lion.Graphing.meterProp setTo 'energyLevel'
+featProp Lion.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// whenever the Lion is touching a snake
+when Lion touches Snake [[
+  every 1 runAtStart [[
+    // if the Lion and the snake are alive
+    ifProp Lion.alive equal true [[
+      ifProp Snake.alive equal true [[
+        featProp Lion.Costume.glow setTo 1
+        // the snake dies when touched by the Lion
+        featProp Snake.Movement.movementType setTo 'stop'
+        prop Snake.alive setTo false
+        prop Snake.alpha setTo 0.3
+        prop Snake.energyLevel setTo 0
+        featCall Snake.IU logString 'Snake was eaten by Lion.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LionS GAIN when eating a snake?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Lion.energyLevel add 25
+        featCall Lion.IU logString 'Lion ate a snake.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the Lion eats a snake, it will stop glowing
+when Lion lastTouches Snake [[
+  featProp Lion.Costume.glow setTo 0
+]]
+
+// whenever the Lion is touching a robin
+when Lion touches Robin [[
+  every 1 runAtStart [[
+    // if the Lion and the snake are alive
+    ifProp Lion.alive equal true [[
+      ifProp Robin.alive equal true [[
+        featProp Lion.Costume.glow setTo 1
+        // the robin dies when touched by the Lion
+        featProp Robin.Movement.movementType setTo 'stop'
+        prop Robin.alive setTo false
+        prop Robin.alpha setTo 0.3
+        prop Robin.energyLevel setTo 0
+        featCall Robin.IU logString 'Robin was eaten by a Lion.'
+
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LionS GAIN when eating a robin?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Lion.energyLevel add 25
+        featCall Lion.IU logString 'Lion ate a robin.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the Lion eats a robin, it will stop glowing
+when Lion lastTouches Robin [[
+  featProp Lion.Costume.glow setTo 0
+]]
+
+// whenever the Lion is touching a mouse
+when Lion touches Mouse [[
+  every 1 runAtStart [[
+    // if the Lion and the mouse are alive
+    ifProp Lion.alive equal true [[
+      ifProp Mouse.alive equal true [[
+        featProp Lion.Costume.glow setTo 1
+        // the mouse dies when touched by the Lion
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        prop Mouse.energyLevel setTo 0
+        featCall Mouse.IU logString 'Mouse was eaten by a Lion.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LionS GAIN when eating a mouse?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Lion.energyLevel add 25
+        featCall Lion.IU logString 'Lion ate a mouse.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the Lion eats a mouse, it will stop glowing
+when Lion lastTouches Mouse [[
+  featProp Lion.Costume.glow setTo 0
+]]
+
+// whenever the Lion is touching a hawk
+when Lion touches Hawk [[
+  every 1 runAtStart [[
+    // if the Lion and the hawk are alive
+    ifProp Lion.alive equal true [[
+      ifProp Hawk.alive equal true [[
+        featProp Lion.Costume.glow setTo 1
+        // the mouse dies when touched by the Lion
+        featProp Hawk.Movement.movementType setTo 'stop'
+        prop Hawk.alive setTo false
+        prop Hawk.alpha setTo 0.3
+        prop Hawk.energyLevel setTo 0
+        featCall Hawk.IU logString 'Mouse was eaten by a Lion.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do LionS GAIN when eating a mouse?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Lion.energyLevel add 25
+        featCall Lion.IU logString 'Lion ate a hawk.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the Lion eats a mouse, it will stop glowing
+when Lion lastTouches Mouse [[
+  featProp Lion.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do LionS LOSE when flying?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Lion.energyLevel sub 2
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the Lion's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The Lion is feeling good, so make the meter green if the Lion has over 50 energy (out of 100)
+  ifProp Lion.energyLevel greaterThanOrEqual 50 [[
+    featProp Lion.Graphing.meterColor setTo 65280
+  ]]
+
+  // The Lion is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Lion.energyLevel lessThan 50 [[
+    featProp Lion.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The Lion is really hungry, so make the meter red if we are under 20
+  ifProp Lion.energyLevel lessThan 20 [[
+    featProp Lion.Graphing.meterColor setTo 16711680
+  ]]
+  // The Lion dies if it has 0 energy
+  ifProp Lion.energyLevel equal 0 [[
+    prop Lion.alive setTo false
+    // change the artwork to show it is dead
+    prop Lion.alpha setTo 0.3
+    featProp Lion.Movement.movementType setTo 'stop'
+    featCall Lion.IU logString 'Lion died from starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Lion.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    },
+    {
+      "name": "Cactus",
+      "scriptText": `# BLUEPRINT Cactus
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A Cactus?
+// 🔎 CactusS are ?????? who USE ?????? and get EATEN by ??????
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Movement
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+addProp hasNutrients boolean false
+
+// This sets the art for the Cactus character and makes it smaller
+featProp Cactus.Costume.costumeName setTo 'IS_cactus.png'
+// 🔎 WHAT SIZE ARE Cactus?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER Cactus
+featProp Cactus.Costume.scale setTo 0.1
+// moves the Cactus back so they appear behind other organisms
+prop Cactus.zIndex setTo -10
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 how much does energy does each Cactus START with?
+// ✏️ LETS CHANGE THIS:
+addProp energyLevel Number 70
+// 🔎 what is the MOST/LEAST amount of energy a Cactus can have?
+prop Cactus.energyLevel setMax 100
+prop Cactus.energyLevel setMin 0
+
+// use a widget to depict the current energy, and color it green (maybe change later)
+featProp Cactus.Graphing.meterProp setTo 'energyLevel'
+featProp Cactus.Graphing.meterColor setTo 65280
+
+# PROGRAM EVENT
+
+// the Cactus loses energy during the night
+ifProp global.skyState notEqual 'daytime' [[
+  every 1 [[
+    ifProp Cactus.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do Cactus lose each second?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Larger numbers => lose energy faster
+      prop Cactus.energyLevel sub 3
+    ]]
+  ]]
+]]
+
+// the Cactus gains energy during the daytime
+ifProp global.skyState equal 'daytime' [[
+  every 1 [[
+    ifProp Cactus.alive equal true [[
+      // 🔎 WHAT DOES THIS DO?
+      // 🔎 how much energy do Cactus get in the sunlight?
+      // ✏️ LETS CHANGE THIS:
+      // ✏️ Larger numbers => gain energy faster
+      prop Cactus.energyLevel add 5
+    ]]
+  ]]
+]]
+
+// the Cactus changes costumes when it has nutrients
+ifProp Cactus.hasNutrients equal false [[
+  // insert code here
+  featProp Cactus.Costume.costumeName setTo 'FW1_Cactus_unhealthy.png'
+  featCall Cactus.IU logString 'Cactus lost nutrients.'
+]]
+ifProp Cactus.hasNutrients equal true [[
+  // insert code here
+  featProp Cactus.Costume.costumeName setTo 'FW1_Cactus_healthy2.png'
+  featCall Cactus.IU logString 'Cactus gained nutrients.'
+]]
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  // this code sets the color of the energy bar based on how hungry the Cactus is
+  // set Cactus energy meter color
+  // doing great
+  ifProp Cactus.energyLevel greaterThanOrEqual 60 [[
+    // Green
+    featProp Cactus.Graphing.meterColor setTo 65280
+  ]]
+  // needs some energy
+  ifProp Cactus.energyLevel lessThan 60 [[
+    // Orange
+    featProp Cactus.Graphing.meterColor setTo 16737792
+  ]]
+  // in trouble
+  ifProp Cactus.energyLevel lessThan 30 [[
+    // Red
+    featProp Cactus.Graphing.meterColor setTo 16711680
+  ]]
+
+  // dead
+  ifProp Cactus.energyLevel equal 0 [[
+    prop Cactus.alive setTo false
+    featProp Cactus.Movement.movementType setTo 'false'
+    prop Cactus.alpha setTo 0.3
+    featCall Cactus.IU logString 'Cactus died from starvation.'
+  ]]
+
+]]
+// Cactuss lose their nutrience over time
+ifProp Cactus.hasNutrients equal true [[
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 how long do Cactus keep their nutrients?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ Larger numbers => nutrients stay for longer
+  every 10 [[
+    // Cactus has lost its nutrients
+    prop Cactus.hasNutrients setTo false
+  ]]
+
+]]`
+    },
+    {
+      "name": "Octopus",
+      "scriptText": `# BLUEPRINT Octopus
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// 🔎 WHAT IS A Octopus?
+// 🔎 OctopusS are ?????? who EAT ?????? to make Octopus ENERGY through DIGESTION
+
+// 🔎 WHAT IS A PRODUCER?
+// 🔎 PRODUCERS are organisms that CONVERT SUN ENERGY into MATTER
+
+// 🔎 WHAT IS A CONSUMER?
+// 🔎 CONSUMERS are organisms that EAT PRODUCERS
+
+# PROGRAM INIT
+addFeature Movement
+addFeature Costume
+addFeature Cursor
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature IU
+addProp alive Boolean true
+
+// Set the Octopus artwork and make it smaller
+featProp Octopus.Costume.costumeName setTo 'IS_octopus.png'
+// 🔎 WHAT SIZE IS THE Octopus?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER number => LARGER OctopusS
+featProp Octopus.Costume.scale setTo 0.8
+
+// Tells Octopuss how to move when they are controlled by the computer
+featProp Octopus.Movement.movementType setTo 'wander'
+// featProp Octopus.Movement.compassDirection setTo 'S'
+featProp Octopus.Movement.distance setTo 3
+// featProp Octopus.Movement.targetY setMax 0.7
+
+
+// check when Octopuss interact with rabbits
+featCall Octopus.Touches monitor 'Mouse' b2b
+
+
+// 🔎 WHAT DOES THIS DO?
+// 🔎 How much ENERGY do OctopusS START with?
+// ✏️ LETS CHANGE THIS:
+// ✏️ LARGER numbers => START with MORE ENERGY
+addProp energyLevel Number 50
+
+// 🔎 What is the MOST/LEAST amount of energy a Octopus can have?
+prop Octopus.energyLevel setMax 100
+prop Octopus.energyLevel setMin 0
+
+
+// use a widget to depict the current energy, and color it green
+featProp Octopus.Graphing.meterProp setTo 'energyLevel'
+featProp Octopus.Graphing.meterColor setTo 65280
+
+# PROGRAM UPDATE
+// whenever the Octopus is touching a mouse
+when Octopus touches Mouse [[
+  ifProp Octopus.alive equal true [[
+    ifProp Mouse.alive equal true [[
+      every 1 runAtStart [[
+        featProp Octopus.Costume.glow setTo 1
+
+        // the mouse dies when touched by a Octopus
+        featProp Mouse.Movement.movementType setTo 'stop'
+        prop Mouse.energyLevel setTo 0
+        prop Mouse.alive setTo false
+        prop Mouse.alpha setTo 0.3
+        featCall Mouse.IU logString 'Mouse was eaten by a Octopus.'
+
+        // 🔎 WHAT DOES THIS DO?
+        // 🔎 How much ENERGY do Octopus GAIN when eating?
+        // ✏️ LETS CHANGE THIS:
+        // ✏️ LARGER numbers => GAIN MORE ENERGY
+        prop Octopus.energyLevel add 25
+        featCall Octopus.IU logString 'Octopus ate a mouse.'
+      ]]
+    ]]
+  ]]
+]]
+
+// After the Octopus eats a rabbit, it will stop glowing
+when Octopus lastTouches Mouse [[
+  featProp Octopus.Costume.glow setTo 0
+]]
+
+every 1 runAtStart [[
+
+  // 🔎 WHAT DOES THIS DO?
+  // 🔎 How much ENERGY do OctopusS LOSE when moving?
+  // ✏️ LETS CHANGE THIS:
+  // ✏️ LARGER numbers => LOSE MORE ENERGY
+  prop Octopus.energyLevel sub 3
+
+  // WHAT DOES THIS DO?
+  // This script changes the color of the Octopus's meter depending on how much energy it has
+  // We can change the numbers if we want the colors to appear at different levels
+
+  // The Octopus is feeling good, so make the meter green if the Octopus has over 50 energy (out of 100)
+  ifProp Octopus.energyLevel greaterThanOrEqual 50 [[
+    featProp Octopus.Costume.currentFrame setTo 0
+    featProp Octopus.Graphing.meterColor setTo 65280
+  ]]
+  // The Octopus is hungry, but not starving if it has less than 50, but more than 20, so make the meter orange
+  ifProp Octopus.energyLevel lessThan 50 [[
+    featProp Octopus.Costume.currentFrame setTo 1
+    featProp Octopus.Graphing.meterColor setTo 16737792
+  ]]
+
+  // The Octopus is really hungry, so make the meter red if we are under 20
+  ifProp Octopus.energyLevel lessThan 20 [[
+    featProp Octopus.Costume.currentFrame setTo 1
+    featProp Octopus.Graphing.meterColor setTo 16711680
+  ]]
+  // The Octopus is dead if it has 0 energy
+  ifProp Octopus.energyLevel equal 0 [[
+    featProp Octopus.Costume.currentFrame setTo 2
+    prop Octopus.alpha setTo 0.3
+    prop Octopus.alive setTo false
+    featProp Octopus.Movement.movementType setTo 'stop'
+    featCall Octopus.IU logString 'Octopus died from starvation.'
+  ]]
+
+  // set meter to mirror energyLevel
+  featProp Octopus.Graphing.meterProp setTo 'energyLevel'
+
+]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "13",
+      "label": "Background13",
+      "bpid": "Background",
+      "initScript": `prop x setTo -0.99
+prop y setTo -28.52`
+    },
+    {
+      "id": "79",
+      "label": "Timer79",
+      "bpid": "Timer",
+      "initScript": `prop x setTo 358.39
+prop y setTo -400.99`
+    },
+    {
+      "id": "97",
+      "label": "VeggieGarden97",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo -279.81
+prop y setTo 66.73`
+    },
+    {
+      "id": "109",
+      "label": "Hawk109",
+      "bpid": "Hawk",
+      "initScript": `prop x setTo -13.21
+prop y setTo -316.55`
+    },
+    {
+      "id": "125",
+      "label": "VeggieGarden125",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 254.22
+prop y setTo 246.32`
+    },
+    {
+      "id": "126",
+      "label": "VeggieGarden126",
+      "bpid": "VeggieGarden",
+      "initScript": `prop x setTo 217.66
+prop y setTo -152.05`
+    },
+    {
+      "id": "130",
+      "label": "Mouse130",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo -250.11
+prop Mouse.y setTo 245.21`
+    },
+    {
+      "id": "131",
+      "label": "Mouse131",
+      "bpid": "Mouse",
+      "initScript": `prop Mouse.x setTo 26.32
+prop Mouse.y setTo 202.00`
+    },
+    {
+      "id": "133",
+      "label": "Hawk133",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo -5.00
+prop Hawk.y setTo 33.00`
+    },
+    {
+      "id": "134",
+      "label": "Hawk134",
+      "bpid": "Hawk",
+      "initScript": `prop Hawk.x setTo -295.58
+prop Hawk.y setTo -184.26`
+    }
+  ]
+}

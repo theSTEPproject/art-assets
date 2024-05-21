@@ -1,0 +1,335 @@
+{
+  "id": "NICE_fashionshow_Denise",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// 🔎 WHAT DOES MODEL DO?
+// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// 🔎 and one that is not though you can use character controller with the second
+// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Model",
+      "scriptText": `# BLUEPRINT Model
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Model.Costume.costumeName setTo 'FS_model.png'
+featProp Model.Costume.scale setTo 0.4
+
+addFeature Physics
+addFeature Touches
+featCall Model.Touches monitor 'DeniseDress' b2b
+featCall Model.Touches monitor 'DeniseDress2' b2b
+featCall Model.Touches monitor 'DeniseDress3' b2b
+featCall Model.Touches monitor 'DeniseDress4' b2b
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+when Model touches DeniseDress [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_denisedress.png'
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+
+when Model touches DeniseDress2 [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_denisedress2.png'
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+
+when Model touches DeniseDress3 [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_denisedress3.png'
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+
+when Model touches DeniseDress4 [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_denisedress4.png'
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+`
+    },
+    {
+      "name": "SarahDress",
+      "scriptText": `# BLUEPRINT SarahDress
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp SarahDress.Costume.costumeName setTo 'FS_sarahdress.png'
+featProp SarahDress.Costume.scale setTo 0.5
+// featProp SarahDress.Costume.color setToColor 11172162
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "DeniseDress",
+      "scriptText": `# BLUEPRINT DeniseDress
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp DeniseDress.Costume.costumeName setTo 'FS_denisedress.png'
+featProp DeniseDress.Costume.scale setTo 0.7
+//featProp DeniseDress.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+// featProp Background.Costume.costumeName setTo 'FS_background_blackglitter.png'
+// featProp Background.Costume.costumeName setTo 'FS_background_roses.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_beach.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_runway.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_school.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_beberlin.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_daniel.jpeg'
+featProp Background.Costume.costumeName setTo 'FS_background_densie.jpg'
+// featProp Background.Costume.costumeName setTo 'FS_background_jennifer.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_khevin.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_merlianny.jpeg'
+featProp Background.Costume.scale setTo 1.25
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "DeniseDress2",
+      "scriptText": `# BLUEPRINT DeniseDress2
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp DeniseDress2.Costume.costumeName setTo 'FS_denisedress2.png'
+featProp DeniseDress2.Costume.scale setTo 0.7
+//featProp DeniseDress2.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "DeniseDress3",
+      "scriptText": `# BLUEPRINT DeniseDress3
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp DeniseDress3.Costume.costumeName setTo 'FS_denisedress3.png'
+featProp DeniseDress3.Costume.scale setTo 0.7
+//featProp DeniseDress3.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "DeniseDress4",
+      "scriptText": `# BLUEPRINT DeniseDress4
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp DeniseDress4.Costume.costumeName setTo 'FS_denisedress4.png'
+featProp DeniseDress4.Costume.scale setTo 0.7
+//featProp DeniseDress4.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    }
+  ],
+  "instances": [
+    {
+      "id": "3",
+      "label": "Background3",
+      "bpid": "Background",
+      "initScript": `prop Background.x setTo 1.06
+prop Background.y setTo 41.99`
+    },
+    {
+      "id": "4",
+      "label": "DeniseDress4",
+      "bpid": "DeniseDress",
+      "initScript": `prop DeniseDress.x setTo 284.64
+prop DeniseDress.y setTo 243.53`
+    },
+    {
+      "id": "5",
+      "label": "DeniseDress25",
+      "bpid": "DeniseDress2",
+      "initScript": `prop DeniseDress2.x setTo 218.65
+prop DeniseDress2.y setTo -242.53`
+    },
+    {
+      "id": "6",
+      "label": "DeniseDress36",
+      "bpid": "DeniseDress3",
+      "initScript": `prop DeniseDress3.x setTo 13.96
+prop DeniseDress3.y setTo 43.03`
+    },
+    {
+      "id": "7",
+      "label": "DeniseDress47",
+      "bpid": "DeniseDress4",
+      "initScript": `prop DeniseDress4.x setTo -233.66
+prop DeniseDress4.y setTo 263.58`
+    }
+  ]
+}

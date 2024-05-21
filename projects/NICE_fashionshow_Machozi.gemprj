@@ -1,0 +1,251 @@
+{
+  "id": "NICE_fashionshow_Machozi",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// 🔎 WHAT DOES MODEL DO?
+// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// 🔎 and one that is not though you can use character controller with the second
+// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Model",
+      "scriptText": `# BLUEPRINT Model
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Model.Costume.costumeName setTo 'FS_model.png'
+featProp Model.Costume.scale setTo 0.4
+
+addFeature Physics
+addFeature Touches
+featCall Model.Touches monitor 'MachoziDress' b2b
+featCall Model.Touches monitor 'MachoziDress2' b2b
+featCall Model.Touches monitor 'MachoziDress3' b2b
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+when Model touches MachoziDress [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_machozidress.png'
+    featProp Model.Costume.scale setTo 0.2
+    featProp Model.Costume.color setToColor 0
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+
+when Model touches MachoziDress2 [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_machozidress2.png'
+    featProp Model.Costume.scale setTo 0.3
+    featProp Model.Costume.color setToColor 16777215
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]
+
+when Model touches MachoziDress3 [[
+  every 1 runAtStart [[
+    featProp Model.Costume.costumeName setTo 'FS_machozidress3.png'
+    featProp Model.Costume.scale setTo 0.4
+    featProp Model.Costume.color setToColor 16777215
+    featProp Model.Costume.glow setTo 1
+  ]]
+]]`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+// featProp Background.Costume.costumeName setTo 'FS_background_blackglitter.png'
+featProp Background.Costume.costumeName setTo 'FS_background_roses.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_beach.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_runway.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_school.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_beberlin.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_daniel.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_densie.jpg'
+// featProp Background.Costume.costumeName setTo 'FS_background_jennifer.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_khevin.jpeg'
+// featProp Background.Costume.costumeName setTo 'FS_background_merlianny.jpeg'
+featProp Background.Costume.scale setTo 4
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "MachoziDress",
+      "scriptText": `# BLUEPRINT MachoziDress
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp MachoziDress.Costume.costumeName setTo 'FS_machozidress.png'
+featProp MachoziDress.Costume.scale setTo 0.2
+featProp MachoziDress.Costume.color setToColor 0
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "MachoziDress2",
+      "scriptText": `# BLUEPRINT MachoziDress2
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp MachoziDress2.Costume.costumeName setTo 'FS_machozidress2.png'
+featProp MachoziDress2.Costume.scale setTo 0.3
+// featProp MachoziDress2.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    },
+    {
+      "name": "MachoziDress3",
+      "scriptText": `# BLUEPRINT MachoziDress3
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable true
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp MachoziDress3.Costume.costumeName setTo 'FS_machozidress3.png'
+featProp MachoziDress3.Costume.scale setTo 0.4
+// featProp MachoziDress3.Costume.color setToColor 16777215
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    }
+  ],
+  "instances": [
+    {
+      "id": "3",
+      "label": "Background3",
+      "bpid": "Background",
+      "initScript": `prop Background.x setTo 2.06
+prop Background.y setTo 41.99`
+    },
+    {
+      "id": "4",
+      "label": "MachoziDress4",
+      "bpid": "MachoziDress",
+      "initScript": `prop MachoziDress.x setTo -5.01
+prop MachoziDress.y setTo 33.63`
+    }
+  ]
+}
