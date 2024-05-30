@@ -66,8 +66,22 @@ featProp Tree.Costume.scale setTo 0.35
 
 # PROGRAM UPDATE
 
+onEvent START [[
+  // setup the tree energy and adapt the artwork
+  // we could assume it wil always be over 10, but I want the option
+  // to set it randomly later 
+  prop Tree.energy setTo 10
+
+  ifProp Tree.energy greaterThan 0 [[
+    featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+    prop Tree.isInert setTo false 
+  ]]
+]] 
+
+
 ifProp Tree.energy equal 0 [[
   featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+  prop Tree.isInert setTo true 
 ]]
 
 `
@@ -92,7 +106,7 @@ addFeature Movement
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.2
 
-addProp energy number 0
+addProp energy number 5
 prop Mammoth.energy setMax 10
 prop Mammoth.energy setMin 0
 featProp Mammoth.Graphing.meterProp setTo 'energy'
@@ -105,8 +119,8 @@ featCall Mammoth.Touches monitor 'Tree' b2b
 when Mammoth touches Tree [[
   every 1 runAtStart [[
     ifProp Mammoth.energy lessThanOrEqual 10 [[
-     prop Mammoth.energy add 1
-     prop Tree.energy sub 1
+     prop Mammoth.energy add 2
+     prop Tree.energy sub 2
     ]]
   ]]
 ]] 
