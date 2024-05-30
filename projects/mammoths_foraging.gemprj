@@ -1,0 +1,121 @@
+{
+  "id": "mammoths_foraging",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x8A9A5B",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+
+// 🔎 WHAT DOES MODEL DO?
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Tree",
+      "scriptText": `# BLUEPRINT Tree
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+addProp energy number 10
+prop Tree.energy setMax 10
+prop Tree.energy setMin 0
+featProp Tree.Graphing.meterProp setTo 'energy'
+
+
+featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+featProp Tree.Costume.scale setTo 0.35
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "Mammoth",
+      "scriptText": `# BLUEPRINT Mammoth
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature Touch
+
+featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
+featProp Mammoth.Costume.scale setTo 0.2
+
+addProp energy number 5
+prop Mammoth.energy setMax 10
+prop Mammoth.energy setMin 0
+featProp Mammoth.Graphing.meterProp setTo 'energy'
+
+featCall Mammoth.Touches monitor 'Tree' b2b
+
+
+# PROGRAM UPDATE
+
+when Mammoth touches Tree [[
+  every 1 runAtStart [[
+    ifProp Mammoth.energy lessThanOrEqual 10 [[
+     prop Mammoth.energy add 1
+     prop Tree.energy sub 1
+    ]]
+  ]]
+]] 
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1",
+      "label": "Tree 1",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo -322.87
+prop Tree.y setTo -310.29`
+    }
+  ]
+}
