@@ -34,8 +34,10 @@
 
 # PROGRAM INIT
 
-// 🔎 WHAT DOES MODEL DO?
-
+// TODO: 
+  // Add humans and other factors to impact plants
+  // add graphs of progress
+  // change artwork 
 
 prop global.visible setTo false
 
@@ -59,7 +61,6 @@ addProp energy number 10
 prop Tree.energy setMax 10
 prop Tree.energy setMin 0
 featProp Tree.Graphing.meterProp setTo 'energy'
-
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
 featProp Tree.Costume.scale setTo 0.35
