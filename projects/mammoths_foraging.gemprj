@@ -63,29 +63,27 @@ prop Tree.energy setMin 0
 featProp Tree.Graphing.meterProp setTo 'energy'
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
-featProp Tree.Costume.scale setTo 0.35
+featProp Tree.Costume.scale setTo 0.25
 
 # PROGRAM UPDATE
 
 onEvent START [[
   // setup the tree energy and adapt the artwork
   // we could assume it wil always be over 10, but I want the option
-  // to set it randomly later 
+  // to set it randomly later
   prop Tree.energy setTo 10
 
   ifProp Tree.energy greaterThan 0 [[
     featProp Tree.Costume.costumeName setTo 'WL_tree.png'
-    prop Tree.isInert setTo false 
+    prop Tree.isInert setTo false
   ]]
-]] 
+]]
 
 
 ifProp Tree.energy equal 0 [[
   featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
-  prop Tree.isInert setTo true 
-]]
-
-`
+  prop Tree.isInert setTo true
+]]`
     },
     {
       "name": "Mammoth",
@@ -101,12 +99,11 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Graphing
-addFeature Touch
 addFeature Movement
 addFeature IU
 
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
-featProp Mammoth.Costume.scale setTo 0.2
+featProp Mammoth.Costume.scale setTo 0.3
 
 addProp energy number 10
 prop Mammoth.energy setMax 10
@@ -119,8 +116,8 @@ featCall Mammoth.Touches monitor 'Tree' c2b
 # PROGRAM UPDATE
 
 every 2 runAfter [[
-ifProp Mammoth.isInert equal false [[
-    // the mammoth loses energy, which means it needs to eat 
+  ifProp Mammoth.isInert equal false [[
+    // the mammoth loses energy, which means it needs to eat
     prop Mammoth.energy sub 1
 
     ifProp Mammoth.energy equal 0 [[
@@ -136,18 +133,18 @@ when Mammoth centerFirsttouches Tree [[
 ]]
 
 when Mammoth centerLasttouches Tree [[
-    featProp Mammoth.Costume.glow setTo 0
+  featProp Mammoth.Costume.glow setTo 0
 ]]
 
 when Mammoth touches Tree [[
   every 1 runAtStart [[
     ifProp Mammoth.energy lessThanOrEqual 10 [[
-     prop Mammoth.energy add 2
-     prop Tree.energy sub 2
-     featProp Mammoth.Costume.glow setTo 1
+      prop Mammoth.energy add 2
+      prop Tree.energy sub 2
+      featProp Mammoth.Costume.glow setTo 1
     ]]
   ]]
-]] 
+]]
 
 // Flip the artwork to point left or right depending on the direction the character is moving
 ifFeatProp Mammoth.Movement.compassDirection equal 'E' [[
@@ -155,9 +152,7 @@ ifFeatProp Mammoth.Movement.compassDirection equal 'E' [[
 ]]
 ifFeatProp Mammoth.Movement.compassDirection equal 'W' [[
   featProp Mammoth.Costume.flipX setTo true
-]]
-
-`
+]]`
     }
   ],
   "instances": [
