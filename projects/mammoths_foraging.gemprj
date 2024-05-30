@@ -233,6 +233,54 @@ ifFeatProp Predator.Movement.compassDirection equal 'W' [[
 
 
 `
+    },
+    {
+      "name": "Human",
+      "scriptText": `# BLUEPRINT Human
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+featProp Human.Costume.costumeName setTo 'MM_meeple.png'
+featProp Human.Costume.glowColor setToColor 16189448
+featProp Human.Costume.scale setTo 0.1
+prop Human.zIndex setTo 410
+
+featCall Human.Touches monitor Mammoth b2b
+
+# PROGRAM UPDATE
+
+when Human firstTouches Mammoth [[
+    featProp Human.Costume.glow setTo 1
+]]
+
+when Human lastTouches Mammoth [[
+    featProp Human.Costume.glow setTo 0
+]]
+
+when Human touches Mammoth [[
+  every 1 runAtStart [[
+    featProp Human.Costume.glow setTo 2
+    prop Mammoth.energy sub 1
+  ]]
+]]
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Human.Movement.compassDirection equal 'E' [[
+  featProp Human.Costume.flipX setTo false
+]]
+ifFeatProp Human.Movement.compassDirection equal 'W' [[
+  featProp Human.Costume.flipX setTo true
+]]
+
+
+`
     }
   ],
   "instances": [
