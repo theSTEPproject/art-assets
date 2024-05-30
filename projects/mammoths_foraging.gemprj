@@ -107,7 +107,7 @@ addFeature IU
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.2
 
-addProp energy number 5
+addProp energy number 10
 prop Mammoth.energy setMax 10
 prop Mammoth.energy setMin 0
 featProp Mammoth.Graphing.meterProp setTo 'energy'
