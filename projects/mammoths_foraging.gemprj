@@ -57,8 +57,8 @@ addFeature Physics
 addFeature Touches
 addFeature Graphing
 
-addProp energy number 10
-prop Tree.energy setMax 10
+addProp energy number 100
+prop Tree.energy setMax 100
 prop Tree.energy setMin 0
 featProp Tree.Graphing.meterProp setTo 'energy'
 
@@ -73,7 +73,7 @@ onEvent START [[
   // setup the tree energy and adapt the artwork
   // we could assume it wil always be over 10, but I want the option
   // to set it randomly later
-  prop Tree.energy setTo 10
+  prop Tree.energy setTo 100
 ]]
 
   ifProp Tree.energy greaterThan 0 [[
@@ -83,13 +83,13 @@ onEvent START [[
   
   // Set the color of the energy meter depending on the amount of energy that the character has
   // These are green orange, and red in order
-  ifProp Tree.energy greaterThanOrEqual 6 [[
+  ifProp Tree.energy greaterThanOrEqual 60 [[
     featProp Tree.Graphing.meterColor setTo 65280
   ]]
-  ifProp Tree.energy lessThan 6 [[
+  ifProp Tree.energy lessThan 60 [[
     featProp Tree.Graphing.meterColor setTo 16737792
   ]]
-  ifProp Tree.energy lessThan 3 [[
+  ifProp Tree.energy lessThan 30 [[
     featProp Tree.Graphing.meterColor setTo 16711680
       featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
   ]]
@@ -120,8 +120,8 @@ featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.3
 prop Mammoth.zIndex setTo 300
 
-addProp energy number 10
-prop Mammoth.energy setMax 10
+addProp energy number 100
+prop Mammoth.energy setMax 100
 prop Mammoth.energy setMin 0
 featProp Mammoth.Graphing.meterProp setTo 'energy'
 
@@ -134,21 +134,21 @@ featCall Mammoth.Touches monitor 'Tree' c2b
 every 2 runAfter [[
   ifProp Mammoth.isInert equal false [[
     // the mammoth loses energy, which means it needs to eat
-    prop Mammoth.energy sub 1
+    prop Mammoth.energy sub 3
   ]]
 ]]
 
-// If the Mammoth reaches 0 enerfy it is dead
+// If the Mammoth reaches 0 energy it is dead
 
 // Set the color of the energy meter depending on the amount of energy that the character has
 // These are green orange, and red in order
-ifProp Mammoth.energy greaterThanOrEqual 6 [[
+ifProp Mammoth.energy greaterThanOrEqual 60 [[
   featProp Mammoth.Graphing.meterColor setTo 65280
 ]]
-ifProp Mammoth.energy lessThan 6 [[
+ifProp Mammoth.energy lessThan 60 [[
   featProp Mammoth.Graphing.meterColor setTo 16737792
 ]]
-ifProp Mammoth.energy lessThan 3 [[
+ifProp Mammoth.energy lessThan 30 [[
   featProp Mammoth.Graphing.meterColor setTo 16711680
 ]]
 
@@ -170,9 +170,9 @@ when Mammoth centerlasttouches Tree [[
 
 when Mammoth centertouches Tree [[
   every 1 runAtStart [[
-    ifProp Mammoth.energy lessThanOrEqual 10 [[
-      prop Mammoth.energy add 2
-      prop Tree.energy sub 2
+    ifProp Mammoth.energy lessThanOrEqual 100 [[
+      prop Mammoth.energy add 5
+      prop Tree.energy sub 5
       featProp Mammoth.Costume.glow setTo 2
     ]]
   ]]
@@ -219,7 +219,7 @@ when Predator lastTouches Mammoth [[
 when Predator touches Mammoth [[
   every 1 runAtStart [[
     featProp Predator.Costume.glow setTo 2
-    prop Mammoth.energy sub 1
+    prop Mammoth.energy sub 3
   ]]
 ]]
 
@@ -267,7 +267,7 @@ when Human lastTouches Mammoth [[
 when Human touches Mammoth [[
   every 1 runAtStart [[
     featProp Human.Costume.glow setTo 2
-    prop Mammoth.energy sub 1
+    prop Mammoth.energy sub 2
   ]]
 ]]
 
