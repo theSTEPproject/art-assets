@@ -83,6 +83,7 @@ addFeature Physics
 addFeature Touches
 addFeature Graphing
 addFeature Touch
+addFeature Movement
 
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.2
@@ -105,6 +106,14 @@ when Mammoth touches Tree [[
     ]]
   ]]
 ]] 
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Mammoth.Movement.compassDirection equal 'E' [[
+  featProp Mammoth.Costume.flipX setTo false
+]]
+ifFeatProp Mammoth.Movement.compassDirection equal 'W' [[
+  featProp Mammoth.Costume.flipX setTo true
+]]
 
 `
     }
