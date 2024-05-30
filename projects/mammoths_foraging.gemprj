@@ -74,18 +74,30 @@ onEvent START [[
   // we could assume it wil always be over 10, but I want the option
   // to set it randomly later
   prop Tree.energy setTo 10
+]]
 
   ifProp Tree.energy greaterThan 0 [[
     featProp Tree.Costume.costumeName setTo 'WL_tree.png'
     prop Tree.isInert setTo false
   ]]
-]]
+  
+  // Set the color of the energy meter depending on the amount of energy that the character has
+  // These are green orange, and red in order
+  ifProp Tree.energy greaterThanOrEqual 6 [[
+    featProp Tree.Graphing.meterColor setTo 65280
+  ]]
+  ifProp Tree.energy lessThan 6 [[
+    featProp Tree.Graphing.meterColor setTo 16737792
+  ]]
+  ifProp Tree.energy lessThan 3 [[
+    featProp Tree.Graphing.meterColor setTo 16711680
+      featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+  ]]
 
-
-ifProp Tree.energy equal 0 [[
-  featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
-  prop Tree.isInert setTo true
-]]`
+  ifProp Tree.energy equal 0 [[
+    prop Tree.isInert setTo true
+  ]]
+`
     },
     {
       "name": "Mammoth",
@@ -126,30 +138,42 @@ every 2 runAfter [[
   ]]
 ]]
 
-// If the Mammoth reaches 0 enerfy it is dead 
+// If the Mammoth reaches 0 enerfy it is dead
+
+// Set the color of the energy meter depending on the amount of energy that the character has
+// These are green orange, and red in order
+ifProp Mammoth.energy greaterThanOrEqual 6 [[
+  featProp Mammoth.Graphing.meterColor setTo 65280
+]]
+ifProp Mammoth.energy lessThan 6 [[
+  featProp Mammoth.Graphing.meterColor setTo 16737792
+]]
+ifProp Mammoth.energy lessThan 3 [[
+  featProp Mammoth.Graphing.meterColor setTo 16711680
+]]
 
 ifProp Mammoth.isInert equal false [[
   ifProp Mammoth.energy equal 0 [[
-      featCall Mammoth.IU logString 'Mammoth died from starvation'
-      prop Mammoth.alpha setTo 0.5
-      prop Mammoth.isInert setTo true
+    featCall Mammoth.IU logString 'Mammoth died from starvation'
+    prop Mammoth.alpha setTo 0.5
+    prop Mammoth.isInert setTo true
   ]]
 ]]
 
-when Mammoth centerFirsttouches Tree [[
+when Mammoth centerfirsttouches Tree [[
   featProp Mammoth.Costume.glow setTo 1
 ]]
 
-when Mammoth centerLasttouches Tree [[
+when Mammoth centerlasttouches Tree [[
   featProp Mammoth.Costume.glow setTo 0
 ]]
 
-when Mammoth touches Tree [[
+when Mammoth centertouches Tree [[
   every 1 runAtStart [[
     ifProp Mammoth.energy lessThanOrEqual 10 [[
       prop Mammoth.energy add 2
       prop Tree.energy sub 2
-      featProp Mammoth.Costume.glow setTo 1
+      featProp Mammoth.Costume.glow setTo 2
     ]]
   ]]
 ]]
