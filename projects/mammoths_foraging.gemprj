@@ -66,6 +66,10 @@ featProp Tree.Costume.scale setTo 0.35
 
 # PROGRAM UPDATE
 
+ifProp Tree.energy equal 0 [[
+  featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+]]
+
 `
     },
     {
@@ -88,7 +92,7 @@ addFeature Movement
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.2
 
-addProp energy number 5
+addProp energy number 0
 prop Mammoth.energy setMax 10
 prop Mammoth.energy setMin 0
 featProp Mammoth.Graphing.meterProp setTo 'energy'
