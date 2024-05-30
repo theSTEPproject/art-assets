@@ -64,6 +64,8 @@ featProp Tree.Graphing.meterProp setTo 'energy'
 
 featProp Tree.Costume.costumeName setTo 'WL_tree.png'
 featProp Tree.Costume.scale setTo 0.25
+prop Tree.zIndex setTo 100
+
 
 # PROGRAM UPDATE
 
@@ -104,6 +106,7 @@ addFeature IU
 
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.3
+prop Mammoth.zIndex setTo 300
 
 addProp energy number 10
 prop Mammoth.energy setMax 10
@@ -115,16 +118,21 @@ featCall Mammoth.Touches monitor 'Tree' c2b
 
 # PROGRAM UPDATE
 
+// Mammoth slowly loses energy just from existing
 every 2 runAfter [[
   ifProp Mammoth.isInert equal false [[
     // the mammoth loses energy, which means it needs to eat
     prop Mammoth.energy sub 1
+  ]]
+]]
 
-    ifProp Mammoth.energy equal 0 [[
+// If the Mammoth reaches 0 enerfy it is dead 
+
+ifProp Mammoth.isInert equal false [[
+  ifProp Mammoth.energy equal 0 [[
       featCall Mammoth.IU logString 'Mammoth died from starvation'
       prop Mammoth.alpha setTo 0.5
       prop Mammoth.isInert setTo true
-    ]]
   ]]
 ]]
 
@@ -153,6 +161,54 @@ ifFeatProp Mammoth.Movement.compassDirection equal 'E' [[
 ifFeatProp Mammoth.Movement.compassDirection equal 'W' [[
   featProp Mammoth.Costume.flipX setTo true
 ]]`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+featProp Predator.Costume.costumeName setTo 'MM_coyote.png'
+featProp Predator.Costume.glowColor setToColor 16189448
+featProp Predator.Costume.scale setTo 0.2
+prop Predator.zIndex setTo 400
+
+featCall Predator.Touches monitor Mammoth b2b
+
+# PROGRAM UPDATE
+
+when Predator firstTouches Mammoth [[
+    featProp Predator.Costume.glow setTo 1
+]]
+
+when Predator lastTouches Mammoth [[
+    featProp Predator.Costume.glow setTo 0
+]]
+
+when Predator touches Mammoth [[
+  every 1 runAtStart [[
+    featProp Predator.Costume.glow setTo 2
+    prop Mammoth.energy sub 1
+  ]]
+]]
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Predator.Movement.compassDirection equal 'E' [[
+  featProp Predator.Costume.flipX setTo false
+]]
+ifFeatProp Predator.Movement.compassDirection equal 'W' [[
+  featProp Predator.Costume.flipX setTo true
+]]
+
+
+`
     }
   ],
   "instances": [
@@ -161,7 +217,21 @@ ifFeatProp Mammoth.Movement.compassDirection equal 'W' [[
       "label": "Tree 1",
       "bpid": "Tree",
       "initScript": `prop Tree.x setTo -322.87
-prop Tree.y setTo -310.29`
+prop Tree.y setTo -322.41`
+    },
+    {
+      "id": "2",
+      "label": "Tree 2",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo -183.31
+prop Tree.y setTo -327.08`
+    },
+    {
+      "id": "3",
+      "label": "Tree 3",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo -276.56
+prop Tree.y setTo 261.64`
     }
   ]
 }
