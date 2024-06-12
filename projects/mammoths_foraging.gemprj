@@ -1,6 +1,6 @@
 {
   "id": "mammoths_foraging",
-  "label": "Starter Model",
+  "label": "Mammoths Foraging",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -106,6 +106,7 @@ onEvent START [[
 # TAG isCharControllable true
 # TAG isPTrackControllable false
 
+// 🔎 HOW This is the script that sets up how the mammoths in our model work.
 
 # PROGRAM INIT
 
@@ -130,7 +131,7 @@ featCall Mammoth.Touches monitor 'Tree' c2b
 
 # PROGRAM UPDATE
 
-// Mammoth slowly loses energy just from existing
+// ✏️ CHANGE Mammoth slowly loses energy just from existing (you can change how fast)
 every 2 runAfter [[
   ifProp Mammoth.isInert equal false [[
     // the mammoth loses energy, which means it needs to eat
@@ -138,9 +139,7 @@ every 2 runAfter [[
   ]]
 ]]
 
-// If the Mammoth reaches 0 energy it is dead
-
-// Set the color of the energy meter depending on the amount of energy that the character has
+// 🔎 HOW Set the color of the energy meter depending on the amount of energy that the character has
 // These are green orange, and red in order
 ifProp Mammoth.energy greaterThanOrEqual 60 [[
   featProp Mammoth.Graphing.meterColor setTo 65280
@@ -152,22 +151,8 @@ ifProp Mammoth.energy lessThan 30 [[
   featProp Mammoth.Graphing.meterColor setTo 16711680
 ]]
 
-ifProp Mammoth.isInert equal false [[
-  ifProp Mammoth.energy equal 0 [[
-    featCall Mammoth.IU logString 'Mammoth died from starvation'
-    prop Mammoth.alpha setTo 0.5
-    prop Mammoth.isInert setTo true
-  ]]
-]]
 
-when Mammoth centerfirsttouches Tree [[
-  featProp Mammoth.Costume.glow setTo 1
-]]
-
-when Mammoth centerlasttouches Tree [[
-  featProp Mammoth.Costume.glow setTo 0
-]]
-
+// 🔎 HOW When a mammoth sits over a tree for a while eat it
 when Mammoth centertouches Tree [[
   every 1 runAtStart [[
     ifProp Mammoth.energy lessThanOrEqual 100 [[
@@ -176,6 +161,23 @@ when Mammoth centertouches Tree [[
       featProp Mammoth.Costume.glow setTo 2
     ]]
   ]]
+]]
+
+// ✏️ If the mammoth has died from lack of energy, change how it looks
+ifProp Mammoth.isInert equal false [[
+  ifProp Mammoth.energy equal 0 [[
+    featCall Mammoth.IU logString 'Mammoth died from starvation'
+    prop Mammoth.alpha setTo 0.5
+    prop Mammoth.isInert setTo true
+  ]]
+]]
+
+// Make the mammoth glow if it touches a tree, but stop if it moves off.
+when Mammoth centerfirsttouches Tree [[
+  featProp Mammoth.Costume.glow setTo 1
+]]
+when Mammoth centerlasttouches Tree [[
+  featProp Mammoth.Costume.glow setTo 0
 ]]
 
 // Flip the artwork to point left or right depending on the direction the character is moving
@@ -204,16 +206,16 @@ featProp Predator.Costume.glowColor setToColor 16189448
 featProp Predator.Costume.scale setTo 0.2
 prop Predator.zIndex setTo 400
 
-featCall Predator.Touches monitor Mammoth b2b
+featCall Predator.Touches monitor 'Mammoth' b2b
 
 # PROGRAM UPDATE
 
 when Predator firstTouches Mammoth [[
-    featProp Predator.Costume.glow setTo 1
+  featProp Predator.Costume.glow setTo 1
 ]]
 
 when Predator lastTouches Mammoth [[
-    featProp Predator.Costume.glow setTo 0
+  featProp Predator.Costume.glow setTo 0
 ]]
 
 when Predator touches Mammoth [[
@@ -229,10 +231,7 @@ ifFeatProp Predator.Movement.compassDirection equal 'E' [[
 ]]
 ifFeatProp Predator.Movement.compassDirection equal 'W' [[
   featProp Predator.Costume.flipX setTo true
-]]
-
-
-`
+]]`
     },
     {
       "name": "Human",
@@ -252,16 +251,16 @@ featProp Human.Costume.glowColor setToColor 16189448
 featProp Human.Costume.scale setTo 0.1
 prop Human.zIndex setTo 410
 
-featCall Human.Touches monitor Mammoth b2b
+featCall Human.Touches monitor 'Mammoth' b2b
 
 # PROGRAM UPDATE
 
 when Human firstTouches Mammoth [[
-    featProp Human.Costume.glow setTo 1
+  featProp Human.Costume.glow setTo 1
 ]]
 
 when Human lastTouches Mammoth [[
-    featProp Human.Costume.glow setTo 0
+  featProp Human.Costume.glow setTo 0
 ]]
 
 when Human touches Mammoth [[
@@ -277,10 +276,7 @@ ifFeatProp Human.Movement.compassDirection equal 'E' [[
 ]]
 ifFeatProp Human.Movement.compassDirection equal 'W' [[
   featProp Human.Costume.flipX setTo true
-]]
-
-
-`
+]]`
     }
   ],
   "instances": [
