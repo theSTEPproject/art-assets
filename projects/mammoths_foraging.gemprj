@@ -107,6 +107,7 @@ onEvent START [[
 # TAG isPTrackControllable false
 
 // 🔎 HOW This is the script that sets up how the mammoths in our model work.
+// 🔎 HOW How do you think being a Mammoth changes the way you understand their environment?
 
 # PROGRAM INIT
 
@@ -277,6 +278,75 @@ ifFeatProp Human.Movement.compassDirection equal 'E' [[
 ifFeatProp Human.Movement.compassDirection equal 'W' [[
   featProp Human.Costume.flipX setTo true
 ]]`
+    },
+    {
+      "name": "EnergyGraph",
+      "scriptText": `# BLUEPRINT EnergyGraph
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "River",
+      "scriptText": `# BLUEPRINT River
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
+    },
+    {
+      "name": "OtherCharacters",
+      "scriptText": `# BLUEPRINT OtherCharacters
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
   "instances": [
