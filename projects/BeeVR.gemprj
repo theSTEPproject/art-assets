@@ -21,7 +21,8 @@
     "rotate": 0,
     "mirrorX": false,
     "mirrorY": false,
-    "enableLogs": true
+    "enableLogs": true,
+    "logFrequency": 1
   },
   "rounds": [
     {
