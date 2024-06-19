@@ -80,28 +80,35 @@ onEvent START [[
   prop Tree.energy setTo 100
 ]]
 
-  ifProp Tree.energy greaterThan 0 [[
-    featProp Tree.Costume.costumeName setTo 'WL_tree.png'
-    prop Tree.isInert setTo false
-  ]]
-  
-  // Set the color of the energy meter depending on the amount of energy that the character has
-  // These are green orange, and red in order
-  ifProp Tree.energy greaterThanOrEqual 60 [[
-    featProp Tree.Graphing.meterColor setTo 65280
-  ]]
-  ifProp Tree.energy lessThan 60 [[
-    featProp Tree.Graphing.meterColor setTo 16737792
-  ]]
-  ifProp Tree.energy lessThan 30 [[
-    featProp Tree.Graphing.meterColor setTo 16711680
-      featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
-  ]]
 
-  ifProp Tree.energy equal 0 [[
-    prop Tree.isInert setTo true
+every 2 runAfter [[
+  ifProp Tree.isInert equal false [[
+    // ✏️ CHANGE the Tree loses energy if we increase this number
+    prop Tree.energy sub 0
   ]]
-`
+]]
+
+ifProp Tree.energy greaterThan 0 [[
+  featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+  prop Tree.isInert setTo false
+]]
+
+// Set the color of the energy meter depending on the amount of energy that the character has
+// These are green orange, and red in order
+ifProp Tree.energy greaterThanOrEqual 60 [[
+  featProp Tree.Graphing.meterColor setTo 65280
+]]
+ifProp Tree.energy lessThan 60 [[
+  featProp Tree.Graphing.meterColor setTo 16737792
+]]
+ifProp Tree.energy lessThan 30 [[
+  featProp Tree.Graphing.meterColor setTo 16711680
+  featProp Tree.Costume.costumeName setTo 'WL_tree_bare.png'
+]]
+
+ifProp Tree.energy equal 0 [[
+  prop Tree.isInert setTo true
+]]`
     },
     {
       "name": "Mammoth",
