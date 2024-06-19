@@ -37,11 +37,8 @@
 # PROGRAM INIT
 addFeature IU
 
-
 // TODO: 
   // Consider a more analogous / embodiment based representation
-  // Add logging
-
 
 
 prop global.visible setTo false
@@ -82,8 +79,6 @@ prop Tree.zIndex setTo 100
 
 onEvent START [[
   // setup the tree energy and adapt the artwork
-  // we could assume it wil always be over 10, but I want the option
-  // to set it randomly later
   prop Tree.energy setTo 100
 ]]
 
