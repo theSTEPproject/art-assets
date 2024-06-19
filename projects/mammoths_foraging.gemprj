@@ -42,9 +42,9 @@ addFeature Population
 // TODO: 
   // Consider a more analogous / embodiment based representation
 
-
 prop global.visible setTo false
 
+addProp noticingString string ' '
 
 // required directive
 # PROGRAM UPDATE
@@ -187,6 +187,8 @@ ifProp Mammoth.isInert equal false [[
   ifProp Mammoth.energy equal 0 [[
     featCall Mammoth.IU logString 'Mammoth died from starvation'
 
+    prop global.noticingString setTo 'A mammoth died from starvation ... '
+    
     // ✏️ Make a popup to tell show users that this beaver was eaten!
     featCall Mammoth.Population createCharacter PopupEffect [[
       prop PopupEffect.textToUse setTo 'Gah!'
@@ -534,6 +536,31 @@ featProp OtherCharacters.Costume.scale setTo 0.3
 # PROGRAM UPDATE`
     },
     {
+      "name": "NoticingString",
+      "scriptText": `# BLUEPRINT NoticingString
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp NoticingString.Costume.costumeName setTo 'GEN_onexone.json'
+featProp NoticingString.Graphing.wordWrapWidth setTo 600
+featProp NoticingString.Graphing.text setTo 'Important things to notice will be mentioned here.'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  
+  propPush global.noticingString
+  featPropPop NoticingString.Graphing.text
+
+]]
+
+  `
+    },
+    {
       "name": "PopupEffect",
       "scriptText": `# BLUEPRINT PopupEffect
       # TAG isPozyxControllable false
@@ -588,22 +615,29 @@ featProp OtherCharacters.Costume.scale setTo 0.3
       "id": "1",
       "label": "Tree 1",
       "bpid": "Tree",
-      "initScript": `prop Tree.x setTo -322.87
-prop Tree.y setTo -322.41`
+      "initScript": `prop Tree.x setTo -323.27
+prop Tree.y setTo -198.86`
     },
     {
       "id": "2",
       "label": "Tree 2",
       "bpid": "Tree",
       "initScript": `prop Tree.x setTo -183.31
-prop Tree.y setTo -327.08`
+prop Tree.y setTo -291.87`
     },
     {
       "id": "3",
       "label": "Tree 3",
       "bpid": "Tree",
-      "initScript": `prop Tree.x setTo -276.56
-prop Tree.y setTo 261.64`
+      "initScript": `prop Tree.x setTo 312.95
+prop Tree.y setTo 266.69`
+    },
+    {
+      "id": "4",
+      "label": "NoticingString",
+      "bpid": "NoticingString",
+      "initScript": `prop NoticingString.x setTo 5.76
+prop NoticingString.y setTo -403.57`
     }
   ]
 }
