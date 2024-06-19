@@ -21,6 +21,7 @@
     "rotate": 0,
     "mirrorX": false,
     "mirrorY": false,
+    "defaultCharacter": "Mammoth",
     "enableLogs": true,
     "logFrequency": 1
   },
@@ -36,12 +37,14 @@
 
 # PROGRAM INIT
 addFeature IU
+addFeature Population
 
 // TODO: 
   // Consider a more analogous / embodiment based representation
 
 
 prop global.visible setTo false
+
 
 // required directive
 # PROGRAM UPDATE
@@ -130,6 +133,7 @@ addFeature Touches
 addFeature Graphing
 addFeature Movement
 addFeature IU
+addFeature Population
 
 featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
 featProp Mammoth.Costume.scale setTo 0.3
@@ -182,6 +186,13 @@ when Mammoth centertouches Tree [[
 ifProp Mammoth.isInert equal false [[
   ifProp Mammoth.energy equal 0 [[
     featCall Mammoth.IU logString 'Mammoth died from starvation'
+
+    // ✏️ Make a popup to tell show users that this beaver was eaten!
+    featCall Mammoth.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'Gah!'
+      prop PopupEffect.costumeToUse setTo ''
+    ]]
+
     prop Mammoth.alpha setTo 0.5
     prop Mammoth.isInert setTo true
   ]]
@@ -208,7 +219,7 @@ ifFeatProp Mammoth.Movement.compassDirection equal 'W' [[
       "name": "Predator",
       "scriptText": `# BLUEPRINT Predator
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -255,7 +266,7 @@ ifFeatProp Predator.Movement.compassDirection equal 'W' [[
       "name": "Herbivore",
       "scriptText": `# BLUEPRINT Herbivore
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -303,7 +314,7 @@ ifFeatProp Herbivore.Movement.compassDirection equal 'W' [[
       "name": "Hunter",
       "scriptText": `# BLUEPRINT Hunter
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -351,7 +362,7 @@ ifFeatProp Hunter.Movement.compassDirection equal 'W' [[
       "name": "Gatherer",
       "scriptText": `# BLUEPRINT Gatherer
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -399,7 +410,7 @@ ifFeatProp Gatherer.Movement.compassDirection equal 'W' [[
       "name": "HunterGatherer",
       "scriptText": `# BLUEPRINT HunterGatherer
 # TAG isCharControllable true
-# TAG isPozyxControllable false
+# TAG isPozyxControllable true
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
@@ -521,6 +532,55 @@ addFeature Costume
 featProp OtherCharacters.Costume.costumeName setTo 'GEN_circle.json'
 featProp OtherCharacters.Costume.scale setTo 0.3
 # PROGRAM UPDATE`
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+      # TAG isPozyxControllable false
+      # TAG isCharControllable false
+      # TAG isPTrackControllable false
+
+      # PROGRAM INIT
+
+      addFeature Costume
+      addFeature Physics
+      addFeature Graphing
+      addFeature Population
+
+      featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+      prop PopupEffect.zIndex setTo 500
+
+      featProp PopupEffect.Graphing.wordWrapWidth setTo 300
+      featProp PopupEffect.Graphing.fontSize setTo 36
+      featProp PopupEffect.Graphing.text setTo ''
+
+      addProp costumeToUse string ''
+      addProp textToUse string 'TEST'
+      addProp countDown Number 2
+
+      # PROGRAM UPDATE
+
+      every 0.1 runAtStart [[
+        ifProp PopupEffect.costumeToUse notEqual '' [[
+          propPush PopupEffect.costumeToUse
+          featPropPop PopupEffect.Costume.costumeName
+          prop PopupEffect.costumeToUse setTo ''
+        ]]
+
+        ifProp PopupEffect.textToUse notEqual '' [[
+          propPush PopupEffect.textToUse
+          featPropPop PopupEffect.Graphing.text
+          prop PopupEffect.textToUse setTo ''
+        ]]
+      ]]
+      every 1 runAtStart [[
+
+        prop PopupEffect.countDown sub 1
+        ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+          featCall PopupEffect.Population removeCharacter
+        ]]
+      ]]
+      `
     }
   ],
   "instances": [
