@@ -35,18 +35,25 @@
 
 
 # PROGRAM INIT
+addFeature IU
+
 
 // TODO: 
-  // Allow hunters and other factors to impact plants
   // Consider a more analogous / embodiment based representation
-  // add graphs of progress
+  // Add logging
 
 
 
 prop global.visible setTo false
 
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+
+onEvent START [[
+      featCall global.IU logString 'Starting Mammoth Model'
+]]
+
+`
     },
     {
       "name": "Tree",
@@ -168,6 +175,7 @@ ifProp Mammoth.energy lessThan 30 [[
 when Mammoth centertouches Tree [[
   every 1 runAtStart [[
     ifProp Mammoth.energy lessThanOrEqual 100 [[
+      featCall Mammoth.IU logString 'Mammoth eats at tree'
       prop Mammoth.energy add 5
       prop Tree.energy sub 5
       featProp Mammoth.Costume.glow setTo 2
@@ -189,7 +197,8 @@ when Mammoth centerfirsttouches Tree [[
   featProp Mammoth.Costume.glow setTo 1
 ]]
 when Mammoth centerlasttouches Tree [[
-  featProp Mammoth.Costume.glow setTo 0
+  featProp Mammoth.Costume.glow setTo 
+
 ]]
 
 // Flip the artwork to point left or right depending on the direction the character is moving
@@ -212,6 +221,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature IU
 
 featProp Predator.Costume.costumeName setTo 'MM_coyote.png'
 featProp Predator.Costume.glowColor setToColor 16189448
@@ -233,6 +243,7 @@ when Predator lastTouches Mammoth [[
 when Predator touches Mammoth [[
   every 1 runAtStart [[
     featProp Predator.Costume.glow setTo 2
+    featCall Predator.IU logString 'Predator attacks Mammoth'
     prop Mammoth.energy sub 3
   ]]
 ]]
@@ -257,6 +268,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature IU
 
 featProp Herbivore.Costume.costumeName setTo 'WL_beaver.png'
 featProp Herbivore.Costume.glowColor setToColor 3208968
@@ -278,6 +290,8 @@ when Herbivore lastTouches Tree [[
 when Herbivore touches Tree [[
   every 1 runAtStart [[
     featProp Herbivore.Costume.glow setTo 2
+    featCall Herbivore.IU logString 'Herbivore eats tree'
+
     prop Tree.energy sub 10
   ]]
 ]]
@@ -302,6 +316,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature IU
 
 featProp Hunter.Costume.costumeName setTo 'MM_meeple.png'
 featProp Hunter.Costume.color setToColor 11866642
@@ -324,6 +339,7 @@ when Hunter lastTouches Mammoth [[
 when Hunter touches Mammoth [[
   every 1 runAtStart [[
     featProp Hunter.Costume.glow setTo 2
+    featCall Hunter.IU logString 'Hunter attacks Mammoth'
     prop Mammoth.energy sub 2
   ]]
 ]]
@@ -348,6 +364,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature IU
 
 featProp Gatherer.Costume.costumeName setTo 'MM_meeple.png'
 featProp Gatherer.Costume.color setToColor 4686359
@@ -369,6 +386,7 @@ when Gatherer lastTouches Tree [[
 
 when Gatherer touches Tree [[
   every 1 runAtStart [[
+    featCall Gatherer.IU logString 'Gatherer collects from tree'
     featProp Gatherer.Costume.glow setTo 2
     prop Tree.energy sub 10
   ]]
@@ -394,6 +412,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Movement
+addFeature IU
 
 featProp HunterGatherer.Costume.costumeName setTo 'MM_meeple.png'
 featProp HunterGatherer.Costume.color setToColor 4084985
@@ -407,11 +426,11 @@ featCall HunterGatherer.Touches monitor 'Mammoth' b2b
 # PROGRAM UPDATE
 
 when HunterGatherer firstTouches Tree [[
+  featProp HunterGatherer.Costume.glowColor setToColor 1636104
   featProp HunterGatherer.Costume.glow setTo 1
 ]]
 
 when HunterGatherer lastTouches Tree [[
-  featProp HunterGatherer.Costume.glowColor setToColor 1636104
   featProp HunterGatherer.Costume.glow setTo 0
 ]]
 
@@ -419,16 +438,17 @@ when HunterGatherer touches Tree [[
   every 1 runAtStart [[
     featProp HunterGatherer.Costume.glowColor setToColor 1636104
     featProp HunterGatherer.Costume.glow setTo 2
+    featCall HunterGatherer.IU logString 'HunterGatherer collects from tree'
     prop Tree.energy sub 10
   ]]
 ]]
 
 when HunterGatherer firstTouches Mammoth [[
+  featProp HunterGatherer.Costume.glowColor setToColor 16189448
   featProp HunterGatherer.Costume.glow setTo 1
 ]]
 
 when HunterGatherer lastTouches Mammoth [[
-  featProp HunterGatherer.Costume.glowColor setToColor 16189448
   featProp HunterGatherer.Costume.glow setTo 0
 ]]
 
@@ -436,6 +456,8 @@ when HunterGatherer touches Mammoth [[
   every 1 runAtStart [[
     featProp HunterGatherer.Costume.glowColor setToColor 16189448
     featProp HunterGatherer.Costume.glow setTo 2
+    featCall HunterGatherer.IU logString 'HunterGatherer attacks Mammoth'
+
     prop Mammoth.energy sub 2
   ]]
 ]]
