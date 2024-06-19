@@ -239,6 +239,51 @@ ifFeatProp Predator.Movement.compassDirection equal 'W' [[
 ]]`
     },
     {
+      "name": "Herbivore",
+      "scriptText": `# BLUEPRINT Herbivore
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+featProp Herbivore.Costume.costumeName setTo 'WL_beaver.png'
+featProp Herbivore.Costume.glowColor setToColor 3208968
+featProp Herbivore.Costume.scale setTo 0.2
+prop Herbivore.zIndex setTo 400
+
+featCall Herbivore.Touches monitor 'Tree' b2b
+
+# PROGRAM UPDATE
+
+when Herbivore firstTouches Tree [[
+  featProp Herbivore.Costume.glow setTo 1
+]]
+
+when Herbivore lastTouches Tree [[
+  featProp Herbivore.Costume.glow setTo 0
+]]
+
+when Herbivore touches Tree [[
+  every 1 runAtStart [[
+    featProp Herbivore.Costume.glow setTo 2
+    prop Tree.energy sub 10
+  ]]
+]]
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Herbivore.Movement.compassDirection equal 'E' [[
+  featProp Herbivore.Costume.flipX setTo false
+]]
+ifFeatProp Herbivore.Movement.compassDirection equal 'W' [[
+  featProp Herbivore.Costume.flipX setTo true
+]]`
+    },
+    {
       "name": "Hunter",
       "scriptText": `# BLUEPRINT Hunter
 # TAG isCharControllable true
@@ -284,7 +329,7 @@ ifFeatProp Hunter.Movement.compassDirection equal 'W' [[
   featProp Hunter.Costume.flipX setTo true
 ]]`
     },
-       {
+    {
       "name": "Gatherer",
       "scriptText": `# BLUEPRINT Gatherer
 # TAG isCharControllable true
