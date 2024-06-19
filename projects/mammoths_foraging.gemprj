@@ -37,7 +37,7 @@
 # PROGRAM INIT
 
 // TODO: 
-  // Allow humans and other factors to impact plants
+  // Allow hunters and other factors to impact plants
   // Consider a more analogous / embodiment based representation
   // add graphs of progress
 
@@ -239,8 +239,8 @@ ifFeatProp Predator.Movement.compassDirection equal 'W' [[
 ]]`
     },
     {
-      "name": "Human",
-      "scriptText": `# BLUEPRINT Human
+      "name": "Hunter",
+      "scriptText": `# BLUEPRINT Hunter
 # TAG isCharControllable true
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
@@ -251,36 +251,149 @@ addFeature Physics
 addFeature Touches
 addFeature Movement
 
-featProp Human.Costume.costumeName setTo 'MM_meeple.png'
-featProp Human.Costume.glowColor setToColor 16189448
-featProp Human.Costume.scale setTo 0.1
-prop Human.zIndex setTo 410
+featProp Hunter.Costume.costumeName setTo 'MM_meeple.png'
+featProp Hunter.Costume.color setToColor 11866642
+featProp Hunter.Costume.glowColor setToColor 16189448
+featProp Hunter.Costume.scale setTo 0.1
+prop Hunter.zIndex setTo 410
 
-featCall Human.Touches monitor 'Mammoth' b2b
+featCall Hunter.Touches monitor 'Mammoth' b2b
 
 # PROGRAM UPDATE
 
-when Human firstTouches Mammoth [[
-  featProp Human.Costume.glow setTo 1
+when Hunter firstTouches Mammoth [[
+  featProp Hunter.Costume.glow setTo 1
 ]]
 
-when Human lastTouches Mammoth [[
-  featProp Human.Costume.glow setTo 0
+when Hunter lastTouches Mammoth [[
+  featProp Hunter.Costume.glow setTo 0
 ]]
 
-when Human touches Mammoth [[
+when Hunter touches Mammoth [[
   every 1 runAtStart [[
-    featProp Human.Costume.glow setTo 2
+    featProp Hunter.Costume.glow setTo 2
     prop Mammoth.energy sub 2
   ]]
 ]]
 
 // Flip the artwork to point left or right depending on the direction the character is moving
-ifFeatProp Human.Movement.compassDirection equal 'E' [[
-  featProp Human.Costume.flipX setTo false
+ifFeatProp Hunter.Movement.compassDirection equal 'E' [[
+  featProp Hunter.Costume.flipX setTo false
 ]]
-ifFeatProp Human.Movement.compassDirection equal 'W' [[
-  featProp Human.Costume.flipX setTo true
+ifFeatProp Hunter.Movement.compassDirection equal 'W' [[
+  featProp Hunter.Costume.flipX setTo true
+]]`
+    },
+       {
+      "name": "Gatherer",
+      "scriptText": `# BLUEPRINT Gatherer
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+featProp Gatherer.Costume.costumeName setTo 'MM_meeple.png'
+featProp Gatherer.Costume.color setToColor 4686359
+featProp Gatherer.Costume.glowColor setToColor 1636104
+featProp Gatherer.Costume.scale setTo 0.1
+prop Gatherer.zIndex setTo 410
+
+featCall Gatherer.Touches monitor 'Tree' b2b
+
+# PROGRAM UPDATE
+
+when Gatherer firstTouches Tree [[
+  featProp Gatherer.Costume.glow setTo 1
+]]
+
+when Gatherer lastTouches Tree [[
+  featProp Gatherer.Costume.glow setTo 0
+]]
+
+when Gatherer touches Tree [[
+  every 1 runAtStart [[
+    featProp Gatherer.Costume.glow setTo 2
+    prop Tree.energy sub 10
+  ]]
+]]
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp Gatherer.Movement.compassDirection equal 'E' [[
+  featProp Gatherer.Costume.flipX setTo false
+]]
+ifFeatProp Gatherer.Movement.compassDirection equal 'W' [[
+  featProp Gatherer.Costume.flipX setTo true
+]]`
+    },
+    {
+      "name": "HunterGatherer",
+      "scriptText": `# BLUEPRINT HunterGatherer
+# TAG isCharControllable true
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+
+featProp HunterGatherer.Costume.costumeName setTo 'MM_meeple.png'
+featProp HunterGatherer.Costume.color setToColor 4084985
+featProp HunterGatherer.Costume.scale setTo 0.1
+prop HunterGatherer.zIndex setTo 410
+
+featCall HunterGatherer.Touches monitor 'Tree' b2b
+featCall HunterGatherer.Touches monitor 'Mammoth' b2b
+
+
+# PROGRAM UPDATE
+
+when HunterGatherer firstTouches Tree [[
+  featProp HunterGatherer.Costume.glow setTo 1
+]]
+
+when HunterGatherer lastTouches Tree [[
+  featProp HunterGatherer.Costume.glowColor setToColor 1636104
+  featProp HunterGatherer.Costume.glow setTo 0
+]]
+
+when HunterGatherer touches Tree [[
+  every 1 runAtStart [[
+    featProp HunterGatherer.Costume.glowColor setToColor 1636104
+    featProp HunterGatherer.Costume.glow setTo 2
+    prop Tree.energy sub 10
+  ]]
+]]
+
+when HunterGatherer firstTouches Mammoth [[
+  featProp HunterGatherer.Costume.glow setTo 1
+]]
+
+when HunterGatherer lastTouches Mammoth [[
+  featProp HunterGatherer.Costume.glowColor setToColor 16189448
+  featProp HunterGatherer.Costume.glow setTo 0
+]]
+
+when HunterGatherer touches Mammoth [[
+  every 1 runAtStart [[
+    featProp HunterGatherer.Costume.glowColor setToColor 16189448
+    featProp HunterGatherer.Costume.glow setTo 2
+    prop Mammoth.energy sub 2
+  ]]
+]]
+
+// Flip the artwork to point left or right depending on the direction the character is moving
+ifFeatProp HunterGatherer.Movement.compassDirection equal 'E' [[
+  featProp HunterGatherer.Costume.flipX setTo false
+]]
+ifFeatProp HunterGatherer.Movement.compassDirection equal 'W' [[
+  featProp HunterGatherer.Costume.flipX setTo true
 ]]`
     },
     {
