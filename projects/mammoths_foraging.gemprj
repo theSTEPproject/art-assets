@@ -20,7 +20,9 @@
     "translateY": 0,
     "rotate": 0,
     "mirrorX": false,
-    "mirrorY": false
+    "mirrorY": false,
+    "enableLogs": true,
+    "logFrequency": 1
   },
   "rounds": [],
   "blueprints": [
@@ -35,9 +37,11 @@
 # PROGRAM INIT
 
 // TODO: 
-  // Add humans and other factors to impact plants
+  // Allow humans and other factors to impact plants
+  // Consider a more analogous / embodiment based representation
   // add graphs of progress
-  // change artwork 
+
+
 
 prop global.visible setTo false
 
@@ -288,19 +292,21 @@ ifFeatProp Human.Movement.compassDirection equal 'W' [[
 
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
+addFeature Graphing
+addFeature Population
+
+// ✏️ Set this up to graph a property called energySum (calculate in update)
+featProp EnergyGraph.Costume.costumeName setTo 'GEN_onexone.json'
+featProp EnergyGraph.Graphing.isLargeGraphic setTo true
+
+addProp energySum number 0
+featProp EnergyGraph.Graphing.graphProp setTo 'energySum'
 
 # PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+// ✏️ Tell the Mammoths to count their energy, then put that value into energySum
+featCall EnergyGraph.Population countCharacterProp 'Mammoth' 'energy'
+featPropPush EnergyGraph.Population.sum
+propPop EnergyGraph.energySum`
     },
     {
       "name": "River",
@@ -311,19 +317,13 @@ featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
 
 # PROGRAM INIT
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
+featProp River.Costume.costumeName setTo 'GEN_square.json'
+featProp River.Costume.width setTo 100
+featProp River.Costume.height setTo 800
+featProp River.Costume.color setToColor 3386111
+prop River.zIndex setTo -200
 
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+# PROGRAM UPDATE`
     },
     {
       "name": "OtherCharacters",
@@ -333,20 +333,12 @@ featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
 # TAG isPTrackControllable false
 
 # PROGRAM INIT
+// ✏️ This is just a circle to stand in for other things we think of
+
 addFeature Costume
-featProp agent.Costume.costumeName setTo 'GEN_onexone.json'
-
-# PROGRAM UPDATE
-// code to run every frame
-// when xxx touches yyy [[ ]]
-// every 5 runAfter [[ ]]
-// onEvent Tick [[ ]]
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body`
+featProp OtherCharacters.Costume.costumeName setTo 'GEN_circle.json'
+featProp OtherCharacters.Costume.scale setTo 0.3
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
