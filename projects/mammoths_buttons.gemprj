@@ -1,0 +1,411 @@
+{
+  "id": "mammoths_buttons",
+  "label": "Mammoths Buttons",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": "0x8A9A5B",
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false,
+    "defaultCharacter": "Controller",
+    "enableLogs": true,
+    "logFrequency": 1
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+addFeature IU
+addFeature Population
+
+// TODO: 
+  // Consider a more analogous / embodiment based representation
+
+prop global.visible setTo false
+
+addProp noticingString string ' '
+
+// required directive
+# PROGRAM UPDATE
+
+onEvent START [[
+      featCall global.IU logString 'Starting Mammoth Model'
+]]
+
+`
+    },
+    {
+      "name": "Tree",
+      "scriptText": `# BLUEPRINT Tree
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+addProp populationCount number 50
+prop Tree.populationCount setMax 100
+prop Tree.populationCount setMin 0
+featProp Tree.Graphing.meterProp setTo 'populationCount'
+
+featProp Tree.Costume.costumeName setTo 'WL_tree.png'
+featProp Tree.Costume.scale setTo 0.25
+prop Tree.zIndex setTo 100
+
+
+# PROGRAM UPDATE
+
+
+`
+    },
+    {
+      "name": "Mammoth",
+      "scriptText": `# BLUEPRINT Mammoth
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// 🔎 HOW This is the script that sets up how the mammoths in our model work.
+// 🔎 HOW How do you think being a Mammoth changes the way you understand their environment?
+
+# PROGRAM INIT
+
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+addFeature Movement
+addFeature IU
+addFeature Population
+
+addProp populationCount number 0
+prop Mammoth.populationCount setMax 100
+prop Mammoth.populationCount setMin 0
+featProp Mammoth.Graphing.meterProp setTo 'populationCount'
+
+featProp Mammoth.Costume.costumeName setTo 'MM_mammoth.png'
+featProp Mammoth.Costume.scale setTo 0.3
+prop Mammoth.zIndex setTo 300
+
+
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Predator",
+      "scriptText": `# BLUEPRINT Predator
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+addFeature IU
+
+featProp Predator.Costume.costumeName setTo 'MM_coyote.png'
+featProp Predator.Costume.glowColor setToColor 16189448
+featProp Predator.Costume.scale setTo 0.2
+prop Predator.zIndex setTo 400
+
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "HunterGatherer",
+      "scriptText": `# BLUEPRINT HunterGatherer
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Physics
+addFeature Touches
+addFeature Movement
+addFeature IU
+addFeature Graphing
+
+addProp populationCount number 0
+prop HunterGatherer.populationCount setMax 100
+prop HunterGatherer.populationCount setMin 0
+featProp HunterGatherer.Graphing.meterProp setTo 'populationCount'
+
+featProp HunterGatherer.Costume.costumeName setTo 'MM_meeple.png'
+featProp HunterGatherer.Costume.color setToColor 4084985
+featProp HunterGatherer.Costume.scale setTo 0.1
+prop HunterGatherer.zIndex setTo 410
+
+
+# PROGRAM UPDATE
+
+`
+    },
+    {
+      "name": "NoticingString",
+      "scriptText": `# BLUEPRINT NoticingString
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp NoticingString.Costume.costumeName setTo 'GEN_onexone.json'
+featProp NoticingString.Graphing.wordWrapWidth setTo 600
+featProp NoticingString.Graphing.text setTo 'Important things to notice will be mentioned here.'
+
+# PROGRAM UPDATE
+
+every 1 runAtStart [[
+  
+  propPush global.noticingString
+  featPropPop NoticingString.Graphing.text
+
+]]
+
+  `
+    },
+    {
+      "name": "PopupEffect",
+      "scriptText": `# BLUEPRINT PopupEffect
+      # TAG isPozyxControllable false
+      # TAG isCharControllable false
+      # TAG isPTrackControllable false
+
+      # PROGRAM INIT
+
+      addFeature Costume
+      addFeature Physics
+      addFeature Graphing
+      addFeature Population
+
+      featProp PopupEffect.Costume.costumeName setTo 'GEN_onexone.json'
+      prop PopupEffect.zIndex setTo 500
+
+      featProp PopupEffect.Graphing.wordWrapWidth setTo 300
+      featProp PopupEffect.Graphing.fontSize setTo 36
+      featProp PopupEffect.Graphing.text setTo ''
+
+      addProp costumeToUse string ''
+      addProp textToUse string 'TEST'
+      addProp countDown Number 2
+
+      # PROGRAM UPDATE
+
+      every 0.1 runAtStart [[
+        ifProp PopupEffect.costumeToUse notEqual '' [[
+          propPush PopupEffect.costumeToUse
+          featPropPop PopupEffect.Costume.costumeName
+          prop PopupEffect.costumeToUse setTo ''
+        ]]
+
+        ifProp PopupEffect.textToUse notEqual '' [[
+          propPush PopupEffect.textToUse
+          featPropPop PopupEffect.Graphing.text
+          prop PopupEffect.textToUse setTo ''
+        ]]
+      ]]
+      every 1 runAtStart [[
+
+        prop PopupEffect.countDown sub 1
+        ifExpr {{ PopupEffect.getProp('countDown').value == 0 }} [[
+          featCall PopupEffect.Population removeCharacter
+        ]]
+      ]]
+      `
+    },
+    {
+      "name": "Button",
+      "scriptText": `# BLUEPRINT Button
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Physics
+
+featProp Button.Costume.costumeName setTo 'GEN_square.json'
+featProp Button.Costume.scale setTo 0.40
+
+addProp buttonType string ''
+
+# PROGRAM UPDATE
+`
+    },
+    {
+      "name": "Controller",
+      "scriptText": `# BLUEPRINT Controller
+# TAG isCharControllable true
+# TAG isPozyxControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+
+featProp Controller.Costume.costumeName setTo 'GEN_circle.json'
+featProp Controller.Costume.scale setTo 0.25
+
+featCall Controller.Touches monitor 'Button' b2b
+
+# PROGRAM UPDATE
+
+when Controller firstTouches Button [[
+
+
+  ifProp Button.buttonType equal 'Mammoth' [[
+    featCall global.Population tellCharacterByName Mammoths [[
+      prop character.populationCount add 1
+    ]]
+  ]]
+
+  ifProp Button.buttonType equal 'Tree' [[
+    featCall global.Population tellCharacterByName Trees [[
+      prop character.populationCount add 1
+    ]]
+  ]]
+
+  ifProp Button.buttonType equal 'HG' [[
+    featCall global.Population tellCharacterByName HunterGatherers [[
+      prop character.populationCount add 1
+    ]]
+  ]]
+
+]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+
+// Setup features
+addFeature Graphing
+addFeature Costume
+
+// Hide the actual art since we just want the text to displaay
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Timer.Costume.scale setTo 1
+
+// A property to track the time
+addProp time number 0
+
+// set the initial label and then update it below during update
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// every second, add one to the time property and display the new time in the format \"Time: #\"\"
+every 1 runAtStart [[
+  prop Timer.time add 1
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
+]]`
+    }
+  ],
+  "instances": [
+    {
+      "id": "4",
+      "label": "NoticingString",
+      "bpid": "NoticingString",
+      "initScript": `prop NoticingString.x setTo 5.76
+prop NoticingString.y setTo -403.57`
+    },
+    {
+      "id": "5",
+      "label": "Mammoths",
+      "bpid": "Mammoth",
+      "initScript": `prop Mammoth.x setTo -233.28
+prop Mammoth.y setTo -170.85`
+    },
+    {
+      "id": "6",
+      "label": "Trees",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo 230.13
+prop Tree.y setTo -174.26`
+    },
+    {
+      "id": "7",
+      "label": "HunterGatherers",
+      "bpid": "HunterGatherer",
+      "initScript": `prop HunterGatherer.x setTo -14.08
+prop HunterGatherer.y setTo -294.78`
+    },
+    {
+      "id": "8",
+      "label": "Add Mammoths",
+      "bpid": "Button",
+      "initScript": `prop Button.x setTo -259.95
+prop Button.y setTo 113.16
+prop Button.buttonType setTo 'Mammoth'
+`
+    },
+    {
+      "id": "9",
+      "label": "Add HGs",
+      "bpid": "Button",
+      "initScript": `prop Button.x setTo -8.97
+prop Button.y setTo 112.22
+prop Button.buttonType setTo 'HG'
+`
+    },
+    {
+      "id": "10",
+      "label": "Add Trees",
+      "bpid": "Button",
+      "initScript": `prop Button.x setTo 245.98
+prop Button.y setTo 112.99
+prop Button.buttonType setTo 'Tree'
+`
+    },
+    {
+      "id": "11",
+      "label": "Timer11",
+      "bpid": "Timer",
+      "initScript": `prop Timer.x setTo 350.50
+prop Timer.y setTo -395.88`
+    }
+  ]
+}
