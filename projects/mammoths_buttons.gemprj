@@ -34,26 +34,22 @@
 # TAG IsPozyxControllable false
 # TAG IsPtrackControllable false
 
-
 # PROGRAM INIT
 addFeature IU
 addFeature Population
-
-// TODO: 
-  // Consider a more analogous / embodiment based representation
+addFeature Timer
 
 prop global.visible setTo false
 
 addProp noticingString string ' '
+addProp tempString string ' '
 
 // required directive
 # PROGRAM UPDATE
 
 onEvent START [[
-      featCall global.IU logString 'Starting Mammoth Model'
-]]
-
-`
+  featCall global.IU logString 'Starting Mammoth Model'
+]]`
     },
     {
       "name": "Tree",
@@ -67,6 +63,7 @@ addFeature Costume
 addFeature Physics
 addFeature Touches
 addFeature Graphing
+addFeature Population
 
 addProp populationCount number 50
 prop Tree.populationCount setMax 100
@@ -80,8 +77,21 @@ prop Tree.zIndex setTo 100
 
 # PROGRAM UPDATE
 
+every 1 runAtStart [[
+  exprPush {{ 'Trees (' + Tree.getProp('populationCount').value + ')' }}
+  featPropPop Tree.Graphing.text
 
-`
+  ifProp Tree.populationCount equal 0 [[
+    // ✏️ Make a popup to tell show users that this beaver was eaten!
+    featCall Tree.Population createCharacter PopupEffect [[
+      prop PopupEffect.textToUse setTo 'No more trees! You lose.'
+      prop PopupEffect.costumeToUse setTo ''
+      featCall global.Timer stopRound
+    ]]
+
+  ]]
+
+]]`
     },
     {
       "name": "Mammoth",
@@ -113,31 +123,43 @@ featProp Mammoth.Costume.scale setTo 0.3
 prop Mammoth.zIndex setTo 300
 
 
-
 # PROGRAM UPDATE
-`
-    },
-    {
-      "name": "Predator",
-      "scriptText": `# BLUEPRINT Predator
-# TAG isCharControllable false
-# TAG isPozyxControllable false
-# TAG isPTrackControllable false
 
-# PROGRAM INIT
-addFeature Costume
-addFeature Physics
-addFeature Touches
-addFeature Movement
-addFeature IU
+every 1 runAtStart [[
+  exprPush {{'Mammoths (' + Mammoth.getProp('populationCount').value + ')'}}
+  featPropPop Mammoth.Graphing.text
+]]
 
-featProp Predator.Costume.costumeName setTo 'MM_coyote.png'
-featProp Predator.Costume.glowColor setToColor 16189448
-featProp Predator.Costume.scale setTo 0.2
-prop Predator.zIndex setTo 400
+every 5 runAtStart [[
+  ifProp populationCount greaterThan 0 [[
+    // eat some Trees
+    featCall global.Population tellCharacterByName Trees [[
+      prop character.populationCount sub 1
+    ]]
+    // glow the arrow to show we ate the trees 
+    featCall global.Population tellCharacterByName MammothToTree [[
+      featProp character.Costume.glow setTo 1
+    ]]
+  ]]
 
+  // if more mammoths, eat more
+  ifProp populationCount greaterThan 5 [[
+    // eat some Trees
+    featCall global.Population tellCharacterByName Trees [[
+      prop character.populationCount sub 1
+    ]]
+  ]]
 
-# PROGRAM UPDATE
+  // if a lot of mammoths, eat more
+  ifProp populationCount greaterThan 10 [[
+    // eat some Trees
+    featCall global.Population tellCharacterByName Trees [[
+      prop character.populationCount sub 1
+    ]]
+  ]]
+
+]]
+
 `
     },
     {
@@ -167,6 +189,53 @@ prop HunterGatherer.zIndex setTo 410
 
 
 # PROGRAM UPDATE
+
+every 1 runAtStart [[
+  exprPush {{'HunterGatherers (' + HunterGatherer.getProp('populationCount').value + ')'}}
+  featPropPop HunterGatherer.Graphing.text
+]]
+
+every 5 runAtStart [[
+  ifProp populationCount greaterThan 0 [[
+      // eat some Trees
+      featCall global.Population tellCharacterByName Trees [[
+        prop character.populationCount sub 1
+      ]]
+
+      // glow the arrow to show we ate the trees 
+      featCall global.Population tellCharacterByName HunterToTree [[
+        featProp character.Costume.glow setTo 1
+      ]]
+    ]]
+
+  ifProp populationCount greaterThan 5 [[
+
+      featCall global.Population tellCharacterByName Trees [[
+        prop character.populationCount sub 1
+      ]]
+
+      featCall global.Population tellCharacterByName Mammoths [[
+        prop character.populationCount sub 1
+      ]]
+
+      // glow the arrow to show we ate the Mammoths 
+      featCall global.Population tellCharacterByName HunterToMammoth [[
+        featProp character.Costume.glow setTo 1
+      ]]
+
+    ]]
+
+      ifProp populationCount greaterThan 10 [[
+        featCall global.Population tellCharacterByName Trees [[
+          prop character.populationCount sub 1
+        ]]
+
+        featCall global.Population tellCharacterByName Mammoths [[
+          prop character.populationCount sub 1
+        ]]
+      ]]
+  ]]
+
 
 `
     },
@@ -342,6 +411,23 @@ every 1 runAtStart [[
   exprPush {{ 'Time: ' + Timer.getProp('time').value }}
   featPropPop Timer.Graphing.text
 ]]`
+    },
+    {
+      "name": "Arrow",
+      "scriptText": `# BLUEPRINT Arrow
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+featProp Arrow.Costume.costumeName setTo 'MM_arrow.png'
+featProp Arrow.Costume.scale setTo 0.5
+
+featProp Arrow.Graphing.text setTo 'eats'
+
+# PROGRAM UPDATE`
     }
   ],
   "instances": [
@@ -356,29 +442,29 @@ prop NoticingString.y setTo -403.57`
       "id": "5",
       "label": "Mammoths",
       "bpid": "Mammoth",
-      "initScript": `prop Mammoth.x setTo -233.28
-prop Mammoth.y setTo -170.85`
+      "initScript": `prop Mammoth.x setTo -298.67
+prop Mammoth.y setTo -132.52`
     },
     {
       "id": "6",
       "label": "Trees",
       "bpid": "Tree",
-      "initScript": `prop Tree.x setTo 230.13
-prop Tree.y setTo -174.26`
+      "initScript": `prop Tree.x setTo 290.44
+prop Tree.y setTo -131.78`
     },
     {
       "id": "7",
       "label": "HunterGatherers",
       "bpid": "HunterGatherer",
-      "initScript": `prop HunterGatherer.x setTo -14.08
-prop HunterGatherer.y setTo -294.78`
+      "initScript": `prop HunterGatherer.x setTo 2.49
+prop HunterGatherer.y setTo -309.79`
     },
     {
       "id": "8",
       "label": "Add Mammoths",
       "bpid": "Button",
-      "initScript": `prop Button.x setTo -259.95
-prop Button.y setTo 113.16
+      "initScript": `prop Button.x setTo -308.79
+prop Button.y setTo 165.69
 prop Button.buttonType setTo 'Mammoth'
 `
     },
@@ -386,8 +472,8 @@ prop Button.buttonType setTo 'Mammoth'
       "id": "9",
       "label": "Add HGs",
       "bpid": "Button",
-      "initScript": `prop Button.x setTo -8.97
-prop Button.y setTo 112.22
+      "initScript": `prop Button.x setTo -8.57
+prop Button.y setTo 164.36
 prop Button.buttonType setTo 'HG'
 `
     },
@@ -395,8 +481,8 @@ prop Button.buttonType setTo 'HG'
       "id": "10",
       "label": "Add Trees",
       "bpid": "Button",
-      "initScript": `prop Button.x setTo 245.98
-prop Button.y setTo 112.99
+      "initScript": `prop Button.x setTo 287.16
+prop Button.y setTo 154.37
 prop Button.buttonType setTo 'Tree'
 `
     },
@@ -406,6 +492,28 @@ prop Button.buttonType setTo 'Tree'
       "bpid": "Timer",
       "initScript": `prop Timer.x setTo 350.50
 prop Timer.y setTo -395.88`
+    },
+    {
+      "id": "12",
+      "label": "HunterToMammoth",
+      "bpid": "Arrow",
+      "initScript": `prop Arrow.x setTo -150.84
+prop Arrow.y setTo -242.08
+featProp Arrow.Costume.flipX setTo true`
+    },
+    {
+      "id": "13",
+      "label": "HunterToTree",
+      "bpid": "Arrow",
+      "initScript": `prop Arrow.x setTo 140.82
+prop Arrow.y setTo -243.07`
+    },
+    {
+      "id": "14",
+      "label": "MammothToTree",
+      "bpid": "Arrow",
+      "initScript": `prop Arrow.x setTo 3.91
+prop Arrow.y setTo -61.70`
     }
   ]
 }
