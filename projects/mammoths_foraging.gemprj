@@ -506,7 +506,7 @@ propPop EnergyGraph.energySum`
     {
       "name": "River",
       "scriptText": `# BLUEPRINT River
-# TAG isCharControllable true
+# TAG isCharControllable false
 # TAG isPozyxControllable false
 # TAG isPTrackControllable false
 
@@ -638,6 +638,27 @@ prop Tree.y setTo 266.69`
       "bpid": "NoticingString",
       "initScript": `prop NoticingString.x setTo 5.76
 prop NoticingString.y setTo -403.57`
+    },
+    {
+      "id": "5",
+      "label": "Tree5",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo 124.35
+prop Tree.y setTo 255.17`
+    },
+    {
+      "id": "6",
+      "label": "Tree6",
+      "bpid": "Tree",
+      "initScript": `prop Tree.x setTo 247.77
+prop Tree.y setTo -176.24`
+    },
+    {
+      "id": "7",
+      "label": "River7",
+      "bpid": "River",
+      "initScript": `prop River.x setTo -10.02
+prop River.y setTo -12.13`
     }
   ]
 }
