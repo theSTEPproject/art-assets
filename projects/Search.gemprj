@@ -1,0 +1,342 @@
+{
+  "id": "Search",
+  "label": "Search",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false,
+    "enableLogs": true,
+    "logFrequency": 1
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "Robot1",
+      "scriptText": `# BLUEPRINT Robot1
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp Robot1.Costume.costumeName setTo 'SRCH_robot1.png'
+featProp Robot1.Costume.scale setTo 0.3
+
+addFeature Physics
+addFeature Touches
+addFeature Graphing
+
+featCall Robot1.Touches monitor 'Item' c2b
+
+addProp energy number 10
+prop Robot1.energy setMax 10
+prop Robot1.energy setMin 0
+
+addProp searchTarget string 'SRCH_strawberry.png'
+
+addProp searchScore number 0
+prop Robot1.searchScore setMax 10
+prop Robot1.searchScore setMin 0
+
+featProp Robot1.Graphing.meterProp setTo 'energy'
+
+# PROGRAM UPDATE
+
+onEvent START [[
+  prop Robot1.energy setTo 10
+]]
+
+every 0.1 runAtStart [[
+  exprPush {{ 'Strawberries: '+ Robot1.getProp('searchScore').value }}
+  featPropPop Robot1.Graphing.text
+]]
+
+when Robot1 centerfirsttouches Item [[
+  ifProp Robot1.energy greaterThan 0 [[
+    ifProp Item.flipped equal false [[
+      prop Robot1.energy sub 1
+      propPush Item.flippedCostume
+      featPropPop Item.Costume.costumeName
+      prop Item.flipped setTo true
+
+      ifExpr {{ Robot1.getProp('searchTarget').value == Item.getFeatProp('Costume','costumeName').value }} [[
+        prop Robot1.searchScore add 1
+      ]]
+    ]]
+  ]]
+]]`
+    },
+    {
+      "name": "Item",
+      "scriptText": `# BLUEPRINT Item
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Costume
+featProp Item.Costume.costumeName setTo 'GEN_square.json'
+featProp Item.Costume.scale setTo 0.5
+
+addFeature Physics
+addFeature Touches
+
+addProp flipped boolean false
+addProp flippedCostume string ''
+
+# PROGRAM UPDATE
+
+onEvent START [[
+  prop Item.flipped setTo false
+  featProp Item.Costume.costumeName setTo 'GEN_square.json'
+  featProp Item.Costume.scale setTo 0.5
+]]
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "1_1",
+      "label": "1_1",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -325
+prop Item.y setTo -320
+prop flippedCostume setTo 'SRCH_zucchini.png'
+`
+    },
+    {
+      "id": "1_2",
+      "label": "1_2",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -185
+prop Item.y setTo -320
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "1_3",
+      "label": "1_3",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -45
+prop Item.y setTo -320
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "1_4",
+      "label": "1_4",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 95
+prop Item.y setTo -320
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "1_5",
+      "label": "1_5",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 235
+prop Item.y setTo -320
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "2_1",
+      "label": "2_1",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -325
+prop Item.y setTo -180
+prop flippedCostume setTo 'SRCH_zucchini.png'
+`
+    },
+    {
+      "id": "2_2",
+      "label": "2_2",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -185
+prop Item.y setTo -180
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "2_3",
+      "label": "2_3",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -45
+prop Item.y setTo -180
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "2_4",
+      "label": "2_4",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 95
+prop Item.y setTo -180
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "2_5",
+      "label": "2_5",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 235
+prop Item.y setTo -180
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "3_1",
+      "label": "3_1",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -325
+prop Item.y setTo -40
+prop flippedCostume setTo 'SRCH_zucchini.png'
+`
+    },
+    {
+      "id": "3_2",
+      "label": "3_2",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -185
+prop Item.y setTo -40
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "3_3",
+      "label": "3_3",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -45
+prop Item.y setTo -40
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "3_4",
+      "label": "3_4",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 95
+prop Item.y setTo -40
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "3_5",
+      "label": "3_5",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 235
+prop Item.y setTo -40
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "4_1",
+      "label": "4_1",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -325
+prop Item.y setTo 100
+prop flippedCostume setTo 'SRCH_zucchini.png'
+`
+    },
+    {
+      "id": "4_2",
+      "label": "4_2",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -185
+prop Item.y setTo 100
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "4_3",
+      "label": "4_3",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -45
+prop Item.y setTo 100
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "4_4",
+      "label": "4_4",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 95
+prop Item.y setTo 100
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "4_5",
+      "label": "4_5",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 235
+prop Item.y setTo 100
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    },
+    {
+      "id": "5_1",
+      "label": "5_1",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -325
+prop Item.y setTo 240
+prop flippedCostume setTo 'SRCH_strawberry.png'
+`
+    },
+    {
+      "id": "5_2",
+      "label": "5_2",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -185
+prop Item.y setTo 240
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "5_3",
+      "label": "5_3",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo -45
+prop Item.y setTo 240
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "5_4",
+      "label": "5_4",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 95
+prop Item.y setTo 240
+prop flippedCostume setTo 'SRCH_zucchini.png'`
+    },
+    {
+      "id": "5_5",
+      "label": "5_5",
+      "bpid": "Item",
+      "initScript": `prop Item.x setTo 235
+prop Item.y setTo 240
+prop flippedCostume setTo 'SRCH_strawberry.png'`
+    }
+  ]
+}
