@@ -1,0 +1,105 @@
+{
+  "id": "ScriptIntro",
+  "label": "Script Intro",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false,
+    "enableLogs": true,
+    "logFrequency": 1
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+
+# PROGRAM INIT
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "EmbodiedCharacter1",
+      "scriptText": `# BLUEPRINT EmbodiedCharacter1
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Physics
+addFeature Touches
+addFeature Costume
+addFeature Graphing
+
+addProp energy number 0
+prop EmbodiedCharacter1.energy setMin 0
+prop EmbodiedCharacter1.energy setMax 20
+
+featProp EmbodiedCharacter1.Costume.costumeName setTo 'GEN_circle.json'
+featProp EmbodiedCharacter1.Costume.scale setTo 0.5
+
+featCall EmbodiedCharacter1.Touches monitor 'InteractingCharacter1' b2b
+
+featProp EmbodiedCharacter1.Graphing.meterProp setTo 'energy'
+
+# PROGRAM UPDATE
+when EmbodiedCharacter1 firsttouches InteractingCharacter1 [[
+  prop EmbodiedCharacter1.energy add 1
+]]`
+    },
+    {
+      "name": "InteractingCharacter1",
+      "scriptText": `# BLUEPRINT InteractingCharacter1
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+
+addFeature Physics
+addFeature Touches
+addFeature Costume
+
+featProp InteractingCharacter1.Costume.costumeName setTo 'GEN_square.json'
+featProp InteractingCharacter1.Costume.scale setTo 0.5
+
+
+# PROGRAM UPDATE
+
+`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "InteractingCharacter10",
+      "bpid": "InteractingCharacter1",
+      "initScript": `prop InteractingCharacter1.x setTo -223.19
+prop InteractingCharacter1.y setTo 212.98`
+    }
+  ]
+}
