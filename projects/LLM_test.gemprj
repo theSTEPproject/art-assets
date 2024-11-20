@@ -1,0 +1,120 @@
+{
+  "id": "LLM_test",
+  "label": "Starter Model",
+  "metadata": {
+    "top": -400,
+    "right": 400,
+    "bottom": 400,
+    "left": -400,
+    "wrap": [
+      false,
+      false
+    ],
+    "bounce": true,
+    "bgcolor": 102,
+    "roundsCanLoop": true,
+    "showWebCam": false,
+    "scaleX": 1,
+    "scaleY": 1,
+    "translateX": 0,
+    "translateY": 0,
+    "rotate": 0,
+    "mirrorX": false,
+    "mirrorY": false
+  },
+  "rounds": [],
+  "blueprints": [
+    {
+      "name": "global",
+      "scriptText": `# BLUEPRINT global
+# TAG IsCharControllable false
+# TAG IsPozyxControllable false
+# TAG IsPtrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+
+// 🔎 WHAT DOES MODEL DO?
+// 🔎 This starter model assumes you have at least 2 charaacters, one that is controllable by IsPozyxControllable
+// 🔎 and one that is not though you can use character controller with the second
+// 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
+
+
+prop global.visible setTo false
+
+// required directive
+# PROGRAM UPDATE`
+    },
+    {
+      "name": "InteractingCharacter1",
+      "scriptText": `# BLUEPRINT InteractingCharacter1
+# TAG isPozyxControllable false
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp InteractingCharacter1.Costume.costumeName setTo 'GEN_square.json'
+
+addFeature Physics
+addFeature Touches
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+
+`
+    },
+    {
+      "name": "warrior",
+      "scriptText": `# BLUEPRINT warrior
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// This is the most basic setup of properties that happens as soon as this character is saved
+
+addFeature Costume
+featProp warrior.Costume.costumeName setTo 'LLM_test_warrior.png'
+
+addFeature Physics
+addFeature Touches
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish`
+    }
+  ],
+  "instances": [
+    {
+      "id": "0",
+      "label": "warrior0",
+      "bpid": "warrior",
+      "initScript": `prop warrior.x setTo 29
+prop warrior.y setTo 30`
+    }
+  ]
+}
