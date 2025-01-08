@@ -78,7 +78,7 @@ addProp check_order boolean false
 addProp has_partner number 0
 
 // set the costume
-featProp Song.Costume.costumeName setTo 'AQ_fish.png'
+featProp Song.Costume.costumeName setTo 'SM_die_with_a_smile.png'
 featProp Song.Costume.scale setTo 0.3
 
 // add other features
@@ -143,8 +143,8 @@ every 1 runAtStart [[
 # PROGRAM INIT
 // setup the NPC costume
 addFeature Costume
-featProp RankChart.Costume.costumeName setTo 'AQ_fish.png'
-featProp RankChart.Costume.scale setTo 0.3
+featProp RankChart.Costume.costumeName setTo 'SM_ranking_chart.png'
+featProp RankChart.Costume.scale setTo 1
 
 // add other features
 addFeature Graphing
@@ -178,7 +178,53 @@ every 1 runAtStart [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "Background",
+      "scriptText": `# BLUEPRINT Background
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+featProp Background.Costume.costumeName setTo 'SM_background.png'
+featProp Background.Costume.scale setTo 1.4
+
+# PROGRAM UPDATE
+// code to run every frame
+// when xxx touches yyy [[ ]]
+// every 5 runAfter [[ ]]
+// onEvent Tick [[ ]]
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body`
     }
   ],
-  "instances": []
+  "instances": [
+    {
+      "id": "0",
+      "label": "Background0",
+      "bpid": "Background",
+      "initScript": `prop Background.x setTo 29
+prop Background.y setTo 30`
+    },
+    {
+      "id": "1",
+      "label": "RankChart1",
+      "bpid": "RankChart",
+      "initScript": `prop RankChart.x setTo 361.48
+prop RankChart.y setTo -13.44`
+    },
+    {
+      "id": "2",
+      "label": "Song2",
+      "bpid": "Song",
+      "initScript": `prop Song.x setTo -278.73
+prop Song.y setTo -240.23`
+    }
+  ]
 }
