@@ -41,14 +41,41 @@
 
 // 🔎 WHAT DOES THIS MODEL DO?
 // 🔎 This starter model is inteded to help users explore how people interacting with each other
-// 🔎 might impact the other people. The existing code mirrors a basic disease spread scenario for 
+// 🔎 might impact the other people. The existing code mirrors a basic disease spread scenario for
 // 🔎 some sample code to muck with
 // 🔎 Change this description once you are ready to share the model so others know how it is supposed to work.
 
 prop global.visible setTo false
-
+addFeature Population
+addFeature IU
+addProp song_title string ''
+addProp stack_counter number 0
 // required directive
-# PROGRAM UPDATE`
+# PROGRAM UPDATE
+onEvent Start [[
+
+  prop global.song_title setTo 'title1'
+  propPush global.song_title
+  prop global.stack_counter add 1
+  prop global.song_title setTo 'title2'
+  propPush global.song_title
+  prop global.stack_counter add 1
+  prop global.song_title setTo 'title3'
+  propPush global.song_title
+  prop global.stack_counter add 1
+  dbgStack
+
+
+  featCall global.Population charactersForEach Song [[
+    ifExpr {{ global.getProp('stack_counter').value > 0 }} [[
+      propPop Song.role
+      dbgStack
+      prop global.stack_counter sub 1
+    ]]
+    // prop Song.role setTo 'test'
+  ]]
+
+]]`
     },
     {
       "name": "Song",
@@ -102,28 +129,25 @@ addProp role string 'song_name'
 // This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
 // This is also where you can handle touches between characters such as When Algae touches Fish
 
+//onEvent START [[
+ // ifExpr {{ global.getProp('stack_counter').value > 3 }} [[
+  //  propPop Song.role
+   // dbgStack
+   // prop global.stack_counter sub 1
+
+  //]]
+//]]
+
 when Song touches Song [[
   // glow to show we are interacting
   featProp Song.Costume.glow setTo 1
 
-  // check if the NPC has the virus (or whatever else)
-  ifExpr {{ NPC.getProp('virus').value == true }} [[
-    // we are in contact with the virus, so we have it now too
-  ]]
 ]]
 
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 
 every 1 runAtStart [[
-  // insert code here to run all the time
-  ifExpr {{ agent.getProp('virus').value == true }} [[
-    featProp agent.Graphing.text setTo '🤢'
-  ]]
-
-  ifExpr {{ agent.getProp('virus').value == false }} [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
 
 ]]`
     },
@@ -225,6 +249,13 @@ prop RankChart.y setTo -13.44`
       "bpid": "Song",
       "initScript": `prop Song.x setTo -278.73
 prop Song.y setTo -240.23`
+    },
+    {
+      "id": "3",
+      "label": "Song3",
+      "bpid": "Song",
+      "initScript": `prop Song.x setTo 29
+prop Song.y setTo 30`
     }
   ]
 }
