@@ -1,6 +1,6 @@
 {
   "id": "sorting_music",
-  "label": "Starter Social Model",
+  "label": "sorting_music",
   "metadata": {
     "top": -400,
     "right": 400,
@@ -50,6 +50,9 @@ addFeature Population
 addFeature IU
 addProp song_title string ''
 addProp stack_counter number 0
+addProp num_players number 0
+addProp countReady number 0
+addProp test_sorting boolean false
 // required directive
 # PROGRAM UPDATE
 onEvent Start [[
@@ -66,142 +69,21 @@ onEvent Start [[
   dbgStack
 
 
-  featCall global.Population charactersForEach Song [[
-    ifExpr {{ global.getProp('stack_counter').value > 0 }} [[
-      propPop Song.role
-      dbgStack
-      prop global.stack_counter sub 1
-    ]]
-    // prop Song.role setTo 'test'
-  ]]
-
-]]`
-    },
-    {
-      "name": "Song",
-      "scriptText": `# BLUEPRINT Song
-# TAG isPozyxControllable true
-# TAG isCharControllable true
-# TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-
-# PROGRAM INIT
-// add the features we are likely to use
-addFeature Costume
-addFeature Population
-// 📖 a number that indicate the rank of the songs ( can change based on year, number of listening etc. If alphabetically please use the relevant number that is in reference to the first letter (1=a, z=26)
-addProp sort_by number 0
-// 📖 A variable to save the value to sort by of the other Song temporarly
-addProp compare_sort_by number 0
-// 📖 check_order is set to true if the player is interacting with the ranking_chart
-addProp check_order boolean false
-// 📖 Checking that we are comparing with maximum 1 agent at a time
-addProp has_partner number 0
-
-// set the costume
-featProp Song.Costume.costumeName setTo 'SM_die_with_a_smile.png'
-featProp Song.Costume.scale setTo 0.3
-
-// add other features
-addFeature Graphing
-addFeature Physics
-addFeature Touches
-
-// make sure we track interactions with the NPC
-featCall Song.Touches monitor 'Song' b2b
-featCall Song.Touches monitor 'RankChart' b2b
-
-// add any properties specific to the PC
-
-// 📖 role is intended to capture the song name. Each agent is going to have a different role and accordingly a different sort_by value and a different costume
-addProp role string 'song_name'
-
-// display the meter if relevant
-// featCall agent.Graphing bindMeterTo energy
-
-# PROGRAM UPDATE
-// This is stuff that happens at particular events such as Start (when the start button is pushed) or Tick (every second or so)
-// This is also where you can handle touches between characters such as When Algae touches Fish
-
-//onEvent START [[
- // ifExpr {{ global.getProp('stack_counter').value > 3 }} [[
-  //  propPop Song.role
-   // dbgStack
-   // prop global.stack_counter sub 1
-
-  //]]
-//]]
-
-when Song touches Song [[
-  // glow to show we are interacting
-  featProp Song.Costume.glow setTo 1
+  // featCall global.Population charactersForEach song [[
+  // ifExpr {{ global.getProp('stack_counter').value > 0 }} [[
+  // propPop song.role
+  // dbgStack
+  // prop global.stack_counter sub 1
+  // ]]
+  // prop song.role setTo 'test'
+  // ]]
 
 ]]
 
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-
-every 1 runAtStart [[
-
-]]`
-    },
-    {
-      "name": "RankChart",
-      "scriptText": `# BLUEPRINT RankChart
-# TAG isPozyxControllable false
-# TAG isCharControllable false
-# TAG isPTrackControllable false
-
-// COMMENT KEY
-// 🔎 WHAT DOES THIS DO? heading
-// 🔎 body
-// ✏️ LETS CHANGE THIS: heading
-// ✏️ body
-
-# PROGRAM INIT
-// setup the NPC costume
-addFeature Costume
-featProp RankChart.Costume.costumeName setTo 'SM_ranking_chart.png'
-featProp RankChart.Costume.scale setTo 1
-
-// add other features
-addFeature Graphing
-addFeature Physics
-addFeature Touches
-
-// add any properties specific to the PC / NPC
-// role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
-// it's helpful to list roles here for other users to see
-// roles for this template are one, and two (they don't mean anything)
-addProp role string 'one'
-
-// virus is intended to capture the idea that people might have something (true or false) that they pass to each other ... it could be a virus, information, or something else ... to model something like money you'd want to change to a number or String
-addProp virus boolean false
-// display the meter if relevant
-// featCall agent.Graphing bindMeterTo energy
-
-
-# PROGRAM UPDATE
-// This is stuff that happens constantly and you can also check certain conditions
-// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-every 1 runAtStart [[
-  // insert code here to run all the time
-  ifProp RankChart.virus equal true [[
-    featProp agent.Graphing.text setTo '🤢'
+ifExpr {{ global.getProp('countReady').value == global.getProp('num_players').value }} [[
+  prop global.test_sorting setTo true
   ]]
-
-  ifProp RankChart.virus equal false [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
-
-]]`
+`
     },
     {
       "name": "Background",
@@ -226,6 +108,205 @@ featProp Background.Costume.scale setTo 1.4
 // 🔎 body
 // ✏️ LETS CHANGE THIS: heading
 // ✏️ body`
+    },
+    {
+      "name": "song",
+      "scriptText": `# BLUEPRINT song
+# TAG isPozyxControllable true
+# TAG isCharControllable true
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+
+# PROGRAM INIT
+// add the features we are likely to use
+addFeature Costume
+addFeature Population
+
+// set the costume
+featProp song.Costume.costumeName setTo 'SM_APT.png'
+featProp song.Costume.scale setTo 0.3
+
+// add other features
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+
+// make sure we track interactions with the NPC
+featCall song.Touches monitor 'song' b2b
+featCall song.Touches monitor 'rankChart' b2b
+
+// add any properties specific to the PC
+
+// 📖 role is intended to capture the song name. Each agent is going to have a different role and accordingly a different sort_by value and a different costume
+addProp role string 'song_name'
+// 📖 a number that indicate the rank of the songs ( can change based on year, number of listening etc. If alphabetically please use the relevant number that is in reference to the first letter (1=a, z=26)
+addProp sort_by number 0
+// 📖 A variable to save the value to sort by of the other song temporarly
+addProp compared_to_sort_by number 0
+// 📖 check_order is set to true if the player is interacting with the ranking_chart
+addProp check_order boolean false
+// 📖 Checking that we are comparing with maximum 1 agent at a time
+addProp has_partner number 0
+// 📖 boolean used to ensure song arent counted as more than one player on init
+addProp player boolean false
+
+
+// display the meter if relevant
+// featCall agent.Graphing bindMeterTo energy
+
+# PROGRAM UPDATE
+onEvent ROUNDINIT [[
+  ifProp song.player equal false [[
+    prop global.num_players add 1
+    prop song.player setTo true
+  ]]
+]]
+
+// onEvent START [[
+// ifExpr {{ global.getProp('stack_counter').value > 3 }} [[
+// propPop song.role
+// dbgStack
+// prop global.stack_counter sub 1
+
+// ]]
+// ]]
+
+when song touches song [[
+  ifProp song.has_partner equal 0 [[
+    ifProp agent.has_partner equal 0 [[
+      // set the scientist and agent as having a partner
+      prop song.has_partner setTo 1
+      prop agent.has_partner setTo 1
+      // push the sort by value property of the agent and put it in a temporary beak length property of the song and vise versa
+      propPush agent.sort_by
+      propPop song.compared_to_sort_by
+      propPush song.sort_by
+      propPop agent.compared_to_sort_by
+      // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
+      ifExpr {{ song.getProp('sort_by').value > song.getProp('compared_to_sort_by').value }} [[
+        featProp song.Costume.costumeName setTo 'SM_APT_B.png'
+        featProp agent.Costume.costumeName setTo 'SM_APT_S.png'
+        featProp song.Costume.scale setTo 0.3
+        featProp agent.Costume.scale setTo 0.3
+        featProp song.Costume.glow setTo 1
+        featProp agent.Costume.glow setTo 1
+      ]]
+      ifExpr {{ song.getProp('sort_by').value < song.getProp('compared_to_sort_by').value }} [[
+        featProp song.Costume.costumeName setTo 'SM_APT_S.png'
+        featProp agent.Costume.costumeName setTo 'SM_APT_B.png'
+        featProp song.Costume.scale setTo 0.3
+        featProp agent.Costume.scale setTo 0.3
+        featProp song.Costume.glow setTo 1
+        featProp agent.Costume.glow setTo 1
+      ]]
+      ifExpr {{ song.getProp('sort_by').value == song.getProp('compared_to_sort_by').value }} [[
+        featProp song.Costume.costumeName setTo 'SM_APT_E.png'
+        featProp agent.Costume.costumeName setTo 'SM_APT_E.png'
+        featProp song.Costume.scale setTo 0.3
+        featProp agent.Costume.scale setTo 0.3
+        featProp song.Costume.glow setTo 1
+        featProp agent.Costume.glow setTo 1
+      ]]
+    ]]
+  ]]
+]]
+
+// change the costume of song after interacting with another song to compare sot by value properties
+when song lasttouches song [[
+  // change the scientist back to carrying a finch after the finch comparison
+  ifProp song.has_partner equal 1 [[
+    ifProp agent.has_partner equal 1 [[
+      prop song.has_partner setTo 0
+      prop agent.has_partner setTo 0
+      featProp song.Costume.costumeName setTo 'SM_APT.png'
+      featProp song.Costume.scale setTo 0.3
+      featProp agent.Costume.costumeName setTo 'SM_APT.png'
+      featProp agent.Costume.scale setTo 0.3    
+    ]]
+  ]]
+]]
+
+// when a song actively interacts with the rank chart, set the player status as ready to make a prediction and add one to the global property to count ready players
+when song touches rankChart [[
+   ifProp song.check_order equal false [[
+     featProp song.Costume.glow setTo 1
+     prop song.check_order setTo true
+     prop global.countReady add 1
+   ]]
+]]
+
+// when song leave the rank chart, set the player status as not ready to make a prediction and remove their count from the global property to count ready players
+when song lasttouches rankChart [[
+  prop global.countReady sub 1
+  prop song.check_order setTo false
+]]
+
+
+
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+
+every 1 runAtStart [[
+
+]]`
+    },
+    {
+      "name": "rankChart",
+      "scriptText": `# BLUEPRINT rankChart
+# TAG isPozyxControllable false
+# TAG isCharControllable false
+# TAG isPTrackControllable false
+
+// COMMENT KEY
+// 🔎 WHAT DOES THIS DO? heading
+// 🔎 body
+// ✏️ LETS CHANGE THIS: heading
+// ✏️ body
+
+# PROGRAM INIT
+// setup the NPC costume
+addFeature Costume
+featProp rankChart.Costume.costumeName setTo 'SM_ranking_chart.png'
+featProp rankChart.Costume.scale setTo 1
+
+// add other features
+addFeature Graphing
+addFeature Physics
+addFeature Touches
+
+// add any properties specific to the PC / NPC
+// role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
+// it's helpful to list roles here for other users to see
+// roles for this template are one, and two (they don't mean anything)
+addProp role string 'one'
+
+// virus is intended to capture the idea that people might have something (true or false) that they pass to each other ... it could be a virus, information, or something else ... to model something like money you'd want to change to a number or String
+addProp virus boolean false
+// display the meter if relevant
+// featCall agent.Graphing bindMeterTo energy
+
+
+# PROGRAM UPDATE
+// This is stuff that happens constantly and you can also check certain conditions
+// For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
+// This is also where you can handle touches between characters such as When Algae touches Fish
+every 1 runAtStart [[
+  // insert code here to run all the time
+  ifProp rankChart.virus equal true [[
+    featProp agent.Graphing.text setTo '🤢'
+  ]]
+
+  ifProp rankChart.virus equal false [[
+    featProp agent.Graphing.text setTo '🙂'
+  ]]
+
+]]`
     }
   ],
   "instances": [
@@ -239,23 +320,23 @@ prop Background.y setTo 30`
     {
       "id": "1",
       "label": "RankChart1",
-      "bpid": "RankChart",
+      "bpid": "rankChart",
       "initScript": `prop RankChart.x setTo 361.48
 prop RankChart.y setTo -13.44`
     },
     {
       "id": "2",
-      "label": "Song2",
-      "bpid": "Song",
-      "initScript": `prop Song.x setTo -278.73
-prop Song.y setTo -240.23`
+      "label": "song2",
+      "bpid": "song",
+      "initScript": `prop song.x setTo -278.73
+prop song.y setTo -240.23`
     },
     {
       "id": "3",
-      "label": "Song3",
-      "bpid": "Song",
-      "initScript": `prop Song.x setTo 29
-prop Song.y setTo 30`
+      "label": "song3",
+      "bpid": "song",
+      "initScript": `prop song.x setTo 29
+prop song.y setTo 30`
     }
   ]
 }
