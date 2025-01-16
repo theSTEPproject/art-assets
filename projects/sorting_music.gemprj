@@ -48,37 +48,37 @@
 prop global.visible setTo false
 addFeature Population
 addFeature IU
+addFeature Graphing
 addProp song_name string ''
 addProp stack_counter number 0
 addProp num_players number 0
 addProp countReady number 0
 addProp test_sorting boolean false
+addProp count_num_comparisons number 0
 // required directive
 # PROGRAM UPDATE
-onEvent Start [[
+// onEvent Start [[
+// prop global.song_name setTo 'title1'
+// propPush global.song_name
+// prop global.stack_counter add 1
+// prop global.song_name setTo 'title2'
+// propPush global.song_name
+// prop global.stack_counter add 1
+// prop global.song_name setTo 'title3'
+// propPush global.song_name
+// prop global.stack_counter add 1
+// dbgStack
 
-  prop global.song_name setTo 'title1'
-  propPush global.song_name
-  prop global.stack_counter add 1
-  prop global.song_name setTo 'title2'
-  propPush global.song_name
-  prop global.stack_counter add 1
-  prop global.song_name setTo 'title3'
-  propPush global.song_name
-  prop global.stack_counter add 1
-  dbgStack
 
-
-  // featCall global.Population charactersForEach song [[
-  // ifExpr {{ global.getProp('stack_counter').value > 0 }} [[
-  // propPop song.role
-  // dbgStack
-  // prop global.stack_counter sub 1
-  // ]]
-  // prop song.role setTo 'test'
-  // ]]
-
-]]
+// featCall global.Population charactersForEach song [[
+// ifExpr {{ global.getProp('stack_counter').value > 0 }} [[
+// propPop song.role
+// dbgStack
+// prop global.stack_counter sub 1
+// ]]
+// prop song.role setTo 'test'
+// ]]
+// ]]
 
 ifExpr {{ global.getProp('countReady').value == global.getProp('num_players').value }} [[
   prop global.test_sorting setTo true
@@ -167,18 +167,11 @@ addProp sort_by_attribute string
 onEvent ROUNDINIT [[
   ifProp song.player equal false [[
     prop global.num_players add 1
+    dbgOut {{ 'num of active players: ' + global.getProp('num_players').value }}
     prop song.player setTo true
+
   ]]
 ]]
-
-// onEvent START [[
-// ifExpr {{ global.getProp('stack_counter').value > 3 }} [[
-// propPop song.song_name
-// dbgStack
-// prop global.stack_counter sub 1
-
-// ]]
-// ]]
 
 when song touches song [[
   ifProp song.has_partner equal 0 [[
@@ -203,19 +196,27 @@ when song touches song [[
         dbgStack
         propPop character.value_to_compare
         dbgOut {{ 'added a value to compare to song: ' + character.getProp('song_name').value + ' and added the following value: ' + character.getProp('value_to_compare').value }}
-        // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
+        // making sure value to compare updates correctly
         ifExpr {{ song.getProp('value_to_compare').value != -100 && character.getProp('value_to_compare').value != -100 }} [[
+          // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
           ifExpr {{ song.getProp('sort_by_value').value > song.getProp('value_to_compare').value }} [[
             featProp song.Costume.scale setTo 0.5
             featProp character.Costume.scale setTo 0.15
             featProp song.Costume.glow setTo 1
             featProp character.Costume.glow setTo 1
+            // Count and log the number of comparisons between songs
+            prop global.count_num_comparisons add 1
+            dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
           ]]
           ifExpr {{ song.getProp('sort_by_value').value < song.getProp('value_to_compare').value }} [[
             featProp song.Costume.scale setTo 0.15
             featProp character.Costume.scale setTo 0.5
             featProp song.Costume.glow setTo 1
             featProp character.Costume.glow setTo 1
+            // Count and log the number of comparisons between songs
+            prop global.count_num_comparisons add 1
+            dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
+
           ]]
           ifExpr {{ song.getProp('sort_by_value').value == song.getProp('value_to_compare').value }} [[
             featProp song.Costume.scale setTo 0.3
@@ -223,6 +224,9 @@ when song touches song [[
             featProp character.Costume.scale setTo 0.3
             featProp song.Costume.glow setTo 1
             featProp character.Costume.glow setTo 1
+            // Count and log the number of comparisons between songs
+            prop global.count_num_comparisons add 1
+            dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
           ]]
         ]]
       ]]
@@ -258,7 +262,11 @@ when song lasttouches rankChart [[
   prop song.check_order setTo false
 ]]
 
+// prediction process
+ifProp global.test_sorting equal true [[
+  dbgOut {{ 'for song name: ' + song.getProp('song_name').value + ' Y value is: ' + song.getProp('y').value }}
 
+]]
 
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
@@ -291,33 +299,16 @@ addFeature Graphing
 addFeature Physics
 addFeature Touches
 
-// add any properties specific to the PC / NPC
-// role is intended to capture the idea that people can have different jobs, or relationships, and that this might influence how they interact with each other
-// it's helpful to list roles here for other users to see
-// roles for this template are one, and two (they don't mean anything)
-addProp role string 'one'
+featCall rankChart.Touches monitor 'song' b2b
 
-// virus is intended to capture the idea that people might have something (true or false) that they pass to each other ... it could be a virus, information, or something else ... to model something like money you'd want to change to a number or String
-addProp virus boolean false
-// display the meter if relevant
-// featCall agent.Graphing bindMeterTo energy
+// add any properties specific to the PC / NPC
 
 
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
 // This is also where you can handle touches between characters such as When Algae touches Fish
-every 1 runAtStart [[
-  // insert code here to run all the time
-  ifProp rankChart.virus equal true [[
-    featProp agent.Graphing.text setTo '🤢'
-  ]]
-
-  ifProp rankChart.virus equal false [[
-    featProp agent.Graphing.text setTo '🙂'
-  ]]
-
-]]`
+`
     },
     {
       "name": "Timer",
@@ -334,14 +325,16 @@ every 1 runAtStart [[
 addFeature Graphing
 addFeature Costume
 
-// this is a hidden image since the timer is just text
-featProp Timer.Costume.costumeName setTo 'onexone.json'
+// Hide the actual art since we just want the text to displaay
+featProp Timer.Costume.costumeName setTo 'GEN_onexone.json'
+featProp Timer.Costume.scale setTo 1
 
-// this is the time we will track
+// A property to track the time
 addProp time number 0
 
-// set the timer to the starting text
-featProp Timer.Graphing.text setTo 'Time: 0'
+// set the initial label and then update it below during update
+exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+featPropPop Timer.Graphing.text
 
 # PROGRAM UPDATE
 // Every second, add one to the time and then update the text on the timer character to say Time: #
@@ -351,6 +344,46 @@ every 1 runAtStart [[
     prop Timer.time add 1
     exprPush {{ 'Time: ' + Timer.getProp('time').value }}
     featPropPop Timer.Graphing.text
+  ]]
+]]`
+    },
+    {
+      "name": "graph_comparisons",
+      "scriptText": `# BLUEPRINT graph_comparisons
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+# PROGRAM INIT
+addFeature Costume
+addFeature Graphing
+addFeature Population
+
+addProp total_comparisons_count number 0
+
+featProp graph_comparisons.Costume.costumeName setTo 'GEN_onexone.json'
+featProp graph_comparisons.Graphing.isLargeGraphic setTo true
+featProp graph_comparisons.Graphing.graphProp setTo 'total_comparisons_count'
+featProp graph_comparisons.Graphing.graphMinY setTo 0
+featProp graph_comparisons.Graphing.graphMaxY setTo 50
+featProp graph_comparisons.Graphing.graphMinX setTo 0
+featProp graph_comparisons.Graphing.graphMaxX setTo 50
+featProp graph_comparisons.Graphing.text setTo 'comaparisons count'
+featProp graph_comparisons.Graphing.meterColor setTo 65280
+featProp graph_comparisons.Graphing.wordWrapWidth setTo 150
+
+
+// what row are we in on the screen (4 total, incremented at end of round)
+addProp row number 1
+
+addProp fieldType string ''
+
+# PROGRAM UPDATE
+every 1 runAtStart [[
+  // only update if this is the main graph, otherwise leave it as a record
+  ifProp graph_comparisons.row equal 1 [[
+    propPush global.count_num_comparisons
+    propPop graph_comparisons.total_comparisons_count
   ]]
 ]]`
     }
@@ -398,6 +431,20 @@ prop song.y setTo -41.12
 prop song.sort_by_value setTo 3
 prop song.song_name setTo 'song4'
 featProp song.Costume.costumeName setTo 'SM_die_with_a_smile.png'`
+    },
+    {
+      "id": "5",
+      "label": "Timer5",
+      "bpid": "Timer",
+      "initScript": `prop Timer.x setTo 552.77
+prop Timer.y setTo -381.44`
+    },
+    {
+      "id": "6",
+      "label": "graph_comparisons6",
+      "bpid": "graph_comparisons",
+      "initScript": `prop graph_comparisons.x setTo 563
+prop graph_comparisons.y setTo -230.05`
     }
   ]
 }
