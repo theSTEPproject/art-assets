@@ -681,8 +681,8 @@ featProp Timer.Graphing.text setTo 'Time: 0'
 every 1 runAtStart [[
   ifProp global.prediction equal false [[
     prop Timer.time add 1
-  \texprPush {{ 'Time: ' + Timer.getProp('time').value }}
-  \tfeatPropPop Timer.Graphing.text
+  exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+  featPropPop Timer.Graphing.text
   ]]
 ]]`
     }

@@ -48,7 +48,7 @@
 prop global.visible setTo false
 addFeature Population
 addFeature IU
-addProp song_title string ''
+addProp song_name string ''
 addProp stack_counter number 0
 addProp num_players number 0
 addProp countReady number 0
@@ -57,14 +57,14 @@ addProp test_sorting boolean false
 # PROGRAM UPDATE
 onEvent Start [[
 
-  prop global.song_title setTo 'title1'
-  propPush global.song_title
+  prop global.song_name setTo 'title1'
+  propPush global.song_name
   prop global.stack_counter add 1
-  prop global.song_title setTo 'title2'
-  propPush global.song_title
+  prop global.song_name setTo 'title2'
+  propPush global.song_name
   prop global.stack_counter add 1
-  prop global.song_title setTo 'title3'
-  propPush global.song_title
+  prop global.song_name setTo 'title3'
+  propPush global.song_name
   prop global.stack_counter add 1
   dbgStack
 
@@ -82,8 +82,7 @@ onEvent Start [[
 
 ifExpr {{ global.getProp('countReady').value == global.getProp('num_players').value }} [[
   prop global.test_sorting setTo true
-  ]]
-`
+]]`
     },
     {
       "name": "Background",
@@ -143,18 +142,22 @@ featCall song.Touches monitor 'rankChart' b2b
 
 // add any properties specific to the PC
 
-// 📖 role is intended to capture the song name. Each agent is going to have a different role and accordingly a different sort_by value and a different costume
-addProp role string 'song_name'
-// 📖 a number that indicate the rank of the songs ( can change based on year, number of listening etc. If alphabetically please use the relevant number that is in reference to the first letter (1=a, z=26)
-addProp sort_by number 0
-// 📖 A variable to save the value to sort by of the other song temporarly
-addProp compared_to_sort_by number 0
-// 📖 check_order is set to true if the player is interacting with the ranking_chart
+// ✏️ Intended to capture the song name. Each agent is going to have a different song_name and accordingly a different sort_by value and a different costume
+addProp song_name string 'song_name'
+// ✏️ a number that indicate the rank of the songs ( can change based on year, number of listening etc. If alphabetically please use the relevant number that is in reference to the first letter (1=a, z=26)
+addProp sort_by_value number 2
+// ✏️ A variable to save the value to sort by of the other song temporarly
+addProp value_to_compare number -100
+// ✏️ saves a temp value of the song name I am comparing with
+addProp compare_to_song_name string
+// ✏️ check_order is set to true if the player is interacting with the ranking_chart
 addProp check_order boolean false
-// 📖 Checking that we are comparing with maximum 1 agent at a time
+// ✏️ Checking that we are comparing with maximum 1 agent at a time
 addProp has_partner number 0
-// 📖 boolean used to ensure song arent counted as more than one player on init
+// ✏️ boolean used to ensure song arent counted as more than one player on init
 addProp player boolean false
+// ✏️ saves for the record what kind of attribute are we sorting by
+addProp sort_by_attribute string
 
 
 // display the meter if relevant
@@ -170,7 +173,7 @@ onEvent ROUNDINIT [[
 
 // onEvent START [[
 // ifExpr {{ global.getProp('stack_counter').value > 3 }} [[
-// propPop song.role
+// propPop song.song_name
 // dbgStack
 // prop global.stack_counter sub 1
 
@@ -179,39 +182,49 @@ onEvent ROUNDINIT [[
 
 when song touches song [[
   ifProp song.has_partner equal 0 [[
-    ifProp agent.has_partner equal 0 [[
-      // set the scientist and agent as having a partner
-      prop song.has_partner setTo 1
-      prop agent.has_partner setTo 1
-      // push the sort by value property of the agent and put it in a temporary beak length property of the song and vise versa
-      propPush agent.sort_by
-      propPop song.compared_to_sort_by
-      propPush song.sort_by
-      propPop agent.compared_to_sort_by
-      // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
-      ifExpr {{ song.getProp('sort_by').value > song.getProp('compared_to_sort_by').value }} [[
-        featProp song.Costume.costumeName setTo 'SM_APT_B.png'
-        featProp agent.Costume.costumeName setTo 'SM_APT_S.png'
-        featProp song.Costume.scale setTo 0.3
-        featProp agent.Costume.scale setTo 0.3
-        featProp song.Costume.glow setTo 1
-        featProp agent.Costume.glow setTo 1
-      ]]
-      ifExpr {{ song.getProp('sort_by').value < song.getProp('compared_to_sort_by').value }} [[
-        featProp song.Costume.costumeName setTo 'SM_APT_S.png'
-        featProp agent.Costume.costumeName setTo 'SM_APT_B.png'
-        featProp song.Costume.scale setTo 0.3
-        featProp agent.Costume.scale setTo 0.3
-        featProp song.Costume.glow setTo 1
-        featProp agent.Costume.glow setTo 1
-      ]]
-      ifExpr {{ song.getProp('sort_by').value == song.getProp('compared_to_sort_by').value }} [[
-        featProp song.Costume.costumeName setTo 'SM_APT_E.png'
-        featProp agent.Costume.costumeName setTo 'SM_APT_E.png'
-        featProp song.Costume.scale setTo 0.3
-        featProp agent.Costume.scale setTo 0.3
-        featProp song.Costume.glow setTo 1
-        featProp agent.Costume.glow setTo 1
+    // push the song_name property of the other agent and put it into a temporary property on the song
+    propPush character.song_name
+    propPop song.compare_to_song_name
+    propPush song.song_name
+    propPop character.compare_to_song_name
+    // compare a temporary property with the song_name property of the other song I am comparing with to check if the other agent is myself
+    ifExpr {{ song.getProp('song_name').value != song.getProp('compare_to_song_name').value }} [[
+      // if the other agent is not me, check if the other agent has a partner and if it is carrying finch properties.
+      ifProp character.has_partner equal 0 [[
+        // set the song and agent as having a partner
+        prop song.has_partner setTo 1
+        prop character.has_partner setTo 1
+        // push the sort by value property of the agent and put it in a temporary beak length property of the song and vise versa
+        propPush character.sort_by_value
+        dbgStack
+        propPop song.value_to_compare
+        dbgOut {{ 'added a value to compare to song: ' + song.getProp('song_name').value + ' and added the following value: ' + song.getProp('value_to_compare').value }}
+        propPush song.sort_by_value
+        dbgStack
+        propPop character.value_to_compare
+        dbgOut {{ 'added a value to compare to song: ' + character.getProp('song_name').value + ' and added the following value: ' + character.getProp('value_to_compare').value }}
+        // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
+        ifExpr {{ song.getProp('value_to_compare').value != -100 && character.getProp('value_to_compare').value != -100 }} [[
+          ifExpr {{ song.getProp('sort_by_value').value > song.getProp('value_to_compare').value }} [[
+            featProp song.Costume.scale setTo 0.5
+            featProp character.Costume.scale setTo 0.15
+            featProp song.Costume.glow setTo 1
+            featProp character.Costume.glow setTo 1
+          ]]
+          ifExpr {{ song.getProp('sort_by_value').value < song.getProp('value_to_compare').value }} [[
+            featProp song.Costume.scale setTo 0.15
+            featProp character.Costume.scale setTo 0.5
+            featProp song.Costume.glow setTo 1
+            featProp character.Costume.glow setTo 1
+          ]]
+          ifExpr {{ song.getProp('sort_by_value').value == song.getProp('value_to_compare').value }} [[
+            featProp song.Costume.scale setTo 0.3
+            featProp character.Costume.scale setTo 0.3
+            featProp character.Costume.scale setTo 0.3
+            featProp song.Costume.glow setTo 1
+            featProp character.Costume.glow setTo 1
+          ]]
+        ]]
       ]]
     ]]
   ]]
@@ -219,26 +232,24 @@ when song touches song [[
 
 // change the costume of song after interacting with another song to compare sot by value properties
 when song lasttouches song [[
-  // change the scientist back to carrying a finch after the finch comparison
-  ifProp song.has_partner equal 1 [[
-    ifProp agent.has_partner equal 1 [[
-      prop song.has_partner setTo 0
-      prop agent.has_partner setTo 0
-      featProp song.Costume.costumeName setTo 'SM_APT.png'
-      featProp song.Costume.scale setTo 0.3
-      featProp agent.Costume.costumeName setTo 'SM_APT.png'
-      featProp agent.Costume.scale setTo 0.3    
-    ]]
-  ]]
+  // resetting values for both songs
+  prop song.has_partner setTo 0
+  prop character.has_partner setTo 0
+  featProp song.Costume.scale setTo 0.3
+  featProp character.Costume.scale setTo 0.3
+  prop song.value_to_compare setTo 0
+  prop character.value_to_compare setTo -100
+  prop song.compare_to_song_name setTo
+  prop character.compare_to_song_name setTo
 ]]
 
 // when a song actively interacts with the rank chart, set the player status as ready to make a prediction and add one to the global property to count ready players
 when song touches rankChart [[
-   ifProp song.check_order equal false [[
-     featProp song.Costume.glow setTo 1
-     prop song.check_order setTo true
-     prop global.countReady add 1
-   ]]
+  ifProp song.check_order equal false [[
+    featProp song.Costume.glow setTo 1
+    prop song.check_order setTo true
+    prop global.countReady add 1
+  ]]
 ]]
 
 // when song leave the rank chart, set the player status as not ready to make a prediction and remove their count from the global property to count ready players
@@ -307,6 +318,41 @@ every 1 runAtStart [[
   ]]
 
 ]]`
+    },
+    {
+      "name": "Timer",
+      "scriptText": `# BLUEPRINT Timer
+# TAG isCharControllable false
+# TAG isPozyxControllable false
+# TAG isPTrackControllable false
+
+// 🔎 WHAT DOES THIS CHARACTER DO?
+// 🔎 This is a timer character so that we can see how much time has passed in our model
+// 🔎 We can use that time to think about how long the ecosystem survives if we want
+
+# PROGRAM INIT
+addFeature Graphing
+addFeature Costume
+
+// this is a hidden image since the timer is just text
+featProp Timer.Costume.costumeName setTo 'onexone.json'
+
+// this is the time we will track
+addProp time number 0
+
+// set the timer to the starting text
+featProp Timer.Graphing.text setTo 'Time: 0'
+
+# PROGRAM UPDATE
+// Every second, add one to the time and then update the text on the timer character to say Time: #
+// timer stops when the test_sorting phase begins
+every 1 runAtStart [[
+  ifProp global.test_sorting equal false [[
+    prop Timer.time add 1
+    exprPush {{ 'Time: ' + Timer.getProp('time').value }}
+    featPropPop Timer.Graphing.text
+  ]]
+]]`
     }
   ],
   "instances": [
@@ -319,24 +365,39 @@ prop Background.y setTo 30`
     },
     {
       "id": "1",
-      "label": "RankChart1",
+      "label": "rankChart1",
       "bpid": "rankChart",
-      "initScript": `prop RankChart.x setTo 361.48
-prop RankChart.y setTo -13.44`
+      "initScript": `prop rankChart.x setTo 380.53
+prop rankChart.y setTo -46.81`
     },
     {
       "id": "2",
       "label": "song2",
       "bpid": "song",
-      "initScript": `prop song.x setTo -278.73
-prop song.y setTo -240.23`
+      "initScript": `prop song.x setTo 54.22
+prop song.y setTo -147.94
+prop song.sort_by_value setTo 1
+prop song.song_name setTo 'song2'
+featProp song.Costume.costumeName setTo 'SM_thats_so_true.png'`
     },
     {
       "id": "3",
       "label": "song3",
       "bpid": "song",
-      "initScript": `prop song.x setTo 29
-prop song.y setTo 30`
+      "initScript": `prop song.x setTo -232.9
+prop song.y setTo -136.98
+prop song.sort_by_value setTo 2
+prop song.song_name setTo 'song3'`
+    },
+    {
+      "id": "4",
+      "label": "song4",
+      "bpid": "song",
+      "initScript": `prop song.x setTo -95.73
+prop song.y setTo -41.12
+prop song.sort_by_value setTo 3
+prop song.song_name setTo 'song4'
+featProp song.Costume.costumeName setTo 'SM_die_with_a_smile.png'`
     }
   ]
 }
