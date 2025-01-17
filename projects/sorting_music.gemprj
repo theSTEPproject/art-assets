@@ -82,7 +82,12 @@ addProp count_num_comparisons number 0
 
 ifExpr {{ global.getProp('countReady').value == global.getProp('num_players').value }} [[
   prop global.test_sorting setTo true
-]]`
+]]
+
+ifExpr {{ global.getProp('countReady').value != global.getProp('num_players').value }} [[
+  prop global.test_sorting setTo false
+]]
+`
     },
     {
       "name": "Background",
@@ -191,11 +196,11 @@ when song touches song [[
         propPush character.sort_by_value
         dbgStack
         propPop song.value_to_compare
-        dbgOut {{ 'added a value to compare to song: ' + song.getProp('song_name').value + ' and added the following value: ' + song.getProp('value_to_compare').value }}
+        dbgOut {{ 'added a value to compare to song: ' + song.getProp('song_name').value + ' and set the following value: ' + song.getProp('value_to_compare').value }}
         propPush song.sort_by_value
         dbgStack
         propPop character.value_to_compare
-        dbgOut {{ 'added a value to compare to song: ' + character.getProp('song_name').value + ' and added the following value: ' + character.getProp('value_to_compare').value }}
+        dbgOut {{ 'added a value to compare to song: ' + character.getProp('song_name').value + ' and set the following value: ' + character.getProp('value_to_compare').value }}
         // making sure value to compare updates correctly
         ifExpr {{ song.getProp('value_to_compare').value != -100 && character.getProp('value_to_compare').value != -100 }} [[
           // compare the sort by value and temporary (compared to) sort by value properties of the song. If song is larger, change the song costume to larger and the agent costume to smaller
@@ -207,6 +212,7 @@ when song touches song [[
             // Count and log the number of comparisons between songs
             prop global.count_num_comparisons add 1
             dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
+            dbgOut {{ 'Comaprison event between ' + song.getProp('song_name').value + ' and ' + character.getProp('song_name').valu + ' with results: ' + song.getProp('song_name').value + ' is bigger '}}
           ]]
           ifExpr {{ song.getProp('sort_by_value').value < song.getProp('value_to_compare').value }} [[
             featProp song.Costume.scale setTo 0.15
@@ -216,6 +222,7 @@ when song touches song [[
             // Count and log the number of comparisons between songs
             prop global.count_num_comparisons add 1
             dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
+            dbgOut {{ 'Comaprison event between ' + song.getProp('song_name').value + ' and ' + character.getProp('song_name').valu + ' with results: ' + song.getProp('song_name').value + ' is smaller '}}
 
           ]]
           ifExpr {{ song.getProp('sort_by_value').value == song.getProp('value_to_compare').value }} [[
@@ -227,6 +234,7 @@ when song touches song [[
             // Count and log the number of comparisons between songs
             prop global.count_num_comparisons add 1
             dbgOut {{ 'num of comparisons so far: ' + global.getProp('count_num_comparisons').value }}
+            dbgOut {{ 'Comaprison event between ' + song.getProp('song_name').value + ' and ' + character.getProp('song_name').valu + ' with results: equal '}}
           ]]
         ]]
       ]]
@@ -245,6 +253,7 @@ when song lasttouches song [[
   prop character.value_to_compare setTo -100
   prop song.compare_to_song_name setTo
   prop character.compare_to_song_name setTo
+  dbgOut {{ 'end of comparison event between ' + song.getProp('song_name').value + ' and ' + character.getProp('song_name').value }}
 ]]
 
 // when a song actively interacts with the rank chart, set the player status as ready to make a prediction and add one to the global property to count ready players
@@ -253,17 +262,22 @@ when song touches rankChart [[
     featProp song.Costume.glow setTo 1
     prop song.check_order setTo true
     prop global.countReady add 1
+    dbgOut {{ 'song: ' + song.getProp('song_name').value + ' is on the rank chart with total songs ready to test sorting of: ' + global.getProp('countReady').value }}
   ]]
 ]]
 
 // when song leave the rank chart, set the player status as not ready to make a prediction and remove their count from the global property to count ready players
 when song lasttouches rankChart [[
-  prop global.countReady sub 1
+  ifProp global.countReady greaterThan 0 [[
+    prop global.countReady sub 1
+  ]]
   prop song.check_order setTo false
-]]
+  dbgOut {{ 'song: ' + song.getProp('song_name').value + ' just left the rank chart with total songs ready to test sorting of: ' + global.getProp('countReady').value }}
+]] 
 
-// prediction process
+// test sorting
 ifProp global.test_sorting equal true [[
+  dbgOut {{ 'test of sorting in progress' }}
   dbgOut {{ 'for song name: ' + song.getProp('song_name').value + ' Y value is: ' + song.getProp('y').value }}
 
 ]]
@@ -379,8 +393,7 @@ addProp row number 1
 addProp fieldType string ''
 
 # PROGRAM UPDATE
-every 1 runAtStart [[
-  // only update if this is the main graph, otherwise leave it as a record
+ifExpr {{global.getProp('count_num_comparisons').value != graph_comparisons.getProp('total_comparisons_count').value}} [[
   ifProp graph_comparisons.row equal 1 [[
     propPush global.count_num_comparisons
     propPop graph_comparisons.total_comparisons_count
@@ -433,18 +446,18 @@ prop song.song_name setTo 'song4'
 featProp song.Costume.costumeName setTo 'SM_die_with_a_smile.png'`
     },
     {
-      "id": "5",
-      "label": "Timer5",
-      "bpid": "Timer",
-      "initScript": `prop Timer.x setTo 552.77
-prop Timer.y setTo -381.44`
-    },
-    {
       "id": "6",
       "label": "graph_comparisons6",
       "bpid": "graph_comparisons",
-      "initScript": `prop graph_comparisons.x setTo 563
-prop graph_comparisons.y setTo -230.05`
+      "initScript": `prop graph_comparisons.x setTo -465.95
+prop graph_comparisons.y setTo -265.36`
+    },
+    {
+      "id": "7",
+      "label": "Timer7",
+      "bpid": "Timer",
+      "initScript": `prop Timer.x setTo -445.20
+prop Timer.y setTo -397.31`
     }
   ]
 }
