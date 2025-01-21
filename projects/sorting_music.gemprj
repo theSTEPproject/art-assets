@@ -99,7 +99,7 @@ ifExpr {{ global.getProp('countReady').value != global.getProp('num_players').va
 # PROGRAM INIT
 addFeature Costume
 featProp Background.Costume.costumeName setTo 'SM_background.png'
-featProp Background.Costume.scale setTo 1.4
+featProp Background.Costume.scale setTo 0.95
 
 # PROGRAM UPDATE
 // code to run every frame
@@ -306,7 +306,7 @@ every 1 runAtStart [[
 // setup the NPC costume
 addFeature Costume
 featProp rankChart.Costume.costumeName setTo 'SM_ranking_chart.png'
-featProp rankChart.Costume.scale setTo 1
+featProp rankChart.Costume.scale setTo 0.9
 
 // add other features
 addFeature Graphing
@@ -321,8 +321,7 @@ featCall rankChart.Touches monitor 'song' b2b
 # PROGRAM UPDATE
 // This is stuff that happens constantly and you can also check certain conditions
 // For example every 1 runAtStart will run every time this is called, including the first, whereas every 5 will happen less offten and not the first time
-// This is also where you can handle touches between characters such as When Algae touches Fish
-`
+// This is also where you can handle touches between characters such as When Algae touches Fish`
     },
     {
       "name": "Timer",
@@ -406,15 +405,15 @@ ifExpr {{global.getProp('count_num_comparisons').value != graph_comparisons.getP
       "id": "0",
       "label": "Background0",
       "bpid": "Background",
-      "initScript": `prop Background.x setTo 29
-prop Background.y setTo 30`
+      "initScript": `prop Background.x setTo 4.31
+prop Background.y setTo 4.15`
     },
     {
       "id": "1",
       "label": "rankChart1",
       "bpid": "rankChart",
-      "initScript": `prop rankChart.x setTo 380.53
-prop rankChart.y setTo -46.81`
+      "initScript": `prop rankChart.x setTo 325.62
+prop rankChart.y setTo -4.36`
     },
     {
       "id": "2",
@@ -449,15 +448,15 @@ featProp song.Costume.costumeName setTo 'SM_die_with_a_smile.png'`
       "id": "6",
       "label": "graph_comparisons6",
       "bpid": "graph_comparisons",
-      "initScript": `prop graph_comparisons.x setTo -465.95
-prop graph_comparisons.y setTo -265.36`
+      "initScript": `prop graph_comparisons.x setTo -473.16
+prop graph_comparisons.y setTo -266.19`
     },
     {
       "id": "7",
       "label": "Timer7",
       "bpid": "Timer",
-      "initScript": `prop Timer.x setTo -445.20
-prop Timer.y setTo -397.31`
+      "initScript": `prop Timer.x setTo -454.54
+prop Timer.y setTo -397.29`
     }
   ]
 }
